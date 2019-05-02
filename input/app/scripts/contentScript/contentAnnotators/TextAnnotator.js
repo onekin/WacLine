@@ -1,19 +1,24 @@
 const ContentAnnotator = require('./ContentAnnotator')
-const ModeManager = require('../ModeManager')
 const ContentTypeManager = require('../ContentTypeManager')
-const TagManager = require('../TagManager')
+const Tag = require('../Tag')
+const TagGroup = require('../TagGroup')
 const Events = require('../Events')
+const RolesManager = require('../RolesManager')
 const DOMTextUtils = require('../../utils/DOMTextUtils')
+const PDFTextUtils = require('../../utils/PDFTextUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
-const Config = require('../../Config')
 const $ = require('jquery')
 require('jquery-contextmenu/dist/jquery.contextMenu')
 const _ = require('lodash')
 require('components-jqueryui')
+const Alerts = require('../../utils/Alerts')
 
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
-const REMOVE_OVERLAYS_INTERVAL_IN_SECONDS = 3
 const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 60
+
+const ReviewAssistant = require('../../specific/review/ReviewAssistant')
+const Config = require('../../Config')
+let swal = require('sweetalert2')
 
 class TextAnnotator extends ContentAnnotator {
   constructor (config) {
@@ -22,8 +27,6 @@ class TextAnnotator extends ContentAnnotator {
     this.config = config
     this.observerInterval = null
     this.reloadInterval = null
-    this.removeOverlaysInterval = null
-    this.currentAnnotations = null
     this.allAnnotations = null
     this.currentUserProfile = null
     this.highlightClassName = 'highlightedAnnotation'
@@ -54,10 +57,10 @@ class TextAnnotator extends ContentAnnotator {
   initEvents (callback) {
     this.initSelectionEvents(() => {
       this.initAnnotateEvent(() => {
-        this.initModeChangeEvent(() => {
-          this.initUserFilterChangeEvent(() => {
-            this.initReloadAnnotationsEvent(() => {
-              this.initDocumentURLChangeEvent(() => {
+        this.initReloadAnnotationsEvent(() => {
+          this.initDeleteAllAnnotationsEvent(() => {
+            this.initDocumentURLChangeEvent(() => {
+              this.initTagsUpdatedEvent(() => {
                 // Reload annotations periodically
                 if (_.isFunction(callback)) {
                   callback()
@@ -68,7 +71,6 @@ class TextAnnotator extends ContentAnnotator {
         })
       })
     })
-    this.initRemoveOverlaysInPDFs()
   }
 
   initDocumentURLChangeEvent (callback) {
@@ -76,6 +78,38 @@ class TextAnnotator extends ContentAnnotator {
     this.events.documentURLChangeEvent.element.addEventListener(this.events.documentURLChangeEvent.event, this.events.documentURLChangeEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
+    }
+  }
+
+  initDeleteAllAnnotationsEvent (callback) {
+    this.events.deleteAllAnnotationsEvent = {element: document, event: Events.deleteAllAnnotations, handler: this.createDeleteAllAnnotationsEventHandler()}
+    this.events.deleteAllAnnotationsEvent.element.addEventListener(this.events.deleteAllAnnotationsEvent.event, this.events.deleteAllAnnotationsEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  initTagsUpdatedEvent (callback) {
+    this.events.tagsUpdated = {element: document, event: Events.tagsUpdated, handler: this.createtagsUpdatedEventHandler()}
+    this.events.tagsUpdated.element.addEventListener(this.events.tagsUpdated.event, this.events.tagsUpdated.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  createtagsUpdatedEventHandler (callback) {
+    return () => {
+      this.updateAllAnnotations(() => {
+        console.debug('Updated all the annotations after Tags Updated event')
+      })
+    }
+  }
+
+  createDeleteAllAnnotationsEventHandler (callback) {
+    return () => {
+      this.deleteAllAnnotations(() => {
+        console.debug('All annotations deleted')
+      })
     }
   }
 
@@ -87,14 +121,6 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  initUserFilterChangeEvent (callback) {
-    this.events.userFilterChangeEvent = {element: document, event: Events.userFilterChange, handler: this.createUserFilterChangeEventHandler()}
-    this.events.userFilterChangeEvent.element.addEventListener(this.events.userFilterChangeEvent.event, this.events.userFilterChangeEvent.handler, false)
-    if (_.isFunction(callback)) {
-      callback()
-    }
-  }
-
   initReloadAnnotationsEvent (callback) {
     this.reloadInterval = setInterval(() => {
       this.updateAllAnnotations(() => {
@@ -103,62 +129,6 @@ class TextAnnotator extends ContentAnnotator {
     }, ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS * 1000)
     if (_.isFunction(callback)) {
       callback()
-    }
-  }
-
-  createUserFilterChangeEventHandler () {
-    return (event) => {
-      // This is only allowed in mode index
-      if (window.abwa.modeManager.mode === ModeManager.modes.index) {
-        let filteredUsers = event.detail.filteredUsers
-        // Unhighlight all annotations
-        this.unHighlightAllAnnotations()
-        // Retrieve annotations for filtered users
-        this.currentAnnotations = this.retrieveAnnotationsForUsers(filteredUsers)
-        LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
-        this.highlightAnnotations(this.currentAnnotations)
-      }
-    }
-  }
-
-  /**
-   * Retrieve from all annotations for the current document, those who user is one of the list in users
-   * @param users
-   * @returns {Array}
-   */
-  retrieveAnnotationsForUsers (users) {
-    return _.filter(this.allAnnotations, (annotation) => {
-      return _.find(users, (user) => {
-        return annotation.user === 'acct:' + user + '@hypothes.is'
-      })
-    })
-  }
-
-  initModeChangeEvent (callback) {
-    this.events.modeChangeEvent = {element: document, event: Events.modeChanged, handler: this.createInitModeChangeEventHandler()}
-    this.events.modeChangeEvent.element.addEventListener(this.events.modeChangeEvent.event, this.events.modeChangeEvent.handler, false)
-    if (_.isFunction(callback)) {
-      callback()
-    }
-  }
-
-  createInitModeChangeEventHandler () {
-    return () => {
-      // If mode is index, disable selection event
-      if (window.abwa.modeManager.mode === ModeManager.modes.index) {
-        // Highlight all annotations
-        this.currentAnnotations = this.allAnnotations
-        LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
-        this.disableSelectionEvent()
-      } else {
-        // Unhighlight all annotations
-        this.unHighlightAllAnnotations()
-        // Highlight only annotations from current user
-        this.currentAnnotations = this.retrieveCurrentAnnotations()
-        LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
-        // Activate selection event and sidebar functionality
-        this.activateSelectionEvent()
-      }
     }
   }
 
@@ -175,18 +145,29 @@ class TextAnnotator extends ContentAnnotator {
       let selectors = []
       // If selection is empty, return null
       if (document.getSelection().toString().length === 0) {
-        window.alert('Nothing to highlight, current selection is empty') // TODO change by swal
+        // If tag element is not checked, no navigation allowed
+        if (event.detail.chosen === 'true') {
+          // Navigate to the first annotation for this tag
+          this.goToFirstAnnotationOfTag(event.detail.tags[0])
+        } else {
+          Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+        }
         return
       }
       // If selection is child of sidebar, return null
       if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
-        window.alert('The selected content cannot be highlighted, is not part of the document') // TODO change by swal
+        Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
         return
       }
       let range = document.getSelection().getRangeAt(0)
       // Create FragmentSelector
       if (_.findIndex(window.abwa.contentTypeManager.documentType.selectors, (elem) => { return elem === 'FragmentSelector' }) !== -1) {
-        let fragmentSelector = DOMTextUtils.getFragmentSelector(range)
+        let fragmentSelector = null
+        if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
+          fragmentSelector = PDFTextUtils.getFragmentSelector(range)
+        } else {
+          fragmentSelector = DOMTextUtils.getFragmentSelector(range)
+        }
         if (fragmentSelector) {
           selectors.push(fragmentSelector)
         }
@@ -217,11 +198,9 @@ class TextAnnotator extends ContentAnnotator {
       let annotation = TextAnnotator.constructAnnotation(selectors, event.detail.tags)
       window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(annotation, (err, annotation) => {
         if (err) {
-          window.alert('Unexpected error, unable to create annotation')
+          Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
           // Add to annotations
-          this.currentAnnotations.push(annotation)
-          LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
           this.allAnnotations.push(annotation)
           LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
           // Send event annotation is created
@@ -236,6 +215,13 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   static constructAnnotation (selectors, tags) {
+    // Check if selectors exist, if then create a target for annotation, in other case the annotation will be a page annotation
+    let target = []
+    if (_.isObject(selectors)) {
+      target.push({
+        selector: selectors
+      })
+    }
     let data = {
       group: window.abwa.groupSelector.currentGroup.id,
       permissions: {
@@ -243,9 +229,7 @@ class TextAnnotator extends ContentAnnotator {
       },
       references: [],
       tags: tags,
-      target: [{
-        selector: selectors
-      }],
+      target: target,
       text: '',
       uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
     }
@@ -317,20 +301,25 @@ class TextAnnotator extends ContentAnnotator {
    */
   initAnnotationsObserver (callback) {
     this.observerInterval = setInterval(() => {
-      if (this.currentAnnotations) {
-        for (let i = 0; i < this.currentAnnotations.length; i++) {
-          let annotation = this.currentAnnotations[i]
-          // Search if annotation exist
-          let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
-          // If annotation doesn't exist, try to find it
-          if (!_.isElement(element)) {
-            Promise.resolve().then(() => { this.highlightAnnotation(annotation) })
+      console.debug('Observer interval')
+      // If a swal is displayed, do not execute highlighting observer
+      if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
+        if (this.allAnnotations) {
+          for (let i = 0; i < this.allAnnotations.length; i++) {
+            let annotation = this.allAnnotations[i]
+            // Search if annotation exist
+            let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
+            // If annotation doesn't exist, try to find it
+            if (!_.isElement(element)) {
+              Promise.resolve().then(() => { this.highlightAnnotation(annotation) })
+            }
           }
         }
       }
     }, ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS * 1000)
     // TODO Improve the way to highlight to avoid this interval (when search in PDFs it is highlighted empty element instead of element)
     this.cleanInterval = setInterval(() => {
+      console.debug('Clean interval')
       let highlightedElements = document.querySelectorAll('.highlightedAnnotation')
       highlightedElements.forEach((element) => {
         if (element.innerText === '') {
@@ -351,10 +340,10 @@ class TextAnnotator extends ContentAnnotator {
         console.error('Unable to load annotations')
       } else {
         // Current annotations will be
-        this.currentAnnotations = this.retrieveCurrentAnnotations()
-        LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+        this.allAnnotations = this.retrieveCurrentAnnotations()
+        LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         // Highlight annotations in the DOM
-        this.highlightAnnotations(this.currentAnnotations)
+        this.highlightAnnotations(this.allAnnotations)
         if (_.isFunction(callback)) {
           callback()
         }
@@ -376,16 +365,13 @@ class TextAnnotator extends ContentAnnotator {
         }
       } else {
         // Search tagged annotations
-        let tagList = window.abwa.tagManager.getTagsList()
-        let taggedAnnotations = []
-        for (let i = 0; i < annotations.length; i++) {
-          // Check if annotation contains a tag of current group
-          let tag = TagManager.retrieveTagForAnnotation(annotations[i], tagList)
-          if (tag) {
-            taggedAnnotations.push(annotations[i])
-          }
-        }
-        this.allAnnotations = taggedAnnotations || []
+        let filteringTags = window.abwa.tagManager.getFilteringTagList()
+        this.allAnnotations = _.filter(annotations, (annotation) => {
+          let tags = annotation.tags
+          return !(tags.length > 0 && _.find(filteringTags, tags[0])) || (tags.length > 1 && _.find(filteringTags, tags[1]))
+        })
+        // Redraw all annotations
+        this.redrawAnnotations()
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         if (_.isFunction(callback)) {
           callback(null, this.allAnnotations)
@@ -394,44 +380,8 @@ class TextAnnotator extends ContentAnnotator {
     })
   }
 
-  getAllAnnotations (callback) {
-    // Retrieve annotations for current url and group
-    window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
-      url: window.abwa.contentTypeManager.getDocumentURIToSearchInHypothesis(),
-      uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis(),
-      group: window.abwa.groupSelector.currentGroup.id,
-      order: 'asc'
-    }, (err, annotations) => {
-      if (err) {
-        if (_.isFunction(callback)) {
-          callback(err)
-        }
-      } else {
-        // Search tagged annotations
-        let tagList = window.abwa.tagManager.getTagsList()
-        let taggedAnnotations = []
-        for (let i = 0; i < annotations.length; i++) {
-          // Check if annotation contains a tag of current group
-          let tag = TagManager.retrieveTagForAnnotation(annotations[i], tagList)
-          if (tag) {
-            taggedAnnotations.push(annotations[i])
-          }
-        }
-        if (_.isFunction(callback)) {
-          callback(null, taggedAnnotations)
-        }
-      }
-    })
-  }
-
   retrieveCurrentAnnotations () {
-    // Depending on the mode of the tool, we must need only
-    if (window.abwa.modeManager.mode === ModeManager.modes.index) {
-      return this.allAnnotations
-    } else if (window.abwa.modeManager.mode === ModeManager.modes.highlight) {
-      // Filter annotations which user is different to current one
-      return _.filter(this.allAnnotations, (annotation) => { return annotation.user === this.currentUserProfile.userid })
-    }
+    return this.allAnnotations
   }
 
   highlightAnnotations (annotations, callback) {
@@ -450,79 +400,64 @@ class TextAnnotator extends ContentAnnotator {
 
   highlightAnnotation (annotation, callback) {
     let classNameToHighlight = this.retrieveHighlightClassName(annotation)
-    let tagList = window.abwa.tagManager.getTagsList()
-    let tagForAnnotation = TagManager.retrieveTagForAnnotation(annotation, tagList)
-    try {
-      let highlightedElements = []
-      // TODO Remove this case for google drive
-      if (window.location.href.includes('drive.google.com')) {
-        // Ensure popup exists
-        if (document.querySelector('.a-b-r-x')) {
-          highlightedElements = DOMTextUtils.highlightContent(
-            annotation.target[0].selector, classNameToHighlight, annotation.id)
-        }
-      } else {
+    // Get annotation color for an annotation
+    let tagInstance = window.abwa.tagManager.findAnnotationTagInstance(annotation)
+    if (tagInstance) {
+      let color = tagInstance.getColor()
+      try {
+        let highlightedElements = []
         highlightedElements = DOMTextUtils.highlightContent(
           annotation.target[0].selector, classNameToHighlight, annotation.id)
-      }
-      // Highlight in same color as button
-      highlightedElements.forEach(highlightedElement => {
-        // If need to highlight, set the color corresponding to, in other case, maintain its original color
-        $(highlightedElement).css('background-color', tagForAnnotation.color)
-        // Set purpose color
-        highlightedElement.dataset.color = tagForAnnotation.color
-        highlightedElement.dataset.tags = tagForAnnotation.tags
-        let user = annotation.user.replace('acct:', '').replace('@hypothes.is', '')
-        if (this.config.namespace === Config.exams.namespace) {
-          let tagGroup = _.find(window.abwa.tagManager.currentTags, (tagGroup) => { return _.find(tagGroup.tags, tagForAnnotation) })
-          let highestMark = _.last(tagGroup.tags).name
-          highlightedElement.title = 'Rubric: ' + tagGroup.config.name + '\nMark: ' + tagForAnnotation.name + ' of ' + highestMark
-        } else if (this.config.namespace === Config.slrDataExtraction.namespace) {
-          highlightedElement.title = 'Author: ' + user + '\n' + 'Category: ' + tagForAnnotation.name
-        } else {
-          highlightedElement.title = 'Author: ' + user + '\n'
+        // Highlight in same color as button
+        highlightedElements.forEach(highlightedElement => {
+          // If need to highlight, set the color corresponding to, in other case, maintain its original color
+          $(highlightedElement).css('background-color', color)
+          // Set purpose color
+          highlightedElement.dataset.color = color
+          let group = null
+          if (LanguageUtils.isInstanceOf(tagInstance, TagGroup)) {
+            group = tagInstance
+            // Set message
+            highlightedElement.title = group.config.name + '\nLevel is pending, please right click to set a level.'
+          } else if (LanguageUtils.isInstanceOf(tagInstance, Tag)) {
+            group = tagInstance.group
+            highlightedElement.title = group.config.name + '\nLevel: ' + tagInstance.name
+          }
+          if (!_.isEmpty(annotation.text)) {
+            try {
+              let feedback = JSON.parse(annotation.text)
+              highlightedElement.title += '\nFeedback: ' + feedback.comment
+            } catch (e) {
+              highlightedElement.title += '\nFeedback: ' + annotation.text
+            }
+          }
+        })
+        // Create context menu event for highlighted elements
+        this.createContextMenuForAnnotation(annotation)
+        // Create click event to move to next annotation
+        // this.createNextAnnotationHandler(annotation)
+        // Create double click event handler
+        this.createDoubleClickEventHandler(annotation)
+      } catch (e) {
+        // TODO Handle error (maybe send in callback the error ¿?)
+        if (_.isFunction(callback)) {
+          callback(new Error('Element not found'))
         }
-      })
-      // Create context menu event for highlighted elements
-      this.createContextMenuForAnnotation(annotation)
-      // Create click event to move to next annotation
-      this.createNextAnnotationHandler(annotation)
-    } catch (e) {
-      // TODO Handle error (maybe send in callback the error ¿?
-      callback(new Error('Element not found'))
-    } finally {
-      if (_.isFunction(callback)) {
-        callback()
+      } finally {
+        if (_.isFunction(callback)) {
+          callback()
+        }
       }
     }
   }
 
-  createNextAnnotationHandler (annotation) {
-    let annotationIndex = _.findIndex(
-      this.currentAnnotations,
-      (currentAnnotation) => { return currentAnnotation.id === annotation.id })
-    let nextAnnotationIndex = _.findIndex(
-      this.currentAnnotations,
-      (currentAnnotation) => { return _.isEqual(currentAnnotation.tags, annotation.tags) },
-      annotationIndex + 1)
-    // If not next annotation found, retrieve the first one
-    if (nextAnnotationIndex === -1) {
-      nextAnnotationIndex = _.findIndex(
-        this.currentAnnotations,
-        (currentAnnotation) => { return _.isEqual(currentAnnotation.tags, annotation.tags) })
-    }
-    // If annotation is different, create event
-    if (nextAnnotationIndex !== annotationIndex) {
-      let highlightedElements = document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')
-      for (let i = 0; i < highlightedElements.length; i++) {
-        let highlightedElement = highlightedElements[i]
-        highlightedElement.addEventListener('click', () => {
-          // If mode is index, move to next annotation
-          if (window.abwa.modeManager.mode === ModeManager.modes.index) {
-            this.goToAnnotation(this.currentAnnotations[nextAnnotationIndex])
-          }
-        })
-      }
+  createDoubleClickEventHandler (annotation) {
+    let highlights = document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')
+    for (let i = 0; i < highlights.length; i++) {
+      let highlight = highlights[i]
+      highlight.addEventListener('dblclick', () => {
+        this.commentAnnotationHandler(annotation)
+      })
     }
   }
 
@@ -532,59 +467,246 @@ class TextAnnotator extends ContentAnnotator {
       build: () => {
         // Create items for context menu
         let items = {}
-        // If current user is the same as author, allow to remove annotation
-        if (this.currentUserProfile.userid === annotation.user) {
-          items['delete'] = {name: 'Delete annotation'}
-        }
-        // Add validate item for SLR
-        if (this.config.namespace === Config.slrDataExtraction.namespace) {
-          if (window.abwa.modeManager.mode === ModeManager.modes.index) {
-            if (_.isObject(items['delete'])) {
-              items['sep1'] = '---------'
-            }
-            items['validate'] = {name: 'Validate classification'}
-          }
+        // If current user is the same as author, allow to remove annotation or add a comment
+        if (window.abwa.rolesManager.role === RolesManager.roles.reviewer) {
+          items['comment'] = {name: 'Comment'}
+          items['delete'] = {name: 'Delete'}
+        } else if (window.abwa.rolesManager.role === RolesManager.roles.author) {
+          // This is disabled by now, maybe in the future it will be interesting to provide a reply mechanism
+          // In the same way, if the author cannot reply to reviewer annotation, the rest of the functionality in this .js about replying will not be used
+          // items['reply'] = {name: 'Reply'}
         }
         return {
-          callback: (key) => {
-            if (key === 'validate') {
-              // Validate annotation category
-              LanguageUtils.dispatchCustomEvent(Events.annotationValidated, {annotation: annotation})
-            } else if (key === 'delete') {
-              // Delete annotation
-              window.abwa.hypothesisClientManager.hypothesisClient.deleteAnnotation(annotation.id, (err, result) => {
-                if (err) {
-                  // Unable to delete this annotation
-                  console.error('Error while trying to delete annotation %s', annotation.id)
-                } else {
-                  if (!result.deleted) {
-                    // Alert user error happened
-                    // TODO swal
-                    window.alert('Error deleting hypothesis annotation, please try it again')
-                  } else {
-                    // Remove annotation from data model
-                    _.remove(this.currentAnnotations, (currentAnnotation) => {
-                      return currentAnnotation.id === annotation.id
-                    })
-                    LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
-                    _.remove(this.allAnnotations, (currentAnnotation) => {
-                      return currentAnnotation.id === annotation.id
-                    })
-                    LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
-                    // Dispatch deleted annotation event
-                    LanguageUtils.dispatchCustomEvent(Events.annotationDeleted, {annotation: annotation})
-                    // Unhighlight annotation highlight elements
-                    DOMTextUtils.unHighlightElements([...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')])
-                    console.debug('Deleted annotation ' + annotation.id)
-                  }
-                }
-              })
+          callback: (key, opt) => {
+            if (key === 'delete') {
+              this.deleteAnnotationHandler(annotation)
+            } else if (key === 'comment') {
+              this.commentAnnotationHandler(annotation)
             }
           },
           items: items
         }
       }
     })
+  }
+
+  deleteAnnotationHandler (annotation) {
+    // Ask for confirmation
+    Alerts.confirmAlert({
+      alertType: Alerts.alertType.question,
+      title: 'Delete annotation',
+      text: 'Are you sure you want to delete this annotation?',
+      callback: () => {
+        // Delete annotation
+        window.abwa.hypothesisClientManager.hypothesisClient.deleteAnnotation(annotation.id, (err, result) => {
+          if (err) {
+            // Unable to delete this annotation
+            console.error('Error while trying to delete annotation %s', annotation.id)
+          } else {
+            if (!result.deleted) {
+              // Alert user error happened
+              Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
+            } else {
+              _.remove(this.allAnnotations, (currentAnnotation) => {
+                return currentAnnotation.id === annotation.id
+              })
+              LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+              // Dispatch deleted annotation event
+              LanguageUtils.dispatchCustomEvent(Events.annotationDeleted, {annotation: annotation})
+              // Unhighlight annotation highlight elements
+              DOMTextUtils.unHighlightElements([...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')])
+              console.debug('Deleted annotation ' + annotation.id)
+            }
+          }
+        })
+      }
+    })
+  }
+
+  commentAnnotationHandler (annotation) {
+    // Close sidebar if opened
+    let isSidebarOpened = window.abwa.sidebar.isOpened()
+    this.closeSidebar()
+    // Open sweetalert
+    let that = this
+
+    let updateAnnotation = (comment, literature, level) => {
+      annotation.text = JSON.stringify({comment: comment, suggestedLiterature: literature})
+
+      // Assign level to annotation
+      if (level != null) {
+        let tagGroup = window.abwa.tagManager.getGroupFromAnnotation(annotation)
+        let pole = tagGroup.tags.find((e) => { return e.name === level })
+        annotation.tags = pole.tags
+      }
+
+      window.abwa.hypothesisClientManager.hypothesisClient.updateAnnotation(
+        annotation.id,
+        annotation,
+        (err, annotation) => {
+          if (err) {
+            // Show error message
+            Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
+          } else {
+            // Update current annotations
+            let currentIndex = _.findIndex(that.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
+            that.allAnnotations.splice(currentIndex, 1, annotation)
+            // Update all annotations
+            let allIndex = _.findIndex(that.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
+            that.allAnnotations.splice(allIndex, 1, annotation)
+            // Dispatch updated annotations events
+            LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: that.allAnnotations})
+
+            // Not sure if this goes here
+            LanguageUtils.dispatchCustomEvent(Events.comment, {annotation: annotation})
+
+            // Redraw annotations
+            DOMTextUtils.unHighlightElements([...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')])
+            that.highlightAnnotation(annotation)
+            ReviewAssistant.checkBalanced()
+          }
+        })
+      if (isSidebarOpened) {
+        that.openSidebar()
+      }
+    }
+    let showAlert = (form) => {
+      let suggestedLiteratureHtml = (lit) => {
+        let html = ''
+        for (let i in lit) {
+          html += '<li><a class="removeReference"></a><span title="' + lit[i] + '">' + lit[i] + '</span></li>'
+        }
+        return html
+      }
+      let hasLevel = (annotation, level) => {
+        return annotation.tags.find((e) => { return e === Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':' + level }) != null
+      }
+
+      let groupTag = window.abwa.tagManager.getGroupFromAnnotation(annotation)
+      let criterionName = groupTag.config.name
+      let poles = groupTag.tags.map((e) => { return e.name })
+      // let poleChoiceRadio = poles.length>0 ? '<h3>Pole</h3>' : ''
+      let poleChoiceRadio = '<div>'
+      poles.forEach((e) => {
+        poleChoiceRadio += '<input type="radio" name="pole" class="swal2-radio poleRadio" value="' + e + '" '
+        if (hasLevel(annotation, e)) poleChoiceRadio += 'checked'
+        poleChoiceRadio += '>'
+        switch (e) {
+          case 'Strength':
+            poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/strength.png') + '"/>'
+            break
+          case 'Major weakness':
+            poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/majorConcern.png') + '"/>'
+            break
+          case 'Minor weakness':
+            poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/minorConcern.png') + '"/>'
+            break
+        }
+        poleChoiceRadio += ' <span class="swal2-label" style="margin-right:5%;" title="\'+e+\'">' + e + '</span>'
+      })
+      poleChoiceRadio += '</div>'
+
+      swal({
+        html: '<h3 class="criterionName">' + criterionName + '</h3>' + poleChoiceRadio + '<textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">' + form.comment + '</textarea>' + '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(form.suggestedLiterature) + '</ul>',
+        showLoaderOnConfirm: true,
+        width: '40em',
+        preConfirm: () => {
+          let newComment = $('#swal-textarea').val()
+          let suggestedLiterature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
+          let level = $('.poleRadio:checked') != null && $('.poleRadio:checked').length === 1 ? $('.poleRadio:checked')[0].value : null
+          if (newComment !== null && newComment !== '') {
+            $.ajax('http://text-processing.com/api/sentiment/', {
+              method: 'POST',
+              data: {text: newComment}
+            }).done(function (ret) {
+              if (ret.label === 'neg' && ret.probability.neg > 0.55) {
+                swal({
+                  type: 'warning',
+                  text: 'The message may be ofensive. Please modify it.',
+                  showCancelButton: true,
+                  cancelButtonText: 'Modify comment',
+                  confirmButtonText: 'Save as it is',
+                  reverseButtons: true
+                }).then((result) => {
+                  if (result.value) {
+                    updateAnnotation(newComment, suggestedLiterature, level)
+                  } else if (result.dismiss === swal.DismissReason.cancel) {
+                    showAlert({comment: newComment, suggestedLiterature: suggestedLiterature})
+                  }
+                })
+              } else {
+                // Update annotation
+                updateAnnotation(newComment, suggestedLiterature, level)
+              }
+            })
+          } else {
+            // Update annotation
+            updateAnnotation('', suggestedLiterature, level)
+          }
+        },
+        onOpen: () => {
+          $('.removeReference').on('click', function () {
+            $(this).closest('li').remove()
+          })
+        }
+      })
+
+      $('.poleRadio + img').on('click', function () {
+        $(this).prev('.poleRadio').prop('checked', true)
+      })
+
+      $('#swal-input1').autocomplete({
+        source: function (request, response) {
+          $.ajax({
+            url: 'http://dblp.org/search/publ/api',
+            data: {
+              q: request.term,
+              format: 'json',
+              h: 5
+            },
+            success: function (data) {
+              response(data.result.hits.hit.map((e) => { return {label: e.info.title + ' (' + e.info.year + ')', value: e.info.title + ' (' + e.info.year + ')', info: e.info} }))
+            }
+          })
+        },
+        minLength: 3,
+        delay: 500,
+        select: function (event, ui) {
+          let content = ''
+          if (ui.item.info.authors !== null && Array.isArray(ui.item.info.authors.author)) {
+            content += ui.item.info.authors.author.join(', ') + ': '
+          } else if (ui.item.info.authors !== null) {
+            content += ui.item.info.authors.author + ': '
+          }
+          if (ui.item.info.title !== null) {
+            content += ui.item.info.title
+          }
+          if (ui.item.info.year !== null) {
+            content += ' (' + ui.item.info.year + ')'
+          }
+          let a = document.createElement('a')
+          a.className = 'removeReference'
+          a.addEventListener('click', function (e) {
+            $(e.target).closest('li').remove()
+          })
+          let li = document.createElement('li')
+          $(li).append(a, '<span title="' + content + '">' + content + '</span>')
+          $('#literatureList').append(li)
+          setTimeout(function () {
+            $('#swal-input1').val('')
+          }, 10)
+        },
+        appendTo: '.swal2-container',
+        create: function () {
+          $('.ui-autocomplete').css('max-width', $('#swal2-content').width())
+        }
+      })
+    }
+    if (annotation.text === null || annotation.text === '') {
+      showAlert({comment: '', suggestedLiterature: []})
+    } else {
+      showAlert(JSON.parse(annotation.text))
+    }
   }
 
   retrieveHighlightClassName () {
@@ -595,13 +717,17 @@ class TextAnnotator extends ContentAnnotator {
     return (event) => {
       // Check if something is selected
       if (document.getSelection().toString().length !== 0) {
-        if ($(event.target).parents('#abwaSidebarWrapper').toArray().length === 0) {
+        if ($(event.target).parents('#abwaSidebarWrapper').toArray().length === 0 &&
+          $(event.target).parents('.swal2-container').toArray().length === 0 &&
+          $(event.target).parents('#canvasContainer').toArray().length === 0
+        ) {
           this.openSidebar()
         }
       } else {
         console.debug('Current selection is empty')
         // If selection is child of sidebar, return null
-        if ($(event.target).parents('#abwaSidebarWrapper').toArray().length === 0) {
+        if ($(event.target).parents('#abwaSidebarWrapper').toArray().length === 0 &&
+          event.target.id !== 'context-menu-layer') {
           console.debug('Current selection is not child of the annotator sidebar')
           this.closeSidebar()
         }
@@ -609,12 +735,14 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  goToFirstAnnotationOfTag (params) {
+  goToFirstAnnotationOfTag (tag) {
     // TODO Retrieve first annotation for tag
-    let annotation = _.find(this.currentAnnotations, (annotation) => {
-      return _.isEqual(annotation.tags, params.tags)
+    let annotation = _.find(this.allAnnotations, (annotation) => {
+      return annotation.tags.includes(tag)
     })
-    this.goToAnnotation(annotation)
+    if (annotation) {
+      this.goToAnnotation(annotation)
+    }
   }
 
   goToAnnotation (annotation) {
@@ -622,8 +750,22 @@ class TextAnnotator extends ContentAnnotator {
     if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
       let queryTextSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
       if (queryTextSelector && queryTextSelector.exact) {
+        // Get page for the annotation
+        let fragmentSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'FragmentSelector' })
+        if (fragmentSelector && fragmentSelector.page) {
+          // Check if annotation was found by 'find' command, otherwise go to page
+          if (window.PDFViewerApplication.page !== fragmentSelector.page) {
+            window.PDFViewerApplication.page = fragmentSelector.page
+          }
+        }
         window.PDFViewerApplication.findController.executeCommand('find', {query: queryTextSelector.exact, phraseSearch: true})
-        this.removeFindTagsInPDFs()
+        // Timeout to remove highlight used by PDF.js
+        setTimeout(() => {
+          let pdfjsHighlights = document.querySelectorAll('.highlight')
+          for (let i = 0; pdfjsHighlights.length; i++) {
+            pdfjsHighlights[i].classList.remove('highlight')
+          }
+        }, 1000)
       }
     } else { // Else, try to find the annotation by data-annotation-id element attribute
       let firstElementToScroll = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
@@ -633,9 +775,7 @@ class TextAnnotator extends ContentAnnotator {
           this.initAnnotatorByAnnotation()
         }, 2000)
       } else {
-        $('html').animate({
-          scrollTop: ($(firstElementToScroll).offset().top - 200) + 'px'
-        }, 300)
+        firstElementToScroll.scrollIntoView({behavior: 'smooth', block: 'center'})
       }
     }
   }
@@ -655,10 +795,6 @@ class TextAnnotator extends ContentAnnotator {
     clearInterval(this.cleanInterval)
     // Remove reload interval
     clearInterval(this.reloadInterval)
-    // Remove overlays interval
-    if (this.removeOverlaysInterval) {
-      clearInterval(this.removeOverlaysInterval)
-    }
     // Remove event listeners
     let events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
@@ -670,10 +806,7 @@ class TextAnnotator extends ContentAnnotator {
 
   unHighlightAllAnnotations () {
     // Remove created annotations
-    let highlightedElements = _.flatten(_.map(
-      this.allAnnotations,
-      (annotation) => { return [...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')] })
-    )
+    let highlightedElements = [...document.querySelectorAll('[data-annotation-id]')]
     DOMTextUtils.unHighlightElements(highlightedElements)
   }
 
@@ -686,7 +819,6 @@ class TextAnnotator extends ContentAnnotator {
         let queryTextSelector = _.find(initAnnotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
         if (queryTextSelector && queryTextSelector.exact) {
           window.PDFViewerApplication.findController.executeCommand('find', {query: queryTextSelector.exact, phraseSearch: true})
-          this.removeFindTagsInPDFs()
         }
       } else { // Else, try to find the annotation by data-annotation-id element attribute
         let firstElementToScroll = document.querySelector('[data-annotation-id="' + initAnnotation.id + '"]')
@@ -697,9 +829,7 @@ class TextAnnotator extends ContentAnnotator {
           }, 2000)
         } else {
           if (_.isElement(firstElementToScroll)) {
-            $('html').animate({
-              scrollTop: ($(firstElementToScroll).offset().top - 200) + 'px'
-            }, 300)
+            firstElementToScroll.scrollIntoView({behavior: 'smooth', block: 'center'})
           } else {
             // Unable to go to the annotation
           }
@@ -711,31 +841,79 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  initRemoveOverlaysInPDFs () {
-    if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
-      this.removeOverlaysInterval = setInterval(() => {
-        // Remove third party made annotations created overlays periodically
-        document.querySelectorAll('section[data-annotation-id]').forEach((elem) => { $(elem).remove() })
-      }, REMOVE_OVERLAYS_INTERVAL_IN_SECONDS * 1000)
+  /**
+   * Giving a list of old tags it changes all the annotations for the current document to the new tags
+   * @param oldTags
+   * @param newTags
+   * @param callback Error, Result
+   */
+  updateTagsForAllAnnotationsWithTag (oldTags, newTags, callback) {
+    // Get all annotations with oldTags
+    let oldTagsAnnotations = _.filter(this.allAnnotations, (annotation) => {
+      let tags = annotation.tags
+      return oldTags.every((oldTag) => {
+        return tags.includes(oldTag)
+      })
+    })
+    let promises = []
+    for (let i = 0; i < oldTagsAnnotations.length; i++) {
+      let oldTagAnnotation = oldTagsAnnotations[i]
+      promises.push(new Promise((resolve, reject) => {
+        oldTagAnnotation.tags = newTags
+        window.abwa.hypothesisClientManager.hypothesisClient.updateAnnotation(oldTagAnnotation.id, oldTagAnnotation, (err, annotation) => {
+          if (err) {
+            reject(new Error('Unable to update annotation ' + oldTagAnnotation.id))
+          } else {
+            resolve(annotation)
+          }
+        })
+      }))
     }
+    let annotations = []
+    Promise.all(promises).then((result) => {
+      // All annotations updated
+      annotations = result
+    }).finally((result) => {
+      if (_.isFunction(callback)) {
+        callback(null, annotations)
+      }
+    })
   }
 
-  removeFindTagsInPDFs () {
-    setTimeout(() => {
-      // Remove class for middle selected elements in find function of PDF.js
-      document.querySelectorAll('.highlight.selected.middle').forEach(elem => {
-        $(elem).removeClass('highlight selected middle')
-      })
-      // Remove wrap for begin and end selected elements in find function of PDF.js
-      document.querySelectorAll('.highlight.selected').forEach(elem => {
-        if (elem.children.length === 1) {
-          $(elem.children[0]).unwrap()
-        } else {
-          $(document.createTextNode(elem.innerText)).insertAfter(elem)
-          $(elem).remove()
-        }
-      })
-    }, 1000)
+  redrawAnnotations () {
+    // Unhighlight all annotations
+    this.unHighlightAllAnnotations()
+    // Highlight all annotations
+    this.highlightAnnotations(this.allAnnotations)
+  }
+
+  deleteAllAnnotations () {
+    // Retrieve all the annotations
+    let allAnnotations = this.allAnnotations
+    // Delete all the annotations
+    let promises = []
+    for (let i = 0; i < allAnnotations.length; i++) {
+      promises.push(new Promise((resolve, reject) => {
+        window.abwa.hypothesisClientManager.hypothesisClient.deleteAnnotation(allAnnotations[i].id, (err) => {
+          if (err) {
+            reject(new Error('Unable to delete annotation id: ' + allAnnotations[i].id))
+          } else {
+            resolve()
+          }
+        })
+        return true
+      }))
+    }
+    // When all the annotations are deleted
+    Promise.all(promises).catch(() => {
+      Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
+    }).then(() => {
+      // Update annotation variables
+      this.allAnnotations = []
+      // Dispatch event and redraw annotations
+      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+      this.redrawAnnotations()
+    })
   }
 }
 

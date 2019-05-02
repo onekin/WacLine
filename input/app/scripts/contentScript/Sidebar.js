@@ -74,6 +74,11 @@ class Sidebar {
     document.querySelector('#abwaSidebarContainer').dataset.shown = sidebarButton.dataset.toggled
   }
 
+  isOpened () {
+    let sidebarButton = document.querySelector('#abwaSidebarButton')
+    return sidebarButton.dataset.toggled
+  }
+
   destroy (callback) {
     $('#abwaSidebarWrapper').remove()
     if (_.isFunction(callback)) {

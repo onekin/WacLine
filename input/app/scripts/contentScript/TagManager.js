@@ -5,79 +5,11 @@ const ModeManager = require('./ModeManager')
 const LanguageUtils = require('../utils/LanguageUtils')
 const ColorUtils = require('../utils/ColorUtils')
 const Events = require('./Events')
-
-class Tag {
-  constructor (config) {
-    this.name = config.name
-    this.namespace = config.namespace
-    this.tags = config.tags || [config.namespace + ':' + config.name]
-    if (config.options && config.options.color) {
-      if (!ColorUtils.hasAlpha(config.options.color)) {
-        this.color = ColorUtils.setAlphaToColor(config.options.color, 0.5) // Set a 0.5 alpha to all colors without alpha
-      } else {
-        this.color = config.options.color
-      }
-    } else {
-      this.color = ColorUtils.getHashColor(this.name)
-    }
-    this.options = config.options
-  }
-
-  createButton () {
-    let tagButtonTemplate = document.querySelector('#tagButtonTemplate')
-    this.tagButton = $(tagButtonTemplate.content.firstElementChild).clone().get(0)
-    this.tagButton.innerText = this.name
-    this.tagButton.title = this.name
-    for (let key in this.options) {
-      this.tagButton.dataset[key] = this.options[key]
-    }
-    this.tagButton.dataset.tags = this.tags
-    this.tagButton.setAttribute('role', 'annotation')
-    if (this.color) {
-      $(this.tagButton).css('background-color', this.color)
-    }
-    // Set handler for button
-    this.tagButton.addEventListener('click', (event) => {
-      if (event.target.getAttribute('role') === Tag.roles.annotation) {
-        LanguageUtils.dispatchCustomEvent(Events.annotate, {tags: this.tags})
-      } else if (event.target.getAttribute('role') === Tag.roles.index) {
-        window.abwa.contentAnnotator.goToFirstAnnotationOfTag({tags: this.tags})
-      }
-    })
-    return this.tagButton
-  }
-}
-
-Tag.roles = {
-  annotation: 'annotation',
-  index: 'index'
-}
-
-class TagGroup {
-  constructor (config, tags) {
-    this.config = config
-    this.tags = tags || []
-  }
-
-  createPanel (indexRole) {
-    if (this.tags.length > 0) {
-      let tagGroupTemplate = document.querySelector('#tagGroupTemplate')
-      let tagGroup = $(tagGroupTemplate.content.firstElementChild).clone().get(0)
-      let tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
-      let groupNameSpan = tagGroup.querySelector('.groupName')
-      groupNameSpan.innerText = this.config.name
-      groupNameSpan.title = this.config.name
-      for (let j = 0; j < this.tags.length; j++) {
-        let tagButton = this.tags[j].createButton()
-        if (indexRole) {
-          tagButton.setAttribute('role', Tag.roles.index)
-        }
-        tagButtonContainer.append(tagButton)
-      }
-      return tagGroup
-    }
-  }
-}
+const Tag = require('./Tag')
+const TagGroup = require('./TagGroup')
+const Alerts = require('../utils/Alerts')
+const DefaultHighlighterGenerator = require('../specific/review/DefaultHighlighterGenerator')
+const DefaultCriterias = require('../specific/review/DefaultCriterias')
 
 class TagManager {
   constructor (namespace, config) {
@@ -88,19 +20,15 @@ class TagManager {
       config: config
     }
     this.currentTags = []
-    this.currentIndexTags = []
     this.events = {}
   }
 
   init (callback) {
+    console.debug('Initializing TagManager')
     this.initTagsStructure(() => {
       this.initEventHandlers(() => {
         this.initAllTags(() => {
-          if (window.abwa.modeManager.mode === ModeManager.modes.highlight) {
-            this.showAllTagsContainer()
-          } else {
-            this.showIndexTagsContainer()
-          }
+          console.debug('Initialized TagManager')
           if (_.isFunction(callback)) {
             callback()
           }
@@ -109,23 +37,30 @@ class TagManager {
     })
   }
 
+  reloadTags (callback) {
+    // Remove tags buttons for each container (evidencing, viewing)
+    _.map(window.abwa.tagManager.tagsContainer).forEach((container) => { container.innerHTML = '' })
+    // Init tags again
+    this.initAllTags(() => {
+      LanguageUtils.dispatchCustomEvent(Events.tagsUpdated, {tags: this.currentTags})
+      if (_.isFunction(callback)) {
+        callback()
+      }
+    })
+  }
+
   getGroupAnnotations (callback) {
     window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
-      url: window.abwa.groupSelector.currentGroup.url,
-      order: 'desc'
+      url: window.abwa.groupSelector.currentGroup.links.html,
+      order: 'asc'
     }, (err, annotations) => {
       if (err) {
-        window.alert('Unable to retrieve document annotations') // TODO Swal
+        Alerts.errorAlert({text: 'Unable to construct the highlighter. Please reload webpage and try it again.'})
       } else {
         // Retrieve tags which has the namespace
         annotations = _.filter(annotations, (annotation) => {
           return this.hasANamespace(annotation, this.model.namespace)
         })
-        // Remove slr:spreadsheet annotation ONLY for SLR case
-        annotations = _.filter(annotations, (annotation) => {
-          return !this.hasATag(annotation, 'slr:spreadsheet')
-        })
-        // Remove tags which are not group or subgroup
         if (_.isFunction(callback)) {
           callback(annotations)
         }
@@ -137,62 +72,43 @@ class TagManager {
     let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/tagWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       $('#abwaSidebarContainer').append($.parseHTML(html))
-      this.tagsContainer = {annotate: document.querySelector('#tagsAnnotate'), index: document.querySelector('#tagsIndex')}
-      if (this.model.namespace === 'exam') {
-        // Hide the content of the tags sidebar until they are ordered
-        this.tagsContainer.annotate.dataset.examHidden = 'true'
-      }
+      this.tagsContainer = {evidencing: document.querySelector('#tagsEvidencing')}
       if (_.isFunction(callback)) {
         callback()
       }
     })
   }
 
-  getTagsList () {
-    if (this.currentTags.length > 0) {
-      if (LanguageUtils.isInstanceOf(this.currentTags[0], Tag)) {
-        return this.currentTags
-      } else if (LanguageUtils.isInstanceOf(this.currentTags[0], TagGroup)) {
-        let tags = []
-        for (let i = 0; i < this.currentTags.length; i++) {
-          tags = tags.concat(this.currentTags[i].tags)
-        }
-        return tags
-      }
-    } else {
-      return [] // No tags for current group
-    }
-  }
-
-  static retrieveTagForAnnotation (annotation, tagList) {
-    for (let i = 0; i < tagList.length; i++) {
-      let difference = _.differenceWith(
-        tagList[i].tags,
-        annotation.tags,
-        (tag1, tag2) => {
-          return tag1.toLowerCase() === tag2.toLowerCase()
-        })
-      if (difference.length === 0) {
-        return tagList[i]
-      }
-    }
-  }
-
   initAllTags (callback) {
     this.getGroupAnnotations((annotations) => {
-      // Add to model
-      this.model.groupAnnotations = annotations
-      // If annotations are grouped
-      if (!_.isEmpty(this.model.config.grouped)) {
-        this.currentTags = this.createTagsBasedOnAnnotationsGrouped(annotations, this.model.config.grouped)
-      } else {
+      // Check if there are tags in the group or it is needed to create the default ones
+      let promise = Promise.resolve(annotations) // TODO Check if it is okay
+      if (annotations.length === 0) {
+        promise = new Promise((resolve) => {
+          if (!Alerts.isVisible()) {
+            Alerts.loadingAlert({title: 'Configuration in progress', text: 'We are configuring everything to start reviewing.', position: Alerts.position.center})
+          }
+          DefaultHighlighterGenerator.createDefaultAnnotations(window.abwa.groupSelector.currentGroup, (err, annotations) => {
+            if (err) {
+              Alerts.errorAlert({text: 'There was an error when configuring Review&Go highlighter'})
+            } else {
+              Alerts.closeAlert()
+              resolve(annotations)
+            }
+          })
+        })
+      }
+      promise.then((annotations) => {
+        // Add to model
+        this.model.groupAnnotations = annotations
         // Create tags based on annotations
-        this.currentTags = this.createTagsBasedOnAnnotations(annotations)
-      }
-      this.createTagButtons()
-      if (_.isFunction(callback)) {
-        callback()
-      }
+        this.currentTags = this.createTagsBasedOnAnnotations()
+        // Populate tags containers for the modes
+        this.createTagsButtonsForEvidencing()
+        if (_.isFunction(callback)) {
+          callback()
+        }
+      })
     })
   }
 
@@ -209,30 +125,38 @@ class TagManager {
   }
 
   createTagsBasedOnAnnotations () {
-    let tags = []
-    for (let i = 0; i < this.model.groupAnnotations.length; i++) {
-      let tagAnnotation = this.model.groupAnnotations[i]
-      let tagName = tagAnnotation.tags[0].substr(this.model.namespace.length + 1) // <namespace>:
-      tags.push(new Tag({name: tagName, namespace: this.model.namespace, options: jsYaml.load(tagAnnotation.text)}))
-    }
-    this.model.currentTags = tags
-    return tags
-  }
-
-  createTagsBasedOnAnnotationsGrouped () {
+    // Get groups
     let tagGroupsAnnotations = {}
     for (let i = 0; i < this.model.groupAnnotations.length; i++) {
       let groupTag = this.retrieveTagNameByPrefix(this.model.groupAnnotations[i].tags, (this.model.namespace + ':' + this.model.config.grouped.group))
       if (groupTag) {
-        tagGroupsAnnotations[groupTag] = new TagGroup({name: groupTag, namespace: this.model.namespace, group: this.model.config.grouped.group})
+        tagGroupsAnnotations[groupTag] = new TagGroup({name: groupTag, namespace: this.model.namespace, group: this.model.config.grouped.group, options: jsYaml.load(this.model.groupAnnotations[i].text), annotation: this.model.groupAnnotations[i]})
       }
     }
-    let groups = _.sortBy(_.keys(tagGroupsAnnotations))
-    let colorList = ColorUtils.getDifferentColors(groups.length)
+    // Get groups names
+    let groups = _.map(_.uniqBy(DefaultCriterias.criteria, (criteria) => { return criteria.group }), 'group')
+    // Get a list of colors
+    // The list of colors to retrieve are 1 per group + 1 per groupTags in "Other" group
+    let listOfOtherTags = _.filter(_.values(tagGroupsAnnotations), (tagGroup) => { return tagGroup.config.options.group === 'Other' })
+    let colorsList = ColorUtils.getDifferentColors(groups.length - 1 + listOfOtherTags.length)
+    let colorsGroup = colorsList.slice(0, groups.length - 1)
+    let colorsOthers = colorsList.slice(groups.length - 1)
+    // Set colors for each group
+    let array = _.toArray(tagGroupsAnnotations)
     let colors = {}
-    for (let i = 0; i < groups.length; i++) {
-      colors[groups[i]] = colorList[i]
+    for (let i = 0; i < array.length; i++) {
+      let tagGroup = tagGroupsAnnotations[array[i].config.name]
+      let color
+      if (tagGroup.config.options.group === 'Other') { // One color for each tag element with group Other
+        color = colorsOthers[_.findIndex(listOfOtherTags, (otherTagGroup) => { return otherTagGroup.config.name === tagGroup.config.name })]
+        colors[tagGroup.config.name] = color
+      } else {
+        color = colorsGroup[_.findIndex(groups, (groupName) => { return groupName === tagGroup.config.options.group })]
+        colors[tagGroup.config.name] = color
+      }
+      tagGroup.config.color = color
     }
+    // Get elements for each subgroup
     for (let i = 0; i < this.model.groupAnnotations.length; i++) {
       let tagAnnotation = this.model.groupAnnotations[i]
       let tagName = this.retrieveTagNameByPrefix(this.model.groupAnnotations[i].tags, (this.model.namespace + ':' + this.model.config.grouped.subgroup))
@@ -245,21 +169,31 @@ class TagManager {
             name: tagName,
             namespace: this.model.namespace,
             options: options || {},
+            annotation: tagAnnotation,
             tags: [
               this.model.namespace + ':' + this.model.config.grouped.relation + ':' + groupBelongedTo,
               this.model.namespace + ':' + this.model.config.grouped.subgroup + ':' + tagName]
-          }))
+          }, tagGroupsAnnotations[groupBelongedTo]))
           this.model.currentTags = tagGroupsAnnotations
         }
       }
     }
-    // Reorder the codes by name
-    tagGroupsAnnotations = _.map(tagGroupsAnnotations, (tagGroup) => { tagGroup.tags = _.sortBy(tagGroup.tags, 'name'); return tagGroup })
+    // Order elements from tag group
+    // TODO Check if in this case is important to order elements from group
+    tagGroupsAnnotations = _.map(tagGroupsAnnotations, (tagGroup) => {
+      // TODO Check all elements, not only tags[0]
+      if (_.isArray(tagGroup.tags) && _.has(tagGroup.tags[0], 'name') && _.isNaN(_.parseInt(tagGroup.tags[0].name))) {
+        tagGroup.tags = _.sortBy(tagGroup.tags, 'name')
+      } else {
+        tagGroup.tags = _.sortBy(tagGroup.tags, (tag) => _.parseInt(tag.name))
+      }
+      return tagGroup
+    })
     // Set color for each code
     tagGroupsAnnotations = _.map(tagGroupsAnnotations, (tagGroup) => {
       if (tagGroup.tags.length > 0) {
         tagGroup.tags = _.map(tagGroup.tags, (tag, index) => {
-          let color = ColorUtils.setAlphaToColor(colors[tagGroup.config.name], 0.2 + index / tagGroup.tags.length * 0.8)
+          let color = ColorUtils.setAlphaToColor(colors[tagGroup.config.name], 0.2 + index / tagGroup.tags.length * 0.6)
           tag.options.color = color
           tag.color = color
           return tag
@@ -267,20 +201,6 @@ class TagManager {
       }
       return tagGroup
     })
-    // For groups without sub elements
-    let emptyGroups = _.filter(tagGroupsAnnotations, (group) => { return group.tags.length === 0 })
-    for (let j = 0; j < emptyGroups.length; j++) {
-      let options = {color: ColorUtils.setAlphaToColor(colors[emptyGroups[j].config.name], 0.5)}
-      let index = _.findIndex(tagGroupsAnnotations, (tagGroup) => { return tagGroup.config.name === emptyGroups[j].config.name })
-      if (index >= 0) {
-        tagGroupsAnnotations[index].tags.push(new Tag({
-          name: emptyGroups[j].config.name,
-          namespace: emptyGroups[j].namespace,
-          options: options,
-          tags: [emptyGroups[j].config.namespace + ':' + emptyGroups[j].config.group + ':' + emptyGroups[j].config.name]
-        }))
-      }
-    }
     // Hash to array
     return _.sortBy(tagGroupsAnnotations, 'config.name')
   }
@@ -304,174 +224,254 @@ class TagManager {
     return null
   }
 
-  createTagButtons (callback) {
-    // If it is an array is not grouped
-    if (this.currentTags.length > 0) {
-      if (LanguageUtils.isInstanceOf(this.currentTags[0], Tag)) {
-        for (let i = 0; i < this.currentTags.length; i++) {
-          // Append each element
-          let tagButton = this.currentTags[i].createButton()
-          this.tagsContainer.annotate.append(tagButton)
+  collapseExpandGroupedButtonsHandler (event) {
+    let tagGroup = event.target.parentElement
+    if (tagGroup.getAttribute('aria-expanded') === 'true') {
+      tagGroup.setAttribute('aria-expanded', 'false')
+    } else {
+      tagGroup.setAttribute('aria-expanded', 'true')
+    }
+  }
+
+  createTagsButtonsForEvidencing () {
+    let groups = _.map(_.uniqBy(DefaultCriterias.criteria, (criteria) => { return criteria.group }), 'group')
+    for (let i = 0; i < groups.length; i++) {
+      let group = groups[i]
+      this.tagsContainer.evidencing.append(TagManager.createGroupedButtons({name: group, groupHandler: this.collapseExpandGroupedButtonsHandler}))
+    }
+    // Create the group Other
+    // Not required to create this group because "Typos" is a default code from Other category, otherwise discomment this two lines
+    /* let groupedButtons = TagManager.createGroupedButtons({name: 'Other', groupHandler: this.collapseExpandGroupedButtonsHandler})
+    groupedButtons.id = 'tagGroupOther'
+    this.tagsContainer.evidencing.append(groupedButtons) */
+    // Create the default groups for annotations
+    // Insert buttons in each of the groups
+    let arrayOfTagGroups = _.values(this.model.currentTags)
+    for (let i = 0; i < arrayOfTagGroups.length; i++) {
+      let tagGroup = arrayOfTagGroups[i]
+      let button = TagManager.createButton({
+        name: tagGroup.config.name,
+        color: ColorUtils.setAlphaToColor(tagGroup.config.color, 0.3),
+        description: tagGroup.config.options.description,
+        handler: (event) => {
+          let tags = [
+            this.model.namespace + ':' + this.model.config.grouped.relation + ':' + tagGroup.config.name
+          ]
+          LanguageUtils.dispatchCustomEvent(Events.annotate, {tags: tags, chosen: event.target.dataset.chosen})
         }
-      } else if (LanguageUtils.isInstanceOf(this.currentTags[0], TagGroup)) {
-        for (let i = 0; i < this.currentTags.length; i++) {
-          let tagGroupElement = this.currentTags[i].createPanel()
-          if (tagGroupElement) {
-            this.tagsContainer.annotate.append(tagGroupElement)
-          }
-        }
+      })
+      // Insert in its corresponding group container
+      this.tagsContainer.evidencing.querySelector('[title="' + tagGroup.config.options.group + '"]').nextElementSibling.append(button)
+    }
+  }
+
+  static createButton ({name, color = 'grey', description, handler, role}) {
+    let tagButtonTemplate = document.querySelector('#tagButtonTemplate')
+    let tagButton = $(tagButtonTemplate.content.firstElementChild).clone().get(0)
+    tagButton.innerText = name
+    if (description) {
+      tagButton.title = name + ': ' + description
+    } else {
+      tagButton.title = name
+    }
+    tagButton.dataset.mark = name
+    tagButton.setAttribute('role', role || 'annotation')
+    if (color) {
+      $(tagButton).css('background-color', color)
+      tagButton.dataset.baseColor = color
+    }
+    // Set handler for button
+    tagButton.addEventListener('click', handler)
+    // Tag button background color change
+    // TODO It should be better to set it as a CSS property, but currently there is not an option for that
+    tagButton.addEventListener('mouseenter', () => {
+      tagButton.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(tagButton.dataset.baseColor), 0.7)
+    })
+    tagButton.addEventListener('mouseleave', () => {
+      if (tagButton.dataset.chosen === 'true') {
+        tagButton.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(tagButton.dataset.baseColor), 0.6)
+      } else {
+        tagButton.style.backgroundColor = tagButton.dataset.baseColor
+      }
+    })
+    return tagButton
+  }
+
+  static createGroupedButtons ({name, color = 'white', elements, groupHandler, buttonHandler}) {
+    // Create the container
+    let tagGroupTemplate = document.querySelector('#tagGroupTemplate')
+    let tagGroup = $(tagGroupTemplate.content.firstElementChild).clone().get(0)
+    let tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
+    let groupNameSpan = tagGroup.querySelector('.groupName')
+    groupNameSpan.innerText = name
+    groupNameSpan.title = name
+    // Create event handler for tag group
+    groupNameSpan.addEventListener('click', groupHandler)
+    // Create buttons and add to the container
+    if (_.isArray(elements) && elements.length > 0) { // Only create group containers for groups which have elements
+      for (let i = 0; i < elements.length; i++) {
+        let element = elements[i]
+        let button = TagManager.createButton({
+          name: element.name,
+          color: element.getColor(),
+          description: (element.options.description || null),
+          handler: buttonHandler,
+          role: 'marking'
+        })
+        tagButtonContainer.append(button)
       }
     }
-    if (_.isFunction(callback)) {
-      callback()
-    }
+    return tagGroup
   }
 
   initEventHandlers (callback) {
     // For mode change
-    this.events.modeChange = {element: document, event: Events.modeChanged, handler: (event) => { this.modeChangeHandler(event) }}
+    this.events.modeChange = {
+      element: document,
+      event: Events.modeChanged,
+      handler: (event) => { this.modeChangeHandler(event) }
+    }
     this.events.modeChange.element.addEventListener(this.events.modeChange.event, this.events.modeChange.handler, false)
-    // For user filter change
-    this.events.updatedCurrentAnnotationsEvent = {element: document, event: Events.updatedCurrentAnnotations, handler: this.createUpdatedCurrentAnnotationsEventHandler()}
-    this.events.updatedCurrentAnnotationsEvent.element.addEventListener(this.events.updatedCurrentAnnotationsEvent.event, this.events.updatedCurrentAnnotationsEvent.handler, false)
+    // For annotation event, reload sidebar with elements chosen and not chosen ones
+    this.events.annotationCreated = {
+      element: document,
+      event: Events.annotationCreated,
+      handler: (event) => { this.reloadTagsChosen() }
+    }
+    this.events.annotationCreated.element.addEventListener(this.events.annotationCreated.event, this.events.annotationCreated.handler, false)
+    // For delete event, reload sidebar with elements chosen and not chosen ones
+    this.events.annotationDeleted = {
+      element: document,
+      event: Events.annotationDeleted,
+      handler: (event) => { this.reloadTagsChosen() }
+    }
+    this.events.annotationDeleted.element.addEventListener(this.events.annotationDeleted.event, this.events.annotationDeleted.handler, false)
+    // When annotations are reloaded
+    this.events.updatedAllAnnotations = {
+      element: document,
+      event: Events.updatedAllAnnotations,
+      handler: (event) => { this.reloadTagsChosen() }
+    }
+    this.events.updatedAllAnnotations.element.addEventListener(this.events.updatedAllAnnotations.event, this.events.updatedAllAnnotations.handler, false)
+    // Callback
     if (_.isFunction(callback)) {
       callback()
     }
   }
 
-  createUpdatedCurrentAnnotationsEventHandler () {
-    return (event) => {
-      // Retrieve current annotations
-      let currentAnnotations = event.detail.currentAnnotations
-      // Update index tags menu
-      this.updateIndexTags(currentAnnotations)
+  reloadTagsChosen () {
+    // Uncheck all the tags
+    let tagButtons = document.querySelectorAll('.tagButton')
+    for (let i = 0; i < tagButtons.length; i++) {
+      let tagButton = tagButtons[i]
+      tagButton.dataset.chosen = 'false'
+      tagButton.style.background = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(tagButton.style.backgroundColor), 0.3)
     }
-  }
-
-  updateIndexTags (currentAnnotations) {
-    let tagsIndexContainer = document.querySelector('#tagsIndex')
-    tagsIndexContainer.innerHTML = ''
-    // Retrieve group annotations
-    let groupAnnotations = this.model.groupAnnotations
-    let groupTags = {}
-    for (let i = 0; i < groupAnnotations.length; i++) {
-      let groupTag = this.retrieveTagNameByPrefix(groupAnnotations[i].tags, (this.model.namespace + ':' + this.model.config.grouped.group))
-      if (groupTag) {
-        groupTags[groupTag] = new TagGroup({name: groupTag, namespace: this.model.namespace, group: this.model.config.grouped.group})
+    // Retrieve annotated tags
+    if (window.abwa.contentAnnotator) {
+      let annotations = window.abwa.contentAnnotator.allAnnotations
+      let annotatedTagGroups = []
+      for (let i = 0; i < annotations.length; i++) {
+        annotatedTagGroups.push(this.getGroupFromAnnotation(annotations[i]))
+      }
+      annotatedTagGroups = _.uniq(annotatedTagGroups)
+      // Mark as chosen annotated tags
+      for (let i = 0; i < annotatedTagGroups.length; i++) {
+        let tagGroup = annotatedTagGroups[i]
+        let tagButton = this.tagsContainer.evidencing.querySelector('.tagButton[data-mark="' + tagGroup.config.name + '"]')
+        tagButton.dataset.chosen = 'true'
+        // Change to a darker color
+        tagButton.style.background = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(tagButton.style.backgroundColor), 0.6)
       }
     }
-    // Retrieve tags of the namespace
-    let documentAnnotations = _.filter(currentAnnotations, (annotation) => {
-      return this.hasANamespace(annotation, this.model.namespace)
-    })
-    // Group active subgroups by groups
-    for (let i = 0; i < documentAnnotations.length; i++) {
-      let annotationGroupData = this.getGroupAndSubgroup(documentAnnotations[i])
-      // If not already subgroup, define it
-      if (!_.find(groupTags[annotationGroupData.group].tags, (tag) => { return tag.name === annotationGroupData.subgroup })) {
-        // Create tag and add to its group
-        // If has subgroup
-        if (annotationGroupData.subgroup) {
-          let tagName = annotationGroupData.subgroup
-          let tagGroup = _.find(window.abwa.tagManager.model.currentTags, (groupTag) => { return groupTag.config.name === annotationGroupData.group })
-          let tag = _.find(tagGroup.tags, (tag) => { return tag.name === annotationGroupData.subgroup })
-          if (_.has(tag, 'color')) {
-            groupTags[annotationGroupData.group].tags.push(new Tag({
-              name: tagName,
-              namespace: this.model.namespace,
-              options: {color: tag.color},
-              tags: [
-                this.model.namespace + ':' + this.model.config.grouped.relation + ':' + annotationGroupData.group,
-                this.model.namespace + ':' + this.model.config.grouped.subgroup + ':' + annotationGroupData.subgroup
-              ]
-            }))
-          } else {
-            console.error('Error parsing tags in sidebar') // TODO Show user
-          }
-        } else { // If doesn't have subgroup (free category)
-          let tagName = annotationGroupData.group
-          let color = _.find(window.abwa.tagManager.getTagsList(), (tag) => { return tag.name === tagName }).color
-          if (groupTags[annotationGroupData.group].tags.length === 0) {
-            groupTags[annotationGroupData.group].tags.push(new Tag({
-              name: tagName,
-              namespace: this.model.namespace,
-              options: {color: color},
-              tags: [
-                this.model.namespace + ':' + this.model.config.grouped.group + ':' + tagName
-              ]
-            }))
-          }
-        }
-      }
-    }
-    // Order code for each group
-    groupTags = _.map(groupTags, (tagGroup) => { tagGroup.tags = _.sortBy(tagGroup.tags, 'name'); return tagGroup })
-    // Order the groups
-    this.currentIndexTags = _.sortBy(groupTags, 'config.name')
-    // Generate tag groups and buttons
-    this.createIndexTagsButtons()
   }
 
   modeChangeHandler (event) {
-    if (event.detail.mode === ModeManager.modes.highlight) {
-      // Show all the tags
-      this.showAllTagsContainer()
-    } else if (event.detail.mode === ModeManager.modes.index) {
-      // TODO Update index tags (it is not really required because everytime user create/delete annotation is updated)
-      this.showIndexTagsContainer()
+    if (event.detail.mode === ModeManager.modes.evidencing) {
+      this.showEvidencingTagsContainer()
     }
   }
 
-  createIndexTagsButtons (callback) {
-    // If it is a non empty array, add buttons
-    if (this.currentIndexTags.length > 0) {
-      if (LanguageUtils.isInstanceOf(this.currentIndexTags[0], Tag)) {
-        for (let i = 0; i < this.currentIndexTags.length; i++) {
-          // Append each element
-          let tagButton = this.currentIndexTags[i].createButton()
-          tagButton.setAttribute('role', Tag.roles.index) // Set index rol to tag
-          this.tagsContainer.index.append(tagButton)
-        }
-      } else if (LanguageUtils.isInstanceOf(this.currentIndexTags[0], TagGroup)) {
-        for (let i = 0; i < this.currentIndexTags.length; i++) {
-          let tagGroupElement = this.currentIndexTags[i].createPanel(true) // Index tag buttons panel
-          if (tagGroupElement) {
-            this.tagsContainer.index.append(tagGroupElement)
-          }
-        }
+  showEvidencingTagsContainer () {
+    $(this.tagsContainer.evidencing).attr('aria-hidden', 'false')
+  }
+
+  /**
+   * Given a no grouped tag container reorder giving a specific order for that
+   * @param order
+   * @param container
+   */
+  reorderNoGroupedTagContainer (order, container) {
+    // Reorder marking container
+    for (let i = order.length - 1; i >= 0; i--) {
+      let criteria = order[i]
+      let tagButton = _.find(container.querySelectorAll('.tagButton'), (elem) => { return elem.title === criteria })
+      let elem = $(tagButton).detach()
+      $(container).prepend(elem)
+    }
+  }
+
+  /**
+   * Given a grouped tag container reorder the groups giving a specific order
+   * @param order
+   * @param container
+   */
+  reorderGroupedTagContainer (order, container) {
+    // Reorder marking container
+    for (let i = order.length - 1; i >= 0; i--) {
+      let criteria = order[i]
+      let tagGroup = _.find(container.querySelectorAll('.tagGroup'), (elem) => { return elem.children[0].title === criteria })
+      let elem = $(tagGroup).detach()
+      $(container).prepend(elem)
+    }
+  }
+
+  getFilteringTagList () {
+    return _.map(this.currentTags, (tagGroup) => {
+      return this.getTagFromGroup(tagGroup)
+    })
+  }
+
+  getTagFromGroup (tagGroup) {
+    return this.model.namespace + ':' + this.model.config.grouped.relation + ':' + tagGroup.config.name
+  }
+
+  findAnnotationTagInstance (annotation) {
+    let groupTag = this.getGroupFromAnnotation(annotation)
+    if (annotation.tags.length > 1) {
+      if (this.hasCodeAnnotation(annotation)) {
+        return this.getCodeFromAnnotation(annotation, groupTag)
+      } else {
+        return groupTag
       }
-    }
-    if (_.isFunction(callback)) {
-      callback()
-    }
-  }
-
-  getGroupAndSubgroup (annotation) {
-    let tags = annotation.tags
-    let group = null
-    let subGroup = null
-    let groupOf = _.find(tags, (tag) => { return _.startsWith(tag, this.model.namespace + ':' + this.model.config.grouped.relation + ':') })
-    if (groupOf) {
-      subGroup = _.find(tags, (tag) => { return _.startsWith(tag, this.model.namespace + ':' + this.model.config.grouped.subgroup + ':') })
-        .replace(this.model.namespace + ':' + this.model.config.grouped.subgroup + ':', '')
-      group = groupOf.replace(this.model.namespace + ':' + this.model.config.grouped.relation + ':', '')
     } else {
-      let groupTag = _.find(tags, (tag) => { return _.startsWith(tag, this.model.namespace + ':' + this.model.config.grouped.group + ':') })
-      if (groupTag) {
-        group = groupTag.replace(this.model.namespace + ':' + this.model.config.grouped.group + ':', '')
-      }
+      return groupTag
     }
-    return {group: group, subgroup: subGroup}
   }
 
-  showAllTagsContainer () {
-    $(this.tagsContainer.index).attr('aria-hidden', 'true')
-    $(this.tagsContainer.annotate).attr('aria-hidden', 'false')
+  getGroupFromAnnotation (annotation) {
+    let tags = annotation.tags
+    let criteriaTag = _.find(tags, (tag) => {
+      return tag.includes('review:isCriteriaOf:')
+    }).replace('review:isCriteriaOf:', '')
+    return _.find(window.abwa.tagManager.currentTags, (tagGroupInstance) => {
+      return criteriaTag === tagGroupInstance.config.name
+    })
   }
 
-  showIndexTagsContainer () {
-    $(this.tagsContainer.index).attr('aria-hidden', 'false')
-    $(this.tagsContainer.annotate).attr('aria-hidden', 'true')
+  getCodeFromAnnotation (annotation, groupTag) {
+    let markTag = _.find(annotation.tags, (tag) => {
+      return tag.includes('review:level:')
+    }).replace('review:level:', '')
+    return _.find(groupTag.tags, (tagInstance) => {
+      return markTag.includes(tagInstance.name)
+    })
+  }
+
+  hasCodeAnnotation (annotation) {
+    return _.some(annotation.tags, (tag) => {
+      return tag.includes('review:level:')
+    })
   }
 }
 

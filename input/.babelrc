@@ -1,0 +1,14 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": "last 2 versions"
+      },
+      "useBuiltIns": true,
+      "debug": false
+    }]
+  ],
+  "plugins": ["transform-es3-property-literals"],
+  "ignore": ["node_modules"],
+  "retainLines": true
+}

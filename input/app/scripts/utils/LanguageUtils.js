@@ -1,6 +1,7 @@
 'use strict'
 
 const jQuery = require('jquery')
+const _ = require('lodash')
 
 class LanguageUtils {
   /**
@@ -49,7 +50,7 @@ class LanguageUtils {
    * @returns {CustomEvent}
    */
   static createCustomEvent (name, message, data) {
-    return (new CustomEvent(name, {
+    return (new window.CustomEvent(name, {
       detail: {
         message: message,
         data: data,
@@ -80,7 +81,7 @@ class LanguageUtils {
    * @param metadata
    */
   static dispatchCustomEvent (eventName, metadata) {
-    let event = new CustomEvent(
+    let event = new window.CustomEvent(
       eventName, {
         detail: metadata,
         bubbles: true,
@@ -89,6 +90,49 @@ class LanguageUtils {
     )
     document.body.dispatchEvent(event)
     return event
+  }
+
+  /**
+   * Run promises in serial. Taken from https://decembersoft.com/posts/promises-in-serial-with-array-reduce/
+   * @param promises
+   * @param callback
+   */
+  static runPromisesInSerial (promises, callback) {
+    promises.reduce((promiseChain, currentTask) => {
+      return promiseChain.then(chainResults =>
+        currentTask.then(currentResult => {
+          return [ ...chainResults, currentResult ]
+        })
+      )
+    }, Promise.resolve([])).then(arrayOfResults => {
+      // Do something with all results
+      if (_.isFunction(callback)) {
+        callback(arrayOfResults)
+      }
+    })
+  }
+
+  /**
+   * Normalize strings removing tildes, etc.
+   * @param string
+   * @returns {*}
+   */
+  static normalizeString (string) {
+    return string.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  }
+
+  static getStringBetween (string, previous, after) {
+    let firstSplit = string.split(previous)
+    if (firstSplit.length > 1) {
+      let secondSplit = firstSplit.pop().split(after)
+      if (secondSplit.length > 1) {
+        return secondSplit[0]
+      } else {
+        return null
+      }
+    } else {
+      return null
+    }
   }
 }
 

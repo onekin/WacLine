@@ -13,31 +13,67 @@
 .groupName{
   background: $subContainerHeaderBackgroundColor;
   color:white;
-  font-size: 1rem;
+  font-size: 1.5rem;
   text-align: center;
   padding-top: 3px;
   padding-bottom: 3px;
-  -webkit-margin-after: 3px;
-  -webkit-margin-before: 3px;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+
+.groupName:after{
+  background-image: url($chromeExtensionMainURL + 'images/arrowUp.svg');
+  background-size: 20px 20px;
+  display: inline-block;
+  width: 0;
+  height: 15px;
+  content:"";
+  padding-right: 20px;
+  float:right;
+  transition: transform 0.5s;
+}
+
+.groupName:before{
+  background-image: url($chromeExtensionMainURL + 'images/pin.png');
+  background-size: 20px 20px;
+  display: inline-block;
+  width: 0;
+  height: 15px;
+  content:"";
+  padding-right: 20px;
+  float:left;
 }
 
 .tagContainer[aria-hidden="true"]{
   display: none;
 }
 
+/* Collapsable tag group */
+
+.tagGroup[aria-expanded="false"] {
+  .tagButtonContainer {
+    height: 0;
+    overflow: hidden;
+  }
+
+  .groupName:after {
+    transform: rotate(180deg);
+  }
+}
+
 .tagButtonContainer{
   padding: 5px 0 0;
+  transition: height 0.5s;
 }
 
 .tagButton {
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   display: block;
-  border: 3px solid black;
+  border: 1px solid black;
   background-color: rgba(200,200,200,0.8);
   margin-left: auto;
   margin-right: auto;
-  padding: 10px;
   border-radius: 5px;
   transition: background-color 0.5s ease;
   color: black;
@@ -46,4 +82,20 @@
   max-width: calc( #{$sideBarWidth} - 0.6rem - 10px);
   min-width: calc( #{$sideBarWidth} - 0.6rem - 10px);
   text-overflow: ellipsis;
+}
+
+.tagButton[data-chosen="true"] {
+  border: 3px solid black;
+}
+
+.tagButton[role="annotation"] {
+  padding: 10px;
+}
+
+.tagButton[role="marking"] {
+  padding: 5px;
+}
+
+.buttonIcon {
+  height: 1.5rem;
 }

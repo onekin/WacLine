@@ -57,6 +57,15 @@ class URLUtils {
     hostname = hostname.split('?')[0]
     return hostname
   }
+
+  static isUrl (string) {
+    try {
+      let url = new URL(string)
+      return url.href === string
+    } catch (typeError) {
+      return false
+    }
+  }
 }
 
 module.exports = URLUtils

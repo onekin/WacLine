@@ -6,6 +6,8 @@ class ContentAnnotator {
   closeSidebar () {
     window.abwa.sidebar.closeSidebar()
   }
+
+  deleteAllAnnotations () {}
 }
 
 module.exports = ContentAnnotator

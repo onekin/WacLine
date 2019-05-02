@@ -93,7 +93,11 @@ class DOM {
   }
 
   static getParentNodeWithId (elem) {
-    return $(elem).parents('[id]').get(0).id
+    try {
+      return $(elem).parents('[id]').get(0).id
+    } catch (e) {
+      return null
+    }
   }
 }
 

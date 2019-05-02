@@ -1,7 +1,12 @@
 @import '../../node_modules/jquery-contextmenu/src/sass/jquery.contextMenu';
+@import '../../node_modules/components-jqueryui/themes/base/jquery-ui';
 
 @import './groupSelection';
 @import './tagWrapper';
 @import './locationManager';
 @import './sidebar';
 @import './slrDataExtraction';
+@import './review';
+@import './textAnnotator';
+@import './reviewAssistant';
+@import './reviewCanvas';

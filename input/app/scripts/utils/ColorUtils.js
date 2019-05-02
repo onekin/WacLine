@@ -14,6 +14,10 @@ class ColorUtils {
     return 'rgba(' + red + ',' + green + ',' + blue + ', ' + alpha + ')'
   }
 
+  static colorFromString (str) {
+    return new Color(str)
+  }
+
   static getHashColor (text, alpha) {
     let colorHash = new ColorHash({hash: ColorUtils.customHash})
     let resultArray = colorHash.rgb(text)

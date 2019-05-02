@@ -1,6 +1,5 @@
 // Enable chromereload by uncommenting this line:
 import 'chromereload/devonly'
-import 'bootstrap/dist/js/bootstrap'
 
 const Popup = require('./popup/Popup')
 

@@ -23,7 +23,6 @@
     "message": "Back to workspace",
     "description": "Text for link to return to workspace in sidebar"
   },
-  PVSCL:IFCOND(Hypothesis,LINE)
   "HypothesisLoginRequired": {
     "message": "You are not logged in hypothesis, please login in Hypothes.is or check internet connection.",
     "description": "Message to show when hypothesis login is required"
@@ -39,13 +38,11 @@
   "ErrorConfiguringHighlighter": {
     "message": "There was a problem while creating the hypothes.is group. Please reload the page and try it again."
   },
-  PVSCL:ENDCOND
-  PVSCL:IFCOND(GSheetProvider,LINE)
   "GoogleSheetLoginRequired": {
     "message": "You need to give permissions to access your Google Spreadsheet.",
     "description": "Message to show when Google Sheets permission is required"
   },
-  PVSCL:ENDCOND
+
   PVSCL:IFCOND(Comment,LINE)
   "errorUpdatingAnnotationComment": {
     "message": "Error updating annotation comment, please try it again.",
