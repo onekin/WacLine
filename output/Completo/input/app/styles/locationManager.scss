@@ -1,0 +1,59 @@
+@import "./variables";
+
+.annotatorSwitch {
+  position: relative;
+  display: inline-block;
+  width: $switchSize;
+  height: calc(#{$switchSize} * 34 / 60);
+  margin-bottom: -8px;
+}
+
+#annotatorToggle {
+  display:none;
+}
+
+.annotatorToggleSlider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.annotatorToggleSlider:hover {
+  background-color: $themeLightColor;
+}
+
+.annotatorToggleSlider:before {
+  position: absolute;
+  content: "";
+  height: calc(#{$switchSize} * 26 / 60);
+  width: calc(#{$switchSize} * 26 / 60);
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+#annotatorToggle:checked + .annotatorToggleSlider {
+  background-color: $themeColor;
+}
+
+#annotatorToggle:focus + .annotatorToggleSlider {
+  box-shadow: 0 0 1px $themeColor;
+}
+
+#annotatorToggle:checked + .annotatorToggleSlider:before {
+  transform: translateX(calc(#{$switchSize} * 26 / 60));
+}
+
+.annotatorToggleSlider.round {
+  border-radius: calc(#{$switchSize} * 34 / 60);
+}
+
+.annotatorToggleSlider.round:before {
+  border-radius: 50%;
+}

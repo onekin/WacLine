@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<moduleconfigs name="Default">
+  <moduleconfig ignoreerrors="false" name="FileProcessing">
+    <input use="false"/>
+    <output clear="false" create="false" recover="false" use="false"/>
+    <mode type="overwrite"/>
+    <module exclude="" include="/variant" name="Convert to transformer action list" tname="standard transformation">
+      <parameter name="output file" type="ps:path"/>
+      <parameter name="execution time" type="ps:string">before</parameter>
+    </module>
+    <module exclude="" include="/variant" name="Execute transformer action list" tname="actionlist">
+      <parameter name="in" type="ps:path"/>
+      <parameter name="destroy" type="ps:boolean"/>
+      <parameter name="execution time" type="ps:string">after</parameter>
+    </module>
+  </moduleconfig>
+  <moduleconfig ignoreerrors="false" name="SelectionReport">
+    <input use="false"/>
+    <output clear="false" create="false" recover="false" use="false"/>
+    <mode type="overwrite"/>
+    <module exclude="" include="/variant" name="Generate Selection Report" tname="Java Script Transformation Module">
+      <parameter name="javascriptfile" type="ps:path">$(PROJECT)/script/elementIsInVariant.js</parameter>
+      <parameter name="outputfile" type="ps:path"/>
+    </module>
+  </moduleconfig>
+  <moduleconfig ignoreerrors="false" name="All">
+    <input use="false"/>
+    <output clear="false" create="false" recover="false" use="false"/>
+    <mode type="overwrite"/>
+    <module exclude="" include="/variant" name="Convert to transformer action list" tname="standard transformation">
+      <parameter name="output file" type="ps:path"/>
+      <parameter name="execution time" type="ps:string">before</parameter>
+    </module>
+    <module exclude="" include="/variant" name="Execute transformer action list" tname="actionlist">
+      <parameter name="in" type="ps:path"/>
+      <parameter name="destroy" type="ps:boolean"/>
+      <parameter name="execution time" type="ps:string">after</parameter>
+    </module>
+    <module exclude="" include="/variant" name="Generate Selection Report" tname="Java Script Transformation Module">
+      <parameter name="javascriptfile" type="ps:path">$(PROJECT)/script/elementIsInVariant.js</parameter>
+      <parameter name="outputfile" type="ps:path"/>
+    </module>
+  </moduleconfig>
+</moduleconfigs>

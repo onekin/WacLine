@@ -1,0 +1,20 @@
+mark {
+  color: transparent;
+}
+
+.textLayer {
+  opacity: 1;
+}
+
+.textLayer ::selection {
+  background: rgba(130, 190, 240, 0.6);
+}
+
+.textLayer .highlight.selected {
+  background-color: rgba(150, 150, 150, 0.5);
+}
+
+/* Fix for background black on pdf using swal2 */
+.swal2-shown {
+  height: 100% !important;
+}

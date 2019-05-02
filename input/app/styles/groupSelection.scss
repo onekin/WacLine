@@ -1,0 +1,19 @@
+$themeColor: #7952b3;
+$themeLightColor: #9972d3;
+$sideBarWidth: 150px;
+
+#groupSelector {
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid $themeColor;
+  max-width: $sideBarWidth - 10px;
+  height: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+#groupSelector:hover {
+  background-color: $themeColor;
+  color: white;
+}

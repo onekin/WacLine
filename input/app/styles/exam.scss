@@ -1,0 +1,94 @@
+@import "./variables";
+
+/* Fix small size sweetalert2 */
+.swal2-container {
+  z-index: $sidebarZIndex - 10 !important;
+}
+
+html[mozdisallowselectionprint] .swal2-container {
+  zoom: 1.5 !important;
+}
+
+.swal2-height-auto {
+  height: 100% !important; // Fix to not unhide pdf document content when showing alerts
+}
+
+.tagContainer[data-exam-hidden="true"] {
+  display: none;
+}
+
+.navigationRingLink[aria-disabled="true"] {
+  cursor: default;
+}
+
+.navigationRingLink[aria-disabled="true"] img {
+  opacity: 0.4;
+}
+
+#studentNavigationRingPrevious {
+  margin-left: 35px;
+}
+
+#screenshotButton {
+  width: 32px;
+  cursor: pointer;
+}
+
+[data-clickable="true"] {
+  cursor: pointer;
+}
+
+.swal2-actions {
+  z-index: 0 !important;
+}
+
+#comment {
+  width: 100%;
+}
+
+.awesomplete {
+  width: 100%;
+}
+
+
+// Comments container styles
+
+$previousAssignmentWidth: 50%;
+$previousAssignmentContainerWidth: 100%;
+
+.previousAssignmentsContainer {
+  max-width: $previousAssignmentContainerWidth;
+  grid-template-columns: repeat(2, calc( #{$previousAssignmentWidth} - 0.5px));
+  grid-gap: 1px;
+  display: grid;
+  margin-bottom: 5px;
+}
+
+.previousAssignmentContainer {
+  max-width: 100%;
+  background-color: rgba(125,125,125,0.2);
+}
+
+.previousAssignmentLink {
+  max-width: calc( 100% - 5px - 15px );
+}
+
+.previousAssignmentAppendButton {
+  width: 15px;
+  cursor: pointer;
+  float: right;
+  border-radius: 2px;
+}
+
+.previousAssignmentAppendButton:hover {
+  background-color: rgba(125, 125, 125, 0.6);
+}
+
+.previousAssignmentContainer {
+  padding-right: 5px;
+  border-radius: 5px;
+}
+
+.previousAssignmentContainer:last-child:nth-child(odd) {
+  grid-column: span 2;
+}
