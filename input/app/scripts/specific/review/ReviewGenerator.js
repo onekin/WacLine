@@ -139,7 +139,7 @@ class ReviewGenerator {
     window.abwa.sidebar.closeSidebar()
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = this.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
-    let canvasPageURL = chrome.extension.getURL('pages/specific/review/reviewCanvas.html')
+    let canvasPageURL = chrome.extension.getURL('pages/specific/reviewCanvas.html')
     axios.get(canvasPageURL).then((response) => {
       document.body.lastChild.insertAdjacentHTML('afterend', response.data)
       document.querySelector("#abwaSidebarButton").style.display = "none"

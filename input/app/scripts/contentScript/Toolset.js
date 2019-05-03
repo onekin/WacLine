@@ -1,5 +1,8 @@
 const axios = require('axios')
 const _ = require('lodash')
+const Screenshots = require('../specific/review/Screenshots')
+const BackToWorkspace = require('../specific/review/BackToWorkspace')
+const $ = require('jquery')
 
 class Toolset {
   constructor () {
@@ -14,7 +17,7 @@ class Toolset {
       this.toolsetContainer = this.sidebarContainer.querySelector('#toolset')
       this.toolsetHeader = this.toolsetContainer.querySelector('#toolsetHeader')
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
-	  let toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
+      let toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
       // Set screenshot image
       let screenshotImageUrl = chrome.extension.getURL('/images/screenshot.png')
       this.screenshotImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -24,7 +27,7 @@ class Toolset {
       this.screenshotImage.addEventListener('click', () => {
         this.screenshotButtonHandler()
       })
-	  // Set Canvas image
+      // Set Canvas image
       let canvasImageUrl = chrome.extension.getURL('/images/overview.png')
       this.canvasImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.canvasImage.src = canvasImageUrl
@@ -33,7 +36,7 @@ class Toolset {
       this.canvasImage.addEventListener('click', () => {
         this.canvasButtonHandler()
       })
-	  // Set TextSummary image
+      // Set TextSummary image
       let textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.textSummaryImage.src = textSummaryImageUrl
@@ -42,7 +45,7 @@ class Toolset {
       this.textSummaryImage.addEventListener('click', () => {
         this.textSummaryButtonHandler()
       })
-	  // Set DeleteGroup image
+      // Set DeleteGroup image
       let deleteGroupImageUrl = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteGroupImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.deleteGroupImage.src = deleteGroupImageUrl
@@ -51,7 +54,7 @@ class Toolset {
       this.deleteGroupImage.addEventListener('click', () => {
         this.deleteGroupButtonHandler()
       })
-	  // Set BackToMoodle image
+      // Set BackToMoodle image
       let backToMoodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
       this.backToMoodleImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.backToMoodleImage.src = backToMoodleImageUrl
@@ -60,7 +63,7 @@ class Toolset {
       this.backToMoodleImage.addEventListener('click', () => {
         this.backToMoodleButtonHandler()
       })
-	  // Set BackToGSheet image
+      // Set BackToGSheet image
       let backToGSheetImageUrl = chrome.extension.getURL('/images/screenshot.png')
       this.backToGSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.backToGSheetImage.src = backToGSheetImageUrl
@@ -69,7 +72,7 @@ class Toolset {
       this.backToGSheetImage.addEventListener('click', () => {
         this.backToGSheetButtonHandler()
       })
-	  // Set GoToLast image
+      // Set GoToLast image
       let goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
       this.goToLastImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.goToLastImage.src = goToLastImageUrl
@@ -78,10 +81,38 @@ class Toolset {
       this.goToLastImage.addEventListener('click', () => {
         this.goToLastButtonHandler()
       })
-	  if (_.isFunction(callback)) {
+      if (_.isFunction(callback)) {
         callback()
       }
     })
+  }
+
+  screenshotButtonHandler () {
+    Screenshots.takeScreenshot()
+  }
+
+  canvasButtonHandler () {
+    Screenshots.takeScreenshot()
+  }
+
+  textSummaryButtonHandler () {
+    Screenshots.takeScreenshot()
+  }
+
+  deleteGroupButtonHandler () {
+    Screenshots.takeScreenshot()
+  }
+
+  backToMoodleButtonHandler () {
+    BackToWorkspace.takeScreenshot()
+  }
+
+  backToGSheetButtonHandler () {
+    Screenshots.takeScreenshot()
+  }
+
+  goToLastButtonHandler () {
+    Screenshots.takeScreenshot()
   }
 
   /**

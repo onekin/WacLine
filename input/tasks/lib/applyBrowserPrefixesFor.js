@@ -10,7 +10,7 @@
  *    __edge__keyName
  *
  * to `keyName`.
- * This way we can write one manifest thats valid
+ * This way we can write one manifest that's valid
  * for all browsers
  *
  * @param  {Object} manifest
@@ -25,7 +25,7 @@ export default function applyBrowserPrefixesFor (_vendor) {
  * Vendor key
  * @type {String}
  */
-var vendor = ''
+let vendor = ''
 
 /**
  * Recursive iterator over all object keys
@@ -36,16 +36,16 @@ function iterator (obj) {
   Object.keys(obj).forEach((key) => {
     let match = key.match(/^__(chrome|firefox|opera|edge)__(.*)/)
     if (match) {
-        // Swap key with non prefixed name
+      // Swap key with non prefixed name
       if (match[1] === vendor) {
         obj[match[2]] = obj[key]
       }
 
-        // Remove the prefixed key
-        // so it won't cause warings
+      // Remove the prefixed key
+      // so it won't cause warings
       delete obj[key]
-    } else {    // no match? try deeper
-        // Recurse over object's inner keys
+    } else { // no match? try deeper
+      // Recurse over object's inner keys
       if (typeof (obj[key]) === 'object') iterator(obj[key])
     }
   })

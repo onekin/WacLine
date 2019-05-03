@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cm:consulmodel xmlns:cm="http://www.pure-systems.com/consul/model" cm:id="iye9kjAySHmnoLq6X" cm:version="1.1" cm:type="ps:configspace"><cm:head></cm:head>
 <cm:elements cm:rootid="iNO-oI4lcaedgCwMO"><cm:element cm:id="iNO-oI4lcaedgCwMO" cm:class="ps:lookup"><cm:relations cm:id="iYqDJwUlnaccss6CL" cm:class="ps:models"><cm:relation cm:id="iVj3LWBd0D37iMb9y" cm:type="ps:used"><cm:target cm:id="i2-qEBnHdX1fomWop">./ii0Y0nO2hxJB8huJ0</cm:target>
-<cm:target cm:id="iVT1ZpWByEpJ-ieKZ">./i72KG7tTyb5wUf-nk</cm:target>
+<cm:target cm:id="i6HtnTRbq4AOaCUuP">./iWjm6DMczoOgFgSQN</cm:target>
 </cm:relation>
 </cm:relations>
 <cm:properties><cm:property cm:id="iQi_kAHuBoXVO30rd" cm:type="ps:path" cm:name="module_base"><cm:constant cm:id="ixrfvsmJKbwysYZNB" cm:type="ps:path">$(WORKSPACE)</cm:constant>
@@ -28,15 +28,15 @@
 </cm:property>
 <cm:property cm:id="iZDLHeZPP-qHf-4J7" cm:type="ps:path" cm:name="model_path"><cm:constant cm:id="i68Ot4WR-fzTUPjx4" cm:type="ps:path">$(PROJECT)/WebAnnotator.xfm</cm:constant>
 </cm:property>
-<cm:property cm:id="io-R8MTTIfJ1xvB0k" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="iqzQ6Jy5FY2C1gXFQ" cm:type="ps:integer">1</cm:constant>
+<cm:property cm:id="io-R8MTTIfJ1xvB0k" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="iYPJ8tnlZoVUDYd3r" cm:type="ps:integer">1</cm:constant>
 </cm:property>
 </cm:properties>
 </cm:element>
-<cm:element cm:id="i72KG7tTyb5wUf-nk" cm:name="iYxgLF3y7VWrcSJYn" cm:type="ps:used" cm:class="ps:model"><cm:properties><cm:property cm:id="i3bJtCSsUb0ynPrJ0" cm:type="ps:string" cm:name="model_type"><cm:constant cm:id="ipVk-6T38-lbhPdin" cm:type="ps:string">ps:ccfm</cm:constant>
+<cm:element cm:id="iWjm6DMczoOgFgSQN" cm:name="iDKkPWYjNaxwLVr6U" cm:type="ps:used" cm:class="ps:model"><cm:properties><cm:property cm:id="i34Z6Y3GLCxglxuvl" cm:type="ps:string" cm:name="model_type"><cm:constant cm:id="ibTPHfUf0QPlBD1bp" cm:type="ps:string">ps:ccfm</cm:constant>
 </cm:property>
-<cm:property cm:id="izkELg2z-i5yrcTY_" cm:type="ps:path" cm:name="model_path"><cm:constant cm:id="iwene0GQY7W2Bjk_2" cm:type="ps:path">$(PROJECT)/ModelFamily.ccfm</cm:constant>
+<cm:property cm:id="i0krR5cXmI8wr6gp6" cm:type="ps:path" cm:name="model_path"><cm:constant cm:id="i9z0J_jMsAmxX4gP3" cm:type="ps:path">$(PROJECT)/WebAnnotator.ccfm</cm:constant>
 </cm:property>
-<cm:property cm:id="i6CQEv5jmpRqOSvHO" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="inm-M9Vmq1j_foivd" cm:type="ps:integer">1</cm:constant>
+<cm:property cm:id="iBoQS5-K4uxm18Nv9" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="iI1efQxm9Kh_uNTsL" cm:type="ps:integer">1</cm:constant>
 </cm:property>
 </cm:properties>
 </cm:element>

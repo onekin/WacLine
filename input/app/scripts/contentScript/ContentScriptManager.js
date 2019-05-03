@@ -11,12 +11,12 @@ const Config = require('../Config')
 const Toolset = require('./Toolset')
 
 class ContentScriptManager {
-  constructor() {
+  constructor () {
     this.events = {}
     this.status = ContentScriptManager.status.notInitialized
   }
 
-  init() {
+  init () {
     console.debug('Initializing content script manager')
     this.status = ContentScriptManager.status.initializing
     this.loadContentTypeManager(() => {
@@ -58,20 +58,20 @@ class ContentScriptManager {
     })
   }
 
-  destroyContentAnnotator() {
+  destroyContentAnnotator () {
     // Destroy current content annotator
     if (!_.isEmpty(window.abwa.contentAnnotator)) {
       window.abwa.contentAnnotator.destroy()
     }
   }
 
-  destroyTagsManager() {
+  destroyTagsManager () {
     if (!_.isEmpty(window.abwa.tagManager)) {
       window.abwa.tagManager.destroy()
     }
   }
 
-  destroy(callback) {
+  destroy (callback) {
     console.debug('Destroying content script manager')
     this.destroyContentTypeManager(() => {
       this.destroyTagsManager()
@@ -91,12 +91,12 @@ class ContentScriptManager {
     })
   }
 
-  initToolset() {
+  initToolset () {
     window.abwa.toolset = new Toolset()
     window.abwa.toolset.init()
   }
 
-  loadContentTypeManager(callback) {
+  loadContentTypeManager (callback) {
     window.abwa.contentTypeManager = new ContentTypeManager()
     window.abwa.contentTypeManager.init(() => {
       if (_.isFunction(callback)) {
@@ -105,7 +105,7 @@ class ContentScriptManager {
     })
   }
 
-  destroyContentTypeManager(callback) {
+  destroyContentTypeManager (callback) {
     if (window.abwa.contentTypeManager) {
       window.abwa.contentTypeManager.destroy(() => {
         if (_.isFunction(callback)) {
