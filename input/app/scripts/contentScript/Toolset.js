@@ -1,7 +1,11 @@
 const axios = require('axios')
 const _ = require('lodash')
-const Screenshots = require('../specific/review/Screenshots')
-const BackToWorkspace = require('../specific/review/BackToWorkspace')
+const Canvas = require('../consumption/Canvas')
+const Screenshots = require('../consumption/Screenshots')
+const BackToWorkspace = require('../consumption/BackToWorkspace')
+const Resume = require('../consumption/Resume')
+const TextSummary = require('../consumption/TextSummary')
+const DeleteGroup = require('../groupManipulation/DeleteGroup')
 const $ = require('jquery')
 
 class Toolset {
@@ -61,7 +65,7 @@ class Toolset {
       this.backToMoodleImage.title = 'Take a screenshot of the current document' // TODO i18n
       this.toolsetBody.appendChild(this.backToMoodleImage)
       this.backToMoodleImage.addEventListener('click', () => {
-        this.backToMoodleButtonHandler()
+        this.backToWorkspace()
       })
       // Set BackToGSheet image
       let backToGSheetImageUrl = chrome.extension.getURL('/images/screenshot.png')
@@ -70,7 +74,7 @@ class Toolset {
       this.backToGSheetImage.title = 'Take a screenshot of the current document' // TODO i18n
       this.toolsetBody.appendChild(this.backToGSheetImage)
       this.backToGSheetImage.addEventListener('click', () => {
-        this.backToGSheetButtonHandler()
+        this.backToWorkspace()
       })
       // Set GoToLast image
       let goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
@@ -92,27 +96,23 @@ class Toolset {
   }
 
   canvasButtonHandler () {
-    Screenshots.takeScreenshot()
+    Canvas.generateCanvas()
   }
 
   textSummaryButtonHandler () {
-    Screenshots.takeScreenshot()
+    TextSummary.generateReview()
   }
 
   deleteGroupButtonHandler () {
-    Screenshots.takeScreenshot()
+    DeleteGroup.deleteAnnotations()
   }
 
-  backToMoodleButtonHandler () {
-    BackToWorkspace.takeScreenshot()
-  }
-
-  backToGSheetButtonHandler () {
-    Screenshots.takeScreenshot()
+  backToWorkspace () {
+    BackToWorkspace.goToWorkspace()
   }
 
   goToLastButtonHandler () {
-    Screenshots.takeScreenshot()
+    Resume.resume()
   }
 
   /**

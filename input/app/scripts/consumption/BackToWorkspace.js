@@ -1,5 +1,5 @@
 class BackToWorkspace {
-  static createWorkspaceLink () {
+  static goToWorkspace () {
     return new Promise((resolve) => {
       this.linkToWorkspace = document.createElement('a')
       if (window.abwa.rubricManager.rubric) {

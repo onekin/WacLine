@@ -36,17 +36,14 @@ class ContentScriptManager {
                   window.abwa.tagManager = new TagManager(Config.review.namespace, Config.review.tags)
                   window.abwa.tagManager.init(() => {
                     // Initialize sidebar toolset
+                    debugger
                     this.initToolset()
                     // Load content annotator
                     const TextAnnotator = require('./contentAnnotators/TextAnnotator')
                     window.abwa.contentAnnotator = new TextAnnotator(Config.review)
                     window.abwa.contentAnnotator.init(() => {
-                      const ReviewContentScript = require('../specific/review/ReviewContentScript')
-                      window.abwa.specificContentManager = new ReviewContentScript(Config.review)
-                      window.abwa.specificContentManager.init(() => {
-                        this.status = ContentScriptManager.status.initialized
-                        console.debug('Initialized content script manager')
-                      })
+                      this.status = ContentScriptManager.status.initialized
+                      console.debug('Initialized content script manager')
                     })
                   })
                 })
