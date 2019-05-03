@@ -36,7 +36,6 @@ class ContentScriptManager {
                   window.abwa.tagManager = new TagManager(Config.review.namespace, Config.review.tags)
                   window.abwa.tagManager.init(() => {
                     // Initialize sidebar toolset
-                    debugger
                     this.initToolset()
                     // Load content annotator
                     const TextAnnotator = require('./contentAnnotators/TextAnnotator')

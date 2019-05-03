@@ -5,7 +5,6 @@ const _ = require('lodash')
 
 console.debug('Loaded abwa content script')
 if (_.isEmpty(window.abwa)) {
-  debugger
   window.abwa = {} // Global namespace for variables
   // Add listener for popup button click
   chrome.extension.onMessage.addListener((msg) => {

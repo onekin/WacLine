@@ -1,5 +1,4 @@
 const _ = require('lodash')
-const ReviewGenerator = require('./ReviewGenerator')
 const CustomCriteriasManager = require('./CustomCriteriasManager')
 
 class ReviewContentScript {
@@ -9,10 +8,6 @@ class ReviewContentScript {
 
   init (callback) {
     window.abwa.specific = window.abwa.specific || {}
-    window.abwa.specific.reviewGenerator = new ReviewGenerator()
-    window.abwa.specific.reviewGenerator.init(() => {
-
-    })
     window.abwa.specific.customCriteriasManager = new CustomCriteriasManager()
     window.abwa.specific.customCriteriasManager.init(() => {
 

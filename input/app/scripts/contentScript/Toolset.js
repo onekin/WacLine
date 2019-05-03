@@ -58,22 +58,15 @@ class Toolset {
       this.deleteGroupImage.addEventListener('click', () => {
         this.deleteGroupButtonHandler()
       })
-      // Set BackToMoodle image
-      let backToMoodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
-      this.backToMoodleImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
-      this.backToMoodleImage.src = backToMoodleImageUrl
-      this.backToMoodleImage.title = 'Take a screenshot of the current document' // TODO i18n
-      this.toolsetBody.appendChild(this.backToMoodleImage)
-      this.backToMoodleImage.addEventListener('click', () => {
-        this.backToWorkspace()
-      })
-      // Set BackToGSheet image
-      let backToGSheetImageUrl = chrome.extension.getURL('/images/screenshot.png')
-      this.backToGSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
-      this.backToGSheetImage.src = backToGSheetImageUrl
-      this.backToGSheetImage.title = 'Take a screenshot of the current document' // TODO i18n
-      this.toolsetBody.appendChild(this.backToGSheetImage)
-      this.backToGSheetImage.addEventListener('click', () => {
+
+      // Set BackToWorkspace image
+      // let backToWorkspaceImageUrl = chrome.extension.getURL('/images/moodle.svg')
+      let backToWorkspaceImageUrl = chrome.extension.getURL('/images/screenshot.png')
+      this.backToWorkspaceImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.backToWorkspaceImage.src = backToWorkspaceImageUrl
+      this.backToWorkspaceImage.title = 'Take a screenshot of the current document' // TODO i18n
+      this.toolsetBody.appendChild(this.backToWorkspaceImage)
+      this.backToWorkspaceImage.addEventListener('click', () => {
         this.backToWorkspace()
       })
       // Set GoToLast image
