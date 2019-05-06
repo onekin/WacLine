@@ -1,5 +1,14 @@
 <div id="groupSelectorContainer" aria-hidden="true">
-  <div id="notLoggedInGroupContainer" class="sidebarContainer" aria-hidden="true">
+  <div id="loggedInGroupContainer" class="sidebarContainer" aria-hidden="true" pv:condition="Manual">
+    <div id="groupHeader" class="containerHeader">
+      <label>Mapping studies</label>
+    </div>
+    <div id="groupBody" class="bodyContainer">
+      <select id="groupSelector" class="dropdown">
+      </select>
+    </div>
+  </div>
+  <div id="notLoggedInGroupContainer" class="sidebarContainer" aria-hidden="true" pv:condition="Hypothesis">
     <div id="hypothesisLogin" class="containerHeader">
       Please log in hypothesis
     </div>
