@@ -9,7 +9,9 @@ const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
 const Config = require('../Config')
 const Toolset = require('./Toolset')
+// PVSCL:IFCOND(Static,LINE)
 const CustomCriteriasManager = require('../specific/review/CustomCriteriasManager')
+// PVSCL:ENDCOND
 
 class ContentScriptManager {
   constructor () {
@@ -38,7 +40,9 @@ class ContentScriptManager {
                   window.abwa.tagManager.init(() => {
                     // Initialize sidebar toolset
                     this.initToolset()
+                    // PVSCL:IFCOND(Static,LINE)
                     this.initCustomCriteriasManager()
+                    // PVSCL:ENDCOND
                     // Load content annotator
                     const TextAnnotator = require('./contentAnnotators/TextAnnotator')
                     window.abwa.contentAnnotator = new TextAnnotator(Config.review)
@@ -93,13 +97,13 @@ class ContentScriptManager {
     window.abwa.toolset = new Toolset()
     window.abwa.toolset.init()
   }
-
+  //PVSCL:IFCOND(Static,LINE)
   initCustomCriteriasManager () {
     window.abwa.specific = window.abwa.specific || {}
     window.abwa.specific.customCriteriasManager = new CustomCriteriasManager()
     window.abwa.specific.customCriteriasManager.init()
   }
-
+  //PVSCL:ENDCOND  
   loadContentTypeManager (callback) {
     window.abwa.contentTypeManager = new ContentTypeManager()
     window.abwa.contentTypeManager.init(() => {

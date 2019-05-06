@@ -84,6 +84,11 @@
         <cm:script cm:id="ignydr15dcYrQepbh" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Screenshot</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="iNh5bwGQj0athrN-9">
+      <cm:restriction cm:id="iQ_z8eEvveQtB2rj6">
+        <cm:script cm:id="iK1-FfCgKtaE6stDx" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Static</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -5089,7 +5094,7 @@
         <cm:mimedesc cm:id="ie7Nt_4kkzHwwYm_y" cm:mimetype="text/plain" cm:encoding="utf-8">ContentScriptManager</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iOul8cqQq3LTK-aNnkPuSpvInw4o" cm:type="ps:file" cm:class="ps:source" cm:default="on">
+    <cm:element cm:id="iOul8cqQq3LTK-aNnkPuSpvInw4o" cm:type="ps:pvscltext" cm:class="ps:source" cm:default="on">
       <cm:relations cm:id="iOul8cqQq3LTK-aNnkPuSpvInw4odependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="igH4UreygSRU7ruF3mdyMH4qusKChCx__6UvfKzFh" cm:class="ps:parents">
@@ -5103,6 +5108,18 @@
         </cm:property>
         <cm:property cm:id="i_0TorjiFc4ZQSDeUB3oD98avTvc" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
           <cm:constant cm:id="ictOjrrcwUOy2i3aCq8gxlNa-aRl" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iabaJSlC8DtzOgmMI" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iubbhEQITRNi2GW84" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iZ8SPps16F8bQ-f-C" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iPu3r14AlYBn_I5T_" cm:type="ps:datetime">2019-05-06T21:32:00.944Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iG7U8uLl2qB2MbAHY" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i_1GM7kM8_B9Yjx2X" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iSL0LDkytlZC-eIwP" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iCoCENshgBXrd1K6i" cm:type="ps:datetime">2019-05-06T21:32:00.944Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -6193,7 +6210,7 @@
         <cm:mimedesc cm:id="iWSNLM3IlixWL4_To" cm:mimetype="text/plain" cm:encoding="utf-8">review</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iYu-43pCBckkJMTzcZavaBZWPujp" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iYu-43pCBckkJMTzcZavaBZWPujp" cm:restriction="iNh5bwGQj0athrN-9" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iYu-43pCBckkJMTzcZavaBZWPujpdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iRQxLiYDNFh__fX7o0nnZSldG5-ndbq19wvBw-VSB" cm:class="ps:parents">
@@ -6206,6 +6223,20 @@
           <cm:target cm:id="igbZCbWCx8FpJP6isseruerkcMziYH4J4I4RA-pIO">./iYL4VQ_df4wim_UG3iWun2yj0TTc</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i4nInpIR_zwICMhIw" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iXhRRY9cG0uoHGtNH" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="if_Tg2C72lWb_Udrb" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iWe7xB9CGBSht1E8o" cm:type="ps:datetime">2019-05-06T20:55:00.518Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-Ne-Q892Mb7NDcp3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i4f-oF-kMRq-xclzI" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iKA49fs9VNmNX91Bj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iagyZMmBuDodsXhfO" cm:type="ps:datetime">2019-05-06T20:55:00.518Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iU9QjB0veZFgNYtVf" cm:mimetype="text/plain" cm:encoding="utf-8">CustomCriteriasManager</cm:mimedesc>
       </cm:vname>
