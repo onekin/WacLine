@@ -116,7 +116,7 @@ class Canvas {
           if (i % 2 === 0 || canvasClusters[key].length === 2) {
             currentColumn = columnTemplate.content.cloneNode(true)
             if (canvasClusters[key].length === 1) currentColumn.querySelector('.clusterColumn').style.width = '100%'
-            /*else if(canvasClusters[key].length==2) currentColumn.querySelector('.clusterColumn').style.width = "50%"
+            /*	else if(canvasClusters[key].length==2) currentColumn.querySelector('.clusterColumn').style.width = "50%"
             else currentColumn.querySelector('.clusterColumn').style.width = parseFloat(100.0/Math.ceil(canvasClusters[key].length/2)).toString()+'%'*/
             else {
               let columnWidth

@@ -48,7 +48,7 @@ class Toolset {
       let canvasImageUrl = chrome.extension.getURL('/images/overview.png')
       this.canvasImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.canvasImage.src = canvasImageUrl
-      this.canvasImage.title = 'Take a screenshot of the current document' // TODO i18n
+      this.canvasImage.title = 'Generate canvas' // TODO i18n
       this.toolsetBody.appendChild(this.canvasImage)
       this.canvasImage.addEventListener('click', () => {
         this.canvasButtonHandler()
@@ -59,7 +59,7 @@ class Toolset {
       let textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.textSummaryImage.src = textSummaryImageUrl
-      this.textSummaryImage.title = 'Take a screenshot of the current document' // TODO i18n
+      this.textSummaryImage.title = 'Generate review report' // TODO i18n
       this.toolsetBody.appendChild(this.textSummaryImage)
       this.textSummaryImage.addEventListener('click', () => {
         this.textSummaryButtonHandler()
@@ -70,7 +70,7 @@ class Toolset {
       let deleteGroupImageUrl = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteGroupImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.deleteGroupImage.src = deleteGroupImageUrl
-      this.deleteGroupImage.title = 'Take a screenshot of the current document' // TODO i18n
+      this.deleteGroupImage.title = 'Delete all annotations in document' // TODO i18n
       this.toolsetBody.appendChild(this.deleteGroupImage)
       this.deleteGroupImage.addEventListener('click', () => {
         this.deleteGroupButtonHandler()
@@ -97,7 +97,7 @@ class Toolset {
       let goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
       this.goToLastImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.goToLastImage.src = goToLastImageUrl
-      this.goToLastImage.title = 'Take a screenshot of the current document' // TODO i18n
+      this.goToLastImage.title = 'Go to last annotation' // TODO i18n
       this.toolsetBody.appendChild(this.goToLastImage)
       this.goToLastImage.addEventListener('click', () => {
         this.goToLastButtonHandler()

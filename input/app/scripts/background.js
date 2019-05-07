@@ -15,6 +15,11 @@ chrome.tabs.onCreated.addListener((tab) => {
 
 const HypothesisManager = require('./background/HypothesisManager')
 const Popup = require('./popup/Popup')
+// const GoogleSheetsManager = require('./background/GoogleSheetsManager')
+// const DoiManager = require('./background/DoiManager')
+// const MoodleDownloadManager = require('./background/MoodleDownloadManager')
+// const MoodleBackgroundManager = require('./background/MoodleBackgroundManager')
+// const TaskManager = require('./background/TaskManager')
 
 const _ = require('lodash')
 
@@ -29,8 +34,29 @@ class Background {
     this.hypothesisManager = new HypothesisManager()
     this.hypothesisManager.init()
 
+    // Initialize google sheets manager
+    // this.googleSheetsManager = new GoogleSheetsManager()
+    // this.googleSheetsManager.init()
+
+    // Initialize doi manager
+    // this.doiManager = new DoiManager()
+    // this.doiManager.init()
+
+    // Initialize moodle download manager
+    // this.moodleDownloadManager = new MoodleDownloadManager()
+    // this.moodleDownloadManager.init()
+
+    // Initialize moodle background manager
+    // this.moodleBackgroundManager = new MoodleBackgroundManager()
+    // this.moodleBackgroundManager.init()
+
+    // Initialize task manager
+    // this.taskManager = new TaskManager()
+    // this.taskManager.init()
+
     // Initialize page_action event handler
     chrome.pageAction.onClicked.addListener((tab) => {
+      // PVSCL:IFCOND(URN, LINE)
       // Check if current tab is a local file
       if (tab.url.startsWith('file://')) {
         // Check if permission to access file URL is enabled
@@ -62,7 +88,20 @@ class Background {
           this.tabs[tab.id].activate()
         }
       }
+      // PVSCL:ELSECOND
+      if (this.tabs[tab.id]) {
+        if (this.tabs[tab.id].activated) {
+          this.tabs[tab.id].deactivate()
+        } else {
+          this.tabs[tab.id].activate()
+        }
+      } else {
+        this.tabs[tab.id] = new Popup()
+        this.tabs[tab.id].activate()
+      }
+      // PVSCL:ENDCOND
     })
+
     // On tab is reloaded
     chrome.tabs.onUpdated.addListener((tabId) => {
       if (this.tabs[tabId]) {

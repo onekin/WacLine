@@ -7154,8 +7154,20 @@
         </cm:relation>
       </cm:relations>
       <cm:properties>
-        <cm:property cm:id="i8OD_VDGLGBVmqV78" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
-          <cm:constant cm:id="ior7MvWS8woAagN8i" cm:type="ps:string">ps:auto</cm:constant>
+        <cm:property cm:id="i8OD_VDGLGBVmqV78" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="ior7MvWS8woAagN8i" cm:type="ps:string">ps:user</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iV88mDTJ9i99UmJkq" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iUlvZLdasUw501RYF" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iHbbLnv9xudUPJi6W" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i3jWCGs8hHUxFpGr8" cm:type="ps:datetime">2019-05-07T09:52:13.966Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iXfAzo6e0jJIxjEwH" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ifAWgI88Zm7UjbJGI" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNLoKLubD5T3TNiMZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iZFa39t5ATCpfYDM5" cm:type="ps:datetime">2019-05-07T09:52:16.743Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -27219,7 +27231,7 @@
           <cm:constant cm:id="isD446dsDufSvA1Zu" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="i7W6BnLGQIWAlzQpi" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ijk5Gjo_9RLye-TRS" cm:type="ps:datetime">2019-05-06T16:26:27.467Z</cm:constant>
+          <cm:constant cm:id="ijk5Gjo_9RLye-TRS" cm:type="ps:datetime">2019-05-07T09:31:03.105Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
