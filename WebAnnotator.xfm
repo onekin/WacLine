@@ -18,6 +18,13 @@
       </cm:property>
     </cm:properties>
   </cm:head>
+  <cm:restrictions>
+    <cm:restset cm:id="i6j90Tn1dkPDTMv0x">
+      <cm:restriction cm:id="ictGLGgG2nrubkSBw">
+        <cm:script cm:id="iyRSGMBMWiVY3C9Rx" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.ApplicationBased</cm:script>
+      </cm:restriction>
+    </cm:restset>
+  </cm:restrictions>
   <cm:elements cm:rootid="itQl43VFxGXDPgxoO">
     <cm:element cm:id="itQl43VFxGXDPgxoO" cm:name="WebAnnotator" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="ij_z7eGJ0MmRMrQkJ" cm:class="ps:children">
@@ -715,7 +722,7 @@
         <cm:mimedesc cm:id="irMSZkkE2iS0J3qBQ" cm:mimetype="text/plain" cm:encoding="utf-8">GSheet</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iNJ5r3-AstSaqLJTC" cm:name="MoodleProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="iNJ5r3-AstSaqLJTC" cm:restriction="i6j90Tn1dkPDTMv0x" cm:name="MoodleProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iuYCXR_EgPq9SSIxI" cm:class="ps:parents">
         <cm:relation cm:id="iGsQe2_c62sJ_icDU" cm:type="ps:parent">
           <cm:target cm:id="i-eV3d66cogxIbbJC">./iEep8KJNy2-O5HLzJ</cm:target>
@@ -732,7 +739,7 @@
           <cm:constant cm:id="icJtHI8zoV0_-ZT_F" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="ieGQX8Ov_bKCiSuVV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i24UB9h5BZP157SaC" cm:type="ps:datetime">2019-04-29T15:28:25.797Z</cm:constant>
+          <cm:constant cm:id="i24UB9h5BZP157SaC" cm:type="ps:datetime">2019-05-08T09:05:29.518Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

@@ -15,12 +15,55 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*/*", "file:///*/*"],
+      "matches": ["*://*/*"PVSCL:IFCOND(URN), "file:///*/*"PVSCL:ENDCOND],
+      // PVSCL:IFCOND(GSheetProvider,LINE)
+      "exclude_matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*"PVSCL:IFCOND(Manual), "https://hypothes.is/login"PVSCL:ENDCOND],
+      // PVSCL:ELSECOND
+      // PVSCL:IFCOND(Manual,LINE)
+      "exclude_matches": ["https://hypothes.is/login"],
+      // PVSCL:ENDCOND
+      //PVSCL:ENDCOND
+      // PVSCL:IFCOND(MoodleProvider,LINE)
+      "exclude_matches": ["*://*/*grade/grading/*", "*://*/*mod/assign/view.php*", "*://*/*course/modedit.php?add=assign*"],
+      // PVSCL:ENDCOND
       "js": ["scripts/contentScript.js"],
       "css": ["styles/contentScript.css"],
       "run_at": "document_start",
       "all_frames": false
-    }
+    }PVSCL:IFCOND(GSheetProvider),
+    {
+      "matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*"],
+      "js": ["scripts/googleSheetsContentScript.js"],
+      "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(ACM),
+    {
+      "matches": ["*://dl.acm.org/citation.cfm?*"],
+      "js": ["scripts/acmContentScript.js"],
+      "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),
+    {
+      "matches": ["*://www.sciencedirect.com/science/article/pii/*"],
+      "js": ["scripts/scienceDirectContentScript.js"],
+      "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(Manual),
+    {
+      "matches": [
+        "https://hypothes.is/groups/*/*"
+      ],
+      "js": [
+        "scripts/hypothesisGroupContentScript.js"
+      ],
+      "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(MoodleProvider),
+    {
+      "matches": ["*://*/*grade/grading/*", "*://*/*mod/assign/view.php*"],
+      "js": ["scripts/moodleContentScript.js"],
+      "run_at": "document_end"
+    }, {
+      "matches": ["*://*/*course/modedit.php?add=assign*"],
+      "js": ["scripts/moodleAssignmentAddContentScript.js"],
+      "run_at": "document_end"
+    }PVSCL:ENDCOND
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
   "page_action": {
@@ -36,8 +79,28 @@
   "permissions": [
     "https://hypothes.is/",
     "storage",
-    "tabs",
-    "file://*/*"
+    "tabs"PVSCL:IFCOND(URN),
+    "file://*/*"PVSCL:ENDCONDPVSCL:IFCOND(URL),
+    "contextMenus"PVSCL:ENDCONDPVSCL:IFCOND(URL),
+    "downloads"PVSCL:ENDCONDPVSCL:IFCOND(URL),
+    "identity"PVSCL:ENDCONDPVSCL:IFCOND(URL),
+    "notifications"PVSCL:ENDCONDPVSCL:IFCOND(URL),
+    "webRequest"PVSCL:ENDCONDPVSCL:IFCOND(URL),
+    "webRequestBlocking"PVSCL:ENDCONDPVSCL:IFCOND(DOI),
+    "*://doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(DOI),
+    "*://dx.doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),
+    "*://www.sciencedirect.com/science/article/pii/*"PVSCL:ENDCONDPVSCL:IFCOND(Dropbox),
+    "*://www.dropbox.com/s/"PVSCL:ENDCONDPVSCL:IFCOND(Dropbox),
+    "*://*.dropboxusercontent.com/*"PVSCL:ENDCOND
   ],
-  "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]
+  PVSCL:IFCOND(GSheetProvider,LINE)
+  "oauth2": {
+    "client_id": "1008657588862-k3t7glpcvdrtc43dsmktkjudufh9m5ho.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/spreadsheets"
+    ]
+  },
+  PVSCL:ENDCOND
+  "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]PVSCL:IFCOND(GSheetProvider),
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoQgtyvjHN1xpYMWig50Bx7iL4d8oSum8aVhiTCLpdSK93YAA6JubzTxeJKWj0n/zx4X6jiByuAGaAd7V0/s+mrJfP2J8hiMFu5BnxT6+2iekiLNV4Nc1RlX9wuaOq2Res0l9E2+2DpMTCli4aS1DyEBd9zpfwaNWPMqbmToZOLO0afibAklS/VAIEfcH/2lbDLrdq3UACEZdW7/hlmICj0yItYFQ2mXEI3spetnJH3VG9Q5Sj5RsSLnyuescQLSeT0vl1uovsPnKCpD/aS/iRzNyEtRNtAy727Ju334bj4xyOA8VIsueWWwYiKPatvhQ+gcNqq77UNOmw5Ido5fHMQIDAQAB"PVSCL:ENDCOND
 }

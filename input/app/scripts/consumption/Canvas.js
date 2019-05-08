@@ -2,7 +2,7 @@ const AnnotationUtils = require('../utils/AnnotationUtils')
 const Alerts = require('../utils/Alerts')
 const axios = require('axios')
 
-// let swal = require('sweetalert2')
+const swal = require('sweetalert2')
 
 class Canvas {
   static generateCanvas () {

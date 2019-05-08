@@ -396,36 +396,6 @@ class TagManager {
     $(this.tagsContainer.evidencing).attr('aria-hidden', 'false')
   }
 
-  /**
-   * Given a no grouped tag container reorder giving a specific order for that
-   * @param order
-   * @param container
-   */
-  reorderNoGroupedTagContainer (order, container) {
-    // Reorder marking container
-    for (let i = order.length - 1; i >= 0; i--) {
-      let criteria = order[i]
-      let tagButton = _.find(container.querySelectorAll('.tagButton'), (elem) => { return elem.title === criteria })
-      let elem = $(tagButton).detach()
-      $(container).prepend(elem)
-    }
-  }
-
-  /**
-   * Given a grouped tag container reorder the groups giving a specific order
-   * @param order
-   * @param container
-   */
-  reorderGroupedTagContainer (order, container) {
-    // Reorder marking container
-    for (let i = order.length - 1; i >= 0; i--) {
-      let criteria = order[i]
-      let tagGroup = _.find(container.querySelectorAll('.tagGroup'), (elem) => { return elem.children[0].title === criteria })
-      let elem = $(tagGroup).detach()
-      $(container).prepend(elem)
-    }
-  }
-
   getFilteringTagList () {
     return _.map(this.currentTags, (tagGroup) => {
       return this.getTagFromGroup(tagGroup)
