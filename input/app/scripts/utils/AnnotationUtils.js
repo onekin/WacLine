@@ -37,34 +37,41 @@ class AnnotationUtils {
   }
 
   static parseAnnotations (annotations) {
-    const criterionTag = Config.review.namespace + ':' + Config.review.tags.grouped.relation + ':'
-    const levelTag = Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':'
+    const criterionTag = Config.namespace + ':' + Config.tags.grouped.relation + ':'
+    const levelTag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':'
     let r = new Review()
 
     for (let a in annotations) {
-      let criterion = null
-      let level = null
-      for (let t in annotations[a].tags) {
-        if (annotations[a].tags[t].indexOf(criterionTag) !== -1) criterion = annotations[a].tags[t].replace(criterionTag, '').trim()
-        if (annotations[a].tags[t].indexOf(levelTag) !== -1) level = annotations[a].tags[t].replace(levelTag, '').trim()
-      }
-      // if (criterion == null || level == null) continue
-      let textQuoteSelector = null
-      let highlightText = ''
-      let pageNumber = null
-      for (let k in annotations[a].target) {
-        if (annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' }) != null) {
-          textQuoteSelector = annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' })
-          highlightText = textQuoteSelector.exact
+      if (annotations.hasOwnProperty(a)) {
+        let criterion = null
+        let level = null
+        for (let t in annotations[a].tags) {
+          if (annotations[a].tags.hasOwnProperty(t)) {
+            if (annotations[a].tags[t].indexOf(criterionTag) !== -1) criterion = annotations[a].tags[t].replace(criterionTag, '').trim()
+            if (annotations[a].tags[t].indexOf(levelTag) !== -1) level = annotations[a].tags[t].replace(levelTag, '').trim()
+          }
         }
-        if (annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }) != null) {
-          pageNumber = annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }).page
+        // if (criterion == null || level == null) continue
+        let textQuoteSelector = null
+        let highlightText = ''
+        let pageNumber = null
+
+        for (let k in annotations[a].target) {
+          if (annotations[a].target.hasOwnProperty(k)) {
+            if (annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' }) != null) {
+              textQuoteSelector = annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' })
+              highlightText = textQuoteSelector.exact
+            }
+            if (annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }) != null) {
+              pageNumber = annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }).page
+            }
+          }
         }
+        let annotationText = annotations[a].text !== null && annotations[a].text !== '' ? JSON.parse(annotations[a].text) : {comment: '', suggestedLiterature: []}
+        let comment = annotationText.comment !== null ? annotationText.comment : null
+        let suggestedLiterature = annotationText.suggestedLiterature !== null ? annotationText.suggestedLiterature : []
+        r.insertAnnotation(new Annotation(annotations[a].id, criterion, level, highlightText, pageNumber, comment, suggestedLiterature))
       }
-      let annotationText = annotations[a].text !== null && annotations[a].text !== '' ? JSON.parse(annotations[a].text) : {comment: '', suggestedLiterature: []}
-      let comment = annotationText.comment !== null ? annotationText.comment : null
-      let suggestedLiterature = annotationText.suggestedLiterature !== null ? annotationText.suggestedLiterature : []
-      r.insertAnnotation(new Annotation(annotations[a].id, criterion, level, highlightText, pageNumber, comment, suggestedLiterature))
     }
     return r
   }

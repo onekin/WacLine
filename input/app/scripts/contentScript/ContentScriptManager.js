@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const ContentTypeManager = require('./ContentTypeManager')
 const Sidebar = require('./Sidebar')
-const TagManager = require('./TagManager')
+const MyTagManager = require('./MyTagManager')
 const ModeManager = require('./ModeManager')
 const RolesManager = require('./RolesManager')
 const GroupSelector = require('./GroupSelector')
@@ -9,9 +9,7 @@ const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
 const Config = require('../Config')
 const Toolset = require('./Toolset')
-// PVSCL:IFCOND(Static,LINE)
-const CustomCriteriasManager = require('../specific/review/CustomCriteriasManager')
-// PVSCL:ENDCOND
+// const CustomCriteriasManager = require('../specific/review/CustomCriteriasManager')
 
 class ContentScriptManager {
   constructor () {
@@ -36,13 +34,11 @@ class ContentScriptManager {
                 window.abwa.modeManager = new ModeManager()
                 window.abwa.modeManager.init(() => {
                   // Load tag manager
-                  window.abwa.tagManager = new TagManager(Config.review.namespace, Config.review.tags)
+                  window.abwa.tagManager = new MyTagManager()
                   window.abwa.tagManager.init(() => {
                     // Initialize sidebar toolset
                     this.initToolset()
-                    // PVSCL:IFCOND(Static,LINE)
-                    this.initCustomCriteriasManager()
-                    // PVSCL:ENDCOND
+                    // this.initCustomCriteriasManager()
                     // Load content annotator
                     const TextAnnotator = require('./contentAnnotators/TextAnnotator')
                     window.abwa.contentAnnotator = new TextAnnotator(Config.review)
@@ -97,13 +93,14 @@ class ContentScriptManager {
     window.abwa.toolset = new Toolset()
     window.abwa.toolset.init()
   }
-  //PVSCL:IFCOND(Static,LINE)
+
+//PVSCL:IFCOND(Dynamic,LINE)
   initCustomCriteriasManager () {
     window.abwa.specific = window.abwa.specific || {}
     window.abwa.specific.customCriteriasManager = new CustomCriteriasManager()
     window.abwa.specific.customCriteriasManager.init()
   }
-  //PVSCL:ENDCOND  
+//PVSCL:ENDCOND  
   loadContentTypeManager (callback) {
     window.abwa.contentTypeManager = new ContentTypeManager()
     window.abwa.contentTypeManager.init(() => {

@@ -11,8 +11,11 @@ const Events = {
   comment: 'annotationComment',
   reply: 'reply',
   tagsUpdated: 'tagsUpdated',
+  //PVSCL:IFCOND(DeleteGroup,LINE)
   deleteAllAnnotations: 'deleteAllAnnotations',
-  deletedAllAnnotations: 'deletedAllAnnotations'
+  deletedAllAnnotations: 'deletedAllAnnotations',
+  //PVSCL:ENDCOND
+  updatedCurrentAnnotations: 'updatedCurrentAnnotations'
 }
 
 module.exports = Events

@@ -1,7 +1,7 @@
 const ContentAnnotator = require('./ContentAnnotator')
 const ContentTypeManager = require('../ContentTypeManager')
-const Tag = require('../Tag')
-const TagGroup = require('../TagGroup')
+// const Tag = require('../Tag')
+// const TagGroup = require('../TagGroup')
 const Events = require('../Events')
 const RolesManager = require('../RolesManager')
 const DOMTextUtils = require('../../utils/DOMTextUtils')
@@ -12,7 +12,10 @@ require('jquery-contextmenu/dist/jquery.contextMenu')
 const _ = require('lodash')
 require('components-jqueryui')
 const Alerts = require('../../utils/Alerts')
-
+const Theme = require('../../definition/Theme')
+// PVSCL:IFCOND(Code,LINE)
+const Code = require('../../definition/Code')
+// PVSCL:ENDCOND
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 60
 
@@ -82,11 +85,13 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   initDeleteAllAnnotationsEvent (callback) {
+	//PVSCL:IFCOND(DeleteGroup,LINE)
     this.events.deleteAllAnnotationsEvent = {element: document, event: Events.deleteAllAnnotations, handler: this.createDeleteAllAnnotationsEventHandler()}
     this.events.deleteAllAnnotationsEvent.element.addEventListener(this.events.deleteAllAnnotationsEvent.event, this.events.deleteAllAnnotationsEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
     }
+    //PVSCL:ENDCOND
   }
 
   initTagsUpdatedEvent (callback) {
@@ -104,7 +109,8 @@ class TextAnnotator extends ContentAnnotator {
       })
     }
   }
-
+  
+  //PVSCL:IFCOND(DeleteGroup,LINE)
   createDeleteAllAnnotationsEventHandler (callback) {
     return () => {
       this.deleteAllAnnotations(() => {
@@ -112,6 +118,7 @@ class TextAnnotator extends ContentAnnotator {
       })
     }
   }
+  //PVSCL:ENDCOND
 
   createDocumentURLChangeEventHandler (callback) {
     return () => {
@@ -195,7 +202,7 @@ class TextAnnotator extends ContentAnnotator {
         }
       }
       // Construct the annotation to send to hypothesis
-      let annotation = TextAnnotator.constructAnnotation(selectors, event.detail.tags)
+      let annotation = TextAnnotator.constructAnnotation({selectors, tags: event.detail.tags, tagId: event.detail.id})
       window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(annotation, (err, annotation) => {
         if (err) {
           Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
@@ -214,7 +221,7 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  static constructAnnotation (selectors, tags) {
+  static constructAnnotation ({selectors, tags = [], tagId}) {
     // Check if selectors exist, if then create a target for annotation, in other case the annotation will be a page annotation
     let target = []
     if (_.isObject(selectors)) {
@@ -232,6 +239,10 @@ class TextAnnotator extends ContentAnnotator {
       target: target,
       text: '',
       uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
+    }
+    // Tag id
+    if (tagId) {
+      data.tagId = tagId
     }
     // For pdf files it is also send the relationship between pdf fingerprint and web url
     if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
@@ -401,12 +412,11 @@ class TextAnnotator extends ContentAnnotator {
   highlightAnnotation (annotation, callback) {
     let classNameToHighlight = this.retrieveHighlightClassName(annotation)
     // Get annotation color for an annotation
-    let tagInstance = window.abwa.tagManager.findAnnotationTagInstance(annotation)
-    if (tagInstance) {
-      let color = tagInstance.getColor()
+    let tag = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
+    if (tag) {
+      let color = tag.color
       try {
-        let highlightedElements = []
-        highlightedElements = DOMTextUtils.highlightContent(
+        let highlightedElements = DOMTextUtils.highlightContent(
           annotation.target[0].selector, classNameToHighlight, annotation.id)
         // Highlight in same color as button
         highlightedElements.forEach(highlightedElement => {
@@ -414,15 +424,13 @@ class TextAnnotator extends ContentAnnotator {
           $(highlightedElement).css('background-color', color)
           // Set purpose color
           highlightedElement.dataset.color = color
-          let group = null
-          if (LanguageUtils.isInstanceOf(tagInstance, TagGroup)) {
-            group = tagInstance
+       // PVSCL:IFCOND(ToolTip and SingleAnnotation,LINE)
+          if (LanguageUtils.isInstanceOf(tag, Theme)) {
             // Set message
-            highlightedElement.title = group.config.name + '\nLevel is pending, please right click to set a level.'
-          } else if (LanguageUtils.isInstanceOf(tagInstance, Tag)) {
-            group = tagInstance.group
-            highlightedElement.title = group.config.name + '\nLevel: ' + tagInstance.name
-          }
+            highlightedElement.title = tag.name
+          }PVSCL:IFCOND(Code) else if (LanguageUtils.isInstanceOf(tag, Code)) {
+            highlightedElement.title = tag.theme.name + '\nCode: ' + tag.name
+          }PVSCL:ENDCOND
           if (!_.isEmpty(annotation.text)) {
             try {
               let feedback = JSON.parse(annotation.text)
@@ -431,6 +439,7 @@ class TextAnnotator extends ContentAnnotator {
               highlightedElement.title += '\nFeedback: ' + annotation.text
             }
           }
+          // PVSCL:ENDCOND
         })
         // Create context menu event for highlighted elements
         this.createContextMenuForAnnotation(annotation)
@@ -468,21 +477,17 @@ class TextAnnotator extends ContentAnnotator {
         // Create items for context menu
         let items = {}
         // If current user is the same as author, allow to remove annotation or add a comment
-        if (window.abwa.rolesManager.role === RolesManager.roles.reviewer) {
-          items['comment'] = {name: 'Comment'}
-          items['delete'] = {name: 'Delete'}
-        } else if (window.abwa.rolesManager.role === RolesManager.roles.author) {
-          // This is disabled by now, maybe in the future it will be interesting to provide a reply mechanism
-          // In the same way, if the author cannot reply to reviewer annotation, the rest of the functionality in this .js about replying will not be used
-          // items['reply'] = {name: 'Reply'}
-        }
+        // PVSCL:IFCOND(Comment)
+        items['comment'] = {name: 'Comment'}
+        // PVSCL:ENDCOND
+        items['delete'] = {name: 'Delete'}
         return {
           callback: (key, opt) => {
             if (key === 'delete') {
               this.deleteAnnotationHandler(annotation)
-            } else if (key === 'comment') {
+            }PVSCL:IFCOND(Comment) else if (key === 'comment') {
               this.commentAnnotationHandler(annotation)
-            }
+            }PVSCL:ENDCOND
           },
           items: items
         }
@@ -524,7 +529,7 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   commentAnnotationHandler (annotation) {
-    // Close sidebar if opened
+	// Close sidebar if opened
     let isSidebarOpened = window.abwa.sidebar.isOpened()
     this.closeSidebar()
     // Open sweetalert

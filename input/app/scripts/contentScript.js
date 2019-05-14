@@ -25,16 +25,11 @@ if (_.isEmpty(window.abwa)) {
   })
   // Check if uri contains annotation to initialize
   let annotation = AnnotationBasedInitializer.getAnnotationHashParam()
-  let autoOpen = AnnotationBasedInitializer.isAutoOpenHashParam()
+  // let autoOpen = AnnotationBasedInitializer.isAutoOpenHashParam()
   if (annotation) {
     // If extension is not activated, activate
     chrome.runtime.sendMessage({scope: 'extension', cmd: 'activatePopup'}, () => {
       console.debug('Activated popup by annotation')
-    })
-  } else if (autoOpen) {
-    // If extension is not activated, activate
-    chrome.runtime.sendMessage({scope: 'extension', cmd: 'activatePopup'}, () => {
-      console.debug('Activated popup by auto open')
     })
   } else {
     // Check if button is activated for this tab

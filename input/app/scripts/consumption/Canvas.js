@@ -2,8 +2,6 @@ const AnnotationUtils = require('../utils/AnnotationUtils')
 const Alerts = require('../utils/Alerts')
 const axios = require('axios')
 
-const swal = require('sweetalert2')
-
 class Canvas {
   static generateCanvas () {
     window.abwa.sidebar.closeSidebar()
@@ -32,7 +30,7 @@ class Canvas {
       })
       let canvasClusters = {}
       let criteriaList = []
-      abwa.tagManager.currentTags.forEach((e) => {
+      window.abwa.tagManager.currentTags.forEach((e) => {
         if (e.config.name === 'Typos') return
         criteriaList.push(e.config.name)
         if (canvasClusters[e.config.options.group] == null) canvasClusters[e.config.options.group] = [e.config.name]
@@ -68,6 +66,7 @@ class Canvas {
         if (annotation.highlightText != null && annotation.highlightText !== '') swalContent += '<h2 style="text-align:left;margin-bottom:10px;">Highlight</h2><div style="text-align:justify;font-style:italic">"' + annotation.highlightText.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '"</div>'
         if (annotation.comment != null && annotation.comment !== '') swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Comment</h2><div style="text-align:justify;">' + annotation.comment.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>'
         if (annotation.suggestedLiterature != null && annotation.suggestedLiterature.length > 0) swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Suggested literature</h2><div style="text-align:justify;"><ul style="padding-left:10px;">' + annotation.suggestedLiterature.map((e) => { return '<li>' + e.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</li>' }).join('') + '</ul></div>'
+        const swal = require('sweetalert2')
         swal({
           html: swalContent,
           confirmButtonText: 'View in context'
@@ -116,8 +115,8 @@ class Canvas {
           if (i % 2 === 0 || canvasClusters[key].length === 2) {
             currentColumn = columnTemplate.content.cloneNode(true)
             if (canvasClusters[key].length === 1) currentColumn.querySelector('.clusterColumn').style.width = '100%'
-            /*	else if(canvasClusters[key].length==2) currentColumn.querySelector('.clusterColumn').style.width = "50%"
-            else currentColumn.querySelector('.clusterColumn').style.width = parseFloat(100.0/Math.ceil(canvasClusters[key].length/2)).toString()+'%'*/
+            /* else if(canvasClusters[key].length==2) currentColumn.querySelector('.clusterColumn').style.width = "50%"
+            else currentColumn.querySelector('.clusterColumn').style.width = parseFloat(100.0/Math.ceil(canvasClusters[key].length/2)).toString()+'%' */
             else {
               let columnWidth
               if (canvasClusters[key].length === 2) columnWidth = getColumnWidth([canvasClusters[key][i]], key)
@@ -129,7 +128,7 @@ class Canvas {
           let clusterProperty = propertyTemplate.content.cloneNode(true)
           clusterProperty.querySelector('.propertyLabel').innerText = canvasClusters[key][i]
           /* if(canvasClusters[key].length==1||canvasClusters[key].length==2||(canvasClusters[key].length%2==1&&i==canvasClusters[key].length-1)) clusterProperty.querySelector(".clusterProperty").style.height = "100%"
-          else clusterProperty.querySelector(".clusterProperty").style.height = "50%";*/
+          else clusterProperty.querySelector(".clusterProperty").style.height = "50%"; */
           let propertyHeight = 100
           if (canvasClusters[key].length === 2) propertyHeight = getPropertyHeight(canvasClusters[key][i], [canvasClusters[key][i]])
           else if (i % 2 === 0 && i < canvasClusters[key].length - 1) propertyHeight = getPropertyHeight(canvasClusters[key][i], [canvasClusters[key][i], canvasClusters[key][i + 1]])
