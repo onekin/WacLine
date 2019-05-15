@@ -2,8 +2,10 @@ const _ = require('lodash')
 const Events = require('./Events')
 const URLUtils = require('../utils/URLUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
+// PVSCL:IFCOND(Span and URN, LINE)
 const Alerts = require('../utils/Alerts')
-
+const CryptoUtils = require('../utils/CryptoUtils')
+// PVSCL:ENDCOND
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
 
 class ContentTypeManager {
@@ -13,7 +15,9 @@ class ContentTypeManager {
     this.urlChangeInterval = null
     this.urlParam = null
     this.documentType = ContentTypeManager.documentTypes.html // By default document type is html
+    // PVSCL:IFCOND(URN, LINE)
     this.localFile = false
+    // PVSCL:ENDCOND
     this.fileMetadata = {}
   }
 
@@ -40,12 +44,34 @@ class ContentTypeManager {
               callback()
             }
           } else {
+            // PVSCL:IFCOND(URN, LINE)
             // Is a local file
             if (window.PDFViewerApplication.url.startsWith('file:///')) {
               this.localFile = true
+              // PVSCL:IFCOND(Span, LINE)
+              chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: URLUtils.retrieveMainUrl(window.location.href)}}, (fileMetadata) => {
+                if (_.isEmpty(fileMetadata)) {
+                  // Warn user document is not from moodle
+                  Alerts.warningAlert({
+                    text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>.',
+                    title: 'This file is not downloaded from moodle'})
+                  this.documentURL = URLUtils.retrieveMainUrl(window.location.href)
+                } else {
+                  this.fileMetadata = fileMetadata.file
+                  this.documentURL = fileMetadata.file.url
+                  // Calculate fingerprint for plain text files
+                  this.tryToLoadPlainTextFingerprint()
+                  this.getContextAndItemIdInLocalFile()
+                }
+                if (_.isFunction(callback)) {
+                  callback()
+                }
+              })
+              // PVSCL:ELSECOND
               if (_.isFunction(callback)) {
                 callback()
               }
+              // PVSCL:ENDCOND
             } else { // Is an online resource
               // Support in ajax websites web url change, web url can change dynamically, but locals never do
               this.initSupportWebURLChange()
@@ -54,6 +80,14 @@ class ContentTypeManager {
                 callback()
               }
             }
+            // PVSCL:ELSECOND
+            // Support in ajax websites web url change, web url can change dynamically, but locals never do
+            this.initSupportWebURLChange()
+            this.documentURL = window.PDFViewerApplication.url
+            if (_.isFunction(callback)) {
+              callback()
+            }
+            // PVSCL:ENDCOND
           }
         })
       } else {
@@ -61,8 +95,10 @@ class ContentTypeManager {
         if (this.urlParam) {
           this.documentURL = this.urlParam
         } else {
+          // PVSCL:IFCOND(URN, LINE)
           if (window.location.href.startsWith('file:///')) {
             this.localFile = true
+            // PVSCL:IFCOND(Span, LINE)
             // Check in moodle download manager if the file exists
             chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: URLUtils.retrieveMainUrl(window.location.href)}}, (fileMetadata) => {
               if (_.isEmpty(fileMetadata)) {
@@ -74,12 +110,15 @@ class ContentTypeManager {
               } else {
                 this.fileMetadata = fileMetadata.file
                 this.documentURL = fileMetadata.file.url
+                // Calculate fingerprint for plain text files
+                this.tryToLoadPlainTextFingerprint()
                 this.getContextAndItemIdInLocalFile()
               }
               if (_.isFunction(callback)) {
                 callback()
               }
             })
+            // PVSCL:ENDCOND
           } else {
             // Support in ajax websites web url change, web url can change dynamically, but locals never do
             this.initSupportWebURLChange()
@@ -88,6 +127,13 @@ class ContentTypeManager {
               callback()
             }
           }
+          // PVSCL:ELSECOND
+          this.initSupportWebURLChange()
+          this.documentURL = URLUtils.retrieveMainUrl(window.location.href)
+          if (_.isFunction(callback)) {
+            callback()
+          }
+          // PVSCL:ENDCOND
         }
       }
     }
@@ -108,12 +154,13 @@ class ContentTypeManager {
     }
     clearInterval(this.urlChangeInterval)
   }
+  // PVSCL:IFCOND(URN, LINE)
 
   getContextAndItemIdInLocalFile () {
     this.fileMetadata.contextId = LanguageUtils.getStringBetween(this.fileMetadata.url, 'pluginfile.php/', '/assignsubmission_file')
     this.fileMetadata.itemId = LanguageUtils.getStringBetween(this.fileMetadata.url, 'submission_files/', '/')
   }
-
+  // PVSCL:ENDCOND
   waitUntilPDFViewerLoad (callback) {
     let interval = setInterval(() => {
       if (_.isObject(window.PDFViewerApplication.pdfDocument)) {
@@ -194,6 +241,16 @@ class ContentTypeManager {
       }
     }, URL_CHANGE_INTERVAL_IN_SECONDS * 1000)
   }
+  // PVSCL:IFCOND(Span, LINE)
+
+  tryToLoadPlainTextFingerprint () {
+    let fileTextContentElement = document.querySelector('body > pre')
+    if (fileTextContentElement) {
+      let fileTextContent = fileTextContentElement.innerText
+      this.documentFingerprint = CryptoUtils.hash(fileTextContent.innerText)
+    }
+  }
+  // PVSCL:ENDCOND
 }
 
 ContentTypeManager.documentTypes = {

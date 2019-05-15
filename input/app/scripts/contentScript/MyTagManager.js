@@ -132,9 +132,10 @@ class MyTagManager {
     this.getHighlighterDefinition((err, highlighterDefinitionAnnotations) => {
       if (err) {
         Alerts.errorAlert({text: 'Unable to retrieve annotations from storage to initialize highlighter buttons.'}) // TODO i18n
-      } else {
-        let promise = new Promise((resolve, reject) => {
+      } else {	
+    	let promise = new Promise((resolve, reject) => {
           if (highlighterDefinitionAnnotations.length === 0) {
+        	// PVSCL:IFCOND(User,LINE)
             // TODO Create definition annotations if Definition->Who is User
             Alerts.loadingAlert({
               title: 'Configuration in progress',
@@ -152,10 +153,14 @@ class MyTagManager {
                 resolve(annotations)
               }
             })
+            // PVSCL:ELSECOND
             // TODO Show alert otherwise (no group is defined)
+            Alerts.errorAlert({text: 'No group is defined'})
+            // PVSCL:ENDCOND
           } else {
             resolve(highlighterDefinitionAnnotations)
           }
+          
         })
         // After creating annotations
         promise.catch(() => {

@@ -1,9 +1,7 @@
 const ContentAnnotator = require('./ContentAnnotator')
 const ContentTypeManager = require('../ContentTypeManager')
-// const Tag = require('../Tag')
-// const TagGroup = require('../TagGroup')
 const Events = require('../Events')
-const RolesManager = require('../RolesManager')
+// const RolesManager = require('../RolesManager')
 const DOMTextUtils = require('../../utils/DOMTextUtils')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
@@ -19,9 +17,8 @@ const Code = require('../../definition/Code')
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 60
 
-const ReviewAssistant = require('../../specific/review/ReviewAssistant')
-const Config = require('../../Config')
-let swal = require('sweetalert2')
+// const ReviewAssistant = require('../../specific/review/ReviewAssistant')
+// const Config = require('../../Config')
 
 class TextAnnotator extends ContentAnnotator {
   constructor (config) {
@@ -109,8 +106,8 @@ class TextAnnotator extends ContentAnnotator {
       })
     }
   }
-  
-  //PVSCL:IFCOND(DeleteGroup,LINE)
+//PVSCL:IFCOND(DeleteGroup,LINE)
+
   createDeleteAllAnnotationsEventHandler (callback) {
     return () => {
       this.deleteAllAnnotations(() => {
@@ -118,7 +115,7 @@ class TextAnnotator extends ContentAnnotator {
       })
     }
   }
-  //PVSCL:ENDCOND
+//PVSCL:ENDCOND
 
   createDocumentURLChangeEventHandler (callback) {
     return () => {
@@ -477,7 +474,7 @@ class TextAnnotator extends ContentAnnotator {
         // Create items for context menu
         let items = {}
         // If current user is the same as author, allow to remove annotation or add a comment
-        // PVSCL:IFCOND(Comment)
+        // PVSCL:IFCOND(Comment,LINE)
         items['comment'] = {name: 'Comment'}
         // PVSCL:ENDCOND
         items['delete'] = {name: 'Delete'}
@@ -527,192 +524,94 @@ class TextAnnotator extends ContentAnnotator {
       }
     })
   }
+//PVSCL:IFCOND(Comment,LINE)
 
-  commentAnnotationHandler (annotation) {
-	// Close sidebar if opened
-    let isSidebarOpened = window.abwa.sidebar.isOpened()
-    this.closeSidebar()
-    // Open sweetalert
-    let that = this
+  /**
+   * Generates the HTML for comment form based on annotation, add reference autofill,...
+   * @param annotation
+   * @returns {Object}
+   */
+  generateCommentForm ({annotation}) {
+    // TODO Mark and go previous assignments (AddReference): Get previous assignments
+    // let previousAssignments = this.retrievePreviousAssignments()
+    // let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
+    let html = ''
+    /* if (previousAssignmentsUI) {
+      html += previousAssignmentsUI.outerHTML
+    } */
+    html += '<textarea data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>'
 
-    let updateAnnotation = (comment, literature, level) => {
-      annotation.text = JSON.stringify({comment: comment, suggestedLiterature: literature})
-
-      // Assign level to annotation
-      if (level != null) {
-        let tagGroup = window.abwa.tagManager.getGroupFromAnnotation(annotation)
-        let pole = tagGroup.tags.find((e) => { return e.name === level })
-        annotation.tags = pole.tags
-      }
-
-      window.abwa.hypothesisClientManager.hypothesisClient.updateAnnotation(
-        annotation.id,
-        annotation,
-        (err, annotation) => {
-          if (err) {
-            // Show error message
-            Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
-          } else {
-            // Update current annotations
-            let currentIndex = _.findIndex(that.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
-            that.allAnnotations.splice(currentIndex, 1, annotation)
-            // Update all annotations
-            let allIndex = _.findIndex(that.allAnnotations, (currentAnnotation) => { return annotation.id === currentAnnotation.id })
-            that.allAnnotations.splice(allIndex, 1, annotation)
-            // Dispatch updated annotations events
-            LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: that.allAnnotations})
-
-            // Not sure if this goes here
-            LanguageUtils.dispatchCustomEvent(Events.comment, {annotation: annotation})
-
-            // Redraw annotations
-            DOMTextUtils.unHighlightElements([...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')])
-            that.highlightAnnotation(annotation)
-            ReviewAssistant.checkBalanced()
-          }
-        })
-      if (isSidebarOpened) {
-        that.openSidebar()
-      }
+    // On before open
+    let onBeforeOpen = () => {}
+    // Preconfirm
+    let preConfirmData = {}
+    let preConfirm = () => {
+      preConfirmData.comment = document.querySelector('#comment').value
     }
-    let showAlert = (form) => {
-      let suggestedLiteratureHtml = (lit) => {
-        let html = ''
-        for (let i in lit) {
-          html += '<li><a class="removeReference"></a><span title="' + lit[i] + '">' + lit[i] + '</span></li>'
-        }
-        return html
-      }
-      let hasLevel = (annotation, level) => {
-        return annotation.tags.find((e) => { return e === Config.review.namespace + ':' + Config.review.tags.grouped.subgroup + ':' + level }) != null
-      }
-
-      let groupTag = window.abwa.tagManager.getGroupFromAnnotation(annotation)
-      let criterionName = groupTag.config.name
-      let poles = groupTag.tags.map((e) => { return e.name })
-      // let poleChoiceRadio = poles.length>0 ? '<h3>Pole</h3>' : ''
-      let poleChoiceRadio = '<div>'
-      poles.forEach((e) => {
-        poleChoiceRadio += '<input type="radio" name="pole" class="swal2-radio poleRadio" value="' + e + '" '
-        if (hasLevel(annotation, e)) poleChoiceRadio += 'checked'
-        poleChoiceRadio += '>'
-        switch (e) {
-          case 'Strength':
-            poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/strength.png') + '"/>'
-            break
-          case 'Major weakness':
-            poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/majorConcern.png') + '"/>'
-            break
-          case 'Minor weakness':
-            poleChoiceRadio += '<img class="poleImage" width="20" src="' + chrome.extension.getURL('images/minorConcern.png') + '"/>'
-            break
-        }
-        poleChoiceRadio += ' <span class="swal2-label" style="margin-right:5%;" title="\'+e+\'">' + e + '</span>'
-      })
-      poleChoiceRadio += '</div>'
-
-      swal({
-        html: '<h3 class="criterionName">' + criterionName + '</h3>' + poleChoiceRadio + '<textarea id="swal-textarea" class="swal2-textarea" placeholder="Type your feedback here...">' + form.comment + '</textarea>' + '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(form.suggestedLiterature) + '</ul>',
-        showLoaderOnConfirm: true,
-        width: '40em',
-        preConfirm: () => {
-          let newComment = $('#swal-textarea').val()
-          let suggestedLiterature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
-          let level = $('.poleRadio:checked') != null && $('.poleRadio:checked').length === 1 ? $('.poleRadio:checked')[0].value : null
-          if (newComment !== null && newComment !== '') {
-            $.ajax('http://text-processing.com/api/sentiment/', {
-              method: 'POST',
-              data: {text: newComment}
-            }).done(function (ret) {
-              if (ret.label === 'neg' && ret.probability.neg > 0.55) {
-                swal({
-                  type: 'warning',
-                  text: 'The message may be ofensive. Please modify it.',
-                  showCancelButton: true,
-                  cancelButtonText: 'Modify comment',
-                  confirmButtonText: 'Save as it is',
-                  reverseButtons: true
-                }).then((result) => {
-                  if (result.value) {
-                    updateAnnotation(newComment, suggestedLiterature, level)
-                  } else if (result.dismiss === swal.DismissReason.cancel) {
-                    showAlert({comment: newComment, suggestedLiterature: suggestedLiterature})
-                  }
-                })
+    // Callback
+    let callback = (err, result) => {
+      if (!_.isUndefined(preConfirmData.comment)) { // It was pressed OK button instead of cancel, so update the annotation
+        if (err) {
+          window.alert('Unable to load alert. Is this an annotable document?')
+        } else {
+          // Update annotation
+          annotation.text = preConfirmData.comment || ''
+          window.abwa.hypothesisClientManager.hypothesisClient.updateAnnotation(
+            annotation.id,
+            annotation,
+            (err, annotation) => {
+              if (err) {
+                // Show error message
+                Alerts.errorAlert({text: chrome.i18n.getMessage('errorUpdatingAnnotationComment')})
               } else {
-                // Update annotation
-                updateAnnotation(newComment, suggestedLiterature, level)
+                // Update all annotations
+                let allIndex = _.findIndex(this.allAnnotations, (currentAnnotation) => {
+                  return annotation.id === currentAnnotation.id
+                })
+                this.allAnnotations.splice(allIndex, 1, annotation)
+                // Dispatch updated annotations events
+                LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+                LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+                LanguageUtils.dispatchCustomEvent(Events.comment, {annotation: annotation})
+                // Redraw annotations
+                this.redrawAnnotations()
               }
             })
-          } else {
-            // Update annotation
-            updateAnnotation('', suggestedLiterature, level)
-          }
-        },
-        onOpen: () => {
-          $('.removeReference').on('click', function () {
-            $(this).closest('li').remove()
-          })
         }
-      })
-
-      $('.poleRadio + img').on('click', function () {
-        $(this).prev('.poleRadio').prop('checked', true)
-      })
-
-      $('#swal-input1').autocomplete({
-        source: function (request, response) {
-          $.ajax({
-            url: 'http://dblp.org/search/publ/api',
-            data: {
-              q: request.term,
-              format: 'json',
-              h: 5
-            },
-            success: function (data) {
-              response(data.result.hits.hit.map((e) => { return {label: e.info.title + ' (' + e.info.year + ')', value: e.info.title + ' (' + e.info.year + ')', info: e.info} }))
-            }
-          })
-        },
-        minLength: 3,
-        delay: 500,
-        select: function (event, ui) {
-          let content = ''
-          if (ui.item.info.authors !== null && Array.isArray(ui.item.info.authors.author)) {
-            content += ui.item.info.authors.author.join(', ') + ': '
-          } else if (ui.item.info.authors !== null) {
-            content += ui.item.info.authors.author + ': '
-          }
-          if (ui.item.info.title !== null) {
-            content += ui.item.info.title
-          }
-          if (ui.item.info.year !== null) {
-            content += ' (' + ui.item.info.year + ')'
-          }
-          let a = document.createElement('a')
-          a.className = 'removeReference'
-          a.addEventListener('click', function (e) {
-            $(e.target).closest('li').remove()
-          })
-          let li = document.createElement('li')
-          $(li).append(a, '<span title="' + content + '">' + content + '</span>')
-          $('#literatureList').append(li)
-          setTimeout(function () {
-            $('#swal-input1').val('')
-          }, 10)
-        },
-        appendTo: '.swal2-container',
-        create: function () {
-          $('.ui-autocomplete').css('max-width', $('#swal2-content').width())
-        }
-      })
+      }
     }
-    if (annotation.text === null || annotation.text === '') {
-      showAlert({comment: '', suggestedLiterature: []})
-    } else {
-      showAlert(JSON.parse(annotation.text))
-    }
+    return {html: html, onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback}
   }
+
+  commentAnnotationHandler (annotation) {
+    // Close sidebar if opened
+    let isSidebarOpened = window.abwa.sidebar.isOpened()
+    this.closeSidebar()
+
+    let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
+    let title = ''
+    if (themeOrCode) {
+      title = themeOrCode.name
+    }
+
+    // Create form
+    let form = this.generateCommentForm({annotation})
+
+    Alerts.multipleInputAlert({
+      title: title,
+      html: form.html,
+      onBeforeOpen: form.onBeforeOpen,
+      // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
+      preConfirm: form.preConfirm,
+      callback: () => {
+        form.callback()
+        if (isSidebarOpened) {
+          this.openSidebar()
+        }
+      }
+    })
+  }
+// PVSCL:ENDCOND
 
   retrieveHighlightClassName () {
     return this.highlightClassName // TODO Depending on the status of the application

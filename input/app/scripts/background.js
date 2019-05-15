@@ -16,7 +16,9 @@ chrome.tabs.onCreated.addListener((tab) => {
 const HypothesisManager = require('./background/HypothesisManager')
 const Popup = require('./popup/Popup')
 // const GoogleSheetsManager = require('./background/GoogleSheetsManager')
-// const DoiManager = require('./background/DoiManager')
+// PVSCL:IFCOND(DOI or NavigationScript, LINE)
+const TargetManager = require('./background/TargetManager')
+// PVSCL:ENDCOND
 // const MoodleDownloadManager = require('./background/MoodleDownloadManager')
 // const MoodleBackgroundManager = require('./background/MoodleBackgroundManager')
 // const TaskManager = require('./background/TaskManager')
@@ -38,9 +40,11 @@ class Background {
     // this.googleSheetsManager = new GoogleSheetsManager()
     // this.googleSheetsManager.init()
 
+    // PVSCL:IFCOND(DOI or NavigationScript, LINE)
     // Initialize doi manager
-    // this.doiManager = new DoiManager()
-    // this.doiManager.init()
+    this.targetManager = new TargetManager()
+    this.targetManager.init()
+    // PVSCL:ENDCOND
 
     // Initialize moodle download manager
     // this.moodleDownloadManager = new MoodleDownloadManager()

@@ -2,22 +2,22 @@ const DOI = require('doi-regex')
 const URLUtils = require('../utils/URLUtils')
 const _ = require('lodash')
 
-class DoiManager {
+class TargetManager {
   constructor () {
-	// PVSCL:IFCOND(DOI, LINE)  
+	  // PVSCL:IFCOND(DOI, LINE)
     this.doiUrlFilterObject = { 'urls': ['*://*.doi.org/*', '*://doi.org/*'] }
-    // PVSCL:ELSECOND
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(ScienceDirect, LINE)
     this.scienceDirect = { 'urls': ['*://www.sciencedirect.com/science/article/pii/*'] }
-    // PVSCL:ELSECOND
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Dropbox, LINE)
     this.dropbox = {'urls': ['*://www.dropbox.com/s/*?raw=1*']}
     this.dropboxContent = {'urls': ['*://*.dropboxusercontent.com/*']}
-    // PVSCL:ELSECOND
+    // PVSCL:ENDCOND
   }
 
   init () {
-	// PVSCL:IFCOND(DOI, LINE)
+	  // PVSCL:IFCOND(DOI, LINE)
     // Requests to doi.org
     chrome.webRequest.onHeadersReceived.addListener((responseDetails) => {
       console.log(responseDetails)
@@ -33,7 +33,7 @@ class DoiManager {
       responseDetails.responseHeaders[2].value = redirectUrl
       return {responseHeaders: responseDetails.responseHeaders}
     }, this.doiUrlFilterObject, ['responseHeaders', 'blocking'])
-    // PVSCL:ELSECOND
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(ScienceDirect, LINE)
     // Requests to sciencedirect, redirection from linkinghub.elsevier.com (parse doi and hag if present)
     chrome.webRequest.onBeforeSendHeaders.addListener((requestHeaders) => {
@@ -67,7 +67,7 @@ class DoiManager {
         })
       }
     }, this.scienceDirect, ['requestHeaders', 'blocking'])
-    // PVSCL:ELSECOND
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Dropbox, LINE)
     // Request to dropbox
     chrome.webRequest.onHeadersReceived.addListener((responseDetails) => {
@@ -87,7 +87,7 @@ class DoiManager {
       details.requestHeaders[index].value = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
       return {requestHeaders: details.requestHeaders}
     }, this.dropboxContent, ['blocking', 'requestHeaders'])
-    // PVSCL:ELSECOND
+    // PVSCL:ENDCOND
   }
 
   extractAnnotationId (url) {
@@ -102,4 +102,4 @@ class DoiManager {
   }
 }
 
-module.exports = DoiManager
+module.exports = TargetManager
