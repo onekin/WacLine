@@ -13,6 +13,7 @@ class TargetManager {
     // PVSCL:IFCOND(Dropbox, LINE)
     this.dropbox = {'urls': ['*://www.dropbox.com/s/*?raw=1*']}
     this.dropboxContent = {'urls': ['*://*.dropboxusercontent.com/*']}
+    this.tabs = {}
     // PVSCL:ENDCOND
   }
 
@@ -20,18 +21,37 @@ class TargetManager {
 	  // PVSCL:IFCOND(DOI, LINE)
     // Requests to doi.org
     chrome.webRequest.onHeadersReceived.addListener((responseDetails) => {
-      console.log(responseDetails)
-      // Retrieve doi from call
-      let doi = DOI.groups(responseDetails.url)[1]
-      // TODO Substitute by URLUtils.extractHashParamsFromUrl(window.location.href)
-      let annotationId = this.extractAnnotationId(responseDetails.url)
-      let redirectUrl = responseDetails.responseHeaders[2].value
-      redirectUrl += '#doi:' + doi
-      if (annotationId) {
-        redirectUrl += '&hag:' + annotationId
+      console.debug(responseDetails)
+      let locationIndex = _.findIndex(responseDetails.responseHeaders, (header) => header.name === 'location')
+      let locationUrl = responseDetails.responseHeaders[locationIndex].value
+      try {
+        let redirectUrl = new URL(locationUrl)
+        // Retrieve doi from call
+        let doi = ''
+        if (_.isArray(DOI.groups(responseDetails.url))) {
+          doi = DOI.groups(responseDetails.url)[1]
+        }
+        let annotationId = this.extractAnnotationId(responseDetails.url)
+        if (doi) {
+          if (_.isEmpty(redirectUrl.hash)) {
+            redirectUrl.hash += '#doi:' + doi
+          } else {
+            redirectUrl.hash += '&doi:' + doi
+          }
+        }
+        if (annotationId) {
+          if (_.isEmpty(redirectUrl.hash)) {
+            redirectUrl.hash += '#hag:' + annotationId
+          } else {
+            redirectUrl.hash += '&hag:' + annotationId
+          }
+        }
+        responseDetails.responseHeaders[locationIndex].value = redirectUrl.toString()
+        this.tabs[responseDetails.tabId] = {doi: doi, annotationId: annotationId}
+        return {responseHeaders: responseDetails.responseHeaders}
+      } catch (e) {
+        return {responseHeaders: responseDetails.responseHeaders}
       }
-      responseDetails.responseHeaders[2].value = redirectUrl
-      return {responseHeaders: responseDetails.responseHeaders}
     }, this.doiUrlFilterObject, ['responseHeaders', 'blocking'])
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(ScienceDirect, LINE)
@@ -71,15 +91,10 @@ class TargetManager {
     // PVSCL:IFCOND(Dropbox, LINE)
     // Request to dropbox
     chrome.webRequest.onHeadersReceived.addListener((responseDetails) => {
-      let redirectUrl = _.find(responseDetails.responseHeaders, (header) => { return header.name.toLowerCase() === 'location' }).value
-      let index = _.findIndex(responseDetails.responseHeaders, (header) => { return header.name.toLowerCase() === 'location' })
-      redirectUrl += '#url::' + responseDetails.url.split('#')[0] // Get only the url of the document
-      let annotationId = this.extractAnnotationId(responseDetails.url)
-      if (annotationId) {
-        redirectUrl += '&hag:' + annotationId
+      this.tabs[responseDetails.tabId] = {
+        url: responseDetails.url.split('#')[0],
+        annotationId: this.extractAnnotationId(responseDetails.url)
       }
-      responseDetails.responseHeaders[index].value = redirectUrl
-      return {responseHeaders: responseDetails.responseHeaders}
     }, this.dropbox, ['responseHeaders', 'blocking'])
     // Request dropbox pdf files
     chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
@@ -87,6 +102,12 @@ class TargetManager {
       details.requestHeaders[index].value = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
       return {requestHeaders: details.requestHeaders}
     }, this.dropboxContent, ['blocking', 'requestHeaders'])
+
+    chrome.webRequest.onCompleted.addListener((details) => {
+      if (this.tabs[details.tabId]) {
+        chrome.tabs.sendMessage(details.tabId, this.tabs[details.tabId])
+      }
+    }, this.dropboxContent)
     // PVSCL:ENDCOND
   }
 

@@ -90,7 +90,7 @@
     "*://doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(DOI),
     "*://dx.doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),
     "*://www.sciencedirect.com/science/article/pii/*"PVSCL:ENDCONDPVSCL:IFCOND(Dropbox),
-    "*://www.dropbox.com/s/"PVSCL:ENDCONDPVSCL:IFCOND(Dropbox),
+    "*://www.dropbox.com/s/",
     "*://*.dropboxusercontent.com/*"PVSCL:ENDCOND
   ],
   PVSCL:IFCOND(GSheetProvider,LINE)
