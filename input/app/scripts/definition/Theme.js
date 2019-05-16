@@ -1,16 +1,22 @@
-const LanguageUtils = require('../utils/LanguageUtils')
 const jsYaml = require('js-yaml')
 const _ = require('lodash')
+const Config = require('../Config')
 
 class Theme {
-  constructor ({id, name, color, annotationGuide, description}) {
+  constructor ({id, name, color, annotationGuide, descriptionPVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCOND}) {
     this.id = id
     this.name = name
     this.color = color
     this.annotationGuide = annotationGuide
+// PVSCL:IFCOND(User,LINE)   
     this.description = description
- // PVSCL:IFCOND(Code,LINE)
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Code,LINE)
     this.codes = []
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    this.multivalued = multivalued
+    this.inductive = inductive
  // PVSCL:ENDCOND
   }
 
@@ -28,17 +34,27 @@ class Theme {
   }
 
   toAnnotation () {
+    let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name]
+// PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    if (this.multivalued) {
+      tags.push(Config.namespace + ':' + Config.tags.statics.multivalued)
+    }
+    if (this.inductive) {
+      tags.push(Config.namespace + ':' + Config.tags.statics.inductive)
+    }
+// PVSCL:ENDCOND
     return {
       group: this.annotationGuide.storage.group.id,
       permissions: {
         read: ['group:' + this.annotationGuide.storage.group.id]
       },
       references: [],
-      tags: ['oa:theme:' + LanguageUtils.normalizeString(this.name)],
+      tags: tags,
       target: [],
       text: jsYaml.dump({
+      // PVSCL:IFCOND(User,LINE)
         description: this.description
-        // custom: this.custom
+      // PVSCL:ENDCOND
       }),
       uri: this.annotationGuide.storage.group.links.html
     }
@@ -52,14 +68,26 @@ class Theme {
     let themeTag = _.find(annotation.tags, (tag) => {
       return tag.includes('oa:theme:')
     })
+    // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    let multivaluedTag = _.find(annotation.tags, (tag) => {
+      return tag.includes('oa:multivalued')
+    })
+    let inductiveTag = _.find(annotation.tags, (tag) => {
+      return tag.includes('oa:inductive')
+    })
+    // PVSCL:ENDCOND
     if (_.isString(themeTag)) {
       let name = themeTag.replace('oa:theme:', '')
       let config = jsYaml.load(annotation.text)
+      // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+      // multivalued and inductive
+      let multivalued = _.isString(multivaluedTag)
+      let inductive = _.isString(inductiveTag)
+      // PVSCL:ENDCOND
       if (_.isObject(config)) {
-        // let criteriaId = config.criteriaId
         let description = config.description
         let id = annotation.id
-        return new Theme({id, name, description, annotationGuide})
+        return new Theme({id, name, description, annotationGuidePVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCOND})
       } else {
 
       }

@@ -29,6 +29,11 @@
         <cm:script cm:id="iW6mjM4rROyiu9ODv" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.SingleAnnotation</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="i1_J_FA8K97HcKJsk">
+      <cm:restriction cm:id="iuKSINGqYVc-jSECd">
+        <cm:script cm:id="iPkHAG0TzLfPZXib4" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.DOI</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="itQl43VFxGXDPgxoO">
     <cm:element cm:id="itQl43VFxGXDPgxoO" cm:name="WebAnnotator" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -443,7 +448,7 @@
         <cm:mimedesc cm:id="i1v8YrPgsGvXeZcRF" cm:mimetype="text/plain" cm:encoding="utf-8">NavigationScript</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="irEHGGoWh2Bf8Vyfh" cm:name="ScienceDirect" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="irEHGGoWh2Bf8Vyfh" cm:restriction="i1_J_FA8K97HcKJsk" cm:name="ScienceDirect" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iJzNpjbf3Yqu-YkX7" cm:class="ps:parents">
         <cm:relation cm:id="idSadoiINaWY9S6uN" cm:type="ps:parent">
           <cm:target cm:id="ivEcCtde_RJYXK5oY">./iQtIAWQv5tJjKZoXP</cm:target>
@@ -460,7 +465,7 @@
           <cm:constant cm:id="iviyiZ_y0QzJD53qU" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="il3JOzE5AguF5k3Cv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iUaJGBmwti8DwkKxE" cm:type="ps:datetime">2019-04-29T15:23:34.577Z</cm:constant>
+          <cm:constant cm:id="iUaJGBmwti8DwkKxE" cm:type="ps:datetime">2019-05-15T17:27:08.111Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>

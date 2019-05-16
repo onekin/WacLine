@@ -6,16 +6,16 @@ const Buttons = require('../definition/Buttons')
 // const AnnotationUtils = require('../utils/AnnotationUtils')
 const Events = require('./Events')
 const Alerts = require('../utils/Alerts')
-// PVSCL:IFCOND(User,LINE)
+//PVSCL:IFCOND(User,LINE)
 const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
-// PVSCL:ENDCOND
-const Config = require('../Config')
 const Hypothesis = require('../storage/Hypothesis')
+//PVSCL:ENDCOND
+const Config = require('../Config')
 const AnnotationGuide = require('../definition/AnnotationGuide')
 const Theme = require('../definition/Theme')
-// PVSCL:IFCOND(Code,LINE)
+//PVSCL:IFCOND(Code,LINE)
 const Code = require('../definition/Code')
-// PVSCL:ENDCOND
+//PVSCL:ENDCOND
 
 class MyTagManager {
   constructor () {
@@ -132,10 +132,10 @@ class MyTagManager {
     this.getHighlighterDefinition((err, highlighterDefinitionAnnotations) => {
       if (err) {
         Alerts.errorAlert({text: 'Unable to retrieve annotations from storage to initialize highlighter buttons.'}) // TODO i18n
-      } else {	
-    	let promise = new Promise((resolve, reject) => {
+      } else {
+        let promise = new Promise((resolve, reject) => {
           if (highlighterDefinitionAnnotations.length === 0) {
-        	// PVSCL:IFCOND(User,LINE)
+            // PVSCL:IFCOND(User,LINE)
             // TODO Create definition annotations if Definition->Who is User
             Alerts.loadingAlert({
               title: 'Configuration in progress',
@@ -160,7 +160,6 @@ class MyTagManager {
           } else {
             resolve(highlighterDefinitionAnnotations)
           }
-          
         })
         // After creating annotations
         promise.catch(() => {
@@ -269,7 +268,7 @@ class MyTagManager {
           }
         })
       }
-   // PVSCL:ELSECOND
+      // PVSCL:ELSECOND
       themeButtonContainer = Buttons.createButton({
         id: theme.id,
         name: theme.name,
@@ -289,7 +288,7 @@ class MyTagManager {
           }
         }
       })
-   // PVSCL:ENDCOND
+      // PVSCL:ENDCOND
       if (_.isElement(themeButtonContainer)) {
         this.buttonContainer.append(themeButtonContainer)
       }
@@ -329,7 +328,7 @@ class MyTagManager {
       })
       // PVSCL:ELSECOND
       theme.color = ColorUtils.setAlphaToColor(color, 0.5)
-   // PVSCL:ENDCOND
+      // PVSCL:ENDCOND
     })
   }
 }

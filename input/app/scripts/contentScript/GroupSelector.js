@@ -2,7 +2,6 @@ const _ = require('lodash')
 const $ = require('jquery')
 const Alerts = require('../utils/Alerts')
 const Config = require('../Config')
-const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
 
 const GroupName = Config.groupName
 
@@ -51,11 +50,11 @@ class GroupSelector {
           if (_.isFunction(callback)) {
             callback(null)
           }
-        } else {
+        }PVSCL:IFCOND(User) else {
           // TODO i18n
           Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.', position: Alerts.position.center})
           // TODO Create default group
-          DefaultHighlighterGenerator.createApplicationBasedGroup((err, group) => {
+          this.createApplicationBasedGroup((err, group) => {
             if (err) {
               Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for Review&Go. Please check if you are logged in Hypothes.is.'})
             } else {
@@ -63,9 +62,13 @@ class GroupSelector {
               callback(null)
             }
           })
-        }
+        }PVSCL:ENDCOND
       }
     })
+  }
+
+  createApplicationBasedGroup (callback) {
+    window.abwa.hypothesisClientManager.hypothesisClient.createNewGroup({name: Config.groupName}, callback)
   }
 
   checkIsLoggedIn (callback) {

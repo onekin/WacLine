@@ -1,12 +1,7 @@
-const Config = require('../Config')
 const UserDefinedHighlighterDefinition = require('./UserDefinedHighlighterDefinition')
 const AnnotationGuide = require('./AnnotationGuide')
 
 class DefaultHighlighterGenerator {
-  static createApplicationBasedGroup (callback) {
-    window.abwa.hypothesisClientManager.hypothesisClient.createNewGroup({name: Config.groupName}, callback)
-  }
-
   static createDefaultAnnotations (storage, callback) {
     // Create annotation guide from user defined highlighter definition
     let annotationGuide = AnnotationGuide.fromUserDefinedHighlighterDefinition(UserDefinedHighlighterDefinition)

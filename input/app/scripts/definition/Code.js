@@ -1,6 +1,6 @@
-const LanguageUtils = require('../utils/LanguageUtils')
 const jsYaml = require('js-yaml')
 const _ = require('lodash')
+const Config = require('../Config')
 
 class Code {
   constructor ({id, name, description, color, theme}) {
@@ -16,6 +16,9 @@ class Code {
   }
 
   toAnnotation () {
+    let codeTag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + this.name
+    let isCodeOfTag = Config.namespace + ':' + Config.tags.grouped.relation + ':' + this.theme.name
+    let tags = [codeTag, isCodeOfTag]
     return {
       id: this.id,
       group: this.theme.annotationGuide.storage.group.id,
@@ -23,7 +26,7 @@ class Code {
         read: ['group:' + this.theme.annotationGuide.storage.group.id]
       },
       references: [],
-      tags: ['oa:isCodeOf:' + LanguageUtils.normalizeString(this.theme.name), 'oa:code:' + this.name],
+      tags: tags,
       target: [],
       text: jsYaml.dump({id: this.id, description: this.description}),
       uri: this.theme.annotationGuide.storage.group.links.html
