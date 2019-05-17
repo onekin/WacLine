@@ -208,6 +208,11 @@ class MyTagManager {
   }
 
   createButtons () {
+    // PVSCL:IFCOND(Dynamic, LINE)
+    // Create new theme button
+    this.createNewThemeButton()
+    // PVSCL:ENDCOND
+    // Create current buttons
     let themes = this.model.highlighterDefinition.themes
     for (let i = 0; i < themes.length; i++) {
       let theme = themes[i]
@@ -245,7 +250,9 @@ class MyTagManager {
                 })
               }
             }
-          }
+          },
+          groupRightClickHandler: this.createThemeRightClickHandler(),
+          buttonRightClickHandler: this.createCodeRightClickHandler()
         })
       } else {
         themeButtonContainer = Buttons.createButton({
@@ -265,7 +272,8 @@ class MyTagManager {
                 })
               }
             }
-          }
+          },
+          buttonRightClickHandler: this.createThemeRightClickHandler()
         })
       }
       // PVSCL:ELSECOND
@@ -286,7 +294,8 @@ class MyTagManager {
               })
             }
           }
-        }
+        },
+        buttonRightClickHandler: this.createThemeRightClickHandler()
       })
       // PVSCL:ENDCOND
       if (_.isElement(themeButtonContainer)) {
@@ -331,6 +340,200 @@ class MyTagManager {
       // PVSCL:ENDCOND
     })
   }
+  // PVSCL:IFCOND(Code, LINE)
+
+  createCodeRightClickHandler () {
+    return (codeId) => {
+      // Get code from id
+      let code = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(codeId)
+      if (LanguageUtils.isInstanceOf(code, Code)) {
+        let items = {}
+        items['removeCode'] = {name: 'Remove code'}
+        return {
+          callback: (key) => {
+            if (key === 'removeCode') {
+              this.removeCode(code)
+            }
+          },
+          items: items
+        }
+      }
+    }
+  }
+  // PVSCL:ENDCOND
+
+  createThemeRightClickHandler () {
+    return (themeId) => {
+      let items = {}
+      // PVSCL:IFCOND(Dynamic, LINE)
+      // PVSCL:IFCOND(Code, LINE)
+      items['createNewCode'] = {name: 'Create new code'}
+      // PVSCL:ENDCOND
+      items['removeTheme'] = {name: 'Remove theme'}
+      // PVSCL:ENDCOND
+      return {
+        callback: (key) => {
+          // PVSCL:IFCOND(Dynamic, LINE)
+          if (key === 'createNewCode') {
+            let theme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(themeId)
+            if (LanguageUtils.isInstanceOf(theme, Theme)) {
+              this.createNewCode({theme: theme})
+            }
+          } else if (key === 'removeTheme') {
+            let theme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(themeId)
+            if (LanguageUtils.isInstanceOf(theme, Theme)) {
+              this.removeTheme(theme)
+            }
+          }
+          // PVSCL:ENDCOND
+        },
+        items: items
+      }
+    }
+  }
+  // PVSCL:IFCOND(Code and Dynamic, LINE)
+
+  createNewCode ({theme, callback}) {
+    if (!LanguageUtils.isInstanceOf(theme, Theme)) {
+      callback(new Error('Unable to create new code, theme is not defined.'))
+    } else {
+      let newCode // The code that the user is creating
+      // Ask user for name and description
+      Alerts.multipleInputAlert({
+        title: 'You are creating a new code for theme: ',
+        html: '<input id="codeName" class="formCodeName" type="text" placeholder="New code name" value=""/>' +
+          '<textarea id="codeDescription" class="formCodeDescription" placeholder="Please type a description that describes this code..."></textarea>',
+        preConfirm: () => {
+          let codeNameElement = document.querySelector('#codeName')
+          let codeName
+          if (_.isElement(codeNameElement)) {
+            codeName = codeNameElement.value
+          }
+          let codeDescriptionElement = document.querySelector('#codeDescription')
+          let codeDescription
+          if (_.isElement(codeDescriptionElement)) {
+            codeDescription = codeDescriptionElement.value
+          }
+          newCode = new Code({name: codeName, description: codeDescription, theme: theme})
+        },
+        callback: () => {
+          let newCodeAnnotation = newCode.toAnnotation()
+          window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(newCodeAnnotation, (err, annotation) => {
+            if (err) {
+              Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
+            } else {
+              let code = Code.fromAnnotation(annotation, theme)
+              // Add to the model the new theme
+              theme.addCode(code)
+              // Reload button container
+              this.reloadButtonContainer()
+            }
+          })
+        }
+      })
+    }
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Dynamic, LINE)
+
+  createNewThemeButton () {
+    let newThemeButton = document.createElement('button')
+    newThemeButton.innerText = 'Create new theme'
+    newThemeButton.id = 'newThemeButton'
+    newThemeButton.className = 'tagButton codingElement'
+    newThemeButton.addEventListener('click', () => {
+      let newTheme
+      Alerts.multipleInputAlert({
+        title: 'You are creating a new code for theme: ',
+        html: '<input id="themeName" class="formCodeName" type="text" placeholder="New theme name" value=""/>' +
+          '<textarea id="themeDescription" class="formCodeDescription" placeholder="Please type a description that describes this theme..."></textarea>',
+        preConfirm: () => {
+          let themeNameElement = document.querySelector('#themeName')
+          let themeName
+          if (_.isElement(themeNameElement)) {
+            themeName = themeNameElement.value
+          }
+          let themeDescriptionElement = document.querySelector('#themeDescription')
+          let themeDescription
+          if (_.isElement(themeDescriptionElement)) {
+            themeDescription = themeDescriptionElement.value
+          }
+          newTheme = new Theme({name: themeName, description: themeDescription, annotationGuide: this.model.highlighterDefinition})
+        },
+        callback: () => {
+          let newThemeAnnotation = newTheme.toAnnotation()
+          window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(newThemeAnnotation, (err, annotation) => {
+            if (err) {
+              Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
+            } else {
+              let theme = Theme.fromAnnotation(annotation, this.model.highlighterDefinition)
+              // Add to the model the new theme
+              this.model.highlighterDefinition.addTheme(theme)
+              // Reload button container
+              this.reloadButtonContainer()
+            }
+          })
+        }
+      })
+    })
+    this.buttonContainer.append(newThemeButton)
+  }
+  // PVSCL:ENDCOND
+
+  reloadButtonContainer () {
+    this.buttonContainer.innerHTML = ''
+    this.createButtons()
+  }
+  //PVSCL:IFCOND(Dynamic, LINE)
+
+  removeTheme (theme) {
+    // Ask user is sure to remove
+    Alerts.confirmAlert({
+      title: 'Removing code ' + theme.name,
+      text: 'Are you sure that you want to remove the theme ' + theme.name + '. All dependant codes will be deleted too. You cannot undo this operation.',
+      alertType: Alerts.alertType.warning,
+      callback: () => {
+        let annotationsToDelete = [theme.id]
+        // Get theme codes id to be removed too
+        let codesId = _.map(theme.codes, (code) => { return code.id })
+        if (_.every(codesId, _.isString)) {
+          annotationsToDelete = annotationsToDelete.concat(codesId)
+        }
+        window.abwa.hypothesisClientManager.hypothesisClient.deleteAnnotations(annotationsToDelete, (err, result) => {
+          if (err) {
+            Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
+          } else {
+            theme.annotationGuide.removeTheme(theme)
+            // Reload button container
+            this.reloadButtonContainer()
+          }
+        })
+      }
+    })
+  }
+  // PVSCL:IFCOND(Code, LINE)
+
+  removeCode (code) {
+    // Ask user is sure to remove
+    Alerts.confirmAlert({
+      title: 'Removing code ' + code.name,
+      text: 'Are you sure that you want to remove the code ' + code.name + '. You cannot undo this operation.',
+      alertType: Alerts.alertType.warning,
+      callback: () => {
+        window.abwa.hypothesisClientManager.hypothesisClient.deleteAnnotation(code.id, (err, result) => {
+          if (err) {
+            Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
+          } else {
+            code.theme.removeCode(code)
+            // Reload button container
+            this.reloadButtonContainer()
+          }
+        })
+      }
+    })
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 }
 
 module.exports = MyTagManager

@@ -10,6 +10,10 @@ const Alerts = require('../utils/Alerts')
 const Config = require('../Config')
 const _ = require('lodash')
 const LanguageUtils = require('../utils/LanguageUtils')
+const Hypothesis = require('../storage/Hypothesis')
+// PVSCL:IFCOND(Dynamic, LINE)
+const ColorUtils = require('../utils/ColorUtils')
+// PVSCL:ENDCOND
 
 class AnnotationGuide {
   constructor ({id = null, name = '', storage = nullPVSCL:IFCOND(MoodleProvider), moodleEndpoint = null, assignmentId = null, courseId = nullPVSCL:ENDCONDPVSCL:IFCOND(GSheetProvider), spreadsheetId = null, sheetId = nullPVSCL:ENDCOND}) {
@@ -72,7 +76,14 @@ class AnnotationGuide {
     config.spreadsheetId = config.spreadsheetId
     config.sheetId = config.sheetId
     // PVSCL:ENDCOND
-    return new AnnotationGuide({id: annotation.id, name: annotation.name, storage: annotation.groupPVSCL:IFCOND(GSheetProvider), spreadsheetId: config.spreadsheetId, sheetId: config.sheetIdPVSCL:ENDCOND})
+    let storage
+    storage = new Hypothesis({group: window.abwa.groupSelector.currentGroup})
+    let annotationGuideOpts = {id: annotation.id, name: annotation.name, storage: storage}
+    // PVSCL:IFCOND(GSheetProvider, LINE)
+    annotationGuideOpts['spreadsheetId'] = config.spreadsheetId
+    annotationGuideOpts['sheetId'] = config.sheetId
+    // PVSCL:ENDCOND
+    return new AnnotationGuide(annotationGuideOpts)
   }
 
   static fromAnnotations (annotations) {
@@ -82,7 +93,7 @@ class AnnotationGuide {
     })
     let guide = AnnotationGuide.fromAnnotation(guideAnnotation[0])
     // TODO Complete the guide from the annotations
-    // For the rest of annotations, get criterias and levels
+    // For the rest of annotations, get themes and codes
     let themeAnnotations = _.remove(annotations, (annotation) => {
       return _.some(annotation.tags, (tag) => {
         return tag.includes('oa:theme:')
@@ -113,7 +124,11 @@ class AnnotationGuide {
         return theme.name === themeName
       })
       let code = Code.fromAnnotation(codeAnnotation, theme)
-      theme.codes.push(code)
+      if (LanguageUtils.isInstanceOf(theme, Theme)) {
+        theme.codes.push(code)
+      } else {
+        console.debug('Code %s has no theme', code.name)
+      }
     }
     // PVSCL:ENDCOND
     return guide
@@ -280,7 +295,7 @@ class AnnotationGuide {
       return new Error('Row 1 theme names')
     }
   }
-//PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   getCodeOrThemeFromId (id) {
     let theme = _.find(this.themes, (theme) => {
@@ -306,6 +321,22 @@ class AnnotationGuide {
     return theme
     // PVSCL:ENDCOND
   }
+  // PVSCL:IFCOND(Dynamic, LINE)
+
+  addTheme (theme) {
+    if (LanguageUtils.isInstanceOf(theme, Theme)) {
+      this.themes.push(theme)
+      // Get new color for the theme
+      let colors = ColorUtils.getDifferentColors(this.themes.length)
+      let lastColor = colors.pop()
+      theme.color = ColorUtils.setAlphaToColor(lastColor, Config.colors.minAlpha)
+    }
+  }
+
+  removeTheme (theme) {
+    _.remove(this.themes, theme)
+  }
+  // PVSCL:ENDCOND
 }
 
 module.exports = AnnotationGuide

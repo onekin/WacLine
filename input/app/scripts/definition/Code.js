@@ -3,7 +3,7 @@ const _ = require('lodash')
 const Config = require('../Config')
 
 class Code {
-  constructor ({id, name, description, color, theme}) {
+  constructor ({id, name, description = '', color, theme}) {
     this.id = id
     this.name = name
     this.color = color
@@ -28,7 +28,7 @@ class Code {
       references: [],
       tags: tags,
       target: [],
-      text: jsYaml.dump({id: this.id, description: this.description}),
+      text: jsYaml.dump({id: this.id || '', description: this.description}),
       uri: this.theme.annotationGuide.storage.group.links.html
     }
   }

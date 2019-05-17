@@ -2,7 +2,7 @@ const _ = require('lodash')
 const Events = require('./Events')
 const URLUtils = require('../utils/URLUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
-const Alerts = require('../utils/Alerts')
+// const Alerts = require('../utils/Alerts')
 //PVSCL:IFCOND(URN, LINE)
 const CryptoUtils = require('../utils/CryptoUtils')
 //PVSCL:ENDCOND

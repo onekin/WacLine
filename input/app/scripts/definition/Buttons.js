@@ -1,6 +1,9 @@
 const $ = require('jquery')
 const _ = require('lodash')
 const ColorUtils = require('../utils/ColorUtils')
+if (!$.contextMenu) {
+  require('jquery-contextmenu/dist/jquery.contextMenu')
+}
 
 /**
  * A class to collect functionality to create buttons and groups of buttons for the sidebar
@@ -55,7 +58,15 @@ class Buttons {
       // Tag button background color change
       // TODO It should be better to set it as a CSS property, but currently there is not an option for that
       groupNameSpan.addEventListener('mouseenter', () => {
-        groupNameSpan.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.7)
+        let currentColor = ColorUtils.colorFromString(groupNameSpan.style.backgroundColor)
+        if (currentColor.valpha) {
+          if (currentColor.opaquer(0.2).isDark()) {
+            groupNameSpan.style.color = 'white'
+          }
+          groupNameSpan.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), currentColor.valpha + 0.2)
+        } else {
+          groupNameSpan.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.7)
+        }
       })
       groupNameSpan.addEventListener('mouseleave', () => {
         if (groupNameSpan.dataset.chosen === 'true') {
@@ -86,9 +97,9 @@ class Buttons {
         })
       }
       if (_.isFunction(ondrop)) {
-        tagGroup.addEventListener('dragover', (e) => {
+        tagGroup.addEventListener('dragover', (event) => {
           event.stopPropagation()
-          e.preventDefault()
+          event.preventDefault()
         })
         // On drop function
         groupNameSpan.addEventListener('drop', Buttons.createDropHandler({

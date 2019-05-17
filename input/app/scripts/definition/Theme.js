@@ -1,6 +1,9 @@
 const jsYaml = require('js-yaml')
 const _ = require('lodash')
 const Config = require('../Config')
+// PVSCL:IFCOND(Dynamic, LINE)
+const ColorUtils = require('../utils/ColorUtils')
+// PVSCL:ENDCOND
 
 class Theme {
   constructor ({id, name, color, annotationGuide, descriptionPVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCOND}) {
@@ -94,6 +97,29 @@ class Theme {
     } else {
       console.error('Unable to retrieve criteria from annotation')
     }
+  }
+  // PVSCL:IFCOND(Dynamic, LINE) // Check if it is possible to add codes to the definition model if it is not selected Dynamic feature
+  // PVSCL:IFCOND(Code, LINE)
+
+  addCode (code) {
+    this.codes.push(code)
+    // Re-set colors for each code
+    this.reloadColorsForCodes()
+  }
+
+  removeCode (code) {
+    _.remove(this.codes, code)
+    // Re-set colors for each code
+    this.reloadColorsForCodes()
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:ENDCOND
+
+  reloadColorsForCodes () {
+    this.codes.forEach((code, j) => {
+      let alphaForChild = (Config.colors.maxAlpha - Config.colors.minAlpha) / this.codes.length * (j + 1) + Config.colors.minAlpha
+      code.color = ColorUtils.setAlphaToColor(this.color, alphaForChild)
+    })
   }
 }
 
