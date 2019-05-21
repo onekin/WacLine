@@ -158,7 +158,7 @@ class AnnotationGuide {
 //PVSCL:IFCOND(GSheetProvider,LINE)  
 
   static fromGSheetProvider (callback) {
-    let annotationGuide = new AnnotationGuide({name: Config.groupName})
+    let annotationGuide = new AnnotationGuide({})
     annotationGuide.spreadsheetId = this.retrieveSpreadsheetId()
     annotationGuide.sheetId = this.retrieveSheetId()
     this.retrieveCurrentToken((err, token) => {
@@ -170,6 +170,12 @@ class AnnotationGuide {
             callback(err)
           } else {
             // Retrieve spreadsheet title
+            //PVSCL:IFCOND(Manual,LINE)
+            annotationGuide.name = spreadsheet.properties.title
+            //PVSCL:ENDCOND
+            //PVSCL:IFCOND(ApplicationBased,LINE)
+            annotationGuide.name = Config.groupName
+            //PVSCL:ENDCOND
             let themes = this.getThemesAndCodesGSheet(spreadsheet, annotationGuide)
             if (_.isError(themes)) {
               callback(err)

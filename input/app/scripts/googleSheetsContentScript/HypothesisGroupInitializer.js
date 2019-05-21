@@ -2,9 +2,11 @@ const _ = require('lodash')
 const swal = require('sweetalert2')
 const Alerts = require('../utils/Alerts')
 const ChromeStorage = require('../utils/ChromeStorage')
-const Config = require('../Config')
 const Hypothesis = require('../storage/Hypothesis')
 const selectedGroupNamespace = 'hypothesis.currentGroup'
+//PVSCL:IFCOND(ApplicationBased, LINE)
+const Config = require('../Config')
+// PVSCL:ENDCOND
 
 class HypothesisGroupInitializer {
   init (annotationGuide, callback) {
@@ -31,7 +33,12 @@ class HypothesisGroupInitializer {
         }
       } else {
         let group = _.find(groups, (group) => {
+          //PVSCL:IFCOND(ApplicationBased, LINE)
           return group.name === Config.groupName
+          // PVSCL:ENDCOND
+          //PVSCL:IFCOND(Manual, LINE)
+          return group.name === this.annotationGuide.name.substr(0, 25)
+         // PVSCL:ENDCOND
         })
         // Create the group if not exists
         if (_.isEmpty(group)) {

@@ -1,5 +1,7 @@
 const Config = {
-  groupName: 'ReviewAndGo',
+  // PVSCL:IFCOND(User or ApplicationBased, LINE)
+  groupName: 'NewAnnotations',
+  // PVSCL:ENDCOND
   namespace: 'oa',
   urlParamName: 'spl', // Name to activate the extension if the url contains this hash param
   tags: { // Defined tags for the domain

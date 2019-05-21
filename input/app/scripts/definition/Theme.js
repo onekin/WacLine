@@ -114,6 +114,7 @@ class Theme {
   }
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
+//PVSCL:IFCOND(Dynamic, LINE)
 
   reloadColorsForCodes () {
     this.codes.forEach((code, j) => {
@@ -121,6 +122,7 @@ class Theme {
       code.color = ColorUtils.setAlphaToColor(this.color, alphaForChild)
     })
   }
+  // PVSCL:ENDCOND
 }
 
 module.exports = Theme
