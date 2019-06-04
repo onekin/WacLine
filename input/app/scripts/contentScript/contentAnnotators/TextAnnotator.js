@@ -428,7 +428,7 @@ class TextAnnotator extends ContentAnnotator {
           }PVSCL:IFCOND(Code) else if (LanguageUtils.isInstanceOf(tag, Code)) {
             highlightedElement.title = tag.theme.name + '\nCode: ' + tag.name
           }PVSCL:ENDCOND
-          // PVSCL:IFCOND(GSheetProvider)
+          // PVSCL:IFCOND(GSheetProvider, LINE)
           let user = annotation.user.replace('acct:', '').replace('@hypothes.is', '')
           highlightedElement.title += '\nAuthor: ' + user
           // PVSCL:ENDCOND

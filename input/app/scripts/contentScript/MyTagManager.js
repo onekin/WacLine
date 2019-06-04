@@ -137,25 +137,53 @@ class MyTagManager {
           if (highlighterDefinitionAnnotations.length === 0) {
             // PVSCL:IFCOND(User,LINE)
             // TODO Create definition annotations if Definition->Who is User
-            Alerts.loadingAlert({
-              title: 'Configuration in progress',
-              text: 'We are configuring everything to start reviewing.',
-              position: Alerts.position.center
-            })
-            let storage = new Hypothesis({
-              group: window.abwa.groupSelector.currentGroup
-            })
-            DefaultHighlighterGenerator.createDefaultAnnotations(storage, (err, annotations) => {
-              if (err) {
-                reject(new Error('Unable to create default annotations.'))
-              } else {
-                Alerts.closeAlert()
-                resolve(annotations)
+            let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
+            Alerts.confirmAlert({
+              text: currentGroupName + ' group has not codes to start annotating. Would you like to configure the highlighter?',
+              alertType: Alerts.alertType.question,
+              callback: () => {
+                Alerts.loadingAlert({
+                  title: 'Configuration in progress',
+                  text: 'We are configuring everything to start reviewing.',
+                  position: Alerts.position.center
+                })
+                let storage = new Hypothesis({
+                  group: window.abwa.groupSelector.currentGroup
+                })
+                DefaultHighlighterGenerator.createDefaultAnnotations(storage, (err, annotations) => {
+                  if (err) {
+                    reject(new Error('Unable to create default annotations.'))
+                  } else {
+                    // Open the sidebar, to notify user that the annotator is correctly created
+                    window.abwa.sidebar.openSidebar()
+                    Alerts.closeAlert()
+                    resolve(annotations)
+                  }
+                })
+              },
+              cancelCallback: () => {
+                // PVSCL:IFCOND(Dynamic,LINE)
+                // TODO In pure::variants: if selected Dynamic, create annotation guide
+                let storage = new Hypothesis({
+                  group: window.abwa.groupSelector.currentGroup
+                })
+                let emptyAnnotationGuide = new AnnotationGuide({storage: storage})
+                let emptyAnnotationGuideAnnotation = emptyAnnotationGuide.toAnnotation()
+                window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(emptyAnnotationGuideAnnotation, (err, annotation) => {
+                  if (err) {
+                    Alerts.errorAlert({text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.'}) // TODO i18n
+                  } else {
+                    // Open the sidebar, to notify user that the annotator is correctly created
+                    window.abwa.sidebar.openSidebar()
+                    resolve([annotation])
+                  }
+                })
+                // PVSCL:ENDCOND
               }
             })
             // PVSCL:ELSECOND
             // TODO Show alert otherwise (no group is defined)
-            Alerts.errorAlert({text: 'No group is defined'})
+            // Alerts.errorAlert({text: 'No group is defined'})
             // PVSCL:ENDCOND
           } else {
             resolve(highlighterDefinitionAnnotations)
@@ -323,22 +351,24 @@ class MyTagManager {
   }
 
   applyColorsToThemes () {
-    let listOfColors = ColorUtils.getDifferentColors(this.model.highlighterDefinition.themes.length)
-    this.model.highlighterDefinition.themes.forEach((theme) => {
-      let color = listOfColors.pop()
-      // PVSCL:IFCOND(Code,LINE)
-      // Set a color for each theme
-      theme.color = ColorUtils.setAlphaToColor(color, Config.colors.minAlpha)
-      // Set color gradient for each code
-      let numberOfCodes = theme.codes.length
-      theme.codes.forEach((code, j) => {
-        let alphaForChild = (Config.colors.maxAlpha - Config.colors.minAlpha) / numberOfCodes * (j + 1) + Config.colors.minAlpha
-        code.color = ColorUtils.setAlphaToColor(color, alphaForChild)
+    if (this.model.highlighterDefinition && this.model.highlighterDefinition.themes) {
+      let listOfColors = ColorUtils.getDifferentColors(this.model.highlighterDefinition.themes.length)
+      this.model.highlighterDefinition.themes.forEach((theme) => {
+        let color = listOfColors.pop()
+        // PVSCL:IFCOND(Code,LINE)
+        // Set a color for each theme
+        theme.color = ColorUtils.setAlphaToColor(color, Config.colors.minAlpha)
+        // Set color gradient for each code
+        let numberOfCodes = theme.codes.length
+        theme.codes.forEach((code, j) => {
+          let alphaForChild = (Config.colors.maxAlpha - Config.colors.minAlpha) / numberOfCodes * (j + 1) + Config.colors.minAlpha
+          code.color = ColorUtils.setAlphaToColor(color, alphaForChild)
+        })
+        // PVSCL:ELSECOND
+        theme.color = ColorUtils.setAlphaToColor(color, 0.5)
+        // PVSCL:ENDCOND
       })
-      // PVSCL:ELSECOND
-      theme.color = ColorUtils.setAlphaToColor(color, 0.5)
-      // PVSCL:ENDCOND
-    })
+    }
   }
   // PVSCL:IFCOND(Code, LINE)
 

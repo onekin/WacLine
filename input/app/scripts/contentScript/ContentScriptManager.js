@@ -2,8 +2,7 @@ const _ = require('lodash')
 const ContentTypeManager = require('./ContentTypeManager')
 const Sidebar = require('./Sidebar')
 const MyTagManager = require('./MyTagManager')
-const ModeManager = require('./ModeManager')
-const RolesManager = require('./RolesManager')
+// const RolesManager = require('./RolesManager')
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
@@ -29,30 +28,12 @@ class ContentScriptManager {
           window.abwa.annotationBasedInitializer.init(() => {
             window.abwa.groupSelector = new GroupSelector()
             window.abwa.groupSelector.init(() => {
-              window.abwa.rolesManager = new RolesManager()
-              window.abwa.rolesManager.init(() => {
-                window.abwa.modeManager = new ModeManager()
-                window.abwa.modeManager.init(() => {
-                  // Load tag manager
-                  window.abwa.tagManager = new MyTagManager()
-                  window.abwa.tagManager.init(() => {
-                    // Initialize sidebar toolset
-                    this.initToolset()
-                    // Load content annotator
-                    window.abwa.contentAnnotator = new TextAnnotator(Config)
-                    window.abwa.contentAnnotator.init(() => {
-                      //PVSCL:IFCOND(Manual,LINE)
-                      // Reload for first time the content by group
-                      this.reloadContentByGroup()
-                      // Initialize listener for group change to reload the content
-                      this.initListenerForGroupChange()
-                      //PVSCL:ENDCOND
-                      this.status = ContentScriptManager.status.initialized
-                      console.debug('Initialized content script manager')
-                    })
-                  })
-                })
-              })
+              // Reload for first time the content by group
+              this.reloadContentByGroup()
+              //PVSCL:IFCOND(Manual,LINE)
+              // Initialize listener for group change to reload the content
+              this.initListenerForGroupChange()
+              //PVSCL:ENDCOND        
             })
           })
         })
@@ -71,43 +52,53 @@ class ContentScriptManager {
       this.reloadContentByGroup()
     }
   }
+//PVSCL:ENDCOND
 
   reloadContentByGroup (callback) {
-    // If not configuration is found
-    if (_.isEmpty(Config)) {
-      // TODO Inform user no defined configuration found
-      console.debug('No supported configuration found for this group')
-      this.destroyTagsManager()
-      // this.destroyUserFilter()
-      this.destroyContentAnnotator()
-      this.destroyContentTypeManager()
-    } else {
-      console.debug('Loaded supported configuration %s', Config.namespace)
-      // Tags manager should go before content annotator, depending on the tags manager, the content annotator can change
-      this.reloadTagsManager(Config, () => {
-        this.reloadContentAnnotator(Config, () => {
-          this.loadContentTypeManager(Config)
+    // TODO Use async await or promises
+    this.reloadRolesManager((err) => {
+      if (err) {
+        // TODO Error
+      } else {
+        this.reloadTagsManager((err) => {
+          if (err) {
+            // TODO Error
+          } else {
+            this.reloadContentAnnotator((err) => {
+              if (err) {
+                // TODO Error
+              } else {
+                this.reloadToolset((err) => {
+                  if (err) {
+                    // TODO Error
+                  } else {
+                    this.status = ContentScriptManager.status.initialized
+                    console.debug('Initialized content script manager')
+                  }
+                })
+              }
+            })
+          }
         })
-      })
-    }
+      }
+    })
   }
 
-  reloadContentAnnotator (config, callback) {
+  reloadContentAnnotator (callback) {
     // Destroy current content annotator
     this.destroyContentAnnotator()
     // Create a new content annotator for the current group
-    window.abwa.contentAnnotator = new TextAnnotator(config) // TODO Depending on the type of annotator
+    window.abwa.contentAnnotator = new TextAnnotator(Config) // TODO Depending on the type of annotator
     window.abwa.contentAnnotator.init(callback)
   }
 
-  reloadTagsManager (config, callback) {
+  reloadTagsManager (callback) {
     // Destroy current tag manager
     this.destroyTagsManager()
     // Create a new tag manager for the current group
-    window.abwa.tagManager = new MyTagManager(config.namespace, config.tags) // TODO Depending on the type of annotator
+    window.abwa.tagManager = new MyTagManager(Config.namespace, Config.tags) // TODO Depending on the type of annotator
     window.abwa.tagManager.init(callback)
   }
-//PVSCL:ENDCOND
 
   destroyContentAnnotator () {
     // Destroy current content annotator
@@ -143,7 +134,7 @@ class ContentScriptManager {
     })
   }
 
-  initToolset () {
+  loadToolset () {
     window.abwa.toolset = new Toolset()
     window.abwa.toolset.init()
   }
@@ -164,6 +155,25 @@ class ContentScriptManager {
           callback()
         }
       })
+    }
+  }
+
+  reloadRolesManager (callback) {
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  reloadToolset (callback) {
+    // Destroy toolset
+    this.destroyToolset()
+    // Create a new toolset
+    this.loadToolset()
+  }
+
+  destroyToolset () {
+    if (window.abwa.toolset) {
+      window.abwa.toolset.destroy()
     }
   }
 }

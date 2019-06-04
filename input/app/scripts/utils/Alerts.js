@@ -6,7 +6,7 @@ if (document && document.head) {
 }
 
 class Alerts {
-  static confirmAlert ({alertType = Alerts.alertType.info, title = '', text = '', callback}) {
+  static confirmAlert ({alertType = Alerts.alertType.info, title = '', text = '', callback, cancelCallback}) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -22,6 +22,10 @@ class Alerts {
         if (result.value) {
           if (_.isFunction(callback)) {
             callback(null, result.value)
+          }
+        } else {
+          if (_.isFunction(cancelCallback)) {
+            cancelCallback(null)
           }
         }
       })

@@ -26,8 +26,12 @@ class Toolset {
   init (callback) {
     axios.get(this.page).then((response) => {
       // Insert toolset container
-      this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
+      // PVSCL:IFCOND(Manual,LINE)
+      let groupSelectorContainer = this.sidebarContainer.querySelector('#groupSelectorContainer')
+      groupSelectorContainer.insertAdjacentHTML('afterend', response.data)
+      // PVSCL:ELSECOND
       this.sidebarContainer.insertAdjacentHTML('afterbegin', response.data)
+      // PVSCL:ENDCOND
       this.toolsetContainer = this.sidebarContainer.querySelector('#toolset')
       this.toolsetHeader = this.toolsetContainer.querySelector('#toolsetHeader')
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
@@ -150,6 +154,10 @@ class Toolset {
   hide () {
     // Toolset aria-hidden is true
     this.toolsetContainer.setAttribute('aria-hidden', 'true')
+  }
+
+  destroy () {
+    this.toolsetContainer.remove()
   }
 }
 

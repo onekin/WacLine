@@ -91,7 +91,12 @@ class AnnotationGuide {
     let guideAnnotation = _.remove(annotations, (annotation) => {
       return _.some(annotation.tags, (tag) => { return tag === 'oa:guide' })
     })
-    let guide = AnnotationGuide.fromAnnotation(guideAnnotation[0])
+    let guide
+    if (guideAnnotation.length === 1) {
+      guide = AnnotationGuide.fromAnnotation(guideAnnotation[0])
+    } else {
+      return null
+    }
     // TODO Complete the guide from the annotations
     // For the rest of annotations, get themes and codes
     let themeAnnotations = _.remove(annotations, (annotation) => {
