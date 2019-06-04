@@ -428,12 +428,16 @@ class TextAnnotator extends ContentAnnotator {
           }PVSCL:IFCOND(Code) else if (LanguageUtils.isInstanceOf(tag, Code)) {
             highlightedElement.title = tag.theme.name + '\nCode: ' + tag.name
           }PVSCL:ENDCOND
+          // PVSCL:IFCOND(GSheetProvider)
+          let user = annotation.user.replace('acct:', '').replace('@hypothes.is', '')
+          highlightedElement.title += '\nAuthor: ' + user
+          // PVSCL:ENDCOND
           if (!_.isEmpty(annotation.text)) {
             try {
               let feedback = JSON.parse(annotation.text)
-              highlightedElement.title += '\nFeedback: ' + feedback.comment
+              highlightedElement.title += '\nComment: ' + feedback.comment
             } catch (e) {
-              highlightedElement.title += '\nFeedback: ' + annotation.text
+              highlightedElement.title += '\nComment: ' + annotation.text
             }
           }
           // PVSCL:ENDCOND
