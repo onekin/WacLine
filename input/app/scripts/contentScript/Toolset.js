@@ -25,6 +25,8 @@ class Toolset {
 
   init (callback) {
     axios.get(this.page).then((response) => {
+      // Get sidebar container
+      this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
       // Insert toolset container
       // PVSCL:IFCOND(Manual,LINE)
       let groupSelectorContainer = this.sidebarContainer.querySelector('#groupSelectorContainer')
