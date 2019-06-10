@@ -1,6 +1,6 @@
-const swal = require('sweetalert2')
 const _ = require('lodash')
 const GoogleSheetClient = require('./GoogleSheetClient')
+const Alerts = require('../utils/Alerts')
 
 const reloadIntervalInSeconds = 10 // Reload the google sheet client every 10 seconds
 
@@ -86,26 +86,29 @@ class GoogleSheetsClientManager {
    * @param callback
    */
   askUserToLogInGoogleSheets (callback) {
-    swal({
-      title: 'Google sheets login required', // TODO i18n
+    Alerts.confirmAlert({
+      title: 'Google sheets login required',
       text: chrome.i18n.getMessage('GoogleSheetLoginRequired'),
-      type: 'info',
-      showCancelButton: true
-    }).then((result) => {
-      if (result.value) {
-        chrome.runtime.sendMessage({scope: 'googleSheets', cmd: 'getToken'}, (result) => {
-          if (result.error) {
-            if (_.isFunction(callback)) {
-              callback(result.error)
-            }
+      callback: (err, result) => {
+        if (err) {
+          callback(new Error('Unable to create message to ask for login'))
+        } else {
+          if (result) {
+            chrome.runtime.sendMessage({scope: 'googleSheets', cmd: 'getToken'}, (result) => {
+              if (result.error) {
+                if (_.isFunction(callback)) {
+                  callback(result.error)
+                }
+              } else {
+                if (_.isFunction(callback)) {
+                  callback(null, result.token)
+                }
+              }
+            })
           } else {
-            if (_.isFunction(callback)) {
-              callback(null, result.token)
-            }
+            callback(new Error('User don\'t want to log in google sheets'))
           }
-        })
-      } else {
-        callback(new Error('User don\'t want to log in google sheets'))
+        }
       }
     })
   }

@@ -7,6 +7,7 @@ const LanguageUtils = require('../utils/LanguageUtils')
 const CryptoUtils = require('../utils/CryptoUtils')
 //PVSCL:ENDCOND
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
+const axios = require('axios')
 
 class ContentTypeManager {
   constructor () {
@@ -35,6 +36,7 @@ class ContentTypeManager {
       // PVSCL:IFCOND(Dropbox, LINE)
       this.tryToLoadURLParam()
       // PVSCL:ENDCOND
+      this.tryToLoadTitle()
       // TODO this.tryToLoadLocalFIleURL() from file metadata
       // If current web is pdf viewer.html, set document type as pdf
       if (window.location.pathname === '/content/pdfjs/web/viewer.html') {
@@ -268,6 +270,108 @@ class ContentTypeManager {
     }
   }
   // PVSCL:ENDCOND
+  
+  getDocumentURIs () {
+    let uris = []
+    if (this.doi) {
+      uris.push('https://doi.org/' + this.doi)
+    }
+    if (this.documentURL) {
+      uris.push(this.documentURL)
+    }
+    if (this.pdfFingerprint) {
+      uris.push('urn:x-pdf:' + this.pdfFingerprint)
+    }
+    if (this.documentFingerprint) {
+      uris.push('urn:x-txt:' + this.documentFingerprint)
+    }
+    return uris
+  }
+
+  getDocumentLink () {
+    let uris = this.getDocumentURIs()
+    return _.map(uris, (uri) => {
+      return {href: uri}
+    })
+  }
+
+  getDocumentFingerprint () {
+    if (this.pdfFingerprint) {
+      return this.pdfFingerprint
+    } else if (this.documentFingerprint) {
+      return this.documentFingerprint
+    } else {
+      return null
+    }
+  }
+
+  tryToLoadTitle () {
+    // Try to load by doi
+    let promise = new Promise((resolve, reject) => {
+      if (this.doi) {
+        let settings = {
+          'async': true,
+          'crossDomain': true,
+          'url': 'https://doi.org/' + this.doi,
+          'method': 'GET',
+          'headers': {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache'
+          }
+        }
+        // Call using axios
+        axios(settings).then((response) => {
+          if (response.data && response.data.title) {
+            this.documentTitle = response.data.title
+          }
+          resolve()
+        })
+      } else {
+        resolve()
+      }
+    })
+    promise.then(() => {
+      // Try to load title from page metadata
+      if (_.isEmpty(this.documentTitle)) {
+        try {
+          let documentTitleElement = document.querySelector('meta[name="citation_title"]')
+          if (!_.isNull(documentTitleElement)) {
+            this.documentTitle = documentTitleElement.content
+          }
+          if (!this.documentTitle) {
+            let documentTitleElement = document.querySelector('meta[property="og:title"]')
+            if (!_.isNull(documentTitleElement)) {
+              this.documentTitle = documentTitleElement.content
+            }
+            if (!this.documentTitle) {
+              let promise = new Promise((resolve, reject) => {
+                // Try to load title from pdf metadata
+                if (this.documentType === ContentTypeManager.documentTypes.pdf) {
+                  this.waitUntilPDFViewerLoad(() => {
+                    if (window.PDFViewerApplication.documentInfo.Title) {
+                      this.documentTitle = window.PDFViewerApplication.documentInfo.Title
+                    }
+                    resolve()
+                  })
+                } else {
+                  resolve()
+                }
+              })
+              promise.then(() => {
+                // Try to load title from document title
+                if (!this.documentTitle) {
+                  this.documentTitle = document.title || 'Unknown document'
+                }
+              })
+            }
+          }
+        } catch (e) {
+          console.debug('Title not found for this document')
+        }
+      }
+    })
+  }
 }
 
 ContentTypeManager.documentTypes = {

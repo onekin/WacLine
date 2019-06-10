@@ -347,6 +347,24 @@ class GroupSelector {
     })
   }
 
+  getCreatorData () {
+    if (this.user) {
+      if (this.user.metadata) {
+        if (this.user.metadata.orcid) {
+          return 'https://orcid.org/' + this.user.metadata.orcid
+        } else if (this.user.metadata.link) {
+          return this.user.metadata.link
+        } else {
+          return 'https://hypothes.is/users/' + this.user.userid.replace('acct:', '').replace('@hypothes.is', '')
+        }
+      } else {
+        return 'https://hypothes.is/users/' + this.user.userid.replace('acct:', '').replace('@hypothes.is', '')
+      }
+    } else {
+      return null
+    }
+  }
+
   destroy (callback) {
     //PVSCL:IFCOND( Manual, LINE)
     // Destroy intervals

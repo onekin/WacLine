@@ -5,6 +5,8 @@ if (typeof window === 'undefined') {
   $ = require('jquery')
 }
 
+const axios = require('axios')
+
 const _ = require('lodash')
 
 class GoogleSheetClient {
@@ -12,46 +14,95 @@ class GoogleSheetClient {
     if (token) {
       this.token = token
     }
-    this.baseURI = 'https://sheets.googleapis.com/v4/spreadsheets/'
+    this.baseURI = 'https://sheets.googleapis.com/v4/spreadsheets'
+  }
+// PVSCL:IFCOND(GSheetConsumer, LINE)
+  
+  createSpreadsheet (data, callback) {
+    $.ajax({
+      method: 'POST',
+      url: this.baseURI,
+      headers: {
+        'Authorization': 'Bearer ' + this.token,
+        'Content-Type': '*/*',
+        'Access-Control-Allow-Origin': '*'
+      },
+      data: JSON.stringify(data)
+    }).done((result) => {
+      callback(null, result)
+    }).fail(() => {
+      callback(new Error('Unable to create a spreadsheet'))
+    })
   }
 
-  getSpreadsheet (spreadsheetId, callback) {
-    if (window.background) {
-      $.ajax({
-        method: 'GET',
-        url: this.baseURI + spreadsheetId,
-        headers: {
-          'Authorization': 'Bearer ' + this.token
-        },
-        data: {
-          includeGridData: true
+  /**
+   * Given data to update spreadsheet, it updates in google sheets using it's API
+   * @param data Contains data.spreadsheetId, sheetId, rows, rowIndex and columnIndex
+   * @param callback
+   */
+  updateSheetCells (data = {}, callback) {
+    let spreadsheetId = data.spreadsheetId
+    let sheetId = data.sheetId || 0
+    let rows = data.rows
+    let rowIndex = data.rowIndex
+    let columnIndex = data.columnIndex
+    if (spreadsheetId && _.isEmpty(sheetId) && _.isArray(rows) && _.isNumber(rowIndex) && _.isNumber(columnIndex)) {
+      let settings = {
+        'async': true,
+        'crossDomain': true,
+        'url': this.baseURI + '/' + spreadsheetId + ':batchUpdate',
+        'data': JSON.stringify({
+          requests: [
+            {
+              updateCells: {
+                rows: rows,
+                fields: '*',
+                start: {
+                  sheetId: sheetId,
+                  rowIndex: rowIndex,
+                  columnIndex: columnIndex
+                }
+              }
+            }
+          ]
+        }),
+        'method': 'POST',
+        'headers': {
+          'Authorization': 'Bearer ' + this.token,
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache'
         }
-      }).fail(() => {
-        callback(new Error('Unable to retrieve gsheet'))
-      }).done((result) => {
-        callback(null, result)
+      }
+      // Call using axios
+      axios(settings).then((response) => {
+        if (_.isFunction(callback)) {
+          callback(null, response.data)
+        }
       })
     } else {
-      // TODO Call background
-      chrome.runtime.sendMessage({
-        scope: 'googleSheets',
-        cmd: 'getSpreadsheet',
-        data: JSON.stringify({
-          spreadsheetId: spreadsheetId
-        })
-      }, (response) => {
-        if (response.error) {
-          callback(response.error)
-        } else {
-          try {
-            let spreadsheet = JSON.parse(response.spreadsheet)
-            callback(null, spreadsheet)
-          } catch (e) {
-            callback(e)
-          }
-        }
-      })
+      callback(new Error('To update spreadsheet it is required '))
     }
+  }
+  // PVSCL:ENDCOND
+
+  getSpreadsheet (spreadsheetId, callback) {
+    $.ajax({
+      async: true,
+      crossDomain: true,
+      method: 'GET',
+      url: this.baseURI + '/' + spreadsheetId,
+      headers: {
+        'Authorization': 'Bearer ' + this.token,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        includeGridData: true
+      }
+    }).done((result) => {
+      callback(null, result)
+    }).fail(() => {
+      callback(new Error('Unable to retrieve gsheet'))
+    })
   }
 
   getSheet (sheetData, callback) {
@@ -84,45 +135,28 @@ class GoogleSheetClient {
   }
 
   batchUpdate (data, callback) {
-    if (window.background) {
-      $.ajax({
-        async: true,
-        crossDomain: true,
-        method: 'POST',
-        url: 'https://sheets.googleapis.com/v4/spreadsheets/' + data.spreadsheetId + ':batchUpdate',
-        headers: {
-          'Authorization': 'Bearer ' + this.token,
-          'Content-Type': 'application/json'
-        },
-        data: JSON.stringify({
-          requests: data.requests
-        })
-      }).done(() => {
-        // TODO Manage responses
-        if (_.isFunction(callback)) {
-          callback(null)
-        }
-      }).fail((xhr, textStatus) => {
-        if (_.isFunction(callback)) {
-          callback(new Error('Error in batch update, error: ' + textStatus))
-        }
+    $.ajax({
+      async: true,
+      crossDomain: true,
+      method: 'POST',
+      url: 'https://sheets.googleapis.com/v4/spreadsheets/' + data.spreadsheetId + ':batchUpdate',
+      headers: {
+        'Authorization': 'Bearer ' + this.token,
+        'Content-Type': 'application/json'
+      },
+      data: JSON.stringify({
+        requests: data.requests
       })
-    } else {
-      // TODO Call background
-      chrome.runtime.sendMessage({
-        scope: 'googleSheets',
-        cmd: 'batchUpdate',
-        data: JSON.stringify({
-          data: data
-        })
-      }, (response) => {
-        if (response.error) {
-          callback(response.error)
-        } else {
-          callback(null)
-        }
-      })
-    }
+    }).done(() => {
+      // TODO Manage responses
+      if (_.isFunction(callback)) {
+        callback(null)
+      }
+    }).fail((xhr, textStatus) => {
+      if (_.isFunction(callback)) {
+        callback(new Error('Error in batch update, error: ' + textStatus))
+      }
+    })
   }
 
   updateCell (data, callback) {

@@ -6,6 +6,9 @@ const Canvas = require('../consumption/Canvas')
 // PVSCL:IFCOND(Screenshot,LINE)
 const Screenshots = require('../consumption/Screenshots')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(GSheetConsumer,LINE)
+const GoogleSheetGenerator = require('../consumption/GoogleSheetGenerator')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleConsumer or GSheetConsumer,LINE)
 const BackToWorkspace = require('../consumption/BackToWorkspace')
 // PVSCL:ENDCOND
@@ -108,6 +111,17 @@ class Toolset {
       this.goToLastImage.addEventListener('click', () => {
         this.goToLastButtonHandler()
       })
+      // PVSCL:IFCOND(GSheetConsumer,LINE)
+      // Set Spreadsheet generation image
+      let googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
+      this.googleSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.googleSheetImage.src = googleSheetImageUrl
+      this.googleSheetImage.title = 'Go to last annotation' // TODO i18n
+      this.toolsetBody.appendChild(this.googleSheetImage)
+      this.googleSheetImage.addEventListener('click', () => {
+        this.generateGoogleSheet()
+      })
+      // PVSCL:ENDCOND
       if (_.isFunction(callback)) {
         callback()
       }
@@ -141,6 +155,11 @@ class Toolset {
   goToLastButtonHandler () {
     Resume.resume()
   }
+  //PVSCL:IFCOND(GSheetConsumer,LINE)
+  generateGoogleSheet () {
+    GoogleSheetGenerator.generate()
+  }
+  //PVSCL:ENDCOND
 
   /**
    * Show toolset in sidebar

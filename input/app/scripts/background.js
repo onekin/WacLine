@@ -15,7 +15,7 @@ chrome.tabs.onCreated.addListener((tab) => {
 
 const HypothesisManager = require('./background/HypothesisManager')
 const Popup = require('./popup/Popup')
-// PVSCL:IFCOND(GSheetProvider, LINE)
+// PVSCL:IFCOND(GSheetProvider or GSheetConsumer, LINE)
 const GoogleSheetsManager = require('./background/GoogleSheetsManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(DOI or NavigationScript, LINE)
@@ -37,7 +37,7 @@ class Background {
     // Initialize hypothesis manager
     this.hypothesisManager = new HypothesisManager()
     this.hypothesisManager.init()
-    // PVSCL:IFCOND(GSheetProvider, LINE)
+    // PVSCL:IFCOND(GSheetProvider or GSheetConsumer, LINE)
 
     // Initialize google sheets manager
     this.googleSheetsManager = new GoogleSheetsManager()

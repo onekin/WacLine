@@ -75,6 +75,15 @@ class AnnotationUtils {
     }
     return r
   }
+
+  static areFromSameDocument (a, b) {
+    // TODO Use also DOI to identify that they are the same document
+    let equalFingerprint = false
+    if (a.documentMetadata && a.documentMetadata.documentFingerprint && b.documentMetadata && b.documentMetadata.documentFingerprint) {
+      equalFingerprint = a.documentMetadata.documentFingerprint === b.documentMetadata.documentFingerprint
+    }
+    return a.uri === b.uri || equalFingerprint
+  }
 }
 
 module.exports = AnnotationUtils

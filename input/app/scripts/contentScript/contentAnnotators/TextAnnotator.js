@@ -227,11 +227,15 @@ class TextAnnotator extends ContentAnnotator {
       })
     }
     let data = {
+      '@context': 'http://www.w3.org/ns/anno.jsonld',
       group: window.abwa.groupSelector.currentGroup.id,
+      creator: window.abwa.groupSelector.getCreatorData() || window.abwa.groupSelector.user.userid,
+      document: {},
       permissions: {
         read: ['group:' + window.abwa.groupSelector.currentGroup.id]
       },
       references: [],
+      motivation: 'oa:classifying',
       tags: tags,
       target: target,
       text: '',
@@ -240,18 +244,14 @@ class TextAnnotator extends ContentAnnotator {
     // Tag id
     if (tagId) {
       data.tagId = tagId
+      data.body = 'https://hypothes.is/api/annotations/' + tagId
     }
-    // For pdf files it is also send the relationship between pdf fingerprint and web url
-    if (window.abwa.contentTypeManager.documentType === ContentTypeManager.documentTypes.pdf) {
-      let pdfFingerprint = window.abwa.contentTypeManager.pdfFingerprint
-      data.document = {
-        documentFingerprint: pdfFingerprint,
-        link: [{
-          href: 'urn:x-pdf:' + pdfFingerprint
-        }, {
-          href: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
-        }]
-      }
+ // Add document URIs
+    data.document.link = window.abwa.contentTypeManager.getDocumentLink()
+    // Add fingerprint if the document has fingerprint (pdf, txt,...)
+    let fingerprint = window.abwa.contentTypeManager.getDocumentFingerprint()
+    if (fingerprint) {
+      data.document.documentFingerprint = fingerprint
     }
     // If doi is available, add it to the annotation
     if (!_.isEmpty(window.abwa.contentTypeManager.doi)) {
@@ -262,12 +262,17 @@ class TextAnnotator extends ContentAnnotator {
       data.document.link = data.document.link || []
       data.document.link.push({href: 'doi:' + doi})
     }
+    // If document title is retrieved
+    if (_.isString(window.abwa.contentTypeManager.documentTitle)) {
+      data.document.title = window.abwa.contentTypeManager.documentTitle
+    }
     // If citation pdf is found
     if (!_.isEmpty(window.abwa.contentTypeManager.citationPdf)) {
       let pdfUrl = window.abwa.contentTypeManager.doi
       data.document.link = data.document.link || []
       data.document.link.push({href: pdfUrl, type: 'application/pdf'})
     }
+    data.documentMetadata = data.document // Copy to metadata field because hypothes.is doesn't return from its API all the data that it is placed in document
     return data
   }
 
