@@ -270,7 +270,7 @@ class ContentTypeManager {
     }
   }
   // PVSCL:ENDCOND
-  
+
   getDocumentURIs () {
     let uris = []
     if (this.doi) {

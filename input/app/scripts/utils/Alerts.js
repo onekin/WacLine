@@ -131,7 +131,7 @@ class Alerts {
     }
   }
 
-  static inputTextAlert ({input = 'text', inputPlaceholder = '', inputValue = '', showCancelButton = true, html = '', callback}) {
+  static inputTextAlert ({input = 'text', inputPlaceholder = '', inputValue = '', showCancelButton = true, html = '', confirmButtonColor = 'rgb(48, 133, 214)', confirmButtonText = 'OK', callback}) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -143,7 +143,9 @@ class Alerts {
         inputPlaceholder: inputPlaceholder,
         inputValue: inputValue,
         html: html,
-        showCancelButton: showCancelButton
+        showCancelButton: showCancelButton,
+        confirmButtonColor: confirmButtonColor,
+        confirmButtonText: confirmButtonText
       }).then((result) => {
         if (result.value) {
           if (_.isFunction(callback)) {

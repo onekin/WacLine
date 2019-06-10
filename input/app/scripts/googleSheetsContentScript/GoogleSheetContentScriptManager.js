@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const HypothesisClientManager = require('../hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
 const GoogleSheetsClientManager = require('../googleSheets/GoogleSheetsClientManager')
 const GoogleSheetParser = require('./GoogleSheetParser')
 const HypothesisGroupInitializer = require('./HypothesisGroupInitializer')

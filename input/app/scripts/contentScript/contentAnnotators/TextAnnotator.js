@@ -14,6 +14,9 @@ const Theme = require('../../definition/Theme')
 // PVSCL:IFCOND(Code,LINE)
 const Code = require('../../definition/Code')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Reply,LINE)
+const ReplyAnnotation = require('../../production/ReplyAnnotation')
+// PVSCL:ENDCOND
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 60
 
@@ -218,7 +221,7 @@ class TextAnnotator extends ContentAnnotator {
     }
   }
 
-  static constructAnnotation ({selectors, tags = [], tagId}) {
+  static constructAnnotation ({selectors, tags = [], tagId, motivation = 'oa:classifying'}) {
     // Check if selectors exist, if then create a target for annotation, in other case the annotation will be a page annotation
     let target = []
     if (_.isObject(selectors)) {
@@ -235,7 +238,7 @@ class TextAnnotator extends ContentAnnotator {
         read: ['group:' + window.abwa.groupSelector.currentGroup.id]
       },
       references: [],
-      motivation: 'oa:classifying',
+      motivation: motivation,
       tags: tags,
       target: target,
       text: '',
@@ -246,7 +249,7 @@ class TextAnnotator extends ContentAnnotator {
       data.tagId = tagId
       data.body = 'https://hypothes.is/api/annotations/' + tagId
     }
- // Add document URIs
+    // Add document URIs
     data.document.link = window.abwa.contentTypeManager.getDocumentLink()
     // Add fingerprint if the document has fingerprint (pdf, txt,...)
     let fingerprint = window.abwa.contentTypeManager.getDocumentFingerprint()
@@ -383,6 +386,11 @@ class TextAnnotator extends ContentAnnotator {
           let tags = annotation.tags
           return !(tags.length > 0 && _.find(filteringTags, tags[0])) || (tags.length > 1 && _.find(filteringTags, tags[1]))
         })
+        // PVSCL:IFCOND( Reply, LINE )
+        this.replyAnnotations = _.filter(annotations, (annotation) => {
+          return annotation.references && annotation.references.length > 0
+        })
+        // PVSCL:ENDCOND
         // Redraw all annotations
         this.redrawAnnotations()
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
@@ -483,16 +491,38 @@ class TextAnnotator extends ContentAnnotator {
         // Create items for context menu
         let items = {}
         // If current user is the same as author, allow to remove annotation or add a comment
-        // PVSCL:IFCOND(Comment,LINE)
-        items['comment'] = {name: 'Comment'}
-        // PVSCL:ENDCOND
-        items['delete'] = {name: 'Delete'}
+        if (annotation.user === window.abwa.groupSelector.user.userid) {
+          // Check if somebody has replied
+          // PVSCL:IFCOND(Reply, LINE)
+          if (ReplyAnnotation.hasReplies(annotation, this.replyAnnotations)) {
+            items['reply'] = {name: 'Reply'}
+          } else {
+            // PVSCL:IFCOND(Comment, LINE)
+            items['comment'] = {name: 'Comment'}
+            // PVSCL:ENDCOND
+          }
+          // PVSCL:ELSEIFCOND(Comment, LINE)
+          items['comment'] = {name: 'Comment'}
+          // PVSCL:ENDCOND
+          items['delete'] = {name: 'Delete'}
+        } else {
+          // PVSCL:IFCOND(Reply, LINE)
+          items['reply'] = {name: 'Reply'}
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(Validate, LINE)
+          items['validate'] = {name: 'Validate'}
+          // PVSCL:ENDCOND
+        }
         return {
           callback: (key, opt) => {
             if (key === 'delete') {
               this.deleteAnnotationHandler(annotation)
             }PVSCL:IFCOND(Comment) else if (key === 'comment') {
               this.commentAnnotationHandler(annotation)
+            }PVSCL:ENDCONDPVSCL:IFCOND(Reply) else if (key === 'reply') {
+              this.replyAnnotationHandler(annotation)
+            }PVSCL:ENDCONDPVSCL:IFCOND(Validate) else if (key === 'validate') {
+              this.validateAnnotationHandler(annotation)
             }PVSCL:ENDCOND
           },
           items: items
@@ -533,6 +563,18 @@ class TextAnnotator extends ContentAnnotator {
       }
     })
   }
+//PVSCL:IFCOND(Reply,LINE)
+
+  replyAnnotationHandler (annotation) {
+    ReplyAnnotation.replyAnnotation(annotation)
+  }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Validate,LINE)
+
+  validateAnnotationHandler (annotation) {
+    ReplyAnnotation.validateAnnotation(annotation)
+  }
+//PVSCL:ENDCOND 
 //PVSCL:IFCOND(Comment,LINE)
 
   /**

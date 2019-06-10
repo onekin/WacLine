@@ -6,6 +6,13 @@
 .reply_text {
   font-size: 70%;
 }
+PVSCL:IFCOND( Validate, LINE )
+
+.reply_validated {
+  background-color: rgba(100, 200, 100, 0.6);
+}
+PVSCL:ENDCOND
+
 .highlightedAnnotation .highlightedAnnotation{ // TODO
   background-color: transparent !important;
 }

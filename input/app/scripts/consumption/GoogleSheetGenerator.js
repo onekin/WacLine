@@ -262,7 +262,7 @@ class GoogleSheetGenerator {
           return 1
         }
       })
-      if (_.has(primaryStudyWithMaxValuesForThisCode.codes, theme.id)) {
+      if (!_.isUndefined(primaryStudyWithMaxValuesForThisCode) && _.has(primaryStudyWithMaxValuesForThisCode.codes, theme.id)) {
         return {theme: theme, columns: primaryStudyWithMaxValuesForThisCode.codes[theme.id].numberOfColumns()}
       } else {
         return {theme: theme, columns: 1}

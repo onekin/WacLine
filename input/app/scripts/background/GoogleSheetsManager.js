@@ -7,7 +7,7 @@ class GoogleSheetsManager {
   constructor () {
     this.googleSheetClient = null
   }
-  
+
   init () {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.scope === 'googleSheets') {

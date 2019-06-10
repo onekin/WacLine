@@ -10,7 +10,7 @@ const Alerts = require('../utils/Alerts')
 const Config = require('../Config')
 const _ = require('lodash')
 const LanguageUtils = require('../utils/LanguageUtils')
-const Hypothesis = require('../storage/Hypothesis')
+const Hypothesis = require('../storage/hypothesis/Hypothesis')
 // PVSCL:IFCOND(Dynamic, LINE)
 const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND

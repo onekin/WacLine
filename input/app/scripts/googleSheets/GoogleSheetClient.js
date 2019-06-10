@@ -17,7 +17,7 @@ class GoogleSheetClient {
     this.baseURI = 'https://sheets.googleapis.com/v4/spreadsheets'
   }
 // PVSCL:IFCOND(GSheetConsumer, LINE)
-  
+
   createSpreadsheet (data, callback) {
     $.ajax({
       method: 'POST',

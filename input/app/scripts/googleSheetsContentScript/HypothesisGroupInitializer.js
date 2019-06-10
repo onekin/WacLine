@@ -2,7 +2,7 @@ const _ = require('lodash')
 const swal = require('sweetalert2')
 const Alerts = require('../utils/Alerts')
 const ChromeStorage = require('../utils/ChromeStorage')
-const Hypothesis = require('../storage/Hypothesis')
+const Hypothesis = require('../storage/hypothesis/Hypothesis')
 const selectedGroupNamespace = 'hypothesis.currentGroup'
 //PVSCL:IFCOND(ApplicationBased, LINE)
 const Config = require('../Config')

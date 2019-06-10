@@ -77,7 +77,8 @@ class GroupSelector {
           if (_.isFunction(callback)) {
             callback(null)
           }
-        }PVSCL:IFCOND(User) else {
+        } else {
+          // PVSCL:IFCOND(User, LINE) 
           // TODO i18n
           Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.', position: Alerts.position.center})
           // TODO Create default group
@@ -89,7 +90,10 @@ class GroupSelector {
               callback(null)
             }
           })
-        }PVSCL:ENDCOND
+          // PVSCL:ELSECOND
+          Alerts.errorAlert({text: 'The group ' + GroupName + ' does not exist. Please configure the tool in the third-party provider.'})
+          // PVSCL:ENDCOND
+        }
       }
     })
     //PVSCL:ENDCOND

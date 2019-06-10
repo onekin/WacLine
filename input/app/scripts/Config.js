@@ -1,6 +1,6 @@
 const Config = {
   // PVSCL:IFCOND(User or ApplicationBased, LINE)
-  groupName: 'NewAnnotations',
+  groupName: 'Annotations',
   // PVSCL:ENDCOND
   namespace: 'oa',
   urlParamName: 'spl', // Name to activate the extension if the url contains this hash param

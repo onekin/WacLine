@@ -1,4 +1,4 @@
-const Storage = require('./Storage')
+const Storage = require('../Storage')
 
 class Hypothesis extends Storage {
   constructor ({group}) {

@@ -8,7 +8,7 @@ const Events = require('./Events')
 const Alerts = require('../utils/Alerts')
 //PVSCL:IFCOND(User,LINE)
 const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
-const Hypothesis = require('../storage/Hypothesis')
+const Hypothesis = require('../storage/hypothesis/Hypothesis')
 //PVSCL:ENDCOND
 const Config = require('../Config')
 const AnnotationGuide = require('../definition/AnnotationGuide')
