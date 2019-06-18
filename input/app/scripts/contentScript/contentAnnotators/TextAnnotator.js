@@ -17,6 +17,10 @@ const Code = require('../../definition/Code')
 // PVSCL:IFCOND(Reply,LINE)
 const ReplyAnnotation = require('../../production/ReplyAnnotation')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(SentimentAnalysis,LINE)
+const axios = require('axios')
+const qs = require('qs')
+// PVSCL:ENDCOND
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 60
 
@@ -580,9 +584,11 @@ class TextAnnotator extends ContentAnnotator {
   /**
    * Generates the HTML for comment form based on annotation, add reference autofill,...
    * @param annotation
+   * @param showForm
+   * @param sidebarOpen
    * @returns {Object}
    */
-  generateCommentForm ({annotation}) {
+  generateCommentForm ({annotation, showForm, sidebarOpen}) {
     // TODO Mark and go previous assignments (AddReference): Get previous assignments
     // let previousAssignments = this.retrievePreviousAssignments()
     // let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
@@ -598,6 +604,36 @@ class TextAnnotator extends ContentAnnotator {
     let preConfirmData = {}
     let preConfirm = () => {
       preConfirmData.comment = document.querySelector('#comment').value
+      //PVSCL:IFCOND(SentimentAnalysis,LINE)
+      let settings = {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        url: 'http://text-processing.com/api/sentiment/',
+        data: qs.stringify({text: preConfirmData.comment})
+      }
+      axios(settings).then((response) => {
+        if (response.data && response.data.label === 'neg' && response.data.probability.neg > 0.55) {
+          // The comment is negative or offensive
+          Alerts.confirmAlert({
+            text: 'The message may be ofensive. Please modify it.',
+            showCancelButton: true,
+            cancelButtonText: 'Modify comment',
+            confirmButtonText: 'Save as it is',
+            reverseButtons: true,
+            callback: () => {
+              callback()
+            },
+            cancelCallback: () => {
+              showForm(preConfirmData)
+            }
+          })
+        } else {
+          callback()
+        }
+      })
+      //PVSCL:ENDCOND 
     }
     // Callback
     let callback = (err, result) => {
@@ -626,6 +662,9 @@ class TextAnnotator extends ContentAnnotator {
                 LanguageUtils.dispatchCustomEvent(Events.comment, {annotation: annotation})
                 // Redraw annotations
                 this.redrawAnnotations()
+                if (sidebarOpen) {
+                  this.openSidebar()
+                }
               }
             })
         }
@@ -636,7 +675,7 @@ class TextAnnotator extends ContentAnnotator {
 
   commentAnnotationHandler (annotation) {
     // Close sidebar if opened
-    let isSidebarOpened = window.abwa.sidebar.isOpened()
+    let sidebarOpen = window.abwa.sidebar.isOpened()
     this.closeSidebar()
 
     let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
@@ -644,23 +683,25 @@ class TextAnnotator extends ContentAnnotator {
     if (themeOrCode) {
       title = themeOrCode.name
     }
-
-    // Create form
-    let form = this.generateCommentForm({annotation})
-
-    Alerts.multipleInputAlert({
-      title: title,
-      html: form.html,
-      onBeforeOpen: form.onBeforeOpen,
-      // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
-      preConfirm: form.preConfirm,
-      callback: () => {
-        form.callback()
-        if (isSidebarOpened) {
-          this.openSidebar()
-        }
+    let showForm = (preConfirmData) => {
+      // Get last call to this form annotation text, not the init one
+      if (_.isObject(preConfirmData) && preConfirmData.comment) {
+        annotation.text = preConfirmData.comment
       }
-    })
+      // Create form
+      let form = this.generateCommentForm({annotation, showForm, sidebarOpen})
+      Alerts.multipleInputAlert({
+        title: title,
+        html: form.html,
+        onBeforeOpen: form.onBeforeOpen,
+        // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
+        preConfirm: form.preConfirm,
+        callback: () => {
+          form.callback()
+        }
+      })
+    }
+    showForm()
   }
 // PVSCL:ENDCOND
 
