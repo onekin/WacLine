@@ -34,15 +34,16 @@ class TextAnnotator extends ContentAnnotator {
     this.config = config
     this.observerInterval = null
     this.reloadInterval = null
+    // PVSCL:IFCOND(UserFilter, LINE)
+    this.currentAnnotations = null
+    // PVSCL:ENDCOND
     this.allAnnotations = null
-    this.currentUserProfile = null
     this.highlightClassName = 'highlightedAnnotation'
   }
 
   init (callback) {
     this.initEvents(() => {
       // Retrieve current user profile
-      this.currentUserProfile = window.abwa.groupSelector.user
       this.loadAnnotations(() => {
         this.initAnnotatorByAnnotation(() => {
           // Check if something is selected after loading annotations and display sidebar
@@ -68,10 +69,19 @@ class TextAnnotator extends ContentAnnotator {
           this.initDeleteAllAnnotationsEvent(() => {
             this.initDocumentURLChangeEvent(() => {
               this.initTagsUpdatedEvent(() => {
+                // PVSCL:IFCOND(UserFilter, LINE)
+                this.initUserFilterChangeEvent(() => {
+                  // Reload annotations periodically
+                  if (_.isFunction(callback)) {
+                    callback()
+                  }
+                })
+                // PVSCL:ELSECOND
                 // Reload annotations periodically
                 if (_.isFunction(callback)) {
                   callback()
                 }
+                // PVSCL:ENDCOND
               })
             })
           })
@@ -87,7 +97,7 @@ class TextAnnotator extends ContentAnnotator {
       callback()
     }
   }
-
+  
   initDeleteAllAnnotationsEvent (callback) {
 	//PVSCL:IFCOND(DeleteGroup,LINE)
     this.events.deleteAllAnnotationsEvent = {element: document, event: Events.deleteAllAnnotations, handler: this.createDeleteAllAnnotationsEventHandler()}
@@ -113,6 +123,42 @@ class TextAnnotator extends ContentAnnotator {
       })
     }
   }
+//PVSCL:IFCOND(UserFilter, LINE)
+
+  initUserFilterChangeEvent (callback) {
+    this.events.userFilterChangeEvent = {element: document, event: Events.userFilterChange, handler: this.createUserFilterChangeEventHandler()}
+    this.events.userFilterChangeEvent.element.addEventListener(this.events.userFilterChangeEvent.event, this.events.userFilterChangeEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  createUserFilterChangeEventHandler () {
+    return (event) => {
+      // This is only allowed in mode index
+      let filteredUsers = event.detail.filteredUsers
+      // Unhighlight all annotations
+      this.unHighlightAllAnnotations()
+      // Retrieve annotations for filtered users
+      this.currentAnnotations = this.retrieveAnnotationsForUsers(filteredUsers)
+      LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+      this.highlightAnnotations(this.currentAnnotations)
+    }
+  }
+
+  /**
+   * Retrieve from all annotations for the current document, those who user is one of the list in users
+   * @param users
+   * @returns {Array}
+   */
+  retrieveAnnotationsForUsers (users) {
+    return _.filter(this.allAnnotations, (annotation) => {
+      return _.find(users, (user) => {
+        return annotation.user === 'acct:' + user + '@hypothes.is'
+      })
+    })
+  }
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(DeleteGroup,LINE)
 
   createDeleteAllAnnotationsEventHandler (callback) {
@@ -212,6 +258,10 @@ class TextAnnotator extends ContentAnnotator {
           Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
           // Add to annotations
+          // PVSCL:IFCOND(UserFilter, LINE)
+          this.currentAnnotations.push(annotation)
+          LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+          // PVSCL:ENDCOND
           this.allAnnotations.push(annotation)
           LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
           // Send event annotation is created
@@ -324,9 +374,15 @@ class TextAnnotator extends ContentAnnotator {
       console.debug('Observer interval')
       // If a swal is displayed, do not execute highlighting observer
       if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
+        // PVSCL:IFCOND(UserFilter, LINE)
+        if (this.currentAnnotations) {
+          for (let i = 0; i < this.currentAnnotations.length; i++) {
+            let annotation = this.currentAnnotations[i]
+        // PVSCL:ELSECOND
         if (this.allAnnotations) {
           for (let i = 0; i < this.allAnnotations.length; i++) {
             let annotation = this.allAnnotations[i]
+        // PVSCL:ENDCOND
             // Search if annotation exist
             let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
             // If annotation doesn't exist, try to find it
@@ -359,11 +415,19 @@ class TextAnnotator extends ContentAnnotator {
         // TODO Show user no able to load all annotations
         console.error('Unable to load annotations')
       } else {
+        // PVSCL:IFCOND(UserFilter, LINE)
+        // Current annotations will be
+        this.currentAnnotations = this.retrieveCurrentAnnotations()
+        LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {annotations: this.allAnnotations})
+        // Highlight annotations in the DOM
+        this.highlightAnnotations(this.currentAnnotations)
+        // PVSCL:ELSECOND
         // Current annotations will be
         this.allAnnotations = this.retrieveCurrentAnnotations()
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         // Highlight annotations in the DOM
         this.highlightAnnotations(this.allAnnotations)
+        // PVSCL:ENDCOND
         if (_.isFunction(callback)) {
           callback()
         }
@@ -396,6 +460,9 @@ class TextAnnotator extends ContentAnnotator {
         })
         // PVSCL:ENDCOND
         // Redraw all annotations
+        // PVSCL:IFCOND(UserFilter, LINE)
+        this.currentAnnotations = this.retrieveCurrentAnnotations()
+        // PVSCL:ENDCOND
         this.redrawAnnotations()
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
         if (_.isFunction(callback)) {
@@ -552,6 +619,13 @@ class TextAnnotator extends ContentAnnotator {
               // Alert user error happened
               Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
             } else {
+              // PVSCL:IFCOND(UserFilter, LINE)
+              // Remove annotation from data model
+              _.remove(this.currentAnnotations, (currentAnnotation) => {
+                return currentAnnotation.id === annotation.id
+              })
+              LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+              // PVSCL:ENDCOND
               _.remove(this.allAnnotations, (currentAnnotation) => {
                 return currentAnnotation.id === annotation.id
               })
@@ -733,7 +807,11 @@ class TextAnnotator extends ContentAnnotator {
 
   goToFirstAnnotationOfTag (tag) {
     // TODO Retrieve first annotation for tag
-    let annotation = _.find(this.allAnnotations, (annotation) => {
+    // PVSCL:IFCOND(UserFilter, LINE)
+    let annotation = _.find(this.currentAnnotations, (annotation) => {
+    // PVSCL:ELSECOND
+      let annotation = _.find(this.allAnnotations, (annotation) => {  
+    // PVSCL:ENDCOND
       return annotation.tags.includes(tag)
     })
     if (annotation) {
@@ -762,6 +840,10 @@ class TextAnnotator extends ContentAnnotator {
             pdfjsHighlights[i].classList.remove('highlight')
           }
         }, 1000)
+        // PVSCL:IFCOND(UserFilter, LINE)
+        // Redraw annotations
+        this.redrawAnnotations()
+        // PVSCL:ENDCOND
       }
     } else { // Else, try to find the annotation by data-annotation-id element attribute
       let firstElementToScroll = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
@@ -880,7 +962,11 @@ class TextAnnotator extends ContentAnnotator {
     // Unhighlight all annotations
     this.unHighlightAllAnnotations()
     // Highlight all annotations
-    this.highlightAnnotations(this.allAnnotations)
+    // PVSCL:IFCOND(UserFilter, LINE)
+    this.highlightAnnotations(this.currentAnnotations)
+    // PVSCL:ELSECOND
+        this.highlightAnnotations(this.allAnnotations)
+    // PVSCL:ENDCOND
   }
 
   deleteAllAnnotations () {
@@ -906,6 +992,9 @@ class TextAnnotator extends ContentAnnotator {
     }).then(() => {
       // Update annotation variables
       this.allAnnotations = []
+      // PVSCL:IFCOND(UserFilter, LINE)
+      this.currentAnnotations= []
+      // PVSCL:ENDCOND
       // Dispatch event and redraw annotations
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
       this.redrawAnnotations()

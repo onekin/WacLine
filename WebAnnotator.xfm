@@ -1127,7 +1127,7 @@
         <cm:mimedesc cm:id="ihNbYv2odWFROMSde" cm:mimetype="text/plain" cm:encoding="utf-8">Filter</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="ioiB4E_xIFMHGhUfp" cm:name="ByUser" cm:type="ps:feature" cm:class="ps:feature">
+    <cm:element cm:id="ioiB4E_xIFMHGhUfp" cm:name="UserFilter" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i5QtYbbV_BurQeseh" cm:class="ps:parents">
         <cm:relation cm:id="iiyP98CB8My0O3-zy" cm:type="ps:parent">
           <cm:target cm:id="ioHqoIuPk50zbtZYs">./iH6HLavdpJFzVsqID</cm:target>
@@ -1144,7 +1144,7 @@
           <cm:constant cm:id="iC3V7YoRz27nSIbQq" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="iJNrhdlwAdQ06lbsg" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="inlFu_TcviiQHV1GZ" cm:type="ps:datetime">2019-04-29T15:42:36.605Z</cm:constant>
+          <cm:constant cm:id="inlFu_TcviiQHV1GZ" cm:type="ps:datetime">2019-06-19T08:32:16.571Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

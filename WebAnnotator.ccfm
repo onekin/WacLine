@@ -86,7 +86,7 @@
     </cm:restset>
     <cm:restset cm:id="i4eGlUfONcwvxARNU">
       <cm:restriction cm:id="ipkjYFxbaYMD_dsn9">
-        <cm:script cm:id="i7BVuNlTLHWyCIaBh" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.ByUser</cm:script>
+        <cm:script cm:id="i7BVuNlTLHWyCIaBh" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.UserFilter</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="ir_aa0DXGalsAtDAS">
@@ -192,6 +192,11 @@
     <cm:restset cm:id="ixPy4vtR3Y0XH9fF8">
       <cm:restriction cm:id="i0DO446w18oI9MnPv">
         <cm:script cm:id="i5k9gvtv6u5mL7u5p" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Reply</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="i41VdSEHhh51hFzvC">
+      <cm:restriction cm:id="iOjXhVSwV5Jm5Ye-J">
+        <cm:script cm:id="i2iRwHKetaQTS90r3" cm:language="ps:pvscl" cm:type="ps:boolean">UserFilter</cm:script>
       </cm:restriction>
     </cm:restset>
   </cm:restrictions>
@@ -5601,7 +5606,7 @@
         <cm:mimedesc cm:id="iRS0WZFL-AYb_l4V_" cm:mimetype="text/plain" cm:encoding="utf-8">Toolset.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iTzacdjxhX-FtF-1bxU57CyGGw3k" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iTzacdjxhX-FtF-1bxU57CyGGw3k" cm:restriction="i41VdSEHhh51hFzvC" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iTzacdjxhX-FtF-1bxU57CyGGw3kdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="ipdoZYCerVBaGiY-VRQ6EIyyw39-F0TLPq0Xmx1GO" cm:class="ps:parents">
@@ -5614,6 +5619,20 @@
           <cm:target cm:id="iQkSR3DYm2nCxv1rK4Uyg7EuLENRk-pkYJyHygr29">./iaMPHHkxWY2rUyu6XkzQuYxT4XQc</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iN_NgOCRq2jx2wBsE" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iDtmM0rDIT8q9vWY1" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ioDn2_lT3fOkDM-A-" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iAwGXNwFKsfRF7Xxb" cm:type="ps:datetime">2019-06-19T08:29:27.609Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iOXfEWamP1-BBK6Bm" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="in1oGXS_LovSm5NDI" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="inYe1__b35Ev9HGSP" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iMwxJQbfkN4i8wS7v" cm:type="ps:datetime">2019-06-19T08:29:27.609Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iAp2h3WU9CYhvTDCF" cm:mimetype="text/plain" cm:encoding="utf-8">UserFilter</cm:mimedesc>
       </cm:vname>

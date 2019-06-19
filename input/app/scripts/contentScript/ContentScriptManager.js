@@ -9,6 +9,9 @@ const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientM
 const Config = require('../Config')
 const Toolset = require('./Toolset')
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
+// PVSCL:IFCOND(UserFilter, LINE)
+const UserFilter = require('./UserFilter')
+// PVSCL:ENDCOND
 
 class ContentScriptManager {
   constructor () {
@@ -72,8 +75,19 @@ class ContentScriptManager {
                   if (err) {
                     // TODO Error
                   } else {
+                    // PVSCL:IFCOND(UserFilter, LINE)
+                    this.reloadUserFilter((err) => {
+                      if (err) {
+                        // TODO Error
+                      } else {
+                        this.status = ContentScriptManager.status.initialized
+                        console.debug('Initialized content script manager')
+                      }
+                    })
+                    // PVSCL:ELSECOND
                     this.status = ContentScriptManager.status.initialized
                     console.debug('Initialized content script manager')
+                    // PVSCL:ENDCOND
                   }
                 })
               }
@@ -99,7 +113,24 @@ class ContentScriptManager {
     window.abwa.tagManager = new MyTagManager(Config.namespace, Config.tags) // TODO Depending on the type of annotator
     window.abwa.tagManager.init(callback)
   }
+//PVSCL:IFCOND(UserFilter, LINE)
 
+  reloadUserFilter (callback) {
+    // Destroy current augmentation operations
+    this.destroyUserFilter()
+    // Create augmentation operations for the current group
+    window.abwa.userFilter = new UserFilter(Config)
+    window.abwa.userFilter.init(callback)
+  }
+//PVSCL:ENDCOND
+
+  destroyUserFilter () {
+    // Destroy current augmentation operations
+    if (!_.isEmpty(window.abwa.userFilter)) {
+      window.abwa.userFilter.destroy()
+    }
+  }
+  
   destroyContentAnnotator () {
     // Destroy current content annotator
     if (!_.isEmpty(window.abwa.contentAnnotator)) {
@@ -118,6 +149,9 @@ class ContentScriptManager {
     this.destroyContentTypeManager(() => {
       this.destroyTagsManager()
       this.destroyContentAnnotator()
+      //PVSCL:IFCOND(UserFilter, LINE)
+      this.destroyUserFilter()
+      //PVSCL:ENDCOND
       // TODO Destroy groupSelector, roleManager,
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
@@ -169,6 +203,9 @@ class ContentScriptManager {
     this.destroyToolset()
     // Create a new toolset
     this.loadToolset()
+    if (_.isFunction(callback)) {
+      callback()
+    }
   }
 
   destroyToolset () {

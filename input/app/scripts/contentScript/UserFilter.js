@@ -1,7 +1,6 @@
 const $ = require('jquery')
 const _ = require('lodash')
 const Events = require('./Events')
-const ModeManager = require('./ModeManager')
 const LanguageUtils = require('../utils/LanguageUtils')
 
 class UserFilter {
@@ -21,8 +20,6 @@ class UserFilter {
           callback(err)
         }
       } else {
-        // Init mode change event handler
-        this.initModeChangeEventHandler()
         // Annotations updated event handler
         this.initAnnotationsUpdatedEventHandler()
         // Init event handler when click in all
@@ -39,15 +36,10 @@ class UserFilter {
   initUserFilterStructure (callback) {
     let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/userFilterWrapper.html')
     $.get(tagWrapperUrl, (html) => {
-      $('#modeWrapper').after($.parseHTML(html))
+      this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
+      this.sidebarContainer.insertAdjacentHTML('afterbegin', html)
       this.userFilterWrapper = document.querySelector('#userFilterWrapper')
       this.usersContainer = document.querySelector('#usersContainer')
-      if (window.abwa.modeManager.mode === ModeManager.modes.index) {
-        this.showUserFilterContainer()
-        this.activateAll() // Activate all the filters
-      } else if (window.abwa.modeManager.mode === ModeManager.modes.highlight) {
-        this.hideUserFilterContainer()
-      }
       if (_.isFunction(callback)) {
         callback()
       }
@@ -102,30 +94,11 @@ class UserFilter {
     })
   }
 
-  initModeChangeEventHandler (callback) {
-    this.events.modeChangeEvent = {element: document, event: Events.modeChanged, handler: this.createInitModeChangeEventHandler()}
-    this.events.modeChangeEvent.element.addEventListener(this.events.modeChangeEvent.event, this.events.modeChangeEvent.handler, false)
-    if (_.isFunction(callback)) {
-      callback()
-    }
-  }
-
   initAnnotationsUpdatedEventHandler (callback) {
     this.events.updatedAllAnnotations = {element: document, event: Events.updatedAllAnnotations, handler: this.createUpdatedAllAnnotationsEventHandler()}
     this.events.updatedAllAnnotations.element.addEventListener(this.events.updatedAllAnnotations.event, this.events.updatedAllAnnotations.handler, false)
     if (_.isFunction(callback)) {
       callback()
-    }
-  }
-
-  createInitModeChangeEventHandler () {
-    return () => {
-      // If mode is index, show sidebar panel, else hide
-      if (window.abwa.modeManager.mode === ModeManager.modes.index) {
-        this.showUserFilterContainer()
-      } else {
-        this.hideUserFilterContainer()
-      }
     }
   }
 
