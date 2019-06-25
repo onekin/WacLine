@@ -10,7 +10,7 @@ const Config = require('../Config')
 const Toolset = require('./Toolset')
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 // PVSCL:IFCOND(UserFilter, LINE)
-const UserFilter = require('./UserFilter')
+const UserFilter = require('../consumption/filters/UserFilter')
 // PVSCL:ENDCOND
 
 class ContentScriptManager {
@@ -122,7 +122,6 @@ class ContentScriptManager {
     window.abwa.userFilter = new UserFilter(Config)
     window.abwa.userFilter.init(callback)
   }
-//PVSCL:ENDCOND
 
   destroyUserFilter () {
     // Destroy current augmentation operations
@@ -130,7 +129,8 @@ class ContentScriptManager {
       window.abwa.userFilter.destroy()
     }
   }
-  
+//PVSCL:ENDCOND
+
   destroyContentAnnotator () {
     // Destroy current content annotator
     if (!_.isEmpty(window.abwa.contentAnnotator)) {
@@ -168,9 +168,9 @@ class ContentScriptManager {
     })
   }
 
-  loadToolset () {
+  loadToolset (callback) {
     window.abwa.toolset = new Toolset()
-    window.abwa.toolset.init()
+    window.abwa.toolset.init(callback)
   }
 
   loadContentTypeManager (callback) {
@@ -202,10 +202,11 @@ class ContentScriptManager {
     // Destroy toolset
     this.destroyToolset()
     // Create a new toolset
-    this.loadToolset()
-    if (_.isFunction(callback)) {
-      callback()
-    }
+    this.loadToolset(() => {
+      if (_.isFunction(callback)) {
+        callback()
+      }
+    })
   }
 
   destroyToolset () {

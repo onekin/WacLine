@@ -1,8 +1,8 @@
-const Alerts = require('../utils/Alerts')
-const AnnotationUtils = require('../utils/AnnotationUtils')
-const LanguageUtils = require('../utils/LanguageUtils')
+const Alerts = require('../../utils/Alerts')
+const AnnotationUtils = require('../../utils/AnnotationUtils')
+const LanguageUtils = require('../../utils/LanguageUtils')
 const _ = require('lodash')
-const Theme = require('../definition/Theme')
+const Theme = require('../../definition/Theme')
 
 const HyperSheetColors = {
   red: {

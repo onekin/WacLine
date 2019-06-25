@@ -1,7 +1,7 @@
 const $ = require('jquery')
 const _ = require('lodash')
-const Events = require('./Events')
-const LanguageUtils = require('../utils/LanguageUtils')
+const Events = require('../../contentScript/Events')
+const LanguageUtils = require('../../utils/LanguageUtils')
 
 class UserFilter {
   constructor () {
@@ -28,16 +28,31 @@ class UserFilter {
           callback()
         }
         // Init panel construction (if no annotation event is detected)
-        this.initUsersPanel(window.abwa.contentAnnotator.allAnnotations)
+        this.initUsersPanel()
       }
     })
+  }
+
+  addFilteredUser (user) {
+    // If the user is not in the all users list
+    if (_.isArray(this.allUsers) && !_.find(this.allUsers, user)) {
+      this.allUsers.push(user)
+    }
+    // Add the user to the filter if it is filtered
+    if (_.isArray(this.filteredUsers)) {
+      if (!_.find(this.filteredUsers, user)) {
+        this.filteredUsers.push(user)
+        return true
+      }
+    }
   }
 
   initUserFilterStructure (callback) {
     let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/userFilterWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
-      this.sidebarContainer.insertAdjacentHTML('afterbegin', html)
+      // Insert user filter after toolset
+      this.sidebarContainer.querySelector('#toolset').insertAdjacentHTML('afterend', html)
       this.userFilterWrapper = document.querySelector('#userFilterWrapper')
       this.usersContainer = document.querySelector('#usersContainer')
       if (_.isFunction(callback)) {
@@ -67,11 +82,11 @@ class UserFilter {
       // Dispatch event user filter has changed
       this.dispatchFilterChanged()
     })
-    let initialEventListener = () => {
+    /* let initialEventListener = () => {
       this.activateAll()
       document.removeEventListener(Events.updatedAllAnnotations, initialEventListener)
     }
-    document.addEventListener(Events.updatedAllAnnotations, initialEventListener)
+    document.addEventListener(Events.updatedAllAnnotations, initialEventListener) */
   }
 
   activateAll () {
@@ -120,7 +135,7 @@ class UserFilter {
     if (_.isArray(annotations)) {
       // Retrieve users who had annotated the document
       this.allUsers = _.uniq(_.map(annotations, (annotation) => {
-        return annotation.user.replace('acct:', '').replace('@hypothes.is', '')
+        return annotation.user
       }))
       this.filteredUsers = _.clone(this.allUsers)
       // Upload sidebar panel with users
@@ -141,12 +156,10 @@ class UserFilter {
 
   updateUsersPanel (annotations) {
     if (_.isArray(annotations)) {
-      let oldFilteredUsers = _.clone(this.filteredUsers)
       // Retrieve users who had annotated the document
       this.allUsers = _.uniq(_.map(annotations, (annotation) => {
-        return annotation.user.replace('acct:', '').replace('@hypothes.is', '')
+        return annotation.user
       }))
-      this.filteredUsers = _.clone(this.allUsers)
       // Upload sidebar panel with users
       this.usersContainer.innerHTML = '' // Empty the container
       for (let i = 0; i < this.allUsers.length; i++) {
@@ -156,8 +169,8 @@ class UserFilter {
       let checkboxes = this.usersContainer.querySelectorAll('input')
       for (let i = 0; i < checkboxes.length; i++) {
         let currentCheckbox = checkboxes[i]
-        if (_.isString(_.find(oldFilteredUsers, (oldUser) => {
-          return oldUser === currentCheckbox.id.replace('userFilter_', '')
+        if (_.isString(_.find(this.filteredUsers, (oldUser) => {
+          return LanguageUtils.normalizeStringToValidID(oldUser) === currentCheckbox.id.replace('userFilter_', '')
         }))) {
           currentCheckbox.checked = true
         }
@@ -172,10 +185,10 @@ class UserFilter {
     let userFilterElement = $(userFilterTemplate.content.firstElementChild).clone().get(0)
     // Set text and properties for label and input
     let input = userFilterElement.querySelector('input')
-    input.id = 'userFilter_' + name
+    input.id = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
     let label = userFilterElement.querySelector('label')
-    label.innerText = name
-    label.htmlFor = 'userFilter_' + name
+    label.innerText = name.replace('acct:', '').replace('@hypothes.is', '') // TODO Other storages different to hypothes.is ¿?
+    label.htmlFor = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
     // Set event handler for input check status
     input.addEventListener('change', (event) => {
       // Update filtered array
@@ -219,7 +232,7 @@ class UserFilter {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
     // Remove user filter container from sidebar
-    $(this.userFilterContainer).remove()
+    this.userFilterWrapper.remove()
   }
 }
 

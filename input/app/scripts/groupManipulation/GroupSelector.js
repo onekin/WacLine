@@ -120,66 +120,68 @@ class GroupSelector {
         })
       })
     } else {
+      this.retrieveUserProfile(() => {
       //PVSCL:IFCOND(User, LINE)
-      // Load all the groups belonged to current user
-      this.retrieveHypothesisGroups((err, groups) => {
-        if (err) {
+        // Load all the groups belonged to current user
+        this.retrieveHypothesisGroups((err, groups) => {
+          if (err) {
 
-        } else {
-          let group = _.find(groups, (group) => {
-            return group.name === GroupName
-          })
-          if (_.isObject(group)) {
-            // Current group will be that group
-            this.currentGroup = group
-            if (_.isFunction(callback)) {
-              callback(null)
-            }
           } else {
-            // TODO i18n
-            Alerts.loadingAlert({
-              title: 'First time reviewing?',
-              text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.',
-              position: Alerts.position.center
+            let group = _.find(groups, (group) => {
+              return group.name === GroupName
             })
-            // TODO Create default group
-            this.createApplicationBasedGroupForUser((err, group) => {
-              if (err) {
-                Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for Review&Go. Please check if you are logged in Hypothes.is.'})
-              } else {
-                this.currentGroup = group
+            if (_.isObject(group)) {
+              // Current group will be that group
+              this.currentGroup = group
+              if (_.isFunction(callback)) {
                 callback(null)
               }
-            })
-          }
-        }
-      })
-      //PVSCL:ELSECOND
-      if (!this.currentGroup) {
-        // Retrieve last saved group
-        ChromeStorage.getData(selectedGroupNamespace, ChromeStorage.local, (err, savedCurrentGroup) => {
-          if (err) {
-            if (_.isFunction(callback)) {
-              callback(new Error('Unable to retrieve current selected group'))
-            }
-          } else {
-            // Parse chrome storage result
-            if (!_.isEmpty(savedCurrentGroup) && savedCurrentGroup.data) {
-              this.currentGroup = JSON.parse(savedCurrentGroup.data)
             } else {
-              this.currentGroup = defaultGroup
-            }
-            if (_.isFunction(callback)) {
-              callback()
+              // TODO i18n
+              Alerts.loadingAlert({
+                title: 'First time reviewing?',
+                text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.',
+                position: Alerts.position.center
+              })
+              // TODO Create default group
+              this.createApplicationBasedGroupForUser((err, group) => {
+                if (err) {
+                  Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for Review&Go. Please check if you are logged in Hypothes.is.'})
+                } else {
+                  this.currentGroup = group
+                  callback(null)
+                }
+              })
             }
           }
         })
-      } else {
-        if (_.isFunction(callback)) {
-          callback()
+        //PVSCL:ELSECOND
+        if (!this.currentGroup) {
+          // Retrieve last saved group
+          ChromeStorage.getData(selectedGroupNamespace, ChromeStorage.local, (err, savedCurrentGroup) => {
+            if (err) {
+              if (_.isFunction(callback)) {
+                callback(new Error('Unable to retrieve current selected group'))
+              }
+            } else {
+              // Parse chrome storage result
+              if (!_.isEmpty(savedCurrentGroup) && savedCurrentGroup.data) {
+                this.currentGroup = JSON.parse(savedCurrentGroup.data)
+              } else {
+                this.currentGroup = defaultGroup
+              }
+              if (_.isFunction(callback)) {
+                callback()
+              }
+            }
+          })
+        } else {
+          if (_.isFunction(callback)) {
+            callback()
+          }
         }
-      }
       //PVSCL:ENDCOND
+      })
     }
     //PVSCL:ENDCOND
   }

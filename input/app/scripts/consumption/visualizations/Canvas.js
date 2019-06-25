@@ -1,5 +1,5 @@
-const AnnotationUtils = require('../utils/AnnotationUtils')
-const Alerts = require('../utils/Alerts')
+const AnnotationUtils = require('../../utils/AnnotationUtils')
+const Alerts = require('../../utils/Alerts')
 const axios = require('axios')
 
 class Canvas {

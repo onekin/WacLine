@@ -1,20 +1,19 @@
 const axios = require('axios')
 const _ = require('lodash')
 // PVSCL:IFCOND(Canvas,LINE)
-const Canvas = require('../consumption/Canvas')
+const Canvas = require('../consumption/visualizations/Canvas')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Screenshot,LINE)
-const Screenshots = require('../consumption/Screenshots')
+const Screenshots = require('../consumption/visualizations/Screenshots')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GSheetConsumer,LINE)
-const GoogleSheetGenerator = require('../consumption/GoogleSheetGenerator')
+const GoogleSheetGenerator = require('../consumption/visualizations/GoogleSheetGenerator')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleConsumer or GSheetConsumer,LINE)
-const BackToWorkspace = require('../consumption/BackToWorkspace')
+//PVSCL:IFCOND(LastAnnotation,LINE)
+const Resume = require('../consumption/visualizations/Resume')
 // PVSCL:ENDCOND
-const Resume = require('../consumption/Resume')
 // PVSCL:IFCOND(TextSummary,LINE)
-const TextSummary = require('../consumption/TextSummary')
+const TextSummary = require('../consumption/visualizations/TextSummary')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(DeleteGroup,LINE)
 const DeleteGroup = require('../groupManipulation/DeleteGroup')
@@ -85,23 +84,7 @@ class Toolset {
         this.deleteGroupButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(MoodleConsumer or GSheetConsumer,LINE)
-      // Set BackToWorkspace image
-      this.backToWorkspaceImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
-      // PVSCL:IFCOND(GSheetConsumer,LINE)
-      let backToWorkspaceImageUrl = chrome.extension.getURL('/images/add.png')
-      this.backToWorkspaceImage.title = 'Go back to GSheet' // TODO i18n
-      // PVSCL:ENDCOND
-      // PVSCL:IFCOND(MoodleConsumer,LINE)
-      let backToWorkspaceImageUrl = chrome.extension.getURL('/images/moodle.svg')
-      this.backToWorkspaceImage.title = 'Go back to Moodle' // TODO i18n
-      // PVSCL:ENDCOND
-      this.backToWorkspaceImage.src = backToWorkspaceImageUrl
-      this.toolsetBody.appendChild(this.backToWorkspaceImage)
-      this.backToWorkspaceImage.addEventListener('click', () => {
-        this.backToWorkspace()
-      })
-      // PVSCL:ENDCOND
+      //PVSCL:IFCOND(LastAnnotation,LINE)
       // Set GoToLast image
       let goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
       this.goToLastImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -111,6 +94,7 @@ class Toolset {
       this.goToLastImage.addEventListener('click', () => {
         this.goToLastButtonHandler()
       })
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(GSheetConsumer,LINE)
       // Set Spreadsheet generation image
       let googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
@@ -122,6 +106,10 @@ class Toolset {
         this.generateGoogleSheet()
       })
       // PVSCL:ENDCOND
+      // Check if exist any element in the tools and show it
+      if (!_.isEmpty(this.toolsetBody.innerHTML)) {
+        this.show()
+      }
       if (_.isFunction(callback)) {
         callback()
       }
@@ -147,14 +135,11 @@ class Toolset {
     DeleteGroup.deleteAnnotations()
   }
   //PVSCL:ENDCOND
-  //PVSCL:IFCOND(MoodleConsumer or GSheetConsumer,LINE)
-  backToWorkspace () {
-    BackToWorkspace.goToWorkspace()
-  }
-  //PVSCL:ENDCOND
+  //PVSCL:IFCOND(LastAnnotation,LINE)
   goToLastButtonHandler () {
     Resume.resume()
   }
+  //PVSCL:ENDCOND
   //PVSCL:IFCOND(GSheetConsumer,LINE)
   generateGoogleSheet () {
     GoogleSheetGenerator.generate()

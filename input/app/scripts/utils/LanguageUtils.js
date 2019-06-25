@@ -121,6 +121,14 @@ class LanguageUtils {
     return string.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
   }
 
+  /**
+   * Normalizes string to a valid string for ID. Based on: https://stackoverflow.com/questions/10619126/make-sure-string-is-a-valid-css-id-name
+   * @param string
+   */
+  static normalizeStringToValidID (string) {
+    return string.replace(/(^-\d-|^\d|^-\d|^--)/, 'a$1').replace(/[\W]/g, '-')
+  }
+
   static getStringBetween (string, previous, after) {
     let firstSplit = string.split(previous)
     if (firstSplit.length > 1) {
