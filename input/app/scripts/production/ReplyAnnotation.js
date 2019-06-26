@@ -36,7 +36,7 @@ class ReplyAnnotation {
             replyAnnotationData.text = result
             // Add its reference (the annotation that replies to)
             replyAnnotationData.references = [annotation.id]
-            window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(replyAnnotationData, (err, replyAnnotation) => {
+            window.abwa.storageManager.client.createNewAnnotation(replyAnnotationData, (err, replyAnnotation) => {
               if (err) {
                 // Show error when creating annotation
                 Alerts.errorAlert({text: 'There was an error when replying, please try again. Make sure you are logged in Hypothes.is.'})
@@ -53,7 +53,7 @@ class ReplyAnnotation {
             })
           } else {
             // The comment you are writing is a modification of the annotation modifying
-            window.abwa.hypothesisClientManager.hypothesisClient.updateAnnotation(annotationModifying.id, {
+            window.abwa.storageManager.client.updateAnnotation(annotationModifying.id, {
               text: result
             }, (err, replyAnnotationResult) => {
               if (err) {

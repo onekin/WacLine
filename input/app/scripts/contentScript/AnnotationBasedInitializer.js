@@ -12,8 +12,9 @@ class AnnotationBasedInitializer {
     // Check if annotation is in hash params
     let annotationId = AnnotationBasedInitializer.getAnnotationHashParam()
     if (annotationId) {
-      if (window.abwa.hypothesisClientManager.isLoggedIn() === false) {
-        window.abwa.hypothesisClientManager.logInHypothesis((err, token) => {
+      //PVSCL:IFCOND(Hypothesis, LINE)
+      if (window.abwa.storageManager.isLoggedIn() === false) {
+        window.abwa.storageManager.logIn((err, token) => {
           if (err) {
             Alerts.errorAlert({title: 'Log in hypothes.is is required', text: 'To use Mark&Go it is necessary to log in Hypothes.is.'})
           } else {
@@ -22,7 +23,7 @@ class AnnotationBasedInitializer {
           }
         })
       } else {
-        window.abwa.hypothesisClientManager.hypothesisClient.fetchAnnotation(annotationId, (err, annotation) => {
+        window.abwa.storageManager.client.fetchAnnotation(annotationId, (err, annotation) => {
           if (err) {
             // Alerts.errorAlert({title: 'Unable to retrieve ',text:})
           } else {
@@ -33,6 +34,19 @@ class AnnotationBasedInitializer {
           }
         })
       }
+      //PVSCL:ENDCOND
+      //PVSCL:IFCOND(Local, LINE)
+      window.abwa.storageManager.client.fetchAnnotation(annotationId, (err, annotation) => {
+        if (err) {
+          // Alerts.errorAlert({title: 'Unable to retrieve ',text:})
+        } else {
+          this.initAnnotation = annotation
+        }
+        if (_.isFunction(callback)) {
+          callback(annotation)
+        }
+      })
+      //PVSCL:ENDCOND
     } else {
       if (_.isFunction(callback)) {
         callback(null)

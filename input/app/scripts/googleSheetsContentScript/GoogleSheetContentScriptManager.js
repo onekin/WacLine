@@ -1,5 +1,10 @@
 const _ = require('lodash')
+//PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
+//PVSCL:ENDCOND
+// PVSCL:IFCOND(Local, LINE)
+const LocalStorageManager = require('../storage/local/LocalStorageManager')
+//PVSCL:ENDCOND
 const GoogleSheetsClientManager = require('../googleSheets/GoogleSheetsClientManager')
 const GoogleSheetParser = require('./GoogleSheetParser')
 const HypothesisGroupInitializer = require('./HypothesisGroupInitializer')
@@ -9,8 +14,7 @@ const swal = require('sweetalert2')
 class GoogleSheetContentScriptManager {
   init (callback) {
     window.hag.googleSheetClientManager = new GoogleSheetsClientManager()
-    window.hag.hypothesisClientManager = new HypothesisClientManager()
-    window.hag.hypothesisClientManager.init(() => {
+    this.loadStorage(() => {
       this.initLoginProcess((err, tokens) => {
         if (err) {
           swal('Oops!',
@@ -22,7 +26,7 @@ class GoogleSheetContentScriptManager {
         } else {
           // Show tool is configuring prompt
           this.showToolIsConfiguring()
-          console.debug('Correctly logged in to hypothesis: %s', tokens.hypothesis)
+          // console.debug('Correctly logged in to hypothesis: %s', tokens.hypothesis)
           console.debug('Correctly logged in to gSheet: %s', tokens.gSheet)
           this.initGoogleSheetParsing(() => {
             // Execute callback without errors
@@ -46,9 +50,10 @@ class GoogleSheetContentScriptManager {
       }
     })
   }
+// PVSCL:IFCOND(Hypothesis, LINE)
 
   initLoginProcess (callback) {
-    window.hag.hypothesisClientManager.logInHypothesis((err, hypothesisToken) => {
+    window.hag.storageManager.logIn((err, hypothesisToken) => {
       if (err) {
         callback(err)
       } else {
@@ -62,6 +67,39 @@ class GoogleSheetContentScriptManager {
             })
           }
         })
+      }
+    })
+  }
+  //PVSCL:ENDCOND
+  //PVSCL:IFCOND(Local, LINE)
+
+  initLoginProcess (callback) {
+    window.hag.googleSheetClientManager.logInGoogleSheets((err, gSheetToken) => {
+      if (err) {
+        callback(err)
+      } else {
+        callback(null, {
+          gSheet: gSheetToken
+        })
+      }
+    })
+  }
+  //PVSCL:ENDCOND
+
+  loadStorage (callback) {
+    // PVSCL:IFCOND(Hypothesis, LINE)
+    window.hag.storageManager = new HypothesisClientManager()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Local, LINE)
+    window.hag.storageManager = new LocalStorageManager()
+    // PVSCL:ENDCOND
+    window.hag.storageManager.init((err) => {
+      if (_.isFunction(callback)) {
+        if (err) {
+          callback(err)
+        } else {
+          callback()
+        }
       }
     })
   }

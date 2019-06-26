@@ -2,7 +2,12 @@ const _ = require('lodash')
 const swal = require('sweetalert2')
 const Alerts = require('../utils/Alerts')
 const ChromeStorage = require('../utils/ChromeStorage')
+//PVSCL:IFCOND(Hypothesis, LINE)
 const Hypothesis = require('../storage/hypothesis/Hypothesis')
+// PVSCL:ENDCOND
+//PVSCL:IFCOND(Local, LINE)
+const Local = require('../storage/local/Local')
+// PVSCL:ENDCOND
 const selectedGroupNamespace = 'hypothesis.currentGroup'
 //PVSCL:IFCOND(ApplicationBased, LINE)
 const Config = require('../Config')
@@ -26,7 +31,7 @@ class HypothesisGroupInitializer {
 
   initializeHypothesisGroup (callback) {
     // Get if current hypothesis group exists
-    window.hag.hypothesisClientManager.hypothesisClient.getListOfGroups({}, (err, groups) => {
+    window.hag.storageManager.client.getListOfGroups({}, (err, groups) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -93,7 +98,7 @@ class HypothesisGroupInitializer {
   }
 
   createHypothesisGroup (callback) {
-    window.hag.hypothesisClientManager.hypothesisClient.createNewGroup({name: this.annotationGuide.name}, (err, group) => {
+    window.hag.storageManager.client.createNewGroup({name: this.annotationGuide.name}, (err, group) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -101,9 +106,16 @@ class HypothesisGroupInitializer {
       } else {
         console.debug('Created group in hypothesis: ')
         console.debug(group)
+        //PVSCL:IFCOND(Hypothesis, LINE)
         let storage = new Hypothesis({
           group: group
         })
+        //PVSCL:ENDCOND
+        //PVSCL:IFCOND(Local, LINE)
+        let storage = new Local({
+          group: group
+        })
+        //PVSCL:ENDCOND
         this.annotationGuide.storage = storage
         if (_.isFunction(callback)) {
           callback()
@@ -116,7 +128,7 @@ class HypothesisGroupInitializer {
     let annotations = this.annotationGuide.toAnnotations()
     console.debug('Generated dimensions and categories annotations: ')
     console.debug(annotations)
-    window.hag.hypothesisClientManager.hypothesisClient.createNewAnnotations(annotations, (err) => {
+    window.hag.storageManager.client.createNewAnnotations(annotations, (err) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -131,7 +143,7 @@ class HypothesisGroupInitializer {
 
   removeGroup (callback) {
     if (this.annotationGuide.storage) {
-      window.hag.hypothesisClientManager.hypothesisClient.removeAMemberFromAGroup(this.annotationGuide.storage.group.id, 'me', (err) => {
+      window.hag.storageManager.client.removeAMemberFromAGroup(this.annotationGuide.storage.group.id, 'me', (err) => {
         if (_.isFunction(callback)) {
           callback(err)
         } else {

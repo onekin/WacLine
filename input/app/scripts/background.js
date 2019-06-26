@@ -13,7 +13,9 @@ chrome.tabs.onCreated.addListener((tab) => {
 
 })
 
+// PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisManager = require('./background/HypothesisManager')
+// PVSCL:ENDCOND
 const Popup = require('./popup/Popup')
 // PVSCL:IFCOND(GSheetProvider or GSheetConsumer, LINE)
 const GoogleSheetsManager = require('./background/GoogleSheetsManager')
@@ -29,16 +31,20 @@ const _ = require('lodash')
 
 class Background {
   constructor () {
+    // PVSCL:IFCOND(Hypothesis, LINE)
     this.hypothesisManager = null
+    // PVSCL:ENDCOND
     this.tabs = {}
   }
 
   init () {
+    // PVSCL:IFCOND(Hypothesis, LINE)
     // Initialize hypothesis manager
     this.hypothesisManager = new HypothesisManager()
     this.hypothesisManager.init()
-    // PVSCL:IFCOND(GSheetProvider or GSheetConsumer, LINE)
 
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GSheetProvider or GSheetConsumer, LINE)
     // Initialize google sheets manager
     this.googleSheetsManager = new GoogleSheetsManager()
     this.googleSheetsManager.init()

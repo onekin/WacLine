@@ -1,5 +1,10 @@
 const TextUtils = require('./utils/URLUtils')
+//PVSCL:IFCOND(Hypothesis,LINE)
 const HypothesisClientManager = require('./storage/hypothesis/HypothesisClientManager')
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Local,LINE)
+const LocalStorageManager = require('./storage/local/LocalStorageManager')
+//PVSCL:ENDCOND
 const _ = require('lodash')
 
 class ScienceDirectContentScript {
@@ -10,9 +15,14 @@ class ScienceDirectContentScript {
       // Activate the extension
       chrome.runtime.sendMessage({scope: 'extension', cmd: 'activatePopup'}, (result) => {
         // Retrieve if annotation is done in current url or in pdf version
-        window.hag.hypothesisClientManager = new HypothesisClientManager()
-        window.hag.hypothesisClientManager.init(() => {
-          window.hag.hypothesisClientManager.hypothesisClient.fetchAnnotation(params.hag, (err, annotation) => {
+        //PVSCL:IFCOND(Hypothesis,LINE)
+        window.hag.storageManager = new HypothesisClientManager()
+        //PVSCL:ENDCOND
+        //PVSCL:IFCOND(Local,LINE)
+        window.hag.storageManager = new LocalStorageManager()
+        //PVSCL:ENDCOND
+        window.hag.storageManager.init(() => {
+          window.hag.storageManager.client.fetchAnnotation(params.hag, (err, annotation) => {
             if (err) {
               console.error(err)
             } else {

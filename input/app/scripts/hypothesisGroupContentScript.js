@@ -1,6 +1,6 @@
 const selectedGroupNamespace = 'hypothesis.currentGroup'
 const ChromeStorage = require('./utils/ChromeStorage')
-const HypothesisClientManager = require('./hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('./storage/hypothesis/HypothesisClientManager')
 const _ = require('lodash')
 
 console.log('Loaded hypothesis group content script')
@@ -17,9 +17,9 @@ window.addEventListener('load', () => {
       } else {
         // Set hypothes.is web page group as current group
         window.abwa = {}
-        window.abwa.hypothesisClientManager = new HypothesisClientManager()
-        window.abwa.hypothesisClientManager.init(() => {
-          window.abwa.hypothesisClientManager.hypothesisClient.getUserProfile((err, userProfile) => {
+        window.abwa.storageManager = new HypothesisClientManager()
+        window.abwa.storageManager.init(() => {
+          window.abwa.storageManager.client.getUserProfile((err, userProfile) => {
             if (err) {
               console.error('Error while retrieving user profile in hypothesis')
             } else {

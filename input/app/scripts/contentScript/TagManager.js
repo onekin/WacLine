@@ -8,7 +8,12 @@ const Events = require('./Events')
 const Alerts = require('../utils/Alerts')
 //PVSCL:IFCOND(User,LINE)
 const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Hypothesis,LINE)
 const Hypothesis = require('../storage/hypothesis/Hypothesis')
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Local,LINE)
+const Local = require('../storage/local/Local')
 //PVSCL:ENDCOND
 const Config = require('../Config')
 const AnnotationGuide = require('../definition/AnnotationGuide')
@@ -17,7 +22,7 @@ const Theme = require('../definition/Theme')
 const Code = require('../definition/Code')
 //PVSCL:ENDCOND
 
-class MyTagManager {
+class TagManager {
   constructor () {
     this.model = {
       highlighterDefinitionAnnotations: [], // Highlighter definition annotations
@@ -100,7 +105,7 @@ class MyTagManager {
    * @param callback
    */
   getHighlighterDefinition (callback) {
-    window.abwa.hypothesisClientManager.hypothesisClient.searchAnnotations({
+    window.abwa.storageManager.client.searchAnnotations({
       url: window.abwa.groupSelector.currentGroup.links.html,
       order: 'desc'
     }, (err, annotations) => {
@@ -147,9 +152,16 @@ class MyTagManager {
                   text: 'We are configuring everything to start reviewing.',
                   position: Alerts.position.center
                 })
+                //PVSCL:IFCOND(Hypothesis,LINE)
                 let storage = new Hypothesis({
                   group: window.abwa.groupSelector.currentGroup
                 })
+                //PVSCL:ENDCOND
+                //PVSCL:IFCOND(Local,LINE)
+                let storage = new Local({
+                  group: window.abwa.groupSelector.currentGroup
+                })
+                //PVSCL:ENDCOND
                 DefaultHighlighterGenerator.createDefaultAnnotations(storage, (err, annotations) => {
                   if (err) {
                     reject(new Error('Unable to create default annotations.'))
@@ -164,12 +176,19 @@ class MyTagManager {
               cancelCallback: () => {
                 // PVSCL:IFCOND(Dynamic,LINE)
                 // TODO In pure::variants: if selected Dynamic, create annotation guide
+                //PVSCL:IFCOND(Hypothesis,LINE)
                 let storage = new Hypothesis({
                   group: window.abwa.groupSelector.currentGroup
                 })
+                //PVSCL:ENDCOND
+                //PVSCL:IFCOND(Local,LINE)
+                let storage = new Local({
+                  group: window.abwa.groupSelector.currentGroup
+                })
+                //PVSCL:ENDCOND
                 let emptyAnnotationGuide = new AnnotationGuide({storage: storage})
                 let emptyAnnotationGuideAnnotation = emptyAnnotationGuide.toAnnotation()
-                window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(emptyAnnotationGuideAnnotation, (err, annotation) => {
+                window.abwa.storageManager.client.createNewAnnotation(emptyAnnotationGuideAnnotation, (err, annotation) => {
                   if (err) {
                     Alerts.errorAlert({text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.'}) // TODO i18n
                   } else {
@@ -448,7 +467,7 @@ class MyTagManager {
         },
         callback: () => {
           let newCodeAnnotation = newCode.toAnnotation()
-          window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(newCodeAnnotation, (err, annotation) => {
+          window.abwa.storageManager.client.createNewAnnotation(newCodeAnnotation, (err, annotation) => {
             if (err) {
               Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
             } else {
@@ -492,7 +511,7 @@ class MyTagManager {
         },
         callback: () => {
           let newThemeAnnotation = newTheme.toAnnotation()
-          window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(newThemeAnnotation, (err, annotation) => {
+          window.abwa.storageManager.client.createNewAnnotation(newThemeAnnotation, (err, annotation) => {
             if (err) {
               Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
             } else {
@@ -529,7 +548,7 @@ class MyTagManager {
         if (_.every(codesId, _.isString)) {
           annotationsToDelete = annotationsToDelete.concat(codesId)
         }
-        window.abwa.hypothesisClientManager.hypothesisClient.deleteAnnotations(annotationsToDelete, (err, result) => {
+        window.abwa.storageManager.client.deleteAnnotations(annotationsToDelete, (err, result) => {
           if (err) {
             Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
           } else {
@@ -550,7 +569,7 @@ class MyTagManager {
       text: 'Are you sure that you want to remove the code ' + code.name + '. You cannot undo this operation.',
       alertType: Alerts.alertType.warning,
       callback: () => {
-        window.abwa.hypothesisClientManager.hypothesisClient.deleteAnnotation(code.id, (err, result) => {
+        window.abwa.storageManager.client.deleteAnnotation(code.id, (err, result) => {
           if (err) {
             Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
           } else {
@@ -566,4 +585,4 @@ class MyTagManager {
   // PVSCL:ENDCOND
 }
 
-module.exports = MyTagManager
+module.exports = TagManager

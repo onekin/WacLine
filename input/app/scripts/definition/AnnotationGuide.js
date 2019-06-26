@@ -10,7 +10,12 @@ const Alerts = require('../utils/Alerts')
 const Config = require('../Config')
 const _ = require('lodash')
 const LanguageUtils = require('../utils/LanguageUtils')
+// PVSCL:IFCOND(Hypothesis, LINE)
 const Hypothesis = require('../storage/hypothesis/Hypothesis')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Local, LINE)
+const Local = require('../storage/local/Local')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Dynamic, LINE)
 const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
@@ -77,7 +82,12 @@ class AnnotationGuide {
     config.sheetId = config.sheetId
     // PVSCL:ENDCOND
     let storage
+    // PVSCL:IFCOND(Hypothesis, LINE)
     storage = new Hypothesis({group: window.abwa.groupSelector.currentGroup})
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Local, LINE)
+    storage = new Local({group: window.abwa.groupSelector.currentGroup})
+    // PVSCL:ENDCOND
     let annotationGuideOpts = {id: annotation.id, name: annotation.name, storage: storage}
     // PVSCL:IFCOND(GSheetProvider, LINE)
     annotationGuideOpts['spreadsheetId'] = config.spreadsheetId

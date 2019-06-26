@@ -17,9 +17,9 @@
     {
       "matches": ["*://*/*"PVSCL:IFCOND(URN), "file:///*/*"PVSCL:ENDCOND],
       // PVSCL:IFCOND(GSheetProvider,LINE)
-      "exclude_matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*"PVSCL:IFCOND(Manual), "https://hypothes.is/login"PVSCL:ENDCOND],
+      "exclude_matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*"PVSCL:IFCOND(Manual and Hypothesis), "https://hypothes.is/login"PVSCL:ENDCOND],
       // PVSCL:ELSECOND
-      // PVSCL:IFCOND(Manual,LINE)
+      // PVSCL:IFCOND(Manual and Hypothesis,LINE)
       "exclude_matches": ["https://hypothes.is/login"],
       // PVSCL:ENDCOND
       //PVSCL:ENDCOND
@@ -45,7 +45,7 @@
       "matches": ["*://www.sciencedirect.com/science/article/pii/*"],
       "js": ["scripts/scienceDirectContentScript.js"],
       "run_at": "document_end"
-    }PVSCL:ENDCONDPVSCL:IFCOND(Manual),
+    }PVSCL:ENDCONDPVSCL:IFCOND(Manual and Hypothesis),
     {
       "matches": [
         "https://hypothes.is/groups/*/*"

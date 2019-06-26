@@ -14,7 +14,9 @@ const GroupName = Config.groupName
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(Manual, LINE)
 const selectedGroupNamespace = 'hypothesis.currentGroup'
+//PVSCL:IFCOND(Hypothesis,LINE)
 const checkHypothesisLoggedInWhenPromptInSeconds = 2 // When not logged in, check if user has logged in
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(NOT(User), LINE)
 const defaultGroup = {id: '__world__', name: 'Public', public: true}
 //PVSCL:ENDCOND
@@ -188,7 +190,7 @@ class GroupSelector {
 //PVSCL:IFCOND(User,LINE)
 
   createApplicationBasedGroupForUser (callback) {
-    window.abwa.hypothesisClientManager.hypothesisClient.createNewGroup({name: Config.groupName}, callback)
+    window.abwa.storageManager.client.createNewGroup({name: Config.groupName}, callback)
   }
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(NOT(Manual),LINE)
@@ -198,7 +200,8 @@ class GroupSelector {
     $.get(sidebarURL, (html) => {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))
-      if (!window.abwa.hypothesisClientManager.isLoggedIn()) {
+      //PVSCL:IFCOND(Hypothesis,LINE)
+      if (!window.abwa.storageManager.isLoggedIn()) {
         // Display login/sign up form
         $('#notLoggedInGroupContainer').attr('aria-hidden', 'false')
         // Hide group container
@@ -217,6 +220,12 @@ class GroupSelector {
           callback()
         }
       }
+      //PVSCL:ENDCOND
+      //PVSCL:IFCOND(Local,LINE)
+      if (_.isFunction(callback)) {
+        callback()
+      }
+      //PVSCL:ENDCOND
     })
   }
 //PVSCL:ENDCOND
@@ -234,7 +243,8 @@ class GroupSelector {
   }
 
   reloadGroupsContainer (callback) {
-    if (window.abwa.hypothesisClientManager.isLoggedIn()) {
+    //PVSCL:IFCOND(Hypothesis,LINE)
+    if (window.abwa.storageManager.isLoggedIn()) {
       // Hide login/sign up form
       $('#notLoggedInGroupContainer').attr('aria-hidden', 'true')
       // Display group container
@@ -263,7 +273,24 @@ class GroupSelector {
         callback()
       }
     }
+    //PVSCL:ENDCOND
+    //PVSCL:IFCOND(Local,LINE)
+    // Hide login/sign up form
+    $('#notLoggedInGroupContainer').attr('aria-hidden', 'true')
+    // Display group container
+    $('#loggedInGroupContainer').attr('aria-hidden', 'false')
+    // Set current group if not defined
+    this.defineCurrentGroup(() => {
+      // Render groups container
+      this.renderGroupsContainer(() => {
+        if (_.isFunction(callback)) {
+          callback()
+        }
+      })
+    })
+    //PVSCL:ENDCOND
   }
+  //PVSCL:IFCOND(Hypothesis,LINE)
 
   initIsLoggedChecking () {
     // Check if user has been logged in
@@ -276,6 +303,7 @@ class GroupSelector {
       })
     }, checkHypothesisLoggedInWhenPromptInSeconds * 1000)
   }
+  //PVSCL:ENDCOND
 
   renderGroupsContainer (callback) {
     // Display group selector and purposes selector
@@ -324,7 +352,7 @@ class GroupSelector {
 // PVSCL:ENDCOND
 
   retrieveHypothesisGroups (callback) {
-    window.abwa.hypothesisClientManager.hypothesisClient.getListOfGroups({}, (err, groups) => {
+    window.abwa.storageManager.client.getListOfGroups({}, (err, groups) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -339,7 +367,7 @@ class GroupSelector {
   }
 
   retrieveUserProfile (callback) {
-    window.abwa.hypothesisClientManager.hypothesisClient.getUserProfile((err, profile) => {
+    window.abwa.storageManager.client.getUserProfile((err, profile) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)

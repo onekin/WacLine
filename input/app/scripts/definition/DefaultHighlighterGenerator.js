@@ -11,7 +11,7 @@ class DefaultHighlighterGenerator {
     let annotations = annotationGuide.toAnnotations()
     // TODO Codes annotations should be related to its corresponding theme: it requires to update Code annotations to relate them by ID instead of by tag
     // Send create highlighter
-    window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotations(annotations, (err, annotations) => {
+    window.abwa.storageManager.client.createNewAnnotations(annotations, (err, annotations) => {
       callback(err, annotations)
     })
   }

@@ -1,11 +1,16 @@
 const _ = require('lodash')
 const ContentTypeManager = require('./ContentTypeManager')
 const Sidebar = require('./Sidebar')
-const MyTagManager = require('./MyTagManager')
+const TagManager = require('./TagManager')
 // const RolesManager = require('./RolesManager')
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
+// PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
+//PVSCL:ENDCOND
+// PVSCL:IFCOND(Local, LINE)
+const LocalStorageManager = require('../storage/local/LocalStorageManager')
+//PVSCL:ENDCOND
 const Config = require('../Config')
 const Toolset = require('./Toolset')
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
@@ -23,8 +28,7 @@ class ContentScriptManager {
     console.debug('Initializing content script manager')
     this.status = ContentScriptManager.status.initializing
     this.loadContentTypeManager(() => {
-      window.abwa.hypothesisClientManager = new HypothesisClientManager()
-      window.abwa.hypothesisClientManager.init(() => {
+      this.loadStorage(() => {
         window.abwa.sidebar = new Sidebar()
         window.abwa.sidebar.init(() => {
           window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
@@ -110,7 +114,7 @@ class ContentScriptManager {
     // Destroy current tag manager
     this.destroyTagsManager()
     // Create a new tag manager for the current group
-    window.abwa.tagManager = new MyTagManager(Config.namespace, Config.tags) // TODO Depending on the type of annotator
+    window.abwa.tagManager = new TagManager(Config.namespace, Config.tags) // TODO Depending on the type of annotator
     window.abwa.tagManager.init(callback)
   }
 //PVSCL:IFCOND(UserFilter, LINE)
@@ -155,7 +159,7 @@ class ContentScriptManager {
       // TODO Destroy groupSelector, roleManager,
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
-          window.abwa.hypothesisClientManager.destroy(() => {
+          this.destroyStorage(() => {
             this.status = ContentScriptManager.status.notInitialized
             console.debug('Correctly destroyed content script manager')
             if (_.isFunction(callback)) {
@@ -212,6 +216,30 @@ class ContentScriptManager {
   destroyToolset () {
     if (window.abwa.toolset) {
       window.abwa.toolset.destroy()
+    }
+  }
+
+  loadStorage (callback) {
+    // PVSCL:IFCOND(Hypothesis, LINE)
+    window.abwa.storageManager = new HypothesisClientManager()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Local, LINE)
+    window.abwa.storageManager = new LocalStorageManager()
+    // PVSCL:ENDCOND
+    window.abwa.storageManager.init((err) => {
+      if (_.isFunction(callback)) {
+        if (err) {
+          callback(err)
+        } else {
+          callback()
+        }
+      }
+    })
+  }
+
+  destroyStorage (callback) {
+    if (window.abwa.storageManager) {
+      window.abwa.storageManager.destroy(callback)
     }
   }
 }
