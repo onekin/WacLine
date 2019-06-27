@@ -112,11 +112,14 @@ class Review {
 
     // Other comments
     if(this.unsortedAnnotations.length>0){
-      t += "OTHER COMMENTS:\n\n"
+      t += "COMMENTS:\n\n"
       let reviewReferences = this.references
       for(let i=0;i<this.unsortedAnnotations.length;i++){
         t += "\t- "
-        if(this.unsortedAnnotations[i].page!=null) t+= '(Page '+this.unsortedAnnotations[i].page+'): '
+        if(this.unsortedAnnotations[i].page!=null) t+= '(Page '+this.unsortedAnnotations[i].page+') - '
+        if (this.unsortedAnnotations[i].criterion !== null) {
+          t += '[' + this.unsortedAnnotations[i].criterion + ']: '
+        }
         t += '"'+this.unsortedAnnotations[i].highlightText+'"'
         if(this.unsortedAnnotations[i].comment!=null) t+= '\n\t'+this.unsortedAnnotations[i].comment
         let literature = this.unsortedAnnotations[i].suggestedLiterature!=null ? this.unsortedAnnotations[i].suggestedLiterature : []
@@ -190,7 +193,7 @@ class AnnotationGroup {
   }
   toString(){
     let t = ''
-    let concernToString = (c) => {
+    /* let concernToString = (c) => {
       let str = ''
       switch(c){
         case "Relevance":
@@ -200,7 +203,7 @@ class AnnotationGroup {
           str += "I think that the importance of the problem needs to be emphasized.";
           break;
         case "Depth of analysis":
-          str += "The paper seems to overlook the â€˜whyâ€™ and focus too much on the â€˜whatâ€™.";
+          str += "The paper seems to overlook the ‘why’ and focus too much on the ‘what’.";
           break;
         case "Adoption":
           str += "There is uncertainty about the adoption of the artefact by practitioners.";
@@ -387,8 +390,11 @@ class AnnotationGroup {
         t += concernToString(this._annotations[0].criterion)
         break
       default:
+        t += '[' + this._annotations[0].criterion + ']'
         break
-    }
+    } */
+    debugger
+
     for(let i in this._annotations){
       if(this._annotations[i].highlightText===null) continue
       t += '\n\t* '

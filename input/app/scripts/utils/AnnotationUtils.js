@@ -37,20 +37,22 @@ class AnnotationUtils {
   }
 
   static parseAnnotations (annotations) {
-    const criterionTag = Config.namespace + ':' + Config.tags.grouped.relation + ':'
+    // TODO Substitute by (tagId -> name) of the annotation
+    const criterionTag = Config.namespace + ':' + Config.tags.grouped.group + ':'
     const levelTag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':'
     let r = new Review()
 
     for (let a in annotations) {
       if (annotations.hasOwnProperty(a)) {
         let criterion = null
-        let level = null
-        for (let t in annotations[a].tags) {
-          if (annotations[a].tags.hasOwnProperty(t)) {
-            if (annotations[a].tags[t].indexOf(criterionTag) !== -1) criterion = annotations[a].tags[t].replace(criterionTag, '').trim()
-            if (annotations[a].tags[t].indexOf(levelTag) !== -1) level = annotations[a].tags[t].replace(levelTag, '').trim()
+        let annotation = annotations[a]
+        annotation.tags.forEach((tag) => {
+          if (tag.includes(levelTag)) {
+            criterion = tag.replace(levelTag, '').trim()
+          } else if (tag.includes(criterionTag)) {
+            criterion = tag.replace(criterionTag, '').trim()
           }
-        }
+        })
         // if (criterion == null || level == null) continue
         let textQuoteSelector = null
         let highlightText = ''
@@ -67,9 +69,9 @@ class AnnotationUtils {
             }
           }
         }
-        let annotationText = annotations[a].text !== null && annotations[a].text !== '' ? JSON.parse(annotations[a].text) : {comment: '', suggestedLiterature: []}
-        let comment = annotationText.comment !== null ? annotationText.comment : null
-        let suggestedLiterature = annotationText.suggestedLiterature !== null ? annotationText.suggestedLiterature : []
+        let comment = annotations[a].text
+        let suggestedLiterature = annotations[a].references || null // TODO When add reference feature is implemented
+        let level = annotations[a].level || null // TODO When add level feature is implemented
         r.insertAnnotation(new Annotation(annotations[a].id, criterion, level, highlightText, pageNumber, comment, suggestedLiterature))
       }
     }
