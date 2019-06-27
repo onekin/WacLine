@@ -28,11 +28,14 @@ class Screenshots {
       // Redraw annotations
       window.abwa.contentAnnotator.redrawAnnotations()
       // Append rubric
-      html2canvas(document.querySelector('#tagsEvidencing')).then((rubric) => {
-        let offsetWidth = document.querySelector('#tagsEvidencing').offsetWidth
-        let offsetHeight = document.querySelector('#tagsEvidencing').offsetHeight
-        pdf.addImage(rubric.toDataURL(), 'png', 0, 0, 29 * offsetWidth / offsetHeight, 29)
-      })
+      let criteriaElement = document.querySelector('#buttonContainer')
+      if (criteriaElement) {
+        html2canvas(criteriaElement).then((rubric) => {
+          let offsetWidth = criteriaElement.offsetWidth
+          let offsetHeight = criteriaElement.offsetHeight
+          pdf.addImage(rubric.toDataURL(), 'png', 0, 0, 29 * offsetWidth / offsetHeight, 29)
+        })
+      }
       // Create promises array
       let promisesData = [...Array(window.PDFViewerApplication.pagesCount).keys()].map((index) => { return {i: index} })
       // Page screenshot promise
@@ -45,7 +48,9 @@ class Screenshots {
           setTimeout(() => {
             html2canvas(document.querySelector('.page[data-page-number="' + (d.i + 1) + '"]'), {scale: 1}).then((canvas) => {
               resolve()
-              pdf.addPage()
+              if (!(d.i === 0 && !_.isElement(criteriaElement))) {
+                pdf.addPage()
+              }
               pdf.addImage(canvas.toDataURL(), 'png', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), '', 'FAST')
             })
           }, 750)
