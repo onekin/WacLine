@@ -93,7 +93,7 @@
     "*://www.dropbox.com/s/",
     "*://*.dropboxusercontent.com/*"PVSCL:ENDCOND
   ],
-  PVSCL:IFCOND(GSheetProvider,LINE)
+  PVSCL:IFCOND(GSheetProvider or GSheetConsumer,LINE)
   "oauth2": {
     "client_id": "1008657588862-k3t7glpcvdrtc43dsmktkjudufh9m5ho.apps.googleusercontent.com",
     "scopes": [
