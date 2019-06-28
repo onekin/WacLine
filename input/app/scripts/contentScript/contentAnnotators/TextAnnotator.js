@@ -694,7 +694,7 @@ class TextAnnotator extends ContentAnnotator {
     /* if (previousAssignmentsUI) {
       html += previousAssignmentsUI.outerHTML
     } */
-    html += '<textarea data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>'
+      html += '<textarea class="swal2-textarea" data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>'
 
     // On before open
     let onBeforeOpen = () => {}

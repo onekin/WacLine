@@ -5,15 +5,14 @@ const axios = require('axios')
 class Canvas {
   static generateCanvas () {
     window.abwa.sidebar.closeSidebar()
-    Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
     let review = AnnotationUtils.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
     let canvasPageURL = chrome.extension.getURL('pages/specific/reviewCanvas.html')
     axios.get(canvasPageURL).then((response) => {
-      document.body.lastChild.insertAdjacentHTML('afterend', response.data)
+      document.body.insertAdjacentHTML('beforeend', response.data)
       document.querySelector('#abwaSidebarButton').style.display = 'none'
 
       let canvasContainer = document.querySelector('#canvasContainer')
-      document.querySelector('canvasOverlay').addEventListener('click', function () {
+      document.querySelector('#canvasOverlay').addEventListener('click', function () {
         document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
@@ -29,19 +28,9 @@ class Canvas {
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
       let canvasClusters = {}
-      let criteriaList = []
-      window.abwa.tagManager.currentTags.forEach((e) => {
-        if (e.config.name === 'Typos') return
-        criteriaList.push(e.config.name)
-        if (canvasClusters[e.config.options.group] == null) canvasClusters[e.config.options.group] = [e.config.name]
-        else canvasClusters[e.config.options.group].push(e.config.name)
-      })
-
-      review.annotations.forEach((e) => {
-        if (e.criterion === 'Typos' || criteriaList.indexOf(e.criterion) !== -1) return
-        if (canvasClusters['Other'] == null) canvasClusters['Other'] = [e.criterion]
-        else canvasClusters['Other'].push(e.criterion)
-        criteriaList.push(e.criterion)
+      window.abwa.tagManager.model.highlighterDefinition.themes.forEach((theme) => {
+        canvasClusters[theme.name] = theme.codes.map((code) => { return code.name })
+        canvasClusters[theme.name].push(theme.name)
       })
 
       let clusterTemplate = document.querySelector('#propertyClusterTemplate')
@@ -119,8 +108,12 @@ class Canvas {
             else currentColumn.querySelector('.clusterColumn').style.width = parseFloat(100.0/Math.ceil(canvasClusters[key].length/2)).toString()+'%' */
             else {
               let columnWidth
-              if (canvasClusters[key].length === 2) columnWidth = getColumnWidth([canvasClusters[key][i]], key)
-              else if (i < canvasClusters[key].length - 1) columnWidth = getColumnWidth([canvasClusters[key][i], canvasClusters[key][i + 1]], key)
+              if (canvasClusters[key].length === 2) {
+                columnWidth = getColumnWidth([canvasClusters[key][i]], key)
+                if (getColumnAnnotationCount(canvasClusters[key]) === 0) {
+                  currentColumn.querySelector('.clusterColumn').style.height = 50 + '%'
+                }
+              } else if (i < canvasClusters[key].length - 1) columnWidth = getColumnWidth([canvasClusters[key][i], canvasClusters[key][i + 1]], key)
               else columnWidth = getColumnWidth([canvasClusters[key][i]], key)
               currentColumn.querySelector('.clusterColumn').style.width = columnWidth + '%'
             }
