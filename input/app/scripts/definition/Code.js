@@ -18,13 +18,15 @@ class Code {
   toAnnotation () {
     let codeTag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + this.name
     let isCodeOfTag = Config.namespace + ':' + Config.tags.grouped.relation + ':' + this.theme.name
-    let tags = [codeTag, isCodeOfTag]
+    let motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'codebookDevelopment'
+    let tags = [codeTag, isCodeOfTag, motivationTag]
     return {
       id: this.id,
       group: this.theme.annotationGuide.storage.group.id,
       permissions: {
         read: ['group:' + this.theme.annotationGuide.storage.group.id]
       },
+      motivation: 'codebookDevelopment',
       references: [],
       tags: tags,
       target: [],

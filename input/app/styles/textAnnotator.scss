@@ -16,6 +16,20 @@ PVSCL:ENDCOND
 .highlightedAnnotation .highlightedAnnotation{ // TODO
   background-color: transparent !important;
 }
+PVSCL:IFCOND( Autofill, LINE )
+
+.swal2-actions {
+  z-index: 0 !important;
+}
+
+#comment {
+  width: 100%;
+}
+
+.awesomplete {
+  width: 100%;
+}
+PVSCL:ENDCOND
 
 // POLE SELECTION IN COMMENT BOX
 .criterionName{

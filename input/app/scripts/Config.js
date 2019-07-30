@@ -9,7 +9,8 @@ const Config = {
       group: 'theme'PVSCL:IFCOND(Code),
       subgroup: 'code',
       relation: 'isCodeOf'PVSCL:ENDCOND
-    }PVSCL:IFCOND(GSheetProvider),
+    },
+    motivation: 'motivation'PVSCL:IFCOND(GSheetProvider),
     statics: { // Other static tags specific for the domain
       multivalued: 'multivalued',
       inductive: 'inductive',

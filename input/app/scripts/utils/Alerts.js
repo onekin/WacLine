@@ -159,7 +159,7 @@ class Alerts {
     }
   }
 
-  static multipleInputAlert ({title = 'Input', html = '', preConfirm, showCancelButton = true, callback}) {
+  static multipleInputAlert ({title = 'Input', html = '', preConfirm, onBeforeOpen, showCancelButton = true, callback}) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -171,6 +171,7 @@ class Alerts {
         html: html,
         focusConfirm: false,
         preConfirm: preConfirm,
+        onBeforeOpen: onBeforeOpen,
         showCancelButton: showCancelButton
       }).then(() => {
         if (_.isFunction(callback)) {

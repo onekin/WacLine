@@ -37,7 +37,9 @@ class Theme {
   }
 
   toAnnotation () {
-    let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name]
+    let themeTag = Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name
+    let motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'codebookDevelopment'
+    let tags = [themeTag, motivationTag]
 // PVSCL:IFCOND(GSheetProvider and Code,LINE)
     if (this.multivalued) {
       tags.push(Config.namespace + ':' + Config.tags.statics.multivalued)
@@ -51,6 +53,7 @@ class Theme {
       permissions: {
         read: ['group:' + this.annotationGuide.storage.group.id]
       },
+      motivation: 'codebookDevelopment',
       references: [],
       tags: tags,
       target: [],

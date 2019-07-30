@@ -21,6 +21,9 @@ const ReplyAnnotation = require('../../production/ReplyAnnotation')
 const axios = require('axios')
 const qs = require('qs')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Autofill,LINE)
+const Awesomplete = require('awesomplete')
+// PVSCL:ENDCOND
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 60
 
@@ -387,7 +390,7 @@ class TextAnnotator extends ContentAnnotator {
    */
   initAnnotationsObserver (callback) {
     this.observerInterval = setInterval(() => {
-      console.debug('Observer interval')
+      // console.debug('Observer interval')
       // If a swal is displayed, do not execute highlighting observer
       if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
         // PVSCL:IFCOND(UserFilter, LINE)
@@ -411,7 +414,7 @@ class TextAnnotator extends ContentAnnotator {
     }, ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS * 1000)
     // TODO Improve the way to highlight to avoid this interval (when search in PDFs it is highlighted empty element instead of element)
     this.cleanInterval = setInterval(() => {
-      console.debug('Clean interval')
+      // console.debug('Clean interval')
       let highlightedElements = document.querySelectorAll('.highlightedAnnotation')
       highlightedElements.forEach((element) => {
         if (element.innerText === '') {
@@ -529,7 +532,7 @@ class TextAnnotator extends ContentAnnotator {
           $(highlightedElement).css('background-color', color)
           // Set purpose color
           highlightedElement.dataset.color = color
-       // PVSCL:IFCOND(ToolTip and SingleAnnotation,LINE)
+       // PVSCL:IFCOND(ToolTip, LINE)
           if (LanguageUtils.isInstanceOf(tag, Theme)) {
             // Set message
             highlightedElement.title = tag.name
@@ -686,7 +689,11 @@ class TextAnnotator extends ContentAnnotator {
    * @param sidebarOpen
    * @returns {Object}
    */
+  //PVSCL:IFCOND(Autofill,LINE)
+  generateCommentForm ({annotation, showForm, sidebarOpen, themeOrCode}) {
+  //PVSCL:ELSECOND
   generateCommentForm ({annotation, showForm, sidebarOpen}) {
+  //PVSCL:ENDCOND
     // TODO Mark and go previous assignments (AddReference): Get previous assignments
     // let previousAssignments = this.retrievePreviousAssignments()
     // let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
@@ -694,10 +701,26 @@ class TextAnnotator extends ContentAnnotator {
     /* if (previousAssignmentsUI) {
       html += previousAssignmentsUI.outerHTML
     } */
-      html += '<textarea class="swal2-textarea" data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>'
-
+    html += '<textarea class="swal2-textarea" data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>'
     // On before open
+    //PVSCL:IFCOND(Autofill,LINE)
+    let onBeforeOpen = () => {
+      // Load datalist with previously used texts
+      this.retrievePreviouslyUsedComments(themeOrCode).then((previousComments) => {
+        let awesomeplete = new Awesomplete(document.querySelector('#comment'), {
+          list: previousComments,
+          minChars: 0
+        })
+        // On double click on comment, open the awesomeplete
+        document.querySelector('#comment').addEventListener('dblclick', () => {
+          awesomeplete.evaluate()
+          awesomeplete.open()
+        })
+      })
+    }
+    //PVSCL:ELSECOND
     let onBeforeOpen = () => {}
+    //PVSCL:ENDCOND
     // Preconfirm
     let preConfirmData = {}
     let preConfirm = () => {
@@ -787,7 +810,11 @@ class TextAnnotator extends ContentAnnotator {
         annotation.text = preConfirmData.comment
       }
       // Create form
+      //PVSCL:IFCOND(Autofill,LINE)
+      let form = this.generateCommentForm({annotation, showForm, sidebarOpen, themeOrCode})
+      //PVSCL:ELSECOND
       let form = this.generateCommentForm({annotation, showForm, sidebarOpen})
+      //PVSCL:ENDCOND
       Alerts.multipleInputAlert({
         title: title,
         html: form.html,
@@ -802,6 +829,44 @@ class TextAnnotator extends ContentAnnotator {
     showForm()
   }
 // PVSCL:ENDCOND
+  //PVSCL:IFCOND(Autofill,LINE)
+
+  retrievePreviouslyUsedComments (themeOrCode) {
+    let tag = ''
+    if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
+      tag = 'oa:theme:' + themeOrCode.name
+    } else {
+      tag = 'oa:code:' + themeOrCode.name
+    }
+    return new Promise((resolve, reject) => {
+      window.abwa.storageManager.client.searchAnnotations({
+        tag: tag
+      }, (err, annotations) => {
+        if (err) {
+          reject(err)
+        } else {
+          // TODO filter by motivation
+          annotations = _.filter(annotations, (annotation) => {
+            return annotation.motivation === 'oa:classifying'
+          })
+          // Get texts from annotations and send them in callback
+          resolve(_.uniq(_.reject(_.map(annotations, (annotation) => {
+            // Remove other students moodle urls
+            let text = annotation.text
+            console.debug(text)
+            // TODO With feature AddReference
+            // let regex = /\b(?:https?:\/\/)?[^/:]+\/.*?mod\/assign\/view.php\?id=[0-9]+/g
+            // return text.replace(regex, '')
+            if (text.replace(/ /g, '') !== '') {
+              return text
+            }
+          }), _.isEmpty)))
+        }
+      })
+      return true
+    })
+  }
+  //PVSCL:ENDCOND
 
   retrieveHighlightClassName () {
     return this.highlightClassName // TODO Depending on the status of the application
