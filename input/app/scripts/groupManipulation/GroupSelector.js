@@ -4,56 +4,54 @@ const Alerts = require('../utils/Alerts')
 // PVSCL:IFCOND(User or ApplicationBased, LINE)
 const Config = require('../Config')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Manual, LINE)
 const ChromeStorage = require('../utils/ChromeStorage')
 const LanguageUtils = require('../utils/LanguageUtils')
+// PVSCL:IFCOND(ImportGroup, LINE)
+// const ImportSchema = require('./ImportSchema')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(User or ApplicationBased, LINE)
-
 const GroupName = Config.groupName
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(Manual, LINE)
-const selectedGroupNamespace = 'hypothesis.currentGroup'
+const Events = require('../contentScript/Events')
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(Hypothesis,LINE)
 const checkHypothesisLoggedInWhenPromptInSeconds = 2 // When not logged in, check if user has logged in
+const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Local,LINE)
+// const LocalStorageManager = require('../storage/local/LocalStorageManager')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(NOT(User), LINE)
 const defaultGroup = {id: '__world__', name: 'Public', public: true}
 //PVSCL:ENDCOND
-//PVSCL:ENDCOND
 
 class GroupSelector {
   constructor () {
+    this.selectedGroupNamespace = 'groupManipulation.currentGroup'
     this.groups = null
     this.currentGroup = null
     this.user = {}
   }
 
   init (callback) {
-    // PVSCL:IFCOND(Manual, LINE)
-    console.debug('Initializing group selector')
-    this.addGroupSelectorToSidebar(() => {
-      this.reloadGroupsContainer(() => {
-        if (_.isFunction(callback)) {
-          callback()
-        }
-      })
-    })
-    // PVSCL:ELSECOND
     console.debug('Initializing group selector')
     this.checkIsLoggedIn((err) => {
       if (err) {
-        // Stop propagating the rest of the functions, because it is not logged in hypothesis
-        // Show that user need to log in hypothes.is to continue
+        // Stop propagating the rest of the functions, because it is not logged in storage
+        // Show that user need to log in remote storage to continue
         Alerts.errorAlert({
-          title: 'Log in Hypothes.is required',
-          text: chrome.i18n.getMessage('HypothesisLoginRequired')
+          title: 'Log in selected storage required',
+          text: chrome.i18n.getMessage('StorageLoginRequired')
         })
       } else {
         // Retrieve user profile (for further uses in other functionalities of the tool)
         this.retrieveUserProfile(() => {
           // Define current group
           this.defineCurrentGroup(() => {
+            //PVSCL:IFCOND(Manual, LINE)
+            this.reloadGroupsContainer()
+            //PVSCL:ENDCOND
             console.debug('Initialized group selector')
             if (_.isFunction(callback)) {
               callback(null)
@@ -62,50 +60,14 @@ class GroupSelector {
         })
       }
     })
-    // PVSCL:ENDCOND
   }
 
   defineCurrentGroup (callback) {
-    // PVSCL:IFCOND(ApplicationBased, LINE)
-    // Load all the groups belonged to current user
-    this.retrieveHypothesisGroups((err, groups) => {
-      if (err) {
-
-      } else {
-        let group = _.find(groups, (group) => { return group.name === GroupName })
-        if (_.isObject(group)) {
-          // Current group will be that group
-          this.currentGroup = group
-          if (_.isFunction(callback)) {
-            callback(null)
-          }
-        } else {
-          // PVSCL:IFCOND(User, LINE) 
-          // TODO i18n
-          Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.', position: Alerts.position.center})
-          // TODO Create default group
-          this.createApplicationBasedGroupForUser((err, group) => {
-            if (err) {
-              Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for Review&Go. Please check if you are logged in Hypothes.is.'})
-            } else {
-              this.currentGroup = group
-              callback(null)
-            }
-          })
-          // PVSCL:ELSECOND
-          Alerts.errorAlert({text: 'The group ' + GroupName + ' does not exist. Please configure the tool in the third-party provider.'})
-          // PVSCL:ENDCOND
-        }
-      }
-    })
-    //PVSCL:ENDCOND
-    //PVSCL:IFCOND(Manual, LINE)
-    // If initialization annotation is set
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
       let annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
       // Load group of annotation
       this.retrieveUserProfile(() => {
-        this.retrieveHypothesisGroups((err, groups) => {
+        this.retrieveGroups((err, groups) => {
           if (err) {
             if (_.isFunction(callback)) {
               callback(err)
@@ -114,7 +76,7 @@ class GroupSelector {
             // Set current group
             this.currentGroup = _.find(groups, (group) => { return group.id === annotationGroupId })
             // Save to chrome storage current group
-            ChromeStorage.setData(selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
+            ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
             if (_.isFunction(callback)) {
               callback()
             }
@@ -122,16 +84,14 @@ class GroupSelector {
         })
       })
     } else {
+      // PVSCL:IFCOND(ApplicationBased, LINE)
       this.retrieveUserProfile(() => {
-      //PVSCL:IFCOND(User, LINE)
         // Load all the groups belonged to current user
-        this.retrieveHypothesisGroups((err, groups) => {
+        this.retrieveGroups((err, groups) => {
           if (err) {
 
           } else {
-            let group = _.find(groups, (group) => {
-              return group.name === GroupName
-            })
+            let group = _.find(groups, (group) => { return group.name === GroupName })
             if (_.isObject(group)) {
               // Current group will be that group
               this.currentGroup = group
@@ -139,12 +99,9 @@ class GroupSelector {
                 callback(null)
               }
             } else {
+              // PVSCL:IFCOND(User, LINE) 
               // TODO i18n
-              Alerts.loadingAlert({
-                title: 'First time reviewing?',
-                text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.',
-                position: Alerts.position.center
-              })
+              Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.', position: Alerts.position.center})
               // TODO Create default group
               this.createApplicationBasedGroupForUser((err, group) => {
                 if (err) {
@@ -154,46 +111,84 @@ class GroupSelector {
                   callback(null)
                 }
               })
+              // PVSCL:ELSECOND
+              Alerts.errorAlert({text: 'The group ' + GroupName + ' does not exist. Please configure the tool in the third-party provider.'})
+              // PVSCL:ENDCOND
             }
           }
         })
-        //PVSCL:ELSECOND
-        if (!this.currentGroup) {
-          // Retrieve last saved group
-          ChromeStorage.getData(selectedGroupNamespace, ChromeStorage.local, (err, savedCurrentGroup) => {
-            if (err) {
-              if (_.isFunction(callback)) {
-                callback(new Error('Unable to retrieve current selected group'))
+      })
+	    //PVSCL:ENDCOND
+	    //PVSCL:IFCOND(Manual, LINE)
+      this.retrieveUserProfile(() => {
+        // Load all the groups belonged to current user
+        this.retrieveGroups((err, groups) => {
+          if (err) {
+
+          } else {
+            ChromeStorage.getData(this.selectedGroupNamespace, ChromeStorage.local, (err, savedCurrentGroup) => {
+              if (!err && !_.isEmpty(savedCurrentGroup) && _.has(savedCurrentGroup, 'data')) {
+                // Parse saved current group
+                try {
+                  let savedCurrentGroupData = JSON.parse(savedCurrentGroup.data)
+                  let currentGroup = _.find(this.groups, (group) => {
+                    return group.id === savedCurrentGroupData.id
+                  })
+                  // Check if group exists in current user
+                  if (_.isObject(currentGroup)) {
+                    this.currentGroup = currentGroup
+                  }
+                } catch (e) {
+                  // Nothing to do
+                }
               }
-            } else {
-              // Parse chrome storage result
-              if (!_.isEmpty(savedCurrentGroup) && savedCurrentGroup.data) {
-                this.currentGroup = JSON.parse(savedCurrentGroup.data)
-              } else {
-                this.currentGroup = defaultGroup
+              // If group cannot be retrieved from saved in extension storage
+              //PVSCL:IFCOND(User or ApplicationBased, LINE)
+              // Try to load a group with defaultName
+              if (_.isEmpty(this.currentGroup)) {
+                this.currentGroup = _.find(window.abwa.groupSelector.groups, (group) => { return group.name === GroupName })
               }
+              //PVSCL:ENDCOND
+              //PVSCL:IFCOND(Local, LINE)
+              // If local annotation storage is selected, open any other group as all of them are for review&go
+              if (_.isEmpty(this.currentGroup) && LanguageUtils.isInstanceOf(window.abwa.storageManager, LocalStorageManager)) {
+                this.currentGroup = _.first(window.abwa.groupSelector.groups)
+              }
+              //PVSCL:ENDCOND
+              //PVSCL:IFCOND(User, LINE)
+              if (_.isEmpty(this.currentGroup)) {
+                // TODO i18n
+                Alerts.loadingAlert({
+                  title: 'First time reviewing?',
+                  text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.',
+                  position: Alerts.position.center
+                })
+                // TODO Create default group
+                this.createApplicationBasedGroupForUser((err, group) => {
+                  if (err) {
+                    Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for Review&Go. Please check if you are logged in Hypothes.is.'})
+                  } else {
+                    this.currentGroup = group
+                    callback(null)
+                  }
+                })
+              } else { // If group was found in extension storage
+                if (_.isFunction(callback)) {
+                  callback()
+                }
+              }
+              //PVSCL:ELSECOND
               if (_.isFunction(callback)) {
                 callback()
               }
-            }
-          })
-        } else {
-          if (_.isFunction(callback)) {
-            callback()
+              //PVSCL:ENDCOND
+            })
           }
-        }
-      //PVSCL:ENDCOND
+        })
       })
-    }
     //PVSCL:ENDCOND
+    }
   }
-//PVSCL:IFCOND(User,LINE)
-
-  createApplicationBasedGroupForUser (callback) {
-    window.abwa.storageManager.client.createNewGroup({name: Config.groupName}, callback)
-  }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(NOT(Manual),LINE)
 
   checkIsLoggedIn (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
@@ -228,67 +223,23 @@ class GroupSelector {
       //PVSCL:ENDCOND
     })
   }
+//PVSCL:IFCOND(User,LINE)
+
+  createApplicationBasedGroupForUser (callback) {
+    window.abwa.storageManager.client.createNewGroup({name: Config.groupName}, callback)
+  }
 //PVSCL:ENDCOND
 // PVSCL:IFCOND(Manual, LINE)
 
-  addGroupSelectorToSidebar (callback) {
-    let sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
-    $.get(sidebarURL, (html) => {
-      // Append sidebar to content
-      $('#abwaSidebarContainer').append($.parseHTML(html))
-      if (_.isFunction(callback)) {
-        callback()
-      }
-    })
-  }
-
   reloadGroupsContainer (callback) {
-    //PVSCL:IFCOND(Hypothesis,LINE)
-    if (window.abwa.storageManager.isLoggedIn()) {
-      // Hide login/sign up form
-      $('#notLoggedInGroupContainer').attr('aria-hidden', 'true')
-      // Display group container
-      $('#loggedInGroupContainer').attr('aria-hidden', 'false')
-      // Set current group if not defined
-      this.defineCurrentGroup(() => {
-        // Render groups container
-        this.renderGroupsContainer(() => {
-          if (_.isFunction(callback)) {
-            callback()
-          }
-        })
-      })
-    } else {
-      // Display login/sign up form
-      $('#notLoggedInGroupContainer').attr('aria-hidden', 'false')
-      // Hide group container
-      $('#loggedInGroupContainer').attr('aria-hidden', 'true')
-      // Hide purposes wrapper
-      $('#purposesWrapper').attr('aria-hidden', 'true')
-      // Init isLogged checking
-      this.initIsLoggedChecking()
-      // Open the sidebar to show that login is required
-      window.abwa.sidebar.openSidebar()
+    this.retrieveGroups(() => {
+      this.container = document.querySelector('#groupSelector')
+      this.container.setAttribute('aria-expanded', 'false')
+      this.renderGroupsContainer()
       if (_.isFunction(callback)) {
         callback()
       }
-    }
-    //PVSCL:ENDCOND
-    //PVSCL:IFCOND(Local,LINE)
-    // Hide login/sign up form
-    $('#notLoggedInGroupContainer').attr('aria-hidden', 'true')
-    // Display group container
-    $('#loggedInGroupContainer').attr('aria-hidden', 'false')
-    // Set current group if not defined
-    this.defineCurrentGroup(() => {
-      // Render groups container
-      this.renderGroupsContainer(() => {
-        if (_.isFunction(callback)) {
-          callback()
-        }
-      })
     })
-    //PVSCL:ENDCOND
   }
   //PVSCL:IFCOND(Hypothesis,LINE)
 
@@ -305,45 +256,216 @@ class GroupSelector {
   }
   //PVSCL:ENDCOND
 
-  renderGroupsContainer (callback) {
-    // Display group selector and purposes selector
-    $('#purposesWrapper').attr('aria-hidden', 'false')
-    // Retrieve groups
-    this.retrieveHypothesisGroups((groups) => {
-      console.debug(groups)
-      let dropdownMenu = document.querySelector('#groupSelector')
-      dropdownMenu.innerHTML = '' // Remove all groups
-      this.groups.forEach(group => {
-        let groupSelectorItem = document.createElement('option')
-        groupSelectorItem.dataset.groupId = group.id
-        groupSelectorItem.innerText = group.name
-        groupSelectorItem.className = 'dropdown-item'
-        dropdownMenu.appendChild(groupSelectorItem)
-      })
-      // Set select option
-      $('#groupSelector').find('option[data-group-id="' + this.currentGroup.id + '"]').prop('selected', 'selected')
-      // Set event handler for group change
-      this.setEventForGroupSelectChange()
-      if (_.isFunction(callback)) {
-        callback()
+  renderGroupsContainer () {
+    // Current group element rendering
+    let currentGroupNameElement = document.querySelector('#groupSelectorName')
+    currentGroupNameElement.innerText = this.currentGroup.name
+    currentGroupNameElement.title = this.currentGroup.name
+    // Toggle functionality
+    let toggleElement = document.querySelector('#groupSelectorToggle')
+    if (this.groupSelectorToggleClickEvent) {
+      currentGroupNameElement.removeEventListener('click', this.groupSelectorToggleClickEvent)
+      toggleElement.removeEventListener('click', this.groupSelectorToggleClickEvent)
+    }
+    this.groupSelectorToggleClickEvent = this.createGroupSelectorToggleEvent()
+    currentGroupNameElement.addEventListener('click', this.groupSelectorToggleClickEvent)
+    toggleElement.addEventListener('click', this.groupSelectorToggleClickEvent)
+    // Groups container
+    let groupsContainer = document.querySelector('#groupSelectorContainerSelector')
+    groupsContainer.innerText = ''
+    // For each group
+    let groupSelectorItemTemplate = document.querySelector('#groupSelectorItem')
+    for (let i = 0; i < this.groups.length; i++) {
+      let group = this.groups[i]
+      let groupSelectorItem = $(groupSelectorItemTemplate.content.firstElementChild).clone().get(0)
+      // Container
+      groupsContainer.appendChild(groupSelectorItem)
+      groupSelectorItem.id = 'groupSelectorItemContainer_' + group.id
+      // Name
+      let nameElement = groupSelectorItem.querySelector('.groupSelectorItemName')
+      nameElement.innerText = group.name
+      nameElement.title = 'Move to review model ' + group.name
+      nameElement.addEventListener('click', this.createGroupChangeEventHandler(group.id))
+      //PVSCL:IFCOND(RenameGroup or ExportGroup or DropGroup,LINE)
+      // Toggle
+      groupSelectorItem.querySelector('.groupSelectorItemToggle').addEventListener('click', this.createGroupSelectorItemToggleEventHandler(group.id))
+      // Options
+      //PVSCL:IFCOND(RenameGroup,LINE)
+      groupSelectorItem.querySelector('.renameGroup').addEventListener('click', this.createGroupSelectorRenameOptionEventHandler(group))
+      //PVSCL:ENDCOND
+      //PVSCL:IFCOND(ExportGroup,LINE)
+      groupSelectorItem.querySelector('.exportGroup').addEventListener('click', this.createGroupSelectorExportOptionEventHandler(group))
+      //PVSCL:ENDCOND
+      //PVSCL:IFCOND(DropGroup,LINE)
+      groupSelectorItem.querySelector('.deleteGroup').addEventListener('click', this.createGroupSelectorDeleteOptionEventHandler(group))
+      //PVSCL:ENDCOND
+      //PVSCL:ENDCOND
+    }
+    //PVSCL:IFCOND(CreateGroup,LINE)
+    // New group button
+    let newGroupButton = document.createElement('div')
+    newGroupButton.innerText = 'Create review model'
+    newGroupButton.id = 'createNewModelButton'
+    newGroupButton.className = 'groupSelectorButton'
+    newGroupButton.title = 'Create a new review model'
+    newGroupButton.addEventListener('click', this.createNewReviewModelEventHandler())
+    groupsContainer.appendChild(newGroupButton)
+    //PVSCL:ENDCOND
+    //PVSCL:IFCOND(ImportGroup,LINE)
+    // Import button
+    let importGroupButton = document.createElement('div')
+    importGroupButton.className = 'groupSelectorButton'
+    importGroupButton.innerText = 'Import review model'
+    importGroupButton.id = 'importReviewModelButton'
+    importGroupButton.addEventListener('click', this.createImportGroupButtonEventHandler())
+    groupsContainer.appendChild(importGroupButton)
+    //PVSCL:ENDCOND
+  }
+
+  createGroupSelectorToggleEvent () {
+    return (e) => {
+      this.toggleGroupSelectorContainer()
+    }
+  }
+
+  toggleGroupSelectorContainer () {
+    let groupSelector = document.querySelector('#groupSelector')
+    if (groupSelector.getAttribute('aria-expanded') === 'true') {
+      groupSelector.setAttribute('aria-expanded', 'false')
+    } else {
+      groupSelector.setAttribute('aria-expanded', 'true')
+    }
+  }
+
+  createGroupChangeEventHandler (groupId) {
+    return (e) => {
+      this.setCurrentGroup(groupId)
+    }
+  }
+
+  setCurrentGroup (groupId, callback) {
+    // Set current group
+    let newCurrentGroup = _.find(this.groups, (group) => { return group.id === groupId })
+    if (newCurrentGroup) {
+      this.currentGroup = newCurrentGroup
+    }
+    // Render groups container
+    this.reloadGroupsContainer((err) => {
+      if (err) {
+        if (_.isFunction(callback)) {
+          callback(err)
+        }
+      } else {
+        // Event group changed
+        this.updateCurrentGroupHandler(this.currentGroup.id)
+        // Open sidebar
+        window.abwa.sidebar.openSidebar()
+        if (_.isFunction(callback)) {
+          callback()
+        }
       }
     })
   }
+//PVSCL:IFCOND(RenameGroup or ExportGroup or DropGroup,LINE)
 
-  setEventForGroupSelectChange () {
-    let menu = document.querySelector('#groupSelector')
-    $(menu).change(() => {
-      let selectedGroup = $('#groupSelector').find('option:selected').get(0)
-      this.updateCurrentGroupHandler(selectedGroup.dataset.groupId)
-    })
+  createGroupSelectorItemToggleEventHandler (groupId) {
+    return (e) => {
+      let groupSelectorItemContainer = document.querySelector('#groupSelectorContainerSelector').querySelector('#groupSelectorItemContainer_' + groupId)
+      if (groupSelectorItemContainer.getAttribute('aria-expanded') === 'true') {
+        groupSelectorItemContainer.setAttribute('aria-expanded', 'false')
+      } else {
+        groupSelectorItemContainer.setAttribute('aria-expanded', 'true')
+      }
+    }
   }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(RenameGroup,LINE)
+
+  createGroupSelectorRenameOptionEventHandler (group) {
+    return () => {
+      this.renameGroup(group, (err, renamedGroup) => {
+        if (err) {
+          Alerts.errorAlert({text: 'Unable to rename group. Error: ' + err.message})
+        } else {
+          this.currentGroup = renamedGroup
+          this.retrieveGroups(() => {
+            this.reloadGroupsContainer(() => {
+              this.container.setAttribute('aria-expanded', 'true')
+              window.abwa.sidebar.openSidebar()
+            })
+          })
+        }
+      })
+    }
+  }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(ExportGroup,LINE)
+
+  createGroupSelectorExportOptionEventHandler (group) {
+    return () => {
+      this.exportCriteriaConfiguration(group, (err) => {
+        if (err) {
+          Alerts.errorAlert({text: 'Error when trying to export review model. Error: ' + err.message})
+        }
+      })
+    }
+  }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(DropGroup,LINE)
+
+  createGroupSelectorDeleteOptionEventHandler (group) {
+    return (e) => {
+      this.deleteGroup(group, (err) => {
+        if (err) {
+          Alerts.errorAlert({text: 'Error when deleting the group: ' + err.message})
+        } else {
+          // If removed group is the current group, current group must defined again
+          if (group.id === this.currentGroup.id) {
+            this.currentGroup = null
+          }
+          // Move to first other group if exists
+          this.defineCurrentGroup(() => {
+            this.reloadGroupsContainer(() => {
+              // Dispatch group has changed
+              this.updateCurrentGroupHandler()
+              // Expand groups container
+              this.container.setAttribute('aria-expanded', 'false')
+              // Reopen sidebar if closed
+              window.abwa.sidebar.openSidebar()
+            })
+          })
+        }
+      })
+    }
+  }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(CreateGroup,LINE)
+
+  createNewReviewModelEventHandler () {
+    return (event) => {
+      Alerts.errorAlert({text: 'It is not implemented yet'})
+    }
+  }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(ImportGroup,LINE)
+
+  createImportGroupButtonEventHandler () {
+    return (e) => {
+      this.importCriteriaConfiguration()
+    }
+  }
+
+  importCriteriaConfiguration () {
+    Alerts.errorAlert({text: 'It is not implemented yet'})
+  }
+//PVSCL:ENDCOND
 
   updateCurrentGroupHandler (groupId) {
     this.currentGroup = _.find(this.groups, (group) => { return groupId === group.id })
-    ChromeStorage.setData(selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local, () => {
+    ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local, () => {
       console.debug('Group updated. Name: %s id: %s', this.currentGroup.name, this.currentGroup.id)
       // Dispatch event
-      LanguageUtils.dispatchCustomEvent(GroupSelector.eventGroupChange, {
+      LanguageUtils.dispatchCustomEvent(Events.groupChanged, {
         group: this.currentGroup,
         time: new Date()
       })
@@ -351,7 +473,7 @@ class GroupSelector {
   }
 // PVSCL:ENDCOND
 
-  retrieveHypothesisGroups (callback) {
+  retrieveGroups (callback) {
     window.abwa.storageManager.client.getListOfGroups({}, (err, groups) => {
       if (err) {
         if (_.isFunction(callback)) {
@@ -359,6 +481,14 @@ class GroupSelector {
         }
       } else {
         this.groups = groups
+        //PVSCL:IFCOND(Hypothesis,LINE)
+        // Remove public group in hypothes.is
+        if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
+          _.remove(this.groups, (group) => {
+            return group.id === '__world__'
+          })
+        }
+        //PVSCL:ENDCOND
         if (_.isFunction(callback)) {
           callback(null, groups)
         }
@@ -398,6 +528,68 @@ class GroupSelector {
       return null
     }
   }
+  //PVSCL:IFCOND( ExportGroup, LINE)
+
+  exportCriteriaConfiguration (group, callback) {
+    // Retrieve group annotations
+    Alerts.errorAlert({text: 'Unable to export group.'})
+  }
+  //PVSCL:ENDCOND
+  //PVSCL:IFCOND( RenameGroup, LINE)
+
+  renameGroup (group, callback) {
+    Alerts.inputTextAlert({
+      title: 'Rename review model ' + group.name,
+      inputPlaceholder: 'Type here the name of your new review model...',
+      inputValue: group.name,
+      preConfirm: (groupName) => {
+        if (_.isString(groupName)) {
+          if (groupName.length <= 0) {
+            const swal = require('sweetalert2')
+            swal.showValidationMessage('Name cannot be empty.')
+          } else if (groupName.length > 25) {
+            const swal = require('sweetalert2')
+            swal.showValidationMessage('The review model name cannot be higher than 25 characters.')
+          } else {
+            return groupName
+          }
+        }
+      },
+      callback: (err, groupName) => {
+        if (err) {
+          window.alert('Unable to load swal. Please contact developer.')
+        } else {
+          groupName = LanguageUtils.normalizeString(groupName)
+          window.abwa.storageManager.client.updateGroup(group.id, {
+            name: groupName,
+            description: group.description || 'A Review&Go group to conduct a review'
+          }, callback)
+        }
+      }
+    })
+  }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND( DeleteGroup, LINE)
+
+  deleteGroup (group, callback) {
+    Alerts.confirmAlert({
+      title: 'Deleting review model ' + group.name,
+      text: 'Are you sure that you want to delete the review model. You will lose all the review model and all the annotations done with this review model in all the documents.',
+      alertType: Alerts.alertType.warning,
+      callback: () => {
+        window.abwa.storageManager.client.removeAMemberFromAGroup({id: group.id, user: this.user}, (err) => {
+          if (_.isFunction(callback)) {
+            if (err) {
+              callback(err)
+            } else {
+              callback(null)
+            }
+          }
+        })
+      }
+    })
+  }
+//PVSCL:ENDCOND
 
   destroy (callback) {
     //PVSCL:IFCOND( Manual, LINE)
@@ -411,7 +603,5 @@ class GroupSelector {
     }
   }
 }
-
-GroupSelector.eventGroupChange = 'hypothesisGroupChanged'
 
 module.exports = GroupSelector

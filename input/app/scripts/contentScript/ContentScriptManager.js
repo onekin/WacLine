@@ -17,6 +17,7 @@ const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 // PVSCL:IFCOND(UserFilter, LINE)
 const UserFilter = require('../consumption/filters/UserFilter')
 // PVSCL:ENDCOND
+const Events = require('./Events')
 
 class ContentScriptManager {
   constructor () {
@@ -51,7 +52,7 @@ class ContentScriptManager {
 
   initListenerForGroupChange () {
     this.events.groupChangedEvent = this.groupChangedEventHandlerCreator()
-    document.addEventListener(GroupSelector.eventGroupChange, this.events.groupChangedEvent, false)
+    document.addEventListener(Events.groupChanged, this.events.groupChangedEvent, false)
   }
 
   groupChangedEventHandlerCreator () {
@@ -168,7 +169,9 @@ class ContentScriptManager {
           })
         })
       })
-      document.removeEventListener(GroupSelector.eventGroupChange, this.events.groupChangedEvent)
+      //PVSCL:IFCOND(Manual, LINE)
+      document.removeEventListener(Events.groupChanged, this.events.groupChangedEvent)
+      //PVSCL:ENDCOND
     })
   }
 

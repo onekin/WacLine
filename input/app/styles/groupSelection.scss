@@ -1,19 +1,136 @@
-$themeColor: #7952b3;
-$themeLightColor: #9972d3;
-$sideBarWidth: 150px;
+@import "./variables";
+
+$elementHoverBackgroundColor: rgba(100,100,100,0.8);
 
 #groupSelector {
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid $themeColor;
-  max-width: 98%;
-  height: 20px;
-  font-size: 16px;
-  cursor: pointer;
+  font-size: 14px;
   transition: background-color 0.5s ease;
 }
 
-#groupSelector:hover {
-  background-color: $themeColor;
-  color: white;
+#groupSelector[aria-expanded="false"]:after {
+  transform: rotate(180deg);
+  padding-top: 3px;
+}
+
+#groupSelectorName {
+  width: 120px;
+  display: inline-block;
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+#groupSelectorToggle {
+  background-image: url($chromeExtensionMainURL + 'images/arrowUp.svg');
+  background-size: 20px 20px;
+  filter: brightness(10.2) sepia(1) hue-rotate(180deg) saturate(5);
+  display: inline-block;
+  width: 0;
+  height: 15px;
+  content:"";
+  padding-right: 20px;
+  float:right;
+  transition: transform 0.5s;
+  cursor: pointer;
+}
+
+#groupSelectorToggle:hover {
+
+}
+
+#groupSelectorContainerSelector {
+  padding-top: 15px;
+}
+
+.groupSelectorButton {
+  padding: 5px 0;
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+.groupSelectorButton:hover {
+  background-color: $elementHoverBackgroundColor;
+}
+
+#groupSelector[aria-expanded="false"] {
+  #groupSelectorToggle {
+    transform: rotate(180deg);
+    padding-top: 3px;
+  }
+
+  #groupSelectorContainerSelector {
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+  }
+}
+
+.groupSelectorItemOption {
+  display: block;
+  cursor: pointer;
+  height: 15px;
+  padding: 2px 0;
+}
+
+.groupSelectorItemOption:hover {
+  background-color: $elementHoverBackgroundColor;
+}
+
+.groupSelectorItemContainer {
+  margin: 3px 0;
+}
+
+.groupSelectorItemContainer[aria-expanded="false"] {
+  .groupSelectorItemToggle {
+    transform: rotate(180deg);
+    margin-top: 3px;
+  }
+  .groupSelectorItemOptionsContainer {
+    height: 0;
+    overflow: hidden;
+  }
+}
+
+.groupSelectorItemContainer[aria-expanded="true"] {
+  background-color: rgba(75, 75, 75, 1);
+}
+
+.groupSelectorItemName {
+  display: inline-block;
+  width: 80%;
+  text-overflow: ellipsis;
+  height: 16px;
+  max-height: 32px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.groupSelectorItemName:hover {
+  background-color: $elementHoverBackgroundColor;
+}
+
+.groupSelectorItemToggle {
+  margin-top: 0;
+  background-image: url($chromeExtensionMainURL + 'images/arrowUp.svg');
+  background-size: 20px 20px;
+  filter: brightness(10.2) sepia(1) hue-rotate(180deg) saturate(5);
+  display: inline-block;
+  width: 0;
+  height: 15px;
+  content:"";
+  padding-right: 20px;
+  float:right;
+  transition: transform 0.5s;
+  border-radius: 1px;
+  cursor: pointer;
+}
+
+.groupSelectorItemToggle:hover {
+  filter: none;
+  background-color: rgba(200,200,200,0.8);
 }

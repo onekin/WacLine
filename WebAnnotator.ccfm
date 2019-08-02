@@ -209,6 +209,11 @@
         <cm:script cm:id="iUZI9TFtGZM4feKg2" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Hypothesis</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="i73iEkA4ityo834y4">
+      <cm:restriction cm:id="iwg2tW4kDhXpwoqQL">
+        <cm:script cm:id="ikFmmG-6yRDaeSkII" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Manual</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -6554,7 +6559,7 @@
         <cm:mimedesc cm:id="iyLbWLs6abAHzlcfg" cm:mimetype="text/plain" cm:encoding="utf-8">contentScript.scss</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iBuXjXXaNnZB8mETzPA08ttck8-a" cm:type="ex:scss" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iBuXjXXaNnZB8mETzPA08ttck8-a" cm:restriction="i73iEkA4ityo834y4" cm:type="ex:scss" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iBuXjXXaNnZB8mETzPA08ttck8-adependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="imd2DTBvffHkII4-p0nRA9_3TiYTBntR6ndicwvhH" cm:class="ps:parents">
@@ -6567,6 +6572,20 @@
           <cm:target cm:id="ipdwLpZN5QkywdqygxL8Fu1pdca7-Bwu16EZmmZnZ">./imysnTtYdv5RxZHaIrUyy6ik2vIe</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iXPr7XLsOLz58EqDD" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="if7du82VVVo8v-AId" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i7mu_N7ULr7ZOKJQw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i7lSfxrUICRc1JzF5" cm:type="ps:datetime">2019-08-02T11:05:34.112Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ir-jzL19NDvY5zFmi" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iwIF-Zpky28HXwXQv" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="inPtM5KwZ5xVclPRh" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iuz0aU7nnxUO1fAy-" cm:type="ps:datetime">2019-08-02T11:05:34.112Z</cm:constant>
+        </cm:property>
+      </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iOlw2xahriyY9CAyl" cm:mimetype="text/plain" cm:encoding="utf-8">groupSelection</cm:mimedesc>
       </cm:vname>

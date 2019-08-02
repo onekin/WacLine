@@ -4,7 +4,9 @@ PVSCL:IFCOND( Autofill, LINE )
 @import '../../node_modules/awesomplete/awesomplete';
 PVSCL:ENDCOND
 
+PVSCL:IFCOND( Manual, LINE )
 @import './groupSelection';
+PVSCL:ENDCOND
 @import './tagWrapper';
 @import './locationManager';
 @import './sidebar';

@@ -180,11 +180,15 @@
       </cm:relations>
       <cm:relations cm:id="it41c_8ojb5L2_tZy" cm:class="ps:children">
         <cm:relation cm:id="i1Ttal9-yzCLL3RTO" cm:type="ps:mandatory" cm:range="n">
-          <cm:target cm:id="ikwjbrGKMnNa34QmG">./iRJEARLrqPssrfVfo</cm:target>
           <cm:target cm:id="iDFTl3FCDCLUnwCDj">./ie0gpTEy3TXJSdrmt</cm:target>
         </cm:relation>
         <cm:relation cm:id="iwFvmhDNhefxPKtkY" cm:type="ps:optional" cm:range="[0,n]">
           <cm:target cm:id="iAg32yjTCHozomCf1">./iSoh3YULozBNzoJxc</cm:target>
+          <cm:target cm:id="iR_Gs2jotEFUBtRak">./ioBQHSMsydWvfQC1e</cm:target>
+          <cm:target cm:id="iD35ZmJW1rtliZ32E">./i5diP0yZS5Vyrksd_</cm:target>
+          <cm:target cm:id="iwaLFVQdxhDGz6jpU">./iusuYtuLuHwfd41pe</cm:target>
+          <cm:target cm:id="iuh1jBokl7xYMIag-">./idl9tomtwuLxpDw9q</cm:target>
+          <cm:target cm:id="ihZ6r_GAr6LR_4d63">./iRJEARLrqPssrfVfo</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -195,10 +199,10 @@
           <cm:constant cm:id="iZ9buBZn0ATAZlTEs" cm:type="ps:datetime">2019-04-29T15:11:17.015Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iFtspysymewYuhvgj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="icTtWjwGHJ_rGFbeY" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="icTtWjwGHJ_rGFbeY" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="i3ppLxk-OgIfp2RAw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iHdQMyGZmriMGThGC" cm:type="ps:datetime">2019-04-29T15:52:24.264Z</cm:constant>
+          <cm:constant cm:id="iHdQMyGZmriMGThGC" cm:type="ps:datetime">2019-08-02T16:01:32.922Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1326,7 +1330,7 @@
         <cm:mimedesc cm:id="i_TQ-Ws6gPzSR03V3" cm:mimetype="text/plain" cm:encoding="utf-8">Moodle</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iRJEARLrqPssrfVfo" cm:name="CreateGroup" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+    <cm:element cm:id="iRJEARLrqPssrfVfo" cm:name="CreateGroup" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="itoGhK7Ho1HjxIQde" cm:class="ps:parents">
         <cm:relation cm:id="ivOFJGOpI9th-Z2YU" cm:type="ps:parent">
           <cm:target cm:id="iT6xPgOpv0RvZf_Nk">./i9lY1oppk19CZy4GX</cm:target>
@@ -1340,10 +1344,10 @@
           <cm:constant cm:id="iAypxhjCC39p1fEjc" cm:type="ps:datetime">2019-04-29T15:49:57.150Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iH4dmlIoa97LpMWHl" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ibLSPFfWKyVTLOaZg" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="ibLSPFfWKyVTLOaZg" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="i6H4k54ptaSQ7_Pf1" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iPYHrXVs7kSRdPyfl" cm:type="ps:datetime">2019-04-29T15:49:57.150Z</cm:constant>
+          <cm:constant cm:id="iPYHrXVs7kSRdPyfl" cm:type="ps:datetime">2019-08-02T16:01:32.922Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1520,6 +1524,102 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iVHV5t_0waNii0Ncm" cm:mimetype="text/plain" cm:encoding="utf-8">LastAnnotation</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ioBQHSMsydWvfQC1e" cm:name="RenameGroup" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i3hDn0D1-Py-g949d" cm:class="ps:parents">
+        <cm:relation cm:id="ik12fgW-I4l6i1ejY" cm:type="ps:parent">
+          <cm:target cm:id="iuwXw6uPXKTIukeDM">./i9lY1oppk19CZy4GX</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="inFRmLWOfD8zhTaja" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iV0QxygtY4-8WZDt5" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iY7pjpvUufLAUgK_E" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i8MJ1nqKoBJ3pD5Cc" cm:type="ps:datetime">2019-08-02T10:46:41.295Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iP6ABmDjL0Ty6FLVK" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ibUQPuZMTqn0dLCyl" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="isPxp7IUR44YXSdiL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i4skS5s_LV0URimhm" cm:type="ps:datetime">2019-08-02T10:49:02.453Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iTO6JYIXY9b_zus8E" cm:mimetype="text/plain" cm:encoding="utf-8">Rename</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i5diP0yZS5Vyrksd_" cm:name="ExportGroup" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i-BWbxUtS3bHdEWbf" cm:class="ps:parents">
+        <cm:relation cm:id="iyGKsergRXhr_HEu6" cm:type="ps:parent">
+          <cm:target cm:id="i3DmHataMCt-omzkm">./i9lY1oppk19CZy4GX</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ilCDsrkY7ga87C7DK" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="io2GyPT-5hWkF5aTG" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="im7i9ZemGVY9Vcxef" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="itBpo4WnvCZqeTWDy" cm:type="ps:datetime">2019-08-02T10:49:14.726Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iEPAnPP-hBwCfLLGo" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iQYaobZOkd_WTiYMh" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iVrLXs6aPsL3Ehlzm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ij-YkQpkv2f229lJr" cm:type="ps:datetime">2019-08-02T10:49:14.726Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="icdGaC1HdFXk9LXTK" cm:mimetype="text/plain" cm:encoding="utf-8">Export</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iusuYtuLuHwfd41pe" cm:name="ImportGroup" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iupVxZwr7E9nKFaQo" cm:class="ps:parents">
+        <cm:relation cm:id="idnCPLZIYHd95IMcr" cm:type="ps:parent">
+          <cm:target cm:id="iktByijbFv6ZLDfji">./i9lY1oppk19CZy4GX</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ijmtiSMon94dpzGUJ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iqo0j87QtzvnoJ6B7" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iSYokh-JTee0tEuiT" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i5rowmqpmw3ur6TBd" cm:type="ps:datetime">2019-08-02T10:49:29.975Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iccQWX3A_BTBdQlV3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iYRe8-XDYbPqwJA0v" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNCtEX0IlH8avZOVG" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i0uE9Jjv6-12zIV4Z" cm:type="ps:datetime">2019-08-02T10:49:29.975Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i_Bq2c2skMhKwuz4c" cm:mimetype="text/plain" cm:encoding="utf-8">Import</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="idl9tomtwuLxpDw9q" cm:name="DropGroup" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iSX4eCgcm9P6oHh4w" cm:class="ps:parents">
+        <cm:relation cm:id="iAHvzINvAdnb_pznf" cm:type="ps:parent">
+          <cm:target cm:id="i2i22qwjbcrzANjoc">./i9lY1oppk19CZy4GX</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iRwZ60b0af_dze7dc" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iugnQmRmu6dejAzo7" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNjsNf1UOdohfQ59y" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="itWVzIZb7qHMsHNbf" cm:type="ps:datetime">2019-08-02T10:49:59.328Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijzC4BFz3zJRe_kjp" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iemKR6RqQMAvb-8mh" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iAAe2KbH4jyi9gSEc" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ily3755ivO5oSTgPn" cm:type="ps:datetime">2019-08-02T10:49:59.328Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iw8h6LG1_jdhdp56t" cm:mimetype="text/plain" cm:encoding="utf-8">Drop</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>
