@@ -997,7 +997,7 @@
         <cm:mimedesc cm:id="i7UW28Kmi9hO46sT2" cm:mimetype="text/plain" cm:encoding="utf-8">SentimentAnalysis</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iPs9Rd3MjMQlRU6y5" cm:name="AddReference" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="iPs9Rd3MjMQlRU6y5" cm:name="SuggestedLiterature" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iRmmzRkgZcBwebp8e" cm:class="ps:parents">
         <cm:relation cm:id="iKGgDd0WWTxvL4uu9" cm:type="ps:parent">
           <cm:target cm:id="iLHRsQqGIaPkfjBu8">./iN7-Pxm6z87AUQFtB</cm:target>
@@ -1011,14 +1011,14 @@
           <cm:constant cm:id="ipCUSYN_IpTWqjPZk" cm:type="ps:datetime">2019-04-29T15:39:51.989Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ihLmJy4lak1XmTKoK" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iH2gCaeaXL6grS8P4" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iH2gCaeaXL6grS8P4" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="ilN7FM5iQx1r0RVjS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i7XlcouUYF94Ac1_A" cm:type="ps:datetime">2019-04-29T15:39:51.989Z</cm:constant>
+          <cm:constant cm:id="i7XlcouUYF94Ac1_A" cm:type="ps:datetime">2019-08-13T11:38:16.039Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
-        <cm:mimedesc cm:id="iid-jv6XJaXw9bqpB" cm:mimetype="text/plain" cm:encoding="utf-8">AddReference</cm:mimedesc>
+        <cm:mimedesc cm:id="iid-jv6XJaXw9bqpB" cm:mimetype="text/plain" cm:encoding="utf-8">SuggestedLiterature</cm:mimedesc>
       </cm:vname>
     </cm:element>
     <cm:element cm:id="ibqZWF5tpWB4R8Opr" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">

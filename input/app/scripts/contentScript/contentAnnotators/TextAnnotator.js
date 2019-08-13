@@ -311,6 +311,9 @@ class TextAnnotator extends ContentAnnotator {
         read: ['group:' + window.abwa.groupSelector.currentGroup.id]
       },
       references: [],
+      // PVSCL:IFCOND(SuggestedLiterature,LINE)
+      suggestedLiterature: [],
+      // PVSCL:ENDCOND
       motivation: motivation,
       tags: tags,
       target: target,
@@ -694,17 +697,24 @@ class TextAnnotator extends ContentAnnotator {
   //PVSCL:ELSECOND
   generateCommentForm ({annotation, showForm, sidebarOpen}) {
   //PVSCL:ENDCOND
-    // TODO Mark and go previous assignments (AddReference): Get previous assignments
-    // let previousAssignments = this.retrievePreviousAssignments()
-    // let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
     let html = ''
-    /* if (previousAssignmentsUI) {
-      html += previousAssignmentsUI.outerHTML
-    } */
     html += '<textarea class="swal2-textarea" data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>'
+    //PVSCL:IFCOND(SuggestedLiterature,LINE)
+    let suggestedLiteratureHtml = (lit) => {
+      let html = ''
+      for (let i in lit) {
+        if (lit.hasOwnProperty(i)) {
+          html += '<li><a class="removeReference"></a><span title="' + lit[i] + '">' + lit[i] + '</span></li>'
+        }
+      }
+      return html
+    }
+    html += '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(annotation.suggestedLiterature) + '</ul>'
+    //PVSCL:ENDCOND
     // On before open
-    //PVSCL:IFCOND(Autofill,LINE)
+    //PVSCL:IFCOND(Autofill or SuggestedLiterature,LINE)
     let onBeforeOpen = () => {
+      //PVSCL:IFCOND(Autofill,LINE)
       // Load datalist with previously used texts
       this.retrievePreviouslyUsedComments(themeOrCode).then((previousComments) => {
         let awesomeplete = new Awesomplete(document.querySelector('#comment'), {
@@ -717,6 +727,60 @@ class TextAnnotator extends ContentAnnotator {
           awesomeplete.open()
         })
       })
+      //PVSCL:ENDCOND
+      //PVSCL:IFCOND(SuggestedLiterature,LINE)
+      // Add the option to delete a suggestedLiterature from the comment
+      $('.removeReference').on('click', function () {
+        $(this).closest('li').remove()
+      })
+      // Autocomplete the suggestedLiteratures
+      $('#swal-input1').autocomplete({
+        source: function (request, response) {
+          $.ajax({
+            url: 'http://dblp.org/search/publ/api',
+            data: {
+              q: request.term,
+              format: 'json',
+              h: 5
+            },
+            success: function (data) {
+              response(data.result.hits.hit.map((e) => { return {label: e.info.title + ' (' + e.info.year + ')', value: e.info.title + ' (' + e.info.year + ')', info: e.info} }))
+            }
+          })
+        },
+        minLength: 3,
+        delay: 500,
+        select: function (event, ui) {
+          let content = ''
+          if (ui.item.info.authors !== null && Array.isArray(ui.item.info.authors.author)) {
+            content += ui.item.info.authors.author.join(', ') + ': '
+          } else if (ui.item.info.authors !== null) {
+            content += ui.item.info.authors.author + ': '
+          }
+          if (ui.item.info.title !== null) {
+            content += ui.item.info.title
+          }
+          if (ui.item.info.year !== null) {
+            content += ' (' + ui.item.info.year + ')'
+          }
+          let a = document.createElement('a')
+          a.className = 'removeReference'
+          a.addEventListener('click', function (e) {
+            $(e.target).closest('li').remove()
+          })
+          let li = document.createElement('li')
+          $(li).append(a, '<span title="' + content + '">' + content + '</span>')
+          $('#literatureList').append(li)
+          setTimeout(function () {
+            $('#swal-input1').val('')
+          }, 10)
+        },
+        appendTo: '.swal2-container',
+        create: function () {
+          $('.ui-autocomplete').css('max-width', $('.swal2-textarea').width())
+        }
+      })
+      //PVSCL:ENDCOND
     }
     //PVSCL:ELSECOND
     let onBeforeOpen = () => {}
@@ -725,35 +789,43 @@ class TextAnnotator extends ContentAnnotator {
     let preConfirmData = {}
     let preConfirm = () => {
       preConfirmData.comment = document.querySelector('#comment').value
+      //PVSCL:IFCOND(SuggestedLiterature,LINE)
+      preConfirmData.literature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
+      //PVSCL:ENDCOND
       //PVSCL:IFCOND(SentimentAnalysis,LINE)
-      let settings = {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        url: 'http://text-processing.com/api/sentiment/',
-        data: qs.stringify({text: preConfirmData.comment})
-      }
-      axios(settings).then((response) => {
-        if (response.data && response.data.label === 'neg' && response.data.probability.neg > 0.55) {
-          // The comment is negative or offensive
-          Alerts.confirmAlert({
-            text: 'The message may be ofensive. Please modify it.',
-            showCancelButton: true,
-            cancelButtonText: 'Modify comment',
-            confirmButtonText: 'Save as it is',
-            reverseButtons: true,
-            callback: () => {
-              callback()
-            },
-            cancelCallback: () => {
-              showForm(preConfirmData)
-            }
-          })
-        } else {
-          callback()
+      if (preConfirmData.comment !== null && preConfirmData.comment !== '') {
+        let settings = {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          url: 'http://text-processing.com/api/sentiment/',
+          data: qs.stringify({text: preConfirmData.comment})
         }
-      })
+        axios(settings).then((response) => {
+          if (response.data && response.data.label === 'neg' && response.data.probability.neg > 0.55) {
+            // The comment is negative or offensive
+            Alerts.confirmAlert({
+              text: 'The message may be ofensive. Please modify it.',
+              showCancelButton: true,
+              cancelButtonText: 'Modify comment',
+              confirmButtonText: 'Save as it is',
+              reverseButtons: true,
+              callback: () => {
+                callback()
+              },
+              cancelCallback: () => {
+                showForm(preConfirmData)
+              }
+            })
+          } else {
+            callback()
+          }
+        })
+      } else {
+        // Update annotation
+        callback()
+      }
       //PVSCL:ENDCOND 
     }
     // Callback
@@ -764,6 +836,9 @@ class TextAnnotator extends ContentAnnotator {
         } else {
           // Update annotation
           annotation.text = preConfirmData.comment || ''
+          //PVSCL:IFCOND(SuggestedLiterature,LINE)
+          annotation.suggestedLiterature = preConfirmData.literature || []
+          //PVSCL:ENDCOND
           window.abwa.storageManager.client.updateAnnotation(
             annotation.id,
             annotation,

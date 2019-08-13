@@ -4,6 +4,10 @@ const Config = require('../Config')
 // PVSCL:IFCOND(Dynamic, LINE)
 const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(ExportGroup, LINE)
+const Code = require('./Code')
+const LanguageUtils = require('../utils/LanguageUtils')
+// PVSCL:ENDCOND
 
 class Theme {
   constructor ({id, name, color, annotationGuide, descriptionPVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCOND}) {
@@ -126,6 +130,26 @@ class Theme {
     })
   }
   // PVSCL:ENDCOND
+  //PVSCL:IFCOND(ExportGroup, LINE)
+
+  toObject () {
+    let object = {
+      name: this.name,
+      description: this.description
+    }
+    if (this.codes.length > 0) {
+      object.codes = []
+      // For each level
+      for (let i = 0; i < this.codes.length; i++) {
+        let code = this.codes[i]
+        if (LanguageUtils.isInstanceOf(code, Code)) {
+          object.codes.push(code.toObject())
+        }
+      }
+    }
+    return object
+  }
+  //PVSCL:ENDCOND
 }
 
 module.exports = Theme

@@ -358,6 +358,23 @@ class AnnotationGuide {
     _.remove(this.themes, theme)
   }
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ExportGroup, LINE)
+
+  toObject (name) {
+    let object = {
+      name: name,
+      definition: []
+    }
+    // For each criteria create the object
+    for (let i = 0; i < this.themes.length; i++) {
+      let theme = this.themes[i]
+      if (LanguageUtils.isInstanceOf(theme, Theme)) {
+        object.definition.push(theme.toObject())
+      }
+    }
+    return object
+  }
+  //PVSCL:ENDCOND
 }
 
 module.exports = AnnotationGuide

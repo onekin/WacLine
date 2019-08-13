@@ -6,8 +6,8 @@ const Config = require('../Config')
 // PVSCL:ENDCOND
 const ChromeStorage = require('../utils/ChromeStorage')
 const LanguageUtils = require('../utils/LanguageUtils')
-// PVSCL:IFCOND(ImportGroup, LINE)
-// const ImportSchema = require('./ImportSchema')
+// PVSCL:IFCOND(ExportGroup, LINE)
+const ExportSchema = require('./ExportSchema')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(User or ApplicationBased, LINE)
 const GroupName = Config.groupName
@@ -20,10 +20,20 @@ const checkHypothesisLoggedInWhenPromptInSeconds = 2 // When not logged in, chec
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(Local,LINE)
-// const LocalStorageManager = require('../storage/local/LocalStorageManager')
+const LocalStorageManager = require('../storage/local/LocalStorageManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(NOT(User), LINE)
+//PVSCL:IFCOND(NOT(User) AND Hypothesis, LINE)
 const defaultGroup = {id: '__world__', name: 'Public', public: true}
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(ImportGroup, LINE)
+const AnnotationGuide = require('../definition/AnnotationGuide')
+const ImportSchema = require('./ImportSchema')
+//PVSCL:IFCOND(Local,LINE)
+const Local = require('../storage/local/Local')
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Hypothesis, LINE)
+const Hypothesis = require('../storage/hypothesis/Hypothesis')
+//PVSCL:ENDCOND
 //PVSCL:ENDCOND
 
 class GroupSelector {
@@ -442,9 +452,55 @@ class GroupSelector {
 //PVSCL:IFCOND(CreateGroup,LINE)
 
   createNewReviewModelEventHandler () {
-    return (event) => {
-      Alerts.errorAlert({text: 'It is not implemented yet'})
+    return () => {
+      this.createNewGroup((err, result) => {
+        if (err) {
+          Alerts.errorAlert({text: 'Unable to create a new group. Please try again or contact developers if the error continues happening.'})
+        } else {
+          // Update list of groups from storage
+          this.retrieveGroups(() => {
+            // Move group to new created one
+            this.setCurrentGroup(result.id, () => {
+              // Expand groups container
+              this.container.setAttribute('aria-expanded', 'false')
+              // Reopen sidebar if closed
+              window.abwa.sidebar.openSidebar()
+            })
+          })
+        }
+      })
     }
+  }
+
+  createNewGroup (callback) {
+    Alerts.inputTextAlert({
+      title: 'Create a new review model',
+      inputPlaceholder: 'Type here the name of your new review model...',
+      preConfirm: (groupName) => {
+        if (_.isString(groupName)) {
+          if (groupName.length <= 0) {
+            const swal = require('sweetalert2')
+            swal.showValidationMessage('Name cannot be empty.')
+          } else if (groupName.length > 25) {
+            const swal = require('sweetalert2')
+            swal.showValidationMessage('The review model name cannot be higher than 25 characters.')
+          } else {
+            return groupName
+          }
+        }
+      },
+      callback: (err, groupName) => {
+        if (err) {
+          window.alert('Unable to load swal. Please contact developer.')
+        } else {
+          groupName = LanguageUtils.normalizeString(groupName)
+          window.abwa.storageManager.client.createNewGroup({
+            name: groupName,
+            description: 'A group to conduct a review'
+          }, callback)
+        }
+      }
+    })
   }
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(ImportGroup,LINE)
@@ -456,7 +512,70 @@ class GroupSelector {
   }
 
   importCriteriaConfiguration () {
-    Alerts.errorAlert({text: 'It is not implemented yet'})
+    ImportSchema.askUserForConfigurationSchema((err, jsonObject) => {
+      if (err) {
+        Alerts.errorAlert({text: 'Unable to parse json file. Error:<br/>' + err.message})
+      } else {
+        Alerts.inputTextAlert({
+          alertType: Alerts.alertType.warning,
+          title: 'Give a name to your imported review model',
+          text: 'When the configuration is imported a new highlighter is created. You can return to your other review models using the sidebar.',
+          inputPlaceholder: 'Type here the name of your review model...',
+          preConfirm: (groupName) => {
+            if (_.isString(groupName)) {
+              if (groupName.length <= 0) {
+                const swal = require('sweetalert2')
+                swal.showValidationMessage('Name cannot be empty.')
+              } else if (groupName.length > 25) {
+                const swal = require('sweetalert2')
+                swal.showValidationMessage('The review model name cannot be higher than 25 characters.')
+              } else {
+                return groupName
+              }
+            }
+          },
+          callback: (err, reviewName) => {
+            if (err) {
+              window.alert('Unable to load alert. Unexpected error, please contact developer.')
+            } else {
+              window.abwa.storageManager.client.createNewGroup({name: reviewName}, (err, newGroup) => {
+                if (err) {
+                  Alerts.errorAlert({text: 'Unable to create a new annotation group. Error: ' + err.message})
+                } else {
+                  let guide = AnnotationGuide.fromUserDefinedHighlighterDefinition(jsonObject)
+                  //PVSCL:IFCOND(Hypothesis,LINE)
+                  let storage = new Hypothesis({
+                    group: newGroup
+                  })
+                  //PVSCL:ENDCOND
+                  //PVSCL:IFCOND(Local,LINE)
+                  let storage = new Local({
+                    group: newGroup
+                  })
+                  //PVSCL:ENDCOND
+                  guide.storage = storage
+                  Alerts.loadingAlert({title: 'Configuration in progress', text: 'We are configuring everything to start reviewing.', position: Alerts.position.center})
+                  ImportSchema.createConfigurationAnnotationsFromReview({
+                    guide,
+                    callback: (err, annotations) => {
+                      if (err) {
+                        Alerts.errorAlert({ text: 'There was an error when configuring Review&Go highlighter' })
+                      } else {
+                        Alerts.closeAlert()
+                        // Update groups from storage
+                        this.retrieveGroups(() => {
+                          this.setCurrentGroup(guide.storage.group.id)
+                        })
+                      }
+                    }
+                  })
+                }
+              })
+            }
+          }
+        })
+      }
+    })
   }
 //PVSCL:ENDCOND
 
@@ -532,7 +651,14 @@ class GroupSelector {
 
   exportCriteriaConfiguration (group, callback) {
     // Retrieve group annotations
-    Alerts.errorAlert({text: 'Unable to export group.'})
+    window.abwa.tagManager.getHighlighterDefinition(group, (err, groupAnnotations) => {
+      if (err) {
+        Alerts.errorAlert({text: 'Unable to export group.'})
+      } else {
+        // Export scheme
+        ExportSchema.exportConfigurationSchemaToJSONFile(groupAnnotations, group)
+      }
+    })
   }
   //PVSCL:ENDCOND
   //PVSCL:IFCOND( RenameGroup, LINE)
@@ -569,7 +695,7 @@ class GroupSelector {
     })
   }
 //PVSCL:ENDCOND
-//PVSCL:IFCOND( DeleteGroup, LINE)
+//PVSCL:IFCOND( DropGroup, LINE)
 
   deleteGroup (group, callback) {
     Alerts.confirmAlert({

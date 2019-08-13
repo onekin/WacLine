@@ -58,6 +58,15 @@ class Code {
       console.error('Unable to retrieve mark from annotation')
     }
   }
+  // PVSCL:IFCOND(ExportGroup, LINE)
+
+  toObject () {
+    return {
+      name: this.name,
+      description: this.description
+    }
+  }
+  //PVSCL:ENDCOND
 }
 
 module.exports = Code

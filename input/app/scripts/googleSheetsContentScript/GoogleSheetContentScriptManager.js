@@ -7,7 +7,7 @@ const LocalStorageManager = require('../storage/local/LocalStorageManager')
 //PVSCL:ENDCOND
 const GoogleSheetsClientManager = require('../googleSheets/GoogleSheetsClientManager')
 const GoogleSheetParser = require('./GoogleSheetParser')
-const HypothesisGroupInitializer = require('./HypothesisGroupInitializer')
+const GroupInitializer = require('./GroupInitializer')
 const Alerts = require('../utils/Alerts')
 const swal = require('sweetalert2')
 
@@ -111,8 +111,8 @@ class GoogleSheetContentScriptManager {
         console.error(err)
         Alerts.errorAlert({text: err.message})
       } else {
-        window.hag.HypothesisGroupInitializer = new HypothesisGroupInitializer()
-        window.hag.HypothesisGroupInitializer.init(annotationGuide, (err) => {
+        window.hag.GroupInitializer = new GroupInitializer()
+        window.hag.GroupInitializer.init(annotationGuide, (err) => {
           if (err) {
             if (_.isFunction(callback)) {
               callback(err)

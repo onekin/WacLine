@@ -13,7 +13,7 @@ const selectedGroupNamespace = 'hypothesis.currentGroup'
 const Config = require('../Config')
 // PVSCL:ENDCOND
 
-class HypothesisGroupInitializer {
+class GroupInitializer {
   init (annotationGuide, callback) {
     this.annotationGuide = annotationGuide
     this.initializeHypothesisGroup((err) => {
@@ -47,10 +47,10 @@ class HypothesisGroupInitializer {
         })
         // Create the group if not exists
         if (_.isEmpty(group)) {
-          this.createHypothesisGroup((err) => {
+          this.createGroup((err) => {
             if (err) {
               swal('Oops!', // TODO i18n
-                'There was a problem while creating the hypothes.is group. Please reload the page and try it again. <br/>' +
+                'There was a problem while creating the group. Please reload the page and try it again. <br/>' +
                 'If the error continues, please contact administrator.',
                 'error') // Show to the user the error
               if (_.isFunction(callback)) {
@@ -97,7 +97,7 @@ class HypothesisGroupInitializer {
     })
   }
 
-  createHypothesisGroup (callback) {
+  createGroup (callback) {
     window.hag.storageManager.client.createNewGroup({name: this.annotationGuide.name}, (err, group) => {
       if (err) {
         if (_.isFunction(callback)) {
@@ -154,4 +154,4 @@ class HypothesisGroupInitializer {
   }
 }
 
-module.exports = HypothesisGroupInitializer
+module.exports = GroupInitializer

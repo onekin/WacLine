@@ -104,9 +104,15 @@ class TagManager {
    * This function retrieves highlighter definition from storage (e.g.: Hypothes.is)
    * @param callback
    */
-  getHighlighterDefinition (callback) {
+  getHighlighterDefinition (group, callback) {
+    let groupUrl
+    if (group) {
+      groupUrl = group.links ? group.links.html : group.url
+    } else {
+      groupUrl = window.abwa.groupSelector.currentGroup.links.html
+    }
     window.abwa.storageManager.client.searchAnnotations({
-      url: window.abwa.groupSelector.currentGroup.links.html,
+      url: groupUrl,
       order: 'desc'
     }, (err, annotations) => {
       if (err) {
@@ -134,7 +140,7 @@ class TagManager {
 
   initAllTags (callback) {
     // Retrieve from storage highlighter definition
-    this.getHighlighterDefinition((err, highlighterDefinitionAnnotations) => {
+    this.getHighlighterDefinition(null, (err, highlighterDefinitionAnnotations) => {
       if (err) {
         Alerts.errorAlert({text: 'Unable to retrieve annotations from storage to initialize highlighter buttons.'}) // TODO i18n
       } else {
