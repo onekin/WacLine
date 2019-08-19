@@ -76,6 +76,36 @@
         </div>
       </div>
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+       <div class="card">
+        <div class="card-header bg-dark text-white">Annotation storage</div>
+        <div class="card-body">
+          <div class="form-check">
+            <label for="storageDropdown">Select your annotations storage</label>
+            <select class="form-control" id="storageDropdown">
+              // PVSCL:IFCOND(Local,LINE)
+              <option value="localStorage" selected="selected">Local storage</option>
+              // PVSCL:ENDCOND
+              // PVSCL:IFCOND(Hypothesis,LINE)
+              <option value="hypothesis">Hypothes.is</option>
+              // PVSCL:ENDCOND
+            </select>
+          </div>
+        </div>
+      </div>
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Local,LINE)
+      <div class="card">
+        <div class="card-header bg-dark text-white">Local storage</div>
+        <div class="card-body">
+          <div class="form-check">
+            <button id="restoreDatabaseButton">Restore database</button>
+            <button id="backupDatabaseButton">Backup database</button>
+            <button id="deleteDatabaseButton">Delete database</button>
+          </div>
+        </div>
+      </div>
+      // PVSCL:ENDCOND
       <div class="card">
         <div class="card-header bg-dark text-white">File formats</div>
         <div class="card-body">

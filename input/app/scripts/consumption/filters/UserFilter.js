@@ -82,11 +82,6 @@ class UserFilter {
       // Dispatch event user filter has changed
       this.dispatchFilterChanged()
     })
-    /* let initialEventListener = () => {
-      this.activateAll()
-      document.removeEventListener(Events.updatedAllAnnotations, initialEventListener)
-    }
-    document.addEventListener(Events.updatedAllAnnotations, initialEventListener) */
   }
 
   activateAll () {
