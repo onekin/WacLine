@@ -2,22 +2,21 @@ const _ = require('lodash')
 const ContentTypeManager = require('./ContentTypeManager')
 const Sidebar = require('./Sidebar')
 const TagManager = require('./TagManager')
-// const RolesManager = require('./RolesManager')
+const Config = require('../Config')
+const Toolset = require('./Toolset')
+const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
+const Events = require('./Events')
 // PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
 //PVSCL:ENDCOND
 // PVSCL:IFCOND(Local, LINE)
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
 //PVSCL:ENDCOND
-const Config = require('../Config')
-const Toolset = require('./Toolset')
-const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 // PVSCL:IFCOND(UserFilter, LINE)
 const UserFilter = require('../consumption/filters/UserFilter')
 // PVSCL:ENDCOND
-const Events = require('./Events')
 
 class ContentScriptManager {
   constructor () {
@@ -221,6 +220,7 @@ class ContentScriptManager {
       window.abwa.toolset.destroy()
     }
   }
+//PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
 
   loadStorage (callback) {
     // PVSCL:IFCOND(Hypothesis, LINE)
@@ -239,6 +239,29 @@ class ContentScriptManager {
       }
     })
   }
+//PVSCL:ELSECOND
+
+  loadStorage (callback) {
+    chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
+      if (storage === 'hypothesis') {
+        // Hypothesis
+        window.abwa.storageManager = new HypothesisClientManager()
+      } else {
+        // Local storage
+        window.abwa.storageManager = new LocalStorageManager()
+      }
+      window.abwa.storageManager.init((err) => {
+        if (_.isFunction(callback)) {
+          if (err) {
+            callback(err)
+          } else {
+            callback()
+          }
+        }
+      })
+    })
+  }
+//PVSCL:ENDCOND
 
   destroyStorage (callback) {
     if (window.abwa.storageManager) {

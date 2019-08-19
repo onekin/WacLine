@@ -1,17 +1,12 @@
 const _ = require('lodash')
 const $ = require('jquery')
 const Alerts = require('../utils/Alerts')
-// PVSCL:IFCOND(User or ApplicationBased, LINE)
-const Config = require('../Config')
-// PVSCL:ENDCOND
 const ChromeStorage = require('../utils/ChromeStorage')
 const LanguageUtils = require('../utils/LanguageUtils')
-// PVSCL:IFCOND(ExportGroup, LINE)
-const ExportSchema = require('./ExportSchema')
-// PVSCL:ENDCOND
 // PVSCL:IFCOND(User or ApplicationBased, LINE)
+const Config = require('../Config')
 const GroupName = Config.groupName
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 //PVSCL:IFCOND(Manual, LINE)
 const Events = require('../contentScript/Events')
 //PVSCL:ENDCOND
@@ -19,22 +14,19 @@ const Events = require('../contentScript/Events')
 const checkHypothesisLoggedInWhenPromptInSeconds = 2 // When not logged in, check if user has logged in
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Local,LINE)
-const LocalStorageManager = require('../storage/local/LocalStorageManager')
-//PVSCL:ENDCOND
 //PVSCL:IFCOND(NOT(User) AND Hypothesis, LINE)
 const defaultGroup = {id: '__world__', name: 'Public', public: true}
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Local,LINE)
+const LocalStorageManager = require('../storage/local/LocalStorageManager')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(ImportGroup, LINE)
 const AnnotationGuide = require('../definition/AnnotationGuide')
 const ImportSchema = require('./ImportSchema')
-//PVSCL:IFCOND(Local,LINE)
-const Local = require('../storage/local/Local')
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Hypothesis, LINE)
-const Hypothesis = require('../storage/hypothesis/Hypothesis')
-//PVSCL:ENDCOND
-//PVSCL:ENDCOND
+// PVSCL:IFCOND(ExportGroup, LINE)
+const ExportSchema = require('./ExportSchema')
+// PVSCL:ENDCOND
 
 class GroupSelector {
   constructor () {
@@ -205,8 +197,8 @@ class GroupSelector {
     $.get(sidebarURL, (html) => {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))
-      //PVSCL:IFCOND(Hypothesis,LINE)
       if (!window.abwa.storageManager.isLoggedIn()) {
+        //PVSCL:IFCOND(Hypothesis,LINE)
         // Display login/sign up form
         $('#notLoggedInGroupContainer').attr('aria-hidden', 'false')
         // Hide group container
@@ -217,6 +209,7 @@ class GroupSelector {
         chrome.runtime.sendMessage({scope: 'hypothesis', cmd: 'startListeningLogin'})
         // Open the sidebar to notify user that needs to log in
         window.abwa.sidebar.openSidebar()
+        //PVSCL:ENDCOND
         if (_.isFunction(callback)) {
           callback(new Error('Is not logged in'))
         }
@@ -225,12 +218,6 @@ class GroupSelector {
           callback()
         }
       }
-      //PVSCL:ENDCOND
-      //PVSCL:IFCOND(Local,LINE)
-      if (_.isFunction(callback)) {
-        callback()
-      }
-      //PVSCL:ENDCOND
     })
   }
 //PVSCL:IFCOND(User,LINE)
@@ -543,31 +530,27 @@ class GroupSelector {
                   Alerts.errorAlert({text: 'Unable to create a new annotation group. Error: ' + err.message})
                 } else {
                   let guide = AnnotationGuide.fromUserDefinedHighlighterDefinition(jsonObject)
-                  //PVSCL:IFCOND(Hypothesis,LINE)
-                  let storage = new Hypothesis({
-                    group: newGroup
-                  })
-                  //PVSCL:ENDCOND
-                  //PVSCL:IFCOND(Local,LINE)
-                  let storage = new Local({
-                    group: newGroup
-                  })
-                  //PVSCL:ENDCOND
-                  guide.storage = storage
-                  Alerts.loadingAlert({title: 'Configuration in progress', text: 'We are configuring everything to start reviewing.', position: Alerts.position.center})
-                  ImportSchema.createConfigurationAnnotationsFromReview({
-                    guide,
-                    callback: (err, annotations) => {
-                      if (err) {
-                        Alerts.errorAlert({ text: 'There was an error when configuring Review&Go highlighter' })
-                      } else {
-                        Alerts.closeAlert()
-                        // Update groups from storage
-                        this.retrieveGroups(() => {
-                          this.setCurrentGroup(guide.storage.group.id)
-                        })
+                  AnnotationGuide.setStorage(newGroup, (storage) => {
+                    guide.storage = storage
+                    Alerts.loadingAlert({
+                      title: 'Configuration in progress',
+                      text: 'We are configuring everything to start reviewing.',
+                      position: Alerts.position.center
+                    })
+                    ImportSchema.createConfigurationAnnotationsFromReview({
+                      guide,
+                      callback: (err, annotations) => {
+                        if (err) {
+                          Alerts.errorAlert({text: 'There was an error when configuring Review&Go highlighter'})
+                        } else {
+                          Alerts.closeAlert()
+                          // Update groups from storage
+                          this.retrieveGroups(() => {
+                            this.setCurrentGroup(guide.storage.group.id)
+                          })
+                        }
                       }
-                    }
+                    })
                   })
                 }
               })

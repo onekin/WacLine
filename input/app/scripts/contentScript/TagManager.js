@@ -3,21 +3,15 @@ const $ = require('jquery')
 const LanguageUtils = require('../utils/LanguageUtils')
 const ColorUtils = require('../utils/ColorUtils')
 const Buttons = require('../definition/Buttons')
-// const AnnotationUtils = require('../utils/AnnotationUtils')
 const Events = require('./Events')
 const Alerts = require('../utils/Alerts')
-//PVSCL:IFCOND(User,LINE)
-const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(Hypothesis,LINE)
-const Hypothesis = require('../storage/hypothesis/Hypothesis')
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(Local,LINE)
-const Local = require('../storage/local/Local')
-//PVSCL:ENDCOND
 const Config = require('../Config')
 const AnnotationGuide = require('../definition/AnnotationGuide')
 const Theme = require('../definition/Theme')
+// const AnnotationUtils = require('../utils/AnnotationUtils')
+//PVSCL:IFCOND(User,LINE)
+const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(Code,LINE)
 const Code = require('../definition/Code')
 //PVSCL:ENDCOND
@@ -158,57 +152,40 @@ class TagManager {
                   text: 'We are configuring everything to start reviewing.',
                   position: Alerts.position.center
                 })
-                //PVSCL:IFCOND(Hypothesis,LINE)
-                let storage = new Hypothesis({
-                  group: window.abwa.groupSelector.currentGroup
-                })
-                //PVSCL:ENDCOND
-                //PVSCL:IFCOND(Local,LINE)
-                let storage = new Local({
-                  group: window.abwa.groupSelector.currentGroup
-                })
-                //PVSCL:ENDCOND
-                DefaultHighlighterGenerator.createDefaultAnnotations(storage, (err, annotations) => {
-                  if (err) {
-                    reject(new Error('Unable to create default annotations.'))
-                  } else {
-                    // Open the sidebar, to notify user that the annotator is correctly created
-                    window.abwa.sidebar.openSidebar()
-                    Alerts.closeAlert()
-                    resolve(annotations)
-                  }
+                AnnotationGuide.setStorage(null, (storage) => {
+                  DefaultHighlighterGenerator.createDefaultAnnotations(storage, (err, annotations) => {
+                    if (err) {
+                      reject(new Error('Unable to create default annotations.'))
+                    } else {
+                      // Open the sidebar, to notify user that the annotator is correctly created
+                      window.abwa.sidebar.openSidebar()
+                      Alerts.closeAlert()
+                      resolve(annotations)
+                    }
+                  })
                 })
               },
               cancelCallback: () => {
                 // PVSCL:IFCOND(Dynamic,LINE)
-                // TODO In pure::variants: if selected Dynamic, create annotation guide
-                //PVSCL:IFCOND(Hypothesis,LINE)
-                let storage = new Hypothesis({
-                  group: window.abwa.groupSelector.currentGroup
-                })
-                //PVSCL:ENDCOND
-                //PVSCL:IFCOND(Local,LINE)
-                let storage = new Local({
-                  group: window.abwa.groupSelector.currentGroup
-                })
-                //PVSCL:ENDCOND
-                let emptyAnnotationGuide = new AnnotationGuide({storage: storage})
-                let emptyAnnotationGuideAnnotation = emptyAnnotationGuide.toAnnotation()
-                window.abwa.storageManager.client.createNewAnnotation(emptyAnnotationGuideAnnotation, (err, annotation) => {
-                  if (err) {
-                    Alerts.errorAlert({text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.'}) // TODO i18n
-                  } else {
-                    // Open the sidebar, to notify user that the annotator is correctly created
-                    window.abwa.sidebar.openSidebar()
-                    resolve([annotation])
-                  }
+                AnnotationGuide.setStorage(null, (storage) => {
+                  let emptyAnnotationGuide = new AnnotationGuide({storage: storage})
+                  let emptyAnnotationGuideAnnotation = emptyAnnotationGuide.toAnnotation()
+                  window.abwa.storageManager.client.createNewAnnotation(emptyAnnotationGuideAnnotation, (err, annotation) => {
+                    if (err) {
+                      Alerts.errorAlert({text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.'}) // TODO i18n
+                    } else {
+                      // Open the sidebar, to notify user that the annotator is correctly created
+                      window.abwa.sidebar.openSidebar()
+                      resolve([annotation])
+                    }
+                  })
                 })
                 // PVSCL:ENDCOND
               }
             })
             // PVSCL:ELSECOND
             // TODO Show alert otherwise (no group is defined)
-            // Alerts.errorAlert({text: 'No group is defined'})
+            Alerts.errorAlert({text: 'No group is defined'})
             // PVSCL:ENDCOND
           } else {
             resolve(highlighterDefinitionAnnotations)
@@ -221,16 +198,18 @@ class TagManager {
         }).then((annotations) => {
           // Add to model
           this.model.highlighterDefinitionAnnotations = annotations
-          this.model.highlighterDefinition = AnnotationGuide.fromAnnotations(annotations)
-          // Set colors for each element
-          this.applyColorsToThemes()
-          console.debug(this.model.highlighterDefinition)
-          // Populate sidebar buttons container
-          this.createButtons()
-          // this.createTagsButtonsTheme()
-          if (_.isFunction(callback)) {
-            callback()
-          }
+          AnnotationGuide.fromAnnotations(annotations, (guide) => {
+            this.model.highlighterDefinition = guide
+            // Set colors for each element
+            this.applyColorsToThemes()
+            console.debug(this.model.highlighterDefinition)
+            // Populate sidebar buttons container
+            this.createButtons()
+            // this.createTagsButtonsTheme()
+            if (_.isFunction(callback)) {
+              callback()
+            }
+          })
         })
         // TODO Create data model from highlighter definition
         // TODO Create buttons from data model

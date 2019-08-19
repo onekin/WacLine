@@ -1,5 +1,8 @@
 const jsYaml = require('js-yaml')
 const Theme = require('./Theme')
+const Config = require('../Config')
+const _ = require('lodash')
+const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:IFCOND(Code,LINE)
 const Code = require('./Code')
 // PVSCL:ENDCOND
@@ -7,9 +10,6 @@ const Code = require('./Code')
 const URLUtils = require('../utils/URLUtils')
 const Alerts = require('../utils/Alerts')
 // PVSCL:ENDCOND
-const Config = require('../Config')
-const _ = require('lodash')
-const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:IFCOND(Hypothesis, LINE)
 const Hypothesis = require('../storage/hypothesis/Hypothesis')
 // PVSCL:ENDCOND
@@ -75,78 +75,107 @@ class AnnotationGuide {
     return annotations
   }
 
-  static fromAnnotation (annotation) {
+  static fromAnnotation (annotation, callback) {
     // PVSCL:IFCOND(GSheetProvider,LINE)
     let config = jsYaml.load(annotation.text)
     config.spreadsheetId = config.spreadsheetId
     config.sheetId = config.sheetId
     // PVSCL:ENDCOND
-    let storage
-    // PVSCL:IFCOND(Hypothesis, LINE)
-    storage = new Hypothesis({group: window.abwa.groupSelector.currentGroup})
-    // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Local, LINE)
-    storage = new Local({group: window.abwa.groupSelector.currentGroup})
-    // PVSCL:ENDCOND
-    let annotationGuideOpts = {id: annotation.id, name: annotation.name, storage: storage}
-    // PVSCL:IFCOND(GSheetProvider, LINE)
-    annotationGuideOpts['spreadsheetId'] = config.spreadsheetId
-    annotationGuideOpts['sheetId'] = config.sheetId
-    // PVSCL:ENDCOND
-    return new AnnotationGuide(annotationGuideOpts)
+    this.setStorage(null, (storage) => {
+      let annotationGuideOpts = {id: annotation.id, name: annotation.name, storage: storage}
+      // PVSCL:IFCOND(GSheetProvider, LINE)
+      annotationGuideOpts['spreadsheetId'] = config.spreadsheetId
+      annotationGuideOpts['sheetId'] = config.sheetId
+      // PVSCL:ENDCOND
+      let guide
+      guide = new AnnotationGuide(annotationGuideOpts)
+      if (_.isFunction(callback)) {
+        callback(guide)
+      }
+    })
   }
 
-  static fromAnnotations (annotations) {
+  static fromAnnotations (annotations, callback) {
     // return AnnotationGuide
     let guideAnnotation = _.remove(annotations, (annotation) => {
       return _.some(annotation.tags, (tag) => { return tag === 'oa:guide' })
     })
-    let guide
     if (guideAnnotation.length === 1) {
-      guide = AnnotationGuide.fromAnnotation(guideAnnotation[0])
+      AnnotationGuide.fromAnnotation(guideAnnotation[0], (guide) => {
+        // TODO Complete the guide from the annotations
+        // For the rest of annotations, get themes and codes
+        let themeAnnotations = _.remove(annotations, (annotation) => {
+          return _.some(annotation.tags, (tag) => {
+            return tag.includes('oa:theme:')
+          })
+        })
+        let codeAnnotations = _.remove(annotations, (annotation) => {
+          return _.some(annotation.tags, (tag) => {
+            return tag.includes('oa:code:')
+          })
+        })
+        for (let i = 0; i < themeAnnotations.length; i++) {
+          let theme = Theme.fromAnnotation(themeAnnotations[i], guide)
+          if (LanguageUtils.isInstanceOf(theme, Theme)) {
+            guide.themes.push(theme)
+          }
+        }
+        for (let i = 0; i < codeAnnotations.length; i++) {
+          let codeAnnotation = codeAnnotations[i]
+          // Get theme corresponding to the level
+          let themeTag = _.find(codeAnnotation.tags, (tag) => {
+            return tag.includes('oa:isCodeOf:')
+          })
+          let themeName = themeTag.replace('oa:isCodeOf:', '')
+          let theme = _.find(guide.themes, (theme) => {
+            return theme.name === themeName
+          })
+          let code = Code.fromAnnotation(codeAnnotation, theme)
+          if (LanguageUtils.isInstanceOf(theme, Theme)) {
+            theme.codes.push(code)
+          } else {
+            console.debug('Code %s has no theme', code.name)
+          }
+        }
+        callback(guide)
+      })
     } else {
-      return null
+      callback(null)
     }
-    // TODO Complete the guide from the annotations
-    // For the rest of annotations, get themes and codes
-    let themeAnnotations = _.remove(annotations, (annotation) => {
-      return _.some(annotation.tags, (tag) => {
-        return tag.includes('oa:theme:')
-      })
-    })
-    // PVSCL:IFCOND(Code,LINE)
-    let codeAnnotations = _.remove(annotations, (annotation) => {
-      return _.some(annotation.tags, (tag) => {
-        return tag.includes('oa:code:')
-      })
-    })
-    // PVSCL:ENDCOND
-    for (let i = 0; i < themeAnnotations.length; i++) {
-      let theme = Theme.fromAnnotation(themeAnnotations[i], guide)
-      if (LanguageUtils.isInstanceOf(theme, Theme)) {
-        guide.themes.push(theme)
-      }
+  }
+
+  static setStorage (newGroup, callback) {
+    let annotationStorage
+    let group
+    if (newGroup === null) {
+      group = window.abwa.groupSelector.currentGroup
+    } else {
+      group = newGroup
     }
-    // PVSCL:IFCOND(Code,LINE)
-    for (let i = 0; i < codeAnnotations.length; i++) {
-      let codeAnnotation = codeAnnotations[i]
-      // Get theme corresponding to the level
-      let themeTag = _.find(codeAnnotation.tags, (tag) => {
-        return tag.includes('oa:isCodeOf:')
-      })
-      let themeName = themeTag.replace('oa:isCodeOf:', '')
-      let theme = _.find(guide.themes, (theme) => {
-        return theme.name === themeName
-      })
-      let code = Code.fromAnnotation(codeAnnotation, theme)
-      if (LanguageUtils.isInstanceOf(theme, Theme)) {
-        theme.codes.push(code)
+    //PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+    chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
+      if (storage === 'hypothesis') {
+        // Hypothesis
+        annotationStorage = new Hypothesis({group: group})
       } else {
-        console.debug('Code %s has no theme', code.name)
+        // Local storage
+        annotationStorage = new Local({group: group})
       }
+      if (_.isFunction(callback)) {
+        callback(annotationStorage)
+      }
+    })
+    // PVSCL:ELSECOND
+    // PVSCL:IFCOND(Hypothesis,LINE)
+    annotationStorage = new Hypothesis({group: group})
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Local,LINE)
+    annotationStorage = new Local({group: group})
+    // PVSCL:ENDCOND
+    if (_.isFunction(callback)) {
+      callback(annotationStorage)
     }
     // PVSCL:ENDCOND
-    return guide
   }
 //PVSCL:IFCOND(User,LINE)
 
