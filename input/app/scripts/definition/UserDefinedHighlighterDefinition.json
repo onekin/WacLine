@@ -2,54 +2,14 @@
   "name": "Test",
   "definition": [
     {
-      "name": "Relevance",
+      "name": "Presentation",
       "description": ""PVSCL:IFCOND(Code),
       "codes": [
         {
-          "name": "Significance",
-          "description": "Significance of the problem for the practice at hand"
-        },
-        {
-          "name": "Depth of analysis",
-          "description": "Depth of analysis of the problem"
-        },
-        {
-          "name": "Adoption",
-          "description": "Artefact adoption and use by real organisations"
-        }
-      ]PVSCL:ENDCOND
-    },
-    {
-      "name": "Design",
-      "description": ""PVSCL:IFCOND(Code),
-      "codes": [
-        {
-          "name": "Artefact",
-          "description": "Existence of an artefact"
-        },
-        {
-          "name": "Novelty",
-          "description": "Novelty of the new artefact"
-        },
-        {
-          "name": "Evaluation",
-          "description": "Evaluation of the artefact"
-        }
-      ]PVSCL:ENDCOND
-    },
-    {
-      "name": "Rigor",
-      "description": ""PVSCL:IFCOND(Code),
-      "codes": [
-        {
-          "name": "Research methods",
+          "name": "Typos",
           "description": "Rigorous use of the research methods"
         }
       ]PVSCL:ENDCOND
-    },
-    {
-      "name": "Other",
-      "description": ""
     }
   ]
 }

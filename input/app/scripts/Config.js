@@ -1,6 +1,6 @@
 const Config = {
   // PVSCL:IFCOND(User or ApplicationBased, LINE)
-  groupName: 'Annotations',
+  groupName: 'DefaultReviewModel',
   // PVSCL:ENDCOND
   namespace: 'oa',
   urlParamName: 'spl', // Name to activate the extension if the url contains this hash param

@@ -151,12 +151,6 @@ class GroupSelector {
                 this.currentGroup = _.find(window.abwa.groupSelector.groups, (group) => { return group.name === GroupName })
               }
               //PVSCL:ENDCOND
-              //PVSCL:IFCOND(Local, LINE)
-              // If local annotation storage is selected, open any other group as all of them are for review&go
-              if (_.isEmpty(this.currentGroup) && LanguageUtils.isInstanceOf(window.abwa.storageManager, LocalStorageManager)) {
-                this.currentGroup = _.first(window.abwa.groupSelector.groups)
-              }
-              //PVSCL:ENDCOND
               //PVSCL:IFCOND(User, LINE)
               if (_.isEmpty(this.currentGroup)) {
                 // TODO i18n
@@ -180,6 +174,12 @@ class GroupSelector {
                 }
               }
               //PVSCL:ELSECOND
+              if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups)) {
+                this.currentGroup = _.first(window.abwa.groupSelector.groups)
+              }
+              if (_.isEmpty(window.abwa.groupSelector.groups)) {
+                Alerts.errorAlert({text: 'No groups found. Please configure the tool in the third-party provider.'})
+              }
               if (_.isFunction(callback)) {
                 callback()
               }

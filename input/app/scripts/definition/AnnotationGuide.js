@@ -177,7 +177,7 @@ class AnnotationGuide {
     }
     // PVSCL:ENDCOND
   }
-//PVSCL:IFCOND(User,LINE)
+//PVSCL:IFCOND(User or ImportGroup,LINE)
 
   static fromUserDefinedHighlighterDefinition (userDefinedHighlighterDefinition) {
     let annotationGuide = new AnnotationGuide({name: userDefinedHighlighterDefinition.name})

@@ -2,6 +2,7 @@ const _ = require('lodash')
 const swal = require('sweetalert2')
 const Alerts = require('../utils/Alerts')
 const ChromeStorage = require('../utils/ChromeStorage')
+const AnnotationGuide = require('../definition/AnnotationGuide')
 //PVSCL:IFCOND(Hypothesis, LINE)
 const Hypothesis = require('../storage/hypothesis/Hypothesis')
 // PVSCL:ENDCOND
@@ -106,20 +107,12 @@ class GroupInitializer {
       } else {
         console.debug('Created group in hypothesis: ')
         console.debug(group)
-        //PVSCL:IFCOND(Hypothesis, LINE)
-        let storage = new Hypothesis({
-          group: group
+        AnnotationGuide.setStorage(group, (storage) => {
+          this.annotationGuide.storage = storage
+          if (_.isFunction(callback)) {
+            callback()
+          }
         })
-        //PVSCL:ENDCOND
-        //PVSCL:IFCOND(Local, LINE)
-        let storage = new Local({
-          group: group
-        })
-        //PVSCL:ENDCOND
-        this.annotationGuide.storage = storage
-        if (_.isFunction(callback)) {
-          callback()
-        }
       }
     })
   }

@@ -48,20 +48,20 @@ class Background {
     // Initialize google sheets manager
     this.googleSheetsManager = new GoogleSheetsManager()
     this.googleSheetsManager.init()
-    // PVSCL:ENDCOND
 
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(DOI or NavigationScript, LINE)
     // Initialize doi manager
     this.targetManager = new TargetManager()
     this.targetManager.init()
-    // PVSCL:ENDCOND
 
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1, LINE)
     // Initialize storage manager
     this.storageManager = new StorageManager()
     this.storageManager.init()
-    // PVSCL:ENDCOND
 
+    // PVSCL:ENDCOND
     // Initialize page_action event handler
     chrome.pageAction.onClicked.addListener((tab) => {
       // PVSCL:IFCOND(URN, LINE)

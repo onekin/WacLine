@@ -68,7 +68,9 @@ class Options {
         }
       })
     })
+    //PVSCL:ENDCOND
   }
+  //PVSCL:IFCOND(Local,LINE)
 
   restoreDatabase (jsonObject, callback) {
     window.options.localStorage = new LocalStorageManager()
@@ -86,7 +88,7 @@ class Options {
         type: 'text/plain;charset=utf-8'
       })
       let dateString = (new Date()).toISOString()
-      FileSaver.saveAs(blob, 'reviewAndGo-databaseBackup' + dateString + '.json')
+      FileSaver.saveAs(blob, 'Local-databaseBackup' + dateString + '.json')
     })
   }
 

@@ -5,11 +5,12 @@ const GroupInitializer = require('./GroupInitializer')
 const Alerts = require('../utils/Alerts')
 const swal = require('sweetalert2')
 const LanguageUtils = require('../utils/LanguageUtils')
+// PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
+//PVSCL:ENDCOND
 // PVSCL:IFCOND(Local, LINE)
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
 //PVSCL:ENDCOND
-
 
 class GoogleSheetContentScriptManager {
   init (callback) {
@@ -52,7 +53,7 @@ class GoogleSheetContentScriptManager {
   }
 
   initLoginProcess (callback) {
-    if (LanguageUtils.isInstanceOf(window.hag.storageManager, HypothesisClientManager)) {
+    if (window.hag.storageManager.constructor.name === 'HypothesisClientManager') {
       window.hag.storageManager.logIn((err, hypothesisToken) => {
         if (err) {
           callback(err)
