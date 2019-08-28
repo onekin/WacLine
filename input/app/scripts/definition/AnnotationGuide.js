@@ -21,16 +21,17 @@ const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
 
 class AnnotationGuide {
-  constructor ({id = null, name = '', storage = nullPVSCL:IFCOND(MoodleProvider), moodleEndpoint = null, assignmentId = null, courseId = nullPVSCL:ENDCONDPVSCL:IFCOND(GSheetProvider), spreadsheetId = null, sheetId = nullPVSCL:ENDCOND}) {
+  constructor ({id = null, name = '', storage = nullPVSCL:IFCOND(MoodleProvider), moodleEndpoint = null, assignmentName = null, assignmentId = null, courseId = null, cmid = nullPVSCL:ENDCONDPVSCL:IFCOND(GSheetProvider), spreadsheetId = null, sheetId = nullPVSCL:ENDCOND}) {
     this.id = id
     this.name = name
     this.themes = []
     this.storage = storage
  // PVSCL:IFCOND(MoodleProvider,LINE)
     this.moodleEndpoint = moodleEndpoint
+    this.assignmentName = assignmentName
     this.assignmentId = assignmentId
     this.courseId = courseId
-    this.cmid = null
+    this.cmid = cmid
  // PVSCL:ENDCOND
  // PVSCL:IFCOND(GSheetProvider,LINE)
     this.spreadsheetId = spreadsheetId
@@ -39,6 +40,13 @@ class AnnotationGuide {
   }
 
   toAnnotation () {
+    let motivationTag = 'motivation:defining'
+    let guideTag = Config.namespace + ':guide'
+    let tags = [motivationTag, guideTag]
+    // PVSCL:IFCOND(MoodleProvider,LINE)
+    let cmidTag = 'cmid:' + this.cmid
+    tags.push(cmidTag)
+    // PVSCL:ENDCOND
     return {
       name: this.name,
       group: this.storage.group.id,
@@ -47,13 +55,15 @@ class AnnotationGuide {
       },
       references: [],
       motivation: 'defining',
-      tags: ['motivation:defining', Config.namespace + ':guide'],
+      tags: tags,
       target: [],
       text: jsYaml.dump({
         // PVSCL:IFCOND(MoodleProvider,LINE)
         moodleEndpoint: this.moodleEndpoint,
         assignmentId: this.assignmentId,
-        courseId: this.courseId
+        assignmentName: this.assignmentName,
+        courseId: this.courseId,
+        cmid: this.cmid
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(GSheetProvider,LINE)
         spreadsheetId: this.spreadsheetId,
@@ -98,7 +108,7 @@ class AnnotationGuide {
   static fromAnnotations (annotations, callback) {
     // return AnnotationGuide
     let guideAnnotation = _.remove(annotations, (annotation) => {
-      return _.some(annotation.tags, (tag) => { return tag === 'oa:guide' })
+      return _.some(annotation.tags, (tag) => { return tag === Config.namespace + ':guide' })
     })
     if (guideAnnotation.length === 1) {
       AnnotationGuide.fromAnnotation(guideAnnotation[0], (guide) => {
@@ -387,6 +397,18 @@ class AnnotationGuide {
     _.remove(this.themes, theme)
   }
   // PVSCL:ENDCOND
+  //PVSCL:IFCOND(MoodleProvider, LINE)
+
+  static createAnnotationGuideFromObject (rubric) {
+    // Instance rubric object
+    let instancedAnnotationGuide = Object.assign(new AnnotationGuide(rubric))
+    // Instance themes and codes
+    for (let i = 0; i < rubric.themes.length; i++) {
+      instancedAnnotationGuide.themes[i] = Theme.createThemeFromObject(rubric.themes[i], instancedAnnotationGuide)
+    }
+    return instancedAnnotationGuide
+  }
+  //PVSCL:ENDCOND
   // PVSCL:IFCOND(ExportGroup, LINE)
 
   toObject (name) {

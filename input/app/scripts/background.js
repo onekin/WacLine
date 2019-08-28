@@ -26,6 +26,11 @@ const TargetManager = require('./background/TargetManager')
 // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1, LINE)
 const StorageManager = require('./background/StorageManager')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleProvider, LINE)
+const MoodleDownloadManager = require('./background/MoodleDownloadManager')
+const MoodleBackgroundManager = require('./background/MoodleBackgroundManager')
+const TaskManager = require('./background/TaskManager')
+// PVSCL:ENDCOND
 
 const _ = require('lodash')
 
@@ -60,6 +65,20 @@ class Background {
     // Initialize storage manager
     this.storageManager = new StorageManager()
     this.storageManager.init()
+
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(MoodleProvider, LINE)
+    // Initialize moodle background manager
+    this.moodleBackgroundManager = new MoodleBackgroundManager()
+    this.moodleBackgroundManager.init()
+
+    // Initialize moodle download manager
+    this.moodleDownloadManager = new MoodleDownloadManager()
+    this.moodleDownloadManager.init()
+
+    // Initialize task manager
+    this.taskManager = new TaskManager()
+    this.taskManager.init()
 
     // PVSCL:ENDCOND
     // Initialize page_action event handler

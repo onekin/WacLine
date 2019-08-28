@@ -83,12 +83,8 @@
           <div class="form-check">
             <label for="storageDropdown">Select your annotations storage</label>
             <select class="form-control" id="storageDropdown">
-              // PVSCL:IFCOND(Local,LINE)
-              <option value="localStorage" selected="selected">Local storage</option>
-              // PVSCL:ENDCOND
-              // PVSCL:IFCOND(Hypothesis,LINE)
-              <option value="hypothesis">Hypothes.is</option>
-              // PVSCL:ENDCOND
+              <option value="PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Attribute('variableName'))" selected="selected">PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Name())</option>
+              <option value="PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(1)->pv:Attribute('variableName'))">PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(1)->pv:Name())</option>
             </select>
           </div>
         </div>

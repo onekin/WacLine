@@ -4,20 +4,20 @@ const Config = require('../Config')
 // PVSCL:IFCOND(Dynamic, LINE)
 const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(ExportGroup, LINE)
+// PVSCL:IFCOND(Code and (ExportGroup or MoodleProvider), LINE)
 const Code = require('./Code')
+// PVSCL:IFCOND(ExportGroup, LINE)
 const LanguageUtils = require('../utils/LanguageUtils')
+// PVSCL:ENDCOND
 // PVSCL:ENDCOND
 
 class Theme {
-  constructor ({id, name, color, annotationGuide, descriptionPVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCOND}) {
+  constructor ({id, name, color, annotationGuide, description = ''PVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCOND}) {
     this.id = id
     this.name = name
+    this.description = description
     this.color = color
     this.annotationGuide = annotationGuide
-// PVSCL:IFCOND(User,LINE)   
-    this.description = description
-// PVSCL:ENDCOND
 // PVSCL:IFCOND(Code,LINE)
     this.codes = []
 // PVSCL:ENDCOND
@@ -44,6 +44,10 @@ class Theme {
     let themeTag = Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name
     let motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'codebookDevelopment'
     let tags = [themeTag, motivationTag]
+    // PVSCL:IFCOND(MoodleProvider,LINE)
+    let cmidTag = 'cmid:' + this.annotationGuide.cmid
+    tags.push(cmidTag)
+    // PVSCL:ENDCOND
 // PVSCL:IFCOND(GSheetProvider and Code,LINE)
     if (this.multivalued) {
       tags.push(Config.namespace + ':' + Config.tags.statics.multivalued)
@@ -137,6 +141,7 @@ class Theme {
       name: this.name,
       description: this.description
     }
+    //PVSCL:IFCOND(Code, LINE)
     if (this.codes.length > 0) {
       object.codes = []
       // For each level
@@ -146,8 +151,24 @@ class Theme {
           object.codes.push(code.toObject())
         }
       }
+      //PVSCL:ENDCOND
     }
     return object
+  }
+  //PVSCL:ENDCOND
+  //PVSCL:IFCOND(MoodleProvider, LINE)
+
+  static createThemeFromObject (theme, rubric) {
+    theme.annotationGuide = rubric
+    // Instance theme object
+    let instancedTheme = Object.assign(new Theme(theme))
+    //PVSCL:IFCOND(Code, LINE)
+    // Instance codes
+    for (let i = 0; i < theme.codes.length; i++) {
+      instancedTheme.codes[i] = Code.createCodeFromObject(theme.codes[i], instancedTheme)
+    }
+    //PVSCL:ENDCOND
+    return instancedTheme
   }
   //PVSCL:ENDCOND
 }

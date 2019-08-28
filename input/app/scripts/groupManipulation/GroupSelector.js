@@ -10,15 +10,12 @@ const GroupName = Config.groupName
 //PVSCL:IFCOND(Manual, LINE)
 const Events = require('../contentScript/Events')
 //PVSCL:ENDCOND
+//PVSCL:IFCOND(MoodleResourceBased,LINE)
+const CryptoUtils = require('../utils/CryptoUtils')
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(Hypothesis,LINE)
 const checkHypothesisLoggedInWhenPromptInSeconds = 2 // When not logged in, check if user has logged in
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(NOT(User) AND Hypothesis, LINE)
-const defaultGroup = {id: '__world__', name: 'Public', public: true}
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(Local,LINE)
-const LocalStorageManager = require('../storage/local/LocalStorageManager')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(ImportGroup, LINE)
 const AnnotationGuide = require('../definition/AnnotationGuide')
@@ -63,7 +60,9 @@ class GroupSelector {
       }
     })
   }
+  //PVSCL:IFCOND(ApplicationBased, LINE) 
 
+  // Defines the current group of the highlighter with an Application based group 
   defineCurrentGroup (callback) {
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
       let annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
@@ -86,7 +85,6 @@ class GroupSelector {
         })
       })
     } else {
-      // PVSCL:IFCOND(ApplicationBased, LINE)
       this.retrieveUserProfile(() => {
         // Load all the groups belonged to current user
         this.retrieveGroups((err, groups) => {
@@ -103,7 +101,7 @@ class GroupSelector {
             } else {
               // PVSCL:IFCOND(User, LINE) 
               // TODO i18n
-              Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.', position: Alerts.position.center})
+              Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the extension. We are configuring everything to start reviewing.', position: Alerts.position.center})
               // TODO Create default group
               this.createApplicationBasedGroupForUser((err, group) => {
                 if (err) {
@@ -120,8 +118,34 @@ class GroupSelector {
           }
         })
       })
-	    //PVSCL:ENDCOND
-	    //PVSCL:IFCOND(Manual, LINE)
+    }
+  }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(Manual, LINE) 
+
+  // Defines the one of the possibles groups as the current group of the highlighter
+  defineCurrentGroup (callback) {
+    if (window.abwa.annotationBasedInitializer.initAnnotation) {
+      let annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
+      // Load group of annotation
+      this.retrieveUserProfile(() => {
+        this.retrieveGroups((err, groups) => {
+          if (err) {
+            if (_.isFunction(callback)) {
+              callback(err)
+            }
+          } else {
+            // Set current group
+            this.currentGroup = _.find(groups, (group) => { return group.id === annotationGroupId })
+            // Save to chrome storage current group
+            ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
+            if (_.isFunction(callback)) {
+              callback()
+            }
+          }
+        })
+      })
+    } else {
       this.retrieveUserProfile(() => {
         // Load all the groups belonged to current user
         this.retrieveGroups((err, groups) => {
@@ -145,24 +169,22 @@ class GroupSelector {
                 }
               }
               // If group cannot be retrieved from saved in extension storage
-              //PVSCL:IFCOND(User or ApplicationBased, LINE)
+              //PVSCL:IFCOND(User, LINE)
               // Try to load a group with defaultName
               if (_.isEmpty(this.currentGroup)) {
                 this.currentGroup = _.find(window.abwa.groupSelector.groups, (group) => { return group.name === GroupName })
               }
-              //PVSCL:ENDCOND
-              //PVSCL:IFCOND(User, LINE)
               if (_.isEmpty(this.currentGroup)) {
                 // TODO i18n
                 Alerts.loadingAlert({
                   title: 'First time reviewing?',
-                  text: 'It seems that it is your first time using Review&Go. We are configuring everything to start reviewing.',
+                  text: 'It seems that it is your first time using the extension. We are configuring everything to start reviewing.',
                   position: Alerts.position.center
                 })
                 // TODO Create default group
                 this.createApplicationBasedGroupForUser((err, group) => {
                   if (err) {
-                    Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for Review&Go. Please check if you are logged in Hypothes.is.'})
+                    Alerts.errorAlert({text: 'We are unable to create the group. Please check if you are logged in the storage.'})
                   } else {
                     this.currentGroup = group
                     callback(null)
@@ -188,9 +210,38 @@ class GroupSelector {
           }
         })
       })
-    //PVSCL:ENDCOND
     }
   }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(MoodleResourceBased, LINE) 
+
+  // Defines the current group of the highlighter with an a Moodle based group
+  defineCurrentGroup (callback) {
+    let fileMetadata = window.abwa.contentTypeManager.fileMetadata
+    // Get group name from file metadata
+    let groupName = (new URL(fileMetadata.url)).host + fileMetadata.courseId + fileMetadata.studentId
+    let hashedGroupName = 'MG' + CryptoUtils.hash(groupName).substring(0, 23)
+    // Load all the groups belonged to current user
+    this.retrieveGroups((err, groups) => {
+      if (err) {
+
+      } else {
+        let group = _.find(groups, (group) => { return group.name === hashedGroupName })
+        if (_.isObject(group)) {
+          // Current group will be that group
+          this.currentGroup = group
+          ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
+          if (_.isFunction(callback)) {
+            callback(null)
+          }
+        } else {
+          // Warn user not group is defined, configure tool first
+          Alerts.errorAlert({text: 'If you are a teacher you need to configure Mark&Go first.<br/>If you are a student, you need to join feedback group first.', title: 'Unable to start Mark&Go'}) // TODO i18n
+        }
+      }
+    })
+  }
+//PVSCL:ENDCOND
 
   checkIsLoggedIn (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')

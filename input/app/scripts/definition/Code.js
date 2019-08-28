@@ -20,6 +20,10 @@ class Code {
     let isCodeOfTag = Config.namespace + ':' + Config.tags.grouped.relation + ':' + this.theme.name
     let motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'codebookDevelopment'
     let tags = [codeTag, isCodeOfTag, motivationTag]
+    // PVSCL:IFCOND(MoodleProvider, LINE)
+    let cmidTag = 'cmid:' + this.theme.annotationGuide.cmid
+    tags.push(cmidTag)
+    // PVSCL:ENDCOND
     return {
       id: this.id,
       group: this.theme.annotationGuide.storage.group.id,
@@ -65,6 +69,14 @@ class Code {
       name: this.name,
       description: this.description
     }
+  }
+  //PVSCL:ENDCOND
+  //PVSCL:IFCOND(MoodleProvider, LINE)
+
+  static createCodeFromObject (code, theme) {
+    // Instance level object
+    let instancedCode = Object.assign(new Code({}), code)
+    return instancedCode
   }
   //PVSCL:ENDCOND
 }

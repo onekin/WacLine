@@ -49,6 +49,43 @@ class Alerts {
       })
     }
   }
+//PVSCL:IFCOND(MoodleProvider,LINE)
+
+  static infoAlert2 ({text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), title = 'Info', timerIntervalHandler = null, timerIntervalPeriodInSeconds = 0.1, callback}) {
+    Alerts.tryToLoadSwal()
+    if (_.isNull(swal)) {
+      if (_.isFunction(callback)) {
+        callback(new Error('Unable to load swal'))
+      }
+    } else {
+      let fire = () => {
+        let timerInterval
+        swal.fire({
+          type: Alerts.alertType.info,
+          title: title,
+          html: text,
+          showConfirmButton: true,
+          onOpen: () => {
+            if (_.isFunction(timerIntervalHandler)) {
+              timerInterval = setInterval(() => {
+                timerIntervalHandler(swal, timerInterval)
+              }, timerIntervalPeriodInSeconds * 1000)
+            }
+          },
+          onClose: () => {
+            clearInterval(timerInterval)
+          }
+        })
+      }
+      if (Alerts.isVisible()) {
+        Alerts.closeAlert()
+        setTimeout(fire, 1000)
+      } else {
+        fire()
+      }
+    }
+  }
+//PVSCL:ENDCOND
 
   static errorAlert ({text = chrome.i18n.getMessage('unexpectedError'), title = 'Oops...', callback, onClose}) {
     Alerts.tryToLoadSwal()

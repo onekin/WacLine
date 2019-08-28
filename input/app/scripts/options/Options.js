@@ -1,7 +1,9 @@
+//PVSCL:IFCOND(Local,LINE)
 const Alerts = require('../utils/Alerts')
 const FileUtils = require('../utils/FileUtils')
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
 const FileSaver = require('file-saver')
+//PVSCL:ENDCOND
 
 class Options {
   init () {
@@ -14,7 +16,7 @@ class Options {
       }
     })
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
-      document.querySelector('#storageDropdown').value = storage || 'localStorage'
+      document.querySelector('#storageDropdown').value = storage || 'PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Attribute('variableName'))'
     })
     //PVSCL:ENDCOND
     //PVSCL:IFCOND(Local,LINE)

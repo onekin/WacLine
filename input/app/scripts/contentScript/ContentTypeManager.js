@@ -2,7 +2,7 @@ const _ = require('lodash')
 const Events = require('./Events')
 const URLUtils = require('../utils/URLUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
-// const Alerts = require('../utils/Alerts')
+const Alerts = require('../utils/Alerts')
 //PVSCL:IFCOND(URN, LINE)
 const CryptoUtils = require('../utils/CryptoUtils')
 //PVSCL:ENDCOND
@@ -19,7 +19,7 @@ class ContentTypeManager {
     // PVSCL:IFCOND(URN, LINE)
     this.localFile = false
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(MoodleProvider, LINE)
+    // PVSCL:IFCOND(MoodleURL, LINE)
     this.fileMetadata = {}
     // PVSCL:ENDCOND
   }
@@ -75,7 +75,7 @@ class ContentTypeManager {
           this.documentURL = window.PDFViewerApplication.url
         }
       }
-      // PVSCL:IFCOND(MoodleProvider, LINE)
+      // PVSCL:IFCOND(MoodleURL, LINE)
       let promise = this.retrievePromiseLoadMoodleMetadata()
       // PVSCL:ELSECOND
       let promise = Promise.resolve()
@@ -111,7 +111,7 @@ class ContentTypeManager {
         this.initSupportWebURLChange()
       }
     }
-    // PVSCL:IFCOND(MoodleProvider, LINE)
+    // PVSCL:IFCOND(MoodleURL, LINE)
     let promise = this.retrievePromiseLoadMoodleMetadata()
     // PVSCL:ELSECOND
     let promise = Promise.resolve()
@@ -123,19 +123,26 @@ class ContentTypeManager {
       }
     })
   }
-  // PVSCL:IFCOND(MoodleProvider, LINE)
+  // PVSCL:IFCOND(MoodleURL, LINE)
 
   retrievePromiseLoadMoodleMetadata () {
     return new Promise((resolve, reject) => {
-      chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: URLUtils.retrieveMainUrl(window.location.href)}}, (fileMetadata) => {
+      let url
+      if (window.location.pathname === '/content/pdfjs/web/viewer.html') {
+        url = URLUtils.retrieveMainUrl(window.PDFViewerApplication.url)
+      } else {
+        url = URLUtils.retrieveMainUrl(window.location.href)
+      }
+      chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: url}}, (fileMetadata) => {
         if (_.isEmpty(fileMetadata)) {
           // Warn user document is not from moodle
           Alerts.warningAlert({
             text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>.',
-            title: 'This file is not downloaded from moodle'})
-            this.documentURL = URLUtils.retrieveMainUrl(window.location.href)
-            // Metadata is not loaded
-            reject()
+            title: 'This file is not downloaded from moodle'
+          })
+          this.documentURL = URLUtils.retrieveMainUrl(window.location.href)
+          // Metadata is not loaded
+          reject()
         } else {
           this.fileMetadata = fileMetadata.file
           this.documentURL = fileMetadata.file.url

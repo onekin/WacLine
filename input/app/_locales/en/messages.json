@@ -1,14 +1,14 @@
 {
   "appName": {
-    "message": "SPL&Go",
+    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('appName'))",
     "description": "The name of the application"
   },
   "appShortName": {
-    "message": "SPL&Go",
+    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('appShortName'))",
     "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
   },
   "appDescription": {
-    "message": "Review papers using highlights and go!",
+    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('appDescription'))",
     "description": "The description of the application"
   },
   "browserActionTitle": {
@@ -24,15 +24,15 @@
     "description": "Text for link to return to workspace in sidebar"
   },
   "HypothesisLoginRequired": {
-    "message": "You are not logged in hypothesis, please login in Hypothes.is or check internet connection.",
-    "description": "Message to show when hypothesis login is required"
+    "message": "You are not logged in, please login in Hypothes.is or check internet connection.",
+    "description": "Message to show when login is required"
   },
   "ShareHypothesisGroup": {
     "message": "Copy and share the group with your students to provide the feedback.",
-    "description": "Message to show when hypothesis group is created"
+    "description": "Message to show when group is created"
   },
   "errorDeletingHypothesisAnnotation": {
-    "message": "Error deleting hypothesis annotation, please try it again",
+    "message": "Error deleting annotation, please try it again",
     "description": "Message when fails deleting annotation comment"
   },
   "ErrorConfiguringHighlighter": {

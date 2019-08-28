@@ -120,11 +120,13 @@ class TagManager {
         annotations = _.filter(annotations, (annotation) => {
           return !this.hasATag(annotation, 'slr:spreadsheet')
         })
+        //PVSCL:IFCOND(MoodleURL,LINE)
         // Remove tags which are not for the current assignment
-        /* let cmid = window.abwa.contentTypeManager.fileMetadata.cmid
+        let cmid = window.abwa.contentTypeManager.fileMetadata.cmid
         annotations = _.filter(annotations, (annotation) => {
-          return this.hasATag(annotation, 'exam:cmid:' + cmid)
-        }) */
+          return this.hasATag(annotation, 'cmid:' + cmid)
+        })
+        //PVSCL:ENDCOND
         if (_.isFunction(callback)) {
           callback(null, annotations)
         }

@@ -18,7 +18,8 @@ class StorageManager {
                 let parsedStorage = JSON.parse(storage.data)
                 sendResponse({storage: parsedStorage || ''})
               } else {
-                sendResponse({storage: ''})
+                let defaultStorage = 'PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Attribute('variableName'))'
+                sendResponse({storage: defaultStorage})
               }
             }
           })

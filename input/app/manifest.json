@@ -19,13 +19,13 @@
       // PVSCL:IFCOND(GSheetProvider,LINE)
       "exclude_matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*"PVSCL:IFCOND(Manual and Hypothesis), "https://hypothes.is/login"PVSCL:ENDCOND],
       // PVSCL:ELSECOND
-      // PVSCL:IFCOND(Manual and Hypothesis,LINE)
+      // PVSCL:IFCOND(Manual and Hypothesis and NOT (MoodleProvider),LINE)
       "exclude_matches": ["https://hypothes.is/login"],
       // PVSCL:ENDCOND
       //PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleProvider,LINE)
-      "exclude_matches": ["*://*/*grade/grading/*", "*://*/*mod/assign/view.php*", "*://*/*course/modedit.php?add=assign*"],
-      // PVSCL:ENDCOND
+      "exclude_matches": ["*://*/*grade/grading/*", "*://*/*mod/assign/view.php*", "*://*/*course/modedit.php?add=assign*"PVSCL:IFCOND(Manual and Hypothesis), "https://hypothes.is/login"PVSCL:ENDCOND],
+      //PVSCL:ENDCOND
       "js": ["scripts/contentScript.js"],
       "css": ["styles/contentScript.css"],
       "run_at": "document_start",
