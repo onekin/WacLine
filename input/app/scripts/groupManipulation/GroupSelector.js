@@ -24,6 +24,9 @@ const ImportSchema = require('./ImportSchema')
 // PVSCL:IFCOND(ExportGroup, LINE)
 const ExportSchema = require('./ExportSchema')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Local, LINE)
+const LocalStorageManager = require('../storage/local/LocalStorageManager')
+// PVSCL:ENDCOND
 
 class GroupSelector {
   constructor () {
@@ -196,6 +199,12 @@ class GroupSelector {
                 }
               }
               //PVSCL:ELSECOND
+              // PVSCL:IFCOND(Local, LINE)
+              if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups) && LanguageUtils.isInstanceOf(window.abwa.storageManager, LocalStorageManager)) {
+                this.currentGroup = _.first(window.abwa.groupSelector.groups)
+              }
+              //PVSCL:ENDCOND
+              // TODO Add an option to get the current group by the extension identification, only retrieves groups created by the product
               if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups)) {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
               }
@@ -289,20 +298,6 @@ class GroupSelector {
       }
     })
   }
-  //PVSCL:IFCOND(Hypothesis,LINE)
-
-  initIsLoggedChecking () {
-    // Check if user has been logged in
-    this.loggedInInterval = setInterval(() => {
-      chrome.runtime.sendMessage({scope: 'hypothesis', cmd: 'getToken'}, (token) => {
-        if (!_.isNull(token)) {
-          // Reload the web page
-          window.location.reload()
-        }
-      })
-    }, checkHypothesisLoggedInWhenPromptInSeconds * 1000)
-  }
-  //PVSCL:ENDCOND
 
   renderGroupsContainer () {
     // Current group element rendering
@@ -475,7 +470,7 @@ class GroupSelector {
           this.defineCurrentGroup(() => {
             this.reloadGroupsContainer(() => {
               // Dispatch group has changed
-              this.updateCurrentGroupHandler()
+              this.updateCurrentGroupHandler(this.currentGroup.id)
               // Expand groups container
               this.container.setAttribute('aria-expanded', 'false')
               // Reopen sidebar if closed
@@ -635,10 +630,15 @@ class GroupSelector {
       } else {
         this.groups = groups
         //PVSCL:IFCOND(Hypothesis,LINE)
-        // Remove public group in hypothes.is
+        // Remove public group in hypothes.is and modify group URL
         if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
           _.remove(this.groups, (group) => {
             return group.id === '__world__'
+          })
+          _.forEach(this.groups, (group) => {
+            if (_.has(group, 'links.html')) {
+              group.links.html = group.links.html.substr(0, group.links.html.lastIndexOf('/'))
+            }
           })
         }
         //PVSCL:ENDCOND

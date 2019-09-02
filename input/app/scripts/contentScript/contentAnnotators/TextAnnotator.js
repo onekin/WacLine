@@ -692,12 +692,11 @@ class TextAnnotator extends ContentAnnotator {
    * @param sidebarOpen
    * @returns {Object}
    */
-  //PVSCL:IFCOND(Autofill,LINE)
-  generateCommentForm ({annotation, showForm, sidebarOpen, themeOrCode}) {
-  //PVSCL:ELSECOND
-  generateCommentForm ({annotation, showForm, sidebarOpen}) {
-  //PVSCL:ENDCOND
+  generateCommentForm ({annotation, showForm, sidebarOpen, themeOrCode, previousAssignmentsUI}) {
     let html = ''
+    //PVSCL:IFCOND(PreviousAssignments,LINE)
+    html += previousAssignmentsUI.outerHTML
+    //PVSCL:ENDCOND
     html += '<textarea class="swal2-textarea" data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>'
     //PVSCL:IFCOND(SuggestedLiterature,LINE)
     let suggestedLiteratureHtml = (lit) => {
@@ -712,8 +711,18 @@ class TextAnnotator extends ContentAnnotator {
     html += '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(annotation.suggestedLiterature) + '</ul>'
     //PVSCL:ENDCOND
     // On before open
-    //PVSCL:IFCOND(Autofill or SuggestedLiterature,LINE)
+    //PVSCL:IFCOND(Autofill or SuggestedLiterature or PreviousAssignments,LINE)
     let onBeforeOpen = () => {
+      //PVSCL:IFCOND(PreviousAssignments,LINE)
+      let previousAssignmentAppendElements = document.querySelectorAll('.previousAssignmentAppendButton')
+      previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
+        previousAssignmentAppendElement.addEventListener('click', () => {
+          // Append url to comment
+          let commentTextarea = document.querySelector('#comment')
+          commentTextarea.value = commentTextarea.value + previousAssignmentAppendElement.dataset.studentUrl
+        })
+      })
+      //PVSCL:ENDCOND
       //PVSCL:IFCOND(Autofill,LINE)
       // Load datalist with previously used texts
       this.retrievePreviouslyUsedComments(themeOrCode).then((previousComments) => {
@@ -873,7 +882,10 @@ class TextAnnotator extends ContentAnnotator {
     // Close sidebar if opened
     let sidebarOpen = window.abwa.sidebar.isOpened()
     this.closeSidebar()
-
+    //PVSCL:IFCOND(PreviousAssignments,LINE)
+    let previousAssignments = this.retrievePreviousAssignments()
+    let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
+    //PVSCL:ENDCOND
     let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
     let title = ''
     if (themeOrCode) {
@@ -885,11 +897,14 @@ class TextAnnotator extends ContentAnnotator {
         annotation.text = preConfirmData.comment
       }
       // Create form
+      let generateFormObjects = {annotation, showForm, sidebarOpen}
       //PVSCL:IFCOND(Autofill,LINE)
-      let form = this.generateCommentForm({annotation, showForm, sidebarOpen, themeOrCode})
-      //PVSCL:ELSECOND
-      let form = this.generateCommentForm({annotation, showForm, sidebarOpen})
+      generateFormObjects['themeOrCode'] = themeOrCode
       //PVSCL:ENDCOND
+      //PVSCL:IFCOND(PreviousAssignments,LINE)
+      generateFormObjects['previousAssignmentsUI'] = previousAssignmentsUI
+      //PVSCL:ENDCOND
+      let form = this.generateCommentForm(generateFormObjects)
       Alerts.multipleInputAlert({
         title: title,
         html: form.html,
@@ -904,6 +919,39 @@ class TextAnnotator extends ContentAnnotator {
     showForm()
   }
 // PVSCL:ENDCOND
+//PVSCL:IFCOND(PreviousAssignments,LINE)
+
+  retrievePreviousAssignments () {
+    return window.abwa.moodle.previousAssignments.previousAssignments
+  }
+
+  createPreviousAssignmentsUI (previousAssignments) {
+    let previousAssignmentsContainer = document.createElement('div')
+    previousAssignmentsContainer.className = 'previousAssignmentsContainer'
+    for (let i = 0; i < previousAssignments.length; i++) {
+      let previousAssignment = previousAssignments[i]
+      // Create previous assignment element container
+      let previousAssignmentElement = document.createElement('span')
+      previousAssignmentElement.className = 'previousAssignmentContainer'
+      // Create previous assignment link
+      let previousAssignmentLinkElement = document.createElement('a')
+      previousAssignmentLinkElement.href = previousAssignment.teacherUrl
+      previousAssignmentLinkElement.target = '_blank'
+      previousAssignmentLinkElement.innerText = previousAssignment.name
+      previousAssignmentLinkElement.className = 'previousAssignmentLink'
+      previousAssignmentElement.appendChild(previousAssignmentLinkElement)
+      // Create previous assignment append img
+      let previousAssignmentAppendElement = document.createElement('img')
+      previousAssignmentAppendElement.src = chrome.extension.getURL('images/append.png')
+      previousAssignmentAppendElement.title = 'Append the assignment URL'
+      previousAssignmentAppendElement.className = 'previousAssignmentAppendButton'
+      previousAssignmentAppendElement.dataset.studentUrl = previousAssignment.studentUrl
+      previousAssignmentElement.appendChild(previousAssignmentAppendElement)
+      previousAssignmentsContainer.appendChild(previousAssignmentElement)
+    }
+    return previousAssignmentsContainer
+  }
+  //PVSCL:ENDCOND
   //PVSCL:IFCOND(Autofill,LINE)
 
   retrievePreviouslyUsedComments (themeOrCode) {

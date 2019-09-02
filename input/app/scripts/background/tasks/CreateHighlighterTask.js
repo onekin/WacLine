@@ -3,9 +3,11 @@ const _ = require('lodash')
 const CryptoUtils = require('../../utils/CryptoUtils')
 const AnnotationUtils = require('../../utils/AnnotationUtils')
 const AnnotationGuide = require('../../definition/AnnotationGuide')
+const Config = require('../../Config')
 // PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../../storage/hypothesis/HypothesisClientManager')
 const Hypothesis = require('../../storage/hypothesis/Hypothesis')
+const LanguageUtils = require('../../utils/LanguageUtils')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Local, LINE)
 const Local = require('../../storage/local/Local')
@@ -145,7 +147,7 @@ class CreateHighlighterTask extends Task {
       })
     }
   }
-  
+
   setStorage (newGroup, callback) {
     let annotationStorage
     let group
@@ -190,8 +192,12 @@ class CreateHighlighterTask extends Task {
     // PVSCL:ENDCOND
   }
 
-
   updateHighlighterAnnotations ({rubric, annotations, storage, userProfile}, callback) {
+    // PVSCL:IFCOND(Hypothesis,LINE)
+    if (LanguageUtils.isInstanceOf(this.storageClientManager, HypothesisClientManager)) {
+      storage.group.links.html = storage.group.links.html.substr(0, storage.group.links.html.lastIndexOf('/'))
+    }
+    // PVSCL:ENDCOND
     // Create teacher annotation if not exists
     this.createTeacherAnnotation({teacherId: userProfile.userid, storage: storage}, (err) => {
       if (err) {
@@ -230,6 +236,11 @@ class CreateHighlighterTask extends Task {
   createHighlighterAnnotations ({rubric, storage, userProfile}, callback) {
     // Generate group annotations
     rubric.storage = storage
+    // PVSCL:IFCOND(Hypothesis,LINE)
+    if (LanguageUtils.isInstanceOf(this.storageClientManager, HypothesisClientManager)) {
+      rubric.storage.group.links.html = rubric.storage.group.links.html.substr(0, rubric.storage.group.links.html.lastIndexOf('/'))
+    }
+    // PVSCL:ENDCOND
     rubric = AnnotationGuide.createAnnotationGuideFromObject(rubric) // convert to rubric to be able to run toAnnotations() function
     let annotations = rubric.toAnnotations()
     this.createTeacherAnnotation({teacherId: userProfile.userid, storage: storage}, (err) => {
@@ -267,7 +278,7 @@ class CreateHighlighterTask extends Task {
   createTeacherAnnotation ({teacherId, storage}, callback) {
     let teacherAnnotation = this.generateTeacherAnnotation(teacherId, storage)
     // Check if annotation already exists
-    this.storageClientManager.client.searchAnnotations({group: storage.group.id, tags: 'exam:teacher'}, (err, annotations) => {
+    this.storageClientManager.client.searchAnnotations({group: storage.group.id, tags: Config.namespace + ':' + Config.tags.teacher}, (err, annotations) => {
       if (err) {
 
       } else {
@@ -301,7 +312,7 @@ class CreateHighlighterTask extends Task {
         read: ['group:' + storage.group.id]
       },
       references: [],
-      tags: ['exam:teacher'],
+      tags: [Config.namespace + ':' + Config.tags.teacher],
       target: [],
       text: 'teacherId: ' + teacherId,
       uri: storage.group.links.html // Compatibility with both group representations getGroups and userProfile
@@ -330,7 +341,7 @@ class CreateHighlighterTask extends Task {
 
   loadStorage (callback) {
     let defaultStorage = 'PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Attribute('variableName'))'
-    ChromeStorage.getData('storage.selected', ChromeStorage.sync, (err, storage) => { 
+    ChromeStorage.getData('storage.selected', ChromeStorage.sync, (err, storage) => {
       if (err) {
         callback(err)
       } else {
@@ -362,17 +373,13 @@ class CreateHighlighterTask extends Task {
 //PVSCL:ENDCOND
 
   initLoginProcess (callback) {
-    if (this.storageClientManager.constructor.name === 'HypothesisClientManager') {
-      this.storageClientManager.logIn((err, hypothesisToken) => {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null)
-        }
-      })
-    } else {
-      callback(null)
-    }
+    this.storageClientManager.logIn((err) => {
+      if (err) {
+        callback(err)
+      } else {
+        callback(null)
+      }
+    })
   }
 
   getStatus () {

@@ -17,7 +17,7 @@ const Config = require('../Config')
 class GroupInitializer {
   init (annotationGuide, callback) {
     this.annotationGuide = annotationGuide
-    this.initializeHypothesisGroup((err) => {
+    this.initializeGroup((err) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -30,7 +30,7 @@ class GroupInitializer {
     })
   }
 
-  initializeHypothesisGroup (callback) {
+  initializeGroup (callback) {
     // Get if current hypothesis group exists
     window.hag.storageManager.client.getListOfGroups({}, (err, groups) => {
       if (err) {

@@ -17,6 +17,9 @@ const LocalStorageManager = require('../storage/local/LocalStorageManager')
 // PVSCL:IFCOND(UserFilter, LINE)
 const UserFilter = require('../consumption/filters/UserFilter')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleURL, LINE)
+const ExamDataExtractionContentScript = require('./ExamDataExtractionContentScript')
+// PVSCL:ENDCOND
 
 class ContentScriptManager {
   constructor () {
@@ -84,11 +87,17 @@ class ContentScriptManager {
                       if (err) {
                         // TODO Error
                       } else {
+                     // PVSCL:IFCOND(MoodleURL, LINE)
+                        this.reloadMoodleContentManager()
+                        // PVSCL:ENDCOND
                         this.status = ContentScriptManager.status.initialized
                         console.debug('Initialized content script manager')
                       }
                     })
                     // PVSCL:ELSECOND
+                    // PVSCL:IFCOND(MoodleURL, LINE)
+                    this.reloadMoodleContentManager()
+                    // PVSCL:ENDCOND
                     this.status = ContentScriptManager.status.initialized
                     console.debug('Initialized content script manager')
                     // PVSCL:ENDCOND
@@ -260,6 +269,21 @@ class ContentScriptManager {
         }
       })
     })
+  }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(MoodleURL, LINE)
+
+  reloadMoodleContentManager (config, callback) {
+    // Destroy current specific content manager
+    this.destroyMoodleContentManager()
+    window.abwa.moodleContentManager = new ExamDataExtractionContentScript()
+    window.abwa.moodleContentManager.init()
+  }
+
+  destroyMoodleContentManager () {
+    if (window.abwa.moodleContentManager) {
+      window.abwa.moodleContentManager.destroy()
+    }
   }
 //PVSCL:ENDCOND
 

@@ -224,17 +224,13 @@ class MoodleContentScript {
 //PVSCL:ENDCOND
 
   initLoginProcess (callback) {
-    if (this.StorageClientManager.constructor.name === 'HypothesisClientManager') {
-      this.StorageClientManager.logIn((err, hypothesisToken) => {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null)
-        }
-      })
-    } else {
-      callback(null)
-    }
+    this.StorageClientManager.logIn((err) => {
+      if (err) {
+        callback(err)
+      } else {
+        callback(null)
+      }
+    })
   }
 
   constructRubricsModel ({moodleRubrics, courseId, assignmentId, callback}) {

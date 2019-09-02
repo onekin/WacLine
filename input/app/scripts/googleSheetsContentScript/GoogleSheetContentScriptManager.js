@@ -53,34 +53,21 @@ class GoogleSheetContentScriptManager {
   }
 
   initLoginProcess (callback) {
-    if (window.hag.storageManager.constructor.name === 'HypothesisClientManager') {
-      window.hag.storageManager.logIn((err, hypothesisToken) => {
-        if (err) {
-          callback(err)
-        } else {
-          window.hag.googleSheetClientManager.logInGoogleSheets((err, gSheetToken) => {
-            if (err) {
-              callback(err)
-            } else {
-              callback(null, {
-                hypothesis: hypothesisToken,
-                gSheet: gSheetToken
-              })
-            }
-          })
-        }
-      })
-    } else {
-      window.hag.googleSheetClientManager.logInGoogleSheets((err, gSheetToken) => {
-        if (err) {
-          callback(err)
-        } else {
-          callback(null, {
-            gSheet: gSheetToken
-          })
-        }
-      })
-    }
+    window.hag.storageManager.logIn((err) => {
+      if (err) {
+        callback(err)
+      } else {
+        window.hag.googleSheetClientManager.logInGoogleSheets((err, gSheetToken) => {
+          if (err) {
+            callback(err)
+          } else {
+            callback(null, {
+              gSheet: gSheetToken
+            })
+          }
+        })
+      }
+    })
   }
 //PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
 

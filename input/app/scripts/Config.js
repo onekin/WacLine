@@ -10,7 +10,8 @@ const Config = {
       subgroup: 'code',
       relation: 'isCodeOf'PVSCL:ENDCOND
     },
-    motivation: 'motivation'PVSCL:IFCOND(GSheetProvider),
+    motivation: 'motivation'PVSCL:IFCOND(MoodleURL),
+    teacher: 'teacher'PVSCL:ENDCONDPVSCL:IFCOND(GSheetProvider),
     statics: { // Other static tags specific for the domain
       multivalued: 'multivalued',
       inductive: 'inductive',

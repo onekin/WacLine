@@ -86,16 +86,25 @@ class AnnotationGuide {
   }
 
   static fromAnnotation (annotation, callback) {
-    // PVSCL:IFCOND(GSheetProvider,LINE)
-    let config = jsYaml.load(annotation.text)
-    config.spreadsheetId = config.spreadsheetId
-    config.sheetId = config.sheetId
-    // PVSCL:ENDCOND
     this.setStorage(null, (storage) => {
       let annotationGuideOpts = {id: annotation.id, name: annotation.name, storage: storage}
       // PVSCL:IFCOND(GSheetProvider, LINE)
+      let config = jsYaml.load(annotation.text)
       annotationGuideOpts['spreadsheetId'] = config.spreadsheetId
       annotationGuideOpts['sheetId'] = config.sheetId
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(MoodleProvider, LINE)
+      let config = jsYaml.load(annotation.text)
+      annotationGuideOpts['moodleEndpoint'] = config.moodleEndpoint
+      annotationGuideOpts['assignmentId'] = config.assignmentId
+      annotationGuideOpts['assignmentName'] = config.assignmentName
+      annotationGuideOpts['courseId'] = config.assignmentName
+      let cmidTag = _.find(annotation.tags, (tag) => {
+        return tag.includes('cmid:')
+      })
+      if (_.isString(cmidTag)) {
+        annotationGuideOpts['cmid'] = cmidTag.replace('cmid:', '')
+      }
       // PVSCL:ENDCOND
       let guide
       guide = new AnnotationGuide(annotationGuideOpts)
@@ -110,7 +119,7 @@ class AnnotationGuide {
     let guideAnnotation = _.remove(annotations, (annotation) => {
       return _.some(annotation.tags, (tag) => { return tag === Config.namespace + ':guide' })
     })
-    if (guideAnnotation.length === 1) {
+    if (guideAnnotation.length > 0) {
       AnnotationGuide.fromAnnotation(guideAnnotation[0], (guide) => {
         // TODO Complete the guide from the annotations
         // For the rest of annotations, get themes and codes
@@ -424,6 +433,24 @@ class AnnotationGuide {
       }
     }
     return object
+  }
+  //PVSCL:ENDCOND
+  //PVSCL:IFCOND(PreviousAssignments, LINE)
+
+  getUrlToStudentAssignmentForTeacher (studentId) {
+    if (studentId && this.moodleEndpoint && this.cmid) {
+      return this.moodleEndpoint + 'mod/assign/view.php?id=' + this.cmid + '&rownum=0&action=grader&userid=' + studentId
+    } else {
+      return null
+    }
+  }
+
+  getUrlToStudentAssignmentForStudent (studentId) {
+    if (studentId && this.moodleEndpoint && this.cmid) {
+      return this.moodleEndpoint + 'mod/assign/view.php?id=' + this.cmid
+    } else {
+      return null
+    }
   }
   //PVSCL:ENDCOND
 }

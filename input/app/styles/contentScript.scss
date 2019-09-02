@@ -7,6 +7,9 @@ PVSCL:ENDCOND
 PVSCL:IFCOND( Manual, LINE )
 @import './groupSelection';
 PVSCL:ENDCOND
+PVSCL:IFCOND( PreviousAssignments, LINE )
+@import './exam';
+PVSCL:ENDCOND
 @import './tagWrapper';
 @import './locationManager';
 @import './sidebar';

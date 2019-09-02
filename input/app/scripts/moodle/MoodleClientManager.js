@@ -1,7 +1,7 @@
 const MoodleClient = require('./MoodleClient')
 const _ = require('lodash')
 const MoodleFunctions = require('./MoodleFunctions')
-// const APISimulation = require('./APISimulation')
+const APISimulation = require('./APISimulation')
 // const RolesManager = require('../contentScript/RolesManager')
 
 class MoodleClientManager {
