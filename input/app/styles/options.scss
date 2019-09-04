@@ -1,1 +1,15 @@
 @import '../../node_modules/bootstrap/scss/bootstrap';
+
+.storageConfiguration[aria-hidden="true"] {
+  display: none;
+}
+
+.requiredFormInput:after {
+  color: red;
+  content: " *";
+}
+
+input:invalid {
+  border-color: red;
+  border-width: 2px;
+}

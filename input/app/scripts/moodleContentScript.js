@@ -1,6 +1,6 @@
 const _ = require('lodash')
-const MoodleContentScript = require('./moodle/MoodleContentScript')
-const MoodleAugmentation = require('./moodle/augmentation/MoodleAugmentation')
+const MoodleProvider = require('./moodleProvider/MoodleProvider')
+const MoodleAugmentation = require('./moodleProvider/augmentation/MoodleAugmentation')
 
 window.addEventListener('load', () => {
   console.debug('Loaded moodle content script')
@@ -13,7 +13,7 @@ window.addEventListener('load', () => {
     if (_.isEmpty(window.mag)) {
       if (msg.action === 'initContentScript') {
         window.mag = {}
-        window.mag.moodleContentScript = new MoodleContentScript()
+        window.mag.moodleContentScript = new MoodleProvider()
         window.mag.moodleContentScript.init(() => {
           // Disable the button of popup
           chrome.runtime.sendMessage({scope: 'extension', cmd: 'deactivatePopup'}, (result) => {

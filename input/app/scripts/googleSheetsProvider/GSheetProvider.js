@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const GoogleSheetsClientManager = require('../googleSheets/GoogleSheetsClientManager')
-const GoogleSheetParser = require('./GoogleSheetParser')
+const GSheetParser = require('./GSheetParser')
 const GroupInitializer = require('./GroupInitializer')
 const Alerts = require('../utils/Alerts')
 const swal = require('sweetalert2')
@@ -113,7 +113,7 @@ class GoogleSheetContentScriptManager {
 //PVSCL:ENDCOND
 
   initGoogleSheetParsing (callback) {
-    window.hag.googleSheetParser = new GoogleSheetParser()
+    window.hag.googleSheetParser = new GSheetParser()
     window.hag.googleSheetParser.parse((err, annotationGuide) => {
       if (err) {
         console.error(err)

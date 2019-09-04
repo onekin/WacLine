@@ -4,6 +4,7 @@ const FileUtils = require('../utils/FileUtils')
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
 const FileSaver = require('file-saver')
 //PVSCL:ENDCOND
+const _ = require('lodash')
 
 class Options {
   init () {
@@ -13,10 +14,13 @@ class Options {
       // Get value
       if (event.target.selectedOptions && event.target.selectedOptions[0] && event.target.selectedOptions[0].value) {
         this.setStorage(event.target.selectedOptions[0].value)
+        // Show/hide configuration for selected storage
+        this.showSelectedStorageConfiguration(event.target.selectedOptions[0].value)
       }
     })
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
-      document.querySelector('#storageDropdown').value = storage || 'PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Attribute('variableName'))'
+      document.querySelector('#storageDropdown').value = storage
+      this.showSelectedStorageConfiguration(storage)
     })
     //PVSCL:ENDCOND
     //PVSCL:IFCOND(Local,LINE)
@@ -113,6 +117,19 @@ class Options {
     })
   }
   //PVSCL:ENDCOND
+
+  showSelectedStorageConfiguration (selectedStorage) {
+    // Hide all storage configurations
+    let storageConfigurationCards = document.querySelectorAll('.storageConfiguration')
+    storageConfigurationCards.forEach((storageConfigurationCard) => {
+      storageConfigurationCard.setAttribute('aria-hidden', 'true')
+    })
+    // Show corresponding selected storage configuration card
+    let selectedStorageConfigurationCard = document.querySelector('#' + selectedStorage + 'ConfigurationCard')
+    if (_.isElement(selectedStorageConfigurationCard)) {
+      selectedStorageConfigurationCard.setAttribute('aria-hidden', 'false')
+    }
+  }
 }
 
 module.exports = Options

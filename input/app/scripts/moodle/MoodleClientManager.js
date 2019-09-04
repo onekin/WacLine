@@ -106,7 +106,7 @@ class MoodleClientManager {
     }
   }
 
-  addSubmissionComment ({courseId, studentId, text, callback}) {
+  /* addSubmissionComment ({courseId, studentId, text, callback}) {
     APISimulation.addSubmissionComment(this.moodleEndpoint, {
       courseId,
       studentId,
@@ -116,7 +116,7 @@ class MoodleClientManager {
       contextId: window.abwa.contentTypeManager.fileMetadata.contextId,
       itemId: window.abwa.contentTypeManager.fileMetadata.itemId
     })
-  }
+  } */
 
   removeSubmissionComment ({commentId, annotationId, callback}) {
     if (commentId) {

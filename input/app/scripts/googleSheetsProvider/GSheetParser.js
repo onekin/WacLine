@@ -2,7 +2,7 @@ const _ = require('lodash')
 const AnnotationGuide = require('../definition/AnnotationGuide')
 const Alerts = require('../utils/Alerts')
 
-class GoogleSheetParser {
+class GSheetParser {
   parse (callback) {
     AnnotationGuide.fromGSheetProvider((err, annotationGuide) => {
       if (err) {
@@ -17,4 +17,4 @@ class GoogleSheetParser {
   }
 }
 
-module.exports = GoogleSheetParser
+module.exports = GSheetParser

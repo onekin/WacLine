@@ -1,5 +1,5 @@
-const MoodleClientManager = require('./MoodleClientManager')
-const MoodleFunctions = require('./MoodleFunctions')
+const MoodleClientManager = require('../moodle/MoodleClientManager')
+const MoodleFunctions = require('../moodle/MoodleFunctions')
 const _ = require('lodash')
 // PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
@@ -15,7 +15,7 @@ const LanguageUtils = require('../utils/LanguageUtils')
 const CircularJSON = require('circular-json-es6')
 const MoodleScraping = require('./MoodleScraping')
 
-class MoodleContentScript {
+class MoodleProvider {
   constructor () {
     this.rubric = null
     this.assignmentId = null
@@ -176,7 +176,7 @@ class MoodleContentScript {
       text: 'If the tool takes too much time, please reload the page and try again.'
     })
   }
-//PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
+// PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
 
   loadStorage (callback) {
     // PVSCL:IFCOND(Hypothesis, LINE)
@@ -277,4 +277,4 @@ class MoodleContentScript {
   }
 }
 
-module.exports = MoodleContentScript
+module.exports = MoodleProvider

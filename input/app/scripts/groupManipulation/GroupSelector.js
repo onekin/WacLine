@@ -14,7 +14,6 @@ const Events = require('../contentScript/Events')
 const CryptoUtils = require('../utils/CryptoUtils')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(Hypothesis,LINE)
-const checkHypothesisLoggedInWhenPromptInSeconds = 2 // When not logged in, check if user has logged in
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(ImportGroup, LINE)

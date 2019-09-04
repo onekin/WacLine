@@ -79,7 +79,13 @@
           <cm:constant cm:id="iMKgXJzdPh5Hv-ycm" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iHOz4DQvdk2XIv7bm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZWJT7KvMS0tN6RgT" cm:type="ps:datetime">2019-08-27T10:36:59.540Z</cm:constant>
+          <cm:constant cm:id="iZWJT7KvMS0tN6RgT" cm:type="ps:datetime">2019-09-04T08:36:53.552Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLtmBzhmaB-6LgGXC" cm:type="ps:string" cm:name="defaultStorage">
+          <cm:constant cm:id="iBR5sKrb1tFl-3-wx" cm:type="ps:string">Local</cm:constant>
+          <cm:desc>
+            <cm:mimedesc cm:id="iCvHw2rgI6FOL1k0S" cm:mimetype="text/html" cm:encoding="utf-8">The value should be one of the selected storages</cm:mimedesc>
+          </cm:desc>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -218,7 +224,7 @@
         <cm:mimedesc cm:id="iPcWTqKEU3608M5GB" cm:mimetype="text/plain" cm:encoding="utf-8">GroupManipulation</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="icgfm8UrjUUnONR63" cm:name="Hypothesis" cm:type="ps:feature" cm:class="ps:feature">
+    <cm:element cm:id="icgfm8UrjUUnONR63" cm:name="Hypothesis" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i_KeXtv9a5x0RyjvD" cm:class="ps:parents">
         <cm:relation cm:id="i1-_eFOws2SIzHQBs" cm:type="ps:parent">
           <cm:target cm:id="ioRonL7RmLDAQpOrh">./iMa6iMdWMevVMj_zT</cm:target>
@@ -235,10 +241,7 @@
           <cm:constant cm:id="in3mefvX-Zz8TEE9-" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iKeKzTNv_JTmm4G-Z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iWSKC2pWXRqNaUakc" cm:type="ps:datetime">2019-08-27T10:33:12.402Z</cm:constant>
-        </cm:property>
-        <cm:property cm:id="ibp7S0kaidodT8D9g" cm:type="ps:string" cm:fixed="true" cm:name="variableName">
-          <cm:constant cm:id="iklzSY5QDvfNXKWWu" cm:type="ps:string">hypothesis</cm:constant>
+          <cm:constant cm:id="iWSKC2pWXRqNaUakc" cm:type="ps:datetime">2019-09-03T14:44:06.306Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1492,10 +1495,7 @@
           <cm:constant cm:id="i0KxZ1OBccH7-csz1" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iU7gNB6cx3eU8g3Qr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i8hshy4aBVelAEZC6" cm:type="ps:datetime">2019-08-27T10:31:15.953Z</cm:constant>
-        </cm:property>
-        <cm:property cm:id="isCsfRoZKzb5N--Nn" cm:type="ps:string" cm:fixed="true" cm:name="variableName">
-          <cm:constant cm:id="i_UThDTOI_ovyFMKs" cm:type="ps:string">localStorage</cm:constant>
+          <cm:constant cm:id="i8hshy4aBVelAEZC6" cm:type="ps:datetime">2019-09-03T14:43:55.956Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>

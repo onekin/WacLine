@@ -76,16 +76,27 @@ class ContentTypeManager {
         }
       }
       // PVSCL:IFCOND(MoodleURL, LINE)
-      let promise = this.retrievePromiseLoadMoodleMetadata()
+      this.retrievePromiseLoadMoodleMetadata()
+        .then(() => {
+          if (_.isFunction(callback)) {
+            callback()
+          }
+        }).catch((err) => {
+        // Warn user document is not from moodle
+          Alerts.warningAlert({
+            text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>. Error: ' + err.message,
+            title: 'This file is not downloaded from moodle'
+          })
+        })
       // PVSCL:ELSECOND
       let promise = Promise.resolve()
-      // PVSCL:ENDCOND
-
+      
       promise.then(() => {
         if (_.isFunction(callback)) {
           callback()
         }
       })
+      // PVSCL:ENDCOND   
     })
   }
 
@@ -112,16 +123,27 @@ class ContentTypeManager {
       }
     }
     // PVSCL:IFCOND(MoodleURL, LINE)
-    let promise = this.retrievePromiseLoadMoodleMetadata()
+    this.retrievePromiseLoadMoodleMetadata()
+      .then(() => {
+        if (_.isFunction(callback)) {
+          callback()
+        }
+      }).catch((err) => {
+        // Warn user document is not from moodle
+        Alerts.warningAlert({
+          text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>. Error: ' + err.message,
+          title: 'This file is not downloaded from moodle'
+        })
+      })
     // PVSCL:ELSECOND
     let promise = Promise.resolve()
-    // PVSCL:ENDCOND
-
+    
     promise.then(() => {
       if (_.isFunction(callback)) {
         callback()
       }
     })
+    // PVSCL:ENDCOND  
   }
   // PVSCL:IFCOND(MoodleURL, LINE)
 
@@ -135,14 +157,9 @@ class ContentTypeManager {
       }
       chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: url}}, (fileMetadata) => {
         if (_.isEmpty(fileMetadata)) {
-          // Warn user document is not from moodle
-          Alerts.warningAlert({
-            text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>.',
-            title: 'This file is not downloaded from moodle'
-          })
           this.documentURL = URLUtils.retrieveMainUrl(window.location.href)
           // Metadata is not loaded
-          reject()
+          reject(new Error('Metadata is not loaded'))
         } else {
           this.fileMetadata = fileMetadata.file
           this.documentURL = fileMetadata.file.url

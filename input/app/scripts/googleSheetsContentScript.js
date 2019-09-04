@@ -1,4 +1,4 @@
-const GoogleSheetContentScriptManager = require('./googleSheetsContentScript/GoogleSheetContentScriptManager')
+const GSheetProvider = require('./googleSheetsProvider/GSheetProvider')
 const _ = require('lodash')
 
 window.addEventListener('load', () => {
@@ -12,7 +12,7 @@ window.addEventListener('load', () => {
     if (_.isEmpty(window.hag)) {
       if (msg.action === 'initContentScript') {
         window.hag = {}
-        window.hag.contentScriptManager = new GoogleSheetContentScriptManager()
+        window.hag.contentScriptManager = new GSheetProvider()
         window.hag.contentScriptManager.init(() => {
           // Disable the button of popup
           chrome.runtime.sendMessage({scope: 'extension', cmd: 'deactivatePopup'}, (result) => {

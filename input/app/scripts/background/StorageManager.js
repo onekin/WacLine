@@ -1,4 +1,5 @@
 const ChromeStorage = require('../utils/ChromeStorage')
+const Config = require('../Config')
 
 class StorageManager {
   init () {
@@ -18,7 +19,7 @@ class StorageManager {
                 let parsedStorage = JSON.parse(storage.data)
                 sendResponse({storage: parsedStorage || ''})
               } else {
-                let defaultStorage = 'PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Attribute('variableName'))'
+                let defaultStorage = Config.defaultGroup
                 sendResponse({storage: defaultStorage})
               }
             }
