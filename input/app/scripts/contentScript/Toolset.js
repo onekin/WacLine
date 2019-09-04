@@ -18,6 +18,9 @@ const TextSummary = require('../consumption/visualizations/TextSummary')
 // PVSCL:IFCOND(DeleteGroup,LINE)
 const DeleteGroup = require('../groupManipulation/DeleteGroup')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleReport,LINE)
+const BackToWorkspace = require('../moodle/BackToWorkspace')
+// PVSCL:ENDCOND
 const $ = require('jquery')
 
 class Toolset {
@@ -104,6 +107,18 @@ class Toolset {
       this.toolsetBody.appendChild(this.googleSheetImage)
       this.googleSheetImage.addEventListener('click', () => {
         this.generateGoogleSheet()
+      })
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(MoodleReport,LINE)
+      // Set back to moodle icon
+      let moodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
+      this.moodleImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.moodleImage.src = moodleImageUrl
+      this.moodleImage.title = 'Back to moodle' // TODO i18n
+      BackToWorkspace.createWorkspaceLink((link) => {
+        this.moodleLink = link
+        this.moodleLink.appendChild(this.moodleImage)
+        this.toolsetBody.appendChild(this.moodleLink)
       })
       // PVSCL:ENDCOND
       // Check if exist any element in the tools and show it

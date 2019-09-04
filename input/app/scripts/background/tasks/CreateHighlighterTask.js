@@ -199,7 +199,7 @@ class CreateHighlighterTask extends Task {
     }
     // PVSCL:ENDCOND
     // Create teacher annotation if not exists
-    this.createTeacherAnnotation({teacherId: userProfile.userid, storage: storage}, (err) => {
+    this.createTeacherAnnotation({producerId: userProfile.userid, storage: storage}, (err) => {
       if (err) {
         callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
       } else {
@@ -243,7 +243,7 @@ class CreateHighlighterTask extends Task {
     // PVSCL:ENDCOND
     rubric = AnnotationGuide.createAnnotationGuideFromObject(rubric) // convert to rubric to be able to run toAnnotations() function
     let annotations = rubric.toAnnotations()
-    this.createTeacherAnnotation({teacherId: userProfile.userid, storage: storage}, (err) => {
+    this.createTeacherAnnotation({producerId: userProfile.userid, storage: storage}, (err) => {
       if (err) {
         callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
       } else {
@@ -275,10 +275,10 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  createTeacherAnnotation ({teacherId, storage}, callback) {
-    let teacherAnnotation = this.generateTeacherAnnotation(teacherId, storage)
+  createTeacherAnnotation ({producerId, storage}, callback) {
+    let teacherAnnotation = this.generateTeacherAnnotation(producerId, storage)
     // Check if annotation already exists
-    this.storageClientManager.client.searchAnnotations({group: storage.group.id, tags: Config.namespace + ':' + Config.tags.teacher}, (err, annotations) => {
+    this.storageClientManager.client.searchAnnotations({group: storage.group.id, tags: Config.namespace + ':' + Config.tags.producer}, (err, annotations) => {
       if (err) {
 
       } else {
@@ -305,16 +305,16 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  generateTeacherAnnotation (teacherId, storage) {
+  generateTeacherAnnotation (producerId, storage) {
     return {
       group: storage.group.id,
       permissions: {
         read: ['group:' + storage.group.id]
       },
       references: [],
-      tags: [Config.namespace + ':' + Config.tags.teacher],
+      tags: [Config.namespace + ':' + Config.tags.producer],
       target: [],
-      text: 'teacherId: ' + teacherId,
+      text: 'producerId: ' + producerId,
       uri: storage.group.links.html // Compatibility with both group representations getGroups and userProfile
     }
   }
@@ -340,7 +340,7 @@ class CreateHighlighterTask extends Task {
 //PVSCL:ELSECOND
 
   loadStorage (callback) {
-    let defaultStorage = 'PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Attribute('variableName'))'
+    let defaultStorage = Config.defaultStorage
     ChromeStorage.getData('storage.selected', ChromeStorage.sync, (err, storage) => {
       if (err) {
         callback(err)

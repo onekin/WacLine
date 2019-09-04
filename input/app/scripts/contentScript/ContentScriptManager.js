@@ -8,6 +8,9 @@ const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const Events = require('./Events')
+// PVSCL:IFCOND(MoodleURL, LINE)
+const RolesManager = require('./RolesManager')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
 //PVSCL:ENDCOND
@@ -17,8 +20,8 @@ const LocalStorageManager = require('../storage/local/LocalStorageManager')
 // PVSCL:IFCOND(UserFilter, LINE)
 const UserFilter = require('../consumption/filters/UserFilter')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleURL, LINE)
-const ExamDataExtractionContentScript = require('./ExamDataExtractionContentScript')
+// PVSCL:IFCOND(PreviousAssignments, LINE)
+const PreviousAssignments = require('../production/PreviousAssignments')
 // PVSCL:ENDCOND
 
 class ContentScriptManager {
@@ -88,7 +91,7 @@ class ContentScriptManager {
                         // TODO Error
                       } else {
                      // PVSCL:IFCOND(MoodleURL, LINE)
-                        this.reloadMoodleContentManager()
+                        this.reloadSpecificContentManager()
                         // PVSCL:ENDCOND
                         this.status = ContentScriptManager.status.initialized
                         console.debug('Initialized content script manager')
@@ -96,7 +99,7 @@ class ContentScriptManager {
                     })
                     // PVSCL:ELSECOND
                     // PVSCL:IFCOND(MoodleURL, LINE)
-                    this.reloadMoodleContentManager()
+                    this.reloadSpecificContentManager()
                     // PVSCL:ENDCOND
                     this.status = ContentScriptManager.status.initialized
                     console.debug('Initialized content script manager')
@@ -273,17 +276,34 @@ class ContentScriptManager {
 //PVSCL:ENDCOND
 //PVSCL:IFCOND(MoodleURL, LINE)
 
-  reloadMoodleContentManager (config, callback) {
-    // Destroy current specific content manager
-    this.destroyMoodleContentManager()
-    window.abwa.moodleContentManager = new ExamDataExtractionContentScript()
-    window.abwa.moodleContentManager.init()
+  reloadSpecificContentManager (config, callback) {
+ // Destroy current specific content manager
+    if (window.abwa.specificContentManager) {
+      this.destroySpecificContentManager()
+    }
+    window.abwa.specificContentManager = {}
+    new Promise((resolve, reject) => {
+      window.abwa.specificContentManager.rolesManager = new RolesManager()
+      window.abwa.specificContentManager.rolesManager.init(() => {
+        resolve()
+      })
+    })PVSCL:IFCOND(PreviousAssignments).then(() => {
+      if (window.abwa.specificContentManager.rolesManager.role === Config.tags.producer) {
+        window.abwa.specificContentManager.previousAssignments = new PreviousAssignments()
+        window.abwa.specificContentManager.previousAssignments.init()
+      }
+    })PVSCL:ENDCOND;
   }
 
-  destroyMoodleContentManager () {
-    if (window.abwa.moodleContentManager) {
-      window.abwa.moodleContentManager.destroy()
+  destroySpecificContentManager () {
+    if (window.abwa.specificContentManager.rolesManager) {
+      window.abwa.specificContentManager.rolesManager.destroy()
     }
+    // PVSCL:IFCOND(PreviousAssignments, LINE)
+    if (window.abwa.specificContentManager.previousAssignments) {
+      window.abwa.specificContentManager.previousAssignments.destroy()
+    }
+    // PVSCL:ENDCOND
   }
 //PVSCL:ENDCOND
 

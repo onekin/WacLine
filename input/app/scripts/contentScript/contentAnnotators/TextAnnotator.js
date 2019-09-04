@@ -1,7 +1,6 @@
 const ContentAnnotator = require('./ContentAnnotator')
 const ContentTypeManager = require('../ContentTypeManager')
 const Events = require('../Events')
-// const RolesManager = require('../RolesManager')
 const DOMTextUtils = require('../../utils/DOMTextUtils')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
@@ -922,7 +921,7 @@ class TextAnnotator extends ContentAnnotator {
 //PVSCL:IFCOND(PreviousAssignments,LINE)
 
   retrievePreviousAssignments () {
-    return window.abwa.moodle.previousAssignments.previousAssignments
+    return window.abwa.specificContentManager.previousAssignments.previousAssignments
   }
 
   createPreviousAssignmentsUI (previousAssignments) {

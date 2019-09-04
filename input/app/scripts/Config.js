@@ -16,7 +16,8 @@ const Config = {
       relation: 'isCodeOf'PVSCL:ENDCOND
     },
     motivation: 'motivation'PVSCL:IFCOND(MoodleURL),
-    teacher: 'teacher'PVSCL:ENDCONDPVSCL:IFCOND(GSheetProvider),
+    producer: 'teacher',
+    consumer: 'student'PVSCL:ENDCONDPVSCL:IFCOND(GSheetProvider),
     statics: { // Other static tags specific for the domain
       multivalued: 'multivalued',
       inductive: 'inductive',

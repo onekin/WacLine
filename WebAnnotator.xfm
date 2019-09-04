@@ -1294,7 +1294,7 @@
         <cm:mimedesc cm:id="iqf1oSYwGv-9AcQ6W" cm:mimetype="text/plain" cm:encoding="utf-8">ThirdAppConsumer</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iJPFmC66OoZRc1I1y" cm:name="MoodleConsumer" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="iJPFmC66OoZRc1I1y" cm:name="MoodleReport" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i3yy4noXdRAtkPnDb" cm:class="ps:parents">
         <cm:relation cm:id="iTwKuHoPjVeFZjTQE" cm:type="ps:parent">
           <cm:target cm:id="ilSkQs41mrRu3Wwn7">./iO3cjnNGVYQnnMX8G</cm:target>
@@ -1308,14 +1308,14 @@
           <cm:constant cm:id="iCIiq_iHGEUcjQ5vZ" cm:type="ps:datetime">2019-04-29T15:48:58.911Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iaiM20qi7xyF5wtoW" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i-Cw0phhnZA3OPI-i" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i-Cw0phhnZA3OPI-i" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iWxCjjx7Osj1hwv5n" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ikZMquRIMXvso_EtE" cm:type="ps:datetime">2019-04-29T15:48:58.911Z</cm:constant>
+          <cm:constant cm:id="ikZMquRIMXvso_EtE" cm:type="ps:datetime">2019-09-04T08:58:42.291Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
-        <cm:mimedesc cm:id="i_TQ-Ws6gPzSR03V3" cm:mimetype="text/plain" cm:encoding="utf-8">Moodle</cm:mimedesc>
+        <cm:mimedesc cm:id="i_TQ-Ws6gPzSR03V3" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleReport</cm:mimedesc>
       </cm:vname>
     </cm:element>
     <cm:element cm:id="iRJEARLrqPssrfVfo" cm:name="CreateGroup" cm:type="ps:feature" cm:class="ps:feature">
@@ -1645,6 +1645,11 @@
           <cm:target cm:id="ihVV_PtZs3uCNPXCy">./i59-rclUjiYMlpJIn</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:relations cm:id="iFQWDa6IlA4F9h830" cm:class="ps:dependencies">
+        <cm:relation cm:id="iGMh1TItNL4qmLpsd" cm:type="ps:requires">
+          <cm:target cm:id="i4YEsRcbLhK6uIyXe">iBWRWvwwJAgrORyLO/iLqGOqKATKrZbB5l4</cm:target>
+        </cm:relation>
+      </cm:relations>
       <cm:properties>
         <cm:property cm:id="iND_YfybIktcVFZhR" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="i7R7rlSCMgT9HrxoW" cm:type="ps:string">xabiergarmendia</cm:constant>
@@ -1656,7 +1661,7 @@
           <cm:constant cm:id="i1pJ7v84xAhFIXvZe" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="inLOT_Y9yJ76-24gQ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iYqEMojhpoFjhuofK" cm:type="ps:datetime">2019-08-26T09:01:28.398Z</cm:constant>
+          <cm:constant cm:id="iYqEMojhpoFjhuofK" cm:type="ps:datetime">2019-09-04T09:03:45.095Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

@@ -1,10 +1,8 @@
 const _ = require('lodash')
 const Config = require('../Config')
-// const Mark = require('./Mark')
 const AnnotationGuide = require('../definition/AnnotationGuide')
 
 const RETRIEVE_PREVIOUS_ASSIGNMENT_INTERVAL_IN_SECONDS = 60
-// const RETRIEVE_ANNOTATIONS_FOR_ASSIGNMENT_INTERVAL_IN_SECONDS = 10
 
 class PreviousAssignments {
   constructor () {

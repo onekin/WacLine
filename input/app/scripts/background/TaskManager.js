@@ -62,7 +62,7 @@ class TaskManager {
       if (err) {
         this.currentTasks = []
       } else {
-        this.currentTasks = tasks || []
+        this.currentTasks = []
       }
       this.currentTask = {}
       if (_.isFunction(callback)) {
