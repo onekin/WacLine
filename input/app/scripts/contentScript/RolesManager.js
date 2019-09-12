@@ -8,6 +8,7 @@ class RolesManager {
   }
 
   init (callback) {
+    console.debug('Initializing RolesManager')
     // Enable different functionality if current user is the teacher or student
     this.currentUserIsProducer((err, isProducer) => {
       if (err) {
@@ -20,6 +21,7 @@ class RolesManager {
         } else {
           this.role = RolesManager.roles.consumer
         }
+        console.debug('Initialized RolesManager')
         if (_.isFunction(callback)) {
           callback()
         }
