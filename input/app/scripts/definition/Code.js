@@ -9,7 +9,9 @@ class Code {
     this.color = color
     this.theme = theme
     this.description = description
+    // PVSCL:IFCOND(MoodleProvider, LINE)
     this.moodleLevelId = moodleLevelId
+    // PVSCL:ENDCOND
   }
 
   toAnnotations () {

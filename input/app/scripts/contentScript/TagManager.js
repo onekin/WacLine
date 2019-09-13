@@ -383,7 +383,7 @@ class TagManager {
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Dynamic, LINE)
-  
+
   createThemeRightClickHandler () {
     return (themeId) => {
       let items = {}
@@ -406,7 +406,7 @@ class TagManager {
             if (LanguageUtils.isInstanceOf(theme, Theme)) {
               this.removeTheme(theme)
             }
-          }     
+          }
         },
         items: items
       }
