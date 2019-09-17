@@ -23,7 +23,7 @@ const ImportSchema = require('./ImportSchema')
 // PVSCL:IFCOND(ExportGroup, LINE)
 const ExportSchema = require('./ExportSchema')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local, LINE)
+// PVSCL:IFCOND(Local and User, LINE) // It is because LocalStorageManager it is only used inside an if where User feature is selected
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
 // PVSCL:ENDCOND
 

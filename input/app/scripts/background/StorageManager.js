@@ -19,7 +19,7 @@ class StorageManager {
                 let parsedStorage = JSON.parse(storage.data)
                 sendResponse({storage: parsedStorage || ''})
               } else {
-                let defaultStorage = Config.defaultGroup
+                let defaultStorage = Config.defaultStorage
                 sendResponse({storage: defaultStorage})
               }
             }

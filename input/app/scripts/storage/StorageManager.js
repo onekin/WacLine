@@ -3,7 +3,12 @@ const _ = require('lodash')
 class StorageManager {
   constructor () {
     this.client = {}
-    this.storageUrl = 'https://localannotationsdatabase.org'
+    this.storageMetadata = {
+      annotationUrl: 'https://localannotationsdatabase.org/annotation/',
+      groupUrl: 'https://localannotationsdatabase.org/group/',
+      userUrl: 'https://localannotationsdatabase.org/user/',
+      storageUrl: 'https://localannotationsdatabase.org'
+    }
   }
 
   isLoggedIn () {

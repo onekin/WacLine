@@ -7,7 +7,10 @@ const Toolset = require('./Toolset')
 const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
+const {AnnotatedContentManager} = require('./AnnotatedContentManager')
+//PVSCL:IFCOND(Manual, LINE)
 const Events = require('./Events')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleURL, LINE)
 const RolesManager = require('./RolesManager')
 // PVSCL:ENDCOND
@@ -69,75 +72,155 @@ class ContentScriptManager {
 
   reloadContentByGroup (callback) {
     // TODO Use async await or promises
-    this.reloadRolesManager((err) => {
-      if (err) {
-        // TODO Error
-      } else {
-        this.reloadTagsManager((err) => {
-          if (err) {
-            // TODO Error
-          } else {
-            this.reloadContentAnnotator((err) => {
-              if (err) {
-                // TODO Error
-              } else {
-                this.reloadToolset((err) => {
-                  if (err) {
-                    // TODO Error
-                  } else {
-                    // PVSCL:IFCOND(UserFilter, LINE)
-                    this.reloadUserFilter((err) => {
-                      if (err) {
-                        // TODO Error
-                      } else {
-                     // PVSCL:IFCOND(MoodleURL, LINE)
-                        this.reloadSpecificContentManager()
-                        // PVSCL:ENDCOND
-                        this.status = ContentScriptManager.status.initialized
-                        console.debug('Initialized content script manager')
-                      }
-                    })
-                    // PVSCL:ELSECOND
-                    // PVSCL:IFCOND(MoodleURL, LINE)
-                    this.reloadSpecificContentManager()
-                    // PVSCL:ENDCOND
-                    this.status = ContentScriptManager.status.initialized
-                    console.debug('Initialized content script manager')
-                    // PVSCL:ENDCOND
-                  }
-                })
-              }
-            })
-          }
-        })
-      }
+    this.reloadTagsManager()
+      .then(() => {
+        return this.reloadContentAnnotator()
+      })
+      .then(() => {
+        return this.reloadAnnotatedContentManager()
+      })
+      .then(() => {
+        return this.reloadToolset()
+      })
+      // PVSCL:IFCOND(UserFilter, LINE)
+      .then(() => {
+        return this.reloadUserFilter()
+      })
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(MoodleURL, LINE)
+      .then(() => {
+        return this.reloadRolesManager()
+      })
+      .then(() => {
+        return this.reloadPreviousAssignments()
+      })
+      // PVSCL:ENDCOND
+      .then(() => {
+        this.status = ContentScriptManager.status.initialized
+        console.debug('Initialized content script manager')
+      })
+  }
+
+  reloadAnnotatedContentManager () {
+    return new Promise((resolve, reject) => {
+      // TODO Destroy annotated content manager
+      this.destroyAnnotatedContentManager()
+      // Create a new annotated content manager
+      window.abwa.annotatedContentManager = new AnnotatedContentManager()
+      window.abwa.annotatedContentManager.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
     })
   }
 
-  reloadContentAnnotator (callback) {
-    // Destroy current content annotator
-    this.destroyContentAnnotator()
-    // Create a new content annotator for the current group
-    window.abwa.contentAnnotator = new TextAnnotator(Config) // TODO Depending on the type of annotator
-    window.abwa.contentAnnotator.init(callback)
+  reloadContentAnnotator () {
+    return new Promise((resolve, reject) => {
+      // Destroy current content annotator
+      this.destroyContentAnnotator()
+      // Create a new content annotator for the current group
+      window.abwa.contentAnnotator = new TextAnnotator(Config) // TODO Depending on the type of annotator
+      window.abwa.contentAnnotator.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 
-  reloadTagsManager (callback) {
-    // Destroy current tag manager
-    this.destroyTagsManager()
-    // Create a new tag manager for the current group
-    window.abwa.tagManager = new TagManager(Config.namespace, Config.tags) // TODO Depending on the type of annotator
-    window.abwa.tagManager.init(callback)
+  reloadTagsManager () {
+    return new Promise((resolve, reject) => {
+      // Destroy current tag manager
+      this.destroyTagsManager()
+      // Create a new tag manager for the current group
+      window.abwa.tagManager = new TagManager(Config.namespace, Config.tags) // TODO Depending on the type of annotator
+      window.abwa.tagManager.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
 //PVSCL:IFCOND(UserFilter, LINE)
 
   reloadUserFilter (callback) {
-    // Destroy current augmentation operations
-    this.destroyUserFilter()
-    // Create augmentation operations for the current group
-    window.abwa.userFilter = new UserFilter(Config)
-    window.abwa.userFilter.init(callback)
+    return new Promise((resolve, reject) => {
+      // Destroy current augmentation operations
+      this.destroyUserFilter()
+      // Create augmentation operations for the current group
+      window.abwa.userFilter = new UserFilter(Config)
+      window.abwa.userFilter.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
   }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(MoodleURL, LINE)
+
+  reloadRolesManager () {
+    return new Promise((resolve, reject) => {
+      // Destroy current content annotator
+      this.destroyRolesManager()
+      // Create a new content annotator for the current group
+      window.abwa.rolesManager = new RolesManager()
+      window.abwa.rolesManager.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+
+  reloadPreviousAssignments () {
+    return new Promise((resolve, reject) => {
+      // Destroy current content annotator
+      this.destroyPreviousAssignments()
+      // Create a new content annotator for the current group
+      if (window.abwa.rolesManager.role === Config.tags.producer) {
+        window.abwa.previousAssignments = new PreviousAssignments()
+        window.abwa.previousAssignments.init((err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+      } else {
+        resolve()
+      }
+    })
+  }
+//PVSCL:ENDCOND
+
+  reloadToolset () {
+    return new Promise((resolve, reject) => {
+      // Destroy toolset
+      this.destroyToolset()
+      // Create a new toolset
+      window.abwa.toolset = new Toolset()
+      window.abwa.toolset.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+//PVSCL:IFCOND(UserFilter, LINE)
 
   destroyUserFilter () {
     // Destroy current augmentation operations
@@ -160,6 +243,34 @@ class ContentScriptManager {
     }
   }
 
+  destroyAnnotatedContentManager () {
+    if (window.abwa.annotatedContentManager) {
+      window.abwa.annotatedContentManager.destroy()
+    }
+  }
+//PVSCL:IFCOND(MoodleURL, LINE)
+
+  destroyRolesManager () {
+    // Destroy current augmentation operations
+    if (window.abwa.rolesManager) {
+      window.abwa.rolesManager.destroy()
+    }
+  }
+
+  destroyPreviousAssignments () {
+    // Destroy current augmentation operations
+    if (window.abwa.previousAssignments) {
+      window.abwa.previousAssignments.destroy()
+    }
+  }
+//PVSCL:ENDCOND
+
+  destroyToolset () {
+    if (window.abwa.toolset) {
+      window.abwa.toolset.destroy()
+    }
+  }
+
   destroy (callback) {
     console.debug('Destroying content script manager')
     this.destroyContentTypeManager(() => {
@@ -167,6 +278,11 @@ class ContentScriptManager {
       this.destroyContentAnnotator()
       //PVSCL:IFCOND(UserFilter, LINE)
       this.destroyUserFilter()
+      //PVSCL:ENDCOND
+      this.destroyToolset()
+      //PVSCL:IFCOND(MoodleURL, LINE)
+      this.destroyRolesManager()
+      this.destroyPreviousAssignments()
       //PVSCL:ENDCOND
       // TODO Destroy groupSelector, roleManager,
       window.abwa.groupSelector.destroy(() => {
@@ -186,11 +302,6 @@ class ContentScriptManager {
     })
   }
 
-  loadToolset (callback) {
-    window.abwa.toolset = new Toolset()
-    window.abwa.toolset.init(callback)
-  }
-
   loadContentTypeManager (callback) {
     window.abwa.contentTypeManager = new ContentTypeManager()
     window.abwa.contentTypeManager.init(() => {
@@ -207,29 +318,6 @@ class ContentScriptManager {
           callback()
         }
       })
-    }
-  }
-
-  reloadRolesManager (callback) {
-    if (_.isFunction(callback)) {
-      callback()
-    }
-  }
-
-  reloadToolset (callback) {
-    // Destroy toolset
-    this.destroyToolset()
-    // Create a new toolset
-    this.loadToolset(() => {
-      if (_.isFunction(callback)) {
-        callback()
-      }
-    })
-  }
-
-  destroyToolset () {
-    if (window.abwa.toolset) {
-      window.abwa.toolset.destroy()
     }
   }
 //PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
@@ -272,38 +360,6 @@ class ContentScriptManager {
         }
       })
     })
-  }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(MoodleURL, LINE)
-
-  reloadSpecificContentManager (config, callback) {
- // Destroy current specific content manager
-    if (window.abwa.specificContentManager) {
-      this.destroySpecificContentManager()
-    }
-    window.abwa.specificContentManager = {}
-    new Promise((resolve, reject) => {
-      window.abwa.specificContentManager.rolesManager = new RolesManager()
-      window.abwa.specificContentManager.rolesManager.init(() => {
-        resolve()
-      })
-    })PVSCL:IFCOND(PreviousAssignments).then(() => {
-      if (window.abwa.specificContentManager.rolesManager.role === Config.tags.producer) {
-        window.abwa.specificContentManager.previousAssignments = new PreviousAssignments()
-        window.abwa.specificContentManager.previousAssignments.init()
-      }
-    })PVSCL:ENDCOND;
-  }
-
-  destroySpecificContentManager () {
-    if (window.abwa.specificContentManager.rolesManager) {
-      window.abwa.specificContentManager.rolesManager.destroy()
-    }
-    // PVSCL:IFCOND(PreviousAssignments, LINE)
-    if (window.abwa.specificContentManager.previousAssignments) {
-      window.abwa.specificContentManager.previousAssignments.destroy()
-    }
-    // PVSCL:ENDCOND
   }
 //PVSCL:ENDCOND
 

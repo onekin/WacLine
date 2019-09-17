@@ -25,7 +25,7 @@ class ContentTypeManager {
   }
 
   init (callback) {
-    if (document.querySelector('embed[type="application/pdf"][name="plugin"]')) {
+    if (document.querySelector('embed[type="application/pdf"]')) {
       window.location = chrome.extension.getURL('content/pdfjs/web/viewer.html') + '?file=' + encodeURIComponent(window.location.href)
     } else {
       //PVSCL:IFCOND(DOI, LINE)
@@ -261,8 +261,8 @@ class ContentTypeManager {
     // PVSCL:ENDCOND
   }
 
-  getDocumentURIToSaveInHypothesis () {
-    // PVSCL:IFCOND(URN, LINE)
+  getDocumentURIToSave () {
+    // PVSCL:IFCOND(URN and NOT (MoodleURL), LINE)
     if (this.localFile) {
       return 'urn:x-pdf:' + this.pdfFingerprint
     } else {

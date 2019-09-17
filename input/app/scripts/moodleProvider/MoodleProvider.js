@@ -7,10 +7,12 @@ const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientM
 // PVSCL:IFCOND(Local, LINE)
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Code, LINE)
+const Code = require('../definition/Code')
+// PVSCL:ENDCOND
 const Alerts = require('../utils/Alerts')
 const AnnotationGuide = require('../definition/AnnotationGuide')
 const Theme = require('../definition/Theme')
-const Code = require('../definition/Code')
 const LanguageUtils = require('../utils/LanguageUtils')
 const CircularJSON = require('circular-json-es6')
 const MoodleScraping = require('./MoodleScraping')
@@ -252,11 +254,13 @@ class MoodleProvider {
         for (let i = 0; i < rubricCriteria.length; i++) {
           let moodleCriteria = rubricCriteria[i]
           let criteria = new Theme({name: LanguageUtils.normalizeString(moodleCriteria.description), id: moodleCriteria.id, description: LanguageUtils.normalizeString(moodleCriteria.description), annotationGuide: this.rubric})
+          // PVSCL:IFCOND(Code, LINE)
           for (let j = 0; j < moodleCriteria.levels.length; j++) {
             let moodleLevel = moodleCriteria.levels[j]
             let level = new Code({name: moodleLevel.score, id: moodleLevel.id, description: LanguageUtils.normalizeString(moodleLevel.definition), theme: criteria})
             criteria.codes.push(level)
           }
+          // PVSCL:ENDCOND
           this.rubric.themes.push(criteria)
         }
         callback(null, this.rubric)
