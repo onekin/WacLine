@@ -269,7 +269,7 @@
           <cm:constant cm:id="itsCX2aYrMBwiZKCaBl2dzTYnKgg" cm:type="ps:string">com.ps.consul.eclipse.ui.sourceimport.JavaConfiguration</cm:constant>
         </cm:property>
         <cm:property cm:id="iiPiigCzv6hH8bS_bEjA5tGnNXXi" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:readonly="true" cm:name="sourceimport:configuration:settings">
-          <cm:constant cm:id="ijRbi1-bcC5ag0Z-GFvx5NVrDWuk" cm:type="ps:string">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&lt;associations&gt;&lt;association checked=&quot;false&quot; desc=&quot;Other files&quot; ending=&quot;.*&quot; filetype=&quot;undefined&quot; type=&quot;ps:object&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Java source file&quot; ending=&quot;.java&quot; filetype=&quot;impl&quot; type=&quot;ps:class&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Ant build script&quot; ending=&quot;build.xml&quot; filetype=&quot;misc&quot; type=&quot;ps:makefile&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;HTML&quot; ending=&quot;.html&quot; filetype=&quot;misc&quot; type=&quot;ex:html&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;JS&quot; ending=&quot;.js&quot; filetype=&quot;misc&quot; type=&quot;ex:js&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;CSS&quot; ending=&quot;.css&quot; filetype=&quot;misc&quot; type=&quot;ex:css&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;JSON&quot; ending=&quot;.json&quot; filetype=&quot;misc&quot; type=&quot;ex:json&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;IMG&quot; ending=&quot;.png&quot; filetype=&quot;misc&quot; type=&quot;ex:img&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;SCSS&quot; ending=&quot;.scss&quot; filetype=&quot;misc&quot; type=&quot;ex:scss&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;BABELRC&quot; ending=&quot;.babelrc&quot; filetype=&quot;misc&quot; type=&quot;ex:babelrc&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;ESLINTRC&quot; ending=&quot;.eslintrc&quot; filetype=&quot;misc&quot; type=&quot;ex:eslintrc&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;GIT&quot; ending=&quot;.gitignore&quot; filetype=&quot;misc&quot; type=&quot;ex:gitignore&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;BAT&quot; ending=&quot;.bat&quot; filetype=&quot;misc&quot; type=&quot;ex:bat&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;SVG&quot; ending=&quot;.svg&quot; filetype=&quot;misc&quot; type=&quot;ex:svg&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Properties&quot; ending=&quot;.properties&quot; filetype=&quot;misc&quot; type=&quot;ex:properties&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;editorConfig&quot; ending=&quot;.editorconfig&quot; filetype=&quot;misc&quot; type=&quot;ex:editorconfig&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;gif&quot; ending=&quot;.gif&quot; filetype=&quot;misc&quot; type=&quot;ex:gif&quot;/&gt;&lt;pattern/&gt;&lt;switches&gt;&lt;switch name=&quot;HIDE_MT_COMPONENTS&quot;&gt;true&lt;/switch&gt;&lt;switch name=&quot;USE_RELATIVE_PATHS&quot;&gt;true&lt;/switch&gt;&lt;switch name=&quot;USE_SORTING&quot;&gt;true&lt;/switch&gt;&lt;/switches&gt;&lt;values&gt;&lt;value name=&quot;RELATIVE_PATH&quot;&gt;E:\DevelopProjects\EclipsePureVariantsWorkspace\WebAnnotatorSPL\input&lt;/value&gt;&lt;value name=&quot;RELATIVE_TO&quot;&gt;path&lt;/value&gt;&lt;/values&gt;&lt;/associations&gt;</cm:constant>
+          <cm:constant cm:id="iSueVepimTFhS59QN45Fl_LVHLlo" cm:type="ps:string">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&lt;associations&gt;&lt;association checked=&quot;false&quot; desc=&quot;Other files&quot; ending=&quot;.*&quot; filetype=&quot;undefined&quot; type=&quot;ps:object&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Java source file&quot; ending=&quot;.java&quot; filetype=&quot;impl&quot; type=&quot;ps:class&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Ant build script&quot; ending=&quot;build.xml&quot; filetype=&quot;misc&quot; type=&quot;ps:makefile&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;HTML&quot; ending=&quot;.html&quot; filetype=&quot;misc&quot; type=&quot;ex:html&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;JS&quot; ending=&quot;.js&quot; filetype=&quot;misc&quot; type=&quot;ex:js&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;CSS&quot; ending=&quot;.css&quot; filetype=&quot;misc&quot; type=&quot;ex:css&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;JSON&quot; ending=&quot;.json&quot; filetype=&quot;misc&quot; type=&quot;ex:json&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;IMG&quot; ending=&quot;.png&quot; filetype=&quot;misc&quot; type=&quot;ex:img&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;SCSS&quot; ending=&quot;.scss&quot; filetype=&quot;misc&quot; type=&quot;ex:scss&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;BABELRC&quot; ending=&quot;.babelrc&quot; filetype=&quot;misc&quot; type=&quot;ex:babelrc&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;ESLINTRC&quot; ending=&quot;.eslintrc&quot; filetype=&quot;misc&quot; type=&quot;ex:eslintrc&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;GIT&quot; ending=&quot;.gitignore&quot; filetype=&quot;misc&quot; type=&quot;ex:gitignore&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;BAT&quot; ending=&quot;.bat&quot; filetype=&quot;misc&quot; type=&quot;ex:bat&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;SVG&quot; ending=&quot;.svg&quot; filetype=&quot;misc&quot; type=&quot;ex:svg&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Properties&quot; ending=&quot;.properties&quot; filetype=&quot;misc&quot; type=&quot;ex:properties&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;editorConfig&quot; ending=&quot;.editorconfig&quot; filetype=&quot;misc&quot; type=&quot;ex:editorconfig&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;gif&quot; ending=&quot;.gif&quot; filetype=&quot;misc&quot; type=&quot;ex:gif&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;sh&quot; ending=&quot;.sh&quot; filetype=&quot;misc&quot; type=&quot;ex:sh&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;ps1&quot; ending=&quot;.ps1&quot; filetype=&quot;misc&quot; type=&quot;ex:ps1&quot;/&gt;&lt;pattern/&gt;&lt;switches&gt;&lt;switch name=&quot;HIDE_MT_COMPONENTS&quot;&gt;true&lt;/switch&gt;&lt;switch name=&quot;USE_RELATIVE_PATHS&quot;&gt;true&lt;/switch&gt;&lt;switch name=&quot;USE_SORTING&quot;&gt;true&lt;/switch&gt;&lt;/switches&gt;&lt;values&gt;&lt;value name=&quot;RELATIVE_PATH&quot;&gt;E:\DevelopProjects\EclipsePureVariantsWorkspace\WebAnnotatorSPL\input&lt;/value&gt;&lt;value name=&quot;RELATIVE_TO&quot;&gt;path&lt;/value&gt;&lt;/values&gt;&lt;/associations&gt;</cm:constant>
         </cm:property>
         <cm:property cm:id="iry5fxzU0bgFLS1SR" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ModelSyncStoreID">
           <cm:constant cm:id="i8G5-4Kc09zHeCCEJ" cm:type="ps:string">com.ps.consul.eclipse.ui.sourceimport.SourceImportSyncStore</cm:constant>
@@ -296,7 +296,7 @@
           <cm:constant cm:id="iOK3FXHVW4rB1wiWQ" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="i8GnwbukRMYcIF-YC" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iUlfgBo6hkeXhboAV" cm:type="ps:datetime">2019-09-09T10:12:18.053Z</cm:constant>
+          <cm:constant cm:id="iUlfgBo6hkeXhboAV" cm:type="ps:datetime">2019-09-17T15:45:37.405Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -8058,7 +8058,7 @@
         <cm:mimedesc cm:id="itGiIgLGbafNquN4t" cm:mimetype="text/plain" cm:encoding="utf-8">.gitignore</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="i1LPKehNzwOWbSwP-r1V7pDQXNql" cm:type="ex:bat" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="i1LPKehNzwOWbSwP-r1V7pDQXNql" cm:type="ex:script" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="i1LPKehNzwOWbSwP-r1V7pDQXNqldependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iseV7Kj7EChuvodksLjLzcGHO4UeXwf6UIy0Dt0U7" cm:class="ps:parents">
@@ -8068,7 +8068,7 @@
       </cm:relations>
       <cm:relations cm:id="i8Y4tP4hcb95uOZZn-ozUzQYyyDo" cm:class="ps:children">
         <cm:relation cm:id="iGoZ3tw9mZf-a0oRmnNoKYKValwl" cm:type="ps:optional">
-          <cm:target cm:id="imjCjhrXTBo9vpUGXgOnSJRlDSif">./iqviDC7So5bS6AfUSHa32TBKll2a</cm:target>
+          <cm:target cm:id="iYJlMh-Ole3YgXbf0ObogAU-O2oo">./idjGFM1cDbxJSw7UpvPrzUNJ7imf</cm:target>
           <cm:target cm:id="iSUTDBUo9gIn8O7Ty-r6ZcF2hwOc">./i2E8jT7XuotE754keDFHeylZCt8b</cm:target>
         </cm:relation>
       </cm:relations>
@@ -8080,46 +8080,14 @@
           <cm:constant cm:id="iXFUxC1oUlFnLBNTS" cm:type="ps:datetime">2019-05-02T14:42:56.351Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iUqDnDLswkvizlY02" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iEYkpgQiIJgKdrr9S" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iEYkpgQiIJgKdrr9S" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="ifsuGi6Qr1Rzf_qoG" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i_w5-HBGFlWTAB1-P" cm:type="ps:datetime">2019-09-13T14:44:22.869Z</cm:constant>
+          <cm:constant cm:id="i_w5-HBGFlWTAB1-P" cm:type="ps:datetime">2019-09-17T15:47:11.357Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iWQKqumUARwgNZQDe" cm:mimetype="text/plain" cm:encoding="utf-8">dependencies</cm:mimedesc>
-      </cm:vname>
-    </cm:element>
-    <cm:element cm:id="iqviDC7So5bS6AfUSHa32TBKll2a" cm:type="ps:file" cm:class="ps:source" cm:default="on">
-      <cm:relations cm:id="iqviDC7So5bS6AfUSHa32TBKll2adependecies" cm:class="ps:dependencies">
-      </cm:relations>
-      <cm:relations cm:id="iu1H4pdChWSygbWJOVREhlYlY9F_V19L5TRCxlIE3" cm:class="ps:parents">
-        <cm:relation cm:id="i6o1nOQO619PQTBjYnZNjP6vfqeWC09aaYSlYGivf" cm:type="ps:parent">
-          <cm:target cm:id="icqy2JOkcLzExOk2TnZufquAgJy-VfXVBuLXSseAM">./i1LPKehNzwOWbSwP-r1V7pDQXNql</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:properties>
-        <cm:property cm:id="iMjpfwj-YKG46UjmEynZc4aStlio" cm:type="ps:path" cm:fixed="true" cm:name="file">
-          <cm:constant cm:id="io09F8oIL14iQ4TNhbsoJ3pm5smh" cm:type="ps:path">dependencies.bat</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iHxAWkuS7PjhTWhJVQQif-swS8La" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
-          <cm:constant cm:id="iSR5OPDBKlVo1QehwY50UKtX1GZc" cm:type="ps:filetype">misc</cm:constant>
-        </cm:property>
-        <cm:property cm:id="ialcstRYgYKbW-h2b" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
-          <cm:constant cm:id="iW8i1KXq5_n_OFsqs" cm:type="ps:string">Xabi</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iGavX6zQS-mjyM2Ab" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
-          <cm:constant cm:id="iEvTd6BzMVMAu_bq4" cm:type="ps:datetime">2019-05-02T14:42:56.351Z</cm:constant>
-        </cm:property>
-        <cm:property cm:id="ieH3oTq5tqEmw-142" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="imzCzwk5CRHl57o9N" cm:type="ps:string">Xabi</cm:constant>
-        </cm:property>
-        <cm:property cm:id="i_-euo4Ii7Ziai-Bi" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iGQQAXnWApLQQSwDu" cm:type="ps:datetime">2019-05-02T14:42:56.351Z</cm:constant>
-        </cm:property>
-      </cm:properties>
-      <cm:vname>
-        <cm:mimedesc cm:id="iPIq3hDRz_cTyRXwk" cm:mimetype="text/plain" cm:encoding="utf-8">dependencies.bat</cm:mimedesc>
       </cm:vname>
     </cm:element>
     <cm:element cm:id="ih8U7NAofBEpWaoDyNfYpHfo07Ff" cm:restriction="iwmIkputfcsu_SonA" cm:type="ex:html" cm:class="ps:part" cm:default="on">
@@ -24480,6 +24448,38 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iTQySGhNMGy8-cf-4" cm:mimetype="text/plain" cm:encoding="utf-8">dependencies.sh</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="idjGFM1cDbxJSw7UpvPrzUNJ7imf" cm:type="ps:file" cm:class="ps:source" cm:default="on">
+      <cm:relations cm:id="idjGFM1cDbxJSw7UpvPrzUNJ7imfdependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="iV7dGNPG4Z8se-Vw1iYFxv1JyMzAMyMu119dq2DRk" cm:class="ps:parents">
+        <cm:relation cm:id="i9Fmt_pbWWCXCTRs0WmeXO6hHENCNpJaGWmM5dWR6" cm:type="ps:parent">
+          <cm:target cm:id="i3DN5ENhHoJL5jssuGipdx11nTldWExIOseZCxfru">./i1LPKehNzwOWbSwP-r1V7pDQXNql</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i9dHDqOuR3sDaFzQVF7-TYHjHqBb" cm:type="ps:path" cm:fixed="true" cm:name="file">
+          <cm:constant cm:id="iCWBQBOxvCPwHKhiAVFNlo_u8Ntf" cm:type="ps:path">dependencies.ps1</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijM8YFWa2L5rUBVJG3oVTgi9_dsn" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
+          <cm:constant cm:id="iZlRodjSDpDiSp2VVmqCZBN0r1hf" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iIiE8dgsWBCKzTucG" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ip3y2tzKL9lmlXVz6" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijz3vKjMfdCcwhMg2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i9t358CYP0rRYV2uN" cm:type="ps:datetime">2019-09-17T15:45:37.405Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="inkczIRBTz75kITkd" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iqIvzCUg9jc2bTIxM" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ifG8GgImTY8JfuIiw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iNPbjhfsf2CShk2My" cm:type="ps:datetime">2019-09-17T15:45:37.405Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="itidIsPOCRu0oL3LL" cm:mimetype="text/plain" cm:encoding="utf-8">dependencies.ps1</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>
