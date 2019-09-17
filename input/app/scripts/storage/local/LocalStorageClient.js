@@ -171,7 +171,13 @@ class LocalStorageClient {
       }
       // TODO wildcard_uri
       if (result && (data.wildcard_uri)) {
-        result = wildcard(data.wildcard_uri, annotation.uri)
+        if (_.has(annotation, 'documentMetadata.link')) {
+          result = _.some(annotation.documentMetadata.link, (link) => {
+            return wildcard(data.wildcard_uri, link)
+          })
+        } else {
+          result = wildcard(data.wildcard_uri, annotation.uri)
+        }
       }
       // TODO Any
       if (result && (data.any)) {

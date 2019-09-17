@@ -13,6 +13,7 @@ class UserFilter {
   }
 
   init (callback) {
+    console.debug('Initializing UserFilter')
     this.initUserFilterStructure((err) => {
       if (err) {
         // Handle error
@@ -24,6 +25,7 @@ class UserFilter {
         this.initAnnotationsUpdatedEventHandler()
         // Init event handler when click in all
         this.initAllFilter()
+        console.debug('Initialized UserFilter')
         if (_.isFunction(callback)) {
           callback()
         }
