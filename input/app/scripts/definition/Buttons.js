@@ -49,6 +49,7 @@ class Buttons {
       tagGroup.dataset.codeName = name
       tagGroup.dataset.codeId = id
       let tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
+      let groupNameSpan = tagGroup.querySelector('.groupName')
       let groupNameContainer = tagGroup.querySelector('.groupNameContainer')
       if (_.isFunction(label)) {
         groupNameSpan.innerText = label({codeId: id, codeName: name})
@@ -69,20 +70,20 @@ class Buttons {
       groupNameContainer.addEventListener('mouseenter', () => {
         let currentColor = ColorUtils.colorFromString(groupNameContainer.style.backgroundColor)
         if (currentColor.valpha) {
-        	if (currentColor.alpha(currentColor.valpha + 0.2).isDark()) {
-        		groupNameSpan.style.color = 'white'
-        	}
-        	groupNameContainer.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), currentColor.valpha + 0.2)
+          if (currentColor.alpha(currentColor.valpha + 0.2).isDark()) {
+            groupNameSpan.style.color = 'white'
+          }
+          groupNameContainer.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), currentColor.valpha + 0.2)
         } else {
-        	groupNameContainer.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.7)
+          groupNameContainer.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.7)
         }
       })
       groupNameContainer.addEventListener('mouseleave', () => {
         if (groupNameSpan.dataset.chosen === 'true') {
-        	groupNameContainer.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.6)
+          groupNameContainer.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.6)
         } else {
-        	groupNameSpan.style.color = ''
-            groupNameContainer.style.backgroundColor = groupNameSpan.dataset.baseColor
+          groupNameSpan.style.color = ''
+          groupNameContainer.style.backgroundColor = groupNameSpan.dataset.baseColor
         }
       })
       // Set button right click handler
