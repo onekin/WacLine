@@ -1,0 +1,21 @@
+@import "./variables";
+
+.toolButton {
+  width: 29px;
+  cursor: pointer;
+  border: none;
+  margin-left: 2px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  -webkit-appearance: none !important;
+}
+
+.toolButton:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+hr.separator {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

@@ -21,9 +21,18 @@ class Buttons {
           if (className) {
             tagGroup.className += ' ' + className
           }
-          let groupName = document.createElement('h4')
+          // Group name container
+          let groupNameContainer = document.createElement('div')
+          groupNameContainer.className = 'groupNameContainer'
+          // Group name label
+          let groupName = document.createElement('div')
           groupName.className = 'groupName'
-          tagGroup.appendChild(groupName)
+          groupNameContainer.appendChild(groupName)
+          // Create collapse button
+          let collapseToogle = document.createElement('span')
+          collapseToogle.className = 'collapseToggle'
+          groupNameContainer.appendChild(collapseToogle)
+          tagGroup.appendChild(groupNameContainer)
           let tagButtonContainer = document.createElement('div')
           tagButtonContainer.className = 'tagButtonContainer'
           tagGroup.appendChild(tagButtonContainer)
@@ -40,7 +49,7 @@ class Buttons {
       tagGroup.dataset.codeName = name
       tagGroup.dataset.codeId = id
       let tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
-      let groupNameSpan = tagGroup.querySelector('.groupName')
+      let groupNameContainer = tagGroup.querySelector('.groupNameContainer')
       if (_.isFunction(label)) {
         groupNameSpan.innerText = label({codeId: id, codeName: name})
       } else {
@@ -51,28 +60,29 @@ class Buttons {
       } else {
         groupNameSpan.title = name
       }
-      groupNameSpan.style.backgroundColor = color
+      groupNameContainer.style.backgroundColor = color
       groupNameSpan.dataset.baseColor = color
       // Create event handler for tag group
       groupNameSpan.addEventListener('click', groupHandler)
       // Tag button background color change
       // TODO It should be better to set it as a CSS property, but currently there is not an option for that
-      groupNameSpan.addEventListener('mouseenter', () => {
-        let currentColor = ColorUtils.colorFromString(groupNameSpan.style.backgroundColor)
+      groupNameContainer.addEventListener('mouseenter', () => {
+        let currentColor = ColorUtils.colorFromString(groupNameContainer.style.backgroundColor)
         if (currentColor.valpha) {
-          if (currentColor.opaquer(0.2).isDark()) {
-            groupNameSpan.style.color = 'white'
-          }
-          groupNameSpan.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), currentColor.valpha + 0.2)
+        	if (currentColor.alpha(currentColor.valpha + 0.2).isDark()) {
+        		groupNameSpan.style.color = 'white'
+        	}
+        	groupNameContainer.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), currentColor.valpha + 0.2)
         } else {
-          groupNameSpan.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.7)
+        	groupNameContainer.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.7)
         }
       })
-      groupNameSpan.addEventListener('mouseleave', () => {
+      groupNameContainer.addEventListener('mouseleave', () => {
         if (groupNameSpan.dataset.chosen === 'true') {
-          groupNameSpan.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.6)
+        	groupNameContainer.style.backgroundColor = ColorUtils.setAlphaToColor(ColorUtils.colorFromString(groupNameSpan.dataset.baseColor), 0.6)
         } else {
-          groupNameSpan.style.backgroundColor = groupNameSpan.dataset.baseColor
+        	groupNameSpan.style.color = ''
+            groupNameContainer.style.backgroundColor = groupNameSpan.dataset.baseColor
         }
       })
       // Set button right click handler

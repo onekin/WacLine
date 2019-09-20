@@ -90,7 +90,6 @@ class ContentTypeManager {
         })
       // PVSCL:ELSECOND
       let promise = Promise.resolve()
-      
       promise.then(() => {
         if (_.isFunction(callback)) {
           callback()
@@ -137,7 +136,6 @@ class ContentTypeManager {
       })
     // PVSCL:ELSECOND
     let promise = Promise.resolve()
-    
     promise.then(() => {
       if (_.isFunction(callback)) {
         callback()
