@@ -189,7 +189,7 @@ class GroupSelector {
                     Alerts.errorAlert({text: 'We are unable to create the group. Please check if you are logged in the storage.'})
                   } else {
                     //PVSCL:IFCOND(Hypothesis, LINE)
-                    // Remove public group in hypothes.is and modify group URL
+                    // Modify group URL in hypothesis
                     if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
                       if (_.has(group, 'links.html')) {
                         group.links.html = group.links.html.substr(0, group.links.html.lastIndexOf('/'))

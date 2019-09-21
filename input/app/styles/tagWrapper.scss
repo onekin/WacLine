@@ -70,6 +70,10 @@
   float:left;
 }
 
+.groupName[data-number-of-annotations="0"]:before {
+  visibility: hidden;
+}
+
 .tagContainer[aria-hidden="true"]{
   display: none;
 }

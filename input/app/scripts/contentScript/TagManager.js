@@ -235,7 +235,7 @@ class TagManager {
           color: theme.color,
           childGuideElements: theme.codes,
           groupHandler: (event) => {
-            let themeId = event.target.parentElement.dataset.codeId
+            let themeId = event.target.parentElement.parentElement.dataset.codeId
             if (themeId) {
               let theme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(themeId)
               if (LanguageUtils.isInstanceOf(theme, Theme)) {

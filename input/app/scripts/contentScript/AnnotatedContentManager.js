@@ -379,39 +379,18 @@ class AnnotatedContentManager {
       let annotatedTheme = this.annotatedThemes[i]
       if (annotatedTheme.theme.codes && annotatedTheme.theme.codes.length > 0) {
         let annotatedGroupButton = document.querySelectorAll('.tagGroup[data-code-id="' + annotatedTheme.theme.id + '"]')
-        annotatedGroupButton[0].dataset.numberOfAnnotations = annotatedTheme.annotations.length
-        let nameElement = annotatedGroupButton[0].childNodes[0]
-        if (annotatedTheme.annotations.length === 0) {
-          nameElement.innerHTML = annotatedTheme.theme.name
-        } else if (annotatedTheme.annotations.length > 0 && annotatedTheme.annotations.length < 10) {
-          nameElement.innerHTML = annotatedTheme.theme.name + ' (' + annotatedTheme.annotations.length + ')'
-        } else {
-          nameElement.innerHTML = annotatedTheme.theme.name + ' (+' + 9 + ')'
-        }
+        let groupNameSpan = annotatedGroupButton[0].querySelector('.groupName')
+        groupNameSpan.dataset.numberOfAnnotations = annotatedTheme.annotations.length
         //PVSCL:IFCOND(Code, LINE)
         for (let j = 0; j < annotatedTheme.annotatedCodes.length; j++) {
           let annotatedCode = annotatedTheme.annotatedCodes[j]
           let annotatedCodeButton = document.querySelectorAll('.tagButton[data-code-id="' + annotatedCode.code.id + '"]')
           annotatedCodeButton[0].dataset.numberOfAnnotations = annotatedCode.annotations.length
-          if (annotatedCode.annotations.length === 0) {
-            annotatedCodeButton[0].innerText = annotatedCode.code.name
-          } else if (annotatedCode.annotations.length > 0 && annotatedCode.annotations.length < 10) {
-            annotatedCodeButton[0].innerText = annotatedCode.code.name + ' (' + annotatedCode.annotations.length + ')'
-          } else {
-            annotatedCodeButton[0].innerText = annotatedCode.code.name + ' (+' + 9 + ')'
-          }
         }
         //PVSCL:ENDCOND
       } else {
         let annotatedThemeButton = document.querySelectorAll('.tagButton[data-code-id="' + annotatedTheme.theme.id + '"]')
         annotatedThemeButton[0].dataset.numberOfAnnotations = annotatedTheme.annotations.length
-        if (annotatedTheme.annotations.length === 0) {
-          annotatedThemeButton[0].innerText = annotatedTheme.theme.name
-        } else if (annotatedTheme.annotations.length > 0 && annotatedTheme.annotations.length < 10) {
-          annotatedThemeButton[0].innerText = annotatedTheme.theme.name + ' (' + annotatedTheme.annotations.length + ')'
-        } else {
-          annotatedThemeButton[0].innerText = annotatedTheme.theme.name + ' (+' + 9 + ')'
-        }
       }
     }
   }
