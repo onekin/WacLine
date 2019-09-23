@@ -239,13 +239,31 @@ class TagManager {
             if (themeId) {
               let theme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(themeId)
               if (LanguageUtils.isInstanceOf(theme, Theme)) {
-                let tags = ['oa:theme:' + theme.name]
+                let id = ''
+                let tags = ''
+                // PVSCL:IFCOND(SingleCode,LINE)
+                // First, ask for the currently annotated code
+                let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(themeId)
+                // If there is already a code annotation for this theme, we have to let the tags of the code, to annotate with the current code
+                if (currentlyAnnotatedCode) {
+                  tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + currentlyAnnotatedCode.code.name]
+                  id = currentlyAnnotatedCode.code.id
+                // else, we annotate with the theme
+                } else {
+                  tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
+                  id = themeId
+                }
+                // PVSCL:ELSECOND
+                tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
+                id = themeId
+                // PVSCL:ENDCOND
+                // if we use MoodleURL we push the cmid tag
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
                 LanguageUtils.dispatchCustomEvent(Events.annotate, {
                   tags: tags,
-                  id: theme.id
+                  id: id
                 })
               }
             }
@@ -255,13 +273,40 @@ class TagManager {
             if (codeId) {
               let code = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(codeId)
               if (LanguageUtils.isInstanceOf(code, Code)) {
-                let tags = ['oa:isCodeOf:' + code.theme.name, 'oa:code:' + code.name]
+                // PVSCL:IFCOND(SingleCode,LINE)
+                // Get the annotatedTheme object of the code selected
+                let annotatedTheme = window.abwa.annotatedContentManager.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.theme.id)
+                // retrive the annotatedTheme object of the code selected
+                let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(code.theme.id)
+                // We have to throw the event of codeToAll when:
+                // There are still theme annotations or there are annotations of other codes done
+                if ((annotatedTheme.hasAnnotations() || (currentlyAnnotatedCode && currentlyAnnotatedCode.code.id !== codeId))) {
+                  if (currentlyAnnotatedCode) {
+                    // For the case, we are annotating with a code that is not the currently annotated code
+                    // In the last case we do not have to throw codeToAll event, we will do the codeToAll after the annotation is created
+                    if (!(document.getSelection().toString().length !== 0 && currentlyAnnotatedCode.code.id !== codeId)) {
+                      LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
+                        id: code.id,
+                        currentlyAnnotatedCode: currentlyAnnotatedCode
+                      })
+                    }
+                  } else {
+                    // In the case that we have annotated with themes until now and there isn't a code annotation yet
+                    LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
+                      id: code.id,
+                      currentlyAnnotatedCode: currentlyAnnotatedCode
+                    })
+                  }
+                }
+                // PVSCL:ENDCOND
+                let tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
                 LanguageUtils.dispatchCustomEvent(Events.annotate, {
                   tags: tags,
-                  id: code.id
+                  id: code.idPVSCL:IFCOND(SingleCode),
+                  lastAnnotatedCode: currentlyAnnotatedCodePVSCL:ENDCOND
                 })
               }
             }
@@ -281,7 +326,7 @@ class TagManager {
             if (themeId) {
               let theme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(themeId)
               if (LanguageUtils.isInstanceOf(theme, Theme)) {
-                let tags = ['oa:theme:' + theme.name]
+                let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND

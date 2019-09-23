@@ -1,6 +1,8 @@
 const Events = require('./Events')
-// const AnnotationUtils = require('../utils/AnnotationUtils')
-// const Alerts = require('../utils/Alerts')
+const Config = require('../Config')
+// PVSCL:IFCOND(SingleCode, LINE)
+const Alerts = require('../utils/Alerts')
+// PVSCL:ENDCOND
 const LanguageUtils = require('../utils/LanguageUtils')
 const Theme = require('../definition/Theme')
 const _ = require('lodash')
@@ -14,6 +16,10 @@ class AnnotatedTheme {
     // PVSCL:ENDCOND
     this.annotations = annotations
   }
+
+  hasAnnotations () {
+    return !(this.annotations.length === 0)
+  }
 }
 //PVSCL:IFCOND(Code, LINE)
 
@@ -21,6 +27,10 @@ class AnnotatedCode {
   constructor ({code = null, annotations = []}) {
     this.code = code
     this.annotations = annotations
+  }
+
+  hasAnnotations () {
+    return !(this.annotations.length === 0)
   }
 }
 //PVSCL:ENDCOND
@@ -129,91 +139,53 @@ class AnnotatedContentManager {
     // PVSCL:ENDCOND
     return annotatedThemesStructure
   }
+  //PVSCL:IFCOND(SingleCode, LINE)
 
-  /* codeToAll (level) {
-    // Update marks
-    this.updateAnnotationForAssignment(() => {
-      let criteria = level.criteria
-      // Get mark with annotations
-      let mark = this.marks[criteria.name]
-      // Get new tag list
-      let newTagList = [
-        'exam:isCriteriaOf:' + criteria.name,
-        'exam:mark:' + level.name,
-        'exam:cmid:' + this.cmid
-      ]
-      // Get annotations
-      let annotations = mark.annotations
-      if (annotations.length === 0) {
-        // Ask user
-        Alerts.confirmAlert({
-          title: chrome.i18n.getMessage('noEvidencesFoundForMarkingTitle', criteria.name),
-          text: chrome.i18n.getMessage('noEvidencesFoundForMarkingText', level.name),
-          alertType: Alerts.alertType.warning,
-          callback: (err) => {
-            if (err) {
-              // Manage error
-              window.alert('Unable to create alert for: noEvidencesFoundForMarking. Reload the page, and if the error continues please contact administrator.')
-            } else {
-              const TextAnnotator = require('./contentAnnotators/TextAnnotator')
-              window.abwa.hypothesisClientManager.hypothesisClient.createNewAnnotation(TextAnnotator.constructAnnotation(null, newTagList), (err, annotation) => {
-                if (err) {
-                  Alerts.errorAlert({text: err.message})
-                } else {
-                  mark.annotations = [annotation]
-                  this.updateAnnotationsInHypothesis(annotations, () => {
-                    window.abwa.contentAnnotator.updateAllAnnotations()
-                  })
-                  // Update moodle
-                  this.updateMoodle(() => {
-                    Alerts.temporalAlert({
-                      text: 'The mark is updated in moodle',
-                      title: 'Correctly marked',
-                      type: Alerts.alertType.success,
-                      toast: true
-                    })
-                  })
-                }
-              })
-            }
-          }
-        })
-      } else {
-        // Update all annotations with new tags
-        _.forEach(annotations, (annotation) => {
-          annotation.tags = newTagList
-        })
-        this.updateAnnotationsInHypothesis(annotations, () => {
-          window.abwa.contentAnnotator.updateAllAnnotations()
-        })
-        // Update moodle
-        this.updateMoodle((err, result) => {
-          if (err) {
-            Alerts.errorAlert({
-              text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
-              title: 'Unable to update marks in moodle'
-            })
-          } else {
-            Alerts.temporalAlert({
-              text: 'The mark is updated in moodle',
-              title: 'Correctly marked',
-              type: Alerts.alertType.success,
-              toast: true
-            })
-          }
-        })
-      }
-      this.marks[criteria.name].level = level
-      // this.reloadMarksChosen()
-    })
+  codeToAll (code, lastAnnotatedCode) {
+    // Update annotatedThemes
+    let annotatedTheme = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.theme.id)
+    let annotatedCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.id)
+    // 'exam:cmid:' + this.cmid
+    let newTagList = [
+      Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name,
+      Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name
+    ]
+    if (annotatedTheme.hasAnnotations()) {
+      let themeAnnotations = annotatedTheme.annotations
+      // Update all annotations with new tags
+      _.forEach(themeAnnotations, (themeAnnotation) => {
+        themeAnnotation.tags = newTagList
+        themeAnnotation.tagId = code.id
+        annotatedCode.annotations.push(themeAnnotation)
+      })
+      this.updateAnnotationsInStorage(themeAnnotations, () => {
+        annotatedTheme.annotations = []
+        window.abwa.contentAnnotator.updateAllAnnotations()
+        this.reloadTagsChosen()
+      })
+    }
+    if (lastAnnotatedCode.code.id !== code.id) {
+      let lastAnnotatedCodeAnnotations = lastAnnotatedCode.annotations
+      // Update all annotations with new tags
+      _.forEach(lastAnnotatedCodeAnnotations, (lastAnnotatedCodeAnnotation) => {
+        lastAnnotatedCodeAnnotation.tags = newTagList
+        lastAnnotatedCodeAnnotation.tagId = code.id
+        annotatedCode.annotations.push(lastAnnotatedCodeAnnotation)
+      })
+      this.updateAnnotationsInStorage(lastAnnotatedCodeAnnotations, () => {
+        lastAnnotatedCode.annotations = []
+        window.abwa.contentAnnotator.updateAllAnnotations()
+        this.reloadTagsChosen()
+      })
+    }
   }
 
-  updateAnnotationsInHypothesis (annotations, callback) {
+  updateAnnotationsInStorage (annotations, callback) {
     let promises = []
     for (let i = 0; i < annotations.length; i++) {
       let annotation = annotations[i]
       promises.push(new Promise((resolve, reject) => {
-        window.abwa.hypothesisClientManager.hypothesisClient.updateAnnotation(annotation.id, annotation, (err, annotation) => {
+        window.abwa.storageManager.client.updateAnnotation(annotation.id, annotation, (err, annotation) => {
           if (err) {
             reject(new Error('Unable to update annotation ' + annotation.id))
           } else {
@@ -231,7 +203,16 @@ class AnnotatedContentManager {
         callback(null, resultAnnotations)
       }
     })
-  } */
+  }
+
+  searchAnnotatedCodeForGivenThemeId (themeId) {
+    let annotatedTheme = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(themeId)
+    let annotatedCode = _.find(annotatedTheme.annotatedCodes, (annoCode) => {
+      return annoCode.hasAnnotations()
+    })
+    return annotatedCode
+  }
+  //PVSCL:ENDCOND
 
   addAnnotationToAnnotatedThemesOrCode (annotation, annotatedThemesObject = this.annotatedThemes) {
     let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(annotation.tagId, annotatedThemesObject)
@@ -292,23 +273,22 @@ class AnnotatedContentManager {
     // Create event listener for updated all annotations
     this.events.deletedAllAnnotations = {element: document, event: Events.deletedAllAnnotations, handler: this.createDeletedAllAnnotationsEventHandler()}
     this.events.deletedAllAnnotations.element.addEventListener(this.events.deletedAllAnnotations.event, this.events.deletedAllAnnotations.handler, false)
+    // PVSCL:IFCOND(SingleCode, LINE)
 
     // Event for tag manager reloaded
-    /* document.addEventListener(Events.codeToAll, (event) => {
+    document.addEventListener(Events.codeToAll, (event) => {
       // Get level for this mark
-      let criteriaName = event.detail.criteriaName
-      let markName = event.detail.levelName
-      let level
-      if (criteriaName && markName) {
+      let code = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(event.detail.id)
+      if (code) {
         // Retrieve criteria from rubric
-        let criteria = _.find(window.abwa.rubricManager.rubric.criterias, (criteria) => { return criteria.name === criteriaName })
-        level = _.find(criteria.levels, (level) => { return level.name === markName })
-        this.mark(level)
+        this.codeToAll(code, event.detail.currentlyAnnotatedCode)
       } else {
         // Unable to retrieve criteria or level
-        Alerts.errorAlert({title: 'Unable to mark', text: 'There was an error when trying to mark this assignment, please reload the page and try it again.' + chrome.i18n.getMessage('ContactAdministrator')})
+        Alerts.errorAlert({title: 'Unable to code to all', text: 'There was an error when trying to mark this assignment, please reload the page and try it again.' + chrome.i18n.getMessage('ContactAdministrator')})
       }
     })
+    // PVSCL:ENDCOND
+    /*
     document.addEventListener(Events.comment, (event) => {
       // Retrieve annotation from event
       let annotation = event.detail.annotation
@@ -340,8 +320,15 @@ class AnnotatedContentManager {
       if (event.detail.annotation) {
         let annotation = event.detail.annotation
         this.annotatedThemes = this.addAnnotationToAnnotatedThemesOrCode(annotation)
+        if (event.detail.codeToAll) {
+          LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
+            id: annotation.tagId,
+            currentlyAnnotatedCode: event.detail.lastAnnotatedCode
+          })
+        } else {
+          this.reloadTagsChosen()
+        }
       }
-      this.reloadTagsChosen()
     }
   }
 
@@ -380,17 +367,17 @@ class AnnotatedContentManager {
       if (annotatedTheme.theme.codes && annotatedTheme.theme.codes.length > 0) {
         let annotatedGroupButton = document.querySelectorAll('.tagGroup[data-code-id="' + annotatedTheme.theme.id + '"]')
         let groupNameSpan = annotatedGroupButton[0].querySelector('.groupName')
-        groupNameSpan.dataset.numberOfAnnotations = annotatedTheme.annotations.length
+        groupNameSpan.dataset.numberOfAnnotations = this.getAnnotationsDoneWithThemeOrCodeId(annotatedTheme.theme.id).length
         //PVSCL:IFCOND(Code, LINE)
         for (let j = 0; j < annotatedTheme.annotatedCodes.length; j++) {
           let annotatedCode = annotatedTheme.annotatedCodes[j]
           let annotatedCodeButton = document.querySelectorAll('.tagButton[data-code-id="' + annotatedCode.code.id + '"]')
-          annotatedCodeButton[0].dataset.numberOfAnnotations = annotatedCode.annotations.length
+          annotatedCodeButton[0].dataset.numberOfAnnotations = this.getAnnotationsDoneWithThemeOrCodeId(annotatedCode.code.id).length
         }
         //PVSCL:ENDCOND
       } else {
         let annotatedThemeButton = document.querySelectorAll('.tagButton[data-code-id="' + annotatedTheme.theme.id + '"]')
-        annotatedThemeButton[0].dataset.numberOfAnnotations = annotatedTheme.annotations.length
+        annotatedThemeButton[0].dataset.numberOfAnnotations = this.getAnnotationsDoneWithThemeOrCodeId(annotatedTheme.theme.id).length
       }
     }
   }

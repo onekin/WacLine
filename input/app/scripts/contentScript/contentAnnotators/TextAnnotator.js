@@ -205,8 +205,24 @@ class TextAnnotator extends ContentAnnotator {
     let _this = this
     return (event) => {
       let selectors = []
+      // PVSCL:IFCOND(SingleCode, LINE)
+      // Get the currently annotatedCode to do comprobations
+      let lastAnnotatedCode = event.detail.lastAnnotatedCode
+      // Get the code or theme of the selected button
+      let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(event.detail.id)
+      // PVSCL:ENDCOND
       // If selection is empty, return null
       if (document.getSelection().toString().length === 0) {
+        // PVSCL:IFCOND(SingleCode, LINE)
+        // If the button has been click to set code (changingCodesOrThemes = true)
+        let changingCodesOrThemes = false
+        if (LanguageUtils.isInstanceOf(codeOrTheme, Code) && lastAnnotatedCode) {
+          let annotatedTheme = window.abwa.annotatedContentManager.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeOrTheme.theme.id)
+          if (lastAnnotatedCode.code.id !== codeOrTheme.id || annotatedTheme.hasAnnotations()) {
+            changingCodesOrThemes = true
+          }
+        }
+        // PVSCL:ENDCOND
         // Check if theme or code has already annotations done
         let annotatedThemeOrCodeAnnotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(event.detail.id)
         if (annotatedThemeOrCodeAnnotations.length > 0) {
@@ -218,10 +234,10 @@ class TextAnnotator extends ContentAnnotator {
           }
         }
         // If tag element is not checked, no navigation allowed
-        if (_this.lastAnnotation) {
+        if (_this.lastAnnotationPVSCL:IFCOND(SingleCode) && !changingCodesOrThemesPVSCL:ENDCOND) {
           // Navigate to the first annotation for this tag
           this.goToAnnotation(_this.lastAnnotation)
-        } else {
+        } elsePVSCL:IFCOND(SingleCode) if (!changingCodesOrThemes)PVSCL:ENDCOND {
           Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
         }
         return
@@ -285,7 +301,16 @@ class TextAnnotator extends ContentAnnotator {
           LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
           // PVSCL:ENDCOND
           // Send event annotation is created
-          LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: annotation})
+          // PVSCL:IFCOND(SingleCode, LINE)
+          // Check if is necesary to do a codeToAll after the annotation is created
+          let codeToAll = false
+          if (LanguageUtils.isInstanceOf(codeOrTheme, Code) && lastAnnotatedCode) {
+            if (lastAnnotatedCode.code.id !== codeOrTheme.id) {
+              codeToAll = true
+            }
+          }
+          // PVSCL:ENDCOND
+          LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: annotationPVSCL:IFCOND(SingleCode), codeToAll: codeToAll, lastAnnotatedCode: lastAnnotatedCodePVSCL:ENDCOND})
           console.debug('Created annotation with ID: ' + annotation.id)
           // PVSCL:IFCOND(UserFilter, LINE)
           if (wasDisabledInUserFilter) {

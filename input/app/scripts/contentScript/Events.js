@@ -5,10 +5,12 @@ const Events = {
   //PVSCL:IFCOND(Validate,LINE)
   annotationValidated: 'annotationValidated',
   //PVSCL:ENDCOND
+  //PVSCL:IFCOND(SingleCode,LINE)
+  codeToAll: 'codeToAll',
+  //PVSCL:ENDCOND
   //PVSCL:IFCOND(Manual,LINE)
   groupChanged: 'groupChanged',
   //PVSCL:ENDCOND
-  mark: 'mark',
   //PVSCL:IFCOND(UserFilter,LINE)
   userFilterChange: 'userFilterChange',
   //PVSCL:ENDCOND
