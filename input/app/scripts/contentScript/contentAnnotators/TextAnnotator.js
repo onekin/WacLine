@@ -234,10 +234,10 @@ class TextAnnotator extends ContentAnnotator {
           }
         }
         // If tag element is not checked, no navigation allowed
-        if (_this.lastAnnotationPVSCL:IFCOND(SingleCode) && !changingCodesOrThemesPVSCL:ENDCOND) {
+        if (_this.lastAnnotation /* PVSCL:IFCOND(SingleCode) */ && !changingCodesOrThemes/*PVSCL:ENDCOND*/) {
           // Navigate to the first annotation for this tag
           this.goToAnnotation(_this.lastAnnotation)
-        } elsePVSCL:IFCOND(SingleCode) if (!changingCodesOrThemes)PVSCL:ENDCOND {
+        } else /*PVSCL:IFCOND(SingleCode)*/ if (!changingCodesOrThemes)/*PVSCL:ENDCOND*/ {
           Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
         }
         return
@@ -310,7 +310,12 @@ class TextAnnotator extends ContentAnnotator {
             }
           }
           // PVSCL:ENDCOND
-          LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: annotationPVSCL:IFCOND(SingleCode), codeToAll: codeToAll, lastAnnotatedCode: lastAnnotatedCodePVSCL:ENDCOND})
+          let eventDetails = {annotation: annotation}
+          // PVSCL:IFCOND(SingleCode, LINE)
+          eventDetails['codeToAll'] = codeToAll
+          eventDetails['lastAnnotatedCode'] = lastAnnotatedCode
+          // PVSCL:ENDCOND
+          LanguageUtils.dispatchCustomEvent(Events.annotationCreated, eventDetails)
           console.debug('Created annotation with ID: ' + annotation.id)
           // PVSCL:IFCOND(UserFilter, LINE)
           if (wasDisabledInUserFilter) {
@@ -430,15 +435,15 @@ class TextAnnotator extends ContentAnnotator {
       // console.debug('Observer interval')
       // If a swal is displayed, do not execute highlighting observer
       if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
+        let annotationsToHighlight
         // PVSCL:IFCOND(UserFilter, LINE)
-        if (this.currentAnnotations) {
-          for (let i = 0; i < this.currentAnnotations.length; i++) {
-            let annotation = this.currentAnnotations[i]
+        annotationsToHighlight = this.currentAnnotations
         // PVSCL:ELSECOND
-        if (this.allAnnotations) {
+        annotationsToHighlight = this.allAnnotations
+        // PVSCL:ENDCOND
+        if (annotationsToHighlight) {
           for (let i = 0; i < this.allAnnotations.length; i++) {
             let annotation = this.allAnnotations[i]
-        // PVSCL:ENDCOND
             // Search if annotation exist
             let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
             // If annotation doesn't exist, try to find it
@@ -514,7 +519,7 @@ class TextAnnotator extends ContentAnnotator {
         this.replyAnnotations = _.filter(annotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
         })
-        // PVSCL:ENDCOND 
+        // PVSCL:ENDCOND
         // PVSCL:IFCOND(UserFilter, LINE)
         this.currentAnnotations = this.retrieveCurrentAnnotations()
         // PVSCL:ENDCOND
@@ -573,9 +578,10 @@ class TextAnnotator extends ContentAnnotator {
           if (LanguageUtils.isInstanceOf(tag, Theme)) {
             // Set message
             highlightedElement.title = tag.name
-          }PVSCL:IFCOND(Code) else if (LanguageUtils.isInstanceOf(tag, Code)) {
+          } /*PVSCL:IFCOND(Code)*/ else if (LanguageUtils.isInstanceOf(tag, Code)) {
             highlightedElement.title = tag.theme.name + '\nCode: ' + tag.name
-          }PVSCL:ENDCOND
+          }
+          //PVSCL:ENDCOND
           // PVSCL:IFCOND(GSheetProvider, LINE)
           let user = annotation.user.replace('acct:', '').replace('@hypothes.is', '')
           highlightedElement.title += '\nAuthor: ' + user
@@ -652,13 +658,13 @@ class TextAnnotator extends ContentAnnotator {
           callback: (key, opt) => {
             if (key === 'delete') {
               this.deleteAnnotationHandler(annotation)
-            }PVSCL:IFCOND(Comment) else if (key === 'comment') {
+            }/*PVSCL:IFCOND(Comment)*/ else if (key === 'comment') {
               this.commentAnnotationHandler(annotation)
-            }PVSCL:ENDCONDPVSCL:IFCOND(Reply) else if (key === 'reply') {
+            }/*PVSCL:ENDCONDPVSCL:IFCOND(Reply)*/ else if (key === 'reply') {
               this.replyAnnotationHandler(annotation)
-            }PVSCL:ENDCONDPVSCL:IFCOND(Validate) else if (key === 'validate') {
+            }/*PVSCL:ENDCONDPVSCL:IFCOND(Validate)*/ else if (key === 'validate') {
               this.validateAnnotationHandler(annotation)
-            }PVSCL:ENDCOND
+            }/*PVSCL:ENDCOND*/
           },
           items: items
         }
@@ -716,7 +722,7 @@ class TextAnnotator extends ContentAnnotator {
   validateAnnotationHandler (annotation) {
     ReplyAnnotation.validateAnnotation(annotation)
   }
-//PVSCL:ENDCOND 
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(Comment,LINE)
 
   /**
@@ -745,8 +751,9 @@ class TextAnnotator extends ContentAnnotator {
     html += '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(annotation.suggestedLiterature) + '</ul>'
     //PVSCL:ENDCOND
     // On before open
+    let onBeforeOpen
     //PVSCL:IFCOND(Autofill or SuggestedLiterature or PreviousAssignments,LINE)
-    let onBeforeOpen = () => {
+    onBeforeOpen = () => {
       //PVSCL:IFCOND(PreviousAssignments,LINE)
       let previousAssignmentAppendElements = document.querySelectorAll('.previousAssignmentAppendButton')
       previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
@@ -826,7 +833,7 @@ class TextAnnotator extends ContentAnnotator {
       //PVSCL:ENDCOND
     }
     //PVSCL:ELSECOND
-    let onBeforeOpen = () => {}
+    onBeforeOpen = () => {}
     //PVSCL:ENDCOND
     // Preconfirm
     let preConfirmData = {}
@@ -869,7 +876,7 @@ class TextAnnotator extends ContentAnnotator {
         // Update annotation
         callback()
       }
-      //PVSCL:ENDCOND 
+      //PVSCL:ENDCOND
     }
     // Callback
     let callback = (err, result) => {
@@ -1061,11 +1068,14 @@ class TextAnnotator extends ContentAnnotator {
 
   goToFirstAnnotationOfTag (tag) {
     // TODO Retrieve first annotation for tag
+    let annotation
+    let annotationsToSearchIn
     // PVSCL:IFCOND(UserFilter, LINE)
-    let annotation = _.find(this.currentAnnotations, (annotation) => {
+    annotationsToSearchIn = this.currentAnnotations
     // PVSCL:ELSECOND
-    let annotation = _.find(this.allAnnotations, (annotation) => {
+    annotationsToSearchIn = this.allAnnotations
     // PVSCL:ENDCOND
+    annotation = _.find(annotationsToSearchIn, (annotation) => {
       return annotation.tags.includes(tag)
     })
     if (annotation) {

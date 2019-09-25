@@ -8,7 +8,11 @@ const Theme = require('../definition/Theme')
 const _ = require('lodash')
 
 class AnnotatedTheme {
-  constructor ({theme = nullPVSCL:IFCOND(Code), annotatedCodes = []PVSCL:ENDCOND, annotations = []}) {
+  constructor ({
+                 theme = null,
+                 annotations = []
+                 /*PVSCL:IFCOND(Code)*/, annotatedCodes = []/*PVSCL:ENDCOND*/
+  }) {
     // code
     this.theme = theme
     // PVSCL:IFCOND(Code, LINE)
@@ -125,15 +129,16 @@ class AnnotatedContentManager {
   }
 
   defineStructure () {
+    let annotatedThemesStructure
     // PVSCL:IFCOND(Code, LINE)
-    let annotatedThemesStructure = _.map(window.abwa.tagManager.model.highlighterDefinition.themes, (theme) => {
+    annotatedThemesStructure = _.map(window.abwa.tagManager.model.highlighterDefinition.themes, (theme) => {
       let codes = _.map(theme.codes, (code) => {
         return new AnnotatedCode({code: code})
       })
       return new AnnotatedTheme({theme: theme, annotatedCodes: codes})
     })
     // PVSCL:ELSECOND
-    let annotatedThemesStructure = _.map(window.abwa.tagManager.model.highlighterDefinition.themes, (theme) => {
+    annotatedThemesStructure = _.map(window.abwa.tagManager.model.highlighterDefinition.themes, (theme) => {
       return new AnnotatedTheme({theme: theme})
     })
     // PVSCL:ENDCOND

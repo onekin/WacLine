@@ -40,7 +40,7 @@
           <cm:constant cm:id="iRXgLWvQNvw-6U2E-" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i6tXXNoPE6qbbVZgy" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="irSns2tiYTVezvQsU" cm:type="ps:datetime">2019-09-13T11:42:01.728Z</cm:constant>
+          <cm:constant cm:id="irSns2tiYTVezvQsU" cm:type="ps:datetime">2019-09-24T16:47:47.196Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iunNuMsh3-OpNyKE5" cm:type="ps:string" cm:name="appName">
           <cm:constant cm:id="ibAeYA7hVAt01I2e6" cm:type="ps:string">WebAnnotator</cm:constant>
@@ -49,7 +49,10 @@
           <cm:constant cm:id="itqu7wS1jLvpOd2uj" cm:type="ps:string">WebAnnotator</cm:constant>
         </cm:property>
         <cm:property cm:id="iyK_UqtCkpofevPpj" cm:type="ps:string" cm:name="appDescription">
-          <cm:constant cm:id="i-n-fFtMvnDTS_Up7" cm:type="ps:string">Review papers using highlights and go!</cm:constant>
+          <cm:constant cm:id="i-n-fFtMvnDTS_Up7" cm:type="ps:string">Annotate documents online following color coding paradigm</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLQiG_aRVz31v8MYS" cm:type="ps:string" cm:name="key">
+          <cm:constant cm:id="iKVfSdkE5TyP9QQ6t" cm:type="ps:string"></cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -712,10 +715,13 @@
           <cm:constant cm:id="iyk2izy8VHMqbj2GQ" cm:type="ps:datetime">2019-04-29T15:28:05.290Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iwolf3ztwS1o9FLr6" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iIQwW1JVhOIKxumPK" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iIQwW1JVhOIKxumPK" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ip2MvG6G3wjrBhW-e" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i1k3W8gdcPImiAfvZ" cm:type="ps:datetime">2019-04-29T15:28:36.387Z</cm:constant>
+          <cm:constant cm:id="i1k3W8gdcPImiAfvZ" cm:type="ps:datetime">2019-09-24T14:49:31.306Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iAzTrDaSN8RWvrdZI" cm:type="ps:string" cm:name="clientId">
+          <cm:constant cm:id="imMFeSY58LInVexDv" cm:type="ps:string"></cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1260,10 +1266,13 @@
           <cm:constant cm:id="ib_x25u2dZjSWNYww" cm:type="ps:datetime">2019-04-29T15:48:11.691Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iQw9AM5ghsJphTl5I" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i-bzH2DuUKIyhZYTv" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i-bzH2DuUKIyhZYTv" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ixlAFKw_VhGqdNsB1" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="invFGrOTdNSnmr2pZ" cm:type="ps:datetime">2019-04-29T15:48:11.691Z</cm:constant>
+          <cm:constant cm:id="invFGrOTdNSnmr2pZ" cm:type="ps:datetime">2019-09-24T14:45:39.546Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ifY5y82Pr3BD4R7JA" cm:type="ps:string" cm:name="clientId">
+          <cm:constant cm:id="iBMmcnvSQUU6raTJ0" cm:type="ps:string"></cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
