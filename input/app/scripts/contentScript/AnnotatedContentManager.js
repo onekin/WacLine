@@ -9,9 +9,9 @@ const _ = require('lodash')
 
 class AnnotatedTheme {
   constructor ({
-                 theme = null,
-                 annotations = []
-                 /*PVSCL:IFCOND(Code)*/, annotatedCodes = []/*PVSCL:ENDCOND*/
+    theme = null,
+    annotations = []
+    /*PVSCL:IFCOND(Code)*/, annotatedCodes = []/*PVSCL:ENDCOND*/
   }) {
     // code
     this.theme = theme
@@ -155,6 +155,9 @@ class AnnotatedContentManager {
       Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name,
       Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name
     ]
+    // PVSCL:IFCOND(MoodleURL, LINE)
+    newTagList.push('cmid:' + this.cmid)
+    // PVSCL:ENDCOND
     if (annotatedTheme.hasAnnotations()) {
       let themeAnnotations = annotatedTheme.annotations
       // Update all annotations with new tags
@@ -169,7 +172,7 @@ class AnnotatedContentManager {
         this.reloadTagsChosen()
       })
     }
-    if (lastAnnotatedCode.code.id !== code.id) {
+    if (lastAnnotatedCode && (lastAnnotatedCode.code.id !== code.id)) {
       let lastAnnotatedCodeAnnotations = lastAnnotatedCode.annotations
       // Update all annotations with new tags
       _.forEach(lastAnnotatedCodeAnnotations, (lastAnnotatedCodeAnnotation) => {
@@ -227,14 +230,11 @@ class AnnotatedContentManager {
 
   removeAnnotationToAnnotatedThemesOrCode (annotation) {
     let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(annotation.tagId)
-    _.remove(annotatedThemeOrCode.annotations, annotation)
+    _.remove(annotatedThemeOrCode.annotations, (anno) => {
+      return anno.id === annotation.id
+    })
   }
 
-  /**
-   * This function returns the annotations done in current document for the given theme id or code id
-   * @param themeOrCodeId
-   * @returns {number}
-   */
   getAnnotationsDoneWithThemeOrCodeId (themeOrCodeId) {
     // Get AnnotatedTheme or AnnotatedCode
     let themeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(themeOrCodeId)
