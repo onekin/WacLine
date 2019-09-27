@@ -223,8 +223,9 @@ class TextAnnotator extends ContentAnnotator {
           }
         }
         // PVSCL:ENDCOND
-        // Check if theme or code has already annotations done
+        // Get all the annotations that pertains to clicked button in the sidebar (selected code)
         let annotatedThemeOrCodeAnnotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(event.detail.id)
+        // Calculate which one is the annotation to go to
         if (annotatedThemeOrCodeAnnotations.length > 0) {
           let index = _.indexOf(annotatedThemeOrCodeAnnotations, _this.lastAnnotation)
           if (index === -1 || index === annotatedThemeOrCodeAnnotations.length - 1) {
@@ -233,12 +234,16 @@ class TextAnnotator extends ContentAnnotator {
             _this.lastAnnotation = annotatedThemeOrCodeAnnotations[index + 1]
           }
         }
-        // If tag element is not checked, no navigation allowed
-        if (_this.lastAnnotation /* PVSCL:IFCOND(SingleCode) */ && !changingCodesOrThemes/*PVSCL:ENDCOND*/) {
-          // Navigate to the first annotation for this tag
-          this.goToAnnotation(_this.lastAnnotation)
-        } else /*PVSCL:IFCOND(SingleCode)*/ if (!changingCodesOrThemes)/*PVSCL:ENDCOND*/ {
+        // If there are no annotation to go to, just show a message
+        if (annotatedThemeOrCodeAnnotations.length === 0) {
+          // If there are not annotations to navigate to, show a message of empty current selection
           Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+          return
+        }/* PVSCL:IFCOND(SingleCode) */ else if (!changingCodesOrThemes) {
+          // If single code is selected, there is another event handler which will modify all the annotations for the given theme to the selected code, nothing to do here
+        }/*PVSCL:ENDCOND*/ else {
+          // Go to calculated last annotation
+          this.goToAnnotation(_this.lastAnnotation)
         }
         return
       }
@@ -1237,34 +1242,22 @@ class TextAnnotator extends ContentAnnotator {
   deleteAllAnnotations () {
     // Retrieve all the annotations
     let allAnnotations = this.allAnnotations
-    // Delete all the annotations
-    let promises = []
-    for (let i = 0; i < allAnnotations.length; i++) {
-      promises.push(new Promise((resolve, reject) => {
-        window.abwa.storageManager.client.deleteAnnotation(allAnnotations[i].id, (err) => {
-          if (err) {
-            reject(new Error('Unable to delete annotation id: ' + allAnnotations[i].id))
-          } else {
-            resolve()
-          }
-        })
-        return true
-      }))
-    }
-    // When all the annotations are deleted
-    Promise.all(promises).catch(() => {
-      Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
-    }).then(() => {
-      let deletedAnnotations = this.allAnnotations
-      // Update annotation variables
-      this.allAnnotations = []
-      // PVSCL:IFCOND(UserFilter, LINE)
-      this.currentAnnotations = []
-      // PVSCL:ENDCOND
-      // Dispatch event and redraw annotations
-      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
-      LanguageUtils.dispatchCustomEvent(Events.deletedAllAnnotations, {annotations: deletedAnnotations})
-      this.redrawAnnotations()
+    window.abwa.storageManager.client.deleteAnnotations(allAnnotations, (err) => {
+      if (err) {
+        Alerts.errorAlert({text: 'Unable to delete all the annotations in the document. Please try it again.'})
+        this.updateAllAnnotations()
+      } else {
+        let deletedAnnotations = this.allAnnotations
+        // Update annotation variables
+        this.allAnnotations = []
+        // PVSCL:IFCOND(UserFilter, LINE)
+        this.currentAnnotations = []
+        // PVSCL:ENDCOND
+        // Dispatch event and redraw annotations
+        LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+        LanguageUtils.dispatchCustomEvent(Events.deletedAllAnnotations, {annotations: deletedAnnotations})
+        this.redrawAnnotations()
+      }
     })
   }
   //PVSCL:ENDCOND
