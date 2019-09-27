@@ -1242,34 +1242,22 @@ class TextAnnotator extends ContentAnnotator {
   deleteAllAnnotations () {
     // Retrieve all the annotations
     let allAnnotations = this.allAnnotations
-    // Delete all the annotations
-    let promises = []
-    for (let i = 0; i < allAnnotations.length; i++) {
-      promises.push(new Promise((resolve, reject) => {
-        window.abwa.storageManager.client.deleteAnnotation(allAnnotations[i].id, (err) => {
-          if (err) {
-            reject(new Error('Unable to delete annotation id: ' + allAnnotations[i].id))
-          } else {
-            resolve()
-          }
-        })
-        return true
-      }))
-    }
-    // When all the annotations are deleted
-    Promise.all(promises).catch(() => {
-      Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
-    }).then(() => {
-      let deletedAnnotations = this.allAnnotations
-      // Update annotation variables
-      this.allAnnotations = []
-      // PVSCL:IFCOND(UserFilter, LINE)
-      this.currentAnnotations = []
-      // PVSCL:ENDCOND
-      // Dispatch event and redraw annotations
-      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
-      LanguageUtils.dispatchCustomEvent(Events.deletedAllAnnotations, {annotations: deletedAnnotations})
-      this.redrawAnnotations()
+    window.abwa.storageManager.client.deleteAnnotations(allAnnotations, (err) => {
+      if (err) {
+        Alerts.errorAlert({text: 'Unable to delete all the annotations in the document. Please try it again.'})
+        this.updateAllAnnotations()
+      } else {
+        let deletedAnnotations = this.allAnnotations
+        // Update annotation variables
+        this.allAnnotations = []
+        // PVSCL:IFCOND(UserFilter, LINE)
+        this.currentAnnotations = []
+        // PVSCL:ENDCOND
+        // Dispatch event and redraw annotations
+        LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+        LanguageUtils.dispatchCustomEvent(Events.deletedAllAnnotations, {annotations: deletedAnnotations})
+        this.redrawAnnotations()
+      }
     })
   }
   //PVSCL:ENDCOND
