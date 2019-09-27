@@ -223,8 +223,9 @@ class TextAnnotator extends ContentAnnotator {
           }
         }
         // PVSCL:ENDCOND
-        // Check if theme or code has already annotations done
+        // Get all the annotations that pertains to clicked button in the sidebar (selected code)
         let annotatedThemeOrCodeAnnotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(event.detail.id)
+        // Calculate which one is the annotation to go to
         if (annotatedThemeOrCodeAnnotations.length > 0) {
           let index = _.indexOf(annotatedThemeOrCodeAnnotations, _this.lastAnnotation)
           if (index === -1 || index === annotatedThemeOrCodeAnnotations.length - 1) {
@@ -233,12 +234,16 @@ class TextAnnotator extends ContentAnnotator {
             _this.lastAnnotation = annotatedThemeOrCodeAnnotations[index + 1]
           }
         }
-        // If tag element is not checked, no navigation allowed
-        if (_this.lastAnnotation /* PVSCL:IFCOND(SingleCode) */ && !changingCodesOrThemes/*PVSCL:ENDCOND*/) {
-          // Navigate to the first annotation for this tag
-          this.goToAnnotation(_this.lastAnnotation)
-        } else /*PVSCL:IFCOND(SingleCode)*/ if (!changingCodesOrThemes)/*PVSCL:ENDCOND*/ {
+        // If there are no annotation to go to, just show a message
+        if (annotatedThemeOrCodeAnnotations.length === 0) {
+          // If there are not annotations to navigate to, show a message of empty current selection
           Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+          return
+        }/* PVSCL:IFCOND(SingleCode) */ else if (!changingCodesOrThemes) {
+          // If single code is selected, there is another event handler which will modify all the annotations for the given theme to the selected code, nothing to do here
+        }/*PVSCL:ENDCOND*/ else {
+          // Go to calculated last annotation
+          this.goToAnnotation(_this.lastAnnotation)
         }
         return
       }
