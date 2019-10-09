@@ -253,12 +253,32 @@ class AnnotatedContentManager {
     })
   }
 
+  /**
+   * This function returns the annotations done in current document for the given theme id or code id
+   * @param themeOrCodeId
+   * @returns array of annotations
+   */
   getAnnotationsDoneWithThemeOrCodeId (themeOrCodeId) {
     // Get AnnotatedTheme or AnnotatedCode
     let themeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(themeOrCodeId)
-    return _.filter(themeOrCode.annotations, (annotation) => {
-      return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
-    })
+    if (LanguageUtils.isInstanceOf(themeOrCode, AnnotatedTheme)) {
+      // If it is the theme, we need to retrieve all the annotations with corresponding theme and annotations done with its children codes
+      let annotations = _.filter(themeOrCode.annotations, (annotation) => {
+        return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
+      })
+      // PVSCL:IFCOND(Code)
+      let childAnnotations = _.flatMap(themeOrCode.annotatedCodes.map(annotatedCode =>
+        _.filter(annotatedCode.annotations, (annotation) => {
+          return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
+        })))
+      annotations = annotations.concat(childAnnotations)
+      // PVSCL:ENDCOND
+      return annotations
+    } /*PVSCL:IFCOND(Code)*/else {
+      return _.filter(themeOrCode.annotations, (annotation) => {
+        return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
+      })
+    } //PVSCL:ENDCOND
   }
 
   /**
