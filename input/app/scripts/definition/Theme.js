@@ -12,7 +12,7 @@ const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:ENDCOND
 
 class Theme {
-  constructor ({id, name, color, annotationGuide, description = ''PVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCOND}) {
+  constructor ({id, name, color, annotationGuide, description = ''PVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCONDPVSCL:IFCOND(MoodleProvider), moodleCriteriaIdPVSCL:ENDCOND}) {
     this.id = id
     this.name = name
     this.description = description
@@ -25,6 +25,9 @@ class Theme {
     this.multivalued = multivalued
     this.inductive = inductive
  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(MoodleProvider, LINE)
+    this.moodleCriteriaId = moodleCriteriaId
+  // PVSCL:ENDCOND
   }
 
   toAnnotations () {
@@ -66,9 +69,9 @@ class Theme {
       tags: tags,
       target: [],
       text: jsYaml.dump({
-      // PVSCL:IFCOND(User,LINE)
+        id: this.id || ''PVSCL:IFCOND(User),
         description: this.description
-      // PVSCL:ENDCOND
+      PVSCL:ENDCOND
       }),
       uri: this.annotationGuide.storage.group.links.html
     }
@@ -101,7 +104,10 @@ class Theme {
       if (_.isObject(config)) {
         let description = config.description
         let id = annotation.id
-        return new Theme({id, name, description, annotationGuidePVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCOND})
+        // PVSCL:IFCOND(MoodleReport,LINE)
+        let moodleCriteriaId = config.id
+        // PVSCL:ENDCOND
+        return new Theme({id, name, description, annotationGuidePVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCONDPVSCL:IFCOND(MoodleReport), moodleCriteriaIdPVSCL:ENDCOND})
       } else {
 
       }

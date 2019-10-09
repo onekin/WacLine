@@ -186,6 +186,24 @@ class AnnotatedContentManager {
         this.reloadTagsChosen()
       })
     }
+    // PVSCL:IFCOND(MoodleReport, LINE)
+    // Update moodle
+    this.updateMoodle((err, result) => {
+      if (err) {
+        Alerts.errorAlert({
+          text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
+          title: 'Unable to update marks in moodle'
+        })
+      } else {
+        Alerts.temporalAlert({
+          text: 'The mark is updated in moodle',
+          title: 'Correctly marked',
+          type: Alerts.alertType.success,
+          toast: true
+        })
+      }
+    })
+    // PVSCL:ENDCOND
   }
 
   updateAnnotationsInStorage (annotations, callback) {
@@ -338,6 +356,12 @@ class AnnotatedContentManager {
       }
     }) */
   }
+// PVSCL:IFCOND(MoodleReport, LINE)
+
+  updateMoodle (callback) {
+    window.abwa.moodleReport.updateMoodleFromMarks(this.annotatedThemes, callback)
+  }
+// PVSCL:ENDCOND
 
   createAnnotationCreatedEventHandler () {
     return (event) => {
@@ -354,6 +378,23 @@ class AnnotatedContentManager {
           this.reloadTagsChosen()
         }
       }
+      // PVSCL:IFCOND(MoodleReport, LINE)
+      this.updateMoodle((err, result) => {
+        if (err) {
+          Alerts.errorAlert({
+            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
+            title: 'Unable to update marks in moodle'
+          })
+        } else {
+          Alerts.temporalAlert({
+            text: 'The mark is updated in moodle',
+            title: 'Correctly marked',
+            type: Alerts.alertType.success,
+            toast: true
+          })
+        }
+      })
+      // PVSCL:ENDCOND
     }
   }
 
@@ -364,6 +405,23 @@ class AnnotatedContentManager {
         this.removeAnnotationToAnnotatedThemesOrCode(annotation)
       }
       this.reloadTagsChosen()
+      // PVSCL:IFCOND(MoodleReport, LINE)
+      this.updateMoodle((err, result) => {
+        if (err) {
+          Alerts.errorAlert({
+            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
+            title: 'Unable to update marks in moodle'
+          })
+        } else {
+          Alerts.temporalAlert({
+            text: 'The mark is updated in moodle',
+            title: 'Correctly marked',
+            type: Alerts.alertType.success,
+            toast: true
+          })
+        }
+      })
+      // PVSCL:ENDCOND
     }
   }
 
@@ -377,12 +435,25 @@ class AnnotatedContentManager {
         }
       }
       this.reloadTagsChosen()
+      // PVSCL:IFCOND(MoodleReport, LINE)
+      this.updateMoodle((err, result) => {
+        if (err) {
+          Alerts.errorAlert({
+            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
+            title: 'Unable to update marks in moodle'
+          })
+        } else {
+          Alerts.temporalAlert({
+            text: 'The mark is updated in moodle',
+            title: 'Correctly marked',
+            type: Alerts.alertType.success,
+            toast: true
+          })
+        }
+      })
+      // PVSCL:ENDCOND
     }
   }
-
-  /* updateMoodle (callback) {
-    window.abwa.specific.moodleGradingManager.updateMoodleFromMarks(this.marks, callback)
-  } */
 
   reloadTagsChosen () {
     // Retrieve annotated themes id
