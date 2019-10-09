@@ -26,6 +26,9 @@ const UserFilter = require('../consumption/filters/UserFilter')
 // PVSCL:IFCOND(PreviousAssignments, LINE)
 const PreviousAssignments = require('../production/PreviousAssignments')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleReport, LINE)
+const MoodleReport = require('../consumption/visualizations/MoodleReport')
+// PVSCL:ENDCOND
 
 class ContentScriptManager {
   constructor () {
@@ -76,6 +79,11 @@ class ContentScriptManager {
       .then(() => {
         return this.reloadContentAnnotator()
       })
+      // PVSCL:IFCOND(MoodleReport, LINE)
+      .then(() => {
+        return this.reloadMoodleReport()
+      })
+      // PVSCL:ENDCOND
       .then(() => {
         return this.reloadAnnotatedContentManager()
       })
@@ -166,6 +174,24 @@ class ContentScriptManager {
     })
   }
 //PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleReport, LINE)
+
+  reloadMoodleReport () {
+    return new Promise((resolve, reject) => {
+      // Destroy current content annotator
+      this.destroyMoodleReport()
+      // Create a new content annotator for the current group
+      window.abwa.moodleReport = new MoodleReport()
+      window.abwa.moodleReport.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(MoodleURL, LINE)
 
   reloadRolesManager () {
@@ -226,6 +252,15 @@ class ContentScriptManager {
     // Destroy current augmentation operations
     if (!_.isEmpty(window.abwa.userFilter)) {
       window.abwa.userFilter.destroy()
+    }
+  }
+//PVSCL:ENDCOND
+//PVSCL:IFCOND(MoodleReport, LINE)
+
+  destroyMoodleReport () {
+    // Destroy current augmentation operations
+    if (!_.isEmpty(window.abwa.moodleReport)) {
+      window.abwa.moodleReport.destroy()
     }
   }
 //PVSCL:ENDCOND
