@@ -2,22 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8dac4e31-5d99-4adb-9a88-e6bd4df324c8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/WebAnnotatorSPL.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleReport.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/input/app/scripts/moodle/MoodleUtils.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Variants/Completo.vdm" beforeDir="false" afterPath="$PROJECT_DIR$/Variants/Completo.vdm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebAnnotator.ccfm" beforeDir="false" afterPath="$PROJECT_DIR$/WebAnnotator.ccfm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/app/scripts/definition/Theme.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/definition/Theme.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/input/package.json" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,20 +12,15 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="testRunner" value="GRADLE" />
+    <option name="delegatedBuild" value="true" />
+  </component>
   <component name="FavoritesManager">
     <favorites_list name="WebAnnotatorSPL" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleReport.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="302">
-              <caret line="124" column="84" selection-start-line="124" selection-start-column="84" selection-end-line="124" selection-end-column="84" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/input/app/scripts/definition/Code.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -59,33 +40,45 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/Toolset.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/Sidebar.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/contentAnnotators/TextAnnotator.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-157">
-              <caret line="921" column="2" selection-start-line="921" selection-start-column="2" selection-end-line="921" selection-end-column="2" />
+            <state relative-caret-position="476">
+              <caret line="926" column="2" selection-start-line="926" selection-start-column="2" selection-end-line="926" selection-end-column="2" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/Events.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/input/app/scripts/Config.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-467" />
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1317">
-              <caret line="344" selection-start-line="344" selection-end-line="344" />
+            <state relative-caret-position="-56">
+              <caret line="333" column="39" selection-start-line="333" selection-start-column="39" selection-end-line="333" selection-end-column="39" />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/input/app/scripts/utils/Alerts.js">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -100,7 +93,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/TagManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
+            <state relative-caret-position="5576">
               <caret line="328" column="84" selection-start-line="328" selection-start-column="28" selection-end-line="328" selection-end-column="84" />
             </state>
           </provider>
@@ -126,9 +119,10 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" />
-        <option value="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" />
         <option value="$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleReport.js" />
         <option value="$PROJECT_DIR$/input/app/scripts/definition/Theme.js" />
+        <option value="$PROJECT_DIR$/input/app/scripts/contentScript/Events.js" />
+        <option value="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" />
       </list>
     </option>
   </component>
@@ -139,8 +133,9 @@
     <auto-save>true</auto-save>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="width" value="800" />
+    <option name="x" value="933" />
+    <option name="y" value="49" />
+    <option name="width" value="709" />
     <option name="height" value="744" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -150,7 +145,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -213,6 +207,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -265,17 +260,17 @@
       <workItem from="1570008190318" duration="322000" />
       <workItem from="1570527136468" duration="5291000" />
       <workItem from="1570558069246" duration="11311000" />
+      <workItem from="1570909615587" duration="2646000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20436000" />
+    <option name="totallyTimeSpent" value="24886000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.82791585" visible="true" weight="0.2647504" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.82791585" visible="true" weight="0.24962178" />
       <window_info id="Structure" order="1" sideWeight="0.502439" side_tool="true" weight="0.24962178" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -290,9 +285,9 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" visible="true" weight="0.14402619" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.44189852" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.3289689" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.14893617" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -369,36 +364,10 @@
     <entry file="file://$PROJECT_DIR$/input/app/scripts/utils/Alerts.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js">
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleReport.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="4" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/TagManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="328" column="84" selection-start-line="328" selection-start-column="28" selection-end-line="328" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/contentAnnotators/TextAnnotator.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-157">
-          <caret line="921" column="2" selection-start-line="921" selection-start-column="2" selection-end-line="921" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/Config.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-467" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1317">
-          <caret line="344" selection-start-line="344" selection-end-line="344" />
+        <state relative-caret-position="1020">
+          <caret line="60" column="15" selection-start-line="60" selection-start-column="15" selection-end-line="60" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -416,10 +385,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleReport.js">
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/Toolset.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/Config.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/TagManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="302">
-          <caret line="124" column="84" selection-start-line="124" selection-start-column="84" selection-end-line="124" selection-end-column="84" />
+        <state relative-caret-position="5576">
+          <caret line="328" column="84" selection-start-line="328" selection-start-column="28" selection-end-line="328" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/Sidebar.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/contentAnnotators/TextAnnotator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="926" column="2" selection-start-line="926" selection-start-column="2" selection-end-line="926" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/Events.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-56">
+          <caret line="333" column="39" selection-start-line="333" selection-start-column="39" selection-end-line="333" selection-end-column="39" />
         </state>
       </provider>
     </entry>
