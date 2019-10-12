@@ -3,12 +3,15 @@ const _ = require('lodash')
 const Config = require('../Config')
 
 class Code {
-  constructor ({id, name, description = '', color, theme}) {
+  constructor ({id, name, description = '', color, themePVSCL:IFCOND(MoodleProvider), moodleLevelIdPVSCL:ENDCOND}) {
     this.id = id
     this.name = name
     this.color = color
     this.theme = theme
     this.description = description
+    // PVSCL:IFCOND(MoodleProvider, LINE)
+    this.moodleLevelId = moodleLevelId
+    // PVSCL:ENDCOND
   }
 
   toAnnotations () {
@@ -53,8 +56,12 @@ class Code {
       if (_.isObject(config)) {
         let description = config.description
         let id = annotation.id
-        // let levelId = config.levelId
+        // PVSCL:IFCOND(MoodleProvider, LINE) 
+        let moodleLevelId = config.id
+        return new Code({id, name, description, theme, moodleLevelId})
+        // PVSCL:ELSECOND
         return new Code({id, name, description, theme})
+        // PVSCL:ENDCOND
       } else {
         console.error('Unable to retrieve mark configuration from annotation')
       }

@@ -12,6 +12,12 @@ class HypothesisClientManager extends StorageManager {
     this.client = null
     this.hypothesisToken = null
     this.reloadInterval = null
+    this.storageMetadata = {
+      annotationUrl: 'https://hypothes.is/api/annotations/',
+      storageUrl: 'https://hypothes.is/api',
+      groupUrl: 'https://hypothes.is/api/groups/',
+      userUrl: 'https://hypothes.is/api/users/'
+    }
   }
 
   init (callback) {

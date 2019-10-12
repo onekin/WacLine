@@ -18,6 +18,9 @@ const TextSummary = require('../consumption/visualizations/TextSummary')
 // PVSCL:IFCOND(DeleteGroup,LINE)
 const DeleteGroup = require('../groupManipulation/DeleteGroup')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleReport,LINE)
+const BackToWorkspace = require('../moodle/BackToWorkspace')
+// PVSCL:ENDCOND
 const $ = require('jquery')
 
 class Toolset {
@@ -26,6 +29,7 @@ class Toolset {
   }
 
   init (callback) {
+    console.debug('Initializing toolset')
     axios.get(this.page).then((response) => {
       // Get sidebar container
       this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
@@ -106,10 +110,23 @@ class Toolset {
         this.generateGoogleSheet()
       })
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(MoodleReport,LINE)
+      // Set back to moodle icon
+      let moodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
+      this.moodleImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.moodleImage.src = moodleImageUrl
+      this.moodleImage.title = 'Back to moodle' // TODO i18n
+      BackToWorkspace.createWorkspaceLink((link) => {
+        this.moodleLink = link
+        this.moodleLink.appendChild(this.moodleImage)
+        this.toolsetBody.appendChild(this.moodleLink)
+      })
+      // PVSCL:ENDCOND
       // Check if exist any element in the tools and show it
       if (!_.isEmpty(this.toolsetBody.innerHTML)) {
         this.show()
       }
+      console.debug('Initialized toolset')
       if (_.isFunction(callback)) {
         callback()
       }

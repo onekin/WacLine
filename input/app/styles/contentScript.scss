@@ -14,7 +14,8 @@ PVSCL:ENDCOND
 @import './locationManager';
 @import './sidebar';
 @import './slrDataExtraction';
-@import './review';
+@import 'toolset';
+@import 'userFilter';
 @import './textAnnotator';
 @import './reviewAssistant';
 @import './reviewCanvas';

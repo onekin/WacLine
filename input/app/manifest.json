@@ -2,7 +2,7 @@
   "name": "__MSG_appName__",
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
-  "version": "0.0.9",
+  "version": "0.0.1",
   "manifest_version": 2,
   "default_locale": "en",
   "icons": {
@@ -93,14 +93,19 @@
     "*://www.dropbox.com/s/",
     "*://*.dropboxusercontent.com/*"PVSCL:ENDCOND
   ],
-  PVSCL:IFCOND(GSheetProvider or GSheetConsumer,LINE)
+  PVSCL:IFCOND(GSheetProvider or GSheetConsumer, LINE)
   "oauth2": {
-    "client_id": "1008657588862-k3t7glpcvdrtc43dsmktkjudufh9m5ho.apps.googleusercontent.com",
+  	PVSCL:IFCOND(GSheetProvider, LINE)
+    "client_id": "PVSCL:EVAL(GSheetProvider->pv:Attribute('clientId'))",
+    PVSCL:ELSEIFCOND(GSheetConsumer and not(GSheetProvider))
+    "client_id": "PVSCL:EVAL(GSheetConsumer->pv:Attribute('clientId'))",
+    PVSCL:ENDCOND
     "scopes": [
       "https://www.googleapis.com/auth/spreadsheets"
     ]
   },
   PVSCL:ENDCOND
-  "web_accessible_resources": ["pages/*.html", "content/*", "images/*"],
-  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoQgtyvjHN1xpYMWig50Bx7iL4d8oSum8aVhiTCLpdSK93YAA6JubzTxeJKWj0n/zx4X6jiByuAGaAd7V0/s+mrJfP2J8hiMFu5BnxT6+2iekiLNV4Nc1RlX9wuaOq2Res0l9E2+2DpMTCli4aS1DyEBd9zpfwaNWPMqbmToZOLO0afibAklS/VAIEfcH/2lbDLrdq3UACEZdW7/hlmICj0yItYFQ2mXEI3spetnJH3VG9Q5Sj5RsSLnyuescQLSeT0vl1uovsPnKCpD/aS/iRzNyEtRNtAy727Ju334bj4xyOA8VIsueWWwYiKPatvhQ+gcNqq77UNOmw5Ido5fHMQIDAQAB"
+  "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]PVSCL:IFCOND(WebAnnotator.WebAnnotator->pv:Attribute('key')<>''),
+  "key": "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('key'))"
+  PVSCL:ENDCOND
 }

@@ -1,7 +1,6 @@
 const ContentAnnotator = require('./ContentAnnotator')
 const ContentTypeManager = require('../ContentTypeManager')
 const Events = require('../Events')
-// const RolesManager = require('../RolesManager')
 const DOMTextUtils = require('../../utils/DOMTextUtils')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
@@ -27,9 +26,6 @@ const Awesomplete = require('awesomplete')
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 60
 
-// const ReviewAssistant = require('../../specific/review/ReviewAssistant')
-// const Config = require('../../Config')
-
 class TextAnnotator extends ContentAnnotator {
   constructor (config) {
     super()
@@ -45,9 +41,11 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   init (callback) {
+    console.debug('Initializing TextAnnotator')
     this.initEvents(() => {
       // Retrieve current user profile
       this.loadAnnotations(() => {
+        console.debug('Initialized TextAnnotator')
         this.initAnnotatorByAnnotation(() => {
           // Check if something is selected after loading annotations and display sidebar
           if (document.getSelection().toString().length !== 0) {
@@ -204,16 +202,48 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   createAnnotationEventHandler () {
+    let _this = this
     return (event) => {
       let selectors = []
+      // PVSCL:IFCOND(SingleCode, LINE)
+      // Get the currently annotatedCode to do comprobations
+      let lastAnnotatedCode = event.detail.lastAnnotatedCode
+      // Get the code or theme of the selected button
+      let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(event.detail.id)
+      // PVSCL:ENDCOND
       // If selection is empty, return null
       if (document.getSelection().toString().length === 0) {
-        // If tag element is not checked, no navigation allowed
-        if (event.detail.chosen === 'true') {
-          // Navigate to the first annotation for this tag
-          this.goToFirstAnnotationOfTag(event.detail.tags[0])
-        } else {
+        // PVSCL:IFCOND(SingleCode, LINE)
+        // If the button has been click to set code (changingCodesOrThemes = true)
+        let changingCodesOrThemes = false
+        if (LanguageUtils.isInstanceOf(codeOrTheme, Code) && lastAnnotatedCode) {
+          let annotatedTheme = window.abwa.annotatedContentManager.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeOrTheme.theme.id)
+          if (lastAnnotatedCode.code.id !== codeOrTheme.id || annotatedTheme.hasAnnotations()) {
+            changingCodesOrThemes = true
+          }
+        }
+        // PVSCL:ENDCOND
+        // Get all the annotations that pertains to clicked button in the sidebar (selected code)
+        let annotatedThemeOrCodeAnnotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(event.detail.id)
+        // Calculate which one is the annotation to go to
+        if (annotatedThemeOrCodeAnnotations.length > 0) {
+          let index = _.indexOf(annotatedThemeOrCodeAnnotations, _this.lastAnnotation)
+          if (index === -1 || index === annotatedThemeOrCodeAnnotations.length - 1) {
+            _this.lastAnnotation = annotatedThemeOrCodeAnnotations[0]
+          } else {
+            _this.lastAnnotation = annotatedThemeOrCodeAnnotations[index + 1]
+          }
+        }
+        // If there are no annotation to go to, just show a message
+        if (annotatedThemeOrCodeAnnotations.length === 0) {
+          // If there are not annotations to navigate to, show a message of empty current selection
           Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionEmpty')})
+          return
+        }/* PVSCL:IFCOND(SingleCode) */ else if (!changingCodesOrThemes) {
+          // If single code is selected, there is another event handler which will modify all the annotations for the given theme to the selected code, nothing to do here
+        }/*PVSCL:ENDCOND*/ else {
+          // Go to calculated last annotation
+          this.goToAnnotation(_this.lastAnnotation)
         }
         return
       }
@@ -276,7 +306,21 @@ class TextAnnotator extends ContentAnnotator {
           LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
           // PVSCL:ENDCOND
           // Send event annotation is created
-          LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: annotation})
+          // PVSCL:IFCOND(SingleCode, LINE)
+          // Check if is necesary to do a codeToAll after the annotation is created
+          let codeToAll = false
+          if (LanguageUtils.isInstanceOf(codeOrTheme, Code) && lastAnnotatedCode) {
+            if (lastAnnotatedCode.code.id !== codeOrTheme.id) {
+              codeToAll = true
+            }
+          }
+          // PVSCL:ENDCOND
+          let eventDetails = {annotation: annotation}
+          // PVSCL:IFCOND(SingleCode, LINE)
+          eventDetails['codeToAll'] = codeToAll
+          eventDetails['lastAnnotatedCode'] = lastAnnotatedCode
+          // PVSCL:ENDCOND
+          LanguageUtils.dispatchCustomEvent(Events.annotationCreated, eventDetails)
           console.debug('Created annotation with ID: ' + annotation.id)
           // PVSCL:IFCOND(UserFilter, LINE)
           if (wasDisabledInUserFilter) {
@@ -318,12 +362,12 @@ class TextAnnotator extends ContentAnnotator {
       tags: tags,
       target: target,
       text: '',
-      uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis()
+      uri: window.abwa.contentTypeManager.getDocumentURIToSave()
     }
     // Tag id
     if (tagId) {
       data.tagId = tagId
-      data.body = 'https://hypothes.is/api/annotations/' + tagId
+      data.body = window.abwa.storageManager.storageMetadata.annotationUrl + tagId
     }
     // Add document URIs
     data.document.link = window.abwa.contentTypeManager.getDocumentLink()
@@ -396,15 +440,15 @@ class TextAnnotator extends ContentAnnotator {
       // console.debug('Observer interval')
       // If a swal is displayed, do not execute highlighting observer
       if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
+        let annotationsToHighlight
         // PVSCL:IFCOND(UserFilter, LINE)
-        if (this.currentAnnotations) {
-          for (let i = 0; i < this.currentAnnotations.length; i++) {
-            let annotation = this.currentAnnotations[i]
+        annotationsToHighlight = this.currentAnnotations
         // PVSCL:ELSECOND
-        if (this.allAnnotations) {
+        annotationsToHighlight = this.allAnnotations
+        // PVSCL:ENDCOND
+        if (annotationsToHighlight) {
           for (let i = 0; i < this.allAnnotations.length; i++) {
             let annotation = this.allAnnotations[i]
-        // PVSCL:ENDCOND
             // Search if annotation exist
             let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
             // If annotation doesn't exist, try to find it
@@ -461,7 +505,7 @@ class TextAnnotator extends ContentAnnotator {
     // Retrieve annotations for current url and group
     window.abwa.storageManager.client.searchAnnotations({
       url: window.abwa.contentTypeManager.getDocumentURIToSearchInHypothesis(),
-      uri: window.abwa.contentTypeManager.getDocumentURIToSaveInHypothesis(),
+      uri: window.abwa.contentTypeManager.getDocumentURIToSave(),
       group: window.abwa.groupSelector.currentGroup.id,
       order: 'asc'
     }, (err, annotations) => {
@@ -480,7 +524,7 @@ class TextAnnotator extends ContentAnnotator {
         this.replyAnnotations = _.filter(annotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
         })
-        // PVSCL:ENDCOND 
+        // PVSCL:ENDCOND
         // PVSCL:IFCOND(UserFilter, LINE)
         this.currentAnnotations = this.retrieveCurrentAnnotations()
         // PVSCL:ENDCOND
@@ -539,9 +583,10 @@ class TextAnnotator extends ContentAnnotator {
           if (LanguageUtils.isInstanceOf(tag, Theme)) {
             // Set message
             highlightedElement.title = tag.name
-          }PVSCL:IFCOND(Code) else if (LanguageUtils.isInstanceOf(tag, Code)) {
+          } /*PVSCL:IFCOND(Code)*/ else if (LanguageUtils.isInstanceOf(tag, Code)) {
             highlightedElement.title = tag.theme.name + '\nCode: ' + tag.name
-          }PVSCL:ENDCOND
+          }
+          //PVSCL:ENDCOND
           // PVSCL:IFCOND(GSheetProvider, LINE)
           let user = annotation.user.replace('acct:', '').replace('@hypothes.is', '')
           highlightedElement.title += '\nAuthor: ' + user
@@ -618,13 +663,13 @@ class TextAnnotator extends ContentAnnotator {
           callback: (key, opt) => {
             if (key === 'delete') {
               this.deleteAnnotationHandler(annotation)
-            }PVSCL:IFCOND(Comment) else if (key === 'comment') {
+            }/*PVSCL:IFCOND(Comment)*/ else if (key === 'comment') {
               this.commentAnnotationHandler(annotation)
-            }PVSCL:ENDCONDPVSCL:IFCOND(Reply) else if (key === 'reply') {
+            }/*PVSCL:ENDCONDPVSCL:IFCOND(Reply)*/ else if (key === 'reply') {
               this.replyAnnotationHandler(annotation)
-            }PVSCL:ENDCONDPVSCL:IFCOND(Validate) else if (key === 'validate') {
+            }/*PVSCL:ENDCONDPVSCL:IFCOND(Validate)*/ else if (key === 'validate') {
               this.validateAnnotationHandler(annotation)
-            }PVSCL:ENDCOND
+            }/*PVSCL:ENDCOND*/
           },
           items: items
         }
@@ -682,7 +727,7 @@ class TextAnnotator extends ContentAnnotator {
   validateAnnotationHandler (annotation) {
     ReplyAnnotation.validateAnnotation(annotation)
   }
-//PVSCL:ENDCOND 
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(Comment,LINE)
 
   /**
@@ -711,8 +756,9 @@ class TextAnnotator extends ContentAnnotator {
     html += '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(annotation.suggestedLiterature) + '</ul>'
     //PVSCL:ENDCOND
     // On before open
+    let onBeforeOpen
     //PVSCL:IFCOND(Autofill or SuggestedLiterature or PreviousAssignments,LINE)
-    let onBeforeOpen = () => {
+    onBeforeOpen = () => {
       //PVSCL:IFCOND(PreviousAssignments,LINE)
       let previousAssignmentAppendElements = document.querySelectorAll('.previousAssignmentAppendButton')
       previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
@@ -792,7 +838,7 @@ class TextAnnotator extends ContentAnnotator {
       //PVSCL:ENDCOND
     }
     //PVSCL:ELSECOND
-    let onBeforeOpen = () => {}
+    onBeforeOpen = () => {}
     //PVSCL:ENDCOND
     // Preconfirm
     let preConfirmData = {}
@@ -835,7 +881,7 @@ class TextAnnotator extends ContentAnnotator {
         // Update annotation
         callback()
       }
-      //PVSCL:ENDCOND 
+      //PVSCL:ENDCOND
     }
     // Callback
     let callback = (err, result) => {
@@ -888,9 +934,17 @@ class TextAnnotator extends ContentAnnotator {
     //PVSCL:ENDCOND
     let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
     let title = ''
+    //PVSCL:IFCOND(MoodleProvider,LINE)
+    if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
+      title = themeOrCode.name
+    } else {
+      title = themeOrCode.description
+    }
+    // PVSCL:ELSECOND
     if (themeOrCode) {
       title = themeOrCode.name
     }
+    // PVSCL:ENDCOND
     let showForm = (preConfirmData) => {
       // Get last call to this form annotation text, not the init one
       if (_.isObject(preConfirmData) && preConfirmData.comment) {
@@ -922,7 +976,7 @@ class TextAnnotator extends ContentAnnotator {
 //PVSCL:IFCOND(PreviousAssignments,LINE)
 
   retrievePreviousAssignments () {
-    return window.abwa.moodle.previousAssignments.previousAssignments
+    return window.abwa.previousAssignments.previousAssignments
   }
 
   createPreviousAssignmentsUI (previousAssignments) {
@@ -1019,11 +1073,14 @@ class TextAnnotator extends ContentAnnotator {
 
   goToFirstAnnotationOfTag (tag) {
     // TODO Retrieve first annotation for tag
+    let annotation
+    let annotationsToSearchIn
     // PVSCL:IFCOND(UserFilter, LINE)
-    let annotation = _.find(this.currentAnnotations, (annotation) => {
+    annotationsToSearchIn = this.currentAnnotations
     // PVSCL:ELSECOND
-    let annotation = _.find(this.allAnnotations, (annotation) => {
+    annotationsToSearchIn = this.allAnnotations
     // PVSCL:ENDCOND
+    annotation = _.find(annotationsToSearchIn, (annotation) => {
       return annotation.tags.includes(tag)
     })
     if (annotation) {
@@ -1048,7 +1105,7 @@ class TextAnnotator extends ContentAnnotator {
         // Timeout to remove highlight used by PDF.js
         setTimeout(() => {
           let pdfjsHighlights = document.querySelectorAll('.highlight')
-          for (let i = 0; pdfjsHighlights.length; i++) {
+          for (let i = 0; i < pdfjsHighlights.length; i++) {
             pdfjsHighlights[i].classList.remove('highlight')
           }
         }, 1000)
@@ -1185,32 +1242,22 @@ class TextAnnotator extends ContentAnnotator {
   deleteAllAnnotations () {
     // Retrieve all the annotations
     let allAnnotations = this.allAnnotations
-    // Delete all the annotations
-    let promises = []
-    for (let i = 0; i < allAnnotations.length; i++) {
-      promises.push(new Promise((resolve, reject) => {
-        window.abwa.storageManager.client.deleteAnnotation(allAnnotations[i].id, (err) => {
-          if (err) {
-            reject(new Error('Unable to delete annotation id: ' + allAnnotations[i].id))
-          } else {
-            resolve()
-          }
-        })
-        return true
-      }))
-    }
-    // When all the annotations are deleted
-    Promise.all(promises).catch(() => {
-      Alerts.errorAlert({text: 'There was an error when trying to delete all the annotations, please reload and try it again.'})
-    }).then(() => {
-      // Update annotation variables
-      this.allAnnotations = []
-      // PVSCL:IFCOND(UserFilter, LINE)
-      this.currentAnnotations = []
-      // PVSCL:ENDCOND
-      // Dispatch event and redraw annotations
-      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
-      this.redrawAnnotations()
+    window.abwa.storageManager.client.deleteAnnotations(allAnnotations, (err) => {
+      if (err) {
+        Alerts.errorAlert({text: 'Unable to delete all the annotations in the document. Please try it again.'})
+        this.updateAllAnnotations()
+      } else {
+        let deletedAnnotations = this.allAnnotations
+        // Update annotation variables
+        this.allAnnotations = []
+        // PVSCL:IFCOND(UserFilter, LINE)
+        this.currentAnnotations = []
+        // PVSCL:ENDCOND
+        // Dispatch event and redraw annotations
+        LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+        LanguageUtils.dispatchCustomEvent(Events.deletedAllAnnotations, {annotations: deletedAnnotations})
+        this.redrawAnnotations()
+      }
     })
   }
   //PVSCL:ENDCOND

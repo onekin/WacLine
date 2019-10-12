@@ -37,10 +37,12 @@
   font-size: 14px;
   font-family: sans-serif;
   border-right: 1px solid black;
+  overflow-y: overlay;
 }
 
 #abwaSidebarContainer[data-shown="true"] {
   width: $sideBarWidth + 11px;
+  padding-right: 2px;
 }
 
 /* Sidebar button */
@@ -102,10 +104,8 @@
   background-color: $containerHeaderBackgroundColor;
   color: $containerHeaderFontColor;
   padding: 0.2rem;
-  border-top-left-radius: 0.2rem;
-  border-top-right-radius: 0.2rem;
   min-width: calc( #{$sideBarWidth} - 0.5rem - 0.2rem);
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   text-align: center;
 }
@@ -113,9 +113,36 @@
 .bodyContainer {
   background-color: $sidebarBackgroundColor;
   min-width: calc( #{$sideBarWidth} - 0.5rem - 0.2rem);
-  padding: 0.4rem 0.2rem 0.4rem;
 }
 
 .bodyContainer[aria-hidden="true"]{
   display: none;
+}
+
+/* Scrollbar */
+
+/* width */
+#abwaSidebarContainer::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+#abwaSidebarContainer::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+#abwaSidebarContainer::-webkit-scrollbar-thumb {
+  background: rgba(150,150,150,0.5);
+  border-radius: 10px;
+}
+
+#abwaSidebarContainer::-webkit-scrollbar-thumb:hover {
+  width: 10px;
+}
+
+/* Handle on hover */
+#abwaSidebarContainer::-webkit-scrollbar-thumb:hover {
+  background: rgba(100,100,100,0.3);
 }

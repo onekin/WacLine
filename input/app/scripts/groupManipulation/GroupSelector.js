@@ -23,7 +23,7 @@ const ImportSchema = require('./ImportSchema')
 // PVSCL:IFCOND(ExportGroup, LINE)
 const ExportSchema = require('./ExportSchema')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local, LINE)
+// PVSCL:IFCOND(Local and User, LINE) // It is because LocalStorageManager it is only used inside an if where User feature is selected
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
 // PVSCL:ENDCOND
 
@@ -188,6 +188,14 @@ class GroupSelector {
                   if (err) {
                     Alerts.errorAlert({text: 'We are unable to create the group. Please check if you are logged in the storage.'})
                   } else {
+                    //PVSCL:IFCOND(Hypothesis, LINE)
+                    // Modify group URL in hypothesis
+                    if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
+                      if (_.has(group, 'links.html')) {
+                        group.links.html = group.links.html.substr(0, group.links.html.lastIndexOf('/'))
+                      }
+                    }
+                    //PVSCL:ENDCOND
                     this.currentGroup = group
                     callback(null)
                   }

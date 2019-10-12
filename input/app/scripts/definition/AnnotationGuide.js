@@ -21,7 +21,7 @@ const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
 
 class AnnotationGuide {
-  constructor ({id = null, name = '', storage = nullPVSCL:IFCOND(MoodleProvider), moodleEndpoint = null, assignmentName = null, assignmentId = null, courseId = null, cmid = nullPVSCL:ENDCONDPVSCL:IFCOND(GSheetProvider), spreadsheetId = null, sheetId = nullPVSCL:ENDCOND}) {
+  constructor ({id = null, name = '', storage = nullPVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL), moodleEndpoint = null, assignmentName = null, assignmentId = null, courseId = null, cmid = nullPVSCL:ENDCONDPVSCL:IFCOND(GSheetProvider), spreadsheetId = null, sheetId = nullPVSCL:ENDCOND}) {
     this.id = id
     this.name = name
     this.themes = []
@@ -43,7 +43,7 @@ class AnnotationGuide {
     let motivationTag = 'motivation:defining'
     let guideTag = Config.namespace + ':guide'
     let tags = [motivationTag, guideTag]
-    // PVSCL:IFCOND(MoodleProvider,LINE)
+    // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL,LINE)
     let cmidTag = 'cmid:' + this.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
@@ -58,7 +58,7 @@ class AnnotationGuide {
       tags: tags,
       target: [],
       text: jsYaml.dump({
-        // PVSCL:IFCOND(MoodleProvider,LINE)
+        // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL,LINE)
         moodleEndpoint: this.moodleEndpoint,
         assignmentId: this.assignmentId,
         assignmentName: this.assignmentName,
@@ -128,17 +128,20 @@ class AnnotationGuide {
             return tag.includes('oa:theme:')
           })
         })
+        // PVSCL:IFCOND(Code,LINE)
         let codeAnnotations = _.remove(annotations, (annotation) => {
           return _.some(annotation.tags, (tag) => {
             return tag.includes('oa:code:')
           })
         })
+        // PVSCL:ENDCOND
         for (let i = 0; i < themeAnnotations.length; i++) {
           let theme = Theme.fromAnnotation(themeAnnotations[i], guide)
           if (LanguageUtils.isInstanceOf(theme, Theme)) {
             guide.themes.push(theme)
           }
         }
+        // PVSCL:IFCOND(Code,LINE)
         for (let i = 0; i < codeAnnotations.length; i++) {
           let codeAnnotation = codeAnnotations[i]
           // Get theme corresponding to the level
@@ -156,6 +159,7 @@ class AnnotationGuide {
             console.debug('Code %s has no theme', code.name)
           }
         }
+        // PVSCL:ENDCOND
         callback(guide)
       })
     } else {

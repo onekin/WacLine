@@ -1,10 +1,8 @@
 const _ = require('lodash')
 const Config = require('../Config')
-// const Mark = require('./Mark')
 const AnnotationGuide = require('../definition/AnnotationGuide')
 
 const RETRIEVE_PREVIOUS_ASSIGNMENT_INTERVAL_IN_SECONDS = 60
-// const RETRIEVE_ANNOTATIONS_FOR_ASSIGNMENT_INTERVAL_IN_SECONDS = 10
 
 class PreviousAssignments {
   constructor () {
@@ -12,9 +10,14 @@ class PreviousAssignments {
     this.intervals = {}
   }
 
-  init () {
+  init (callback) {
+    console.debug('Initializing previousAssignments')
     // Load previous assignments
     this.retrievePreviousAssignments(() => {
+      console.debug('Initialized previousAssignments')
+      if (_.isFunction(callback)) {
+        callback()
+      }
       this.intervals.retrievePreviousAssignment = window.setInterval(() => {
         this.retrievePreviousAssignments()
       }, RETRIEVE_PREVIOUS_ASSIGNMENT_INTERVAL_IN_SECONDS * 1000)

@@ -1,5 +1,10 @@
 @import "./variables";
 
+#buttonContainer {
+  padding-left: 2px;
+  padding-top: 5px;
+}
+
 .tagGroup{
   border: 1px solid grey;
   width: 99%;
@@ -8,20 +13,28 @@
   padding: 0;
 }
 
+.groupNameContainer {
+  height: 23px;
+}
+
 .groupName{
-  background: $subContainerHeaderBackgroundColor;
-  color:white;
+    color:black;
+  color:white;	  font-size: 15px;
   font-size: 1.5rem;
   text-align: center;
+  width: 130px;
+  float: left;
   padding-top: 3px;
   padding-bottom: 3px;
   margin-bottom: 3px;
   cursor: pointer;
+  transition: background-color, color 0.5s ease;
 }
 
-.groupName:after{
+.collapseToggle {
   background-image: url($chromeExtensionMainURL + 'images/arrowUp.svg');
   background-size: 20px 20px;
+  filter: brightness(10.2) sepia(1) hue-rotate(180deg) saturate(5);
   display: inline-block;
   width: 0;
   height: 15px;
@@ -29,10 +42,25 @@
   padding-right: 20px;
   float:right;
   transition: transform 0.5s;
+  cursor: pointer;
+  margin-top: 3px;
+}
+
+.groupName[data-number-of-annotations]:before {
+  content: attr(data-number-of-annotations);
+  border-radius: 10px;
+  font-size: 14px;
+  margin-left: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: lightgray;
+  margin-bottom: auto;
+  margin-top: auto;
+  color: black;
+  float: left;
 }
 
 .groupName:before{
-  background-image: url($chromeExtensionMainURL + 'images/pin.png');
   background-size: 20px 20px;
   display: inline-block;
   width: 0;
@@ -40,6 +68,10 @@
   content:"";
   padding-right: 20px;
   float:left;
+}
+
+.groupName[data-number-of-annotations="0"]:before {
+  visibility: hidden;
 }
 
 .tagContainer[aria-hidden="true"]{
@@ -53,10 +85,6 @@
     height: 0;
     overflow: hidden;
   }
-
-  .groupName:after {
-    transform: rotate(180deg);
-  }
 }
 
 .tagButtonContainer{
@@ -68,12 +96,13 @@
   cursor: pointer;
   margin-bottom: 5px;
   display: block;
+  font-size: 14px;
   border: 1px solid black;
   background-color: rgba(200,200,200,0.8);
   margin-left: auto;
   margin-right: auto;
   border-radius: 5px;
-  transition: background-color 0.5s ease;
+  transition: background-color, color 0.5s ease;
   color: black;
   overflow: hidden;
   white-space: nowrap;
@@ -82,8 +111,20 @@
   text-overflow: ellipsis;
 }
 
-.tagButton[data-chosen="true"] {
-  border: 3px solid black;
+.tagButton[data-number-of-annotations]:before {
+  border: 3px solid black;	  content: attr(data-number-of-annotations);
+  border-radius: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: lightgray;
+  margin-bottom: auto;
+  margin-top: auto;
+  color: black;
+  float: left;
+}
+
+.tagButton[data-number-of-annotations="0"]:before {
+  visibility: hidden;
 }
 
 .tagButton[role="annotation"] {
@@ -100,4 +141,36 @@
 
 #newThemeButton {
   margin-bottom: 15px;
+}
+
+.customCriteriaButton {
+  cursor: pointer;
+  margin-bottom: 5px;
+  display: block;
+  border: 1px solid black;
+  background-color: rgba(200,200,200,0.8);
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 5px;
+  transition: background-color 0.5s ease;
+  color: black;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: calc( #{$sideBarWidth} - 0.6rem - 10px);
+  min-width: calc( #{$sideBarWidth} - 0.6rem - 10px);
+  text-overflow: ellipsis;
+  padding: 10px;
+}
+
+.customCriteriaButton:hover {
+  background-color: rgba(175, 175, 175, 0.7);
+}
+
+input.customizeInput {
+
+}
+
+textarea.customizeInput {
+  height: 5em !important;
+  padding-top: .75em !important;
 }
