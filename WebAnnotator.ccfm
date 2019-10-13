@@ -264,6 +264,11 @@
         <cm:script cm:id="i4QKP6yu21o55WUy4" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.MoodleReport</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="iYe2_R7-YSNP-2pdK">
+      <cm:restriction cm:id="i0AF5helkzHq89Oxj">
+        <cm:script cm:id="iVcm6SqMQK82BcUCX" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.MoodleComment</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -21455,6 +21460,7 @@
         <cm:relation cm:id="iMymApkpdjJEjstEN0y2LvKB9ZRi" cm:type="ps:optional">
           <cm:target cm:id="iZBKrbx_1F_JbtvOixyfyP9KRyda">./icMtJv56nST-hanz1o38oZmaF0ie</cm:target>
           <cm:target cm:id="iSimrMyvV5dsAst9PEAIMa9xGVSm">./i6MuIzReuBGVQln6QpeeQpYj7m5n</cm:target>
+          <cm:target cm:id="irmkOGXMeIUTxjbkwgEsCkYxROop">./iBuA83aQ923Mv125fz5F8cv9AR6f</cm:target>
           <cm:target cm:id="iQaQ7r40x6WyigbZYf3olUGexsvc">./i0ythQiYhZ_e8S3hjk0WdSTNC-da</cm:target>
           <cm:target cm:id="iNKiZp2zpABF_0dEz46qmPP0fI0c">./iJynJCsT0_lGNZhfeENA0EFXBotl</cm:target>
           <cm:target cm:id="iMee-CJDa9YGbsoiik8RJzSY3rjj">./ik8cdxQ6kBxG_1Sr2tbzalmX9efp</cm:target>
@@ -21478,7 +21484,7 @@
           <cm:constant cm:id="ieFVskVAZ_7UeTfjD" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="iBRe3C9-FNvJFRtr2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ibkBwahsnuIiE4S-5" cm:type="ps:datetime">2019-09-26T17:37:09.526Z</cm:constant>
+          <cm:constant cm:id="ibkBwahsnuIiE4S-5" cm:type="ps:datetime">2019-10-13T10:47:14.423Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -24746,6 +24752,69 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="imaCAykIYoTT9qrnf" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleUtils.js</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iBuA83aQ923Mv125fz5F8cv9AR6f" cm:restriction="iYe2_R7-YSNP-2pdK" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+      <cm:relations cm:id="iBuA83aQ923Mv125fz5F8cv9AR6fdependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="ite2DlYjcCNJicqRk3D6EL5mtCxzMUlA2sKbGWC6U" cm:class="ps:parents">
+        <cm:relation cm:id="i_V5-tu4EhX6EfHHyZmcqs0W8dqE3vLfXjsq0lsEx" cm:type="ps:parent">
+          <cm:target cm:id="iteXmmdmdD3hb0DSBjIkIC3X8q04oic9Vjsu1Hyy2">./iveUB5PUCT0Tnf3XdLM0WgLXudnb</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iSS2E3RIqWJMXATXPZ-jimx-nA2m" cm:class="ps:children">
+        <cm:relation cm:id="iDTE3EOb-X-owztjUW39uFZPVeOh" cm:type="ps:optional">
+          <cm:target cm:id="iupsFSFMY5zzb4kB7O9CU-4Nwdid">./ibKcCTVghf2hQ498XW1d0h3yWzze</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i6my-181mZDl4SLap" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="io3QtZHgp-mIm6slB" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iMN56O_8WVngeHQSG" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iR6LWQlr0SbssxmZM" cm:type="ps:datetime">2019-10-13T10:47:14.423Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijx0EicLu5cpT74NJ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i1qinaq6WgZ_RzvHK" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iEDWM7Og01ZVAkxmV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iSQvMt8pP04cT75RU" cm:type="ps:datetime">2019-10-13T10:51:13.810Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iYLmNGvdQSmLFwaN3" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleComment</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ibKcCTVghf2hQ498XW1d0h3yWzze" cm:type="ps:file" cm:class="ps:source" cm:default="on">
+      <cm:relations cm:id="ibKcCTVghf2hQ498XW1d0h3yWzzedependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="iaav19FYC-F5UeXotfbs0jsquywdaX8CNHilImZvL" cm:class="ps:parents">
+        <cm:relation cm:id="i1TLz0TXSVl0T7-x1fXgb39Mzw1qeSBbGKj8ps0qK" cm:type="ps:parent">
+          <cm:target cm:id="iQADhN5-FvfpJ3DNzZ8CNOQquBMVl6oZmgbV7E3gb">./iBuA83aQ923Mv125fz5F8cv9AR6f</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iteUkft6-UaJWuSnG6cJFPprm-ak" cm:type="ps:path" cm:fixed="true" cm:name="file">
+          <cm:constant cm:id="iHRuSG04f59WF80LwGRfzDaD9Bol" cm:type="ps:path">MoodleComment.js</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iBZjZ2Ggn78b2eM8QNZ8PVA75-Xi" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
+          <cm:constant cm:id="iJ9DANw5qFFw1xLADcbpx0DaJ9ij" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iSf6OTriPktWQX05c" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i1ihx0Ktml9jb974N" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ioDKrpS7MPoNbx3Qn" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iakLGklt_Y_QYMiZk" cm:type="ps:datetime">2019-10-13T10:47:14.423Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i7y8xjjcbiE73mUOj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="itBW4hYiQlqzF8rTI" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i6p66Fp_Ea4JoIMw2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i27Xb8cTUwfwkSBaA" cm:type="ps:datetime">2019-10-13T10:47:14.423Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ihbAnwwSQrPvtxguF" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleComment.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>
