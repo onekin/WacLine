@@ -8,7 +8,7 @@ const TextAnnotator = require('./contentAnnotators/TextAnnotator')
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const {AnnotatedContentManager} = require('./AnnotatedContentManager')
-//PVSCL:IFCOND(Manual, LINE)
+// PVSCL:IFCOND(Manual, LINE)
 const Events = require('./Events')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleURL, LINE)
@@ -16,10 +16,10 @@ const RolesManager = require('./RolesManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Local, LINE)
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(UserFilter, LINE)
 const UserFilter = require('../consumption/filters/UserFilter')
 // PVSCL:ENDCOND
@@ -52,17 +52,17 @@ class ContentScriptManager {
             window.abwa.groupSelector.init(() => {
               // Reload for first time the content by group
               this.reloadContentByGroup()
-              //PVSCL:IFCOND(Manual,LINE)
+              // PVSCL:IFCOND(Manual,LINE)
               // Initialize listener for group change to reload the content
               this.initListenerForGroupChange()
-              //PVSCL:ENDCOND        
+              // PVSCL:ENDCOND
             })
           })
         })
       })
     })
   }
-//PVSCL:IFCOND(Manual, LINE)
+  // PVSCL:IFCOND(Manual, LINE)
 
   initListenerForGroupChange () {
     this.events.groupChangedEvent = this.groupChangedEventHandlerCreator()
@@ -74,7 +74,7 @@ class ContentScriptManager {
       this.reloadContentByGroup()
     }
   }
-//PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   reloadContentByGroup (callback) {
     // TODO Use async await or promises
@@ -164,7 +164,7 @@ class ContentScriptManager {
       })
     })
   }
-//PVSCL:IFCOND(UserFilter, LINE)
+  // PVSCL:IFCOND(UserFilter, LINE)
 
   reloadUserFilter (callback) {
     return new Promise((resolve, reject) => {
@@ -181,8 +181,8 @@ class ContentScriptManager {
       })
     })
   }
-//PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleReport, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(MoodleReport, LINE)
 
   reloadMoodleReport () {
     return new Promise((resolve, reject) => {
@@ -199,8 +199,8 @@ class ContentScriptManager {
       })
     })
   }
-//PVSCL:ENDCOND
-  // PVSCL:IFCOND(MoodleReport, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(MoodleComment, LINE)
 
   reloadMoodleComment () {
     return new Promise((resolve, reject) => {
@@ -217,8 +217,8 @@ class ContentScriptManager {
       })
     })
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(MoodleURL, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(MoodleURL, LINE)
 
   reloadRolesManager () {
     return new Promise((resolve, reject) => {
@@ -235,7 +235,7 @@ class ContentScriptManager {
       })
     })
   }
-//PVSCL:IFCOND(PreviousAssignments, LINE)
+  // PVSCL:IFCOND(PreviousAssignments, LINE)
 
   reloadPreviousAssignments () {
     return new Promise((resolve, reject) => {
@@ -256,8 +256,8 @@ class ContentScriptManager {
       }
     })
   }
-//PVSCL:ENDCOND
-//PVSCL:ENDCOND
+  // PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   reloadToolset () {
     return new Promise((resolve, reject) => {
@@ -274,7 +274,7 @@ class ContentScriptManager {
       })
     })
   }
-//PVSCL:IFCOND(UserFilter, LINE)
+  // PVSCL:IFCOND(UserFilter, LINE)
 
   destroyUserFilter () {
     // Destroy current augmentation operations
@@ -282,8 +282,8 @@ class ContentScriptManager {
       window.abwa.userFilter.destroy()
     }
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(MoodleReport, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(MoodleReport, LINE)
 
   destroyMoodleReport () {
     // Destroy current augmentation operations
@@ -291,8 +291,8 @@ class ContentScriptManager {
       window.abwa.moodleReport.destroy()
     }
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(MoodleComment, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(MoodleComment, LINE)
 
   destroyMoodleComment () {
     // Destroy current augmentation operations
@@ -300,7 +300,7 @@ class ContentScriptManager {
       window.abwa.moodleComment.destroy()
     }
   }
-//PVSCL:ENDCOND
+  // PVSCL:ENDCOND
   destroyContentAnnotator () {
     // Destroy current content annotator
     if (!_.isEmpty(window.abwa.contentAnnotator)) {
@@ -319,7 +319,7 @@ class ContentScriptManager {
       window.abwa.annotatedContentManager.destroy()
     }
   }
-//PVSCL:IFCOND(MoodleURL, LINE)
+  // PVSCL:IFCOND(MoodleURL, LINE)
 
   destroyRolesManager () {
     // Destroy current augmentation operations
@@ -334,7 +334,7 @@ class ContentScriptManager {
       window.abwa.previousAssignments.destroy()
     }
   }
-//PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   destroyToolset () {
     if (window.abwa.toolset) {
@@ -347,14 +347,14 @@ class ContentScriptManager {
     this.destroyContentTypeManager(() => {
       this.destroyTagsManager()
       this.destroyContentAnnotator()
-      //PVSCL:IFCOND(UserFilter, LINE)
+      // PVSCL:IFCOND(UserFilter, LINE)
       this.destroyUserFilter()
-      //PVSCL:ENDCOND
+      // PVSCL:ENDCOND
       this.destroyToolset()
-      //PVSCL:IFCOND(MoodleURL, LINE)
+      // PVSCL:IFCOND(MoodleURL, LINE)
       this.destroyRolesManager()
       this.destroyPreviousAssignments()
-      //PVSCL:ENDCOND
+      // PVSCL:ENDCOND
       // TODO Destroy groupSelector, roleManager,
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
@@ -367,9 +367,9 @@ class ContentScriptManager {
           })
         })
       })
-      //PVSCL:IFCOND(Manual, LINE)
+      // PVSCL:IFCOND(Manual, LINE)
       document.removeEventListener(Events.groupChanged, this.events.groupChangedEvent)
-      //PVSCL:ENDCOND
+      // PVSCL:ENDCOND
     })
   }
 
@@ -391,9 +391,9 @@ class ContentScriptManager {
       })
     }
   }
-//PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
 
   loadStorage (callback) {
+    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     window.abwa.storageManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
@@ -409,10 +409,7 @@ class ContentScriptManager {
         }
       }
     })
-  }
-//PVSCL:ELSECOND
-
-  loadStorage (callback) {
+    // PVSCL:ELSECOND
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
       if (storage === 'hypothesis') {
         // Hypothesis
@@ -431,8 +428,8 @@ class ContentScriptManager {
         }
       })
     })
+    // PVSCL:ENDCOND
   }
-//PVSCL:ENDCOND
 
   destroyStorage (callback) {
     if (window.abwa.storageManager) {

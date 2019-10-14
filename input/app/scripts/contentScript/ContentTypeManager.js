@@ -3,9 +3,9 @@ const Events = require('./Events')
 const URLUtils = require('../utils/URLUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Alerts = require('../utils/Alerts')
-//PVSCL:IFCOND(URN, LINE)
+// PVSCL:IFCOND(URN, LINE)
 const CryptoUtils = require('../utils/CryptoUtils')
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
 const axios = require('axios')
 
@@ -28,7 +28,7 @@ class ContentTypeManager {
     if (document.querySelector('embed[type="application/pdf"]')) {
       window.location = chrome.extension.getURL('content/pdfjs/web/viewer.html') + '?file=' + encodeURIComponent(window.location.href)
     } else {
-      //PVSCL:IFCOND(DOI, LINE)
+      // PVSCL:IFCOND(DOI, LINE)
       // Try to load doi from the document, page metadata or URL hash param
       this.tryToLoadDoi()
       // PVSCL:ENDCOND
@@ -95,7 +95,7 @@ class ContentTypeManager {
           callback()
         }
       })
-      // PVSCL:ENDCOND   
+      // PVSCL:ENDCOND
     })
   }
 
@@ -141,7 +141,7 @@ class ContentTypeManager {
         callback()
       }
     })
-    // PVSCL:ENDCOND  
+    // PVSCL:ENDCOND
   }
   // PVSCL:IFCOND(MoodleURL, LINE)
 
@@ -200,8 +200,8 @@ class ContentTypeManager {
       }
     }, 500)
   }
-
   // PVSCL:IFCOND(DOI, LINE)
+
   tryToLoadDoi () {
     // Try to load doi from hash param
     let decodedUri = decodeURIComponent(window.location.href)
@@ -246,29 +246,33 @@ class ContentTypeManager {
   }
 
   getDocumentURIToSearchInHypothesis () {
+    let urlToSearch
     // PVSCL:IFCOND(URN, LINE)
     if (this.documentType === ContentTypeManager.documentTypes.pdf) {
-      return 'urn:x-pdf:' + this.pdfFingerprint
+      urlToSearch = 'urn:x-pdf:' + this.pdfFingerprint
     } else if (this.documentFingerprint) {
-      return 'urn:x-txt:' + this.documentFingerprint
+      urlToSearch = 'urn:x-txt:' + this.documentFingerprint
     } else {
-      return this.documentURL
+      urlToSearch = this.documentURL
     }
     // PVSCL:ELSECOND
-    return this.documentURL
+    urlToSearch = this.documentURL
     // PVSCL:ENDCOND
+    return urlToSearch
   }
 
   getDocumentURIToSave () {
+    let urlToSave
     // PVSCL:IFCOND(URN and NOT (MoodleURL), LINE)
     if (this.localFile) {
-      return 'urn:x-pdf:' + this.pdfFingerprint
+      urlToSave = 'urn:x-pdf:' + this.pdfFingerprint
     } else {
-      return this.documentURL
+      urlToSave = this.documentURL
     }
     // PVSCL:ELSECOND
-    return this.documentURL
+    urlToSave = this.documentURL
     // PVSCL:ENDCOND
+    return urlToSave
   }
 
   initSupportWebURLChange () {

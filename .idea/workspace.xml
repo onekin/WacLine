@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8dac4e31-5d99-4adb-9a88-e6bd4df324c8" name="Default Changelist" comment="">
+    <list default="true" id="8dac4e31-5d99-4adb-9a88-e6bd4df324c8" name="Default Changelist" comment="Minor changes in sidebar interface and pv annotations.&#10;&#10;Some minor changes in sidebar interface (no multiline themes). Some minor changes in pv comments in some files to remove problems in linter when developing.">
+      <change beforePath="$PROJECT_DIR$/.idea/WebAnnotatorSPL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WebAnnotatorSPL.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Variants/MarkAndGo.vdm" beforeDir="false" afterPath="$PROJECT_DIR$/Variants/MarkAndGo.vdm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/app/pages/options.html" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/pages/options.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentTypeManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentTypeManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/app/styles/tagWrapper.scss" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/styles/tagWrapper.scss" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,77 +23,6 @@
   <component name="FavoritesManager">
     <favorites_list name="WebAnnotatorSPL" />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleComment.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="680">
-              <caret line="40" column="44" selection-start-line="40" selection-start-column="44" selection-end-line="40" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
-              <caret line="244" column="64" selection-start-line="244" selection-start-column="10" selection-end-line="244" selection-end-column="64" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleReport.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="35" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/input/app/scripts/background/tasks/CreateHighlighterTask.js">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/input/app/scripts/background/TaskManager.js">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-    </leaf>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>MoodleRepor</find>
-      <find>updateM</find>
-      <find>repli</find>
-      <find>reply</find>
-      <find>MoodleReport</find>
-    </findStrings>
-    <dirStrings>
-      <dir>C:\Users\Xabi\pure-variants-workspace-4.0\WebAnnotatorSPL</dir>
-    </dirStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -98,121 +31,29 @@
       </map>
     </option>
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleReport.js" />
-        <option value="$PROJECT_DIR$/input/app/scripts/definition/Theme.js" />
-        <option value="$PROJECT_DIR$/input/app/scripts/contentScript/Events.js" />
-        <option value="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" />
-        <option value="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" />
-        <option value="$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleComment.js" />
-        <option value="$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js" />
-        <option value="$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js" />
-      </list>
-    </option>
-  </component>
   <component name="JsFlowSettings">
     <service-enabled>true</service-enabled>
     <exe-path />
     <other-services-enabled>true</other-services-enabled>
     <auto-save>true</auto-save>
   </component>
-  <component name="MavenProjectNavigator">
-    <treeState>
-      <expand />
-      <select />
-    </treeState>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="933" />
-    <option name="y" value="49" />
-    <option name="width" value="709" />
-    <option name="height" value="744" />
-  </component>
+  <component name="ProjectId" id="1SBnDzyoqzJlVZyaRNnkIZ6WYt3" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="background" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="background" type="462c0819:PsiDirectoryNode" />
-              <item name="tasks" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="definition" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="moodle" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-    </panes>
-  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="editor.config.ad.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/input/app/scripts/moodle" />
+    <property name="js.linters.configure.manually.selectedeslint" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/output/node_modules/eslint" />
     <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
-    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/output/node_modules/eslint" />
+    <property name="node.js.selected.package.standard" value="$PROJECT_DIR$/output/ReviewAndGo/node_modules/standard" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -257,45 +98,24 @@
       <workItem from="1570962561440" duration="4871000" />
       <workItem from="1571002149582" duration="1986000" />
       <workItem from="1571040997306" duration="1791000" />
+      <workItem from="1571045742583" duration="4428000" />
     </task>
+    <task id="LOCAL-00001" summary="Removed options menu for permissions as it is not implemented yet.">
+      <created>1571049773723</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1571049773723</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fixed #9">
+      <created>1571052420271</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1571052420272</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="34171000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.82791585" visible="true" weight="0.2647504" />
-      <window_info id="Structure" order="1" sideWeight="0.502439" side_tool="true" weight="0.24962178" />
-      <window_info id="Image Layers" order="2" />
-      <window_info id="Designer" order="3" />
-      <window_info id="UI Designer" order="4" />
-      <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" sideWeight="0.17208412" side_tool="true" weight="0.24962178" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.44189852" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" visible="true" weight="0.14893617" />
-      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Theme Preview" order="4" />
-      <window_info anchor="right" id="Maven" order="5" weight="0.18003026" />
-      <window_info anchor="right" id="Capture Analysis" order="6" />
-      <window_info anchor="right" id="Palette&#9;" order="7" />
-      <window_info anchor="right" id="Database" order="8" />
-    </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -306,20 +126,7 @@
         <entry key="MAIN">
           <value>
             <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
+              <option name="COLUMN_ORDER" />
             </State>
           </value>
         </entry>
@@ -340,119 +147,11 @@
       </map>
     </option>
   </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/background/StorageManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="35" lean-forward="true" selection-start-column="35" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/moodle/MoodleUtils.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/utils/Alerts.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/definition/Code.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="112" selection-start-line="5" selection-start-column="56" selection-end-line="5" selection-end-column="112" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/definition/Theme.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1156">
-          <caret line="68" column="17" selection-start-line="68" selection-start-column="17" selection-end-line="68" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/Toolset.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/Sidebar.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/Events.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/Config.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5661">
-          <caret line="333" column="39" selection-start-line="333" selection-start-column="39" selection-end-line="333" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/TagManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5576">
-          <caret line="328" column="84" selection-start-line="328" selection-start-column="28" selection-end-line="328" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/contentAnnotators/TextAnnotator.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="720" column="2" selection-start-line="720" selection-start-column="2" selection-end-line="720" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/production/ReplyAnnotation.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2805">
-          <caret line="165" column="7" lean-forward="true" selection-start-line="165" selection-start-column="7" selection-end-line="165" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleReport.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/background/tasks/CreateHighlighterTask.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/background/TaskManager.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="244" column="64" selection-start-line="244" selection-start-column="10" selection-end-line="244" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="35" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleComment.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" column="44" selection-start-line="40" selection-start-column="44" selection-end-line="40" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Removed options menu for permissions as it is not implemented yet." />
+    <MESSAGE value="Fixed #9" />
+    <MESSAGE value="Minor changes in sidebar interface and pv annotations.&#10;&#10;Some minor changes in sidebar interface (no multiline themes). Some minor changes in pv comments in some files to remove problems in linter when developing." />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor changes in sidebar interface and pv annotations.&#10;&#10;Some minor changes in sidebar interface (no multiline themes). Some minor changes in pv comments in some files to remove problems in linter when developing." />
   </component>
   <component name="masterDetails">
     <states>

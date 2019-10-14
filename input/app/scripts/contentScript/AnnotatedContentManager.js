@@ -278,7 +278,7 @@ class AnnotatedContentManager {
       return _.filter(themeOrCode.annotations, (annotation) => {
         return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
       })
-    } // PVSCL:ENDCOND
+    }/* PVSCL:ENDCOND */
   }
 
   /**
