@@ -100,17 +100,17 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   initDeleteAllAnnotationsEvent (callback) {
-	//PVSCL:IFCOND(DeleteGroup,LINE)
+    // PVSCL:IFCOND(DeleteGroup,LINE)
     this.events.deleteAllAnnotationsEvent = {element: document, event: Events.deleteAllAnnotations, handler: this.createDeleteAllAnnotationsEventHandler()}
     this.events.deleteAllAnnotationsEvent.element.addEventListener(this.events.deleteAllAnnotationsEvent.event, this.events.deleteAllAnnotationsEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
     }
-    //PVSCL:ELSECOND
+    // PVSCL:ELSECOND
     if (_.isFunction(callback)) {
       callback()
     }
-    //PVSCL:ENDCOND
+    // PVSCL:ENDCOND
   }
 
   initTagsUpdatedEvent (callback) {
@@ -128,7 +128,7 @@ class TextAnnotator extends ContentAnnotator {
       })
     }
   }
-//PVSCL:IFCOND(UserFilter, LINE)
+  // PVSCL:IFCOND(UserFilter, LINE)
 
   initUserFilterChangeEvent (callback) {
     this.events.userFilterChangeEvent = {element: document, event: Events.userFilterChange, handler: this.createUserFilterChangeEventHandler()}
@@ -162,8 +162,8 @@ class TextAnnotator extends ContentAnnotator {
       })
     })
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(DeleteGroup,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(DeleteGroup,LINE)
 
   createDeleteAllAnnotationsEventHandler (callback) {
     return () => {
@@ -172,7 +172,7 @@ class TextAnnotator extends ContentAnnotator {
       })
     }
   }
-//PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   createDocumentURLChangeEventHandler (callback) {
     return () => {
@@ -241,7 +241,7 @@ class TextAnnotator extends ContentAnnotator {
           return
         }/* PVSCL:IFCOND(SingleCode) */ else if (!changingCodesOrThemes) {
           // If single code is selected, there is another event handler which will modify all the annotations for the given theme to the selected code, nothing to do here
-        }/*PVSCL:ENDCOND*/ else {
+        }/* PVSCL:ENDCOND */ else {
           // Go to calculated last annotation
           this.goToAnnotation(_this.lastAnnotation)
         }
@@ -332,6 +332,8 @@ class TextAnnotator extends ContentAnnotator {
               window.getSelection().removeAllRanges()
             })
           }
+          // PVSCL:ELSECOND
+          window.getSelection().removeAllRanges()
           // PVSCL:ENDCOND
         }
       })
@@ -539,15 +541,17 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   retrieveCurrentAnnotations () {
+    let currentAnnotations
     // PVSCL:IFCOND(UserFilter, LINE)
     if (window.abwa.userFilter) {
-      return this.retrieveAnnotationsForUsers(window.abwa.userFilter.filteredUsers)
+      currentAnnotations = this.retrieveAnnotationsForUsers(window.abwa.userFilter.filteredUsers)
     } else {
-      return this.allAnnotations
+      currentAnnotations = this.allAnnotations
     }
     // PVSCL:ELSECOND
-    return this.allAnnotations
+    currentAnnotations = this.allAnnotations
     // PVSCL:ENDCOND
+    return currentAnnotations
   }
 
   highlightAnnotations (annotations, callback) {
@@ -579,14 +583,14 @@ class TextAnnotator extends ContentAnnotator {
           $(highlightedElement).css('background-color', color)
           // Set purpose color
           highlightedElement.dataset.color = color
-       // PVSCL:IFCOND(ToolTip, LINE)
+          // PVSCL:IFCOND(ToolTip, LINE)
           if (LanguageUtils.isInstanceOf(tag, Theme)) {
             // Set message
             highlightedElement.title = tag.name
-          } /*PVSCL:IFCOND(Code)*/ else if (LanguageUtils.isInstanceOf(tag, Code)) {
+          } /* PVSCL:IFCOND(Code) */ else if (LanguageUtils.isInstanceOf(tag, Code)) {
             highlightedElement.title = tag.theme.name + '\nCode: ' + tag.name
           }
-          //PVSCL:ENDCOND
+          // PVSCL:ENDCOND
           // PVSCL:IFCOND(GSheetProvider, LINE)
           let user = annotation.user.replace('acct:', '').replace('@hypothes.is', '')
           highlightedElement.title += '\nAuthor: ' + user
@@ -663,13 +667,13 @@ class TextAnnotator extends ContentAnnotator {
           callback: (key, opt) => {
             if (key === 'delete') {
               this.deleteAnnotationHandler(annotation)
-            }/*PVSCL:IFCOND(Comment)*/ else if (key === 'comment') {
+            }/* PVSCL:IFCOND(Comment) */ else if (key === 'comment') {
               this.commentAnnotationHandler(annotation)
-            }/*PVSCL:ENDCONDPVSCL:IFCOND(Reply)*/ else if (key === 'reply') {
+            }/* PVSCL:ENDCONDPVSCL:IFCOND(Reply) */ else if (key === 'reply') {
               this.replyAnnotationHandler(annotation)
-            }/*PVSCL:ENDCONDPVSCL:IFCOND(Validate)*/ else if (key === 'validate') {
+            }/* PVSCL:ENDCONDPVSCL:IFCOND(Validate) */ else if (key === 'validate') {
               this.validateAnnotationHandler(annotation)
-            }/*PVSCL:ENDCOND*/
+            }/* PVSCL:ENDCOND */
           },
           items: items
         }
@@ -716,19 +720,19 @@ class TextAnnotator extends ContentAnnotator {
       }
     })
   }
-//PVSCL:IFCOND(Reply,LINE)
+  // PVSCL:IFCOND(Reply,LINE)
 
   replyAnnotationHandler (annotation) {
     ReplyAnnotation.replyAnnotation(annotation)
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(Validate,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Validate,LINE)
 
   validateAnnotationHandler (annotation) {
     ReplyAnnotation.validateAnnotation(annotation)
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(Comment,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Comment,LINE)
 
   /**
    * Generates the HTML for comment form based on annotation, add reference autofill,...
@@ -739,11 +743,11 @@ class TextAnnotator extends ContentAnnotator {
    */
   generateCommentForm ({annotation, showForm, sidebarOpen, themeOrCode, previousAssignmentsUI}) {
     let html = ''
-    //PVSCL:IFCOND(PreviousAssignments,LINE)
+    // PVSCL:IFCOND(PreviousAssignments,LINE)
     html += previousAssignmentsUI.outerHTML
-    //PVSCL:ENDCOND
+    // PVSCL:ENDCOND
     html += '<textarea class="swal2-textarea" data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + annotation.text + '</textarea>'
-    //PVSCL:IFCOND(SuggestedLiterature,LINE)
+    // PVSCL:IFCOND(SuggestedLiterature,LINE)
     let suggestedLiteratureHtml = (lit) => {
       let html = ''
       for (let i in lit) {
@@ -754,12 +758,12 @@ class TextAnnotator extends ContentAnnotator {
       return html
     }
     html += '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(annotation.suggestedLiterature) + '</ul>'
-    //PVSCL:ENDCOND
+    // PVSCL:ENDCOND
     // On before open
     let onBeforeOpen
-    //PVSCL:IFCOND(Autofill or SuggestedLiterature or PreviousAssignments,LINE)
+    // PVSCL:IFCOND(Autofill or SuggestedLiterature or PreviousAssignments,LINE)
     onBeforeOpen = () => {
-      //PVSCL:IFCOND(PreviousAssignments,LINE)
+      // PVSCL:IFCOND(PreviousAssignments,LINE)
       let previousAssignmentAppendElements = document.querySelectorAll('.previousAssignmentAppendButton')
       previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
         previousAssignmentAppendElement.addEventListener('click', () => {
@@ -768,8 +772,8 @@ class TextAnnotator extends ContentAnnotator {
           commentTextarea.value = commentTextarea.value + previousAssignmentAppendElement.dataset.studentUrl
         })
       })
-      //PVSCL:ENDCOND
-      //PVSCL:IFCOND(Autofill,LINE)
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Autofill,LINE)
       // Load datalist with previously used texts
       this.retrievePreviouslyUsedComments(themeOrCode).then((previousComments) => {
         let awesomeplete = new Awesomplete(document.querySelector('#comment'), {
@@ -782,8 +786,8 @@ class TextAnnotator extends ContentAnnotator {
           awesomeplete.open()
         })
       })
-      //PVSCL:ENDCOND
-      //PVSCL:IFCOND(SuggestedLiterature,LINE)
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(SuggestedLiterature,LINE)
       // Add the option to delete a suggestedLiterature from the comment
       $('.removeReference').on('click', function () {
         $(this).closest('li').remove()
@@ -835,19 +839,19 @@ class TextAnnotator extends ContentAnnotator {
           $('.ui-autocomplete').css('max-width', $('.swal2-textarea').width())
         }
       })
-      //PVSCL:ENDCOND
+      // PVSCL:ENDCOND
     }
-    //PVSCL:ELSECOND
+    // PVSCL:ELSECOND
     onBeforeOpen = () => {}
-    //PVSCL:ENDCOND
+    // PVSCL:ENDCOND
     // Preconfirm
     let preConfirmData = {}
     let preConfirm = () => {
       preConfirmData.comment = document.querySelector('#comment').value
-      //PVSCL:IFCOND(SuggestedLiterature,LINE)
+      // PVSCL:IFCOND(SuggestedLiterature,LINE)
       preConfirmData.literature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
-      //PVSCL:ENDCOND
-      //PVSCL:IFCOND(SentimentAnalysis,LINE)
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(SentimentAnalysis,LINE)
       if (preConfirmData.comment !== null && preConfirmData.comment !== '') {
         let settings = {
           method: 'post',
@@ -881,7 +885,7 @@ class TextAnnotator extends ContentAnnotator {
         // Update annotation
         callback()
       }
-      //PVSCL:ENDCOND
+      // PVSCL:ENDCOND
     }
     // Callback
     let callback = (err, result) => {
@@ -891,9 +895,9 @@ class TextAnnotator extends ContentAnnotator {
         } else {
           // Update annotation
           annotation.text = preConfirmData.comment || ''
-          //PVSCL:IFCOND(SuggestedLiterature,LINE)
+          // PVSCL:IFCOND(SuggestedLiterature,LINE)
           annotation.suggestedLiterature = preConfirmData.literature || []
-          //PVSCL:ENDCOND
+          // PVSCL:ENDCOND
           window.abwa.storageManager.client.updateAnnotation(
             annotation.id,
             annotation,
@@ -928,13 +932,13 @@ class TextAnnotator extends ContentAnnotator {
     // Close sidebar if opened
     let sidebarOpen = window.abwa.sidebar.isOpened()
     this.closeSidebar()
-    //PVSCL:IFCOND(PreviousAssignments,LINE)
+    // PVSCL:IFCOND(PreviousAssignments,LINE)
     let previousAssignments = this.retrievePreviousAssignments()
     let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
-    //PVSCL:ENDCOND
+    // PVSCL:ENDCOND
     let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
     let title = ''
-    //PVSCL:IFCOND(MoodleProvider,LINE)
+    // PVSCL:IFCOND(MoodleProvider,LINE)
     if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
       title = themeOrCode.name
     } else {
@@ -952,12 +956,12 @@ class TextAnnotator extends ContentAnnotator {
       }
       // Create form
       let generateFormObjects = {annotation, showForm, sidebarOpen}
-      //PVSCL:IFCOND(Autofill,LINE)
+      // PVSCL:IFCOND(Autofill,LINE)
       generateFormObjects['themeOrCode'] = themeOrCode
-      //PVSCL:ENDCOND
-      //PVSCL:IFCOND(PreviousAssignments,LINE)
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(PreviousAssignments,LINE)
       generateFormObjects['previousAssignmentsUI'] = previousAssignmentsUI
-      //PVSCL:ENDCOND
+      // PVSCL:ENDCOND
       let form = this.generateCommentForm(generateFormObjects)
       Alerts.multipleInputAlert({
         title: title,
@@ -972,8 +976,8 @@ class TextAnnotator extends ContentAnnotator {
     }
     showForm()
   }
-// PVSCL:ENDCOND
-//PVSCL:IFCOND(PreviousAssignments,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(PreviousAssignments,LINE)
 
   retrievePreviousAssignments () {
     return window.abwa.previousAssignments.previousAssignments
@@ -1005,8 +1009,8 @@ class TextAnnotator extends ContentAnnotator {
     }
     return previousAssignmentsContainer
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Autofill,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Autofill,LINE)
 
   retrievePreviouslyUsedComments (themeOrCode) {
     let tag = ''
@@ -1043,7 +1047,7 @@ class TextAnnotator extends ContentAnnotator {
       return true
     })
   }
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   retrieveHighlightClassName () {
     return this.highlightClassName // TODO Depending on the status of the application
@@ -1237,7 +1241,7 @@ class TextAnnotator extends ContentAnnotator {
     this.highlightAnnotations(this.allAnnotations)
     // PVSCL:ENDCOND
   }
-//PVSCL:IFCOND(DeleteGroup, LINE)
+  // PVSCL:IFCOND(DeleteGroup, LINE)
 
   deleteAllAnnotations () {
     // Retrieve all the annotations
@@ -1260,7 +1264,7 @@ class TextAnnotator extends ContentAnnotator {
       }
     })
   }
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 }
 
 module.exports = TextAnnotator

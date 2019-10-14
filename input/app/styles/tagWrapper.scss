@@ -48,10 +48,9 @@
 }
 
 .groupName[data-number-of-annotations]:before {
+  border: 1px solid black;
   content: attr(data-number-of-annotations);
   border-radius: 10px;
-  font-size: 14px;
-  margin-left: 2px;
   padding-left: 5px;
   padding-right: 5px;
   background-color: lightgray;
@@ -64,7 +63,6 @@
 .groupName:before{
   background-size: 20px 20px;
   display: inline-block;
-  width: 0;
   height: 15px;
   content:"";
   padding-right: 20px;
@@ -113,7 +111,8 @@
 }
 
 .tagButton[data-number-of-annotations]:before {
-  border: 3px solid black;	  content: attr(data-number-of-annotations);
+  border: 1px solid black;
+  content: attr(data-number-of-annotations);
   border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;

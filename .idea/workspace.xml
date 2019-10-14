@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="8dac4e31-5d99-4adb-9a88-e6bd4df324c8" name="Default Changelist" comment="Minor changes in sidebar interface and pv annotations.&#10;&#10;Some minor changes in sidebar interface (no multiline themes). Some minor changes in pv comments in some files to remove problems in linter when developing.">
-      <change beforePath="$PROJECT_DIR$/.idea/WebAnnotatorSPL.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WebAnnotatorSPL.iml" afterDir="false" />
+    <list default="true" id="8dac4e31-5d99-4adb-9a88-e6bd4df324c8" name="Default Changelist" comment="Minor fix in css for sidebar number of annotations">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/haritz.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Variants/MarkAndGo.vdm" beforeDir="false" afterPath="$PROJECT_DIR$/Variants/MarkAndGo.vdm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/app/pages/options.html" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/pages/options.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentTypeManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentTypeManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/contentAnnotators/TextAnnotator.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/contentAnnotators/TextAnnotator.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/input/app/styles/tagWrapper.scss" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/styles/tagWrapper.scss" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -58,7 +55,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -98,7 +95,8 @@
       <workItem from="1570962561440" duration="4871000" />
       <workItem from="1571002149582" duration="1986000" />
       <workItem from="1571040997306" duration="1791000" />
-      <workItem from="1571045742583" duration="4428000" />
+      <workItem from="1571045742583" duration="5878000" />
+      <workItem from="1571060215968" duration="73000" />
     </task>
     <task id="LOCAL-00001" summary="Removed options menu for permissions as it is not implemented yet.">
       <created>1571049773723</created>
@@ -114,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1571052420272</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Minor changes in sidebar interface and pv annotations.&#10;&#10;Some minor changes in sidebar interface (no multiline themes). Some minor changes in pv comments in some files to remove problems in linter when developing.">
+      <created>1571053517080</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1571053517080</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,7 +156,8 @@
     <MESSAGE value="Removed options menu for permissions as it is not implemented yet." />
     <MESSAGE value="Fixed #9" />
     <MESSAGE value="Minor changes in sidebar interface and pv annotations.&#10;&#10;Some minor changes in sidebar interface (no multiline themes). Some minor changes in pv comments in some files to remove problems in linter when developing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Minor changes in sidebar interface and pv annotations.&#10;&#10;Some minor changes in sidebar interface (no multiline themes). Some minor changes in pv comments in some files to remove problems in linter when developing." />
+    <MESSAGE value="Minor fix in css for sidebar number of annotations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor fix in css for sidebar number of annotations" />
   </component>
   <component name="masterDetails">
     <states>
