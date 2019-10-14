@@ -11,7 +11,7 @@ class AnnotatedTheme {
   constructor ({
     theme = null,
     annotations = []
-    /*PVSCL:IFCOND(Code)*/, annotatedCodes = []/*PVSCL:ENDCOND*/
+    /* PVSCL:IFCOND(Code) */, annotatedCodes = []/* PVSCL:ENDCOND */
   }) {
     // code
     this.theme = theme
@@ -25,7 +25,7 @@ class AnnotatedTheme {
     return !(this.annotations.length === 0)
   }
 }
-//PVSCL:IFCOND(Code, LINE)
+// PVSCL:IFCOND(Code, LINE)
 
 class AnnotatedCode {
   constructor ({code = null, annotations = []}) {
@@ -37,7 +37,7 @@ class AnnotatedCode {
     return !(this.annotations.length === 0)
   }
 }
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 
 class AnnotatedContentManager {
   constructor () {
@@ -144,7 +144,7 @@ class AnnotatedContentManager {
     // PVSCL:ENDCOND
     return annotatedThemesStructure
   }
-  //PVSCL:IFCOND(SingleCode, LINE)
+  // PVSCL:IFCOND(SingleCode, LINE)
 
   codeToAll (code, lastAnnotatedCode) {
     // Update annotatedThemes
@@ -238,7 +238,7 @@ class AnnotatedContentManager {
     })
     return annotatedCode
   }
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   addAnnotationToAnnotatedThemesOrCode (annotation, annotatedThemesObject = this.annotatedThemes) {
     let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(annotation.tagId, annotatedThemesObject)
@@ -274,11 +274,11 @@ class AnnotatedContentManager {
       annotations = annotations.concat(childAnnotations)
       // PVSCL:ENDCOND
       return annotations
-    } /*PVSCL:IFCOND(Code)*/else {
+    } /* PVSCL:IFCOND(Code) */else {
       return _.filter(themeOrCode.annotations, (annotation) => {
         return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
       })
-    } //PVSCL:ENDCOND
+    } // PVSCL:ENDCOND
   }
 
   /**
@@ -344,24 +344,26 @@ class AnnotatedContentManager {
           annotatedThemeOrCode.annotations[index] = annotation
         }
         // Update moodle
-        this.updateMoodle(() => {
-          Alerts.temporalAlert({
-            text: 'Comment updated in moodle',
-            title: 'Moodle updated',
-            type: Alerts.alertType.success,
-            toast: true
-          })
+        this.updateMoodle((err) => {
+          if (err) {
+            Alerts.errorAlert({
+              text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again. Error: ' + err.toString(),
+              title: 'Unable to update marks in moodle'
+            })
+          } else {
+            // Do nothing
+          }
         })
       }
     })
     // PVSCL:ENDCOND
   }
-// PVSCL:IFCOND(MoodleReport, LINE)
+  // PVSCL:IFCOND(MoodleReport, LINE)
 
   updateMoodle (callback) {
     window.abwa.moodleReport.updateMoodleFromMarks(this.annotatedThemes, callback)
   }
-// PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   createAnnotationCreatedEventHandler () {
     return (event) => {
@@ -386,12 +388,7 @@ class AnnotatedContentManager {
             title: 'Unable to update marks in moodle'
           })
         } else {
-          Alerts.temporalAlert({
-            text: 'The mark is updated in moodle',
-            title: 'Correctly marked',
-            type: Alerts.alertType.success,
-            toast: true
-          })
+          // Do nothing
         }
       })
       // PVSCL:ENDCOND
@@ -413,12 +410,7 @@ class AnnotatedContentManager {
             title: 'Unable to update marks in moodle'
           })
         } else {
-          Alerts.temporalAlert({
-            text: 'The mark is updated in moodle',
-            title: 'Correctly marked',
-            type: Alerts.alertType.success,
-            toast: true
-          })
+          // Do nothing
         }
       })
       // PVSCL:ENDCOND
@@ -443,12 +435,7 @@ class AnnotatedContentManager {
             title: 'Unable to update marks in moodle'
           })
         } else {
-          Alerts.temporalAlert({
-            text: 'The mark is updated in moodle',
-            title: 'Correctly marked',
-            type: Alerts.alertType.success,
-            toast: true
-          })
+          // Do nothing
         }
       })
       // PVSCL:ENDCOND
@@ -464,13 +451,13 @@ class AnnotatedContentManager {
         let annotatedGroupButton = document.querySelectorAll('.tagGroup[data-code-id="' + annotatedTheme.theme.id + '"]')
         let groupNameSpan = annotatedGroupButton[0].querySelector('.groupName')
         groupNameSpan.dataset.numberOfAnnotations = this.getAnnotationsDoneWithThemeOrCodeId(annotatedTheme.theme.id).length
-        //PVSCL:IFCOND(Code, LINE)
+        // PVSCL:IFCOND(Code, LINE)
         for (let j = 0; j < annotatedTheme.annotatedCodes.length; j++) {
           let annotatedCode = annotatedTheme.annotatedCodes[j]
           let annotatedCodeButton = document.querySelectorAll('.tagButton[data-code-id="' + annotatedCode.code.id + '"]')
           annotatedCodeButton[0].dataset.numberOfAnnotations = this.getAnnotationsDoneWithThemeOrCodeId(annotatedCode.code.id).length
         }
-        //PVSCL:ENDCOND
+        // PVSCL:ENDCOND
       } else {
         let annotatedThemeButton = document.querySelectorAll('.tagButton[data-code-id="' + annotatedTheme.theme.id + '"]')
         annotatedThemeButton[0].dataset.numberOfAnnotations = this.getAnnotationsDoneWithThemeOrCodeId(annotatedTheme.theme.id).length
@@ -479,4 +466,7 @@ class AnnotatedContentManager {
   }
 }
 
-module.exports = {AnnotatedContentManager, AnnotatedThemePVSCL:IFCOND(Code), AnnotatedCodePVSCL:ENDCOND}
+module.exports = {
+  AnnotatedContentManager,
+  AnnotatedTheme/* PVSCL:IFCOND(Code) */,
+  AnnotatedCode/* PVSCL:ENDCOND */}
