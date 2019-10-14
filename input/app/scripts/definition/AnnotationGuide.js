@@ -98,7 +98,7 @@ class AnnotationGuide {
       annotationGuideOpts['moodleEndpoint'] = config.moodleEndpoint
       annotationGuideOpts['assignmentId'] = config.assignmentId
       annotationGuideOpts['assignmentName'] = config.assignmentName
-      annotationGuideOpts['courseId'] = config.assignmentName
+      annotationGuideOpts['courseId'] = config.courseId
       let cmidTag = _.find(annotation.tags, (tag) => {
         return tag.includes('cmid:')
       })

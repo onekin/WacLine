@@ -29,6 +29,9 @@ const PreviousAssignments = require('../production/PreviousAssignments')
 // PVSCL:IFCOND(MoodleReport, LINE)
 const MoodleReport = require('../consumption/visualizations/MoodleReport')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleComment, LINE)
+const MoodleComment = require('../consumption/visualizations/MoodleComment')
+// PVSCL:ENDCOND
 
 class ContentScriptManager {
   constructor () {
@@ -82,6 +85,11 @@ class ContentScriptManager {
       // PVSCL:IFCOND(MoodleReport, LINE)
       .then(() => {
         return this.reloadMoodleReport()
+      })
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(MoodleComment, LINE)
+      .then(() => {
+        return this.reloadMoodleComment()
       })
       // PVSCL:ENDCOND
       .then(() => {
@@ -192,6 +200,24 @@ class ContentScriptManager {
     })
   }
 //PVSCL:ENDCOND
+  // PVSCL:IFCOND(MoodleReport, LINE)
+
+  reloadMoodleComment () {
+    return new Promise((resolve, reject) => {
+      // Destroy current content annotator
+      this.destroyMoodleComment()
+      // Create a new content annotator for the current group
+      window.abwa.moodleComment = new MoodleComment()
+      window.abwa.moodleComment.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+//PVSCL:ENDCOND
 //PVSCL:IFCOND(MoodleURL, LINE)
 
   reloadRolesManager () {
@@ -209,6 +235,7 @@ class ContentScriptManager {
       })
     })
   }
+//PVSCL:IFCOND(PreviousAssignments, LINE)
 
   reloadPreviousAssignments () {
     return new Promise((resolve, reject) => {
@@ -229,6 +256,7 @@ class ContentScriptManager {
       }
     })
   }
+//PVSCL:ENDCOND
 //PVSCL:ENDCOND
 
   reloadToolset () {
@@ -264,7 +292,15 @@ class ContentScriptManager {
     }
   }
 //PVSCL:ENDCOND
+//PVSCL:IFCOND(MoodleComment, LINE)
 
+  destroyMoodleComment () {
+    // Destroy current augmentation operations
+    if (!_.isEmpty(window.abwa.moodleComment)) {
+      window.abwa.moodleComment.destroy()
+    }
+  }
+//PVSCL:ENDCOND
   destroyContentAnnotator () {
     // Destroy current content annotator
     if (!_.isEmpty(window.abwa.contentAnnotator)) {

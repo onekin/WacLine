@@ -266,7 +266,7 @@ class AnnotatedContentManager {
       let annotations = _.filter(themeOrCode.annotations, (annotation) => {
         return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
       })
-      // PVSCL:IFCOND(Code)
+      // PVSCL:IFCOND(Code, LINE)
       let childAnnotations = _.flatMap(themeOrCode.annotatedCodes.map(annotatedCode =>
         _.filter(annotatedCode.annotations, (annotation) => {
           return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
@@ -331,18 +331,17 @@ class AnnotatedContentManager {
       }
     })
     // PVSCL:ENDCOND
-    /*
+    // PVSCL:IFCOND(MoodleReport, LINE)
+    // Set comment in MoodleReport
     document.addEventListener(Events.comment, (event) => {
       // Retrieve annotation from event
       let annotation = event.detail.annotation
+      let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(annotation.tagId)
       // Retrieve criteria name for annotation
-      let criteriaName = AnnotationUtils.getTagSubstringFromAnnotation(annotation, 'exam:isCriteriaOf:')
-      // Find index in criteria annotations
-      let mark = window.abwa.specific.assessmentManager.marks[criteriaName]
-      if (mark && mark.annotations.length > 0) {
-        let index = _.findIndex(mark.annotations, (annotationMark) => annotationMark.id === annotation.id)
+      if (annotatedThemeOrCode && annotatedThemeOrCode.annotations.length > 0) {
+        let index = _.findIndex(annotatedThemeOrCode.annotations, (annotationMark) => annotationMark.id === annotation.id)
         if (index > -1) {
-          mark.annotations[index] = annotation
+          annotatedThemeOrCode.annotations[index] = annotation
         }
         // Update moodle
         this.updateMoodle(() => {
@@ -354,7 +353,8 @@ class AnnotatedContentManager {
           })
         })
       }
-    }) */
+    })
+    // PVSCL:ENDCOND
   }
 // PVSCL:IFCOND(MoodleReport, LINE)
 
