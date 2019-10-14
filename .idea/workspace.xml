@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8dac4e31-5d99-4adb-9a88-e6bd4df324c8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Variants/Completo.vdm" beforeDir="false" afterPath="$PROJECT_DIR$/Variants/Completo.vdm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebAnnotator.ccfm" beforeDir="false" afterPath="$PROJECT_DIR$/WebAnnotator.ccfm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WebAnnotator.xfm" beforeDir="false" afterPath="$PROJECT_DIR$/WebAnnotator.xfm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js" beforeDir="false" afterPath="$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,7 +24,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleComment.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
+            <state relative-caret-position="680">
               <caret line="40" column="44" selection-start-line="40" selection-start-column="44" selection-end-line="40" selection-end-column="44" />
             </state>
           </provider>
@@ -35,8 +33,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="293">
-              <caret line="296" column="22" selection-start-line="296" selection-start-column="22" selection-end-line="296" selection-end-column="22" />
+            <state relative-caret-position="115">
+              <caret line="244" column="64" selection-start-line="244" selection-start-column="10" selection-end-line="244" selection-end-column="64" />
             </state>
           </provider>
         </entry>
@@ -48,6 +46,34 @@
               <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="50" />
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="35" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/input/app/scripts/background/tasks/CreateHighlighterTask.js">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/input/app/scripts/background/TaskManager.js">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -81,6 +107,8 @@
         <option value="$PROJECT_DIR$/input/app/scripts/contentScript/AnnotatedContentManager.js" />
         <option value="$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js" />
         <option value="$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleComment.js" />
+        <option value="$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js" />
+        <option value="$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js" />
       </list>
     </option>
   </component>
@@ -139,7 +167,7 @@
               <item name="input" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="consumption" type="462c0819:PsiDirectoryNode" />
+              <item name="background" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
@@ -147,25 +175,8 @@
               <item name="input" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="consumption" type="462c0819:PsiDirectoryNode" />
-              <item name="visualizations" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="contentScript" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
-              <item name="WebAnnotatorSPL" type="462c0819:PsiDirectoryNode" />
-              <item name="input" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="contentScript" type="462c0819:PsiDirectoryNode" />
-              <item name="contentAnnotators" type="462c0819:PsiDirectoryNode" />
+              <item name="background" type="462c0819:PsiDirectoryNode" />
+              <item name="tasks" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="WebAnnotatorSPL" type="b2602c69:ProjectViewProjectNode" />
@@ -181,7 +192,7 @@
               <item name="input" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="scripts" type="462c0819:PsiDirectoryNode" />
-              <item name="utils" type="462c0819:PsiDirectoryNode" />
+              <item name="moodle" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -244,17 +255,19 @@
       <workItem from="1570909615587" duration="2646000" />
       <workItem from="1570914448381" duration="637000" />
       <workItem from="1570962561440" duration="4871000" />
+      <workItem from="1571002149582" duration="1986000" />
+      <workItem from="1571040997306" duration="1791000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="30394000" />
+    <option name="totallyTimeSpent" value="34171000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.82791585" visible="true" weight="0.25718608" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.82791585" visible="true" weight="0.2647504" />
       <window_info id="Structure" order="1" sideWeight="0.502439" side_tool="true" weight="0.24962178" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -335,13 +348,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="29" column="40" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/input/app/scripts/moodle/MoodleUtils.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -413,16 +419,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/background/tasks/CreateHighlighterTask.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/background/TaskManager.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/input/app/scripts/contentScript/ContentScriptManager.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="293">
-          <caret line="296" column="22" selection-start-line="296" selection-start-column="22" selection-end-line="296" selection-end-column="22" />
+        <state relative-caret-position="115">
+          <caret line="244" column="64" selection-start-line="244" selection-start-column="10" selection-end-line="244" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/definition/AnnotationGuide.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/input/app/scripts/moodle/MoodleClientManager.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="35" selection-start-line="4" selection-start-column="35" selection-end-line="4" selection-end-column="35" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/input/app/scripts/consumption/visualizations/MoodleComment.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
+        <state relative-caret-position="680">
           <caret line="40" column="44" selection-start-line="40" selection-start-column="44" selection-end-line="40" selection-end-column="44" />
         </state>
       </provider>
