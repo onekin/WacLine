@@ -14,7 +14,7 @@
         <cm:constant cm:id="iFCYCkKq6HYN0XedS" cm:type="ps:datetime">2019-04-29T08:30:51.873Z</cm:constant>
       </cm:property>
       <cm:property cm:id="iv25446DQ0aCh7s-C" cm:type="ps:mimetype" cm:invisible="true" cm:name="ps:DescriptionType">
-        <cm:constant cm:id="iW0bYumKn2-7CZ02E" cm:type="ps:mimetype">text/html</cm:constant>
+        <cm:constant cm:id="iW0bYumKn2-7CZ02E" cm:type="ps:mimetype">text/plain</cm:constant>
       </cm:property>
     </cm:properties>
   </cm:head>
@@ -80,10 +80,10 @@
           <cm:constant cm:id="ib7tdnUA56nbp-7pk" cm:type="ps:datetime">2019-04-29T15:10:11.859Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iKVMGwsKKKeF8jqQU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iMKgXJzdPh5Hv-ycm" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iMKgXJzdPh5Hv-ycm" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iHOz4DQvdk2XIv7bm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZWJT7KvMS0tN6RgT" cm:type="ps:datetime">2019-09-13T11:42:51.915Z</cm:constant>
+          <cm:constant cm:id="iZWJT7KvMS0tN6RgT" cm:type="ps:datetime">2019-10-15T07:00:19.302Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iLtmBzhmaB-6LgGXC" cm:type="ps:string" cm:name="defaultStorage">
           <cm:constant cm:id="iBR5sKrb1tFl-3-wx" cm:type="ps:string">Local</cm:constant>
@@ -95,6 +95,9 @@
       <cm:vname>
         <cm:mimedesc cm:id="ixx_pt7PAS1wRqJH7" cm:mimetype="text/plain" cm:encoding="utf-8">Storage</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iL60yU-ZDKjLOGelS" cm:mimetype="text/plain" cm:encoding="utf-8">A Web annotator must store the annotations made by the users. Therefore, in order to save or load the different annotations, the application needs a storage system. The different types of storage are listed in this Feature.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i23J0Q-jxKpGw7fGR" cm:name="Definition" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iL_KsJqJcheckl_uA" cm:class="ps:parents">
@@ -116,15 +119,21 @@
           <cm:constant cm:id="i-zIzyLug8-0TB2W2" cm:type="ps:datetime">2019-04-29T15:10:27.118Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iQFVUi9Qh5rm_uDBz" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iZ0T2e-QeodNzT6zK" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iZ0T2e-QeodNzT6zK" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i4uK55lei-bkYnv2f" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iKh6WiiNarqVNaXuF" cm:type="ps:datetime">2019-04-29T15:15:16.960Z</cm:constant>
+          <cm:constant cm:id="iKh6WiiNarqVNaXuF" cm:type="ps:datetime">2019-10-15T09:01:56.120Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ii0K_s_7MbA6SwBy7" cm:mimetype="text/plain" cm:encoding="utf-8">Definition</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iv1pG7JszszVV4lR2" cm:mimetype="text/plain" cm:encoding="utf-8">When the application is created, the data model to be used must be defined in it. For this it is necessary to determine how the annotations will be, from what resources can be extracted and where are the criteria on which they are annotated Make the annotation. All Features related to the above mentioned are group within this Feature.
+
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iM2O5e9g3Z9jZ57ZZ" cm:name="Production" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iQnbbLeRxWjBbx_Gz" cm:class="ps:parents">
@@ -151,15 +160,18 @@
           <cm:constant cm:id="icMiAGC1ISoBOFIG-" cm:type="ps:datetime">2019-04-29T15:10:41.978Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iEki_WviHnerongH3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i6nZdrPjFuihPJBPN" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i6nZdrPjFuihPJBPN" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iqoVttDZWv9HN_MX6" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iAl0xxbTzRvJTjETX" cm:type="ps:datetime">2019-04-29T15:39:04.996Z</cm:constant>
+          <cm:constant cm:id="iAl0xxbTzRvJTjETX" cm:type="ps:datetime">2019-10-15T08:37:58.102Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i_sK8wNq2cD6n5YOC" cm:mimetype="text/plain" cm:encoding="utf-8">Production</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i0swYzPGIR-tkfPAt" cm:mimetype="text/plain" cm:encoding="utf-8">There are several options that can be perform or added on an annotation. Either when creating them or once they are made. This Feature groups the Features that collect the different ways of producing, managing and complementing the annotations.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iPre3Wc9haoBZ4Hxa" cm:name="Consumption" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iEyEX3CI3BcOVYZu6" cm:class="ps:parents">
@@ -181,15 +193,18 @@
           <cm:constant cm:id="ilsY52KZrv3rZ4lkn" cm:type="ps:datetime">2019-04-29T15:10:58.247Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iqFipGvAnj8avMjF0" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iA_JzrozxB2cBWEpp" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iA_JzrozxB2cBWEpp" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="imE78peOJPv4S8_Jt" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iTNs6Dmfye5ZcWKjL" cm:type="ps:datetime">2019-07-29T09:20:28.102Z</cm:constant>
+          <cm:constant cm:id="iTNs6Dmfye5ZcWKjL" cm:type="ps:datetime">2019-10-15T08:35:41.006Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i4ZtHMSxD8rZ_4mRR" cm:mimetype="text/plain" cm:encoding="utf-8">Consumption</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iEKsHHplBomQnQ3f_" cm:mimetype="text/plain" cm:encoding="utf-8">Creating annotations about a content can serve different purposes. Once the annotations have been produced, their results can be interpreted in different ways. Features related to consuming annotations are found within this Feature.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i9lY1oppk19CZy4GX" cm:name="GroupManipulation" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="ibKrNZhV8sMC0pkO3" cm:class="ps:parents">
@@ -218,15 +233,18 @@
           <cm:constant cm:id="iZ9buBZn0ATAZlTEs" cm:type="ps:datetime">2019-04-29T15:11:17.015Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iFtspysymewYuhvgj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="icTtWjwGHJ_rGFbeY" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="icTtWjwGHJ_rGFbeY" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i3ppLxk-OgIfp2RAw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iHdQMyGZmriMGThGC" cm:type="ps:datetime">2019-08-02T16:01:32.922Z</cm:constant>
+          <cm:constant cm:id="iHdQMyGZmriMGThGC" cm:type="ps:datetime">2019-10-15T09:04:10.116Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iPcWTqKEU3608M5GB" cm:mimetype="text/plain" cm:encoding="utf-8">GroupManipulation</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="inBiEvtlAyzcagaIW" cm:mimetype="text/plain" cm:encoding="utf-8">Several options can be applied to the different annotation groups when managing them, therefore, in this Feature these different group manipulation operations have been grouped.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="icgfm8UrjUUnONR63" cm:name="Hypothesis" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i_KeXtv9a5x0RyjvD" cm:class="ps:parents">
@@ -242,15 +260,20 @@
           <cm:constant cm:id="iu0uB8L7OCgjpDVZ4" cm:type="ps:datetime">2019-04-29T15:14:04.860Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iaLphEi6QvcL8x1W6" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="in3mefvX-Zz8TEE9-" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="in3mefvX-Zz8TEE9-" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iKeKzTNv_JTmm4G-Z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iWSKC2pWXRqNaUakc" cm:type="ps:datetime">2019-09-03T14:44:06.306Z</cm:constant>
+          <cm:constant cm:id="iWSKC2pWXRqNaUakc" cm:type="ps:datetime">2019-10-15T07:43:19.739Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iaLk6Joj9bIAeYhvm" cm:mimetype="text/plain" cm:encoding="utf-8">Hypothesis</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iqXdqiJLEN0NLktYm" cm:mimetype="text/plain" cm:encoding="utf-8">Store annotations in Hypothes.is web page. In Hypothes.is the annotations are stored in annotations groups, a user can have multiple groups and can share them with other users. With this feature the users can manage and search for annotations in Hypothes.is web page.
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i59-rclUjiYMlpJIn" cm:name="Target" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iAhO4hAx0HJDvOtcM" cm:class="ps:parents">
@@ -277,15 +300,19 @@
           <cm:constant cm:id="iO4KoD8KpKCHNH04s" cm:type="ps:datetime">2019-04-29T15:14:29.438Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iGi_JZ02CWc3M_zYe" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iGhAABimRHFUM_ifu" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iGhAABimRHFUM_ifu" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iGdXx7FjyWDdBa9O_" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iDJgcK__kPZeWDJ1O" cm:type="ps:datetime">2019-08-26T09:06:07.420Z</cm:constant>
+          <cm:constant cm:id="iDJgcK__kPZeWDJ1O" cm:type="ps:datetime">2019-10-15T08:01:59.278Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ikCDuMnUVfunrIxiv" cm:mimetype="text/plain" cm:encoding="utf-8">Target</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iYDDDq6LVnHlB9_eb" cm:mimetype="text/plain" cm:encoding="utf-8">Defining the target means specifying the information about the resource that is being annotated.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iaHD02mUup8AnHhvY" cm:name="TagBasedBody" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="i9o_wBugiln5Psz0V" cm:class="ps:parents">
@@ -310,15 +337,20 @@
           <cm:constant cm:id="i44YwZSBIsRik5kdV" cm:type="ps:datetime">2019-04-29T15:15:16.960Z</cm:constant>
         </cm:property>
         <cm:property cm:id="imSa97DI-rApQVbLh" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iq-Rp1d-6Kpxa59Xn" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iq-Rp1d-6Kpxa59Xn" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iVnu3uBi5wvDk7tLm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ilJtP53LRqSRY-Vmi" cm:type="ps:datetime">2019-04-29T15:29:17.906Z</cm:constant>
+          <cm:constant cm:id="ilJtP53LRqSRY-Vmi" cm:type="ps:datetime">2019-10-15T08:05:28.890Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iZI6oI_36xaYubUrN" cm:mimetype="text/plain" cm:encoding="utf-8">TagBasedBody</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="izeIpyQCBG3LFsYl_" cm:mimetype="text/plain" cm:encoding="utf-8">Defining the tag-based body means specifying the structure of the annotations.
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i-Jkq-7Sn8ur57r8_" cm:name="URL" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="i0Gx9SP3vmvXLVMv9" cm:class="ps:parents">
@@ -334,15 +366,19 @@
           <cm:constant cm:id="ieoxtonSHOLNXx_ew" cm:type="ps:datetime">2019-04-29T15:22:32.368Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iJBSBUU-2dqxZSIdH" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ilORs1tvn9zVAdNTT" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="ilORs1tvn9zVAdNTT" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iZEAPea2yhbFu9TV_" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iwTKdNpq-FlYF3G5_" cm:type="ps:datetime">2019-05-15T15:37:37.669Z</cm:constant>
+          <cm:constant cm:id="iwTKdNpq-FlYF3G5_" cm:type="ps:datetime">2019-10-15T07:55:53.718Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iGOLIAlaKhDKoLx6p" cm:mimetype="text/plain" cm:encoding="utf-8">URL</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i3aDpwhF_7Vlz08cr" cm:mimetype="text/plain" cm:encoding="utf-8">Identify Web resources by a URL.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iLqGOqKATKrZbB5l4" cm:name="URN" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iR0F99HDnHNn4CBxe" cm:class="ps:parents">
@@ -358,15 +394,19 @@
           <cm:constant cm:id="iFIMSJOnyYs1_AAG1" cm:type="ps:datetime">2019-04-29T15:22:49.198Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i_ElI45E9blQlhzVX" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="igKlgBz-jW4ze3OX1" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="igKlgBz-jW4ze3OX1" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ik6s1eT7YvWPCOpNv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iyjDxRDE060JY_AQO" cm:type="ps:datetime">2019-04-29T15:22:49.198Z</cm:constant>
+          <cm:constant cm:id="iyjDxRDE060JY_AQO" cm:type="ps:datetime">2019-10-15T07:49:38.896Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="im2olBlZMDPK4dnd_" cm:mimetype="text/plain" cm:encoding="utf-8">URN</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i5p51GFntMeKB8m1z" cm:mimetype="text/plain" cm:encoding="utf-8">URNs identify resources in the web, but in contrast to URLs, they do not tell exactly where these resources are located. Therefore, with this feature it will be possible to identify resources that are not in the internet (e.g. local files).
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="it7rlBJVtHme7XN56" cm:name="DOI" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="igXwgZYunwmqgL6GF" cm:class="ps:parents">
@@ -382,15 +422,20 @@
           <cm:constant cm:id="iZcAQ2n8B3SmCqzAv" cm:type="ps:datetime">2019-04-29T15:23:00.967Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iF2SFmymcO8n1Umy9" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iC4OvNaymZQ7JhB-3" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iC4OvNaymZQ7JhB-3" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iQIyCa3O2m1Wkwf4e" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iYrcjDer08mrHeyw6" cm:type="ps:datetime">2019-04-29T15:23:00.967Z</cm:constant>
+          <cm:constant cm:id="iYrcjDer08mrHeyw6" cm:type="ps:datetime">2019-10-15T08:00:49.172Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iAYL7GzVEU6PEIM7o" cm:mimetype="text/plain" cm:encoding="utf-8">DOI</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ijHUcCiIKs9Ig4UEz" cm:mimetype="text/plain" cm:encoding="utf-8">Identify resources using a Digital Object Identifier (DOI). With this feature it is possible redirecting to a document using a DOI.
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iQtIAWQv5tJjKZoXP" cm:name="NavigationScript" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="ilY9Hq_mmyANf-LGK" cm:class="ps:parents">
@@ -413,15 +458,19 @@
           <cm:constant cm:id="irww6SvEdfPi6rEsE" cm:type="ps:datetime">2019-04-29T15:23:17.248Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ir3Tc1MPlUdGhkbRR" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iz1OqS1C0r6LhUEMu" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iz1OqS1C0r6LhUEMu" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i7xj8SrgTdb39T7uj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i9zNQmInvntTmps6g" cm:type="ps:datetime">2019-04-29T15:24:06.975Z</cm:constant>
+          <cm:constant cm:id="i9zNQmInvntTmps6g" cm:type="ps:datetime">2019-10-15T07:56:41.086Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i1v8YrPgsGvXeZcRF" cm:mimetype="text/plain" cm:encoding="utf-8">NavigationScript</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iz4BddWTriZw0XoGE" cm:mimetype="text/plain" cm:encoding="utf-8">Identify articles of different web pages in which it is possible to annotate.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="irEHGGoWh2Bf8Vyfh" cm:name="ScienceDirect" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iJzNpjbf3Yqu-YkX7" cm:class="ps:parents">
@@ -608,15 +657,20 @@
           <cm:constant cm:id="itebhmokPqMOpjwCR" cm:type="ps:datetime">2019-04-29T15:25:27.961Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iITT09UlJ2eJITfdn" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="igmOMj_fAaa18zdoJ" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="igmOMj_fAaa18zdoJ" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i7WBVBIDYPDm_tuqm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="isongVWOvbuh-OjGm" cm:type="ps:datetime">2019-04-29T15:25:27.961Z</cm:constant>
+          <cm:constant cm:id="isongVWOvbuh-OjGm" cm:type="ps:datetime">2019-10-15T08:09:07.468Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="imw7GOm65HJKmGV4y" cm:mimetype="text/plain" cm:encoding="utf-8">Theme</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i_2S3TJg0xnAJAIWK" cm:mimetype="text/plain" cm:encoding="utf-8">The theme of the annotation.
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iRR5QoNRjuPDfmQL3" cm:name="Code" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iM7pklkdFxQGf-1FS" cm:class="ps:parents">
@@ -637,15 +691,19 @@
           <cm:constant cm:id="iAjLLsIwzkYDgQxnE" cm:type="ps:datetime">2019-04-29T15:25:41.770Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i1cy0HFa4FZoTIzkZ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iC06i_i2r-kTwcJmU" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iC06i_i2r-kTwcJmU" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ip1s6VIHyt-cW8ZhN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iE0Bmo3yBRHPnCbfU" cm:type="ps:datetime">2019-09-13T11:46:18.249Z</cm:constant>
+          <cm:constant cm:id="iE0Bmo3yBRHPnCbfU" cm:type="ps:datetime">2019-10-15T08:09:47.275Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i5wRGmStOosd1JE9L" cm:mimetype="text/plain" cm:encoding="utf-8">Code</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iiCcEFFXtfW33WXdV" cm:mimetype="text/plain" cm:encoding="utf-8">Divide a theme in differente codes. This way the theme can be annotated in a more granularized way.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iRuXTD2K_ATD4nrLv" cm:name="User" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="ivLug5l0KRNrF1ZFC" cm:class="ps:parents">
@@ -661,15 +719,20 @@
           <cm:constant cm:id="iPUjBK4U2QFSZEQ8T" cm:type="ps:datetime">2019-04-29T15:27:24.165Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iXqCDIQgJMvqUD152" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iGTzQLFbBP8bi_qeM" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iGTzQLFbBP8bi_qeM" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iLRCAkukwsxvOLWDb" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="igUaVCrnsSeT7UnHW" cm:type="ps:datetime">2019-04-29T15:27:24.165Z</cm:constant>
+          <cm:constant cm:id="igUaVCrnsSeT7UnHW" cm:type="ps:datetime">2019-10-15T08:17:04.694Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iZ1T8erZOGXcr3zAm" cm:mimetype="text/plain" cm:encoding="utf-8">User</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iPlsxfrwGHNFXZ--s" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from a predefined configuration file made by the user. This file can also be imported in the application.
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iEep8KJNy2-O5HLzJ" cm:name="ThirdAppProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iX4qYwgLCSTksOOLm" cm:class="ps:parents">
@@ -691,15 +754,19 @@
           <cm:constant cm:id="idfLYN1BzhIP50TxX" cm:type="ps:datetime">2019-04-29T15:27:41.698Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iPnNKhivSMtKKgXFy" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iLR_rcI-o_ebLOls3" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iLR_rcI-o_ebLOls3" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iJO_J8HbzS4v_pDur" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i__gKtapxXPaLmIxB" cm:type="ps:datetime">2019-04-29T15:28:25.797Z</cm:constant>
+          <cm:constant cm:id="i__gKtapxXPaLmIxB" cm:type="ps:datetime">2019-10-15T08:20:21.306Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ip8FkvsCvwVOlXxpc" cm:mimetype="text/plain" cm:encoding="utf-8">ThirdAppProvider</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iQwnjede1OzCSWDhZ" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from an external application using an API.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iRlovWCplUplwiKa0" cm:name="GSheetProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="ix4pVdHvqmonJhzTj" cm:class="ps:parents">
@@ -715,10 +782,10 @@
           <cm:constant cm:id="iyk2izy8VHMqbj2GQ" cm:type="ps:datetime">2019-04-29T15:28:05.290Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iwolf3ztwS1o9FLr6" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iIQwW1JVhOIKxumPK" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iIQwW1JVhOIKxumPK" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ip2MvG6G3wjrBhW-e" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i1k3W8gdcPImiAfvZ" cm:type="ps:datetime">2019-09-24T14:49:31.306Z</cm:constant>
+          <cm:constant cm:id="i1k3W8gdcPImiAfvZ" cm:type="ps:datetime">2019-10-15T08:20:46.321Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iAzTrDaSN8RWvrdZI" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="imMFeSY58LInVexDv" cm:type="ps:string"></cm:constant>
@@ -727,6 +794,10 @@
       <cm:vname>
         <cm:mimedesc cm:id="irMSZkkE2iS0J3qBQ" cm:mimetype="text/plain" cm:encoding="utf-8">GSheet</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ixW7wS1LXvr6pUZTY" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from the cells of the document.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iNJ5r3-AstSaqLJTC" cm:name="MoodleProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iuYCXR_EgPq9SSIxI" cm:class="ps:parents">
@@ -747,15 +818,19 @@
           <cm:constant cm:id="iTWdkHEomLfTDmqMK" cm:type="ps:datetime">2019-04-29T15:28:25.797Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iHeZbNpaaSBBbN5ST" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="icJtHI8zoV0_-ZT_F" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="icJtHI8zoV0_-ZT_F" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ieGQX8Ov_bKCiSuVV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i24UB9h5BZP157SaC" cm:type="ps:datetime">2019-08-26T11:13:39.866Z</cm:constant>
+          <cm:constant cm:id="i24UB9h5BZP157SaC" cm:type="ps:datetime">2019-10-15T08:21:51.174Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i1i6ulRhz_TFlwwtv" cm:mimetype="text/plain" cm:encoding="utf-8">Moodle</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ifaTWSFXyGgyPWRh5" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook mapping the rubric of the task that will be perform,
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iXwlTQXM8YGrVgjZu" cm:name="Dynamic" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iPm1oAHRWOI3D4zat" cm:class="ps:parents">
@@ -776,15 +851,19 @@
           <cm:constant cm:id="iyV3MYL8-WHevYpoG" cm:type="ps:datetime">2019-04-29T15:26:57.724Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iAqzrrYxXL9ejB4JC" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iymZaB4dOpKnj-J-2" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="iymZaB4dOpKnj-J-2" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="itteDDJ65zXG2NVZA" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iEvgUTnUXHjmegz8y" cm:type="ps:datetime">2019-05-17T10:12:39.320Z</cm:constant>
+          <cm:constant cm:id="iEvgUTnUXHjmegz8y" cm:type="ps:datetime">2019-10-15T08:11:46.164Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iUSS-B_T_IZwp62CA" cm:mimetype="text/plain" cm:encoding="utf-8">Dynamic</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iQrB07-bv5LtkyLmm" cm:mimetype="text/plain" cm:encoding="utf-8">The user can create elements in the CodeBook (Themes and Codes) during the execution of the application.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iTiMcuJFS6OAZdNu0" cm:name="Static" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i6Q8A_xOV9fuI6iXg" cm:class="ps:parents">
@@ -800,15 +879,18 @@
           <cm:constant cm:id="iAt36wAu7qoGL2GO-" cm:type="ps:datetime">2019-04-29T15:26:41.840Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iJcgI60NXcbH0zEjU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iB84-cc-0xXDSvRAi" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iB84-cc-0xXDSvRAi" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iEqwqLF5LGScZY5H0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i8_DYj5xdYDyTAoh-" cm:type="ps:datetime">2019-04-29T15:30:07.748Z</cm:constant>
+          <cm:constant cm:id="i8_DYj5xdYDyTAoh-" cm:type="ps:datetime">2019-10-15T08:13:53.177Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="icfbrLlVeNqp8sBdj" cm:mimetype="text/plain" cm:encoding="utf-8">Static</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ipbDUjBT1JD0c3YbR" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from a predefined set of themes and codes when the application is started.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ixfCsh9L3C5THFt5K" cm:name="Create" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iuxIbgZeV-uDe9oyQ" cm:class="ps:parents">
@@ -829,15 +911,18 @@
           <cm:constant cm:id="ip_KAi25OQsTeICyZ" cm:type="ps:datetime">2019-04-29T15:32:54.367Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ieMe2X-nXuu7La0LL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i01B_WDmWGJfY8wVs" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i01B_WDmWGJfY8wVs" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iZOeMqJXGRRRWTmyO" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iyokgKpm89GuIhkSz" cm:type="ps:datetime">2019-04-29T15:34:19.702Z</cm:constant>
+          <cm:constant cm:id="iyokgKpm89GuIhkSz" cm:type="ps:datetime">2019-10-15T08:27:50.068Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iv_5uSpNYdc0xZNFx" cm:mimetype="text/plain" cm:encoding="utf-8">Create</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iCYvq6NwLkXwXDXmp" cm:mimetype="text/plain" cm:encoding="utf-8">Create an annotation. It is a primary action for a Web annotator, therefore, this feature will be available on all products of the LPS. Annotations can be done in several ways, but for now, only It is implemented by means of the Color Coding Highlight technique.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iHKRSA2jiljgX2n66" cm:name="ColorCodingHighlight" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iE-Zewe9fWxnz8G51" cm:class="ps:parents">
@@ -877,15 +962,18 @@
           <cm:constant cm:id="izOpEhuTbiv9UHjf2" cm:type="ps:datetime">2019-04-29T15:34:19.702Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iUGnr2_pcG_esxCqN" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iqA_4jzGYfYARH5Yq" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iqA_4jzGYfYARH5Yq" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ilh578e8ojh-_RvzJ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iSaf_Mq9f4dVy0XL8" cm:type="ps:datetime">2019-04-29T15:34:19.702Z</cm:constant>
+          <cm:constant cm:id="iSaf_Mq9f4dVy0XL8" cm:type="ps:datetime">2019-10-15T08:28:20.607Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iDIxxnx0yTVbpCjVa" cm:mimetype="text/plain" cm:encoding="utf-8">Delete</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ibniGH0gx_jDYipnU" cm:mimetype="text/plain" cm:encoding="utf-8">Delete an annotation.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iXfCsVvuKWMDCxRRf" cm:name="Validate" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iAkKA9PpeG2VXOOif" cm:class="ps:parents">
@@ -906,15 +994,18 @@
           <cm:constant cm:id="iXsW_qhJqp5I5NJqD" cm:type="ps:datetime">2019-04-29T15:34:45.551Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iwuXGoVdIt4HhPA53" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i3-GVIra-dOnoXf1K" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i3-GVIra-dOnoXf1K" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iB7Z1WATk7w036agT" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iTxani2TnnXgN9N8O" cm:type="ps:datetime">2019-06-10T20:54:31.069Z</cm:constant>
+          <cm:constant cm:id="iTxani2TnnXgN9N8O" cm:type="ps:datetime">2019-10-15T08:28:54.374Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iDWqo1fhUG0GrqmU4" cm:mimetype="text/plain" cm:encoding="utf-8">Validate</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ibtXNPD28M5hTayJi" cm:mimetype="text/plain" cm:encoding="utf-8">Validate an annotation made by another user in the same resource.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iRvWLlt_N58zBLPpN" cm:name="Reply" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="irnO9hAL4ryAr_ObN" cm:class="ps:parents">
@@ -930,15 +1021,19 @@
           <cm:constant cm:id="iaVkq2AK0LuvJXQ50" cm:type="ps:datetime">2019-04-29T15:35:00.975Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipVwwv1-QJF3BNqYU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iS0Dn33QZ75lZ7eld" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iS0Dn33QZ75lZ7eld" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iLloBKrZbnsmwbIv0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i-BE10p-xwtjxQaFZ" cm:type="ps:datetime">2019-04-29T15:35:00.975Z</cm:constant>
+          <cm:constant cm:id="i-BE10p-xwtjxQaFZ" cm:type="ps:datetime">2019-10-15T08:29:40.967Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ibJzCeG7PCrhvozII" cm:mimetype="text/plain" cm:encoding="utf-8">Reply</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iYmftXuTYHB_I_Rmc" cm:mimetype="text/plain" cm:encoding="utf-8">Reply to an annotation made by another user and stablish a discussion with him/she.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iN7-Pxm6z87AUQFtB" cm:name="Comment" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iRe-nPMGFN7_iEiUr" cm:class="ps:parents">
@@ -963,15 +1058,19 @@
           <cm:constant cm:id="icwINvPALehB2V1xk" cm:type="ps:datetime">2019-04-29T15:35:18.007Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iSf-9dVRKlz8Je4_h" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ifKzek5EAd3Xumvve" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="ifKzek5EAd3Xumvve" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="if0_VFngz4x7pyxlt" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ieN0crRdYgEHrRmnq" cm:type="ps:datetime">2019-08-29T14:38:10.971Z</cm:constant>
+          <cm:constant cm:id="ieN0crRdYgEHrRmnq" cm:type="ps:datetime">2019-10-15T08:30:42.011Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ijjxZmjday7zmzrcN" cm:mimetype="text/plain" cm:encoding="utf-8">Comment</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iwTzL4wW6SpraUVw-" cm:mimetype="text/plain" cm:encoding="utf-8">Add a comment to an annotation. The comment can be personalized in different ways (features).
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iy9NJD1a4fP1gSBKs" cm:name="SentimentAnalysis" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iRdvyyVDjEInpCjKv" cm:class="ps:parents">
@@ -987,15 +1086,18 @@
           <cm:constant cm:id="izehoTHWEaXxJjrJk" cm:type="ps:datetime">2019-04-29T15:39:27.847Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i3Ruoge8Y0Y9Ydhxj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ijF-11ra5lbbZXt2S" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="ijF-11ra5lbbZXt2S" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iLA3qdmTT0Xg_zMhE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i3kESCHAihc_M4a6c" cm:type="ps:datetime">2019-04-29T15:39:27.847Z</cm:constant>
+          <cm:constant cm:id="i3kESCHAihc_M4a6c" cm:type="ps:datetime">2019-10-15T09:22:02.854Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i7UW28Kmi9hO46sT2" cm:mimetype="text/plain" cm:encoding="utf-8">SentimentAnalysis</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i81ClhjBGd0JtBZI7" cm:mimetype="text/plain" cm:encoding="utf-8">Realize a sentimental analysis over a comment. If the comment is detected as offensive, the application raises a warning.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iPs9Rd3MjMQlRU6y5" cm:name="SuggestedLiterature" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iRmmzRkgZcBwebp8e" cm:class="ps:parents">
@@ -1011,15 +1113,18 @@
           <cm:constant cm:id="ipCUSYN_IpTWqjPZk" cm:type="ps:datetime">2019-04-29T15:39:51.989Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ihLmJy4lak1XmTKoK" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iH2gCaeaXL6grS8P4" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iH2gCaeaXL6grS8P4" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ilN7FM5iQx1r0RVjS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i7XlcouUYF94Ac1_A" cm:type="ps:datetime">2019-08-13T11:38:16.039Z</cm:constant>
+          <cm:constant cm:id="i7XlcouUYF94Ac1_A" cm:type="ps:datetime">2019-10-15T09:49:57.944Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iid-jv6XJaXw9bqpB" cm:mimetype="text/plain" cm:encoding="utf-8">SuggestedLiterature</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ir4rJdEENnsYL1o-e" cm:mimetype="text/plain" cm:encoding="utf-8">Add suggested literature references to the comment.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ibqZWF5tpWB4R8Opr" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iGMHB6b1hPEm8bVQC" cm:class="ps:parents">
@@ -1035,15 +1140,18 @@
           <cm:constant cm:id="iCqmdD5ysFY0OpTfT" cm:type="ps:datetime">2019-04-29T15:40:09.510Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iTa6Afvw-rXVzdZdJ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iwjofN3H45TZ2yomA" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iwjofN3H45TZ2yomA" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iKo88bXng7pOolIOR" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i5gqgxRtmxh3DwEtf" cm:type="ps:datetime">2019-04-29T15:40:09.510Z</cm:constant>
+          <cm:constant cm:id="i5gqgxRtmxh3DwEtf" cm:type="ps:datetime">2019-10-15T09:50:04.800Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iGnRwk6S5WpP1FENK" cm:mimetype="text/plain" cm:encoding="utf-8">Categorize</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="icdcyanuBb8yhpCpu" cm:mimetype="text/plain" cm:encoding="utf-8">Categorize the comment.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iKoWPZzp6fgQ19gFg" cm:name="Autofill" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="ihh7FCKjtrB2GDB9y" cm:class="ps:parents">
@@ -1059,15 +1167,19 @@
           <cm:constant cm:id="iBc7drOwwRdwY8sGK" cm:type="ps:datetime">2019-04-29T15:40:25.715Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iqJ6xLCdNIazQVmJa" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iR-5JjOmNXtP2vHAw" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iR-5JjOmNXtP2vHAw" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iR8XYMI6PC15hGGQO" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iFvC0tSHRbnm_Uzmw" cm:type="ps:datetime">2019-04-29T15:40:25.715Z</cm:constant>
+          <cm:constant cm:id="iFvC0tSHRbnm_Uzmw" cm:type="ps:datetime">2019-10-15T08:33:44.264Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i988J4xW3WR-zrBgK" cm:mimetype="text/plain" cm:encoding="utf-8">Autofill</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="imDS-_gBI8waGESLq" cm:mimetype="text/plain" cm:encoding="utf-8">Based on previous comments, the application recommends possible useful comments to the user.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iH6HLavdpJFzVsqID" cm:name="Filter" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="izHmXiwsGGpVJU_Cz" cm:class="ps:parents">
@@ -1088,15 +1200,19 @@
           <cm:constant cm:id="i8ivaNGRmorZA9YBB" cm:type="ps:datetime">2019-04-29T15:41:35.218Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ixM342aG-qRfUHKSn" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iSJCLgM9XncSwJqse" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iSJCLgM9XncSwJqse" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i_EPQgZlbEk6-pasn" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iYuFaAoS49Zmrb3LY" cm:type="ps:datetime">2019-04-29T15:42:36.605Z</cm:constant>
+          <cm:constant cm:id="iYuFaAoS49Zmrb3LY" cm:type="ps:datetime">2019-10-15T08:38:42.078Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ihNbYv2odWFROMSde" cm:mimetype="text/plain" cm:encoding="utf-8">Filter</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i6vQ9SXLIM9pOfoyz" cm:mimetype="text/plain" cm:encoding="utf-8">Filter annotations based on some criteria.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ioiB4E_xIFMHGhUfp" cm:name="UserFilter" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i5QtYbbV_BurQeseh" cm:class="ps:parents">
@@ -1112,15 +1228,20 @@
           <cm:constant cm:id="iScmUXv9Tak-abK7U" cm:type="ps:datetime">2019-04-29T15:42:36.605Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i-YIT-MRi5flE7v98" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iC3V7YoRz27nSIbQq" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iC3V7YoRz27nSIbQq" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iJNrhdlwAdQ06lbsg" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="inlFu_TcviiQHV1GZ" cm:type="ps:datetime">2019-06-19T08:32:16.571Z</cm:constant>
+          <cm:constant cm:id="inlFu_TcviiQHV1GZ" cm:type="ps:datetime">2019-10-15T08:39:45.797Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iHy2tUtoyiGyTbOx3" cm:mimetype="text/plain" cm:encoding="utf-8">ByUser</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i63JlBqQ1s6AYlcxt" cm:mimetype="text/plain" cm:encoding="utf-8">Filter annotations based on a user or a group of users. The filtered annotations will be those made by the selected users.
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i8rFiOiZD7DVlbkyr" cm:name="Visualization" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iDV5hQzjwRxlZ7bYZ" cm:class="ps:parents">
@@ -1146,15 +1267,18 @@
           <cm:constant cm:id="ih07uQoHnDne5GTIk" cm:type="ps:datetime">2019-04-29T15:43:16.728Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iX53V7cakmIBjFJta" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i6L6yqITGOWfmVBu4" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i6L6yqITGOWfmVBu4" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="issiz89lMn7nTsJcV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iPBTm1LrFuDp6JRmQ" cm:type="ps:datetime">2019-06-22T20:45:24.284Z</cm:constant>
+          <cm:constant cm:id="iPBTm1LrFuDp6JRmQ" cm:type="ps:datetime">2019-10-15T08:41:59.199Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iyOePIgMeO7VwaBpV" cm:mimetype="text/plain" cm:encoding="utf-8">Visualization</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iJIflvEy2pydk4CoL" cm:mimetype="text/plain" cm:encoding="utf-8">The annotations are visualized in different ways in order to satisfy different needs of the users.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iqYXR38uQdhApg9_m" cm:name="ToolTip" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iEDAdrONa89VpysQY" cm:class="ps:parents">
@@ -1170,15 +1294,19 @@
           <cm:constant cm:id="iBfX-zubyqsXxrlVp" cm:type="ps:datetime">2019-04-29T15:46:55.558Z</cm:constant>
         </cm:property>
         <cm:property cm:id="idTAzg1fwONm9s6Z3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iMOMaxQanJZUz02yi" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iMOMaxQanJZUz02yi" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ir3tOCGgRz75z0Z_2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ipkoJ405y9k8vCP0v" cm:type="ps:datetime">2019-07-29T09:20:36.117Z</cm:constant>
+          <cm:constant cm:id="ipkoJ405y9k8vCP0v" cm:type="ps:datetime">2019-10-15T08:43:21.987Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iNM3oEUEnAAlyFXgu" cm:mimetype="text/plain" cm:encoding="utf-8">ToolTip</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="itsJjst68wYpT__Z3" cm:mimetype="text/plain" cm:encoding="utf-8">Shows available information of an annotation when the cursor is over it.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="icrCBjMKx_hLxI2iJ" cm:name="Screenshot" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="ixIiDvtF5ymdPg8UU" cm:class="ps:parents">
@@ -1194,15 +1322,20 @@
           <cm:constant cm:id="iZEFYXtnJILoPpqVm" cm:type="ps:datetime">2019-04-29T15:47:16.098Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iS4_6SXcqQfrC0beN" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iNMpEH-CxDr2iYSkG" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iNMpEH-CxDr2iYSkG" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i15uiQ_awxI2-zdZC" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iDdWcLUe-lv56lEyg" cm:type="ps:datetime">2019-04-29T15:47:16.098Z</cm:constant>
+          <cm:constant cm:id="iDdWcLUe-lv56lEyg" cm:type="ps:datetime">2019-10-15T08:45:42.821Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ifxHrpSjAys16Kibj" cm:mimetype="text/plain" cm:encoding="utf-8">Screenshot</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i0CQ41JOU6AkdWCPn" cm:mimetype="text/plain" cm:encoding="utf-8">Take a screenshot of the annotated document and prints a PDF with the document and the annotations.
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iv6S35C7ImJlFMUd5" cm:name="Canvas" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i25yhFg_zklGB4Ycd" cm:class="ps:parents">
@@ -1218,15 +1351,20 @@
           <cm:constant cm:id="iv1H-j6Ax0-gNaCVO" cm:type="ps:datetime">2019-04-29T15:47:25.595Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iph8iYyByOEhX0igr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i5FHnWzI4d0VgJS5H" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i5FHnWzI4d0VgJS5H" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iBV3apl4n192cHdBT" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iv7esBKYhyItXk71y" cm:type="ps:datetime">2019-04-29T15:47:25.595Z</cm:constant>
+          <cm:constant cm:id="iv7esBKYhyItXk71y" cm:type="ps:datetime">2019-10-15T08:46:22.441Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iGz7vWWshyIvXEfgH" cm:mimetype="text/plain" cm:encoding="utf-8">Canvas</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iwhnS4SMJ4lAqRdD6" cm:mimetype="text/plain" cm:encoding="utf-8">Show an illustration of the annotations within a Canvas model view.
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iMlQj8C_O2_0CC4yn" cm:name="TextSummary" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i1VhwwYI35Qcuf6OC" cm:class="ps:parents">
@@ -1242,15 +1380,19 @@
           <cm:constant cm:id="iWhudpz_37TYGvKK1" cm:type="ps:datetime">2019-04-29T15:47:45.102Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ibJfXR9DxH1xIlbs-" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iMwRn7I-9QDjGhK9-" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iMwRn7I-9QDjGhK9-" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i5-3zrYc2Wlv2dN5W" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iH14eRCp-lPTTmSyw" cm:type="ps:datetime">2019-04-29T15:47:45.102Z</cm:constant>
+          <cm:constant cm:id="iH14eRCp-lPTTmSyw" cm:type="ps:datetime">2019-10-15T08:44:13.469Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i-r-jThjhxm5b1ure" cm:mimetype="text/plain" cm:encoding="utf-8">TextSummary</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iXzPLP00nm4YNQ04G" cm:mimetype="text/plain" cm:encoding="utf-8">Prints a brief summary about some clustered annotations using a predefined template.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iIygdftsUUQPHnTOX" cm:name="GSheetConsumer" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="ij2J0OdoeGbyJhY4H" cm:class="ps:parents">
@@ -1266,10 +1408,10 @@
           <cm:constant cm:id="ib_x25u2dZjSWNYww" cm:type="ps:datetime">2019-04-29T15:48:11.691Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iQw9AM5ghsJphTl5I" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i-bzH2DuUKIyhZYTv" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i-bzH2DuUKIyhZYTv" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ixlAFKw_VhGqdNsB1" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="invFGrOTdNSnmr2pZ" cm:type="ps:datetime">2019-09-26T09:45:30.892Z</cm:constant>
+          <cm:constant cm:id="invFGrOTdNSnmr2pZ" cm:type="ps:datetime">2019-10-15T08:55:13.694Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ifY5y82Pr3BD4R7JA" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="iBMmcnvSQUU6raTJ0" cm:type="ps:string">1008657588862-k3t7glpcvdrtc43dsmktkjudufh9m5ho.apps.googleusercontent.com</cm:constant>
@@ -1278,6 +1420,10 @@
       <cm:vname>
         <cm:mimedesc cm:id="iNaHgXUH7VoObE3VQ" cm:mimetype="text/plain" cm:encoding="utf-8">GSheet</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="idqMG_z3TRjZ4zNLf" cm:mimetype="text/plain" cm:encoding="utf-8">Shows the annotations in the correspondent cells of a spreadsheet.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iO3cjnNGVYQnnMX8G" cm:name="ThirdAppConsumer" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iybmezQo7gNamDuXJ" cm:class="ps:parents">
@@ -1300,15 +1446,20 @@
           <cm:constant cm:id="i7BVzYP0gKIHHqIni" cm:type="ps:datetime">2019-04-29T15:48:39.819Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i8m_x7rjOK9cVcav4" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i0_0PK9BPciNpiBc_" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i0_0PK9BPciNpiBc_" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iPAJ-y-Amz35-pFEW" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ihybEl7IQVo399YTu" cm:type="ps:datetime">2019-10-13T10:46:25.991Z</cm:constant>
+          <cm:constant cm:id="ihybEl7IQVo399YTu" cm:type="ps:datetime">2019-10-15T08:52:46.279Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iqf1oSYwGv-9AcQ6W" cm:mimetype="text/plain" cm:encoding="utf-8">ThirdAppConsumer</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i0VnxPKjWyglIAPsa" cm:mimetype="text/plain" cm:encoding="utf-8">Visualizations are shown on an independent platform. External applications consume the annotations made by the users through an API and illustrate them in their manner.
+
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iJPFmC66OoZRc1I1y" cm:name="MoodleReport" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i3yy4noXdRAtkPnDb" cm:class="ps:parents">
@@ -1329,10 +1480,10 @@
           <cm:constant cm:id="iCIiq_iHGEUcjQ5vZ" cm:type="ps:datetime">2019-04-29T15:48:58.911Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iaiM20qi7xyF5wtoW" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i-Cw0phhnZA3OPI-i" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="i-Cw0phhnZA3OPI-i" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iWxCjjx7Osj1hwv5n" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ikZMquRIMXvso_EtE" cm:type="ps:datetime">2019-09-13T11:48:22.684Z</cm:constant>
+          <cm:constant cm:id="ikZMquRIMXvso_EtE" cm:type="ps:datetime">2019-10-15T08:57:17.502Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1362,15 +1513,19 @@
           <cm:constant cm:id="iAypxhjCC39p1fEjc" cm:type="ps:datetime">2019-04-29T15:49:57.150Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iH4dmlIoa97LpMWHl" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ibLSPFfWKyVTLOaZg" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="ibLSPFfWKyVTLOaZg" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i6H4k54ptaSQ7_Pf1" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iPYHrXVs7kSRdPyfl" cm:type="ps:datetime">2019-08-26T13:09:27.129Z</cm:constant>
+          <cm:constant cm:id="iPYHrXVs7kSRdPyfl" cm:type="ps:datetime">2019-10-15T09:00:40.615Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ibfK4TegrjT__fnej" cm:mimetype="text/plain" cm:encoding="utf-8">Create</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iNraFcNoeCi5MJrry" cm:mimetype="text/plain" cm:encoding="utf-8">Create a group in which the annotations are done.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ie0gpTEy3TXJSdrmt" cm:name="SelectGroup" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iRsXpmUjpPDOxUsfW" cm:class="ps:parents">
@@ -1393,15 +1548,19 @@
           <cm:constant cm:id="iitDTYduI6gAlaz5Q" cm:type="ps:datetime">2019-04-29T15:51:11.344Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iDLzs94E-EnwXx2Ae" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i9MInW1em8A66Mud7" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i9MInW1em8A66Mud7" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i4zHr2YwSileS4p77" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ihTkbtogx24x7OLmi" cm:type="ps:datetime">2019-04-29T15:52:07.767Z</cm:constant>
+          <cm:constant cm:id="ihTkbtogx24x7OLmi" cm:type="ps:datetime">2019-10-15T08:58:27.541Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iYgLKzsdK7nQJtWDO" cm:mimetype="text/plain" cm:encoding="utf-8">Select</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iOhwHspBfVJ-t-vuf" cm:mimetype="text/plain" cm:encoding="utf-8">Provide the user with the option of selecting the group in which the annotations are done.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ioSpr4N0gWrb0NSG7" cm:name="Manual" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iW17wJq89_3xS159e" cm:class="ps:parents">
@@ -1417,15 +1576,18 @@
           <cm:constant cm:id="i7q9KXWfKaY8Ksd0j" cm:type="ps:datetime">2019-04-29T15:51:39.488Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iC8E4K23EvEVysFNC" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i8pox9lc3PLYl5bDV" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i8pox9lc3PLYl5bDV" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iwzwxADMyWCg_jabu" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iK53K-L4kLle6P8L6" cm:type="ps:datetime">2019-04-29T15:51:39.488Z</cm:constant>
+          <cm:constant cm:id="iK53K-L4kLle6P8L6" cm:type="ps:datetime">2019-10-15T09:55:08.795Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i2o6SbHpr1DK_QRZQ" cm:mimetype="text/plain" cm:encoding="utf-8">Manual</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i4c1zu758222kSByb" cm:mimetype="text/plain" cm:encoding="utf-8">The user can choose manually in which group he wants to annotate.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="izNQPCkBvNzlf-3ai" cm:name="ApplicationBased" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iiCjGRmsVIrjqIhlu" cm:class="ps:parents">
@@ -1441,15 +1603,19 @@
           <cm:constant cm:id="ieR8qvV4za1RSySaz" cm:type="ps:datetime">2019-04-29T15:51:54.536Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iEkLYORyNxv45Fh-N" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iEe0QrHjuyIK--b_Q" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iEe0QrHjuyIK--b_Q" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iTmKvUE0L4qjepXVH" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iqU9KYplkAR34wZf7" cm:type="ps:datetime">2019-04-29T15:51:54.536Z</cm:constant>
+          <cm:constant cm:id="iqU9KYplkAR34wZf7" cm:type="ps:datetime">2019-10-15T09:55:33.310Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iztsLBzR81MPSogCh" cm:mimetype="text/plain" cm:encoding="utf-8">ApplicationBased</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i8WfFgp4oQf9ZsvxF" cm:mimetype="text/plain" cm:encoding="utf-8">The application is in charge of selecting the group.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ihs4ebDhv-mKLcMNr" cm:name="MoodleResourceBased" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="inStVxNGO_ozgMA2M" cm:class="ps:parents">
@@ -1465,10 +1631,10 @@
           <cm:constant cm:id="iSgijhlSXAjXqXT7F" cm:type="ps:datetime">2019-04-29T15:52:07.767Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i2C-CyO7Cyo6jEoXr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i5vEYXBAs8Fs3HB_J" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="i5vEYXBAs8Fs3HB_J" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ituW9yguf5DXjOCcy" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iEUkHJdDoAFEy_vwX" cm:type="ps:datetime">2019-08-26T13:59:19.739Z</cm:constant>
+          <cm:constant cm:id="iEUkHJdDoAFEy_vwX" cm:type="ps:datetime">2019-10-15T09:55:42.162Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1489,15 +1655,19 @@
           <cm:constant cm:id="itxh-m95HNkCaaJC1" cm:type="ps:datetime">2019-04-29T15:52:24.264Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iLTAu4NG_0N3B0HSX" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iV9ulD9dXsx8093VA" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iV9ulD9dXsx8093VA" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="irQGQA2Y0ejQ50H_v" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iICkkOiMm7c2CxQaD" cm:type="ps:datetime">2019-04-29T15:52:24.264Z</cm:constant>
+          <cm:constant cm:id="iICkkOiMm7c2CxQaD" cm:type="ps:datetime">2019-10-15T08:59:11.504Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ihd43n2KiH5gM5_C9" cm:mimetype="text/plain" cm:encoding="utf-8">Delete</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i-X8-qdGEkXRJgaVm" cm:mimetype="text/plain" cm:encoding="utf-8">Delete all the annotations within a group. (Raul: El grupo no lo borra?)
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="igB8qnELudwLbu7Ud" cm:name="Local" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i3bxcOsXeRmZwjs6T" cm:class="ps:parents">
@@ -1513,12 +1683,15 @@
           <cm:constant cm:id="i4M3qxV0QxQp1AkC3" cm:type="ps:datetime">2019-06-22T20:02:19.466Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iElz_6Qle-RsLLkWW" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i0KxZ1OBccH7-csz1" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="i0KxZ1OBccH7-csz1" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iU7gNB6cx3eU8g3Qr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i8hshy4aBVelAEZC6" cm:type="ps:datetime">2019-09-03T14:43:55.956Z</cm:constant>
+          <cm:constant cm:id="i8hshy4aBVelAEZC6" cm:type="ps:datetime">2019-10-15T07:39:24.031Z</cm:constant>
         </cm:property>
       </cm:properties>
+      <cm:desc>
+        <cm:mimedesc cm:id="i5zghqEqMZGQdCKFh" cm:mimetype="text/plain" cm:encoding="utf-8">Provides a local storage for annotations, the storage system used is chromestorage.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iOFjKH_6NqWuqH8Ey" cm:name="LastAnnotation" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iG94bbRG1693MxjT-" cm:class="ps:parents">
@@ -1534,15 +1707,19 @@
           <cm:constant cm:id="iND9IgHitg-qQp7ye" cm:type="ps:datetime">2019-06-22T20:45:24.284Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iq7qA7cnVK_5g7kWy" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i00h1TssMXuiQmUCB" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i00h1TssMXuiQmUCB" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ir1sUDHnhBZZ-1mmh" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZP50_4PKnX1q3mOQ" cm:type="ps:datetime">2019-06-24T20:57:19.274Z</cm:constant>
+          <cm:constant cm:id="iZP50_4PKnX1q3mOQ" cm:type="ps:datetime">2019-10-15T08:48:02.785Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iVHV5t_0waNii0Ncm" cm:mimetype="text/plain" cm:encoding="utf-8">LastAnnotation</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iBQvstrLjeIJrLbN3" cm:mimetype="text/plain" cm:encoding="utf-8">Places the user at the location of the last annotation.
+</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ioBQHSMsydWvfQC1e" cm:name="RenameGroup" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i3hDn0D1-Py-g949d" cm:class="ps:parents">
@@ -1563,15 +1740,18 @@
           <cm:constant cm:id="i8MJ1nqKoBJ3pD5Cc" cm:type="ps:datetime">2019-08-02T10:46:41.295Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iP6ABmDjL0Ty6FLVK" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ibUQPuZMTqn0dLCyl" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="ibUQPuZMTqn0dLCyl" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="isPxp7IUR44YXSdiL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i4skS5s_LV0URimhm" cm:type="ps:datetime">2019-08-26T12:57:05.664Z</cm:constant>
+          <cm:constant cm:id="i4skS5s_LV0URimhm" cm:type="ps:datetime">2019-10-15T08:59:21.393Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iTO6JYIXY9b_zus8E" cm:mimetype="text/plain" cm:encoding="utf-8">Rename</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iUFAnb_Ay1E9Ammri" cm:mimetype="text/plain" cm:encoding="utf-8">Rename a group?</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i5diP0yZS5Vyrksd_" cm:name="ExportGroup" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i-BWbxUtS3bHdEWbf" cm:class="ps:parents">
@@ -1592,15 +1772,18 @@
           <cm:constant cm:id="itBpo4WnvCZqeTWDy" cm:type="ps:datetime">2019-08-02T10:49:14.726Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iEPAnPP-hBwCfLLGo" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iQYaobZOkd_WTiYMh" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iQYaobZOkd_WTiYMh" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iVrLXs6aPsL3Ehlzm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ij-YkQpkv2f229lJr" cm:type="ps:datetime">2019-08-26T12:59:27.548Z</cm:constant>
+          <cm:constant cm:id="ij-YkQpkv2f229lJr" cm:type="ps:datetime">2019-10-15T09:00:05.825Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="icdGaC1HdFXk9LXTK" cm:mimetype="text/plain" cm:encoding="utf-8">Export</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iRpfLzpZjRwVzs89C" cm:mimetype="text/plain" cm:encoding="utf-8">Export a group into a format that can be imported in a web annotator application.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iusuYtuLuHwfd41pe" cm:name="ImportGroup" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iupVxZwr7E9nKFaQo" cm:class="ps:parents">
@@ -1621,15 +1804,18 @@
           <cm:constant cm:id="i5rowmqpmw3ur6TBd" cm:type="ps:datetime">2019-08-02T10:49:29.975Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iccQWX3A_BTBdQlV3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iYRe8-XDYbPqwJA0v" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iYRe8-XDYbPqwJA0v" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iNCtEX0IlH8avZOVG" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0uE9Jjv6-12zIV4Z" cm:type="ps:datetime">2019-08-26T12:59:29.731Z</cm:constant>
+          <cm:constant cm:id="i0uE9Jjv6-12zIV4Z" cm:type="ps:datetime">2019-10-15T09:00:19.099Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i_Bq2c2skMhKwuz4c" cm:mimetype="text/plain" cm:encoding="utf-8">Import</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i7VeYP2g-RDsX-y1U" cm:mimetype="text/plain" cm:encoding="utf-8">Import a group into the application.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="idl9tomtwuLxpDw9q" cm:name="DropGroup" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iSX4eCgcm9P6oHh4w" cm:class="ps:parents">
@@ -1732,15 +1918,18 @@
           <cm:constant cm:id="iGt-bsWnG3Gzy3dup" cm:type="ps:datetime">2019-09-13T11:42:29.539Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iVJgwU3boq-F-Cw2F" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="irbcH-4jP_QoFeFJE" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="irbcH-4jP_QoFeFJE" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ii3xfXOrZD5hjDRPn" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i2oQjE-RjE9fPdWta" cm:type="ps:datetime">2019-09-13T11:42:29.539Z</cm:constant>
+          <cm:constant cm:id="i2oQjE-RjE9fPdWta" cm:type="ps:datetime">2019-10-15T07:43:42.442Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iTJ3KMUoKL0n19nVl" cm:mimetype="text/plain" cm:encoding="utf-8">Neo4J</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iH_2ha5la9UiXMGHO" cm:mimetype="text/plain" cm:encoding="utf-8">Annotations are stored in Neo4J graph database.</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ipzXGRzY-JO6ndYvG" cm:name="SingleCode" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="invDmqcWkYvekjiTj" cm:class="ps:parents">
