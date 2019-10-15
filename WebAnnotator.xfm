@@ -122,14 +122,14 @@
           <cm:constant cm:id="iZ0T2e-QeodNzT6zK" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i4uK55lei-bkYnv2f" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iKh6WiiNarqVNaXuF" cm:type="ps:datetime">2019-10-15T09:01:56.120Z</cm:constant>
+          <cm:constant cm:id="iKh6WiiNarqVNaXuF" cm:type="ps:datetime">2019-10-15T10:36:57.223Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ii0K_s_7MbA6SwBy7" cm:mimetype="text/plain" cm:encoding="utf-8">Definition</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="iv1pG7JszszVV4lR2" cm:mimetype="text/plain" cm:encoding="utf-8">When the application is created, the data model to be used must be defined in it. For this it is necessary to determine how the annotations will be, from what resources can be extracted and where are the criteria on which they are annotated Make the annotation. All Features related to the above mentioned are group within this Feature.
+        <cm:mimedesc cm:id="iv1pG7JszszVV4lR2" cm:mimetype="text/plain" cm:encoding="utf-8">When the application is created, the data model to be used must be defined in it. For this it is necessary to determine how the annotations will be, from what resources can be extracted and where are the annotation criteria. All Features related to the above mentioned are group within this Feature.
 
 
 </cm:mimedesc>
@@ -163,14 +163,14 @@
           <cm:constant cm:id="i6nZdrPjFuihPJBPN" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iqoVttDZWv9HN_MX6" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iAl0xxbTzRvJTjETX" cm:type="ps:datetime">2019-10-15T08:37:58.102Z</cm:constant>
+          <cm:constant cm:id="iAl0xxbTzRvJTjETX" cm:type="ps:datetime">2019-10-15T10:40:54.315Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i_sK8wNq2cD6n5YOC" cm:mimetype="text/plain" cm:encoding="utf-8">Production</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="i0swYzPGIR-tkfPAt" cm:mimetype="text/plain" cm:encoding="utf-8">There are several options that can be perform or added on an annotation. Either when creating them or once they are made. This Feature groups the Features that collect the different ways of producing, managing and complementing the annotations.</cm:mimedesc>
+        <cm:mimedesc cm:id="i0swYzPGIR-tkfPAt" cm:mimetype="text/plain" cm:encoding="utf-8">There are several options that can be done or added on an annotation. Either when creating them or once they are made. This Feature groups the Features that collect the different ways of producing, managing and complementing the annotations.</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iPre3Wc9haoBZ4Hxa" cm:name="Consumption" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -785,7 +785,7 @@
           <cm:constant cm:id="iIQwW1JVhOIKxumPK" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ip2MvG6G3wjrBhW-e" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i1k3W8gdcPImiAfvZ" cm:type="ps:datetime">2019-10-15T08:20:46.321Z</cm:constant>
+          <cm:constant cm:id="i1k3W8gdcPImiAfvZ" cm:type="ps:datetime">2019-10-15T10:39:37.697Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iAzTrDaSN8RWvrdZI" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="imMFeSY58LInVexDv" cm:type="ps:string"></cm:constant>
@@ -795,7 +795,7 @@
         <cm:mimedesc cm:id="irMSZkkE2iS0J3qBQ" cm:mimetype="text/plain" cm:encoding="utf-8">GSheet</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="ixW7wS1LXvr6pUZTY" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from the cells of the document.
+        <cm:mimedesc cm:id="ixW7wS1LXvr6pUZTY" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from the cells of the spreadsheet.
 </cm:mimedesc>
       </cm:desc>
     </cm:element>
@@ -821,14 +821,14 @@
           <cm:constant cm:id="icJtHI8zoV0_-ZT_F" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ieGQX8Ov_bKCiSuVV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i24UB9h5BZP157SaC" cm:type="ps:datetime">2019-10-15T08:21:51.174Z</cm:constant>
+          <cm:constant cm:id="i24UB9h5BZP157SaC" cm:type="ps:datetime">2019-10-15T10:39:50.269Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i1i6ulRhz_TFlwwtv" cm:mimetype="text/plain" cm:encoding="utf-8">Moodle</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="ifaTWSFXyGgyPWRh5" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook mapping the rubric of the task that will be perform,
+        <cm:mimedesc cm:id="ifaTWSFXyGgyPWRh5" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook mapping the rubric of the task that will be performed.
 </cm:mimedesc>
       </cm:desc>
     </cm:element>
@@ -914,14 +914,14 @@
           <cm:constant cm:id="i01B_WDmWGJfY8wVs" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iZOeMqJXGRRRWTmyO" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iyokgKpm89GuIhkSz" cm:type="ps:datetime">2019-10-15T08:27:50.068Z</cm:constant>
+          <cm:constant cm:id="iyokgKpm89GuIhkSz" cm:type="ps:datetime">2019-10-15T10:42:22.649Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iv_5uSpNYdc0xZNFx" cm:mimetype="text/plain" cm:encoding="utf-8">Create</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="iCYvq6NwLkXwXDXmp" cm:mimetype="text/plain" cm:encoding="utf-8">Create an annotation. It is a primary action for a Web annotator, therefore, this feature will be available on all products of the LPS. Annotations can be done in several ways, but for now, only It is implemented by means of the Color Coding Highlight technique.</cm:mimedesc>
+        <cm:mimedesc cm:id="iCYvq6NwLkXwXDXmp" cm:mimetype="text/plain" cm:encoding="utf-8">Create an annotation. It is a primary action for a Web annotator, therefore, this feature will be available on all products of the LPS. Annotations can be done in several ways, but for now, only the Color Coding Highlight technique is implemented.</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iHKRSA2jiljgX2n66" cm:name="ColorCodingHighlight" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -1089,14 +1089,14 @@
           <cm:constant cm:id="ijF-11ra5lbbZXt2S" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iLA3qdmTT0Xg_zMhE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i3kESCHAihc_M4a6c" cm:type="ps:datetime">2019-10-15T09:22:02.854Z</cm:constant>
+          <cm:constant cm:id="i3kESCHAihc_M4a6c" cm:type="ps:datetime">2019-10-15T10:43:08.946Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i7UW28Kmi9hO46sT2" cm:mimetype="text/plain" cm:encoding="utf-8">SentimentAnalysis</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="i81ClhjBGd0JtBZI7" cm:mimetype="text/plain" cm:encoding="utf-8">Realize a sentimental analysis over a comment. If the comment is detected as offensive, the application raises a warning.</cm:mimedesc>
+        <cm:mimedesc cm:id="i81ClhjBGd0JtBZI7" cm:mimetype="text/plain" cm:encoding="utf-8">Realize a sentiment analysis over a comment. If the comment is detected as offensive, the application raises a warning.</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iPs9Rd3MjMQlRU6y5" cm:name="SuggestedLiterature" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1297,15 +1297,14 @@
           <cm:constant cm:id="iMOMaxQanJZUz02yi" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ir3tOCGgRz75z0Z_2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ipkoJ405y9k8vCP0v" cm:type="ps:datetime">2019-10-15T08:43:21.987Z</cm:constant>
+          <cm:constant cm:id="ipkoJ405y9k8vCP0v" cm:type="ps:datetime">2019-10-15T10:44:29.457Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iNM3oEUEnAAlyFXgu" cm:mimetype="text/plain" cm:encoding="utf-8">ToolTip</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="itsJjst68wYpT__Z3" cm:mimetype="text/plain" cm:encoding="utf-8">Shows available information of an annotation when the cursor is over it.
-</cm:mimedesc>
+        <cm:mimedesc cm:id="itsJjst68wYpT__Z3" cm:mimetype="text/plain" cm:encoding="utf-8">Show available information of an annotation when the cursor is over it.</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="icrCBjMKx_hLxI2iJ" cm:name="Screenshot" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1383,14 +1382,14 @@
           <cm:constant cm:id="iMwRn7I-9QDjGhK9-" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i5-3zrYc2Wlv2dN5W" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iH14eRCp-lPTTmSyw" cm:type="ps:datetime">2019-10-15T08:44:13.469Z</cm:constant>
+          <cm:constant cm:id="iH14eRCp-lPTTmSyw" cm:type="ps:datetime">2019-10-15T10:44:22.660Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i-r-jThjhxm5b1ure" cm:mimetype="text/plain" cm:encoding="utf-8">TextSummary</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="iXzPLP00nm4YNQ04G" cm:mimetype="text/plain" cm:encoding="utf-8">Prints a brief summary about some clustered annotations using a predefined template.
+        <cm:mimedesc cm:id="iXzPLP00nm4YNQ04G" cm:mimetype="text/plain" cm:encoding="utf-8">Print a brief summary about some clustered annotations using a predefined template.
 </cm:mimedesc>
       </cm:desc>
     </cm:element>
@@ -1411,7 +1410,7 @@
           <cm:constant cm:id="i-bzH2DuUKIyhZYTv" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ixlAFKw_VhGqdNsB1" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="invFGrOTdNSnmr2pZ" cm:type="ps:datetime">2019-10-15T08:55:13.694Z</cm:constant>
+          <cm:constant cm:id="invFGrOTdNSnmr2pZ" cm:type="ps:datetime">2019-10-15T10:44:58.184Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ifY5y82Pr3BD4R7JA" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="iBMmcnvSQUU6raTJ0" cm:type="ps:string">1008657588862-k3t7glpcvdrtc43dsmktkjudufh9m5ho.apps.googleusercontent.com</cm:constant>
@@ -1421,7 +1420,7 @@
         <cm:mimedesc cm:id="iNaHgXUH7VoObE3VQ" cm:mimetype="text/plain" cm:encoding="utf-8">GSheet</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="idqMG_z3TRjZ4zNLf" cm:mimetype="text/plain" cm:encoding="utf-8">Shows the annotations in the correspondent cells of a spreadsheet.
+        <cm:mimedesc cm:id="idqMG_z3TRjZ4zNLf" cm:mimetype="text/plain" cm:encoding="utf-8">Show the annotations in the correspondent cells of a spreadsheet.
 </cm:mimedesc>
       </cm:desc>
     </cm:element>
@@ -1449,14 +1448,14 @@
           <cm:constant cm:id="i0_0PK9BPciNpiBc_" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="iPAJ-y-Amz35-pFEW" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ihybEl7IQVo399YTu" cm:type="ps:datetime">2019-10-15T08:52:46.279Z</cm:constant>
+          <cm:constant cm:id="ihybEl7IQVo399YTu" cm:type="ps:datetime">2019-10-15T10:44:51.559Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iqf1oSYwGv-9AcQ6W" cm:mimetype="text/plain" cm:encoding="utf-8">ThirdAppConsumer</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="i0VnxPKjWyglIAPsa" cm:mimetype="text/plain" cm:encoding="utf-8">Visualizations are shown on an independent platform. External applications consume the annotations made by the users through an API and illustrate them in their manner.
+        <cm:mimedesc cm:id="i0VnxPKjWyglIAPsa" cm:mimetype="text/plain" cm:encoding="utf-8">Show visualizations on an independent platform. External applications consume the annotations made by the users through an API and illustrate them in their manner.
 
 </cm:mimedesc>
       </cm:desc>
@@ -1710,14 +1709,14 @@
           <cm:constant cm:id="i00h1TssMXuiQmUCB" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="ir1sUDHnhBZZ-1mmh" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZP50_4PKnX1q3mOQ" cm:type="ps:datetime">2019-10-15T08:48:02.785Z</cm:constant>
+          <cm:constant cm:id="iZP50_4PKnX1q3mOQ" cm:type="ps:datetime">2019-10-15T10:45:07.645Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iVHV5t_0waNii0Ncm" cm:mimetype="text/plain" cm:encoding="utf-8">LastAnnotation</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="iBQvstrLjeIJrLbN3" cm:mimetype="text/plain" cm:encoding="utf-8">Places the user at the location of the last annotation.
+        <cm:mimedesc cm:id="iBQvstrLjeIJrLbN3" cm:mimetype="text/plain" cm:encoding="utf-8">Place the user at the location of the last annotation.
 </cm:mimedesc>
       </cm:desc>
     </cm:element>
