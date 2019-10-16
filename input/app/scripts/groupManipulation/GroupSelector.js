@@ -23,7 +23,7 @@ const ImportSchema = require('./ImportSchema')
 // PVSCL:IFCOND(ExportGroup, LINE)
 const ExportSchema = require('./ExportSchema')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local and User, LINE) // It is because LocalStorageManager it is only used inside an if where User feature is selected
+// PVSCL:IFCOND(Local, LINE)
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
 // PVSCL:ENDCOND
 
@@ -62,9 +62,9 @@ class GroupSelector {
       }
     })
   }
-  //PVSCL:IFCOND(ApplicationBased, LINE) 
+  //PVSCL:IFCOND(ApplicationBased, LINE)
 
-  // Defines the current group of the highlighter with an Application based group 
+  // Defines the current group of the highlighter with an Application based group
   defineCurrentGroup (callback) {
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
       let annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
@@ -101,7 +101,7 @@ class GroupSelector {
                 callback(null)
               }
             } else {
-              // PVSCL:IFCOND(User, LINE) 
+              // PVSCL:IFCOND(User, LINE)
               // TODO i18n
               Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the extension. We are configuring everything to start reviewing.', position: Alerts.position.center})
               // TODO Create default group
@@ -123,7 +123,7 @@ class GroupSelector {
     }
   }
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(Manual, LINE) 
+//PVSCL:IFCOND(Manual, LINE)
 
   // Defines the one of the possibles groups as the current group of the highlighter
   defineCurrentGroup (callback) {
@@ -229,7 +229,7 @@ class GroupSelector {
     }
   }
 //PVSCL:ENDCOND
-//PVSCL:IFCOND(MoodleResourceBased, LINE) 
+//PVSCL:IFCOND(MoodleResourceBased, LINE)
 
   // Defines the current group of the highlighter with an a Moodle based group
   defineCurrentGroup (callback) {
