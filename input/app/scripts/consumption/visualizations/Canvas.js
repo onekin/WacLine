@@ -20,7 +20,7 @@ class Canvas {
         e.stopPropagation()
       })
       document.addEventListener('keydown', function (e) {
-        if (e.keyCode === 27 && document.querySelector('#reviewCanvas') != null) document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
+        if (e.code === 'Escape' && document.querySelector('#reviewCanvas') != null) document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
       document.querySelector('#canvasCloseButton').addEventListener('click', function () {

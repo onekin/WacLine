@@ -178,9 +178,9 @@ class MoodleProvider {
       text: 'If the tool takes too much time, please reload the page and try again.'
     })
   }
-// PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
 
   loadStorage (callback) {
+    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     this.StorageClientManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
@@ -198,10 +198,7 @@ class MoodleProvider {
         }
       })
     })
-  }
-//PVSCL:ELSECOND
-
-  loadStorage (callback) {
+    // PVSCL:ELSECOND
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
       if (storage === 'hypothesis') {
         // Hypothesis
@@ -222,8 +219,8 @@ class MoodleProvider {
         })
       })
     })
+    // PVSCL:ENDCOND
   }
-//PVSCL:ENDCOND
 
   initLoginProcess (callback) {
     this.StorageClientManager.logIn((err) => {

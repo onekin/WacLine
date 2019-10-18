@@ -1,10 +1,10 @@
 const TextUtils = require('./utils/URLUtils')
-//PVSCL:IFCOND(Hypothesis,LINE)
+// PVSCL:IFCOND(Hypothesis,LINE)
 const HypothesisClientManager = require('./storage/hypothesis/HypothesisClientManager')
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(Local,LINE)
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Local,LINE)
 const LocalStorageManager = require('./storage/local/LocalStorageManager')
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 const _ = require('lodash')
 
 class ScienceDirectContentScript {
@@ -27,9 +27,9 @@ class ScienceDirectContentScript {
       })
     }
   }
-//PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
 
   loadStorage (callback) {
+    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     window.hag.storageManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
@@ -45,10 +45,7 @@ class ScienceDirectContentScript {
         }
       }
     })
-  }
-//PVSCL:ELSECOND
-
-  loadStorage (callback) {
+    // PVSCL:ELSECOND
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
       if (storage === 'hypothesis') {
         // Hypothesis
@@ -67,8 +64,8 @@ class ScienceDirectContentScript {
         }
       })
     })
+    // PVSCL:ENDCOND
   }
-//PVSCL:ENDCOND
 }
 
 window.hag = {}

@@ -1,10 +1,12 @@
 const DOI = require('doi-regex')
+// PVSCL:IFCOND(ScienceDirect, LINE)
 const URLUtils = require('../utils/URLUtils')
+// PVSCL:ENDCOND
 const _ = require('lodash')
 
 class TargetManager {
   constructor () {
-	  // PVSCL:IFCOND(DOI, LINE)
+    // PVSCL:IFCOND(DOI, LINE)
     this.doiUrlFilterObject = { 'urls': ['*://*.doi.org/*', '*://doi.org/*'] }
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(ScienceDirect, LINE)
@@ -18,7 +20,7 @@ class TargetManager {
   }
 
   init () {
-	  // PVSCL:IFCOND(DOI, LINE)
+    // PVSCL:IFCOND(DOI, LINE)
     // Requests to doi.org
     chrome.webRequest.onHeadersReceived.addListener((responseDetails) => {
       console.debug(responseDetails)

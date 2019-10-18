@@ -4,13 +4,12 @@ const GSheetParser = require('./GSheetParser')
 const GroupInitializer = require('./GroupInitializer')
 const Alerts = require('../utils/Alerts')
 const swal = require('sweetalert2')
-const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Local, LINE)
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 
 class GoogleSheetContentScriptManager {
   init (callback) {
@@ -69,9 +68,9 @@ class GoogleSheetContentScriptManager {
       }
     })
   }
-//PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
 
   loadStorage (callback) {
+    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     window.hag.storageManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
@@ -87,10 +86,7 @@ class GoogleSheetContentScriptManager {
         }
       }
     })
-  }
-//PVSCL:ELSECOND
-
-  loadStorage (callback) {
+    // PVSCL:ELSECOND
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
       if (storage === 'hypothesis') {
         // Hypothesis
@@ -109,8 +105,8 @@ class GoogleSheetContentScriptManager {
         }
       })
     })
+    // PVSCL:ENDCOND
   }
-//PVSCL:ENDCOND
 
   initGoogleSheetParsing (callback) {
     window.hag.googleSheetParser = new GSheetParser()

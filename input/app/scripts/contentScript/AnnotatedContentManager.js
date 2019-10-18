@@ -1,10 +1,15 @@
 const Events = require('./Events')
+// PVSCL:IFCOND(SingleCode, LINE) // It is only used by SingleCode
 const Config = require('../Config')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(SingleCode, LINE)
 const Alerts = require('../utils/Alerts')
 // PVSCL:ENDCOND
 const LanguageUtils = require('../utils/LanguageUtils')
 const Theme = require('../definition/Theme')
+// PVSCL:IFCOND(Code, LINE)
+const Code = require('../definition/Code')
+// PVSCL:ENDCOND
 const _ = require('lodash')
 
 class AnnotatedTheme {
@@ -274,11 +279,13 @@ class AnnotatedContentManager {
       annotations = annotations.concat(childAnnotations)
       // PVSCL:ENDCOND
       return annotations
-    } /* PVSCL:IFCOND(Code) */else {
+    } /* PVSCL:IFCOND(Code) */else if (LanguageUtils.isInstanceOf(themeOrCode, AnnotatedCode)) {
       return _.filter(themeOrCode.annotations, (annotation) => {
         return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
       })
-    }/* PVSCL:ENDCOND */
+    }/* PVSCL:ENDCOND */ else {
+      return []
+    }
   }
 
   /**
@@ -289,12 +296,12 @@ class AnnotatedContentManager {
   getAnnotatedThemeOrCodeFromThemeOrCodeId (themeOrCodeId, annotatedThemesObject = this.annotatedThemes) {
     let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(themeOrCodeId)
     if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
-      // return annotationTheme with the codeId we need
+      // Return annotationTheme with the codeId we need
       return _.find(annotatedThemesObject, (annotatedTheme) => {
         return annotatedTheme.theme.id === themeOrCode.id
       })
-    } else {
-      // return annotationCode with the codeId we need
+    } else if (LanguageUtils.isInstanceOf(themeOrCode, Code)) {
+      // Return annotationCode with the codeId we need
       let annotatedTheme = _.find(annotatedThemesObject, (annotatedTheme) => {
         return annotatedTheme.theme.id === themeOrCode.theme.id
       })

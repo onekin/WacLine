@@ -3,7 +3,12 @@ const _ = require('lodash')
 const Config = require('../Config')
 
 class Code {
-  constructor ({id, name, description = '', color, themePVSCL:IFCOND(MoodleProvider), moodleLevelIdPVSCL:ENDCOND}) {
+  constructor ({
+    id,
+    name,
+    description = '',
+    color, theme/* PVSCL:IFCOND(MoodleProvider) */,
+    moodleLevelId/* PVSCL:ENDCOND */}) {
     this.id = id
     this.name = name
     this.color = color
@@ -56,12 +61,14 @@ class Code {
       if (_.isObject(config)) {
         let description = config.description
         let id = annotation.id
-        // PVSCL:IFCOND(MoodleProvider, LINE) 
+        let codeToReturn
+        // PVSCL:IFCOND(MoodleProvider, LINE)
         let moodleLevelId = config.id
-        return new Code({id, name, description, theme, moodleLevelId})
+        codeToReturn = new Code({id, name, description, theme, moodleLevelId})
         // PVSCL:ELSECOND
-        return new Code({id, name, description, theme})
+        codeToReturn = new Code({id, name, description, theme})
         // PVSCL:ENDCOND
+        return codeToReturn
       } else {
         console.error('Unable to retrieve mark configuration from annotation')
       }
@@ -77,15 +84,15 @@ class Code {
       description: this.description
     }
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(MoodleProvider, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(MoodleProvider, LINE)
 
   static createCodeFromObject (code, theme) {
     // Instance level object
     let instancedCode = Object.assign(new Code({}), code)
     return instancedCode
   }
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 }
 
 module.exports = Code
