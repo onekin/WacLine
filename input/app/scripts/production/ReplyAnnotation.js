@@ -97,7 +97,7 @@ class ReplyAnnotation {
       annotationModifying, annotation, repliesData, motivation: 'oa:replying'
     })
   }
-  //PVSCL:IFCOND( Validate, LINE )
+  // PVSCL:IFCOND( Validate, LINE )
 
   static validateAnnotation (annotation) {
     let repliesData = ReplyAnnotation.createRepliesData(annotation, window.abwa.contentAnnotator.replyAnnotations)

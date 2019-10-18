@@ -3,14 +3,8 @@ const swal = require('sweetalert2')
 const Alerts = require('../utils/Alerts')
 const ChromeStorage = require('../utils/ChromeStorage')
 const AnnotationGuide = require('../definition/AnnotationGuide')
-//PVSCL:IFCOND(Hypothesis, LINE)
-const Hypothesis = require('../storage/hypothesis/Hypothesis')
-// PVSCL:ENDCOND
-//PVSCL:IFCOND(Local, LINE)
-const Local = require('../storage/local/Local')
-// PVSCL:ENDCOND
 const selectedGroupNamespace = 'hypothesis.currentGroup'
-//PVSCL:IFCOND(ApplicationBased, LINE)
+// PVSCL:IFCOND(ApplicationBased, LINE)
 const Config = require('../Config')
 // PVSCL:ENDCOND
 
@@ -39,12 +33,14 @@ class GroupInitializer {
         }
       } else {
         let group = _.find(groups, (group) => {
-          //PVSCL:IFCOND(ApplicationBased, LINE)
-          return group.name === Config.groupName
+          let isGroupNameEqual
+          // PVSCL:IFCOND(ApplicationBased, LINE)
+          isGroupNameEqual = group.name === Config.groupName
           // PVSCL:ENDCOND
-          //PVSCL:IFCOND(Manual, LINE)
-          return group.name === this.annotationGuide.name.substr(0, 25)
-         // PVSCL:ENDCOND
+          // PVSCL:IFCOND(Manual, LINE)
+          isGroupNameEqual = group.name === this.annotationGuide.name.substr(0, 25)
+          // PVSCL:ENDCOND
+          return isGroupNameEqual
         })
         // Create the group if not exists
         if (_.isEmpty(group)) {

@@ -2,31 +2,31 @@ const Events = {
   annotate: 'annotate',
   annotationCreated: 'annotationCreated',
   annotationDeleted: 'annotationDeleted',
-  //PVSCL:IFCOND(Validate,LINE)
+  // PVSCL:IFCOND(Validate,LINE)
   annotationValidated: 'annotationValidated',
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(SingleCode,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(SingleCode,LINE)
   codeToAll: 'codeToAll',
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Manual,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Manual,LINE)
   groupChanged: 'groupChanged',
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(UserFilter,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(UserFilter,LINE)
   userFilterChange: 'userFilterChange',
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
   updatedAllAnnotations: 'updatedAllAnnotations',
   updatedDocumentURL: 'updatedDocumentURL',
-  //PVSCL:IFCOND(Comment,LINE)
+  // PVSCL:IFCOND(Comment,LINE)
   comment: 'annotationComment',
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Reply,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Reply,LINE)
   reply: 'reply',
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
   tagsUpdated: 'tagsUpdated',
-  //PVSCL:IFCOND(DeleteGroup,LINE)
+  // PVSCL:IFCOND(DeleteGroup,LINE)
   deleteAllAnnotations: 'deleteAllAnnotations',
   deletedAllAnnotations: 'deletedAllAnnotations',
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
   updatedCurrentAnnotations: 'updatedCurrentAnnotations'
 }
 

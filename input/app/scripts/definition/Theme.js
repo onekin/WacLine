@@ -12,20 +12,29 @@ const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:ENDCOND
 
 class Theme {
-  constructor ({id, name, color, annotationGuide, description = ''PVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCONDPVSCL:IFCOND(MoodleProvider), moodleCriteriaIdPVSCL:ENDCOND}) {
+  constructor ({
+    id,
+    name,
+    color,
+    annotationGuide,
+    description = ''/* PVSCL:IFCOND(GSheetProvider and Code) */,
+    multivalued,
+    inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
+    moodleCriteriaId/* PVSCL:ENDCOND */
+  }) {
     this.id = id
     this.name = name
     this.description = description
     this.color = color
     this.annotationGuide = annotationGuide
-// PVSCL:IFCOND(Code,LINE)
+    // PVSCL:IFCOND(Code,LINE)
     this.codes = []
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GSheetProvider and Code,LINE)
     this.multivalued = multivalued
     this.inductive = inductive
- // PVSCL:ENDCOND
-  // PVSCL:IFCOND(MoodleProvider, LINE)
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(MoodleProvider, LINE)
     this.moodleCriteriaId = moodleCriteriaId
   // PVSCL:ENDCOND
   }
@@ -51,14 +60,14 @@ class Theme {
     let cmidTag = 'cmid:' + this.annotationGuide.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
-// PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    // PVSCL:IFCOND(GSheetProvider and Code,LINE)
     if (this.multivalued) {
       tags.push(Config.namespace + ':' + Config.tags.statics.multivalued)
     }
     if (this.inductive) {
       tags.push(Config.namespace + ':' + Config.tags.statics.inductive)
     }
-// PVSCL:ENDCOND
+    // PVSCL:ENDCOND
     return {
       group: this.annotationGuide.storage.group.id,
       permissions: {
@@ -69,9 +78,8 @@ class Theme {
       tags: tags,
       target: [],
       text: jsYaml.dump({
-        id: this.id || ''PVSCL:IFCOND(User),
-        description: this.description
-      PVSCL:ENDCOND
+        id: this.id || ''/* PVSCL:IFCOND(User) */,
+        description: this.description/* PVSCL:ENDCOND */
       }),
       uri: this.annotationGuide.storage.group.links.html
     }
@@ -107,7 +115,15 @@ class Theme {
         // PVSCL:IFCOND(MoodleReport,LINE)
         let moodleCriteriaId = config.id
         // PVSCL:ENDCOND
-        return new Theme({id, name, description, annotationGuidePVSCL:IFCOND(GSheetProvider and Code), multivalued, inductivePVSCL:ENDCONDPVSCL:IFCOND(MoodleReport), moodleCriteriaIdPVSCL:ENDCOND})
+        return new Theme({
+          id,
+          name,
+          description,
+          annotationGuide/* PVSCL:IFCOND(GSheetProvider and Code) */,
+          multivalued,
+          inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
+          moodleCriteriaId/* PVSCL:ENDCOND */
+        })
       } else {
 
       }
@@ -131,7 +147,7 @@ class Theme {
   }
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
-//PVSCL:IFCOND(Dynamic, LINE)
+  // PVSCL:IFCOND(Dynamic, LINE)
 
   reloadColorsForCodes () {
     this.codes.forEach((code, j) => {
@@ -140,14 +156,14 @@ class Theme {
     })
   }
   // PVSCL:ENDCOND
-  //PVSCL:IFCOND(ExportGroup, LINE)
+  // PVSCL:IFCOND(ExportGroup, LINE)
 
   toObject () {
     let object = {
       name: this.name,
       description: this.description
     }
-    //PVSCL:IFCOND(Code, LINE)
+    // PVSCL:IFCOND(Code, LINE)
     if (this.codes.length > 0) {
       object.codes = []
       // For each level
@@ -157,26 +173,26 @@ class Theme {
           object.codes.push(code.toObject())
         }
       }
-      //PVSCL:ENDCOND
+      // PVSCL:ENDCOND
     }
     return object
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(MoodleProvider, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(MoodleProvider, LINE)
 
   static createThemeFromObject (theme, rubric) {
     theme.annotationGuide = rubric
     // Instance theme object
     let instancedTheme = Object.assign(new Theme(theme))
-    //PVSCL:IFCOND(Code, LINE)
+    // PVSCL:IFCOND(Code, LINE)
     // Instance codes
     for (let i = 0; i < theme.codes.length; i++) {
       instancedTheme.codes[i] = Code.createCodeFromObject(theme.codes[i], instancedTheme)
     }
-    //PVSCL:ENDCOND
+    // PVSCL:ENDCOND
     return instancedTheme
   }
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 }
 
 module.exports = Theme

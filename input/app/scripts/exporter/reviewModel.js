@@ -203,7 +203,7 @@ class AnnotationGroup {
           str += "I think that the importance of the problem needs to be emphasized.";
           break;
         case "Depth of analysis":
-          str += "The paper seems to overlook the ‘why’ and focus too much on the ‘what’.";
+          str += "The paper seems to overlook the ï¿½whyï¿½ and focus too much on the ï¿½whatï¿½.";
           break;
         case "Adoption":
           str += "There is uncertainty about the adoption of the artefact by practitioners.";

@@ -1,7 +1,8 @@
 // Configuration for default storage
 let defaultStorage
 // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Collect(p | IF p->pv:Name() = Storage->pv:Attribute('defaultStorage') THEN 1 ELSE 0 ENDIF)->pv:Contains(1), LINE)
-defaultStorage = 'PVSCL:EVAL(Storage->pv:Attribute('defaultStorage')->pv:ToLowerCase())'
+// eslint-disable-next-line quotes
+defaultStorage = "PVSCL:EVAL(Storage->pv:Attribute('defaultStorage')->pv:ToLowerCase())"
 // PVSCL:ELSECOND
 defaultStorage = 'PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Name()->pv:ToLowerCase())'
 // PVSCL:ENDCOND
@@ -18,13 +19,11 @@ let tags = {
   grouped: grouped,
   motivation: 'motivation'
 }
-
 // PVSCL:IFCOND(MoodleURL, LINE)
 tags['producer'] = 'teacher'
 tags['consumer'] = 'student'
 // PVSCL:ENDCOND
-
-//PVSCL:IFCOND(GSheetProvider)
+// PVSCL:IFCOND(GSheetProvider, LINE)
 tags['statics'] = {
   multivalued: 'multivalued',
   inductive: 'inductive',
@@ -32,7 +31,6 @@ tags['statics'] = {
   spreadsheet: 'spreadsheet'
 }
 // PVSCL:ENDCOND
-
 const Config = {
   // PVSCL:IFCOND(User or ApplicationBased, LINE)
   groupName: 'DefaultReviewModel',

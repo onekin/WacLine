@@ -7,19 +7,19 @@ const LanguageUtils = require('../utils/LanguageUtils')
 const Config = require('../Config')
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
-//PVSCL:IFCOND(Manual, LINE)
+// PVSCL:IFCOND(Manual, LINE)
 const Events = require('../contentScript/Events')
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(MoodleResourceBased,LINE)
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleResourceBased,LINE)
 const CryptoUtils = require('../utils/CryptoUtils')
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(Hypothesis,LINE)
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Hypothesis,LINE)
 const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(ImportGroup, LINE)
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(ImportGroup, LINE)
 const AnnotationGuide = require('../definition/AnnotationGuide')
 const ImportSchema = require('./ImportSchema')
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(ExportGroup, LINE)
 const ExportSchema = require('./ExportSchema')
 // PVSCL:ENDCOND
@@ -50,9 +50,9 @@ class GroupSelector {
         this.retrieveUserProfile(() => {
           // Define current group
           this.defineCurrentGroup(() => {
-            //PVSCL:IFCOND(Manual, LINE)
+            // PVSCL:IFCOND(Manual, LINE)
             this.reloadGroupsContainer()
-            //PVSCL:ENDCOND
+            // PVSCL:ENDCOND
             console.debug('Initialized group selector')
             if (_.isFunction(callback)) {
               callback(null)
@@ -62,36 +62,22 @@ class GroupSelector {
       }
     })
   }
-  //PVSCL:IFCOND(ApplicationBased, LINE)
 
-  // Defines the current group of the highlighter with an Application based group
+  /**
+   * This function defines the group of annotations that is selected by default when the application is opened
+   * @param callback
+   */
   defineCurrentGroup (callback) {
+    // PVSCL:IFCOND(ApplicationBased, LINE)
+    // Defines the current group of the highlighter with an Application based group
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
-      let annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
-      // Load group of annotation
-      this.retrieveUserProfile(() => {
-        this.retrieveGroups((err, groups) => {
-          if (err) {
-            if (_.isFunction(callback)) {
-              callback(err)
-            }
-          } else {
-            // Set current group
-            this.currentGroup = _.find(groups, (group) => { return group.id === annotationGroupId })
-            // Save to chrome storage current group
-            ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
-            if (_.isFunction(callback)) {
-              callback()
-            }
-          }
-        })
-      })
+      this.defineGroupBasedOnInitAnnotation(callback)
     } else {
       this.retrieveUserProfile(() => {
         // Load all the groups belonged to current user
         this.retrieveGroups((err, groups) => {
           if (err) {
-
+            callback(err)
           } else {
             let group = _.find(groups, (group) => { return group.name === GroupName })
             if (_.isObject(group)) {
@@ -121,38 +107,16 @@ class GroupSelector {
         })
       })
     }
-  }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(Manual, LINE)
-
-  // Defines the one of the possibles groups as the current group of the highlighter
-  defineCurrentGroup (callback) {
+    // PVSCL:ELSEIFCOND(Manual)
+    // Defines the one of the possibles groups as the current group of the highlighter
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
-      let annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
-      // Load group of annotation
-      this.retrieveUserProfile(() => {
-        this.retrieveGroups((err, groups) => {
-          if (err) {
-            if (_.isFunction(callback)) {
-              callback(err)
-            }
-          } else {
-            // Set current group
-            this.currentGroup = _.find(groups, (group) => { return group.id === annotationGroupId })
-            // Save to chrome storage current group
-            ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
-            if (_.isFunction(callback)) {
-              callback()
-            }
-          }
-        })
-      })
+      this.defineGroupBasedOnInitAnnotation(callback)
     } else {
       this.retrieveUserProfile(() => {
         // Load all the groups belonged to current user
         this.retrieveGroups((err, groups) => {
           if (err) {
-
+            callback(err)
           } else {
             ChromeStorage.getData(this.selectedGroupNamespace, ChromeStorage.local, (err, savedCurrentGroup) => {
               if (!err && !_.isEmpty(savedCurrentGroup) && _.has(savedCurrentGroup, 'data')) {
@@ -171,7 +135,7 @@ class GroupSelector {
                 }
               }
               // If group cannot be retrieved from saved in extension storage
-              //PVSCL:IFCOND(User, LINE)
+              // PVSCL:IFCOND(User, LINE)
               // Try to load a group with defaultName
               if (_.isEmpty(this.currentGroup)) {
                 this.currentGroup = _.find(window.abwa.groupSelector.groups, (group) => { return group.name === GroupName })
@@ -188,14 +152,14 @@ class GroupSelector {
                   if (err) {
                     Alerts.errorAlert({text: 'We are unable to create the group. Please check if you are logged in the storage.'})
                   } else {
-                    //PVSCL:IFCOND(Hypothesis, LINE)
+                    // PVSCL:IFCOND(Hypothesis, LINE)
                     // Modify group URL in hypothesis
                     if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
                       if (_.has(group, 'links.html')) {
                         group.links.html = group.links.html.substr(0, group.links.html.lastIndexOf('/'))
                       }
                     }
-                    //PVSCL:ENDCOND
+                    // PVSCL:ENDCOND
                     this.currentGroup = group
                     callback(null)
                   }
@@ -205,12 +169,12 @@ class GroupSelector {
                   callback()
                 }
               }
-              //PVSCL:ELSECOND
+              // PVSCL:ELSECOND
               // PVSCL:IFCOND(Local, LINE)
               if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups) && LanguageUtils.isInstanceOf(window.abwa.storageManager, LocalStorageManager)) {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
               }
-              //PVSCL:ENDCOND
+              // PVSCL:ENDCOND
               // TODO Add an option to get the current group by the extension identification, only retrieves groups created by the product
               if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups)) {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
@@ -221,18 +185,14 @@ class GroupSelector {
               if (_.isFunction(callback)) {
                 callback()
               }
-              //PVSCL:ENDCOND
+              // PVSCL:ENDCOND
             })
           }
         })
       })
     }
-  }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(MoodleResourceBased, LINE)
-
-  // Defines the current group of the highlighter with an a Moodle based group
-  defineCurrentGroup (callback) {
+    // PVSCL:ELSEIFCOND(MoodleResourceBased)
+    // Defines the current group of the highlighter with an a Moodle based group
     let fileMetadata = window.abwa.contentTypeManager.fileMetadata
     // Get group name from file metadata
     let groupName = (new URL(fileMetadata.url)).host + fileMetadata.courseId + fileMetadata.studentId
@@ -240,7 +200,7 @@ class GroupSelector {
     // Load all the groups belonged to current user
     this.retrieveGroups((err, groups) => {
       if (err) {
-
+        callback(err)
       } else {
         let group = _.find(groups, (group) => { return group.name === hashedGroupName })
         if (_.isObject(group)) {
@@ -256,8 +216,30 @@ class GroupSelector {
         }
       }
     })
+    // PVSCL:ENDCOND
   }
-//PVSCL:ENDCOND
+
+  defineGroupBasedOnInitAnnotation (callback) {
+    let annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
+    // Load group of annotation
+    this.retrieveUserProfile(() => {
+      this.retrieveGroups((err, groups) => {
+        if (err) {
+          if (_.isFunction(callback)) {
+            callback(err)
+          }
+        } else {
+          // Set current group
+          this.currentGroup = _.find(groups, (group) => { return group.id === annotationGroupId })
+          // Save to chrome storage current group
+          ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
+          if (_.isFunction(callback)) {
+            callback()
+          }
+        }
+      })
+    })
+  }
 
   checkIsLoggedIn (callback) {
     let sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
@@ -265,7 +247,7 @@ class GroupSelector {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))
       if (!window.abwa.storageManager.isLoggedIn()) {
-        //PVSCL:IFCOND(Hypothesis,LINE)
+        // PVSCL:IFCOND(Hypothesis,LINE)
         // Display login/sign up form
         $('#notLoggedInGroupContainer').attr('aria-hidden', 'false')
         // Hide group container
@@ -276,7 +258,7 @@ class GroupSelector {
         chrome.runtime.sendMessage({scope: 'hypothesis', cmd: 'startListeningLogin'})
         // Open the sidebar to notify user that needs to log in
         window.abwa.sidebar.openSidebar()
-        //PVSCL:ENDCOND
+        // PVSCL:ENDCOND
         if (_.isFunction(callback)) {
           callback(new Error('Is not logged in'))
         }
@@ -287,13 +269,13 @@ class GroupSelector {
       }
     })
   }
-//PVSCL:IFCOND(User,LINE)
+  // PVSCL:IFCOND(User,LINE)
 
   createApplicationBasedGroupForUser (callback) {
     window.abwa.storageManager.client.createNewGroup({name: Config.groupName}, callback)
   }
-//PVSCL:ENDCOND
-// PVSCL:IFCOND(Manual, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Manual, LINE)
 
   reloadGroupsContainer (callback) {
     this.retrieveGroups(() => {
@@ -336,22 +318,22 @@ class GroupSelector {
       nameElement.innerText = group.name
       nameElement.title = 'Move to review model ' + group.name
       nameElement.addEventListener('click', this.createGroupChangeEventHandler(group.id))
-      //PVSCL:IFCOND(RenameGroup or ExportGroup or DropGroup,LINE)
+      // PVSCL:IFCOND(RenameGroup or ExportGroup or DropGroup,LINE)
       // Toggle
       groupSelectorItem.querySelector('.groupSelectorItemToggle').addEventListener('click', this.createGroupSelectorItemToggleEventHandler(group.id))
       // Options
-      //PVSCL:IFCOND(RenameGroup,LINE)
+      // PVSCL:IFCOND(RenameGroup,LINE)
       groupSelectorItem.querySelector('.renameGroup').addEventListener('click', this.createGroupSelectorRenameOptionEventHandler(group))
-      //PVSCL:ENDCOND
-      //PVSCL:IFCOND(ExportGroup,LINE)
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(ExportGroup,LINE)
       groupSelectorItem.querySelector('.exportGroup').addEventListener('click', this.createGroupSelectorExportOptionEventHandler(group))
-      //PVSCL:ENDCOND
-      //PVSCL:IFCOND(DropGroup,LINE)
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(DropGroup,LINE)
       groupSelectorItem.querySelector('.deleteGroup').addEventListener('click', this.createGroupSelectorDeleteOptionEventHandler(group))
-      //PVSCL:ENDCOND
-      //PVSCL:ENDCOND
+      // PVSCL:ENDCOND
+      // PVSCL:ENDCOND
     }
-    //PVSCL:IFCOND(CreateGroup,LINE)
+    // PVSCL:IFCOND(CreateGroup,LINE)
     // New group button
     let newGroupButton = document.createElement('div')
     newGroupButton.innerText = 'Create review model'
@@ -360,8 +342,8 @@ class GroupSelector {
     newGroupButton.title = 'Create a new review model'
     newGroupButton.addEventListener('click', this.createNewReviewModelEventHandler())
     groupsContainer.appendChild(newGroupButton)
-    //PVSCL:ENDCOND
-    //PVSCL:IFCOND(ImportGroup,LINE)
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(ImportGroup,LINE)
     // Import button
     let importGroupButton = document.createElement('div')
     importGroupButton.className = 'groupSelectorButton'
@@ -369,7 +351,7 @@ class GroupSelector {
     importGroupButton.id = 'importReviewModelButton'
     importGroupButton.addEventListener('click', this.createImportGroupButtonEventHandler())
     groupsContainer.appendChild(importGroupButton)
-    //PVSCL:ENDCOND
+    // PVSCL:ENDCOND
   }
 
   createGroupSelectorToggleEvent () {
@@ -416,7 +398,7 @@ class GroupSelector {
       }
     })
   }
-//PVSCL:IFCOND(RenameGroup or ExportGroup or DropGroup,LINE)
+  // PVSCL:IFCOND(RenameGroup or ExportGroup or DropGroup,LINE)
 
   createGroupSelectorItemToggleEventHandler (groupId) {
     return (e) => {
@@ -428,8 +410,8 @@ class GroupSelector {
       }
     }
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(RenameGroup,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(RenameGroup,LINE)
 
   createGroupSelectorRenameOptionEventHandler (group) {
     return () => {
@@ -448,8 +430,8 @@ class GroupSelector {
       })
     }
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(ExportGroup,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ExportGroup,LINE)
 
   createGroupSelectorExportOptionEventHandler (group) {
     return () => {
@@ -460,8 +442,8 @@ class GroupSelector {
       })
     }
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(DropGroup,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(DropGroup,LINE)
 
   createGroupSelectorDeleteOptionEventHandler (group) {
     return (e) => {
@@ -488,8 +470,8 @@ class GroupSelector {
       })
     }
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(CreateGroup,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(CreateGroup,LINE)
 
   createNewReviewModelEventHandler () {
     return () => {
@@ -542,8 +524,8 @@ class GroupSelector {
       }
     })
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(ImportGroup,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ImportGroup,LINE)
 
   createImportGroupButtonEventHandler () {
     return (e) => {
@@ -613,7 +595,7 @@ class GroupSelector {
       }
     })
   }
-//PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   updateCurrentGroupHandler (groupId) {
     this.currentGroup = _.find(this.groups, (group) => { return groupId === group.id })
@@ -626,7 +608,7 @@ class GroupSelector {
       })
     })
   }
-// PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   retrieveGroups (callback) {
     window.abwa.storageManager.client.getListOfGroups({}, (err, groups) => {
@@ -636,7 +618,7 @@ class GroupSelector {
         }
       } else {
         this.groups = groups
-        //PVSCL:IFCOND(Hypothesis,LINE)
+        // PVSCL:IFCOND(Hypothesis,LINE)
         // Remove public group in hypothes.is and modify group URL
         if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
           _.remove(this.groups, (group) => {
@@ -648,7 +630,7 @@ class GroupSelector {
             }
           })
         }
-        //PVSCL:ENDCOND
+        // PVSCL:ENDCOND
         if (_.isFunction(callback)) {
           callback(null, groups)
         }
@@ -688,7 +670,7 @@ class GroupSelector {
       return null
     }
   }
-  //PVSCL:IFCOND( ExportGroup, LINE)
+  // PVSCL:IFCOND( ExportGroup, LINE)
 
   exportCriteriaConfiguration (group, callback) {
     // Retrieve group annotations
@@ -701,8 +683,8 @@ class GroupSelector {
       }
     })
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND( RenameGroup, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND( RenameGroup, LINE)
 
   renameGroup (group, callback) {
     Alerts.inputTextAlert({
@@ -735,8 +717,8 @@ class GroupSelector {
       }
     })
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND( DropGroup, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND( DropGroup, LINE)
 
   deleteGroup (group, callback) {
     Alerts.confirmAlert({
@@ -756,10 +738,10 @@ class GroupSelector {
       }
     })
   }
-//PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   destroy (callback) {
-    //PVSCL:IFCOND( Manual, LINE)
+    // PVSCL:IFCOND( Manual, LINE)
     // Destroy intervals
     if (this.loggedInInterval) {
       clearInterval(this.loggedInInterval)

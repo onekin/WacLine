@@ -9,12 +9,12 @@ const Config = require('../Config')
 const AnnotationGuide = require('../definition/AnnotationGuide')
 const Theme = require('../definition/Theme')
 // const AnnotationUtils = require('../utils/AnnotationUtils')
-//PVSCL:IFCOND(User,LINE)
+// PVSCL:IFCOND(User,LINE)
 const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(Code,LINE)
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Code,LINE)
 const Code = require('../definition/Code')
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 
 class TagManager {
   constructor () {
@@ -93,13 +93,13 @@ class TagManager {
         annotations = _.filter(annotations, (annotation) => {
           return !this.hasATag(annotation, 'slr:spreadsheet')
         })
-        //PVSCL:IFCOND(MoodleURL,LINE)
+        // PVSCL:IFCOND(MoodleURL,LINE)
         // Remove tags which are not for the current assignment
         let cmid = window.abwa.contentTypeManager.fileMetadata.cmid
         annotations = _.filter(annotations, (annotation) => {
           return this.hasATag(annotation, 'cmid:' + cmid)
         })
-        //PVSCL:ENDCOND
+        // PVSCL:ENDCOND
         if (_.isFunction(callback)) {
           callback(null, annotations)
         }
@@ -305,14 +305,14 @@ class TagManager {
                 // PVSCL:ENDCOND
                 LanguageUtils.dispatchCustomEvent(Events.annotate, {
                   tags: tags,
-                  id: code.idPVSCL:IFCOND(SingleCode),
-                  lastAnnotatedCode: currentlyAnnotatedCodePVSCL:ENDCOND
+                  id: code.id/* PVSCL:IFCOND(SingleCode) */,
+                  lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
                 })
               }
             }
-          }PVSCL:IFCOND(Dynamic),
+          }/* PVSCL:IFCOND(Dynamic) */,
           groupRightClickHandler: this.createThemeRightClickHandler(),
-          buttonRightClickHandler: this.createCodeRightClickHandler()PVSCL:ENDCOND
+          buttonRightClickHandler: this.createCodeRightClickHandler()/* PVSCL:ENDCOND */
         })
       } else {
         themeButtonContainer = Buttons.createButton({
@@ -336,8 +336,8 @@ class TagManager {
                 })
               }
             }
-          }PVSCL:IFCOND(Dynamic),
-          buttonRightClickHandler: this.createThemeRightClickHandler()PVSCL:ENDCOND
+          }/* PVSCL:IFCOND(Dynamic) */,
+          buttonRightClickHandler: this.createThemeRightClickHandler()/* PVSCL:ENDCOND */
         })
       }
       // PVSCL:ELSECOND
@@ -362,8 +362,8 @@ class TagManager {
               })
             }
           }
-        }PVSCL:IFCOND(Dynamic),
-        buttonRightClickHandler: this.createThemeRightClickHandler()PVSCL:ENDCOND
+        }/* PVSCL:IFCOND(Dynamic) */,
+        buttonRightClickHandler: this.createThemeRightClickHandler()/* PVSCL:ENDCOND */
       })
       // PVSCL:ENDCOND
       if (_.isElement(themeButtonContainer)) {
@@ -457,7 +457,7 @@ class TagManager {
       }
     }
   }
-//PVSCL:ENDCOND
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(Code and Dynamic, LINE)
 
   createNewCode ({theme, callback}) {
@@ -552,7 +552,7 @@ class TagManager {
     this.buttonContainer.innerHTML = ''
     this.createButtons()
   }
-  //PVSCL:IFCOND(Dynamic, LINE)
+  // PVSCL:IFCOND(Dynamic, LINE)
 
   removeTheme (theme) {
     // Ask user is sure to remove

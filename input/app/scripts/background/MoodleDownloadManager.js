@@ -90,7 +90,7 @@ class MoodleDownloadManager {
           // Check if auto-open option is activated
           ChromeStorage.getData('autoOpenFiles', ChromeStorage.sync, (err, result) => {
             if (err) {
-
+              // Nothing to do
             } else {
               let autoOpen = result.activated // TODO Change
               if (autoOpen) {

@@ -9,7 +9,7 @@ const Screenshots = require('../consumption/visualizations/Screenshots')
 // PVSCL:IFCOND(GSheetConsumer,LINE)
 const GoogleSheetGenerator = require('../consumption/visualizations/GoogleSheetGenerator')
 // PVSCL:ENDCOND
-//PVSCL:IFCOND(LastAnnotation,LINE)
+// PVSCL:IFCOND(LastAnnotation,LINE)
 const Resume = require('../consumption/visualizations/Resume')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(TextSummary,LINE)
@@ -88,7 +88,7 @@ class Toolset {
         this.deleteGroupButtonHandler()
       })
       // PVSCL:ENDCOND
-      //PVSCL:IFCOND(LastAnnotation,LINE)
+      // PVSCL:IFCOND(LastAnnotation,LINE)
       // Set GoToLast image
       let goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
       this.goToLastImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -132,36 +132,36 @@ class Toolset {
       }
     })
   }
-  //PVSCL:IFCOND(Screenshot,LINE)
+  // PVSCL:IFCOND(Screenshot,LINE)
   screenshotButtonHandler () {
     Screenshots.takeScreenshot()
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Canvas,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Canvas,LINE)
   canvasButtonHandler () {
     Canvas.generateCanvas()
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(TextSummary,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(TextSummary,LINE)
   textSummaryButtonHandler () {
     TextSummary.generateReview()
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(DeleteGroup,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(DeleteGroup,LINE)
   deleteGroupButtonHandler () {
     DeleteGroup.deleteAnnotations()
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(LastAnnotation,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(LastAnnotation,LINE)
   goToLastButtonHandler () {
     Resume.resume()
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(GSheetConsumer,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(GSheetConsumer,LINE)
   generateGoogleSheet () {
     GoogleSheetGenerator.generate()
   }
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   /**
    * Show toolset in sidebar

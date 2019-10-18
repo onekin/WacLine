@@ -324,17 +324,15 @@ class TextAnnotator extends ContentAnnotator {
           console.debug('Created annotation with ID: ' + annotation.id)
           // PVSCL:IFCOND(UserFilter, LINE)
           if (wasDisabledInUserFilter) {
-            this.redrawAnnotations(() => {
-              window.getSelection().removeAllRanges()
-            })
+            this.redrawAnnotations()
           } else {
-            this.highlightAnnotation(annotation, () => {
-              window.getSelection().removeAllRanges()
-            })
+            this.highlightAnnotation(annotation)
           }
           // PVSCL:ELSECOND
-          window.getSelection().removeAllRanges()
+          // Highlight annotation
+          this.highlightAnnotation(annotation)
           // PVSCL:ENDCOND
+          window.getSelection().removeAllRanges()
         }
       })
     }
@@ -589,8 +587,7 @@ class TextAnnotator extends ContentAnnotator {
             highlightedElement.title = tag.name
           } /* PVSCL:IFCOND(Code) */ else if (LanguageUtils.isInstanceOf(tag, Code)) {
             highlightedElement.title = tag.theme.name + '\nCode: ' + tag.name
-          }
-          // PVSCL:ENDCOND
+          } /* PVSCL:ENDCOND */
           // PVSCL:IFCOND(GSheetProvider, LINE)
           let user = annotation.user.replace('acct:', '').replace('@hypothes.is', '')
           highlightedElement.title += '\nAuthor: ' + user

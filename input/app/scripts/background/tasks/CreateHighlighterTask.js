@@ -13,7 +13,7 @@ const LanguageUtils = require('../../utils/LanguageUtils')
 const Local = require('../../storage/local/Local')
 const LocalStorageManager = require('../../storage/local/LocalStorageManager')
 // PVSCL:ENDCOND
-//PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+// PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
 const ChromeStorage = require('../../utils/ChromeStorage')
 // PVSCL:ENDCOND
 
@@ -156,7 +156,7 @@ class CreateHighlighterTask extends Task {
     } else {
       group = newGroup
     }
-    //PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
     ChromeStorage.getData('storage.selected', ChromeStorage.sync, (err, storage) => {
       if (err) {
         console.error('ErrorSettingStorage')
@@ -318,9 +318,9 @@ class CreateHighlighterTask extends Task {
       uri: storage.group.links.html // Compatibility with both group representations getGroups and userProfile
     }
   }
-//PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
 
   loadStorage (callback) {
+    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     this.storageClientManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
@@ -336,10 +336,7 @@ class CreateHighlighterTask extends Task {
         }
       }
     })
-  }
-//PVSCL:ELSECOND
-
-  loadStorage (callback) {
+    // PVSCL:ELSECOND
     let defaultStorage = Config.defaultStorage
     ChromeStorage.getData('storage.selected', ChromeStorage.sync, (err, storage) => {
       if (err) {
@@ -369,8 +366,8 @@ class CreateHighlighterTask extends Task {
         })
       }
     })
+    // PVSCL:ENDCOND
   }
-//PVSCL:ENDCOND
 
   initLoginProcess (callback) {
     this.storageClientManager.logIn((err) => {

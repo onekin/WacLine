@@ -25,7 +25,7 @@ if (_.isEmpty(window.abwa)) {
   })
   // Check if uri contains annotation to initialize
   let promise = new Promise((resolve) => {
-  	// PVSCL:IFCOND(Dropbox, LINE)
+    // PVSCL:IFCOND(Dropbox, LINE)
     if (window.location.href.includes('dl.dropboxusercontent.com') && !window.location.href.includes('chrome-extension')) {
       chrome.runtime.onMessage.addListener((request, sender, sendresponse) => {
         let location = window.location.href + 'url::' + request.url

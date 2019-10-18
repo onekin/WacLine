@@ -21,22 +21,33 @@ const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
 
 class AnnotationGuide {
-  constructor ({id = null, name = '', storage = nullPVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL), moodleEndpoint = null, assignmentName = null, assignmentId = null, courseId = null, cmid = nullPVSCL:ENDCONDPVSCL:IFCOND(GSheetProvider), spreadsheetId = null, sheetId = nullPVSCL:ENDCOND}) {
+  constructor ({
+    id = null,
+    name = '',
+    storage = null/* PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL) */,
+    moodleEndpoint = null,
+    assignmentName = null,
+    assignmentId = null,
+    courseId = null,
+    cmid = null/* PVSCL:ENDCOND *//* PVSCL:IFCOND(GSheetProvider) */,
+    spreadsheetId = null,
+    sheetId = null/* PVSCL:ENDCOND */
+  }) {
     this.id = id
     this.name = name
     this.themes = []
     this.storage = storage
- // PVSCL:IFCOND(MoodleProvider,LINE)
+    // PVSCL:IFCOND(MoodleProvider,LINE)
     this.moodleEndpoint = moodleEndpoint
     this.assignmentName = assignmentName
     this.assignmentId = assignmentId
     this.courseId = courseId
     this.cmid = cmid
- // PVSCL:ENDCOND
- // PVSCL:IFCOND(GSheetProvider,LINE)
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GSheetProvider,LINE)
     this.spreadsheetId = spreadsheetId
     this.sheetId = sheetId
- // PVSCL:ENDCOND   
+    // PVSCL:ENDCOND
   }
 
   toAnnotation () {
@@ -47,6 +58,24 @@ class AnnotationGuide {
     let cmidTag = 'cmid:' + this.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
+    // Construct text attribute of the annotation
+    let textObject
+    // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL,LINE)
+    textObject = {
+      moodleEndpoint: this.moodleEndpoint,
+      assignmentId: this.assignmentId,
+      assignmentName: this.assignmentName,
+      courseId: this.courseId,
+      cmid: this.cmid
+    }
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GSheetProvider,LINE)
+    textObject = {
+      spreadsheetId: this.spreadsheetId,
+      sheetId: this.sheetId
+    }
+    // PVSCL:ENDCOND
+    // Return the constructed annotation
     return {
       name: this.name,
       group: this.storage.group.id,
@@ -57,19 +86,7 @@ class AnnotationGuide {
       motivation: 'defining',
       tags: tags,
       target: [],
-      text: jsYaml.dump({
-        // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL,LINE)
-        moodleEndpoint: this.moodleEndpoint,
-        assignmentId: this.assignmentId,
-        assignmentName: this.assignmentName,
-        courseId: this.courseId,
-        cmid: this.cmid
-        // PVSCL:ENDCOND
-        // PVSCL:IFCOND(GSheetProvider,LINE)
-        spreadsheetId: this.spreadsheetId,
-        sheetId: this.sheetId
-        // PVSCL:ENDCOND
-      }),
+      text: jsYaml.dump(textObject),
       uri: this.storage.group.links.html
     }
   }
@@ -88,13 +105,16 @@ class AnnotationGuide {
   static fromAnnotation (annotation, callback) {
     this.setStorage(null, (storage) => {
       let annotationGuideOpts = {id: annotation.id, name: annotation.name, storage: storage}
-      // PVSCL:IFCOND(GSheetProvider, LINE)
+      // PVSCL:IFCOND(GSheetProvider or MoodleProvider, LINE)
+      // Configuration for gsheet provider or moodle provider is saved in text attribute
+      // TODO Maybe this is not the best place to store this configuration, it wa done in this way to be visible in Hypothes.is client, but probably it should be defined in the body of the annotation
       let config = jsYaml.load(annotation.text)
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(GSheetProvider, LINE)
       annotationGuideOpts['spreadsheetId'] = config.spreadsheetId
       annotationGuideOpts['sheetId'] = config.sheetId
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleProvider, LINE)
-      let config = jsYaml.load(annotation.text)
       annotationGuideOpts['moodleEndpoint'] = config.moodleEndpoint
       annotationGuideOpts['assignmentId'] = config.assignmentId
       annotationGuideOpts['assignmentName'] = config.assignmentName
@@ -175,7 +195,7 @@ class AnnotationGuide {
     } else {
       group = newGroup
     }
-    //PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
       if (storage === 'hypothesis') {
         // Hypothesis
@@ -200,7 +220,7 @@ class AnnotationGuide {
     }
     // PVSCL:ENDCOND
   }
-//PVSCL:IFCOND(User or ImportGroup,LINE)
+  // PVSCL:IFCOND(User or ImportGroup,LINE)
 
   static fromUserDefinedHighlighterDefinition (userDefinedHighlighterDefinition) {
     let annotationGuide = new AnnotationGuide({name: userDefinedHighlighterDefinition.name})
@@ -221,8 +241,8 @@ class AnnotationGuide {
     }
     return annotationGuide
   }
-//PVSCL:ENDCOND
-//PVSCL:IFCOND(GSheetProvider,LINE)  
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(GSheetProvider,LINE)
 
   static fromGSheetProvider (callback) {
     let annotationGuide = new AnnotationGuide({})
@@ -237,12 +257,12 @@ class AnnotationGuide {
             callback(err)
           } else {
             // Retrieve spreadsheet title
-            //PVSCL:IFCOND(Manual,LINE)
+            // PVSCL:IFCOND(Manual,LINE)
             annotationGuide.name = spreadsheet.properties.title
-            //PVSCL:ENDCOND
-            //PVSCL:IFCOND(ApplicationBased,LINE)
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(ApplicationBased,LINE)
             annotationGuide.name = Config.groupName
-            //PVSCL:ENDCOND
+            // PVSCL:ENDCOND
             let themes = this.getThemesAndCodesGSheet(spreadsheet, annotationGuide)
             if (_.isError(themes)) {
               callback(err)
@@ -353,7 +373,7 @@ class AnnotationGuide {
               }
             }
           }
-         // PVSCL:ENDCOND
+          // PVSCL:ENDCOND
           return themes
         } else {
           Alerts.errorAlert('The spreadsheet hasn\'t the correct structure, you have not defined any facet.')
@@ -371,11 +391,13 @@ class AnnotationGuide {
   // PVSCL:ENDCOND
 
   getCodeOrThemeFromId (id) {
+    let themeOrCodeToReturn = null
     let theme = _.find(this.themes, (theme) => {
       return theme.id === id
     })
-    // PVSCL:IFCOND(Code,LINE)
-    if (!LanguageUtils.isInstanceOf(theme, Theme)) {
+    if (LanguageUtils.isInstanceOf(theme, Theme)) {
+      themeOrCodeToReturn = theme
+    } /* PVSCL:IFCOND(Code) */ else {
       // Look for code inside themes
       for (let i = 0; i < this.themes.length; i++) {
         let theme = this.themes[i]
@@ -383,16 +405,11 @@ class AnnotationGuide {
           return code.id === id
         })
         if (LanguageUtils.isInstanceOf(code, Code)) {
-          return code
+          themeOrCodeToReturn = code
         }
       }
-      return null
-    } else {
-      return theme
-    }
-    // PVSCL:ELSECOND
-    return theme
-    // PVSCL:ENDCOND
+    } /* PVSCL:ENDCOND */
+    return themeOrCodeToReturn
   }
   // PVSCL:IFCOND(Dynamic, LINE)
 
@@ -410,7 +427,7 @@ class AnnotationGuide {
     _.remove(this.themes, theme)
   }
   // PVSCL:ENDCOND
-  //PVSCL:IFCOND(MoodleProvider, LINE)
+  // PVSCL:IFCOND(MoodleProvider, LINE)
 
   static createAnnotationGuideFromObject (rubric) {
     // Instance rubric object
@@ -421,7 +438,7 @@ class AnnotationGuide {
     }
     return instancedAnnotationGuide
   }
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(ExportGroup, LINE)
 
   toObject (name) {
@@ -438,8 +455,8 @@ class AnnotationGuide {
     }
     return object
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(PreviousAssignments, LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(PreviousAssignments, LINE)
 
   getUrlToStudentAssignmentForTeacher (studentId) {
     if (studentId && this.moodleEndpoint && this.cmid) {
@@ -456,7 +473,7 @@ class AnnotationGuide {
       return null
     }
   }
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 }
 
 module.exports = AnnotationGuide

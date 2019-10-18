@@ -1,14 +1,14 @@
-//PVSCL:IFCOND(Local,LINE)
+// PVSCL:IFCOND(Local,LINE)
 const Alerts = require('../utils/Alerts')
 const FileUtils = require('../utils/FileUtils')
 const LocalStorageManager = require('../storage/local/LocalStorageManager')
 const FileSaver = require('file-saver')
-//PVSCL:ENDCOND
+// PVSCL:ENDCOND
 const _ = require('lodash')
 
 class Options {
   init () {
-    //PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
     // Storage type
     document.querySelector('#storageDropdown').addEventListener('change', (event) => {
       // Get value
@@ -22,8 +22,8 @@ class Options {
       document.querySelector('#storageDropdown').value = storage
       this.showSelectedStorageConfiguration(storage)
     })
-    //PVSCL:ENDCOND
-    //PVSCL:IFCOND(Local,LINE)
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Local,LINE)
     // Local storage restore
     document.querySelector('#restoreDatabaseButton').addEventListener('click', () => {
       Alerts.inputTextAlert({
@@ -74,9 +74,9 @@ class Options {
         }
       })
     })
-    //PVSCL:ENDCOND
+    // PVSCL:ENDCOND
   }
-  //PVSCL:IFCOND(Local,LINE)
+  // PVSCL:IFCOND(Local,LINE)
 
   restoreDatabase (jsonObject, callback) {
     window.options.localStorage = new LocalStorageManager()
@@ -104,8 +104,8 @@ class Options {
       window.options.localStorage.cleanDatabase(callback)
     })
   }
-  //PVSCL:ENDCOND
-  //PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
 
   setStorage (storage) {
     chrome.runtime.sendMessage({
@@ -116,7 +116,7 @@ class Options {
       console.debug('Storage selected ' + storage)
     })
   }
-  //PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 
   showSelectedStorageConfiguration (selectedStorage) {
     // Hide all storage configurations
