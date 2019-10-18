@@ -324,17 +324,15 @@ class TextAnnotator extends ContentAnnotator {
           console.debug('Created annotation with ID: ' + annotation.id)
           // PVSCL:IFCOND(UserFilter, LINE)
           if (wasDisabledInUserFilter) {
-            this.redrawAnnotations(() => {
-              window.getSelection().removeAllRanges()
-            })
+            this.redrawAnnotations()
           } else {
-            this.highlightAnnotation(annotation, () => {
-              window.getSelection().removeAllRanges()
-            })
+            this.highlightAnnotation(annotation)
           }
           // PVSCL:ELSECOND
-          window.getSelection().removeAllRanges()
+          // Highlight annotation
+          this.highlightAnnotation(annotation)
           // PVSCL:ENDCOND
+          window.getSelection().removeAllRanges()
         }
       })
     }
