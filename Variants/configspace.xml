@@ -20,7 +20,7 @@
 </cm:property>
 <cm:property cm:id="iVlHLBtU-tSrUMxB6" cm:type="ps:string" cm:name="conf_create_dir"><cm:constant cm:id="im7Y49z35ppFueLMo" cm:type="ps:string">true</cm:constant>
 </cm:property>
-<cm:property cm:id="iW1X4-na_oZA_Fc7T" cm:type="ps:string" cm:name="recover"><cm:constant cm:id="itAULy4XjKCnD1wk-" cm:type="ps:string">true</cm:constant>
+<cm:property cm:id="iW1X4-na_oZA_Fc7T" cm:type="ps:string" cm:name="recover"><cm:constant cm:id="iEXGbcWt3a7yb8RGU" cm:type="ps:string">true</cm:constant>
 </cm:property>
 </cm:properties>
 </cm:element>
@@ -28,7 +28,7 @@
 </cm:property>
 <cm:property cm:id="iZDLHeZPP-qHf-4J7" cm:type="ps:path" cm:name="model_path"><cm:constant cm:id="i68Ot4WR-fzTUPjx4" cm:type="ps:path">$(PROJECT)/WebAnnotator.xfm</cm:constant>
 </cm:property>
-<cm:property cm:id="io-R8MTTIfJ1xvB0k" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="igLxpqVFqmrjTeR4z" cm:type="ps:integer">1</cm:constant>
+<cm:property cm:id="io-R8MTTIfJ1xvB0k" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="iKGULkhSmzOLlWcxC" cm:type="ps:integer">1</cm:constant>
 </cm:property>
 </cm:properties>
 </cm:element>
@@ -36,7 +36,7 @@
 </cm:property>
 <cm:property cm:id="i0krR5cXmI8wr6gp6" cm:type="ps:path" cm:name="model_path"><cm:constant cm:id="i9z0J_jMsAmxX4gP3" cm:type="ps:path">$(PROJECT)/WebAnnotator.ccfm</cm:constant>
 </cm:property>
-<cm:property cm:id="iBoQS5-K4uxm18Nv9" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="idtoDyu90BITQX0ea" cm:type="ps:integer">1</cm:constant>
+<cm:property cm:id="iBoQS5-K4uxm18Nv9" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="iJksJI_wgxWwXv3Q3" cm:type="ps:integer">1</cm:constant>
 </cm:property>
 </cm:properties>
 </cm:element>
