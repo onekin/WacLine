@@ -444,10 +444,11 @@
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iDHSCs0Wg0cBE9vml" cm:class="ps:children">
-        <cm:relation cm:id="iXcCMgciisUKyo0K0" cm:type="ps:or">
+        <cm:relation cm:id="iXcCMgciisUKyo0K0" cm:type="ps:or" cm:range="[1,n]">
           <cm:target cm:id="iE4wLcsld7peWnYJa">./irEHGGoWh2Bf8Vyfh</cm:target>
           <cm:target cm:id="iWqXcqGdKrpitk0OC">./iy8LlR6jKh5d97Tv8</cm:target>
           <cm:target cm:id="iClnP5kvzDqtVHxTF">./iUYLAxRK4gHoxev47</cm:target>
+          <cm:target cm:id="i7n0NpEqYoWOgdKqh">./i9rU_8KKYlMT1C1iR</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -461,7 +462,7 @@
           <cm:constant cm:id="iz1OqS1C0r6LhUEMu" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i7xj8SrgTdb39T7uj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i9zNQmInvntTmps6g" cm:type="ps:datetime">2019-10-15T07:56:41.086Z</cm:constant>
+          <cm:constant cm:id="i9zNQmInvntTmps6g" cm:type="ps:datetime">2019-10-23T15:39:10.606Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1976,6 +1977,30 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i-01nieU7q4jzXGNJ" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleComment</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i9rU_8KKYlMT1C1iR" cm:name="SpringerLink" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="id4Ma9Uk1QcAH8EFi" cm:class="ps:parents">
+        <cm:relation cm:id="iBHQsZWhr82gp3oaR" cm:type="ps:parent">
+          <cm:target cm:id="iGElstWa3IBh5xjKF">./iQtIAWQv5tJjKZoXP</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ih1s2fipLgvU_FYad" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iUs91B4vumL5jS15N" cm:type="ps:string">RaulMedeiros</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iX8osWgChw7bnyLo2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iDYIk417135RC1Cj7" cm:type="ps:datetime">2019-10-23T15:39:10.606Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iUPgwE1FwfS19GLa_" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="imHmzGAIlbKmpNPaZ" cm:type="ps:string">RaulMedeiros</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iTmCQpxF6EJ-kVpLk" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i5gY-2hQxIE_xWtQa" cm:type="ps:datetime">2019-10-23T15:39:10.606Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iUrPFJUEYsBn1p9O3" cm:mimetype="text/plain" cm:encoding="utf-8">SpringerLink</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>

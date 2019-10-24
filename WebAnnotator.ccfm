@@ -269,6 +269,11 @@
         <cm:script cm:id="iVcm6SqMQK82BcUCX" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.MoodleComment</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="iDehFBQsIBEac0U1m">
+      <cm:restriction cm:id="iubrcuOvzo8MiELNQ">
+        <cm:script cm:id="ipfcfDJt_j-qVt9ju" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.SpringerLink</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -4954,6 +4959,7 @@
           <cm:target cm:id="i1nHysu4o7EMzkYr0XS_FURBg19HOA2cGB2gHGiq0">./iNqpLxzPo0mFnPHRHw3a8WmoVqMj</cm:target>
           <cm:target cm:id="ikcz23nqKEhkcptDNI4sKpdHyVBRk6o_pW8BMlIBg">./idPt7JAB_mKs63VYSiOcY3z_gM_d</cm:target>
           <cm:target cm:id="i0Qa9o7E56PBNDkzuCP7vjiRpx4g">./i9FlwfuAtsXqU7901dU_Md_qdq1g</cm:target>
+          <cm:target cm:id="i59k_KKLQMMB4TeIq">./iXJs2Gp02RdUDllvR</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -24815,6 +24821,69 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ihbAnwwSQrPvtxguF" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleComment.js</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="itqbhx7RwQyHZAurx" cm:type="ps:pvscltext" cm:class="ps:source" cm:default="on">
+      <cm:relations cm:id="iAhulwa3clIHPv9vR" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="ix6gEwXrRICAuYBgn" cm:class="ps:parents">
+        <cm:relation cm:id="icdFH7jnS_EBi0Rfi" cm:type="ps:parent">
+          <cm:target cm:id="iTo5mOck0TpUa4cIE">./iXJs2Gp02RdUDllvR</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i6sRj6hEIBVB6wDiT" cm:type="ps:path" cm:fixed="true" cm:name="file">
+          <cm:constant cm:id="iU4KweGxxftaEqF3h" cm:type="ps:path">springerContentScript.js</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwhKeMLmhpGCKMBDj" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
+          <cm:constant cm:id="iYwrMtHQ-xFa7v3jZ" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ics6LPk6VmZBOwZpU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iED8t9mRx5X5Z0cSA" cm:type="ps:string">RaulMedeiros</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iW-CaTRc1_hDo8knd" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iNfHx2ykn5gWx2ya4" cm:type="ps:datetime">2019-10-24T07:06:08.295Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ireyl9xwzFJDVvDy9" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iWmig0G8PAWBzBDnP" cm:type="ps:string">RaulMedeiros</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLKLn0UmUoCqLFd_X" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="irTpyyN2s16nIDn6u" cm:type="ps:datetime">2019-10-24T07:14:30.106Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ivJq7BXJcFCBg2wVg" cm:mimetype="text/plain" cm:encoding="utf-8">springerContentScript.js</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iXJs2Gp02RdUDllvR" cm:restriction="iDehFBQsIBEac0U1m" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+      <cm:relations cm:id="iH9FHlLOui5NqQe8o" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="iBgr8893TQphRUj9X" cm:class="ps:parents">
+        <cm:relation cm:id="i_zR0dHBSLdouEu0A" cm:type="ps:parent">
+          <cm:target cm:id="i1UqtqlLe3MZTthFI">./icGR_X9_Zyy0IoAOQZXE1w12CA_f</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i2aabvG2g3-gxS_DE" cm:class="ps:children">
+        <cm:relation cm:id="iyuMdeC0tWsJj63WO" cm:type="ps:optional">
+          <cm:target cm:id="iAV0Ry9uAjqJGy6rW">./itqbhx7RwQyHZAurx</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iiQ8wY0seenGjbJV0" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i5H20HoBzuTej_wwI" cm:type="ps:string">RaulMedeiros</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRLSqJC3yUnQEG70n" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iMZ6mNLeNhwS1i-DR" cm:type="ps:datetime">2019-10-24T07:06:08.294Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iXsHKnoosBAk5Hcvt" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iaLHTEoTNKeetJpaz" cm:type="ps:string">RaulMedeiros</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iyFWxuEmGy8fiZryM" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iZB8ZbGgBJ0UobBBc" cm:type="ps:datetime">2019-10-24T07:06:29.394Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="im-5Zq_ILyCe0fkI7" cm:mimetype="text/plain" cm:encoding="utf-8">springerContentScript</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>

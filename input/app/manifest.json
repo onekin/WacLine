@@ -45,6 +45,11 @@
       "matches": ["*://www.sciencedirect.com/science/article/pii/*"],
       "js": ["scripts/scienceDirectContentScript.js"],
       "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(SpringerLink),
+    {
+      "matches": ["*://link.springer.com/*"],
+      "js": ["scripts/springerContentScript.js"],
+      "run_at": "document_end"
     }PVSCL:ENDCONDPVSCL:IFCOND(Manual and Hypothesis and Storage->pv:SelectedChildren()->pv:Size()=1),
     {
       "matches": [
