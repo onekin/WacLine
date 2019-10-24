@@ -45,7 +45,7 @@
       "matches": ["*://www.sciencedirect.com/science/article/pii/*"],
       "js": ["scripts/scienceDirectContentScript.js"],
       "run_at": "document_end"
-    }PVSCL:ENDCONDPVSCL:IFCOND(SpringerLink),
+    }PVSCL:ENDCONDPVSCL:IFCOND(Springer),
     {
       "matches": ["*://link.springer.com/*"],
       "js": ["scripts/springerContentScript.js"],
