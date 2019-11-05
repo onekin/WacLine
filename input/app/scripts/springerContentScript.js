@@ -1,11 +1,11 @@
 const URLUtils = require('./utils/URLUtils')
 const _ = require('lodash')
 const DOI = require('doi-regex')
+const Config = require('./Config')
 
 class SpringerContentScript {
   constructor () {
     this.doi = null
-    this.hag = null
   }
 
   init () {
@@ -23,14 +23,14 @@ class SpringerContentScript {
     let pdfLinkElements = this.getPdfLinkElement()
     if (pdfLinkElements.length > 0) {
       // Get if this tab has an annotation to open
-      if (!_.isEmpty(params) && !_.isEmpty(params.hag)) {
+      if (!_.isEmpty(params) && !_.isEmpty(params[Config.urlParamName])) {
         // Activate the extension
         chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, (result) => {
           console.log('Activated popup')
           // Retrieve pdf url
           let pdfUrl = pdfLinkElements[0].href
           // Create hash with required params to open extension
-          let hash = '#hag:' + params.hag
+          let hash = '#' + Config.urlParamName + ':' + params[Config.urlParamName]
           if (this.doi) {
             hash += '&doi:' + this.doi
           }
@@ -93,6 +93,6 @@ class SpringerContentScript {
   }
 }
 
-window.hag = {}
-window.hag.acmContentScript = new SpringerContentScript()
-window.hag.acmContentScript.init()
+window.springer = {}
+window.springer.springerContentScript = new SpringerContentScript()
+window.springer.springerContentScript.init()
