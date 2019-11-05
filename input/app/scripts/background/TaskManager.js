@@ -11,7 +11,7 @@ class TaskManager {
   }
 
   init () {
-    // TODO Init background listener for background tasks
+    // Init background listener for background tasks
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.scope === 'task') {
         if (request.cmd === 'createHighlighters') {

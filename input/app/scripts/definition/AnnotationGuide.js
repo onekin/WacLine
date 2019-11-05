@@ -59,7 +59,7 @@ class AnnotationGuide {
     tags.push(cmidTag)
     // PVSCL:ENDCOND
     // Construct text attribute of the annotation
-    let textObject
+    let textObject = {}
     // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL,LINE)
     textObject = {
       moodleEndpoint: this.moodleEndpoint,
@@ -145,13 +145,13 @@ class AnnotationGuide {
         // For the rest of annotations, get themes and codes
         let themeAnnotations = _.remove(annotations, (annotation) => {
           return _.some(annotation.tags, (tag) => {
-            return tag.includes('oa:theme:')
+            return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
           })
         })
         // PVSCL:IFCOND(Code,LINE)
         let codeAnnotations = _.remove(annotations, (annotation) => {
           return _.some(annotation.tags, (tag) => {
-            return tag.includes('oa:code:')
+            return tag.includes(Config.namespace + ':' + Config.tags.grouped.subgroup + ':')
           })
         })
         // PVSCL:ENDCOND
@@ -166,9 +166,9 @@ class AnnotationGuide {
           let codeAnnotation = codeAnnotations[i]
           // Get theme corresponding to the level
           let themeTag = _.find(codeAnnotation.tags, (tag) => {
-            return tag.includes('oa:isCodeOf:')
+            return tag.includes(Config.namespace + ':' + Config.tags.grouped.relation + ':')
           })
-          let themeName = themeTag.replace('oa:isCodeOf:', '')
+          let themeName = themeTag.replace(Config.namespace + ':' + Config.tags.grouped.relation + ':', '')
           let theme = _.find(guide.themes, (theme) => {
             return theme.name === themeName
           })

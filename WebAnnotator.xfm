@@ -18,6 +18,13 @@
       </cm:property>
     </cm:properties>
   </cm:head>
+  <cm:restrictions>
+    <cm:restset cm:id="iaTV32mbq7a9n-FHp">
+      <cm:restriction cm:id="i7lm8B7l-TuFqNIzX">
+        <cm:script cm:id="i_sNyzRlU86q5z__b" cm:language="ps:pvscl" cm:type="ps:boolean">Storage-&gt;pv:SelectedChildren()-&gt;pv:Contains(pv:Element(SELF-&gt;defaultStorage))</cm:script>
+      </cm:restriction>
+    </cm:restset>
+  </cm:restrictions>
   <cm:elements cm:rootid="itQl43VFxGXDPgxoO">
     <cm:element cm:id="itQl43VFxGXDPgxoO" cm:name="WebAnnotator" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="ij_z7eGJ0MmRMrQkJ" cm:class="ps:children">
@@ -59,7 +66,7 @@
         <cm:mimedesc cm:id="iW7ev_MIYGgs_ws-o" cm:mimetype="text/plain" cm:encoding="utf-8">WebAnnotator</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iMa6iMdWMevVMj_zT" cm:name="Storage" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+    <cm:element cm:id="iMa6iMdWMevVMj_zT" cm:restriction="iaTV32mbq7a9n-FHp" cm:name="Storage" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iffnbO_uCd7sjIwpn" cm:class="ps:parents">
         <cm:relation cm:id="iTZ8s5QmtNu-9bNOH" cm:type="ps:parent">
           <cm:target cm:id="iynzo1-z6sDoWP6jn">./itQl43VFxGXDPgxoO</cm:target>
@@ -80,13 +87,13 @@
           <cm:constant cm:id="ib7tdnUA56nbp-7pk" cm:type="ps:datetime">2019-04-29T15:10:11.859Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iKVMGwsKKKeF8jqQU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iMKgXJzdPh5Hv-ycm" cm:type="ps:string">RaulMedeiros</cm:constant>
+          <cm:constant cm:id="iMKgXJzdPh5Hv-ycm" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iHOz4DQvdk2XIv7bm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZWJT7KvMS0tN6RgT" cm:type="ps:datetime">2019-10-15T07:00:19.302Z</cm:constant>
+          <cm:constant cm:id="iZWJT7KvMS0tN6RgT" cm:type="ps:datetime">2019-10-29T14:25:16.290Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iLtmBzhmaB-6LgGXC" cm:type="ps:string" cm:name="defaultStorage">
-          <cm:constant cm:id="iBR5sKrb1tFl-3-wx" cm:type="ps:string">Local</cm:constant>
+          <cm:constant cm:id="imkHIYMOmnOiQi2OY" cm:type="ps:string">Local</cm:constant>
           <cm:desc>
             <cm:mimedesc cm:id="iCvHw2rgI6FOL1k0S" cm:mimetype="text/html" cm:encoding="utf-8">The value should be one of the selected storages</cm:mimedesc>
           </cm:desc>

@@ -1,4 +1,5 @@
 const TextUtils = require('./utils/URLUtils')
+const Config = require('./Config')
 // PVSCL:IFCOND(Hypothesis,LINE)
 const HypothesisClientManager = require('./storage/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
@@ -11,12 +12,12 @@ class ScienceDirectContentScript {
   init () {
     // Get if this tab has an annotation to open and a doi
     let params = TextUtils.extractHashParamsFromUrl(window.location.href)
-    if (!_.isEmpty(params) && !_.isEmpty(params.hag)) {
+    if (!_.isEmpty(params) && !_.isEmpty(params[Config.namespace])) {
       // Activate the extension
       chrome.runtime.sendMessage({scope: 'extension', cmd: 'activatePopup'}, (result) => {
         // Retrieve if annotation is done in current url or in pdf version
         this.loadStorage(() => {
-          window.hag.storageManager.client.fetchAnnotation(params.hag, (err, annotation) => {
+          window.scienceDirect.storageManager.client.fetchAnnotation(params[Config.namespace], (err, annotation) => {
             if (err) {
               console.error(err)
             } else {
@@ -31,12 +32,12 @@ class ScienceDirectContentScript {
   loadStorage (callback) {
     // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    window.hag.storageManager = new HypothesisClientManager()
+    window.scienceDirect.storageManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Local, LINE)
-    window.hag.storageManager = new LocalStorageManager()
+    window.scienceDirect.storageManager = new LocalStorageManager()
     // PVSCL:ENDCOND
-    window.hag.storageManager.init((err) => {
+    window.scienceDirect.storageManager.init((err) => {
       if (_.isFunction(callback)) {
         if (err) {
           callback(err)
@@ -49,12 +50,12 @@ class ScienceDirectContentScript {
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
       if (storage === 'hypothesis') {
         // Hypothesis
-        window.hag.storageManager = new HypothesisClientManager()
+        window.scienceDirect.storageManager = new HypothesisClientManager()
       } else {
         // Local storage
-        window.hag.storageManager = new LocalStorageManager()
+        window.scienceDirect.storageManager = new LocalStorageManager()
       }
-      window.hag.storageManager.init((err) => {
+      window.scienceDirect.storageManager.init((err) => {
         if (_.isFunction(callback)) {
           if (err) {
             callback(err)
@@ -68,6 +69,6 @@ class ScienceDirectContentScript {
   }
 }
 
-window.hag = {}
-window.hag.scienceDirectContentScript = new ScienceDirectContentScript()
-window.hag.scienceDirectContentScript.init()
+window.scienceDirect = {}
+window.scienceDirect.scienceDirectContentScript = new ScienceDirectContentScript()
+window.scienceDirect.scienceDirectContentScript.init()

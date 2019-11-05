@@ -9,16 +9,16 @@ window.addEventListener('load', () => {
   })
   // When popup button is clicked
   chrome.extension.onMessage.addListener((msg, sender, sendResponse) => {
-    if (_.isEmpty(window.hag)) {
+    if (_.isEmpty(window.googleSheetProvider)) {
       if (msg.action === 'initContentScript') {
-        window.hag = {}
-        window.hag.contentScriptManager = new GSheetProvider()
-        window.hag.contentScriptManager.init(() => {
+        window.googleSheetProvider = {}
+        window.googleSheetProvider.contentScriptManager = new GSheetProvider()
+        window.googleSheetProvider.contentScriptManager.init(() => {
           // Disable the button of popup
           chrome.runtime.sendMessage({scope: 'extension', cmd: 'deactivatePopup'}, (result) => {
             console.log('Deactivated popup')
           })
-          window.hag = null
+          window.googleSheetProvider = null
         })
       }
     }

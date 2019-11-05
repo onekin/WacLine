@@ -53,10 +53,10 @@ class Code {
 
   static fromAnnotation (annotation, theme = {}) {
     let codeTag = _.find(annotation.tags, (tag) => {
-      return tag.includes('oa:code:')
+      return tag.includes(Config.namespace + ':' + Config.tags.grouped.subgroup + ':')
     })
     if (_.isString(codeTag)) {
-      let name = codeTag.replace('oa:code:', '')
+      let name = codeTag.replace(Config.namespace + ':' + Config.tags.grouped.subgroup + ':', '')
       let config = jsYaml.load(annotation.text)
       if (_.isObject(config)) {
         let description = config.description

@@ -19,7 +19,7 @@ class LocalStorageClient {
       console.debug(annotationToStore)
       // Store in database
       this.database.annotations.push(annotationToStore)
-      // TODO Update storage
+      // Update storage
       this.manager.saveDatabase(this.database)
       // Callback
       callback(null, annotationToStore)
@@ -42,7 +42,7 @@ class LocalStorageClient {
       }
       // Store in database
       this.database.annotations = this.database.annotations.concat(toStoreAnnotations)
-      // TODO Update storage
+      // Update storage
       this.manager.saveDatabase(this.database)
       callback(null, toStoreAnnotations)
     } catch (e) {
@@ -51,17 +51,13 @@ class LocalStorageClient {
   }
 
   static constructAnnotation ({annotation, user, annotations}) {
-    // Check if the required parameter uri exists
-    if (annotation.uri) {
+    // Check if the required parameter group exists
+    if (annotation.group) {
       // TODO Check if annotation follows the standard schema
       let annotationToCreate = LocalStorageClient.constructEmptyAnnotation()
       // Override properties of annotation with inserted content
       annotationToCreate = Object.assign(annotationToCreate, annotation)
 
-      // Append required params but not added in annotation (groupid, user, etc.)
-      if (_.isEmpty(annotationToCreate.group)) {
-        annotationToCreate.group = '__world__'
-      }
       // UserInfo
       if (_.isEmpty(annotationToCreate.user_info)) {
         annotationToCreate.user_info = {display_name: user.display_name}
@@ -75,24 +71,16 @@ class LocalStorageClient {
       annotationToCreate.id = RandomUtils.randomUnique(arrayOfIds, 22)
 
       // Permissions
-      annotationToCreate.permissions = annotationToCreate.permissions || {}
-      if (_.isEmpty(annotationToCreate.permissions.read)) {
-        annotationToCreate.permissions.read = [user.userid]
-      }
-      if (_.isEmpty(annotationToCreate.permissions.admin)) {
-        annotationToCreate.permissions.admin = [user.userid]
-      }
-      if (_.isEmpty(annotationToCreate.permissions.delete)) {
-        annotationToCreate.permissions.delete = [user.userid]
-      }
-      if (_.isEmpty(annotationToCreate.permissions.update)) {
-        annotationToCreate.permissions.update = [user.userid]
-      }
+      LocalStorageClient.setAnnotationPermissions(annotationToCreate, user)
       // TODO Links property ¿?
       // Return constructed annotation to create
       return annotationToCreate
     } else {
-      throw new Error('Required parameter missing in annotation: uri.\n' + annotation.toString())
+      if (_.isEmpty(annotation.group)) {
+        throw new Error('Required parameter missing in annotation: group.\n' + annotation.toString())
+      } else if (_.isEmpty(annotation.uri)) {
+        throw new Error('Required parameter missing in annotation: uri.\n' + annotation.toString())
+      }
     }
   }
 
@@ -116,7 +104,6 @@ class LocalStorageClient {
       'tags': [],
       'text': '',
       'created': now.toISOString(),
-      'uri': '',
       'flagged': false,
       'user_info': {},
       'moderation': {
@@ -125,7 +112,6 @@ class LocalStorageClient {
       'references': [],
       'user': '',
       'hidden': false,
-      'document': {},
       'id': '',
       'permissions': {}
     }
@@ -137,7 +123,16 @@ class LocalStorageClient {
       let result = true
       // URL
       if (result && (data.uri || data.url)) {
-        result = annotation.uri === data.url || annotation.uri === data.uri
+        if (!_.isEmpty(annotation.target)) {
+          // Check if uri exists in any of the source's URIs
+          result = !_.isEmpty(_.filter(_.values(annotation.target[0].source), (uri) => {
+            return data.url === uri || data.uri === uri
+          }))
+        } else if (annotation.uri) {
+          result = annotation.uri === data.url || annotation.uri === data.uri
+        } else {
+          result = false
+        }
       }
       // User
       if (result && (data.user)) {
@@ -164,35 +159,35 @@ class LocalStorageClient {
         // Check if annotation's tags includes all the annotations
         result = tags.length === _.intersection(annotation.tags, tags).length
       }
-      // TODO Uri.parts
+      // Uri.parts
       if (result && (data['uri.parts'])) {
         let splittedUri = annotation.uri.split(/[#+/:=?.-]/) // Chars used to split URIs for uri.parts in Hypothes.is https://hyp.is/ajJkEI3pEemPn2ukkpZWjQ/h.readthedocs.io/en/latest/api-reference/v1/
         result = _.some(splittedUri, (str) => { return str === data['uri.parts'] })
       }
-      // TODO wildcard_uri
+      // Wildcard_uri
       if (result && (data.wildcard_uri)) {
-        if (_.has(annotation, 'documentMetadata.link')) {
-          result = _.some(annotation.documentMetadata.link, (link) => {
-            return wildcard(data.wildcard_uri, link)
-          })
-        } else {
-          result = wildcard(data.wildcard_uri, annotation.uri)
-        }
-      }
-      // TODO Any
-      if (result && (data.any)) {
-        let anyUrl = annotation.uri.includes(data.any) // Any checks in uri
-        let anyTag = annotation.tags.includes(data.any) // Any checks in tags
-        result = anyUrl || anyTag // TODO Quote and text
+        result = wildcard(data.wildcard_uri, annotation.uri)
       }
       // TODO Quote
-      // TODO References
+      // References
       if (result && (data.references)) {
         if (_.isString(data.references)) {
           result = annotation.references.includes(data.references)
         }
       }
-      // TODO Text
+      // Text
+      if (result && data.text) {
+        if (_.isString(data.text)) {
+          result = annotation.text.includes(data.text)
+        }
+      }
+      // Any, this is the last one as it is the algorithm with higher computational cost
+      if (result && (data.any)) {
+        let anyUrl = annotation.uri.includes(data.any) // Any checks in uri
+        let anyTag = annotation.tags.includes(data.any) // Any checks in tags
+        let anyText = annotation.text.includes(data.text)
+        result = anyUrl || anyTag || anyText // TODO Quote
+      }
       return result
     })
     if (data.order) {
@@ -229,23 +224,11 @@ class LocalStorageClient {
             })
           }
           // Permissions
-          annotationUpdated.permissions = annotationUpdated.permissions || {}
-          if (_.isEmpty(annotationUpdated.permissions.read)) {
-            annotationUpdated.permissions.read = [currentUser.userid]
-          }
-          if (_.isEmpty(annotationUpdated.permissions.admin)) {
-            annotationUpdated.permissions.admin = [currentUser.userid]
-          }
-          if (_.isEmpty(annotationUpdated.permissions.delete)) {
-            annotationUpdated.permissions.delete = [currentUser.userid]
-          }
-          if (_.isEmpty(annotationUpdated.permissions.update)) {
-            annotationUpdated.permissions.update = [currentUser.userid]
-          }
+          LocalStorageClient.setAnnotationPermissions(annotationUpdated, currentUser)
           // Update the annotation from list
           annotations[annotationToUpdateIndex] = annotationUpdated
           // Return deleted annotation
-          return annotation
+          return annotationUpdated
         } else {
           // Your are not the owner
           throw new Error('Your are not the owner of the annotation ID: ' + id)
@@ -448,6 +431,22 @@ class LocalStorageClient {
       description: description || '',
       links: {html: storageUrl + '/groups/' + groupId},
       id: groupId
+    }
+  }
+
+  static setAnnotationPermissions (annotation, currentUser) {
+    annotation.permissions = annotation.permissions || {}
+    if (_.isEmpty(annotation.permissions.read)) {
+      annotation.permissions.read = [currentUser.userid]
+    }
+    if (_.isEmpty(annotation.permissions.admin)) {
+      annotation.permissions.admin = [currentUser.userid]
+    }
+    if (_.isEmpty(annotation.permissions.delete)) {
+      annotation.permissions.delete = [currentUser.userid]
+    }
+    if (_.isEmpty(annotation.permissions.update)) {
+      annotation.permissions.update = [currentUser.userid]
     }
   }
 

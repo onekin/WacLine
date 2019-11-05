@@ -23,9 +23,6 @@ const ImportSchema = require('./ImportSchema')
 // PVSCL:IFCOND(ExportGroup, LINE)
 const ExportSchema = require('./ExportSchema')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local, LINE)
-const LocalStorageManager = require('../storage/local/LocalStorageManager')
-// PVSCL:ENDCOND
 
 class GroupSelector {
   constructor () {
@@ -95,6 +92,12 @@ class GroupSelector {
                 if (err) {
                   Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for Review&Go. Please check if you are logged in Hypothes.is.'})
                 } else {
+                  // PVSCL:IFCOND(Hypothesis,LINE)
+                  // Modify group URL in Hypothes.is as it adds the name at the end of the URL
+                  if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
+                    group.links.html = group.links.html.substr(0, group.links.html.lastIndexOf('/'))
+                  }
+                  // PVSCL:ENDCOND
                   this.currentGroup = group
                   callback(null)
                 }
@@ -171,6 +174,7 @@ class GroupSelector {
               }
               // PVSCL:ELSECOND
               // PVSCL:IFCOND(Local, LINE)
+              const LocalStorageManager = require('../storage/local/LocalStorageManager')
               if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups) && LanguageUtils.isInstanceOf(window.abwa.storageManager, LocalStorageManager)) {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
               }

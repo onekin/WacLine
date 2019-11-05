@@ -2,6 +2,7 @@ const AnnotationUtils = require('../utils/AnnotationUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Alerts = require('../utils/Alerts')
 const Events = require('../contentScript/Events')
+const Config = require('../Config')
 const _ = require('lodash')
 // const linkifyUrls = require('linkify-urls')
 
@@ -9,7 +10,7 @@ class ReplyAnnotation {
   /**
    * Creates the input form for reply with the previous replies
    */
-  static createInputFormForReply ({repliesData, annotationModifying, annotation, motivation = 'oa:replying', confirmButtonColor, confirmButtonText, placeholder = 'Type your reply here...'}) {
+  static createInputFormForReply ({repliesData, annotationModifying, annotation, motivation = Config.namespace + ':replying', confirmButtonColor, confirmButtonText, placeholder = 'Type your reply here...'}) {
     // Get text of annotation modifying if exist
     let inputValue = ''
     if (_.isObject(annotationModifying)) {
@@ -85,16 +86,16 @@ class ReplyAnnotation {
   static replyAnnotation (annotation) {
     // Get annotations replying current annotation
     let repliesData = ReplyAnnotation.createRepliesData(annotation, window.abwa.contentAnnotator.replyAnnotations)
-    // Filter replies different to oa:replying
+    // Filter replies different to replying
     repliesData.replies = _.filter(repliesData.replies, (reply) => {
-      return reply.motivation === 'oa:replying'
+      return reply.motivation === Config.namespace + ':replying'
     })
     let annotationModifying
     if (_.last(repliesData.replies) && _.last(repliesData.replies).user === window.abwa.groupSelector.user.userid) {
       annotationModifying = _.last(repliesData.replies)
     }
     ReplyAnnotation.createInputFormForReply({
-      annotationModifying, annotation, repliesData, motivation: 'oa:replying'
+      annotationModifying, annotation, repliesData, motivation: Config.namespace + ':replying'
     })
   }
   // PVSCL:IFCOND( Validate, LINE )
@@ -104,13 +105,13 @@ class ReplyAnnotation {
     // Get validation annotation if the current user has already validated annotation
     let annotationModifying
     let userValidationAnnotation = _.find(repliesData.replies, (reply) => {
-      return reply.user === window.abwa.groupSelector.user.userid && reply.motivation === 'oa:assessing'
+      return reply.user === window.abwa.groupSelector.user.userid && reply.motivation === Config.namespace + ':assessing'
     })
     if (_.isObject(userValidationAnnotation)) {
       annotationModifying = userValidationAnnotation
     }
     ReplyAnnotation.createInputFormForReply({
-      annotationModifying, annotation, repliesData, motivation: 'oa:assessing', placeholder: 'Type the reason to validate...', confirmButtonColor: 'rgba(100,200,100,1)', confirmButtonText: 'Validate'
+      annotationModifying, annotation, repliesData, motivation: Config.namespace + ':assessing', placeholder: 'Type the reason to validate...', confirmButtonColor: 'rgba(100,200,100,1)', confirmButtonText: 'Validate'
     })
   }
   // PVSCL:ENDCOND
@@ -173,7 +174,7 @@ class ReplyAnnotation {
     let userSpanClassName = 'reply_user'
     let textSpanClassName = 'reply_text'
     // PVSCL:IFCOND( Validate, LINE )
-    if (reply.motivation === 'oa:assessing') {
+    if (reply.motivation === Config.namespace + ':assessing') {
       userSpanClassName += ' reply_validated'
       textSpanClassName += ' reply_validated'
     }

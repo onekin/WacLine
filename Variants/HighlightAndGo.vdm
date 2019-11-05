@@ -149,6 +149,21 @@
         <cm:property cm:id="iY4G5vnpXl6c5Jm3a" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
           <cm:constant cm:id="iuB2mAprOX83-HhbS" cm:type="ps:string">ps:auto</cm:constant>
         </cm:property>
+        <cm:property cm:id="i4RMudym7j22DU9_6" cm:type="ps:string" cm:name="iBWRWvwwJAgrORyLO/iLtmBzhmaB-6LgGXC">
+          <cm:constant cm:id="iaxLgifYmYaYhcID-" cm:type="ps:string">Hypothesis</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ivK2CWJEHgU4-DGoO" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iiLr7195VgmxzaZM6" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iZuOIyTD-yrApwJpS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ihjWdABPxTzPz0nrh" cm:type="ps:datetime">2019-10-29T14:20:04.620Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="irYrmzZyghCR72a1X" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iE0BFmUaj7Il7nIWk" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izvBZAFgA7TKvxXve" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ipp83zuVoD6LzNGg_" cm:type="ps:datetime">2019-10-29T16:45:29.185Z</cm:constant>
+        </cm:property>
       </cm:properties>
     </cm:element>
     <cm:element cm:id="i5_H4rjLA1O-vSyU7" cm:type="ps:selected" cm:class="ps:selection">
@@ -228,10 +243,10 @@
           <cm:constant cm:id="iWoIXbhzcoi08X2q2" cm:type="ps:datetime">2019-06-22T21:39:44.579Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iQwLlVLB_QKSpyCl6" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iReQe6HO8DWtBh0ot" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iReQe6HO8DWtBh0ot" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i9W4evj1cf9h32uzj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iK_vXf9U8jTL4xTy7" cm:type="ps:datetime">2019-06-22T21:39:44.579Z</cm:constant>
+          <cm:constant cm:id="iK_vXf9U8jTL4xTy7" cm:type="ps:datetime">2019-10-29T16:45:42.686Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -9183,7 +9198,7 @@
           <cm:constant cm:id="iPanxv2glpd-i0m14" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iV-RwzcaLnXZAeXJ0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ikO9yTjgkspToLiVw" cm:type="ps:datetime">2019-09-13T16:37:14.585Z</cm:constant>
+          <cm:constant cm:id="ikO9yTjgkspToLiVw" cm:type="ps:datetime">2019-10-29T14:34:08.843Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -9642,7 +9657,7 @@
           <cm:constant cm:id="iOeJO89voNZ5Js1HC" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ia8wLXe-Zuvofwpxm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ipBDEHbcJAIKBAK9y" cm:type="ps:datetime">2019-09-13T16:37:57.372Z</cm:constant>
+          <cm:constant cm:id="ipBDEHbcJAIKBAK9y" cm:type="ps:datetime">2019-11-05T09:22:33.259Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>

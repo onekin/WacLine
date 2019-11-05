@@ -96,12 +96,12 @@ class AnnotatedContentManager {
     let promise
     // PVSCL:IFCOND(MoodleURL, LINE)
     promise = new Promise((resolve, reject) => {
-      let call = {}
-      // Set the annotation group where annotations should be searched from
-      call['group'] = window.abwa.groupSelector.currentGroup.id
-      call['tags'] = 'cmid:' + this.cmid
-      call['wildcard_uri'] = window.abwa.tagManager.model.highlighterDefinition.moodleEndpoint + '*'
       if (window.abwa.groupSelector.currentGroup.id) {
+        let call = {}
+        // Set the annotation group where annotations should be searched from
+        call['group'] = window.abwa.groupSelector.currentGroup.id
+        call['tags'] = 'cmid:' + this.cmid
+        call['wildcard_uri'] = window.abwa.tagManager.model.highlighterDefinition.moodleEndpoint + '*'
         window.abwa.storageManager.client.searchAnnotations(call, (err, annotations) => {
           if (err) {
             reject(err)
@@ -109,6 +109,8 @@ class AnnotatedContentManager {
             resolve(annotations)
           }
         })
+      } else {
+        resolve([])
       }
     })
     // PVSCL:ELSECOND
@@ -247,7 +249,9 @@ class AnnotatedContentManager {
 
   addAnnotationToAnnotatedThemesOrCode (annotation, annotatedThemesObject = this.annotatedThemes) {
     let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(annotation.tagId, annotatedThemesObject)
-    annotatedThemeOrCode.annotations.push(annotation)
+    if (annotatedThemeOrCode) {
+      annotatedThemeOrCode.annotations.push(annotation)
+    }
     return annotatedThemesObject
   }
 
@@ -269,19 +273,19 @@ class AnnotatedContentManager {
     if (LanguageUtils.isInstanceOf(themeOrCode, AnnotatedTheme)) {
       // If it is the theme, we need to retrieve all the annotations with corresponding theme and annotations done with its children codes
       let annotations = _.filter(themeOrCode.annotations, (annotation) => {
-        return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
+        return _.intersection(window.abwa.contentTypeManager.getDocumentLink(), _.values(annotation.target[0].source))
       })
       // PVSCL:IFCOND(Code, LINE)
       let childAnnotations = _.flatMap(themeOrCode.annotatedCodes.map(annotatedCode =>
         _.filter(annotatedCode.annotations, (annotation) => {
-          return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
+          return _.intersection(window.abwa.contentTypeManager.getDocumentLink(), _.values(annotation.target[0].source))
         })))
       annotations = annotations.concat(childAnnotations)
       // PVSCL:ENDCOND
       return annotations
     } /* PVSCL:IFCOND(Code) */else if (LanguageUtils.isInstanceOf(themeOrCode, AnnotatedCode)) {
       return _.filter(themeOrCode.annotations, (annotation) => {
-        return annotation.uri === window.abwa.contentTypeManager.getDocumentURIToSave()
+        return _.intersection(window.abwa.contentTypeManager.getDocumentLink(), _.values(annotation.target[0].source))
       })
     }/* PVSCL:ENDCOND */ else {
       return []
