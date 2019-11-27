@@ -1,0 +1,2451 @@
+<cm:consulmodel xmlns:cm="http://www.pure-systems.com/consul/model" cm:id="iivhJRwmojkiJvYc5" cm:version="1.5" cm:type="ps:fm">
+  <cm:head>
+    <cm:properties>
+      <cm:property cm:id="i9JGAOgELgO1pn3I1" cm:type="ps:string" cm:invisible="true" cm:name="ps:name">
+        <cm:constant cm:id="iB8BMnkN799xwlr0C" cm:type="ps:string">WebAnnotator4</cm:constant>
+      </cm:property>
+      <cm:property cm:id="ifkGll9viaFDBg6Zs" cm:type="ps:string" cm:invisible="true" cm:name="ps:author">
+        <cm:constant cm:id="iyq5n0ZMnvyURgQwe" cm:type="ps:string">haritz</cm:constant>
+      </cm:property>
+      <cm:property cm:id="iQ9DEEYN_0Nl4XrSg" cm:type="ps:string" cm:invisible="true" cm:name="ps:version">
+        <cm:constant cm:id="ivdt2te4JpitVrhBi" cm:type="ps:string">1.0</cm:constant>
+      </cm:property>
+      <cm:property cm:id="iWb_MieRktFl8PxEy" cm:type="ps:datetime" cm:invisible="true" cm:name="ps:created">
+        <cm:constant cm:id="i-fUFbrchxQX2CBCN" cm:type="ps:datetime">2019-11-07T11:39:58.470Z</cm:constant>
+      </cm:property>
+      <cm:property cm:id="ibUwS_ifeYYxRVafH" cm:type="ps:mimetype" cm:invisible="true" cm:name="ps:DescriptionType">
+        <cm:constant cm:id="iavPekwhRd9eU4vEL" cm:type="ps:mimetype">text/html</cm:constant>
+      </cm:property>
+    </cm:properties>
+  </cm:head>
+  <cm:elements cm:rootid="i0OQU875T4LHYFzNv">
+    <cm:element cm:id="i0OQU875T4LHYFzNv" cm:name="WebAnnotator" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iBVGcaSkWSJCxqtCk" cm:class="ps:children">
+        <cm:relation cm:id="inz0jhAc7Dk8lXWy6" cm:type="ps:mandatory">
+          <cm:target cm:id="iwa5UfLKG2_y0NmFk">./iM2X1UnHUUT1pjL6Y</cm:target>
+          <cm:target cm:id="ikqisCgm5hSkDYZNJ">./i36v9Ay8VIclaxIo7</cm:target>
+          <cm:target cm:id="iMbzMKR28lrZ8YFih">./iq8KhwKzipWRNNLFw</cm:target>
+          <cm:target cm:id="iAkqtF6fLM8E1iZ7p">./i8_myHFxfoMjDRua9</cm:target>
+        </cm:relation>
+        <cm:relation cm:id="iev1lgslEiI_IbVCn" cm:type="ps:optional" cm:range="[0,n]">
+          <cm:target cm:id="iYKe0ZzShJsqSwiiR">./iD93S-Zw_CUcdoLrR</cm:target>
+          <cm:target cm:id="iCOvRGFjzZid_3Vt6">./ieFZrnU5hSRcf0lcM</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i9musH2pIjrz-dWv_" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ixSevWvT_pYJGH5ab" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYPz3Jm2SGyEJUNsr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="icv3bKA3BND-DPoJI" cm:type="ps:datetime">2019-11-07T11:39:58.469Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iv210VYiJEpozoArk" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izamyJvttk5t9t1_z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2019-11-07T12:44:49.559Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ipaIptNGXwqXJsHyV" cm:type="ps:string" cm:name="appName">
+          <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">WebAnnotator</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ikd06TuWH0GM-TRbB" cm:type="ps:string" cm:name="appShortName">
+          <cm:constant cm:id="i0KxubGKI8HcRImfH" cm:type="ps:string">WebAnnotator</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYoalgh7V2S1hh0Ba" cm:type="ps:string" cm:name="appDescription">
+          <cm:constant cm:id="isA9XE5dMHtoswIjh" cm:type="ps:string">Annotate documents online following color coding paradigm</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iPbotzrtzWXGUgGrQ" cm:type="ps:string" cm:name="key">
+          <cm:constant cm:id="iXFgjBJ-zzXtaLPyv" cm:type="ps:string"></cm:constant>
+        </cm:property>
+      </cm:properties>
+    </cm:element>
+    <cm:element cm:id="iEfgsVnpbEva1d9oR" cm:name="BrowserStorage" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="in91YdJz4hbJAzsfh" cm:class="ps:parents">
+        <cm:relation cm:id="iHNj22Bv6-w77GE6d" cm:type="ps:parent">
+          <cm:target cm:id="i5mNefOwJF15HYZS3">./iMUoI4wgyFYLxNVBr</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i0z1SL20ii9zwN4qH" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i2Q73K5TWDUXBhLRr" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iZ9mgakUG5eUYq14j" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iKnwIrIHTDaMOzIiB" cm:type="ps:datetime">2019-11-07T11:51:34.616Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ipgk7HynJTC9TogM2" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iMheCnv-AumqzFsUX" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iFmfx9Tg0hh1zixB8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iw8CeVB-Dmw44pZeW" cm:type="ps:datetime">2019-11-07T12:14:10.776Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="in2H5gEmQJ8Gaw2AZ" cm:mimetype="text/plain" cm:encoding="utf-8">BrowserStorage</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iMUoI4wgyFYLxNVBr" cm:name="Local" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="ixkgoqWiONVxRfN5l" cm:class="ps:parents">
+        <cm:relation cm:id="ifZkmbkehqjHnmvqY" cm:type="ps:parent">
+          <cm:target cm:id="iCYaKsuX9X434G2G8">./iM2X1UnHUUT1pjL6Y</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iBImxl-BvaGxRrCYn" cm:class="ps:children">
+        <cm:relation cm:id="iUKeA5GX9OpQF2UA2" cm:type="ps:or" cm:range="[1,n]">
+          <cm:target cm:id="i0HklU4mriOmtM2pc">./iEfgsVnpbEva1d9oR</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iaKIXXlPzV34Fdqrj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iUdds89GUUT_HxqED" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYGpFzZR8oh5qlXxY" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iawnA51y7I4Vj1VA7" cm:type="ps:datetime">2019-11-07T11:51:34.615Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ivTPfBqB70Mpdz665" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ihg9ZlmXm7NaMlXPL" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="idLNlemORZ2LzA4c0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ipjv0-80hcwEwhKjs" cm:type="ps:datetime">2019-11-07T12:14:10.776Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:desc>
+        <cm:mimedesc cm:id="iw73nXUSSSJPrmUmr" cm:mimetype="text/plain" cm:encoding="utf-8">Provides a local storage for annotations, the storage system used is chromestorage.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iKPZ7FOheJ8Z7dw0G" cm:name="Hypothesis" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="ijfPJkzzFyDhHrROK" cm:class="ps:parents">
+        <cm:relation cm:id="iFOUw7B7SSBK4gsq1" cm:type="ps:parent">
+          <cm:target cm:id="iieHaoZTyz3PuiVzP">./iL58X6bULcvtAMo6U</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iZAE-EypMMAvtdcAS" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iJwo5szfGqa_B2fG3" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iXanR8xWe9olYWxYn" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iBIvUb7jSVpQEtEul" cm:type="ps:datetime">2019-11-07T11:51:34.619Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i2j6SamNoGy0nW2O0" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i0fARwRG0val5OT2-" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i8TELEMIqeqzRzCBV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iINUVTffUJCbQkyxc" cm:type="ps:datetime">2019-11-07T11:51:34.619Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i6sR3y9np5Xyci06O" cm:mimetype="text/plain" cm:encoding="utf-8">Hypothesis</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i0Ux3YemKU-OCIVRg" cm:mimetype="text/plain" cm:encoding="utf-8">Store annotations in Hypothes.is web page. In Hypothes.is the annotations are stored in annotations groups, a user can have multiple groups and can share them with other users. With this feature the users can manage and search for annotations in Hypothes.is web page.
+
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iKaWQRey8XRPnJnpV" cm:name="Neo4JStorage" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iMoR7e0u_dUgrnNK1" cm:class="ps:parents">
+        <cm:relation cm:id="ijea4n_fQ-6oMqCPo" cm:type="ps:parent">
+          <cm:target cm:id="ixYV7Q98YsEeTMbBQ">./iL58X6bULcvtAMo6U</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iMQ1a0FbkQhZLg55A" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iFaCNOOzJ464Ippgc" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iEY3HUO2w-ivRVPDT" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iXLUHm9TNJC266xXH" cm:type="ps:datetime">2019-11-07T11:51:34.620Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i7-an8ddcjIzzmJ3l" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iXaw06UtagWzjxv2R" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJEUFDsQwT_IWZ2Ss" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iC9VM9zlISu9V8DTh" cm:type="ps:datetime">2019-11-07T11:51:34.620Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iOlypPXSfye7SCCxL" cm:mimetype="text/plain" cm:encoding="utf-8">Neo4J</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ikA-Yo1d0dJZbomes" cm:mimetype="text/plain" cm:encoding="utf-8">Annotations are stored in Neo4J graph database.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iL58X6bULcvtAMo6U" cm:name="Remote" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="in8PslaIWzxMJiQRW" cm:class="ps:parents">
+        <cm:relation cm:id="iOpKuAdzarWOFryVY" cm:type="ps:parent">
+          <cm:target cm:id="ib5v5SYv77g4YJU9D">./iM2X1UnHUUT1pjL6Y</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ibAX6D8rQOSZkUIc7" cm:class="ps:children">
+        <cm:relation cm:id="ioWyCZfhyxBTJJ9lE" cm:type="ps:or">
+          <cm:target cm:id="iTKpqVqZVcGGKG8CD">./iKPZ7FOheJ8Z7dw0G</cm:target>
+          <cm:target cm:id="i_rBskgnmVFjpzlFU">./iKaWQRey8XRPnJnpV</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iQe-2856__psGtvb6" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ixsWkTwSbvwOTAtJy" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iX995ZAOqFg5vPIqn" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iS9zM9rJIrHzNA7fD" cm:type="ps:datetime">2019-11-07T11:51:34.619Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i0AJFbdjDR-FqaPRH" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ikrB9UgMtJS5F6xvx" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwbNuYsd8LXol8p3j" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iiQpsM9rnXxW9DXUK" cm:type="ps:datetime">2019-11-07T11:51:34.619Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iKv5awJ602-6L_QRR" cm:mimetype="text/plain" cm:encoding="utf-8">Remote</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iM2X1UnHUUT1pjL6Y" cm:name="Storage" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iPPBEy0yWGsOJiKP1" cm:class="ps:parents">
+        <cm:relation cm:id="igCGYejAhUt6m6ORs" cm:type="ps:parent">
+          <cm:target cm:id="iTaqq5uWOeBzcYCPL">./i0OQU875T4LHYFzNv</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iXx_vZXlozAk6UNbg" cm:class="ps:children">
+        <cm:relation cm:id="i-ia1-5D4undPMb3S" cm:type="ps:or" cm:range="[1,n]">
+          <cm:target cm:id="iI1DOKVS-Am1uVZoS">./iMUoI4wgyFYLxNVBr</cm:target>
+          <cm:target cm:id="i1j_Vd0a9LH2iYGp7">./iL58X6bULcvtAMo6U</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iKPbitmCYM7LG2Bml" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iNz1UhAwHql2AOyfQ" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwdCCKEHhA1aHDeOU" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="izi9GyFJwTwMqIJ5A" cm:type="ps:datetime">2019-11-07T11:51:34.615Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i8WVoBd18UqdJ1kmO" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iplU9l5Qemq1c6sgn" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJQWZKups0u2y4XLz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iOSbxUKeMIoLeZ-4b" cm:type="ps:datetime">2019-11-07T11:51:34.615Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i5ZzDl1GGb47n7Li9" cm:type="ps:string" cm:name="defaultStorage">
+          <cm:constant cm:id="iWEaFogJLO1DOvjAj" cm:type="ps:string">Local</cm:constant>
+          <cm:desc>
+            <cm:mimedesc cm:id="iecTonNP86jGbS7v7" cm:mimetype="text/html" cm:encoding="utf-8">The value should be one of the selected storages</cm:mimedesc>
+          </cm:desc>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iiV9kIP59PLzE444h" cm:mimetype="text/plain" cm:encoding="utf-8">Storage</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i2u-xSARpUSgjdOP9" cm:name="PDF" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iewvBkOnw9OT7STMt" cm:class="ps:parents">
+        <cm:relation cm:id="itvkFkyoAvGppf4YJ" cm:type="ps:parent">
+          <cm:target cm:id="iWS6UDXTZjyJ37Chv">./ixlunvy0cZpkuROiF</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i8Zkpzh9JHOfY3xDq" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iEF3HewgQFmf7AOlh" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwYvxL_ec8mFpYy5X" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i97mpKKnVH0V1hM3r" cm:type="ps:datetime">2019-11-07T11:51:46.866Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iz6BfTmEiVfH5Cu1w" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="icHpKWB_VO_9oMNEI" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRlKSAzZona7ANl2k" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i7sObV3cluDi2aEpo" cm:type="ps:datetime">2019-11-07T11:51:46.866Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iUhl5r3a5OrF30Wtt" cm:mimetype="text/plain" cm:encoding="utf-8">PDF</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="imdg4GLfcMhZak4l5" cm:name="HTML" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i3sHA71jUwJwe1nDj" cm:class="ps:parents">
+        <cm:relation cm:id="ihgLWgEBdU0jbkGzC" cm:type="ps:parent">
+          <cm:target cm:id="ipBucjc5qsQwBpXv6">./ixlunvy0cZpkuROiF</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i07G6AwhMAPS6fcQI" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iQTYXe2sZ6KtThMit" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iQCi68VCMwcAwtXox" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iOZZlZcuD0Up7wNzf" cm:type="ps:datetime">2019-11-07T11:51:46.868Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ipmnh34FBChHbmTdl" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ighe2F7K3zLBFPep3" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iGK8C3jVw7MIoolFS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iPq8eqvOZeeYvhJx4" cm:type="ps:datetime">2019-11-07T11:51:46.868Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iiFXDXno15Cybeh4q" cm:mimetype="text/plain" cm:encoding="utf-8">HTML</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iEJfm9-DcqfmgWXYr" cm:name="TXT" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iyjRv6-Fu2YADyzL-" cm:class="ps:parents">
+        <cm:relation cm:id="izp04nxrABj_IfKdi" cm:type="ps:parent">
+          <cm:target cm:id="iJT6_HsyVWei10Q7A">./ixlunvy0cZpkuROiF</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iBiCLelNvHUepTteH" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ipg6vxg0eGFIEcd5q" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iK915RYL8i_ETK_Yv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iMU_nkcX16OY8EEvJ" cm:type="ps:datetime">2019-11-07T11:51:46.869Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iQbwGJiP0E0g4f7l7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iQJp2lQ9_0ngLi-rk" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iuxhD6jpa4UEboTw0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i7-Ql9AQHKOgVDa3d" cm:type="ps:datetime">2019-11-07T11:51:46.869Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i5LQlosdaq7UhzB39" cm:mimetype="text/plain" cm:encoding="utf-8">TXT</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ixlunvy0cZpkuROiF" cm:name="Format" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="ir7yIaN66c2bapQBY" cm:class="ps:parents">
+        <cm:relation cm:id="iOh_M8CwDyCmr1WDs" cm:type="ps:parent">
+          <cm:target cm:id="iDZbvE5P2iX5HX0ck">./i36v9Ay8VIclaxIo7</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iQqHZObhy74OKqXTR" cm:class="ps:children">
+        <cm:relation cm:id="i2F4kJbQbIGBGlxJD" cm:type="ps:or" cm:range="[1,n]">
+          <cm:target cm:id="iCg6ULJorSl8Bq3xZ">./i2u-xSARpUSgjdOP9</cm:target>
+          <cm:target cm:id="igPcUZfj-uFfuDWlQ">./imdg4GLfcMhZak4l5</cm:target>
+          <cm:target cm:id="iLJVSDMJnVo4pCDG7">./iEJfm9-DcqfmgWXYr</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i6pmdjHagvHgRH7iB" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iWWkvuXd-M5KbPHhz" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iWqz2wiPpC8fMlRP6" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i8vK9AcIySHwn-N6e" cm:type="ps:datetime">2019-11-07T11:51:46.865Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iywdke87DA7aBAtrc" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="izu37gDa8PZez8Y9I" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iSwqXubHHzUIjCjXM" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iZn5z-BEBukA2wIKi" cm:type="ps:datetime">2019-11-07T11:51:46.865Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iV-7LfJIuH-hQVbS-" cm:mimetype="text/plain" cm:encoding="utf-8">Format</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iulCLFSpiQ4oNyrwG" cm:name="Selector" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="irkff01S4xX5sX1Am" cm:class="ps:parents">
+        <cm:relation cm:id="i94TdCldzvvr6ywku" cm:type="ps:parent">
+          <cm:target cm:id="i7NAeSbjgg3ha2VO8">./i36v9Ay8VIclaxIo7</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i3irar61UM4SRccZe" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i-ObaJPGaQgOOFsUU" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iWqilrIYYCja7wC4R" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ix4W3WqNvfV0HbmoM" cm:type="ps:datetime">2019-11-07T11:51:46.871Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iEQXQWaR8vEDQCYHn" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iY27-csrDKRBnAKbT" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i1rsoGCwAL6FvI9FE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iKQYmRd8XRDCwHPlP" cm:type="ps:datetime">2019-11-07T11:52:07.808Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iVFa2K7zXk6lR5rno" cm:mimetype="text/plain" cm:encoding="utf-8">Selector</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ivkR0Fg80lOpvss8j" cm:name="URL" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="it-PKoXeWxubrDB00" cm:class="ps:parents">
+        <cm:relation cm:id="iO9m8ohbqurZ6OpfS" cm:type="ps:parent">
+          <cm:target cm:id="ikC_qQgZGJr2F_20x">./iQdbsVXouENbMee3e</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ic3DsKeHf7pW9FOEr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i_Szqe20FEK7kSTAK" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYvPe9nLB8gAVTo3T" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iqfnhYvYd2-KVdtK6" cm:type="ps:datetime">2019-11-07T11:51:46.876Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iEKy6xP1hVCQTUKzc" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iDTbmsvo5m6ObdkKc" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="inNhEBHni5a4vLS8z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iirXuBQXywWGO-U3e" cm:type="ps:datetime">2019-11-07T11:51:46.876Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iWASOVak-mJ0g-zV-" cm:mimetype="text/plain" cm:encoding="utf-8">URL</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iv0ApTqEmWw8oHkTx" cm:mimetype="text/plain" cm:encoding="utf-8">Identify Web resources by a URL.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iNIFWI_RjLwZRNCwL" cm:name="URN" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iRut2dCJKEObl1sl8" cm:class="ps:parents">
+        <cm:relation cm:id="irPpdbtKtgB23S_vw" cm:type="ps:parent">
+          <cm:target cm:id="it5TInnLY6kFm37Oy">./iQdbsVXouENbMee3e</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ikv5a2gYGPUY---W9" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iaU50E3uSI0ce9sYP" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i65RL6HOj5jJO40Fi" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i5uAHD46TAJq8Qmrg" cm:type="ps:datetime">2019-11-07T11:51:46.877Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iN2-4BHgo18iavEcf" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iCUs9cPqHPk3hQIY8" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iCQp5yM5YdlF1sUWX" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="it-YGLHQKOnMSznTx" cm:type="ps:datetime">2019-11-07T11:51:46.877Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iUUFCGDZZpujPb-mZ" cm:mimetype="text/plain" cm:encoding="utf-8">URN</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iagUxGJdXz5gZUgKO" cm:mimetype="text/plain" cm:encoding="utf-8">URNs identify resources in the web, but in contrast to URLs, they do not tell exactly where these resources are located. Therefore, with this feature it will be possible to identify resources that are not in the internet (e.g. local files).
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iAltosjho8hLJdnGU" cm:name="DOI" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="imLcJ6O8ag1yL2Ee-" cm:class="ps:parents">
+        <cm:relation cm:id="iehxPg35q4LM2He9O" cm:type="ps:parent">
+          <cm:target cm:id="iOHl1OyaZ-bfXS_MZ">./iQdbsVXouENbMee3e</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iKnFysk5VOx50vEp8" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i6815Ju_-dzTnzqGQ" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ih_iz28Ultt1xuyBW" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iA9u0a4MuDTRpLWAO" cm:type="ps:datetime">2019-11-07T11:51:46.878Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i64GNGiFoAR0loPHY" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ih4YlHmWp25MKErUK" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJF_I29u_obAEuYji" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iV2PsXsdKFaKVdI2c" cm:type="ps:datetime">2019-11-07T11:51:46.878Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iGLDJbOKPrnl6E_hj" cm:mimetype="text/plain" cm:encoding="utf-8">DOI</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="idxoDjgurSjMGdFwO" cm:mimetype="text/plain" cm:encoding="utf-8">Identify resources using a Digital Object Identifier (DOI). With this feature it is possible redirecting to a document using a DOI.
+
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iQdbsVXouENbMee3e" cm:name="ResourceIdentification" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iGOFrV-GEemTuFuMF" cm:class="ps:children">
+        <cm:relation cm:id="iaEyo2jVsX9Q5ICAQ" cm:type="ps:or" cm:range="[1,n]">
+          <cm:target cm:id="ic-4_0xRS8KtekvGN">./ivkR0Fg80lOpvss8j</cm:target>
+          <cm:target cm:id="i__2EIxhqNT0Tk_9Q">./iNIFWI_RjLwZRNCwL</cm:target>
+          <cm:target cm:id="iaR34Ik-QcbfQQv1Z">./iAltosjho8hLJdnGU</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="igge84Iw24fMaUeng" cm:class="ps:parents">
+        <cm:relation cm:id="ipi6bRnyyWgwrTRFA" cm:type="ps:parent">
+          <cm:target cm:id="iORbow2IhG4_ukmbk">./i36v9Ay8VIclaxIo7</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iSTNcxRaUJeX3GQQV" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i-aukpXTuM1dcH2y_" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNZY4TFcJnQgJIkJQ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ijb-k645JqLqlbg5P" cm:type="ps:datetime">2019-11-07T11:51:46.875Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ieJxpky0Yg9_J42V6" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i4OL17iK8rOERdzSS" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i2KiOtsf5ffd6m-vC" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="izt65x09KcRfk30KK" cm:type="ps:datetime">2019-11-07T11:51:46.875Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iVZitlJNd1-rzLODa" cm:mimetype="text/plain" cm:encoding="utf-8">ResourceIdentification</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i36v9Ay8VIclaxIo7" cm:name="Target" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iW3Xk89M5FTbSBClH" cm:class="ps:parents">
+        <cm:relation cm:id="iAOUco6CTde4DpPry" cm:type="ps:parent">
+          <cm:target cm:id="i_qA9HWeYQrfT4x3C">./i0OQU875T4LHYFzNv</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ixe1liqRpnKk9_QmQ" cm:class="ps:children">
+        <cm:relation cm:id="i7Z9pHEGn_yfKRzTl" cm:type="ps:mandatory">
+          <cm:target cm:id="ihUvs8jLyig1NvhfY">./ixlunvy0cZpkuROiF</cm:target>
+          <cm:target cm:id="igZtdrIGimX-vj9co">./iQdbsVXouENbMee3e</cm:target>
+        </cm:relation>
+        <cm:relation cm:id="icrc1w8g5E7L2lv0z" cm:type="ps:optional" cm:range="[0,n]">
+          <cm:target cm:id="igM5ESNSdpFjjzBW0">./iulCLFSpiQ4oNyrwG</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i8FV2zpsnY8NoLakb" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iqcQ0E-dovGEZOIOe" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-W2G8SP4KMhPNQN5" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ig9Nwf5t5EIq5vExi" cm:type="ps:datetime">2019-11-07T11:51:46.864Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iQPIv8u9CPsQkbL8x" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ilpbgrT9VavSDHtvt" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ihJAwRqZJXhf9h_BN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iOcCXNTrjlYcRRkWH" cm:type="ps:datetime">2019-11-07T11:51:59.537Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ize0arwkLpji9ZSOI" cm:mimetype="text/plain" cm:encoding="utf-8">Target</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ih2dyCeLQVCl7YW4M" cm:name="Classifying" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i4UCTyrEWyKEM3N5O" cm:class="ps:parents">
+        <cm:relation cm:id="iBn8FuX97bcD4U5CB" cm:type="ps:parent">
+          <cm:target cm:id="ioxoMSj2TuqmXK-z4">./iq8KhwKzipWRNNLFw</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iD7yYBJGHM0H-kZZz" cm:class="ps:dependencies">
+        <cm:relation cm:id="ix9QNV90Mv9UqRkpT" cm:type="ps:requires">
+          <cm:target cm:id="ixkZFOTAbIqmIq-pO">iivhJRwmojkiJvYc5/ieFZrnU5hSRcf0lcM</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ixATi3V-wCeemQ-AU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="izOca0jw_9Z8LDppD" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwV1hUVv0KMUzwXm8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iJob74T-CpfCi0ezM" cm:type="ps:datetime">2019-11-07T11:52:27.892Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="irjMESSZaGtTXIdOm" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="io-RwyCNGNBHhtUcJ" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-6vPOib7cmutOjlL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iMG3qrus29IdyPyae" cm:type="ps:datetime">2019-11-07T12:47:58.479Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iRP4ahDZ5-RqMQ4uU" cm:mimetype="text/plain" cm:encoding="utf-8">Classifying</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="imDiekbsxQOEG5Hat" cm:name="SentimentAnalysis" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iPXb2bVDeWeWmgETr" cm:class="ps:parents">
+        <cm:relation cm:id="iB7BE6dhC-GTsflCu" cm:type="ps:parent">
+          <cm:target cm:id="i59YhmJg4cTAixvUz">./i16D2Cp179ierYM5h</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iuJPok-mnrI9v-gAo" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iF84Wm9er2DFS9-IV" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iV3aOab1_B--lKvqL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ick3VGavGAaIZYRv4" cm:type="ps:datetime">2019-11-07T11:52:27.893Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwUW9tJaoulZiZ9Q4" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="isECEc45xNRuiWrSR" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ip7xml__7wGkiHQpZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="imGZv5eAIUJ7h3-M8" cm:type="ps:datetime">2019-11-07T11:52:27.893Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i9k9qZ_S3bpJpvvhj" cm:mimetype="text/plain" cm:encoding="utf-8">SentimentAnalysis</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iT6r080aUH98KWoMw" cm:mimetype="text/plain" cm:encoding="utf-8">Realize a sentiment analysis over a comment. If the comment is detected as offensive, the application raises a warning.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iHP3JmF7E_uW0oUXg" cm:name="SuggestedLiterature" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="irSvl9uCBNd_goHaB" cm:class="ps:parents">
+        <cm:relation cm:id="ivGaesYDzTzpPlsoE" cm:type="ps:parent">
+          <cm:target cm:id="iyPrKRCDzE21-ck1q">./i16D2Cp179ierYM5h</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iTu6Mjn9oMEvBAsMQ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i4m2V1Y67UGWLwSoY" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4TfmA-Z7NPUKIQVf" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iWZm4Nbz2Cwlsmpbp" cm:type="ps:datetime">2019-11-07T11:52:27.895Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iY8wAfdIsOx1sTwCc" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ixWABS3o6vffWi-Yz" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRIJIlFFHFPOSLyEd" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ioYJECPYL1hgfP90f" cm:type="ps:datetime">2019-11-07T11:52:27.895Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iK523ur0AzlH_PUUZ" cm:mimetype="text/plain" cm:encoding="utf-8">SuggestedLiterature</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iwrC4NDyDTASd6iAy" cm:mimetype="text/plain" cm:encoding="utf-8">Add suggested literature references to the comment.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="i1mmM3Y--SH1eoXIl" cm:name="Autofill" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="irADtWNkmo5Aq6oFO" cm:class="ps:parents">
+        <cm:relation cm:id="iP1k69h4Vdj-rWpqd" cm:type="ps:parent">
+          <cm:target cm:id="ibQJxChNryPMgn8Cz">./i16D2Cp179ierYM5h</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iC3avtZUKhcQteBx2" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ivQnSuOUiFayEAR4L" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="intu_AbeWT86d75gO" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iV8M4NQfrb8Lnl1Gy" cm:type="ps:datetime">2019-11-07T11:52:27.896Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="itv3CSPgaL9o34EQo" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i0u7kQvalCW6--q4E" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iREc1SNNvibJ1Oytp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iyo0__YEp-zraJUZJ" cm:type="ps:datetime">2019-11-07T11:52:27.896Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ionbe10mw-GPoZkLC" cm:mimetype="text/plain" cm:encoding="utf-8">Autofill</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i5qcshvCmz3OYV0cN" cm:mimetype="text/plain" cm:encoding="utf-8">Based on previous comments, the application recommends possible useful comments to the user.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="ini7gtBrap5Ux362Y" cm:name="PreviousAssignments" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="ilUEIqYdmDfR8fcsG" cm:class="ps:dependencies">
+        <cm:relation cm:id="izmC_BTt8kSujcXSq" cm:type="ps:requires">
+          <cm:target cm:id="iQ7MkzAJt4f2_cCFz">iVM-rr85zz2NiNKQB/is9TGaTvycjq9g8kH</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ijXEXKwVlg3-YoGU1" cm:class="ps:parents">
+        <cm:relation cm:id="iI7Glq2OGtDgabYSs" cm:type="ps:parent">
+          <cm:target cm:id="iroHC_UGidSBNg8rI">./i16D2Cp179ierYM5h</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ilDWTDulfA3pdLZoy" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iUTw-jVvXysflN00Q" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ibw_-Ariwo1Yoxmy-" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ieF3Wpdv1EsWpsQ6d" cm:type="ps:datetime">2019-11-07T11:52:27.897Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iR3XWY3ZpsXwj8Ixr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iVmDhSPYV6DC7Nhrs" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ia_S9XqS8UF-N42NU" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iTrIaERNIZnqmT-mQ" cm:type="ps:datetime">2019-11-07T11:52:27.897Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ibFcWGUvw1Hwheyjn" cm:mimetype="text/plain" cm:encoding="utf-8">PreviousAssignments</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i16D2Cp179ierYM5h" cm:name="Commenting" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i31qzx-2gBc3f3DKz" cm:class="ps:parents">
+        <cm:relation cm:id="iEoL8kwopVfDKYPUi" cm:type="ps:parent">
+          <cm:target cm:id="ifIM_KhE_UxA96EF6">./iq8KhwKzipWRNNLFw</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ivTnGolLY28KWAykp" cm:class="ps:children">
+        <cm:relation cm:id="iTvXA8TbonaGNAcZC" cm:type="ps:optional">
+          <cm:target cm:id="iI11dSN2Rzrw3nkxw">./imDiekbsxQOEG5Hat</cm:target>
+          <cm:target cm:id="iRRnxmF9VRiWdJ8w-">./iHP3JmF7E_uW0oUXg</cm:target>
+          <cm:target cm:id="i49l8wBGDTemxp_Ge">./i1mmM3Y--SH1eoXIl</cm:target>
+          <cm:target cm:id="igHtBjWAz1k0DCNBt">./ini7gtBrap5Ux362Y</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ivQakt1ybdxLiN8GX" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="igk2WDz3HXKeKEjRk" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iv6HX4BLf-nINhuma" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="idRPhmlOvYt1suJ1T" cm:type="ps:datetime">2019-11-07T11:52:27.893Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLBJZVhbFlyxIJIod" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i6vFJ0R5YTHnsspsE" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iKgPOuLA8wPocgQUg" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iMwWO75YeG-ETwjsf" cm:type="ps:datetime">2019-11-07T11:52:27.893Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iraqyA6Li-lygrhpB" cm:mimetype="text/plain" cm:encoding="utf-8">Commenting</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iTX52aKLiU5bPOxWs" cm:name="Replying" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="if76ls-sVlKCAxgny" cm:class="ps:parents">
+        <cm:relation cm:id="iyU40BSfa4o5yfXVZ" cm:type="ps:parent">
+          <cm:target cm:id="iKQNXjV0UN8x5OSsB">./iq8KhwKzipWRNNLFw</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ia3xdTjLuey53lDTB" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="icXfJtVZ6Tj_3NroF" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4nR9UCqxxXiJEBkR" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ijY4bA4vz3fTX2wpo" cm:type="ps:datetime">2019-11-07T11:52:27.899Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i8UyvVFzQOy9d3UCv" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ixF8eN0dNBeWIDLri" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iTjw5cha98IVEqsP5" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iTFxwjoVQD0YlDrdP" cm:type="ps:datetime">2019-11-07T11:52:27.899Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iHhuzniUynypGPKV6" cm:mimetype="text/plain" cm:encoding="utf-8">Replying</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i4zTrONY9hhrFIG2J" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i0Rih-9DHXDFXzcH2" cm:class="ps:parents">
+        <cm:relation cm:id="i0jw8HNk-k9kH2wxG" cm:type="ps:parent">
+          <cm:target cm:id="igHwDDYRKVEypWy9a">./i3kWFU7xg1gvK1BJS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iHMnWFtZyWLECVEzv" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iWYZnK00GgEBURnc-" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iUeSBhprLjTQCzrtg" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="idc_byAtc59mpHD2J" cm:type="ps:datetime">2019-11-07T11:52:27.901Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ii47QaHYUHuuh1hIU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iQhfceMAbav2NB01w" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iqO7WQR44ygIcfeQt" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iG1leeSsbbFcwe7pz" cm:type="ps:datetime">2019-11-07T11:52:27.901Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iIG0c-VlXt9Ah8k-h" cm:mimetype="text/plain" cm:encoding="utf-8">Categorize</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iiJ5oY4IdfN6MZyZK" cm:mimetype="text/plain" cm:encoding="utf-8">Categorize the comment.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="i3kWFU7xg1gvK1BJS" cm:name="Assessing" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="ihvGebk2xH4CHQo_N" cm:class="ps:parents">
+        <cm:relation cm:id="iDZ-IXkZOU4ksqB-c" cm:type="ps:parent">
+          <cm:target cm:id="ik9b-VKB6XnmSjbt8">./iq8KhwKzipWRNNLFw</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iM1m98Wj73NiqNlAX" cm:class="ps:children">
+        <cm:relation cm:id="i9YAUBWAmTSh05PIb" cm:type="ps:optional">
+          <cm:target cm:id="i4Giga6dOj0omBkkQ">./i4zTrONY9hhrFIG2J</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iy1yMSbCN3mbMwuz8" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i3qWxJY7UByeZyAn3" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iFfwsPiJYoFwKRFwk" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iCq9IoFgX051G1YxD" cm:type="ps:datetime">2019-11-07T11:52:27.900Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ivBl8eLBiJIpJRRPL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iMshjpdXVtnauqI4u" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iqOfYE-OeVlmu0shI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iP3DWUw8HHiKIMg6t" cm:type="ps:datetime">2019-11-07T11:52:27.900Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iPMxHfnlv72e77Wts" cm:mimetype="text/plain" cm:encoding="utf-8">Assessing</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iq8KhwKzipWRNNLFw" cm:name="AnnotationPurpose" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iwuH5oKQXM3bibZKR" cm:class="ps:parents">
+        <cm:relation cm:id="i00Znw3_B9XpPg-Js" cm:type="ps:parent">
+          <cm:target cm:id="i_QNRYLkCWxrKsGgN">./i0OQU875T4LHYFzNv</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ivs2Ip2aMsSQOzhnV" cm:class="ps:children">
+        <cm:relation cm:id="ioKvRYkrzMdsMn_IR" cm:type="ps:optional" cm:range="[0,n]">
+          <cm:target cm:id="i3O3RKN63g3ImAMsa">./ih2dyCeLQVCl7YW4M</cm:target>
+          <cm:target cm:id="iYvNxbTMbmeR9MrTQ">./i16D2Cp179ierYM5h</cm:target>
+          <cm:target cm:id="ii_-qcu_r_Ri3DsSQ">./iTX52aKLiU5bPOxWs</cm:target>
+          <cm:target cm:id="iYMyaZ7mnK_NLPo-a">./i3kWFU7xg1gvK1BJS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iBHYORw5o-FvyeXBL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i6fs2GU_PAk8mL3DT" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRAr2G7EfO2ptxhrK" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i6GEfsiIyoDOsMF7F" cm:type="ps:datetime">2019-11-07T11:52:27.890Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iUU9cPSNrNCLKoTMQ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i_0DWMP0eqN7IhgJr" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ienLCCTIkTsyxQdZe" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iGNXajOFP277PrIkZ" cm:type="ps:datetime">2019-11-07T12:46:54.681Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iskC9Ktaw0KpAwckU" cm:mimetype="text/plain" cm:encoding="utf-8">Purpose</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iGhbUDem1xU6z--QH" cm:name="Create" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="igbyAhnR60tAnavaC" cm:class="ps:parents">
+        <cm:relation cm:id="ivEZOzKL-sNgl4t1a" cm:type="ps:parent">
+          <cm:target cm:id="iTgWV3UUY9_ehpfzU">./i8_myHFxfoMjDRua9</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iIY6BuEGqsqU23lni" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iRPO03T3KdXyAPqeB" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i9KLKM8Aas-cT-VZa" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iSCCgufFfeq8AKA8L" cm:type="ps:datetime">2019-11-07T11:53:29.998Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i3A8J7aE0MTfGwqyx" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i3D2akAWBhzDZJDWZ" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izZj8YRI90OMwfmFw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="irQe9oAAiojebuKaf" cm:type="ps:datetime">2019-11-07T11:53:29.998Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i_tMld5PQ85FXVY_P" cm:mimetype="text/plain" cm:encoding="utf-8">Create</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i5YVVKJv2f-CqbtuI" cm:mimetype="text/plain" cm:encoding="utf-8">Create an annotation. It is a primary action for a Web annotator, therefore, this feature will be available on all products of the LPS. Annotations can be done in several ways, but for now, only the Color Coding Highlight technique is implemented.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="i54HQIWWVXxAgTPji" cm:name="DeleteAll" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iq5wJ5mkEUgbFnisH" cm:class="ps:parents">
+        <cm:relation cm:id="iOw-NtiKMk6UKvUQy" cm:type="ps:parent">
+          <cm:target cm:id="iSIfinhobqEefW_Oj">./if3jIX_F4ncIu2mq6</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="il8_uxmeY0vScU_TV" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ilQkywY8nKzDeVV4e" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i0PmT_wqkqm-YWeSO" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i2_ZDjbbcHTG-Kol_" cm:type="ps:datetime">2019-11-07T11:53:30.000Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iytlsKIWoajhnvucA" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i5n1ZKjM0JPCdY5R2" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iOkt2TALwAdjv5YuW" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i3vCum9z7oMkGzZUt" cm:type="ps:datetime">2019-11-07T11:53:30.000Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i7zKGCRyiEND2AqWG" cm:mimetype="text/plain" cm:encoding="utf-8">DeleteAll</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i4SeA4JPWNcWq8E04" cm:mimetype="text/plain" cm:encoding="utf-8">Delete all the annotations within a group. (Raul: El grupo no lo borra?)
+</cm:mimedesc>
+        <cm:mimedesc cm:id="ixUMpE07Y7gFK_FJK" cm:mimetype="text/html" cm:encoding="utf-8">Delete all the annotations within a group.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="if3jIX_F4ncIu2mq6" cm:name="Delete" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iG8wL4r0NXO_Rrju9" cm:class="ps:children">
+        <cm:relation cm:id="ichs9Z5DSnhNQggsm" cm:type="ps:optional">
+          <cm:target cm:id="iKXxojG-dLx5nCvrZ">./i54HQIWWVXxAgTPji</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ip2uQZGgmqLS2fBTt" cm:class="ps:parents">
+        <cm:relation cm:id="ix1B0OoXNNBguf_HC" cm:type="ps:parent">
+          <cm:target cm:id="iWdwvUgMeIUT-ZJPu">./i8_myHFxfoMjDRua9</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iVyGNTjexY8oFRMTU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iO2kxfWTCSKFahQYX" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iPmWSTY3euLevJQrp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i0TA0EDjmLZN2uwLm" cm:type="ps:datetime">2019-11-07T11:53:29.999Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4um5PYj2WT2INEu5" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iGDOD_lD8WjG7vjHn" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iGuz-Q4Pu-bTJYhNW" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iQh6-Urw9lDuCUTBF" cm:type="ps:datetime">2019-11-07T11:53:29.999Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ikiDBwv8ErECltvBZ" cm:mimetype="text/plain" cm:encoding="utf-8">Delete</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="imO18AWL97crbbEwB" cm:mimetype="text/plain" cm:encoding="utf-8">Delete an annotation.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iDk2GRG_JmFTmVPuB" cm:name="Update" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="ifCuAghcmkLbsigV-" cm:class="ps:parents">
+        <cm:relation cm:id="iyNSyExvkV_mBhTvo" cm:type="ps:parent">
+          <cm:target cm:id="iNlFQArP58YhdCPtw">./i8_myHFxfoMjDRua9</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ibVZr09oJruQ8GROQ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iSYB8DCoIPqKl5A9z" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i19ccXV00d9XbSbxS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iYUNljAjrGj071j5K" cm:type="ps:datetime">2019-11-07T11:53:30.003Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i_roWCfNmXVfnqjzY" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iQ4s117IgdpboP4BY" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ixgmDVoIBabTg8bJU" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iUUdREp5U1RmMLBMy" cm:type="ps:datetime">2019-11-07T11:53:30.003Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i-oeFnOTn09j4YG8k" cm:mimetype="text/plain" cm:encoding="utf-8">Update</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ilm04i-3POhJHchHd" cm:name="ImportAnnotations" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iumcGBJ1MtUW4xlSR" cm:class="ps:parents">
+        <cm:relation cm:id="ifN7_hTBI7UP6f2vl" cm:type="ps:parent">
+          <cm:target cm:id="igLKWd_pkFO6tEi3E">./iD93S-Zw_CUcdoLrR</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iQ7JIHwJmUV1OOvTb" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iz0lmOp6B37Z5v15P" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLCGb0CUAbxFcb3xR" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iDN1nIr3OQQ1dhWxZ" cm:type="ps:datetime">2019-11-07T11:53:30.004Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i7WmCg9acq32DPC3m" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ixLd21MnHb4_sIaqB" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="isnhTGls7-0L3olWo" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iDzJOZI0Z8rYHW6XB" cm:type="ps:datetime">2019-11-07T11:54:54.174Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iDTGjy2BiH_EJPzf5" cm:mimetype="text/plain" cm:encoding="utf-8">Import</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i8_myHFxfoMjDRua9" cm:name="AnnotationOperation" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="i5JCxB5e4BZ3Ik-Og" cm:class="ps:parents">
+        <cm:relation cm:id="iHp8Bfmm3mzVnB0xD" cm:type="ps:parent">
+          <cm:target cm:id="i5_pyeJqN9ArlzYl_">./i0OQU875T4LHYFzNv</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i6L5sf0VshZpat_KZ" cm:class="ps:children">
+        <cm:relation cm:id="iJZexyWMtlTnj4lcw" cm:type="ps:mandatory">
+          <cm:target cm:id="iMMgAG2k01tqKvvmX">./iGhbUDem1xU6z--QH</cm:target>
+          <cm:target cm:id="is9bKCSuILIHixhNX">./i7eRnuEkO3RqH5A_o</cm:target>
+          <cm:target cm:id="ivyKRV2K5k9Q1TqPD">./iDk2GRG_JmFTmVPuB</cm:target>
+          <cm:target cm:id="iQrUiBX9voZcDCku5">./if3jIX_F4ncIu2mq6</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i4vFsilq41tnaP51O" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="izMX3vbIQJx82L0Zi" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i7TjePZc3gc8UDou1" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="inNKyGUM-NAbjh6Cd" cm:type="ps:datetime">2019-11-07T11:53:29.997Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ieeAuo__jcNAsSrd3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i24f47jCCo0nNuIz7" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4tix4zQkUsUje-je" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i_EmxAzWq2Ne4nR3Z" cm:type="ps:datetime">2019-11-07T11:54:10.429Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iFAOGULWGP1LuZM8F" cm:mimetype="text/plain" cm:encoding="utf-8">Operation</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i7eRnuEkO3RqH5A_o" cm:name="Read" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="i0b0Ih0tY7ypfhkEa" cm:class="ps:parents">
+        <cm:relation cm:id="isNR217scm1SA7wEV" cm:type="ps:parent">
+          <cm:target cm:id="ilH_VonoLyFZYEf7K">./i8_myHFxfoMjDRua9</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iX6i73jp6aHlzR3Jc" cm:class="ps:children">
+        <cm:relation cm:id="i5Yqt-4MftraZlRzB" cm:type="ps:mandatory" cm:range="n">
+          <cm:target cm:id="ij0JAEieNiZ6p_1qr">./iN19grbphHN3w26d6</cm:target>
+        </cm:relation>
+        <cm:relation cm:id="iMWHJhDofpY-CeS6A" cm:type="ps:optional">
+          <cm:target cm:id="imDt4AhgRH8dA6jet">./itA1S9T7cBw2iXff8</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iPpG_gblKc_NPSEWk" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iAk_-X_mjruXybRdl" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDjh3c5y7PeAtZhUr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i8fOPLoVPHIYOKXYv" cm:type="ps:datetime">2019-11-07T11:54:10.430Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4goW8zRJZNbeII_Z" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ip7mWpb6NXPu7lslW" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iieuiIPKWzFKpIC25" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ilhnU9CweSvkPhOox" cm:type="ps:datetime">2019-11-07T11:57:57.153Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iA_Z83RUduzJPbBgM" cm:mimetype="text/plain" cm:encoding="utf-8">Read</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iD93S-Zw_CUcdoLrR" cm:name="ImportExport" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iVLB1KYrjcL6x1iaQ" cm:class="ps:parents">
+        <cm:relation cm:id="ixx-Mvu_DthEfZ3SO" cm:type="ps:parent">
+          <cm:target cm:id="i30uwwXANV0o-jz8-">./i0OQU875T4LHYFzNv</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i0wdeXoZjLlRCfs7m" cm:class="ps:children">
+        <cm:relation cm:id="i9A5SNXW5iqd-6Um-" cm:type="ps:optional">
+          <cm:target cm:id="iOZJ2Zz74qu3RJ7dO">./ilm04i-3POhJHchHd</cm:target>
+          <cm:target cm:id="iEZt6cpQCEZnyvoRl">./imC0TaQUj7PyX6Yzb</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i16aOKQVxvWV07pfE" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iI2VWZxGtOyYdVxyp" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iD40JjlWFhTUmeSv6" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i1flylJ0zNkWM_Yb3" cm:type="ps:datetime">2019-11-07T11:54:24.199Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ilzMrpEO6bEP-YbRd" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iiK6a56QOcRNNRboi" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i_nDgP0AN3KbsemLE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iOUSHFVg6yQIcUSR4" cm:type="ps:datetime">2019-11-07T11:54:30.213Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iVAHAw1mvALW9ZwWX" cm:mimetype="text/plain" cm:encoding="utf-8">ImportExport</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iladiHg5dhy3o4jOc" cm:name="AnnotatedPDFExport" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iQ5v9N8iW6hPA4-H7" cm:class="ps:parents">
+        <cm:relation cm:id="iYnOlIdoKH6ti91zN" cm:type="ps:parent">
+          <cm:target cm:id="i9Fgawe816hIpr1DN">./ij2QyVevRHICSjapM</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i0DICZmwCiikDvHcz" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i5GnbfLnt_gPbQOlM" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ixW3kwZd83O19Puns" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iWEi0UmjPULHDs4Qx" cm:type="ps:datetime">2019-11-07T11:54:45.182Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iVq7x32X-z58YoC-x" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iQAcVNJ7hEsEM7HjO" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iaKSIygt0r0jJlGbl" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="igJH_wjHiKiwTOMnj" cm:type="ps:datetime">2019-11-07T12:53:14.185Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iISwcvRjT2TFXjH7B" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotatedPDF</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ij2QyVevRHICSjapM" cm:name="AnnotatedResource" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iHRmu5U3UsT_VXSj4" cm:class="ps:parents">
+        <cm:relation cm:id="i1QC4KPxflf91oqvK" cm:type="ps:parent">
+          <cm:target cm:id="iy6mqOg0MUz7ybviz">./imC0TaQUj7PyX6Yzb</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iN2QSb5Pl6KW40_k-" cm:class="ps:children">
+        <cm:relation cm:id="ige9W4hKISNdq4ahB" cm:type="ps:mandatory">
+          <cm:target cm:id="i6RjnxqNoj5ZgZuy7">./iladiHg5dhy3o4jOc</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iQp72Qj3jd8X_RzbH" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iDEia9UZ4sWrthhbo" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iMdotO-Zwrfp3jAUx" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iPn7XoiJ6rbRiWYye" cm:type="ps:datetime">2019-11-07T11:54:45.182Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="inqh47wc6GEo8JjwM" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="izOV5LrfndlGhADwC" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i3fX_Emu4yUVfKxXK" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iETjg46XHfc81UebG" cm:type="ps:datetime">2019-11-07T11:54:45.182Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ivDIfr6_v5Vf1Vd2w" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotatedResource</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ihPuzIFMqVTF-0oOE" cm:mimetype="text/plain" cm:encoding="utf-8">Take a screenshot of the annotated document and prints a PDF with the document and the annotations.
+
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iHV6Svjo-TRRgF2NH" cm:name="JSON" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iFqxAFXJ7XCGY1zai" cm:class="ps:parents">
+        <cm:relation cm:id="iRg2PAiwBJoFFA_m-" cm:type="ps:parent">
+          <cm:target cm:id="iduZaSJKAnoobtx-x">./imC0TaQUj7PyX6Yzb</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i7hYbuUnYVjDNXU25" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="izgzA5hTJm40GCKXm" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iWS0cPv-eSl_8t3wo" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ire3iQVOlNcwIX_0C" cm:type="ps:datetime">2019-11-07T11:54:45.203Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="idlU9TnpS-iwrObIL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iiBmyGTy1h2evY5Mz" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iur2rFphdEP6CaFy3" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iy5Gyx9o0SiIjO2jC" cm:type="ps:datetime">2019-11-07T11:54:45.203Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iLGUPEyXyQqIrPUJ7" cm:mimetype="text/plain" cm:encoding="utf-8">JSON</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iqCMPDxu-TOFOI5lL" cm:name="TextSummary" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="isOdDOjZLkmNxBQRK" cm:class="ps:parents">
+        <cm:relation cm:id="i-Mgd7ovDx7mTFbMt" cm:type="ps:parent">
+          <cm:target cm:id="ixdP7QSaoBjWx6GLt">./imC0TaQUj7PyX6Yzb</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ijXN8hf4zLk_znkWP" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iucuYkBbUCXJrnYxU" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iZjnghgbR7tYRDqJ2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iyl-zkWxAdkNhOkos" cm:type="ps:datetime">2019-11-07T11:54:45.204Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iIUD8yeeYcEXKjhiq" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="itSMFkK8TNZpsAcUI" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwW1SbSAE5TeM4mjL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ioa0iRoz6ddI84zkh" cm:type="ps:datetime">2019-11-07T11:54:45.204Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iBMnFIx_6n9MbDhY7" cm:mimetype="text/plain" cm:encoding="utf-8">TextSummary</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ix3aFO2P_fNTdYLmf" cm:mimetype="text/plain" cm:encoding="utf-8">Print a brief summary about some clustered annotations using a predefined template.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="imC0TaQUj7PyX6Yzb" cm:name="Export" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i5WemfxxEjrB-samm" cm:class="ps:parents">
+        <cm:relation cm:id="ihwYfskUFIZr3aFSV" cm:type="ps:parent">
+          <cm:target cm:id="iddzmlbiEPw0GyaPB">./iD93S-Zw_CUcdoLrR</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iE3FQaaZ_8wiH-DYE" cm:class="ps:children">
+        <cm:relation cm:id="iKYn69CO2AYet4Sg5" cm:type="ps:optional" cm:range="[0,n]">
+          <cm:target cm:id="ilUVeUQ4a0dIPH49y">./ij2QyVevRHICSjapM</cm:target>
+          <cm:target cm:id="iG-EzE0yfhc9Hy8L1">./iHV6Svjo-TRRgF2NH</cm:target>
+          <cm:target cm:id="iHxQa48ghbg5S_yfJ">./iqCMPDxu-TOFOI5lL</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iFkyx9-taf9L95zzC" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iO397b_1DfVlcEnhU" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iIfKo-hMT4oLo-E-C" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iYVcFxabrn-y_fhDb" cm:type="ps:datetime">2019-11-07T11:54:45.181Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ivFtigcL9iCpDJUwL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iIIxnxpra2QTYv6Vq" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ic-yr2c-20KF-9gLV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iH8zFQ2CsjwCC1hbb" cm:type="ps:datetime">2019-11-07T11:54:45.181Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i0erZODrRyKo_yx9E" cm:mimetype="text/plain" cm:encoding="utf-8">Export</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ixYZqYCEB5ATYxq38" cm:name="UserFilter" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iCU8x2NhGxT9eQwM1" cm:class="ps:parents">
+        <cm:relation cm:id="iop6WgDXBZjn9jg59" cm:type="ps:parent">
+          <cm:target cm:id="iEo0IItGobG2fsj1F">./i4bQlrs2YHC1KbIbc</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iOlpa-5boOmix7ygO" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iENXdlRhzK6hDFJ8W" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iymUozt90WRoIDQRG" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ieW1yaWoKHKMtCy2h" cm:type="ps:datetime">2019-11-07T11:55:36.471Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iBtsTNbDys1_yBWCw" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iGD-xM4PXXtjC388R" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i9P7TfHoRrD-S4qaw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iL7M_hR1IWVjbPbyt" cm:type="ps:datetime">2019-11-07T11:55:36.471Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iEhQRcUCkX8WJd4-t" cm:mimetype="text/plain" cm:encoding="utf-8">ByUser</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iKYR93GgBNfP37kSk" cm:mimetype="text/plain" cm:encoding="utf-8">Filter annotations based on a user or a group of users. The filtered annotations will be those made by the selected users.
+
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="i4bQlrs2YHC1KbIbc" cm:name="Filter" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iIIBabSeiFbDAf5xs" cm:class="ps:children">
+        <cm:relation cm:id="iR80kYBEKGjkUApze" cm:type="ps:or" cm:range="[1,n]">
+          <cm:target cm:id="iku7NSE-VSqyBknIC">./ixYZqYCEB5ATYxq38</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iTkOmBFsLOrK5PV9K" cm:class="ps:parents">
+        <cm:relation cm:id="icxvKE42NZxnE2pt6" cm:type="ps:parent">
+          <cm:target cm:id="iTLN93iMwxkCed-N5">./iN19grbphHN3w26d6</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iDixoNhNbTZP4I1YF" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ihs_8Qdh0MfLKsnqz" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iO1CD_iuQJCoIhK3l" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ixIiWsLZA_9FWw7vY" cm:type="ps:datetime">2019-11-07T11:55:36.471Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i1w5KZMIbS9xPsHpm" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iMRDOrFdNc6p9p-ee" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iieR0TManctHPoK7u" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iZ7Fl0DY2GmaNfzVQ" cm:type="ps:datetime">2019-11-07T11:55:36.471Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="izSOL7YDUdGUjACz8" cm:mimetype="text/plain" cm:encoding="utf-8">Filter</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iLpPEg9JFD0NXOYNe" cm:mimetype="text/plain" cm:encoding="utf-8">Filter annotations based on some criteria.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iJM-ZXPlkf0N1kQZW" cm:name="Highlighting" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="ipL2nv_bIEezyrxYm" cm:class="ps:parents">
+        <cm:relation cm:id="i-U17-J8UkHRcRHkT" cm:type="ps:parent">
+          <cm:target cm:id="iNiFcw0IGrGgf-9JZ">./iN19grbphHN3w26d6</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ialRGpMrrS9I5r7hZ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i9cSumi1URWto2oxL" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJ8fC4AVGhu9x40_H" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iQe4CLHHzuMxJpZSJ" cm:type="ps:datetime">2019-11-07T11:55:36.474Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ibK0axYF4mqgydT35" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iM6q1pZTOBQ8US0Gj" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYy554VGM7eqv_ykI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i6lpf8x7ganxyIzZU" cm:type="ps:datetime">2019-11-11T14:37:02.495Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iUMUr-Xdd0o5aOu7a" cm:mimetype="text/plain" cm:encoding="utf-8">Highlighting</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i7u76IIRg9Qn38BMR" cm:name="LastAnnotation_1" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i5XGyIqTn_e0CdU40" cm:class="ps:parents">
+        <cm:relation cm:id="ijpmuMMcl64M0oT1h" cm:type="ps:parent">
+          <cm:target cm:id="it2oQwDa8rxjFDSwz">./i7DSN7eJJwoP5YQrf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i4xIiRsucAzPB5KUu" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iXO2T7CuovbCscAlT" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDeVHtHX-QSttTOjd" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iMn_y8erZF0ngCmM9" cm:type="ps:datetime">2019-11-07T11:55:36.476Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i8q2vISCUXT1gC3I3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i6c6YjsKuSKnW46rR" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iI6vrqIEbBK1IXIqu" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iGH-2j9V7gmqdDQYn" cm:type="ps:datetime">2019-11-07T11:55:36.476Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="idziWBjy9d2GhJ71G" cm:mimetype="text/plain" cm:encoding="utf-8">LastAnnotation</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="igF2pkpTjgk55pzlI" cm:mimetype="text/plain" cm:encoding="utf-8">Place the user at the location of the last annotation.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iO03Tlk_amWlDoyRX" cm:name="SidebarNavigation" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="ik97M6CX_kT8f4zFC" cm:class="ps:parents">
+        <cm:relation cm:id="irxPpzXaCLF2bhdgc" cm:type="ps:parent">
+          <cm:target cm:id="iSkQfGh6tnmq-21OM">./i7DSN7eJJwoP5YQrf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iuHQX5Ck2Psmmn10Z" cm:class="ps:dependencies">
+        <cm:relation cm:id="iuHgdcKE27ACEG2QV" cm:type="ps:requires">
+          <cm:target cm:id="imzcsnXUcBilv9JYa">iivhJRwmojkiJvYc5/iQ7weqylRhjWxFRT7</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iwAldf0JQ56VjrAPG" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iTxDE9oJXbflqHLQH" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ixszPxWYsWfhx8S9e" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iIH4wXITM8ZBRKut4" cm:type="ps:datetime">2019-11-07T11:55:36.478Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ib_5GbNnEx2hB1t4t" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i4I8zp3ex7GrlG5QS" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iiQVQN4GOtVpLjera" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iYEzhO-yEfkixFPs6" cm:type="ps:datetime">2019-11-07T13:01:30.368Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iUmNiduAm1rq02DF5" cm:mimetype="text/plain" cm:encoding="utf-8">SidebarNavigation</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i-PAhd9FJ1NmvgIJh" cm:name="Canvas" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="ihIu8hv4t75QvtAMz" cm:class="ps:parents">
+        <cm:relation cm:id="ifX_dp-ObnQNdzz3i" cm:type="ps:parent">
+          <cm:target cm:id="i6xGtju1h3yg-Dy77">./i7DSN7eJJwoP5YQrf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ipMYRrmK4PJtOmHvR" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ifoltXwaemCbl1yn3" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="irr7QEqRV-sYxyErK" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ilRt1AgC9AHcsHSMy" cm:type="ps:datetime">2019-11-07T11:55:36.479Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYM_KGC5Y4hfK49bJ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="is_0e1JPFBuhBkDQO" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iy-TP-H87lnt4Oum0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iP4sBtyX3CE9-E0BT" cm:type="ps:datetime">2019-11-07T11:55:36.479Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iWBmpazMEE1WXwD0E" cm:mimetype="text/plain" cm:encoding="utf-8">Canvas</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iYwEm8-VtiB_cN1Q5" cm:mimetype="text/plain" cm:encoding="utf-8">Show an illustration of the annotations within a Canvas model view.
+
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="i7DSN7eJJwoP5YQrf" cm:name="Navigation" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iqWQ25DVxKGd6qfk5" cm:class="ps:children">
+        <cm:relation cm:id="i4zUVQ-MS02PrSqmf" cm:type="ps:optional" cm:range="[0,n]">
+          <cm:target cm:id="iBrh_Ncu2ctJlk9ye">./i7u76IIRg9Qn38BMR</cm:target>
+          <cm:target cm:id="i59k0-HRIukyCTX-a">./iO03Tlk_amWlDoyRX</cm:target>
+          <cm:target cm:id="irVzRZq0D2u2Cf-Ix">./i-PAhd9FJ1NmvgIJh</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i0vPE8jNsl9-Y8JK3" cm:class="ps:parents">
+        <cm:relation cm:id="i60VKpLR4Y1xoZGOo" cm:type="ps:parent">
+          <cm:target cm:id="iDrjnVqrevb-Y2QUk">./iN19grbphHN3w26d6</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="imXG39LjOGUv1XF1g" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="id9pO5gK8z0CZqES1" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iGpiKJg7H-4ZNjxRS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iJ-sWL0yj0nAXUP5r" cm:type="ps:datetime">2019-11-07T11:55:36.476Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwys5LMdfYEsvPuN0" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i4xokChJBZmFaVA0w" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ifWgZEfuVT-yIYuWy" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i507CgZ2IRmGEw7vN" cm:type="ps:datetime">2019-11-07T11:56:19.013Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="izPnD-q26lSie8D9m" cm:mimetype="text/plain" cm:encoding="utf-8">Navigation</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iN19grbphHN3w26d6" cm:name="UponTarget" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iqMp0ialKJTQUmqNq" cm:class="ps:parents">
+        <cm:relation cm:id="iACb0lzGJTfdpuzR3" cm:type="ps:parent">
+          <cm:target cm:id="iorybmnGOlBg5-0te">./i7eRnuEkO3RqH5A_o</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i7n3WWBOenQLYa46s" cm:class="ps:children">
+        <cm:relation cm:id="iReUMOfMZZEve0FRX" cm:type="ps:optional">
+          <cm:target cm:id="i0nV0ImwTVSQ5fYYm">./i4bQlrs2YHC1KbIbc</cm:target>
+          <cm:target cm:id="ilAcUpRcJWKLcI7Q1">./i7DSN7eJJwoP5YQrf</cm:target>
+        </cm:relation>
+        <cm:relation cm:id="i8r86e3nfcIa1hrwn" cm:type="ps:mandatory">
+          <cm:target cm:id="ifW2I3J_Eydw97Obf">./iJM-ZXPlkf0N1kQZW</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iZQpwp52ajPJbUFA-" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iTHlTfRwqQHfLY8Yv" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iTuSG4eOSXxuKSv2f" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ifeYFlUyjIt9ckZD5" cm:type="ps:datetime">2019-11-07T11:57:00.027Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ibyx509U7HVpBGalN" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="igR3pFM2QIVJpOOid" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i75qunYp2s9ZbCOSA" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="issm0ZttSHEpIWWkC" cm:type="ps:datetime">2019-11-07T11:57:15.196Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i2Z5yTXZClXpDQytQ" cm:mimetype="text/plain" cm:encoding="utf-8">UponTarget</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i2065vzUUlQLbU8vB" cm:name="IRR" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iP9c1ZRTI0qYrBHWT" cm:class="ps:parents">
+        <cm:relation cm:id="inQGym5vRWQF-gWLo" cm:type="ps:parent">
+          <cm:target cm:id="iq69Ki5-Tc57Ghdlg">./i14bKbeRjWqUbd0zH</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iBFLm9XVLJKpdCGyU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iXTSlhdSv6yfkEdR7" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="idyynU2C7lsdWcBzt" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ipcbuVoc2rlzgOxUJ" cm:type="ps:datetime">2019-11-07T11:57:45.595Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iVAA-eDfpm8X9kLG7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iVmvoIx3_ZFMFDNAw" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLKvDu1ufLQQP75l9" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ikp6ENQMkPS6jJURH" cm:type="ps:datetime">2019-11-07T11:57:45.595Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ikdDoZnvoFnkCH58o" cm:mimetype="text/plain" cm:encoding="utf-8">IRR</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i14bKbeRjWqUbd0zH" cm:name="GoogleSheetConsumer" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iWlvyMrgNlFPmfdI1" cm:class="ps:children">
+        <cm:relation cm:id="iYOGLLX55YnB3X5vC" cm:type="ps:optional" cm:range="[0,n]">
+          <cm:target cm:id="iF5Ei-qXdTHMZLMlr">./i2065vzUUlQLbU8vB</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iY6ypdAR1V_xFbRLV" cm:class="ps:parents">
+        <cm:relation cm:id="i1LMRxH-cFMmj5S5s" cm:type="ps:parent">
+          <cm:target cm:id="ixLh6QBazolvVwM0p">./itA1S9T7cBw2iXff8</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iDaZbdlMN1BkRHA1k" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iHfHv-g-fxHDbEwPe" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="in06EZUaoJFT3_n3O" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="izOYCnR0iafKw4Dt6" cm:type="ps:datetime">2019-11-07T11:57:45.594Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iu4y-VRWuyH26-DvL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iyoZcdE6N0v1kCJUO" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iH_O8ySA4PxNGN-59" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="imSNSRsDjKE7_Cmd1" cm:type="ps:datetime">2019-11-07T11:58:41.036Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ivoGkUam8WoLPHvEr" cm:type="ps:string" cm:name="clientId">
+          <cm:constant cm:id="iYopaaPrxFqW84R6a" cm:type="ps:string"></cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iOZPkWPewiRLxowqg" cm:mimetype="text/plain" cm:encoding="utf-8">GoogleSheet</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iA9Lfuv6_R0MOgePc" cm:mimetype="text/plain" cm:encoding="utf-8">Show the annotations in the correspondent cells of a spreadsheet.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iscJfRCn09JLPpJJY" cm:name="MoodleReport" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="ihzY33qhoow0CG7fA" cm:class="ps:dependencies">
+        <cm:relation cm:id="ikYe3ieN-tJWS084G" cm:type="ps:requires">
+          <cm:target cm:id="it8o3kldVW_M-dkdi">iivhJRwmojkiJvYc5/i2E8IgoKCVFFmVA-u</cm:target>
+        </cm:relation>
+        <cm:relation cm:id="iVBnsAuzUBHu8vw3M" cm:type="ps:requires">
+          <cm:target cm:id="iwxE-tPMO6zEZXLRl">iivhJRwmojkiJvYc5/iDY06iZyA7N-YzILL</cm:target>
+        </cm:relation>
+        <cm:relation cm:id="i03Ixbx9xE-wTB82y" cm:type="ps:requires">
+          <cm:target cm:id="iEbgaMZsLMnhd4LOT">iivhJRwmojkiJvYc5/ih2dyCeLQVCl7YW4M</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i1h_g_g9PVtW9SyVh" cm:class="ps:parents">
+        <cm:relation cm:id="iDwX1FfbeKQPA3ZQf" cm:type="ps:parent">
+          <cm:target cm:id="ilV55TGdWULZ9P_aV">./iQ8yOJfMoM51p9qLP</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iYuzu7rgTG1uXanlB" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ijnKIQtVVMlxACvw9" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDt_tdItPgGaf7Po9" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i86Xy7mo59sMog71w" cm:type="ps:datetime">2019-11-07T11:57:45.597Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iGlH7XF3BBvqXKan3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="it6_CCr2_HUhvP0xL" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDkZgLEd7w2kJgvlS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iHfKSWV8EaPoaticu" cm:type="ps:datetime">2019-11-07T12:58:18.573Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i30yTz7HvB5t5Arsv" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleReport</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iay0jThzzCTt0M6ma" cm:name="MoodleComment" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iUJhnt8WIlo8UrtXJ" cm:class="ps:dependencies">
+        <cm:relation cm:id="ist9p8ZS-9OCh1q-w" cm:type="ps:requires">
+          <cm:target cm:id="iWfUEKOdfm5tp4ZJu">iivhJRwmojkiJvYc5/i16D2Cp179ierYM5h</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iluOkkjD2ShURC3jk" cm:class="ps:parents">
+        <cm:relation cm:id="i4U0XOri75Fxe1gTL" cm:type="ps:parent">
+          <cm:target cm:id="isU-JKu7qHDaR2UY7">./iQ8yOJfMoM51p9qLP</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i8_eLNZ11ZiseWnUz" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iEHEQU2wGTkROdh1z" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRpqgJKnAXjTDxEAh" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ifwRT4bEDl0lgY004" cm:type="ps:datetime">2019-11-07T11:57:45.605Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iZvnQ4p56i3XSGF7j" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iUCpuJFZrkTd2JSvd" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iO5VOKIBM8GWx-8iS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iRUZFqG_nraPWUWP6" cm:type="ps:datetime">2019-11-07T12:58:31.553Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iC4YvkFX6pdWN8cJl" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleComment</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iMpzmjS26NPYu9VTY" cm:name="MindMeisterConsumer" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i05SdndJJvg1lp1ZZ" cm:class="ps:parents">
+        <cm:relation cm:id="iDwg3OhQe_nbNYhsF" cm:type="ps:parent">
+          <cm:target cm:id="i9V-ctdu_qBYOwnfC">./itA1S9T7cBw2iXff8</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i7FMCSBPhVCqQMmYu" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i0GmSGr5KBTumTXqo" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i1wARg4bJGixmwGpM" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ir5NrsdJyrSK3fVwW" cm:type="ps:datetime">2019-11-07T11:57:45.606Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i5-MsrY3N50rq4-XM" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iHkaHzCtOKEJ5rJTu" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iS4oyRwRMy5zcQLtv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i562M8WoxdAeQSU4x" cm:type="ps:datetime">2019-11-07T11:59:04.125Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iJSnEu4xASNHorPfF" cm:mimetype="text/plain" cm:encoding="utf-8">MindMeister</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="itA1S9T7cBw2iXff8" cm:name="UponThirdParty" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iSut-EIYSft4HZ--4" cm:class="ps:parents">
+        <cm:relation cm:id="iddy0_DRlZThZ01Yq" cm:type="ps:parent">
+          <cm:target cm:id="icYc1Is0Tx8e7Yugv">./i7eRnuEkO3RqH5A_o</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iGvvZr9hyoyUoBsO2" cm:class="ps:children">
+        <cm:relation cm:id="imsp13qwx4Zd57g4Q" cm:type="ps:optional" cm:range="[0,n]">
+          <cm:target cm:id="i4v_sfNPTXwX3X8MG">./i14bKbeRjWqUbd0zH</cm:target>
+          <cm:target cm:id="iv9sS5uNnf_x0vMi3">./iMpzmjS26NPYu9VTY</cm:target>
+          <cm:target cm:id="iqH96TBIozqXTsYUF">./iQ8yOJfMoM51p9qLP</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iSBawZfglkjxM5WGF" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="icDTPsARs8vJ9SSh2" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ioaggBxBwsRa-1WBC" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iYXZJ9rtCQkHJki0u" cm:type="ps:datetime">2019-11-07T11:57:45.594Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i7DJbAUawp0BqvitS" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="itH2i_hqtAAaCj5Ue" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i8Y5kdZI7rkmhNTa5" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ikYlU8xUQyNTTkHxi" cm:type="ps:datetime">2019-11-07T11:58:51.927Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i6RXftRi5KF9Q2kid" cm:mimetype="text/plain" cm:encoding="utf-8">UponThirdParty</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iNoorRXF41HqoLkf6" cm:mimetype="text/plain" cm:encoding="utf-8">The annotations are visualized in different ways in order to satisfy different needs of the users.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iQ8yOJfMoM51p9qLP" cm:name="MoodleConsumer" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iK67YjOu66L_h69A0" cm:class="ps:parents">
+        <cm:relation cm:id="imyo1uQr4cvoHZHwj" cm:type="ps:parent">
+          <cm:target cm:id="iyDq-BdLKDtAUQkBk">./itA1S9T7cBw2iXff8</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ithVfn1OIDS1uFMED" cm:class="ps:children">
+        <cm:relation cm:id="iCQllnxBGiSaigGu6" cm:type="ps:optional">
+          <cm:target cm:id="iG2-Yd0-72kMhH-_8">./iscJfRCn09JLPpJJY</cm:target>
+          <cm:target cm:id="i2flQ4KBANW8j7ytr">./iay0jThzzCTt0M6ma</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i8Cq-UitJE-5KHpbf" cm:class="ps:dependencies">
+        <cm:relation cm:id="iEmBDz3MOSeZjqbT5" cm:type="ps:requires">
+          <cm:target cm:id="igy-dsRFhyMv8naZm">iVM-rr85zz2NiNKQB/is9TGaTvycjq9g8kH</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iRuYUaE1nIKoOCdOY" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i7bM93To5XiQ7rIgR" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iPLUppDuiuiW9aoNt" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ixtXLEs_Q1B_Bweul" cm:type="ps:datetime">2019-11-07T11:58:51.927Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijV2sicGgAgTNgnIb" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i_Y1NpJRN01P3T28l" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="il7S6nMKJ9ZAAKvCF" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iETr_ZhcCdRodipZY" cm:type="ps:datetime">2019-11-07T12:55:23.443Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iL-OitP8M2UlD2-xn" cm:mimetype="text/plain" cm:encoding="utf-8">Moodle</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iZt_QaIU0OC-6uFyb" cm:name="Manual" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="igsiIdT3m-uFNdgfI" cm:class="ps:parents">
+        <cm:relation cm:id="iLbozmHEGaO2kqSaM" cm:type="ps:parent">
+          <cm:target cm:id="i_E1bZwi-r_GOvgXq">./ibvhVSOvqx-0TmtKP</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iPkUuEr1OMdYJhwej" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i3peTH-Vo0S95eshf" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i52mixc3vpSMVhpzm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ie8GrV9FMSIIAc9kx" cm:type="ps:datetime">2019-11-07T11:59:22.656Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i29G1LFXCghsdW5_-" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="it6X3Ci7uIogRaL3h" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="idlm7didoH3k1l_Sr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i7oKeqi6pV_9ju2UB" cm:type="ps:datetime">2019-11-07T11:59:22.656Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iU14KS1l-MrBAue2L" cm:mimetype="text/plain" cm:encoding="utf-8">Manual</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iIpiYVLG4JgpExu1j" cm:mimetype="text/plain" cm:encoding="utf-8">The user can choose manually in which group he wants to annotate.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iMFQwhQg2WH3TBqpE" cm:name="ApplicationBased" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i76kWgHHYVbuiFHVn" cm:class="ps:parents">
+        <cm:relation cm:id="ihtKsJa0U27ZKztWU" cm:type="ps:parent">
+          <cm:target cm:id="ie6G3u8YdgC6a2-rj">./ibvhVSOvqx-0TmtKP</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i_8d42QRSs_rVuuYj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i_A6phI2scGesXJrf" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ikHaH7o06UYNcfLvS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="izPaUzK3dPFAT90sD" cm:type="ps:datetime">2019-11-07T11:59:22.658Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDhlH2ks5kXW9I69Z" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="itiWs2dlu1U0OQPMx" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ij-2UuuHfd2oDyEc5" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iYaDJRJ-7DhD-biY_" cm:type="ps:datetime">2019-11-07T11:59:22.658Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iSBNsvgONS09prT5O" cm:mimetype="text/plain" cm:encoding="utf-8">ApplicationBased</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iMgh2l_mmTGVs2_3X" cm:mimetype="text/plain" cm:encoding="utf-8">The application is in charge of selecting the group.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="icBU8v-JYVylwHG2w" cm:name="MoodleResourceBased" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="izQTjNlBm__EjdA4f" cm:class="ps:parents">
+        <cm:relation cm:id="ikXl2AFR2OKhnqHjj" cm:type="ps:parent">
+          <cm:target cm:id="idKpZILtlC1yXaTvC">./ibvhVSOvqx-0TmtKP</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iHio_oPK1vSgGAwe9" cm:class="ps:dependencies">
+        <cm:relation cm:id="iUPcbmQwrT0Yl6ukD" cm:type="ps:requires">
+          <cm:target cm:id="ilrHyJcskUjFosaA_">iVM-rr85zz2NiNKQB/is9TGaTvycjq9g8kH</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iZoya8OliYNiWa5yU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ihoEz2qFPJQDt4gJT" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ij3efEAfeccZFm4Jp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iixyIhhbY8hMNhdHc" cm:type="ps:datetime">2019-11-07T11:59:22.659Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ivsbGlMXvYlp8I7MI" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iCwJl0YMFU2SzG04U" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i8V-Y9xw4wCZjMs08" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ieO_5hMdqTqDICUhe" cm:type="ps:datetime">2019-11-07T11:59:22.659Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iVpIV3z3-DLJMqKW2" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleResourceBased</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ibvhVSOvqx-0TmtKP" cm:name="CodebookRead" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="ib_hWVB7_UqxFfGNa" cm:class="ps:children">
+        <cm:relation cm:id="i307lGHDwbDYmQZHO" cm:type="ps:alternative" cm:range="1">
+          <cm:target cm:id="idTPttPpEqLzwrXVG">./iZt_QaIU0OC-6uFyb</cm:target>
+          <cm:target cm:id="iJHwt7MhrPJEV7XBu">./iMFQwhQg2WH3TBqpE</cm:target>
+          <cm:target cm:id="iMzVFBOrAR1ynzGpj">./icBU8v-JYVylwHG2w</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iKvHZ4LT5_onnqtKz" cm:class="ps:parents">
+        <cm:relation cm:id="icgpUlbQ2Z2O0Sqbu" cm:type="ps:parent">
+          <cm:target cm:id="ivk2wjyIMqego7Gob">./io_YSpZJ6bkF4zw2y</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ifYFVdmWyjHnz9xgV" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iTsai7R771TlNPrkx" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDVmu4QLpxY6UQbbZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i4z6rghtvXgAJWmVO" cm:type="ps:datetime">2019-11-07T11:59:22.655Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ing6qdmmWHDk-xPJO" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iN14vRJACUoLfREHF" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iOLfamcXk7MBp7vCZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iOdtkLwl9vPw2Sidy" cm:type="ps:datetime">2019-11-07T12:02:08.459Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ijwunUDYCFkZuI5ip" cm:mimetype="text/plain" cm:encoding="utf-8">Read</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ihlvzFRUaWC9XAri9" cm:mimetype="text/plain" cm:encoding="utf-8">Provide the user with the option of selecting the group in which the annotations are done.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="i-BUxJ1Ob2OrOYWMg" cm:name="RenameGroup" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i5wNogdAWJ4bT-L3K" cm:class="ps:dependencies">
+        <cm:relation cm:id="iaOg6qY3YgkZhYIFh" cm:type="ps:requires">
+          <cm:target cm:id="ir5m8Q9CTGJkMb5L-">iqgcP8lLneoXVjgp5/iJPE_yQyo3GJgm2wf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iWc_8E3vAlv1Gq82N" cm:class="ps:parents">
+        <cm:relation cm:id="iYcCNXb-qBVMufVKV" cm:type="ps:parent">
+          <cm:target cm:id="iIyS2kPHoWkv7vqsR">./iL9clt1_lu8MGDEqZ</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iQKAn36ecOqJH4J0j" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iDAwgmO011nECw4Gt" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iFfac1NQ-h-OsSwti" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iHhQCYWZ2pA0oYG-I" cm:type="ps:datetime">2019-11-07T11:59:22.660Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izPXAXELnJwYZYQ0h" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iz2Z4ovWggFCOdyVw" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iBviM-iEUyOif5b10" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ietD_EY0UuPlXUxep" cm:type="ps:datetime">2019-11-07T11:59:22.660Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iwJkC0iMtp3RFKyD8" cm:mimetype="text/plain" cm:encoding="utf-8">Rename</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ib-4h0ZOUkMeqKY6Q" cm:mimetype="text/plain" cm:encoding="utf-8">Rename a group?</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iqfzoFbwkQ3zf6BoO" cm:name="ExportGroup" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iTifIFQKkzl9P-9J5" cm:class="ps:dependencies">
+        <cm:relation cm:id="iZAu7OFcypyGyObUz" cm:type="ps:requires">
+          <cm:target cm:id="iCfFCkvDKyhuK2Kj2">iqgcP8lLneoXVjgp5/iJPE_yQyo3GJgm2wf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iurCB6NMKdEJXdsVR" cm:class="ps:parents">
+        <cm:relation cm:id="iCqBlgZxSA_qB0tLy" cm:type="ps:parent">
+          <cm:target cm:id="iqxnB_ZQPdhREG_hf">./iL9f02WrlfXgKAbG0</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ihUwiQc5QEAHMs0Yr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i6P5Li8za3c3hrGF9" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iu379Ux9EowwCPC53" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iFIXEQ1Fg2nRFRkx6" cm:type="ps:datetime">2019-11-07T11:59:22.662Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i5dUcvki6DBH8EraD" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iXL-t4NuP2hya_2iS" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iO2u9nLDm2Z-YYqA-" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iDauAfvEm4NX6gEpS" cm:type="ps:datetime">2019-11-07T11:59:22.662Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i21seRS7IXk7xcwsD" cm:mimetype="text/plain" cm:encoding="utf-8">Export</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i0ybr1BwjpFL-JcyR" cm:mimetype="text/plain" cm:encoding="utf-8">Export a group into a format that can be imported in a web annotator application.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="ib3-dlwNr_ia0jptU" cm:name="ImportGroup" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i9rSoUdzZRQ0ZN273" cm:class="ps:dependencies">
+        <cm:relation cm:id="ip7rcYAn_FB6J7xzI" cm:type="ps:requires">
+          <cm:target cm:id="iObA03nNAu_XDJIQT">iqgcP8lLneoXVjgp5/iJPE_yQyo3GJgm2wf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ii6Q6PQh1W8uAGJWC" cm:class="ps:parents">
+        <cm:relation cm:id="ips4e57bUuhrrST6h" cm:type="ps:parent">
+          <cm:target cm:id="iqVlz9RJXtMhuoBJ6">./iL9f02WrlfXgKAbG0</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i03fudfpP2hio6C18" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iB39NO8S-ygYgH5oh" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i18wONEeB-NvZJX2p" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iUe8rJ5Q54Y-97cso" cm:type="ps:datetime">2019-11-07T11:59:22.663Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i_4o-LtKIlHQ7Ls6v" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iz2miwZalnYYSkCh3" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iFrKihYoWHSedL5yJ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="icojBL3IUmrpiNI5j" cm:type="ps:datetime">2019-11-13T11:10:29.457Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iJ24JTDJg1HaGRvUi" cm:mimetype="text/plain" cm:encoding="utf-8">Import</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i2zgmjv7n2xchmQgC" cm:mimetype="text/plain" cm:encoding="utf-8">Import a group into the application.</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="irmd0pttddYIzA1qB" cm:name="CodebookDelete" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i1K10ANQPCoc077O0" cm:class="ps:dependencies">
+        <cm:relation cm:id="i_SVLC_DQjnZe4TXP" cm:type="ps:requires">
+          <cm:target cm:id="iu23KYyG69-iQPPCa">iqgcP8lLneoXVjgp5/iJPE_yQyo3GJgm2wf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iEB1kHXJpmovMzQxF" cm:class="ps:parents">
+        <cm:relation cm:id="iqF-4EhSB9rAdentN" cm:type="ps:parent">
+          <cm:target cm:id="in05pLfQBpnJBVUnU">./io_YSpZJ6bkF4zw2y</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="izwfMGPHuiWYM6tuw" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iUMDgpEfRinCzIJRd" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ih1trlW3uZRtNSVG8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iUbxVFnJeKySzt0X1" cm:type="ps:datetime">2019-11-07T11:59:22.664Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ieXklrtfZgWOWc-ew" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i5SXqSvjaQVTW8IKA" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ikZCxAvMRKV1Tm2tN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ipkt1bKbA6Ete3oua" cm:type="ps:datetime">2019-11-07T12:49:04.994Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i9bQAbnh6Yxr2q9VR" cm:mimetype="text/plain" cm:encoding="utf-8">Delete</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iQeiEpiGYC0HWicyS" cm:name="CodebookCreate" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="ixEZmX6knSEAiLGlV" cm:class="ps:children">
+        <cm:relation cm:id="i8FS8HLy6YW90xc45" cm:type="ps:alternative">
+          <cm:target cm:id="i1oK6WeJvB87ASxMv">./iv-1TW9HrC_mqG0PE</cm:target>
+          <cm:target cm:id="itswamivJBoY7NUiB">./iV1VTsMrn7e6nACxf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iMLOZXxm1QW3etybd" cm:class="ps:parents">
+        <cm:relation cm:id="itwnT8HYmxbi_KNOg" cm:type="ps:parent">
+          <cm:target cm:id="in-8NmnnWDzTp_Xss">./io_YSpZJ6bkF4zw2y</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iv8aJUParNN9fZZTw" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i-Mytqs3vaMTARx-9" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iWwNxC-90-bqMOtas" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ibU-kLM847FWEhlTz" cm:type="ps:datetime">2019-11-07T11:59:22.665Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iM6XyTKLJgBr4gXu5" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ivzkjkKjIDlxsOvm4" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNnP5jznHL43uZqRp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iQ_nDiroL64VPNaFC" cm:type="ps:datetime">2019-11-12T15:30:30.122Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iQsrpmOdqglV2X0Y-" cm:mimetype="text/plain" cm:encoding="utf-8">Create</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iZl0lUVGxB17yfuhA" cm:mimetype="text/plain" cm:encoding="utf-8">Create a group in which the annotations are done.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="io_YSpZJ6bkF4zw2y" cm:name="CodebookOperation" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="i1n1lKPOp7xdNspIZ" cm:class="ps:parents">
+        <cm:relation cm:id="i6Bo5f7CcvuorIOCR" cm:type="ps:parent">
+          <cm:target cm:id="iDM9m7rJvfr8hmoS6">./ieFZrnU5hSRcf0lcM</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i6ehME4Tt125F5uo7" cm:class="ps:children">
+        <cm:relation cm:id="iAEn_uLCUIZWolBVI" cm:type="ps:optional">
+          <cm:target cm:id="iIrRm7hQQo8gG9XkF">./iL9clt1_lu8MGDEqZ</cm:target>
+          <cm:target cm:id="i3lO34b3KA9_YsGS4">./irmd0pttddYIzA1qB</cm:target>
+        </cm:relation>
+        <cm:relation cm:id="i8IkKY9hbNoQesMoC" cm:type="ps:mandatory">
+          <cm:target cm:id="iJvxU1gjYChEeFpE0">./ibvhVSOvqx-0TmtKP</cm:target>
+          <cm:target cm:id="iCc9wZxggkHHOvp0F">./iQeiEpiGYC0HWicyS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iOdlPba2JjtxBBd7F" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iUFJCF7CE3tWLGJnk" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRmB7V3FRlauXW81h" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i6DRsOBNO2KDJX1H-" cm:type="ps:datetime">2019-11-07T11:59:22.655Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i1p4-QnHmYiYimLb4" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iZ00jeeSediRykxrq" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i5mqLOUrW22AtztFZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="it-VoxINlRGO2YJz3" cm:type="ps:datetime">2019-11-12T15:15:37.008Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i8102UOtNV3XKfvQz" cm:mimetype="text/plain" cm:encoding="utf-8">Operation</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="idx775ZgSbGl_gG97" cm:name="GSheetProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iMVYmjWCo_ymfhJQB" cm:class="ps:parents">
+        <cm:relation cm:id="iFrv7VDSCzgWn1HCB" cm:type="ps:parent">
+          <cm:target cm:id="ilbB79EHnc7f5ORRA">./iV1VTsMrn7e6nACxf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iptg0if2gj1RDw5_m" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i0Ef6JO8Q14O343jl" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iPA4phufQpLnJ4LLy" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i7hhG9_aAc5JAZhxi" cm:type="ps:datetime">2019-11-07T11:59:22.668Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="in5nD_KhlF6PCSUIe" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i6qVjuklYBHC4ymZV" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iilI0eCKYvctJyi4q" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iMSALfO69WXZwbzUp" cm:type="ps:datetime">2019-11-13T11:34:26.185Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="imgLFrqWuPYWn4WSf" cm:type="ps:string" cm:name="clientId">
+          <cm:constant cm:id="ixOmPqzOqPX8K_vdL" cm:type="ps:string"></cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ikazlRuFBjRaUyrT7" cm:mimetype="text/plain" cm:encoding="utf-8">GSheet</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iX-8W4bcYalpm8q9T" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from the cells of the spreadsheet.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iY5UzNxKFYLzcy1oG" cm:name="MoodleProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="ibyoMJyD8hCOg80Ci" cm:class="ps:parents">
+        <cm:relation cm:id="i711gpbA3n5r2CrUw" cm:type="ps:parent">
+          <cm:target cm:id="iMa8At2ICBjRb5Y1f">./iV1VTsMrn7e6nACxf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ie2V0hFf55llcYg_Z" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i7JsM7ytcV6z1yFiY" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i5JlMle-gFrEZW-uz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i3onOI9jC4sCaC8om" cm:type="ps:datetime">2019-11-07T11:59:22.669Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iTLLmUIwdq-_Bqca9" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iYmkH8GX3MYbx9UBA" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iMe1_6e-wQekLpt0V" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i21piN7nSs5JbWvN_" cm:type="ps:datetime">2019-11-13T11:34:20.569Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iQTgoRGhuHEK96HHM" cm:mimetype="text/plain" cm:encoding="utf-8">Moodle</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iYfZI1S3Kvl6deGf9" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook mapping the rubric of the task that will be performed.
+</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="isIwh-UJzrQOnW-DO" cm:name="MindMeisterProvider" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i-gq9GK098d4qzO9Q" cm:class="ps:parents">
+        <cm:relation cm:id="inK4LOrlaQi1LPo8I" cm:type="ps:parent">
+          <cm:target cm:id="iy-8f9GGzkvnguGRe">./iV1VTsMrn7e6nACxf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="imqT-BezcLYfbDqC6" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iV4HKp3g4xkwJ8kZM" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i2V0MTpW3-Kg1Wyij" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="idLGwBWADfCPnS7Z6" cm:type="ps:datetime">2019-11-07T11:59:22.670Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i1v8UApiMhMeb8a62" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iLLgA-JHoAWPxRLMk" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="idp3tdbPxOnVeSFoi" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iVTZSot5b6xUcz1oH" cm:type="ps:datetime">2019-11-13T11:34:31.249Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ichTkqACi75mT_iDh" cm:mimetype="text/plain" cm:encoding="utf-8">MindMeister</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iV1VTsMrn7e6nACxf" cm:name="ThirdParty" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i-IK9Li0oWmfreH7q" cm:class="ps:children">
+        <cm:relation cm:id="iXh2sbx9YCS9YBEvl" cm:type="ps:alternative" cm:range="1">
+          <cm:target cm:id="iusL732i7Av09EvZp">./idx775ZgSbGl_gG97</cm:target>
+          <cm:target cm:id="iQpVj2Gn2Skrl-JRT">./iY5UzNxKFYLzcy1oG</cm:target>
+          <cm:target cm:id="iUMaCrLLMyzwoG5KT">./isIwh-UJzrQOnW-DO</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="itCetqqlZYAeRoa2n" cm:class="ps:parents">
+        <cm:relation cm:id="iKttEOGUY2_6oHJGp" cm:type="ps:parent">
+          <cm:target cm:id="iyy1aD7BPrinZWRRW">./iQeiEpiGYC0HWicyS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="izc3z6sggX9rDLdCN" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iVxAZApl_7ql_s-Rt" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ip5y_9wphUbI_PhPU" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iMGMTEqRo4039oJb5" cm:type="ps:datetime">2019-11-07T11:59:22.667Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNEGYkilb6n9kwyst" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iBxdcy7jf25fZ1pNU" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJpWm9mAkep5khGRK" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ibxYbcpNPex5WELa1" cm:type="ps:datetime">2019-11-07T11:59:22.667Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ipWQ_HdbQ5gMstZXJ" cm:mimetype="text/plain" cm:encoding="utf-8">ThirdParty</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iDY06iZyA7N-YzILL" cm:name="Multivalued" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iRSICnhr3x4y7S1rT" cm:class="ps:parents">
+        <cm:relation cm:id="i6Y4ztN5gqHMf08HF" cm:type="ps:parent">
+          <cm:target cm:id="igILWkjC6tnDnWO52">./i2E8IgoKCVFFmVA-u</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ifibZZkx5JPPFGqRP" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ii0MlEEOOOOY0lO9C" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iO6FvH8a_nLXqcti9" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iKtF0g7QQWmp9jXIG" cm:type="ps:datetime">2019-11-07T11:59:22.675Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="if9v2-dcetQtrtc3l" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ikdNTxFWme7RtPKMX" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNyKOHt6zkOrE7NaV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iy2xl7tNlsfmDbH76" cm:type="ps:datetime">2019-11-13T09:46:57.689Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i47tHb1wB-FaioD5Q" cm:mimetype="text/plain" cm:encoding="utf-8">Multivalued</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i1x3iYEoGqxxR_L7o" cm:name="CodebookTypology" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="i_CszjxfdSCDGRp30" cm:class="ps:parents">
+        <cm:relation cm:id="ixk2FVSv1R52hurCx" cm:type="ps:parent">
+          <cm:target cm:id="ilPszlxO4_SfD3xgi">./ieFZrnU5hSRcf0lcM</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ijsQAR-C1GoNXBDnb" cm:class="ps:children">
+        <cm:relation cm:id="i9hQSx60Ih8VFhXsI" cm:type="ps:optional">
+          <cm:target cm:id="i5asHjUlc5YDSbAsF">./i2E8IgoKCVFFmVA-u</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i3y3QOcZKIALdVxK7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ijU6UnYhD28Vz3iOd" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ib2U-nZGAYbGcDZo4" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iG4ZaK0hwIq_j7NC-" cm:type="ps:datetime">2019-11-07T11:59:22.674Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iiU5rfmWX9tvQ5lRP" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iK2Ya-pY9Y8DFpo9O" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4kxXcfg_32YDGTBE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="isiPwjaLYxb7fcNEt" cm:type="ps:datetime">2019-11-13T09:46:48.015Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iBvDWMDQu5eDE8eDy" cm:mimetype="text/plain" cm:encoding="utf-8">Typology</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iv59_Ug0UN-UPdFmv" cm:name="Alphabetical" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="inWNKyZW2yAofAT_F" cm:class="ps:parents">
+        <cm:relation cm:id="iTNU1W-8AYl4IjGQj" cm:type="ps:parent">
+          <cm:target cm:id="imgWh_GoHWXC3MHSG">./i_fDWVAwf7hTsunWS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iDyVinICh-kygTNyo" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iRpYh6ITD6Jogsmt-" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRJr_k5XALylDS3H7" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iA5PdFxUOJ6HIencm" cm:type="ps:datetime">2019-11-07T11:59:22.679Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iogNx-eog7DrHJDs4" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ijxZxXlPDn17_b_v6" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ioHMn1PxeD6kHfqK8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iOA9v3VogXEyDq568" cm:type="ps:datetime">2019-11-07T11:59:22.679Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iRuxNgGPOpIaZ3buC" cm:mimetype="text/plain" cm:encoding="utf-8">Alphabetical</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="idi9dgho2A67zm07I" cm:name="Date" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i3_HTzRUQkHCi4WA4" cm:class="ps:parents">
+        <cm:relation cm:id="iN6LHguqxugyoQfbz" cm:type="ps:parent">
+          <cm:target cm:id="ivY_5ujW4OnNJfjay">./i_fDWVAwf7hTsunWS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iy-OGS65MbQ0NqLsv" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iR0dML9z5m5vMqckP" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ig1HrY85fJ3Dcx5wz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iKgHepVpoueJraz2v" cm:type="ps:datetime">2019-11-07T11:59:22.680Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i5D9S0Ga2a1cfZ7nZ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iLC96Uv4UoFPuX-iv" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i_OEDOWHjU_B7s7d8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i1dTGZxs096grOTQQ" cm:type="ps:datetime">2019-11-07T11:59:22.680Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iMozKG5dPyM5ZC4-z" cm:mimetype="text/plain" cm:encoding="utf-8">Date</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iulsA5J7emnGLZy5d" cm:name="Number" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i0M45OzsEM58AL3IO" cm:class="ps:parents">
+        <cm:relation cm:id="iu2IV77H0vAmSx8pZ" cm:type="ps:parent">
+          <cm:target cm:id="ibvqFk14sEes5zMfC">./i_fDWVAwf7hTsunWS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iuqJUiY39VTbUMFNx" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iwnqPgpXDOb-iTd0I" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iO63HLka5hAVrs93S" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="itzAx6GusAhW-iYEf" cm:type="ps:datetime">2019-11-07T11:59:22.681Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-9bjoU_zSSZw-oDc" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ilDY0_gEqawWnFWQa" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iHV4fcXFEqo33xHHi" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iuEp0Zp3Uh1kP8Hef" cm:type="ps:datetime">2019-11-07T11:59:22.681Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="itwZPJLCOedTVfDgW" cm:mimetype="text/plain" cm:encoding="utf-8">Number</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i_fDWVAwf7hTsunWS" cm:name="Order" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="i3oWNFcFFDv2f2WBG" cm:class="ps:parents">
+        <cm:relation cm:id="ii1XyAfC-e8Zw4VwK" cm:type="ps:parent">
+          <cm:target cm:id="iEaRt8aRmpqlpAB1W">./iXgPLCFXiXZqhgEtZ</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iVaWn_5CwCOA7JNKG" cm:class="ps:children">
+        <cm:relation cm:id="iRHMlkK5o5d1UU9re" cm:type="ps:alternative" cm:range="1">
+          <cm:target cm:id="i9S6Uf2axLbg_CYGK">./iv59_Ug0UN-UPdFmv</cm:target>
+          <cm:target cm:id="ilk479bkHjOpKP766">./idi9dgho2A67zm07I</cm:target>
+          <cm:target cm:id="i31wPYO1r1fRGJepg">./iulsA5J7emnGLZy5d</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i1avCnFdBBtbCUY4F" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iimaBznqP9DBHuyz3" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iulD6UtAsgOaLdufD" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="isEZhO6zdDG9daIxX" cm:type="ps:datetime">2019-11-07T11:59:22.677Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i9CSc729nYGGA4ynT" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iHNhLD-hqFJ389Y52" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-ihcRew3T_PDJM-p" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iLKuAf1UzgIDYQ79m" cm:type="ps:datetime">2019-11-07T11:59:22.677Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iQNkhvTw96PaYAM_5" cm:mimetype="text/plain" cm:encoding="utf-8">Order</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iQ7weqylRhjWxFRT7" cm:name="Sidebar" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iJs_BeUn5WelPKWhp" cm:class="ps:parents">
+        <cm:relation cm:id="iMZMxJYW-xL-KGgpc" cm:type="ps:parent">
+          <cm:target cm:id="i7N1naKbJ9Acv0bUd">./iKYgefvL6VodrIIk4</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iQejL9IchtOWzqZjt" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i3jjX79bGMuLWEGcl" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijgV9xB15jYaE2kSH" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iu3zuOnDN1ArcKgwR" cm:type="ps:datetime">2019-11-07T11:59:22.684Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="itXx_MX5Tkmzc5C2f" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iz6L9dDxgjtLllNIm" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iGhNfySKZ7fnbcKg1" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i13JiDTepd67_-UoE" cm:type="ps:datetime">2019-11-07T11:59:22.684Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iu0szNZRhFkXoLogb" cm:mimetype="text/plain" cm:encoding="utf-8">Sidebar</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iKYgefvL6VodrIIk4" cm:name="Interface" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iX7ZfH6dQL1NBqcDd" cm:class="ps:parents">
+        <cm:relation cm:id="inpUkZKaPf1lb-LUL" cm:type="ps:parent">
+          <cm:target cm:id="iZ3Pn_fPLCb0I-Z8Y">./iXgPLCFXiXZqhgEtZ</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="itZcQzOmZSGWOuR42" cm:class="ps:children">
+        <cm:relation cm:id="icgteksC9BPWn5wd_" cm:type="ps:mandatory">
+          <cm:target cm:id="idGV6E90J5m8sFHv7">./iQ7weqylRhjWxFRT7</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="io9LD-syTjnY6K7pH" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iTGECxsI1Ny7LYy6W" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i2twRb52l_f5j8ts8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iIXaaXhO0VHv1toUN" cm:type="ps:datetime">2019-11-07T11:59:22.683Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4GRi8dxG2ERGgpDc" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iLaZNJQZnKTyEsCMS" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iafvs2VhAEkEgBaSd" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ije2pNwRVqQOyhHW8" cm:type="ps:datetime">2019-11-07T11:59:22.683Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iBou7cI0FkHh-bzCy" cm:mimetype="text/plain" cm:encoding="utf-8">Interface</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iXgPLCFXiXZqhgEtZ" cm:name="Presentation" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+      <cm:relations cm:id="iFdbhTsO8PuNZAbI7" cm:class="ps:parents">
+        <cm:relation cm:id="iGHEjMXOU3fgeDGyk" cm:type="ps:parent">
+          <cm:target cm:id="iVImekwgad0Fw5JeY">./ieFZrnU5hSRcf0lcM</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iBVxC79rXdcRiK7kJ" cm:class="ps:children">
+        <cm:relation cm:id="i3IfzChmWTZue8Hc2" cm:type="ps:mandatory">
+          <cm:target cm:id="iaxR3IO2skLSqk2-u">./i_fDWVAwf7hTsunWS</cm:target>
+          <cm:target cm:id="iopqyob3rOeKuAe3h">./iKYgefvL6VodrIIk4</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ihpsYYRSdxmzOhTBH" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iZ9OpiKYA0d3tNngN" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iHVAfif-_o9T-hrLN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iTcsdoRwM0ksodJvX" cm:type="ps:datetime">2019-11-07T11:59:22.677Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYat0gFHZQIUycZ_g" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ic0GMPKfYzisB7oEp" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-L50JaL6Fh-xQXsH" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ivBxEwPKemuuXHyR5" cm:type="ps:datetime">2019-11-07T11:59:22.677Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iI8j5cx1uXa8Xi6W8" cm:mimetype="text/plain" cm:encoding="utf-8">Presentation</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ieFZrnU5hSRcf0lcM" cm:name="Codebook" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iVmD7VAyA0NJTH3Es" cm:class="ps:parents">
+        <cm:relation cm:id="inl6S-SsRYb4Rg6K2" cm:type="ps:parent">
+          <cm:target cm:id="iQUj_EJEX5sQjNqle">./i0OQU875T4LHYFzNv</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iKgc7IZvUeCXBdIRI" cm:class="ps:children">
+        <cm:relation cm:id="iHi_XkaKDUZDg5CeU" cm:type="ps:mandatory" cm:range="n">
+          <cm:target cm:id="iDsj2Kooq9UrXPoFm">./io_YSpZJ6bkF4zw2y</cm:target>
+          <cm:target cm:id="iyRIc3f0A2LzYfFP7">./i1x3iYEoGqxxR_L7o</cm:target>
+          <cm:target cm:id="i3BtyGklLb2xPD7tE">./iXgPLCFXiXZqhgEtZ</cm:target>
+        </cm:relation>
+        <cm:relation cm:id="iCeKJt3lWReloWM-s" cm:type="ps:optional">
+          <cm:target cm:id="iK-YaBNbKnw8J0LNZ">./iL9f02WrlfXgKAbG0</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iLqiFV_NTsE6KhrWh" cm:class="ps:dependencies">
+        <cm:relation cm:id="iVA84Yt_LRFkUvOPL" cm:type="ps:provides">
+          <cm:target cm:id="iYu_5BIGC-DALbiFf">iivhJRwmojkiJvYc5/ih2dyCeLQVCl7YW4M</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iTGsY2b8aWGcki8CW" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iXNeUx5EpwSg6Fwwq" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iST5GFa_83ZzNM9_H" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ii2MyEsquEtkp8Iec" cm:type="ps:datetime">2019-11-07T11:59:22.654Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i6jZWzkfVj7vWgCqL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i4wRslDI1iw78NQn4" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iQtpVQ1SvAtFBkohn" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ixZ7OeYVwi_nWMMfu" cm:type="ps:datetime">2019-11-12T15:18:40.121Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="in1JG_YB2Ev-VD3oX" cm:mimetype="text/plain" cm:encoding="utf-8">Codebook</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iv-1TW9HrC_mqG0PE" cm:name="BuiltIn_1" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i_8dT0D0rRduQvJ0g" cm:class="ps:parents">
+        <cm:relation cm:id="i7VnW-jCtKy8suzbA" cm:type="ps:parent">
+          <cm:target cm:id="ivSOg6zlD6YOnUjLo">./iQeiEpiGYC0HWicyS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iIQW7iWxe6kbs88FP" cm:class="ps:dependencies">
+        <cm:relation cm:id="ijbyfrbYWiWCfEmci" cm:type="ps:requires">
+          <cm:target cm:id="iUl4Ai5BUdrvnJzwg">iqgcP8lLneoXVjgp5/iJPE_yQyo3GJgm2wf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="isPryZ8-TZAFpSb9I" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iPRdt9Jz5mmPfk2Qd" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iP1IFcSmeRFQ908Ed" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ir_2SQy0OeTTDE0bf" cm:type="ps:datetime">2019-11-07T12:01:19.936Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iT1fpGk_Z_WPGzR02" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i29kZVWYPCo4uup2n" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRYJQ9vbcgQzea3Jb" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ioCteT6U2q4DrG2vD" cm:type="ps:datetime">2019-11-12T15:30:30.123Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i2_KSJGnC64Nnuv3l" cm:mimetype="text/plain" cm:encoding="utf-8">BuiltIn</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iL9clt1_lu8MGDEqZ" cm:name="CodebookUpdate" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="ihZB5M1ZsATrctP6-" cm:class="ps:dependencies">
+        <cm:relation cm:id="id8CIEir6LXD9Onvd" cm:type="ps:requires">
+          <cm:target cm:id="iLWXRtlsS6dOIomwj">iivhJRwmojkiJvYc5/iv-1TW9HrC_mqG0PE</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ifHEZqB7Sw0tZu1dp" cm:class="ps:parents">
+        <cm:relation cm:id="inx57F4gNqrREx45A" cm:type="ps:parent">
+          <cm:target cm:id="iCDxNMKzlAR4ofKyM">./io_YSpZJ6bkF4zw2y</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iVd1LbWoL-f2EJPVe" cm:class="ps:children">
+        <cm:relation cm:id="it8PT6E8WtLs7PRjh" cm:type="ps:optional">
+          <cm:target cm:id="icjRnWCIQ6_M2XCf0">./i-BUxJ1Ob2OrOYWMg</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="icAErmZcsK0aXqP44" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iXJF1lmaFBhvwa7zA" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iab97X6U5ghkKaPWX" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iKB8z2bPpfOX8YMJy" cm:type="ps:datetime">2019-11-07T12:01:44.522Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iOdM64ijF3w6iluJp" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iBouChqEyv1Iz-Fvo" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iMumw3as4a3JKKkDq" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iHlMLTSjk7_oajYZ2" cm:type="ps:datetime">2019-11-07T12:13:21.662Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ivmnwMleu9PaB-Cxh" cm:mimetype="text/plain" cm:encoding="utf-8">Update</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i2E8IgoKCVFFmVA-u" cm:name="Hierarchy" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i5PYxFXQGziXy9SsT" cm:class="ps:parents">
+        <cm:relation cm:id="iox1PabwSRWeBYMBn" cm:type="ps:parent">
+          <cm:target cm:id="iZFllnBZt4G9XDkpy">./i1x3iYEoGqxxR_L7o</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iIK4ADKEHuKLI49nl" cm:class="ps:children">
+        <cm:relation cm:id="ip8mPoyZKy5kglneX" cm:type="ps:optional">
+          <cm:target cm:id="iCdiUp74njm0H2K2G">./iDY06iZyA7N-YzILL</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ipsMIGPD03ZDIgj7s" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="imPtCNGbSrfvAYRue" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDTxiFqi5kVd8_bK-" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iIoFKDBOsqeNMqAdY" cm:type="ps:datetime">2019-11-07T12:09:57.674Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ieD9gqMOFi2OdvUZs" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i0AQGrqsqmkVu0zUQ" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="invfJ7Il-ahOs4wn6" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ia__AKHK-6WkXKy66" cm:type="ps:datetime">2019-11-07T12:09:57.674Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i6yba5usjVsUyjeBJ" cm:mimetype="text/plain" cm:encoding="utf-8">Hierarchy</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iL9f02WrlfXgKAbG0" cm:name="CodebookImportExport" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i-zFYtVx4d3989cpL" cm:class="ps:parents">
+        <cm:relation cm:id="ihdpKmPR8x04EhToQ" cm:type="ps:parent">
+          <cm:target cm:id="i6P-_Xobq8h165_98">./ieFZrnU5hSRcf0lcM</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iRgTHZSe76g74_C_L" cm:class="ps:children">
+        <cm:relation cm:id="i9iIw89YGTlzVN-6V" cm:type="ps:optional">
+          <cm:target cm:id="idwnhLvgXUjbwSHK4">./iqfzoFbwkQ3zf6BoO</cm:target>
+        </cm:relation>
+        <cm:relation cm:id="iG4OxnXsuiVR6YwJY" cm:type="ps:or" cm:range="[1,n]">
+          <cm:target cm:id="iMAanB1SAfdGXUXnR">./ib3-dlwNr_ia0jptU</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iDnGbz9npq0Qrpv4t" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iAt3TCvBR6xYyK6RL" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="icDIcdqbbyw_Cozec" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="icmQjgUC4eXNDsyiV" cm:type="ps:datetime">2019-11-07T12:10:47.027Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ipAGdMsXR7rqele09" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iRC8SGXe9K0A1_thn" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iMIbBdgjDgpsPo6Qk" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iMoKYagR1Ij1YeThl" cm:type="ps:datetime">2019-11-13T11:10:29.456Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iEj5TQx9pATLkwyu2" cm:mimetype="text/plain" cm:encoding="utf-8">ImportExport</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+  </cm:elements>
+</cm:consulmodel>
