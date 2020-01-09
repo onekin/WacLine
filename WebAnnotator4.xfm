@@ -593,7 +593,7 @@
         <cm:mimedesc cm:id="iwrC4NDyDTASd6iAy" cm:mimetype="text/plain" cm:encoding="utf-8">Add suggested literature references to the comment.</cm:mimedesc>
       </cm:desc>
     </cm:element>
-    <cm:element cm:id="i1mmM3Y--SH1eoXIl" cm:name="Autofill" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="i1mmM3Y--SH1eoXIl" cm:name="Autocomplete" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="irADtWNkmo5Aq6oFO" cm:class="ps:parents">
         <cm:relation cm:id="iP1k69h4Vdj-rWpqd" cm:type="ps:parent">
           <cm:target cm:id="ibQJxChNryPMgn8Cz">./i16D2Cp179ierYM5h</cm:target>
@@ -610,11 +610,11 @@
           <cm:constant cm:id="i0u7kQvalCW6--q4E" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iREc1SNNvibJ1Oytp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iyo0__YEp-zraJUZJ" cm:type="ps:datetime">2019-11-07T11:52:27.896Z</cm:constant>
+          <cm:constant cm:id="iyo0__YEp-zraJUZJ" cm:type="ps:datetime">2020-01-08T18:10:09.487Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
-        <cm:mimedesc cm:id="ionbe10mw-GPoZkLC" cm:mimetype="text/plain" cm:encoding="utf-8">Autofill</cm:mimedesc>
+        <cm:mimedesc cm:id="ionbe10mw-GPoZkLC" cm:mimetype="text/plain" cm:encoding="utf-8">Autocomplete</cm:mimedesc>
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="i5qcshvCmz3OYV0cN" cm:mimetype="text/plain" cm:encoding="utf-8">Based on previous comments, the application recommends possible useful comments to the user.
@@ -2015,7 +2015,7 @@
         <cm:mimedesc cm:id="ichTkqACi75mT_iDh" cm:mimetype="text/plain" cm:encoding="utf-8">MindMeister</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iV1VTsMrn7e6nACxf" cm:name="ThirdParty" cm:type="ps:feature" cm:class="ps:feature">
+    <cm:element cm:id="iV1VTsMrn7e6nACxf" cm:name="CodebookOutsourced" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i-IK9Li0oWmfreH7q" cm:class="ps:children">
         <cm:relation cm:id="iXh2sbx9YCS9YBEvl" cm:type="ps:alternative" cm:range="1">
           <cm:target cm:id="iusL732i7Av09EvZp">./idx775ZgSbGl_gG97</cm:target>
@@ -2039,11 +2039,11 @@
           <cm:constant cm:id="iBxdcy7jf25fZ1pNU" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iJpWm9mAkep5khGRK" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ibxYbcpNPex5WELa1" cm:type="ps:datetime">2019-11-07T11:59:22.667Z</cm:constant>
+          <cm:constant cm:id="ibxYbcpNPex5WELa1" cm:type="ps:datetime">2020-01-08T18:14:26.112Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
-        <cm:mimedesc cm:id="ipWQ_HdbQ5gMstZXJ" cm:mimetype="text/plain" cm:encoding="utf-8">ThirdParty</cm:mimedesc>
+        <cm:mimedesc cm:id="ipWQ_HdbQ5gMstZXJ" cm:mimetype="text/plain" cm:encoding="utf-8">Outsourced</cm:mimedesc>
       </cm:vname>
     </cm:element>
     <cm:element cm:id="iDY06iZyA7N-YzILL" cm:name="Multivalued" cm:type="ps:feature" cm:class="ps:feature">
