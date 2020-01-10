@@ -137,6 +137,21 @@
         <cm:property cm:id="iOefq3j0eOB3sozBI" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
           <cm:constant cm:id="iVjm_e8QOkBAnM6rV" cm:type="ps:string">ps:auto</cm:constant>
         </cm:property>
+        <cm:property cm:id="ixJTKU87MQAAUezC3" cm:type="ps:string" cm:name="iBWRWvwwJAgrORyLO/iLtmBzhmaB-6LgGXC">
+          <cm:constant cm:id="iDZsFszTNBFSZ9g05" cm:type="ps:string">Hypothesis</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iHKYuR7tRIgSdtDXd" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iN5FqFhBlmNl81JWD" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="isiz0Ui8y-xLWqUcv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iAWnJycJ3TcLPsP--" cm:type="ps:datetime">2019-11-04T17:37:04.935Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="irjCNlYI1gvT4Ki09" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iGtu6NEm9hlGE6IZ2" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i9cH0pPGpoP_EOFUu" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iukA_7z_aV2dzcGx1" cm:type="ps:datetime">2019-11-04T17:37:21.917Z</cm:constant>
+        </cm:property>
       </cm:properties>
     </cm:element>
     <cm:element cm:id="iH0-b6Tk1ElwMUwxK" cm:type="ps:selected" cm:class="ps:selection">

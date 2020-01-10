@@ -2,6 +2,7 @@ const DOI = require('doi-regex')
 // PVSCL:IFCOND(ScienceDirect, LINE)
 const URLUtils = require('../utils/URLUtils')
 // PVSCL:ENDCOND
+const Config = require('../Config')
 const _ = require('lodash')
 
 class TargetManager {
@@ -43,9 +44,9 @@ class TargetManager {
         }
         if (annotationId) {
           if (_.isEmpty(redirectUrl.hash)) {
-            redirectUrl.hash += '#hag:' + annotationId
+            redirectUrl.hash += '#' + Config.urlParamName + ':' + annotationId
           } else {
-            redirectUrl.hash += '&hag:' + annotationId
+            redirectUrl.hash += '&' + Config.urlParamName + ':' + annotationId
           }
         }
         responseDetails.responseHeaders[locationIndex].value = redirectUrl.toString()
@@ -57,7 +58,7 @@ class TargetManager {
     }, this.doiUrlFilterObject, ['responseHeaders', 'blocking'])
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(ScienceDirect, LINE)
-    // Requests to sciencedirect, redirection from linkinghub.elsevier.com (parse doi and hag if present)
+    // Requests to sciencedirect, redirection from linkinghub.elsevier.com (parse doi and annotation hash param if present)
     chrome.webRequest.onBeforeSendHeaders.addListener((requestHeaders) => {
       let referer = _.find(requestHeaders.requestHeaders, (requestHeader) => { return requestHeader.name === 'Referer' })
       if (referer && referer.value.includes('linkinghub.elsevier.com')) {
@@ -67,28 +68,28 @@ class TargetManager {
           let url = tab.url
           // Retrieve doi
           let doiGroups = DOI.groups(url)
-          if (doiGroups[1]) {
+          if (doiGroups && doiGroups[1]) {
             doi = doiGroups[1]
-            doi = doi.split('&hag')[0] // If doi-regex inserts also the hag parameter, remove it, is not part of the doi
+            doi = doi.split('&' + Config.urlParamName)[0] // If doi-regex inserts also the annotation hash parameter, remove it, is not part of the doi
           }
           let params = URLUtils.extractHashParamsFromUrl(url)
-          if (params && params.hag) {
-            annotationId = params.hag
+          if (params && params[Config.urlParamName]) {
+            annotationId = params[Config.urlParamName]
           }
-          console.log(requestHeaders)
+          console.debug(requestHeaders)
           if (doi && annotationId) {
-            let redirectUrl = requestHeaders.url + '#doi:' + doi + '&hag:' + annotationId
+            let redirectUrl = requestHeaders.url + '#doi:' + doi + '&' + Config.urlParamName + ':' + annotationId
             chrome.tabs.update(requestHeaders.tabId, {url: redirectUrl})
           } else if (doi) {
             let redirectUrl = requestHeaders.url + '#doi:' + doi
             chrome.tabs.update(requestHeaders.tabId, {url: redirectUrl})
           } else if (annotationId) {
-            let redirectUrl = requestHeaders.url + '#hag:' + annotationId
+            let redirectUrl = requestHeaders.url + '#' + Config.urlParamName + ':' + annotationId
             chrome.tabs.update(requestHeaders.tabId, {url: redirectUrl})
           }
         })
       }
-    }, this.scienceDirect, ['requestHeaders', 'blocking'])
+    }, this.scienceDirect, ['requestHeaders', 'blocking', 'extraHeaders'])
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Dropbox, LINE)
     // Request to dropbox
@@ -116,7 +117,7 @@ class TargetManager {
   extractAnnotationId (url) {
     if (url.includes('#')) {
       let parts = url.split('#')[1].split(':')
-      if (parts[0] === 'hag') {
+      if (parts[0] === Config.urlParamName) {
         return parts[1] || null
       }
     } else {

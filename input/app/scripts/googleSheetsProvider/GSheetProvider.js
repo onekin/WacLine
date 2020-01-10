@@ -13,7 +13,7 @@ const LocalStorageManager = require('../storage/local/LocalStorageManager')
 
 class GoogleSheetContentScriptManager {
   init (callback) {
-    window.hag.googleSheetClientManager = new GoogleSheetsClientManager()
+    window.googleSheetProvider.googleSheetClientManager = new GoogleSheetsClientManager()
     this.loadStorage(() => {
       this.initLoginProcess((err, tokens) => {
         if (err) {
@@ -52,11 +52,11 @@ class GoogleSheetContentScriptManager {
   }
 
   initLoginProcess (callback) {
-    window.hag.storageManager.logIn((err) => {
+    window.googleSheetProvider.storageManager.logIn((err) => {
       if (err) {
         callback(err)
       } else {
-        window.hag.googleSheetClientManager.logInGoogleSheets((err, gSheetToken) => {
+        window.googleSheetProvider.googleSheetClientManager.logInGoogleSheets((err, gSheetToken) => {
           if (err) {
             callback(err)
           } else {
@@ -72,12 +72,12 @@ class GoogleSheetContentScriptManager {
   loadStorage (callback) {
     // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    window.hag.storageManager = new HypothesisClientManager()
+    window.googleSheetProvider.storageManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Local, LINE)
-    window.hag.storageManager = new LocalStorageManager()
+    window.googleSheetProvider.storageManager = new LocalStorageManager()
     // PVSCL:ENDCOND
-    window.hag.storageManager.init((err) => {
+    window.googleSheetProvider.storageManager.init((err) => {
       if (_.isFunction(callback)) {
         if (err) {
           callback(err)
@@ -90,12 +90,12 @@ class GoogleSheetContentScriptManager {
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
       if (storage === 'hypothesis') {
         // Hypothesis
-        window.hag.storageManager = new HypothesisClientManager()
+        window.googleSheetProvider.storageManager = new HypothesisClientManager()
       } else {
         // Local storage
-        window.hag.storageManager = new LocalStorageManager()
+        window.googleSheetProvider.storageManager = new LocalStorageManager()
       }
-      window.hag.storageManager.init((err) => {
+      window.googleSheetProvider.storageManager.init((err) => {
         if (_.isFunction(callback)) {
           if (err) {
             callback(err)
@@ -109,14 +109,14 @@ class GoogleSheetContentScriptManager {
   }
 
   initGoogleSheetParsing (callback) {
-    window.hag.googleSheetParser = new GSheetParser()
-    window.hag.googleSheetParser.parse((err, annotationGuide) => {
+    window.googleSheetProvider.googleSheetParser = new GSheetParser()
+    window.googleSheetProvider.googleSheetParser.parse((err, annotationGuide) => {
       if (err) {
         console.error(err)
         Alerts.errorAlert({text: err.message})
       } else {
-        window.hag.GroupInitializer = new GroupInitializer()
-        window.hag.GroupInitializer.init(annotationGuide, (err) => {
+        window.googleSheetProvider.GroupInitializer = new GroupInitializer()
+        window.googleSheetProvider.GroupInitializer.init(annotationGuide, (err) => {
           if (err) {
             if (_.isFunction(callback)) {
               callback(err)

@@ -45,6 +45,11 @@
       "matches": ["*://www.sciencedirect.com/science/article/pii/*"],
       "js": ["scripts/scienceDirectContentScript.js"],
       "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(Springer),
+    {
+      "matches": ["*://link.springer.com/*"],
+      "js": ["scripts/springerContentScript.js"],
+      "run_at": "document_end"
     }PVSCL:ENDCONDPVSCL:IFCOND(Manual and Hypothesis and Storage->pv:SelectedChildren()->pv:Size()=1),
     {
       "matches": [
@@ -81,13 +86,13 @@
     "storage",
     "tabs"PVSCL:IFCOND(URN),
     "file://*/*"PVSCL:ENDCONDPVSCL:IFCOND(URL),
-    "contextMenus"PVSCL:ENDCONDPVSCL:IFCOND(URL),
-    "downloads"PVSCL:ENDCONDPVSCL:IFCOND(URL),
-    "identity"PVSCL:ENDCONDPVSCL:IFCOND(URL),
-    "notifications"PVSCL:ENDCONDPVSCL:IFCOND(URL),
-    "webRequest"PVSCL:ENDCONDPVSCL:IFCOND(URL),
+    "contextMenus",
+    "downloads",
+    "identity",
+    "notifications",
+    "webRequest",
     "webRequestBlocking"PVSCL:ENDCONDPVSCL:IFCOND(DOI),
-    "*://doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(DOI),
+    "*://doi.org/*",
     "*://dx.doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),
     "*://www.sciencedirect.com/science/article/pii/*"PVSCL:ENDCONDPVSCL:IFCOND(Dropbox),
     "*://www.dropbox.com/s/",

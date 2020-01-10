@@ -170,7 +170,7 @@ class Buttons {
 
   static createGroupRightClickHandler ({id, className = 'tagGroup', handler}) {
     $.contextMenu({
-      selector: '.' + className + '[data-code-id="' + id + '"] > .groupName',
+      selector: '.' + className + '[data-code-id="' + id + '"] > .groupNameContainer > .groupName',
       build: () => {
         return handler(id)
       }

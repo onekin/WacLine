@@ -91,18 +91,18 @@ class Theme {
 
   static fromAnnotation (annotation, annotationGuide = {}) {
     let themeTag = _.find(annotation.tags, (tag) => {
-      return tag.includes('oa:theme:')
+      return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
     })
     // PVSCL:IFCOND(GSheetProvider and Code,LINE)
     let multivaluedTag = _.find(annotation.tags, (tag) => {
-      return tag.includes('oa:multivalued')
+      return tag.includes(Config.namespace + ':multivalued')
     })
     let inductiveTag = _.find(annotation.tags, (tag) => {
-      return tag.includes('oa:inductive')
+      return tag.includes(Config.namespace + ':inductive')
     })
     // PVSCL:ENDCOND
     if (_.isString(themeTag)) {
-      let name = themeTag.replace('oa:theme:', '')
+      let name = themeTag.replace(Config.namespace + ':' + Config.tags.grouped.group + ':', '')
       let config = jsYaml.load(annotation.text)
       // PVSCL:IFCOND(GSheetProvider and Code,LINE)
       // multivalued and inductive

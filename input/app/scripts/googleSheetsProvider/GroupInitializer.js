@@ -26,7 +26,7 @@ class GroupInitializer {
 
   initializeGroup (callback) {
     // Get if current hypothesis group exists
-    window.hag.storageManager.client.getListOfGroups({}, (err, groups) => {
+    window.googleSheetProvider.storageManager.client.getListOfGroups({}, (err, groups) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -95,7 +95,7 @@ class GroupInitializer {
   }
 
   createGroup (callback) {
-    window.hag.storageManager.client.createNewGroup({name: this.annotationGuide.name}, (err, group) => {
+    window.googleSheetProvider.storageManager.client.createNewGroup({name: this.annotationGuide.name}, (err, group) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -117,7 +117,7 @@ class GroupInitializer {
     let annotations = this.annotationGuide.toAnnotations()
     console.debug('Generated dimensions and categories annotations: ')
     console.debug(annotations)
-    window.hag.storageManager.client.createNewAnnotations(annotations, (err) => {
+    window.googleSheetProvider.storageManager.client.createNewAnnotations(annotations, (err) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -132,7 +132,7 @@ class GroupInitializer {
 
   removeGroup (callback) {
     if (this.annotationGuide.storage) {
-      window.hag.storageManager.client.removeAMemberFromAGroup(this.annotationGuide.storage.group.id, 'me', (err) => {
+      window.googleSheetProvider.storageManager.client.removeAMemberFromAGroup(this.annotationGuide.storage.group.id, 'me', (err) => {
         if (_.isFunction(callback)) {
           callback(err)
         } else {

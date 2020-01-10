@@ -18,6 +18,13 @@
       </cm:property>
     </cm:properties>
   </cm:head>
+  <cm:restrictions>
+    <cm:restset cm:id="iaTV32mbq7a9n-FHp">
+      <cm:restriction cm:id="i7lm8B7l-TuFqNIzX">
+        <cm:script cm:id="i_sNyzRlU86q5z__b" cm:language="ps:pvscl" cm:type="ps:boolean">Storage-&gt;pv:SelectedChildren()-&gt;pv:Contains(pv:Element(SELF-&gt;defaultStorage))</cm:script>
+      </cm:restriction>
+    </cm:restset>
+  </cm:restrictions>
   <cm:elements cm:rootid="itQl43VFxGXDPgxoO">
     <cm:element cm:id="itQl43VFxGXDPgxoO" cm:name="WebAnnotator" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="ij_z7eGJ0MmRMrQkJ" cm:class="ps:children">
@@ -59,7 +66,7 @@
         <cm:mimedesc cm:id="iW7ev_MIYGgs_ws-o" cm:mimetype="text/plain" cm:encoding="utf-8">WebAnnotator</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iMa6iMdWMevVMj_zT" cm:name="Storage" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+    <cm:element cm:id="iMa6iMdWMevVMj_zT" cm:restriction="iaTV32mbq7a9n-FHp" cm:name="Storage" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iffnbO_uCd7sjIwpn" cm:class="ps:parents">
         <cm:relation cm:id="iTZ8s5QmtNu-9bNOH" cm:type="ps:parent">
           <cm:target cm:id="iynzo1-z6sDoWP6jn">./itQl43VFxGXDPgxoO</cm:target>
@@ -80,13 +87,13 @@
           <cm:constant cm:id="ib7tdnUA56nbp-7pk" cm:type="ps:datetime">2019-04-29T15:10:11.859Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iKVMGwsKKKeF8jqQU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iMKgXJzdPh5Hv-ycm" cm:type="ps:string">RaulMedeiros</cm:constant>
+          <cm:constant cm:id="iMKgXJzdPh5Hv-ycm" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iHOz4DQvdk2XIv7bm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZWJT7KvMS0tN6RgT" cm:type="ps:datetime">2019-10-15T07:00:19.302Z</cm:constant>
+          <cm:constant cm:id="iZWJT7KvMS0tN6RgT" cm:type="ps:datetime">2019-10-29T14:25:16.290Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iLtmBzhmaB-6LgGXC" cm:type="ps:string" cm:name="defaultStorage">
-          <cm:constant cm:id="iBR5sKrb1tFl-3-wx" cm:type="ps:string">Local</cm:constant>
+          <cm:constant cm:id="imkHIYMOmnOiQi2OY" cm:type="ps:string">Local</cm:constant>
           <cm:desc>
             <cm:mimedesc cm:id="iCvHw2rgI6FOL1k0S" cm:mimetype="text/html" cm:encoding="utf-8">The value should be one of the selected storages</cm:mimedesc>
           </cm:desc>
@@ -444,10 +451,11 @@
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iDHSCs0Wg0cBE9vml" cm:class="ps:children">
-        <cm:relation cm:id="iXcCMgciisUKyo0K0" cm:type="ps:or">
+        <cm:relation cm:id="iXcCMgciisUKyo0K0" cm:type="ps:or" cm:range="[1,n]">
           <cm:target cm:id="iE4wLcsld7peWnYJa">./irEHGGoWh2Bf8Vyfh</cm:target>
           <cm:target cm:id="iWqXcqGdKrpitk0OC">./iy8LlR6jKh5d97Tv8</cm:target>
           <cm:target cm:id="iClnP5kvzDqtVHxTF">./iUYLAxRK4gHoxev47</cm:target>
+          <cm:target cm:id="i7n0NpEqYoWOgdKqh">./i9rU_8KKYlMT1C1iR</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -461,7 +469,7 @@
           <cm:constant cm:id="iz1OqS1C0r6LhUEMu" cm:type="ps:string">RaulMedeiros</cm:constant>
         </cm:property>
         <cm:property cm:id="i7xj8SrgTdb39T7uj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i9zNQmInvntTmps6g" cm:type="ps:datetime">2019-10-15T07:56:41.086Z</cm:constant>
+          <cm:constant cm:id="i9zNQmInvntTmps6g" cm:type="ps:datetime">2019-10-23T15:39:10.606Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1976,6 +1984,30 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i-01nieU7q4jzXGNJ" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleComment</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i9rU_8KKYlMT1C1iR" cm:name="Springer" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="id4Ma9Uk1QcAH8EFi" cm:class="ps:parents">
+        <cm:relation cm:id="iBHQsZWhr82gp3oaR" cm:type="ps:parent">
+          <cm:target cm:id="iGElstWa3IBh5xjKF">./iQtIAWQv5tJjKZoXP</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ih1s2fipLgvU_FYad" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iUs91B4vumL5jS15N" cm:type="ps:string">RaulMedeiros</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iX8osWgChw7bnyLo2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iDYIk417135RC1Cj7" cm:type="ps:datetime">2019-10-23T15:39:10.606Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iUPgwE1FwfS19GLa_" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="imHmzGAIlbKmpNPaZ" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iTmCQpxF6EJ-kVpLk" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i5gY-2hQxIE_xWtQa" cm:type="ps:datetime">2019-10-24T10:15:54.957Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iUrPFJUEYsBn1p9O3" cm:mimetype="text/plain" cm:encoding="utf-8">Springer</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>

@@ -37,7 +37,8 @@ const Config = {
   // PVSCL:ENDCOND
   defaultStorage: defaultStorage,
   namespace: 'oa',
-  urlParamName: 'spl', // Name to activate the extension if the url contains this hash param
+  // eslint-disable-next-line quotes
+  urlParamName: "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('appShortName'))", // Name to activate the extension if the url contains this hash param
   tags: tags,
   colors: {
     minAlpha: 0.2,

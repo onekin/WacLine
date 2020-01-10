@@ -180,7 +180,9 @@ class Toolset {
   }
 
   destroy () {
-    this.toolsetContainer.remove()
+    if (_.isElement(this.toolsetContainer)) {
+      this.toolsetContainer.remove()
+    }
   }
 }
 

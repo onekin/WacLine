@@ -1,6 +1,7 @@
 const Alerts = require('../../utils/Alerts')
 const AnnotationUtils = require('../../utils/AnnotationUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
+const Config = require('../../Config')
 const _ = require('lodash')
 const Theme = require('../../definition/Theme')
 
@@ -29,7 +30,7 @@ const HyperSheetColors = {
 
 class GoogleSheetGenerator {
   static generate (callback) {
-    // TODO Spreadsheet for SLRs
+    // Spreadsheet for SLRs
     GoogleSheetGenerator.createSpreadsheet((err, spreadsheetMetadata) => {
       if (err) {
         Alerts.errorAlert({title: 'Error creating spreadsheet'})
@@ -159,10 +160,10 @@ class GoogleSheetGenerator {
 
   static getSLRInfoFromAnnotations (annotations) {
     let codingAnnotations = _.filter(annotations, (annotation) => {
-      return annotation.motivation === 'classifying' || annotation.motivation === 'oa:classifying'
+      return annotation.motivation === 'classifying' || annotation.motivation === Config.namespace + ':classifying'
     })
     let validatingAnnotations = _.filter(annotations, (annotation) => {
-      return annotation.motivation === 'assessing' || annotation.motivation === 'oa:assessing'
+      return annotation.motivation === 'assessing' || annotation.motivation === Config.namespace + ':assessing'
     })
     let anAnnotationForEachPrimaryStudy = _.uniqWith(codingAnnotations, (a, b) => {
       return AnnotationUtils.areFromSameDocument(a, b)
@@ -180,27 +181,35 @@ class GoogleSheetGenerator {
       try {
         // Look for any annotation with document title
         let annotationWithTitle = _.find(codingAnnotationsForPrimaryStudy, (annotation) => {
-          if (annotation.documentMetadata) {
-            return _.isString(annotation.documentMetadata.title)
+          if (_.has(annotation, 'target[0].source.title')) {
+            return _.isString(annotation.target[0].source.title)
           }
         })
         if (annotationWithTitle) {
-          title = annotationWithTitle.documentMetadata.title
-        } else {
+          title = annotationWithTitle.target[0].source.title
+        } /* PVSCL:IFCOND(Hypothesis) */else {
           annotationWithTitle = _.find(codingAnnotationsForPrimaryStudy, (annotation) => {
-            return _.isArray(annotation.document.title)
+            return annotation.documentMetadata.title
           })
           if (annotationWithTitle) {
-            title = annotationWithTitle.document.title[0]
+            title = annotationWithTitle.documentMetadata.title
           }
-        }
+        } /* PVSCL:ENDCOND */
       } catch (e) {
-        title = 'Primary Study ' + i
+        title = 'Document ' + i
       }
+      // Retrieve reliable URL for the primary study
+      let reliableURL = _.find(_.map(codingAnnotationsForPrimaryStudy, (annotation) => {
+        return AnnotationUtils.getReliableURItoLocateTarget(annotation)
+      }), (possibleReliableURLs) => {
+        return possibleReliableURLs !== null
+      })
+      reliableURL = reliableURL || 'undefined' // TODO In the case that no reliableURL is found, go to the annotation if storage is Hypothes.is (check if it is possible to do the same with other remote storages (e.g.: Neo4J)
       // Retrieve users for current primary study
       let usersForPrimaryStudy = _.map(_.uniqBy(codingAnnotationsForPrimaryStudy, (anno) => { return anno['user'] }), 'user')
-      let primaryStudy = new PrimaryStudy({metadata: {url: annotationForPrimaryStudy.uri, title: title}, users: usersForPrimaryStudy}) // TODO Retrieve doi
+      let primaryStudy = new PrimaryStudy({metadata: {url: reliableURL, title: title}, users: usersForPrimaryStudy})
       let parentCodes = GoogleSheetGenerator.parseCodesFromCodingAnnotations({
+        targetUrl: reliableURL,
         codingAnnotations: codingAnnotationsForPrimaryStudy,
         validatingAnnotations
       })
@@ -210,13 +219,13 @@ class GoogleSheetGenerator {
     return {primaryStudies: primaryStudies, users: users}
   }
 
-  static parseCodesFromCodingAnnotations ({codingAnnotations, validatingAnnotations}) {
+  static parseCodesFromCodingAnnotations ({codingAnnotations, validatingAnnotations, targetUrl}) {
     let classifiedThemes = {}
     for (let i = 0; i < codingAnnotations.length; i++) {
       let codingAnnotation = codingAnnotations[i]
       // Check if annotation is validated
       let validatingAnnotation = _.find(validatingAnnotations, (validatingAnnotation) => {
-        let validatedAnnotationId = validatingAnnotation['oa:target'].replace('https://hypothes.is/api/annotations/', '')
+        let validatedAnnotationId = validatingAnnotation[Config.namespace + ':target'].replace('https://hypothes.is/api/annotations/', '')
         return codingAnnotation.id === validatedAnnotationId
       })
       // Get code or theme that is classified with
@@ -236,8 +245,8 @@ class GoogleSheetGenerator {
         } else {
           // Theme is not classified by any other annotation yet
           let chosenCodes = {}
-          chosenCodes[code.id] = new Code({codeId: code.id, codeName: code.name, annotations: [codingAnnotation], validatingAnnotation})
-          classifiedThemes[theme.id] = new Codes({theme, chosenCodes, multivalued: theme.multivalued})
+          chosenCodes[code.id] = new Code({codeId: code.id, codeName: code.name, annotations: [codingAnnotation], validatingAnnotation, targetUrl})
+          classifiedThemes[theme.id] = new Codes({theme, chosenCodes, multivalued: theme.multivalued, targetUrl})
         }
       } else {
         // What is classified is the theme
@@ -314,24 +323,25 @@ class PrimaryStudy {
 }
 
 class Code {
-  constructor ({codeId, codeName, annotations, validatingAnnotation}) {
+  constructor ({codeId, codeName, annotations, validatingAnnotation, targetUrl}) {
     this.codeId = codeId
     this.codeName = codeName
     this.annotations = annotations
     this.validatingAnnotation = validatingAnnotation
+    this.targetUrl = targetUrl
   }
 
   toCell (users) {
     if (this.validatingAnnotation) {
       // Find validated annotation
-      let validatedAnnotationId = this.validatingAnnotation['oa:target'].replace('https://hypothes.is/api/annotations/', '')
+      let validatedAnnotationId = this.validatingAnnotation[Config.namespace + ':target'].replace('https://hypothes.is/api/annotations/', '')
       let annotation = _.find(this.annotations, (annotation) => { return annotation.id === validatedAnnotationId })
       if (!_.isObject(annotation)) { // If not found, retrieve first annotation, but something is probably wrong
         annotation = this.annotations[0]
       }
       return {
         userEnteredValue: {
-          formulaValue: '=HYPERLINK("' + annotation.uri + '#hag:' + annotation.id + '", "' + this.codeName + '")'
+          formulaValue: '=HYPERLINK("' + this.targetUrl + '#' + Config.urlParamName + ':' + annotation.id + '", "' + this.codeName + '")'
         },
         userEnteredFormat: {
           backgroundColor: HyperSheetColors.green
@@ -349,7 +359,7 @@ class Code {
         if (allUsersWithThisCode) {
           return {
             userEnteredValue: {
-              formulaValue: '=HYPERLINK("' + annotation.uri + '#hag:' + annotation.id + '", "' + this.codeName + '")'
+              formulaValue: '=HYPERLINK("' + this.targetUrl + '#' + Config.urlParamName + ':' + annotation.id + '", "' + this.codeName + '")'
             },
             userEnteredFormat: {
               backgroundColor: HyperSheetColors.yellow
@@ -358,7 +368,7 @@ class Code {
         } else {
           return {
             userEnteredValue: {
-              formulaValue: '=HYPERLINK("' + annotation.uri + '#hag:' + annotation.id + '", "' + this.codeName + '")'
+              formulaValue: '=HYPERLINK("' + this.targetUrl + '#' + Config.urlParamName + ':' + annotation.id + '", "' + this.codeName + '")'
             },
             userEnteredFormat: {
               backgroundColor: HyperSheetColors.red
@@ -370,7 +380,7 @@ class Code {
         let annotation = this.annotations[0]
         return {
           userEnteredValue: {
-            formulaValue: '=HYPERLINK("' + annotation.uri + '#hag:' + annotation.id + '", "' + this.codeName + '")'
+            formulaValue: '=HYPERLINK("' + this.targetUrl + '#' + Config.urlParamName + ':' + annotation.id + '", "' + this.codeName + '")'
           }
         }
       }
@@ -394,12 +404,13 @@ Code.status = {
 }
 
 class Codes {
-  constructor ({parentCode, chosenCodes = {}, itself, multivalued = false, validatingAnnotation}) {
+  constructor ({parentCode, chosenCodes = {}, itself, multivalued = false, validatingAnnotation, targetUrl}) {
     this.parentCode = parentCode
     this.chosenCodes = chosenCodes
     this.itself = itself
     this.multivalued = multivalued
     this.validatingAnnotation = validatingAnnotation
+    this.targetUrl = targetUrl
   }
 
   numberOfColumns () {
@@ -429,14 +440,14 @@ class Codes {
         let validatedCode = _.find(chosenCodes, (chosenCode) => { return chosenCode.validatingAnnotation })
         if (validatedCode) {
           // Find validated annotation
-          let validatedAnnotationId = validatedCode.validatingAnnotation['oa:target'].replace('https://hypothes.is/api/annotations/', '')
+          let validatedAnnotationId = validatedCode.validatingAnnotation[Config.namespace + ':target'].replace('https://hypothes.is/api/annotations/', '')
           let annotation = _.find(validatedCode.annotations, (annotation) => { return annotation.id === validatedAnnotationId })
           if (!_.isObject(annotation)) { // If not found, retrieve first annotation, but something is probably wrong
             annotation = validatedCode.annotations[0]
           }
           return [{
             userEnteredValue: {
-              formulaValue: '=HYPERLINK("' + annotation.uri + '#hag:' + annotation.id + '", "' + validatedCode.codeName + '")'
+              formulaValue: '=HYPERLINK("' + this.targetUrl + '#' + Config.urlParamName + ':' + annotation.id + '", "' + validatedCode.codeName + '")'
             },
             userEnteredFormat: {
               backgroundColor: HyperSheetColors.green
@@ -449,7 +460,7 @@ class Codes {
             // Conflict
             return [{
               userEnteredValue: {
-                formulaValue: '=HYPERLINK("' + annotation.uri + '#hag:' + annotation.id + '", "' + chosenCodes[0].codeName + '")'
+                formulaValue: '=HYPERLINK("' + this.targetUrl + '#' + Config.urlParamName + ':' + annotation.id + '", "' + chosenCodes[0].codeName + '")'
               },
               userEnteredFormat: {
                 backgroundColor: HyperSheetColors.red
@@ -475,7 +486,7 @@ class Codes {
               // All reviewers has annotated with that code and more than one reviewer has codified the PS
               return [{
                 userEnteredValue: {
-                  formulaValue: '=HYPERLINK("' + annotation.uri + '#hag:' + annotation.id + '", "' + chosenCodes[0].codeName + '")'
+                  formulaValue: '=HYPERLINK("' + this.targetUrl + '#' + Config.urlParamName + ':' + annotation.id + '", "' + chosenCodes[0].codeName + '")'
                 },
                 userEnteredFormat: {
                   backgroundColor: HyperSheetColors.yellow
@@ -485,7 +496,7 @@ class Codes {
               // Not all reviewers has annotated with that code or there is only one reviewer that has codified the PS
               return [{
                 userEnteredValue: {
-                  formulaValue: '=HYPERLINK("' + annotation.uri + '#hag:' + annotation.id + '", "' + chosenCodes[0].codeName + '")'
+                  formulaValue: '=HYPERLINK("' + this.targetUrl + '#' + Config.urlParamName + ':' + annotation.id + '", "' + chosenCodes[0].codeName + '")'
                 }
               }]
             }
@@ -503,7 +514,7 @@ class Codes {
         if (this.validatingAnnotation) {
           return [
             {userEnteredValue: {
-              formulaValue: '=HYPERLINK("' + this.itself.uri + '#hag:' + this.itself.id + '", "' + quote + '")'
+              formulaValue: '=HYPERLINK("' + this.itself.uri + '#' + Config.urlParamName + ':' + this.itself.id + '", "' + quote + '")'
             },
             userEnteredFormat: {
               backgroundColor: HyperSheetColors.yellow
@@ -511,7 +522,7 @@ class Codes {
             }]
         } else {
           return [{userEnteredValue: {
-            formulaValue: '=HYPERLINK("' + this.itself.uri + '#hag:' + this.itself.id + '", "' + quote + '")'
+            formulaValue: '=HYPERLINK("' + this.itself.uri + '#' + Config.urlParamName + ':' + this.itself.id + '", "' + quote + '")'
           }}]
         }
       }

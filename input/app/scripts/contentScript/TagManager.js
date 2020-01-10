@@ -119,6 +119,7 @@ class TagManager {
             // TODO Create definition annotations if Definition->Who is User
             let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
             Alerts.confirmAlert({
+              title: 'Do you want to create a default annotation codebook?',
               text: currentGroupName + ' group has not codes to start annotating. Would you like to configure the highlighter?',
               alertType: Alerts.alertType.question,
               callback: () => {
@@ -225,7 +226,6 @@ class TagManager {
       let theme = themes[i]
       let themeButtonContainer
       // PVSCL:IFCOND(Code,LINE)
-      // TODO Theme has codes or not
       if (theme.codes.length > 0) {
         themeButtonContainer = Buttons.createGroupedButtons({
           id: theme.id,
@@ -352,7 +352,7 @@ class TagManager {
           if (themeId) {
             let theme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(themeId)
             if (LanguageUtils.isInstanceOf(theme, Theme)) {
-              let tags = ['oa:theme:' + theme.name]
+              let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
               // PVSCL:IFCOND(MoodleURL,LINE)
               tags.push('cmid:' + theme.annotationGuide.cmid)
               // PVSCL:ENDCOND
@@ -494,6 +494,8 @@ class TagManager {
               theme.addCode(code)
               // Reload button container
               this.reloadButtonContainer()
+              // Reopen sidebar to see the new added code
+              window.abwa.sidebar.openSidebar()
             }
           })
         }
@@ -539,6 +541,8 @@ class TagManager {
               // Reload button container
               this.reloadButtonContainer()
               LanguageUtils.dispatchCustomEvent(Events.tagsUpdated, {})
+              // Open the sidebar
+              window.abwa.sidebar.openSidebar()
             }
           })
         }

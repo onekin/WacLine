@@ -229,7 +229,9 @@ class UserFilter {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
     // Remove user filter container from sidebar
-    this.userFilterWrapper.remove()
+    if (_.isElement(this.userFilterWrapper)) {
+      this.userFilterWrapper.remove()
+    }
   }
 }
 
