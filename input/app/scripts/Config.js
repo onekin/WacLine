@@ -1,8 +1,8 @@
-// Configuration for default storage
+// Configuration for default annotation server
 let defaultAnnotationServer
-// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Collect(p | IF p->pv:Name() = AnnotationServer->pv:Attribute('defaultStorage') THEN 1 ELSE 0 ENDIF)->pv:Contains(1), LINE)
+// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Collect(p | IF p->pv:Name() = AnnotationServer->pv:Attribute('defaultAnnotationServer') THEN 1 ELSE 0 ENDIF)->pv:Contains(1), LINE)
 // eslint-disable-next-line quotes
-defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:Attribute('defaultStorage')->pv:ToLowerCase())"
+defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:Attribute('defaultAnnotationServer')->pv:ToLowerCase())"
 // PVSCL:ELSECOND
 defaultAnnotationServer = 'PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(0)->pv:Name()->pv:ToLowerCase())'
 // PVSCL:ENDCOND
@@ -35,7 +35,7 @@ const Config = {
   // PVSCL:IFCOND(User or ApplicationBased, LINE)
   groupName: 'DefaultReviewModel',
   // PVSCL:ENDCOND
-  defaultStorage: defaultAnnotationServer,
+  defaultAnnotationServer: defaultAnnotationServer,
   namespace: 'oa',
   // eslint-disable-next-line quotes
   urlParamName: "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))", // Name to activate the extension if the url contains this hash param

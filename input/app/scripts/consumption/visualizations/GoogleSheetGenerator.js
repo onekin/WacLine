@@ -71,7 +71,7 @@ class GoogleSheetGenerator {
     // Promise to retrieve all annotations from current group
     promises.push(new Promise((resolve, reject) => {
       // TODO Change the limit of annotations
-      window.abwa.storageManager.client.searchAnnotations({
+      window.abwa.annotationServerManager.client.searchAnnotations({
         group: window.abwa.groupSelector.currentGroup.id,
         limit: 100000000,
         order: 'desc',
@@ -204,7 +204,7 @@ class GoogleSheetGenerator {
       }), (possibleReliableURLs) => {
         return possibleReliableURLs !== null
       })
-      reliableURL = reliableURL || 'undefined' // TODO In the case that no reliableURL is found, go to the annotation if storage is Hypothes.is (check if it is possible to do the same with other remote storages (e.g.: Neo4J)
+      reliableURL = reliableURL || 'undefined' // TODO In the case that no reliableURL is found, go to the annotation if annotation server is Hypothes.is (check if it is possible to do the same with other remote annotation servers (e.g.: Neo4J)
       // Retrieve users for current primary study
       let usersForPrimaryStudy = _.map(_.uniqBy(codingAnnotationsForPrimaryStudy, (anno) => { return anno['user'] }), 'user')
       let primaryStudy = new PrimaryStudy({metadata: {url: reliableURL, title: title}, users: usersForPrimaryStudy})

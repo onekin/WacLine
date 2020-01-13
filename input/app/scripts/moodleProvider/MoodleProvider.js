@@ -2,10 +2,10 @@ const MoodleClientManager = require('../moodle/MoodleClientManager')
 const MoodleFunctions = require('../moodle/MoodleFunctions')
 const _ = require('lodash')
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local, LINE)
-const LocalStorageManager = require('../storage/local/LocalStorageManager')
+// PVSCL:IFCOND(BrowserStorage, LINE)
+const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Code, LINE)
 const Code = require('../definition/Code')
@@ -23,7 +23,7 @@ class MoodleProvider {
     this.assignmentId = null
     this.moodleEndpoint = null
     this.assignmentName = null
-    this.StorageClientManager = null
+    this.AnnotationServerClientManager = null
   }
 
   init (callback) {
@@ -35,7 +35,7 @@ class MoodleProvider {
       },
       callback: () => {
         // Create hypothesis client
-        this.loadStorage(() => {
+        this.loadAnnotationServer(() => {
           MoodleScraping.scrapAssignmentData((err, assignmentData) => {
             if (err) {
 
@@ -179,15 +179,15 @@ class MoodleProvider {
     })
   }
 
-  loadStorage (callback) {
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
+  loadAnnotationServer (callback) {
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    this.StorageClientManager = new HypothesisClientManager()
+    this.AnnotationServerClientManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Local, LINE)
-    this.StorageClientManager = new LocalStorageManager()
+    // PVSCL:IFCOND(BrowserStorage, LINE)
+    this.AnnotationServerClientManager = new BrowserStorageManager()
     // PVSCL:ENDCOND
-    this.StorageClientManager.init(() => {
+    this.AnnotationServerClientManager.init(() => {
       this.initLoginProcess((err) => {
         if (_.isFunction(callback)) {
           if (err) {
@@ -199,15 +199,15 @@ class MoodleProvider {
       })
     })
     // PVSCL:ELSECOND
-    chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
-      if (storage === 'hypothesis') {
+    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+      if (annotationServer === 'hypothesis') {
         // Hypothesis
-        this.StorageClientManager = new HypothesisClientManager()
+        this.AnnotationServerClientManager = new HypothesisClientManager()
       } else {
-        // Local storage
-        this.StorageClientManager = new LocalStorageManager()
+        // Browser storage
+        this.AnnotationServerClientManager = new BrowserStorageManager()
       }
-      this.StorageClientManager.init(() => {
+      this.AnnotationServerClientManager.init(() => {
         this.initLoginProcess((err) => {
           if (_.isFunction(callback)) {
             if (err) {
@@ -223,7 +223,7 @@ class MoodleProvider {
   }
 
   initLoginProcess (callback) {
-    this.StorageClientManager.logIn((err) => {
+    this.AnnotationServerClientManager.logIn((err) => {
       if (err) {
         callback(err)
       } else {

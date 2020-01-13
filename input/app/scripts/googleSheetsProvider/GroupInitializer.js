@@ -26,7 +26,7 @@ class GroupInitializer {
 
   initializeGroup (callback) {
     // Get if current hypothesis group exists
-    window.googleSheetProvider.storageManager.client.getListOfGroups({}, (err, groups) => {
+    window.googleSheetProvider.annotationServerManager.client.getListOfGroups({}, (err, groups) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -67,9 +67,9 @@ class GroupInitializer {
                   }
                 } else {
                   // Save as current group the generated one
-                  ChromeStorage.setData(selectedGroupNamespace, {data: JSON.stringify(this.annotationGuide.storage.group)}, ChromeStorage.local)
+                  ChromeStorage.setData(selectedGroupNamespace, {data: JSON.stringify(this.annotationGuide.annotationServer.group)}, ChromeStorage.local)
                   // When window.focus
-                  let groupUrl = this.annotationGuide.storage.group.links.html
+                  let groupUrl = this.annotationGuide.annotationServer.group.links.html
                   Alerts.successAlert({
                     title: 'Correctly configured', // TODO i18n
                     text: chrome.i18n.getMessage('ShareHypothesisGroup') + '<br/><a href="' + groupUrl + '" target="_blank">' + groupUrl + '</a>'
@@ -95,7 +95,7 @@ class GroupInitializer {
   }
 
   createGroup (callback) {
-    window.googleSheetProvider.storageManager.client.createNewGroup({name: this.annotationGuide.name}, (err, group) => {
+    window.googleSheetProvider.annotationServerManager.client.createNewGroup({name: this.annotationGuide.name}, (err, group) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -103,8 +103,8 @@ class GroupInitializer {
       } else {
         console.debug('Created group in hypothesis: ')
         console.debug(group)
-        AnnotationGuide.setStorage(group, (storage) => {
-          this.annotationGuide.storage = storage
+        AnnotationGuide.setAnnotationServer(group, (annotationServer) => {
+          this.annotationGuide.annotationServer = annotationServer
           if (_.isFunction(callback)) {
             callback()
           }
@@ -117,7 +117,7 @@ class GroupInitializer {
     let annotations = this.annotationGuide.toAnnotations()
     console.debug('Generated dimensions and categories annotations: ')
     console.debug(annotations)
-    window.googleSheetProvider.storageManager.client.createNewAnnotations(annotations, (err) => {
+    window.googleSheetProvider.annotationServerManager.client.createNewAnnotations(annotations, (err) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -131,8 +131,8 @@ class GroupInitializer {
   }
 
   removeGroup (callback) {
-    if (this.annotationGuide.storage) {
-      window.googleSheetProvider.storageManager.client.removeAMemberFromAGroup(this.annotationGuide.storage.group.id, 'me', (err) => {
+    if (this.annotationGuide.annotationServer) {
+      window.googleSheetProvider.annotationServerManager.client.removeAMemberFromAGroup(this.annotationGuide.annotationServer.group.id, 'me', (err) => {
         if (_.isFunction(callback)) {
           callback(err)
         } else {

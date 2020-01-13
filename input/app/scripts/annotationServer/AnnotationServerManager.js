@@ -1,13 +1,13 @@
 const _ = require('lodash')
 
-class StorageManager {
+class AnnotationServerManager {
   constructor () {
     this.client = {}
-    this.storageMetadata = {
+    this.annotationServerMetadata = {
       annotationUrl: 'https://localannotationsdatabase.org/annotation/',
       groupUrl: 'https://localannotationsdatabase.org/group/',
       userUrl: 'https://localannotationsdatabase.org/user/',
-      storageUrl: 'https://localannotationsdatabase.org'
+      annotationServerUrl: 'https://localannotationsdatabase.org'
     }
   }
 
@@ -34,4 +34,4 @@ class StorageManager {
   }
 }
 
-module.exports = StorageManager
+module.exports = AnnotationServerManager

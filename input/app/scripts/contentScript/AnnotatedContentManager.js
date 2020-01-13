@@ -102,7 +102,7 @@ class AnnotatedContentManager {
         call['group'] = window.abwa.groupSelector.currentGroup.id
         call['tags'] = 'cmid:' + this.cmid
         call['wildcard_uri'] = window.abwa.tagManager.model.highlighterDefinition.moodleEndpoint + '*'
-        window.abwa.storageManager.client.searchAnnotations(call, (err, annotations) => {
+        window.abwa.annotationServerManager.client.searchAnnotations(call, (err, annotations) => {
           if (err) {
             reject(err)
           } else {
@@ -173,7 +173,7 @@ class AnnotatedContentManager {
         themeAnnotation.tagId = code.id
         annotatedCode.annotations.push(themeAnnotation)
       })
-      this.updateAnnotationsInStorage(themeAnnotations, () => {
+      this.updateAnnotationsInAnnotationServer(themeAnnotations, () => {
         annotatedTheme.annotations = []
         window.abwa.contentAnnotator.updateAllAnnotations()
         this.reloadTagsChosen()
@@ -187,7 +187,7 @@ class AnnotatedContentManager {
         lastAnnotatedCodeAnnotation.tagId = code.id
         annotatedCode.annotations.push(lastAnnotatedCodeAnnotation)
       })
-      this.updateAnnotationsInStorage(lastAnnotatedCodeAnnotations, () => {
+      this.updateAnnotationsInAnnotationServer(lastAnnotatedCodeAnnotations, () => {
         lastAnnotatedCode.annotations = []
         window.abwa.contentAnnotator.updateAllAnnotations()
         this.reloadTagsChosen()
@@ -213,12 +213,12 @@ class AnnotatedContentManager {
     // PVSCL:ENDCOND
   }
 
-  updateAnnotationsInStorage (annotations, callback) {
+  updateAnnotationsInAnnotationServer (annotations, callback) {
     let promises = []
     for (let i = 0; i < annotations.length; i++) {
       let annotation = annotations[i]
       promises.push(new Promise((resolve, reject) => {
-        window.abwa.storageManager.client.updateAnnotation(annotation.id, annotation, (err, annotation) => {
+        window.abwa.annotationServerManager.client.updateAnnotation(annotation.id, annotation, (err, annotation) => {
           if (err) {
             reject(new Error('Unable to update annotation ' + annotation.id))
           } else {

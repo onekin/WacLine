@@ -1,14 +1,14 @@
-const ChromeStorage = require('../../utils/ChromeStorage')
-const LocalStorageClient = require('./LocalStorageClient')
-const StorageManager = require('../StorageManager')
+const Chrome = require('../../utils/ChromeStorage')
+const BrowserStorageClient = require('./BrowserStorageClient')
+const AnnotationServerManager = require('../AnnotationServerManager')
 // const mockDatabase = require('./mockDatabase')
 const EmptyDatabase = require('./EmptyDatabase')
 const _ = require('lodash')
 
-class LocalStorageManager extends StorageManager {
+class BrowserStorageManager extends AnnotationServerManager {
   constructor () {
     super()
-    this.localStorageClient = this.client
+    this.browserStorageClient = this.client
     this.annotationsDatabase = {}
   }
 
@@ -25,12 +25,12 @@ class LocalStorageManager extends StorageManager {
           } catch (e) {
             this.annotationsDatabase = EmptyDatabase
           } finally {
-            this.client = new LocalStorageClient(this.annotationsDatabase, this)
+            this.client = new BrowserStorageClient(this.annotationsDatabase, this)
           }
         } else {
           // Load empty database
           this.annotationsDatabase = EmptyDatabase
-          this.client = new LocalStorageClient(this.annotationsDatabase, this)
+          this.client = new BrowserStorageClient(this.annotationsDatabase, this)
         }
         // Callback
         callback()
@@ -66,4 +66,4 @@ class LocalStorageManager extends StorageManager {
   }
 }
 
-module.exports = LocalStorageManager
+module.exports = BrowserStorageManager

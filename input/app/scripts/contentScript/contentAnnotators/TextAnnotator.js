@@ -15,7 +15,7 @@ const Theme = require('../../definition/Theme')
 const Code = require('../../definition/Code')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('../../storage/hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Reply,LINE)
 const ReplyAnnotation = require('../../production/ReplyAnnotation')
@@ -293,7 +293,7 @@ class TextAnnotator extends ContentAnnotator {
       }
       // Construct the annotation to send to hypothesis
       let annotation = TextAnnotator.constructAnnotation({selectors, tags: event.detail.tags, tagId: event.detail.id})
-      window.abwa.storageManager.client.createNewAnnotation(annotation, (err, annotation) => {
+      window.abwa.annotationServerManager.client.createNewAnnotation(annotation, (err, annotation) => {
         if (err) {
           Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
@@ -361,18 +361,18 @@ class TextAnnotator extends ContentAnnotator {
         selector: selectors
       }],
       text: '',
-      uri: window.abwa.targetManager.getDocumentURIToSaveInStorage()
+      uri: window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
     }
     // Tag id
     if (tagId) {
       data.tagId = tagId
-      data.body = window.abwa.storageManager.storageMetadata.annotationUrl + tagId
+      data.body = window.abwa.annotationServerManager.annotationServerMetadata.annotationUrl + tagId
     }
     // PVSCL:IFCOND(Hypothesis, LINE)
     // As hypothes.is don't follow some attributes of W3C, we must adapt created annotation with its own attributes to set the target source
-    if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
+    if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
       // Add uri attribute
-      data.uri = window.abwa.targetManager.getDocumentURIToSaveInStorage()
+      data.uri = window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
       // Add document, uris, title, etc.
       let uris = window.abwa.targetManager.getDocumentURIs()
       data.document = {}
@@ -505,9 +505,9 @@ class TextAnnotator extends ContentAnnotator {
 
   updateAllAnnotations (callback) {
     // Retrieve annotations for current url and group
-    window.abwa.storageManager.client.searchAnnotations({
-      url: window.abwa.targetManager.getDocumentURIToSearchInStorage(),
-      uri: window.abwa.targetManager.getDocumentURIToSaveInStorage(),
+    window.abwa.annotationServerManager.client.searchAnnotations({
+      url: window.abwa.targetManager.getDocumentURIToSearchInAnnotationServer(),
+      uri: window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer(),
       group: window.abwa.groupSelector.currentGroup.id,
       order: 'asc'
     }, (err, annotations) => {
@@ -688,7 +688,7 @@ class TextAnnotator extends ContentAnnotator {
       text: 'Are you sure you want to delete this annotation?',
       callback: () => {
         // Delete annotation
-        window.abwa.storageManager.client.deleteAnnotation(annotation.id, (err, result) => {
+        window.abwa.annotationServerManager.client.deleteAnnotation(annotation.id, (err, result) => {
           if (err) {
             // Unable to delete this annotation
             console.error('Error while trying to delete annotation %s', annotation.id)
@@ -895,7 +895,7 @@ class TextAnnotator extends ContentAnnotator {
           // PVSCL:IFCOND(SuggestedLiterature,LINE)
           annotation.suggestedLiterature = preConfirmData.literature || []
           // PVSCL:ENDCOND
-          window.abwa.storageManager.client.updateAnnotation(
+          window.abwa.annotationServerManager.client.updateAnnotation(
             annotation.id,
             annotation,
             (err, annotation) => {
@@ -1017,7 +1017,7 @@ class TextAnnotator extends ContentAnnotator {
       tag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + themeOrCode.name
     }
     return new Promise((resolve, reject) => {
-      window.abwa.storageManager.client.searchAnnotations({
+      window.abwa.annotationServerManager.client.searchAnnotations({
         tag: tag
       }, (err, annotations) => {
         if (err) {
@@ -1208,7 +1208,7 @@ class TextAnnotator extends ContentAnnotator {
       let oldTagAnnotation = oldTagsAnnotations[i]
       promises.push(new Promise((resolve, reject) => {
         oldTagAnnotation.tags = newTags
-        window.abwa.storageManager.client.updateAnnotation(oldTagAnnotation.id, oldTagAnnotation, (err, annotation) => {
+        window.abwa.annotationServerManager.client.updateAnnotation(oldTagAnnotation.id, oldTagAnnotation, (err, annotation) => {
           if (err) {
             reject(new Error('Unable to update annotation ' + oldTagAnnotation.id))
           } else {
@@ -1243,7 +1243,7 @@ class TextAnnotator extends ContentAnnotator {
   deleteAllAnnotations () {
     // Retrieve all the annotations
     let allAnnotations = this.allAnnotations
-    window.abwa.storageManager.client.deleteAnnotations(allAnnotations, (err) => {
+    window.abwa.annotationServerManager.client.deleteAnnotations(allAnnotations, (err) => {
       if (err) {
         Alerts.errorAlert({text: 'Unable to delete all the annotations in the document. Please try it again.'})
         this.updateAllAnnotations()

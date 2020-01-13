@@ -258,7 +258,7 @@ class TargetManager {
     }
   }
 
-  getDocumentURIToSearchInStorage () {
+  getDocumentURIToSearchInAnnotationServer () {
     if (this.documentFormat === PDF) {
       return this.urn
     } else {
@@ -266,7 +266,7 @@ class TargetManager {
     }
   }
 
-  getDocumentURIToSaveInStorage () {
+  getDocumentURIToSaveInAnnotationServer () {
     if (this.doi) {
       return 'https://doi.org/' + this.doi
     } else if (this.url) {

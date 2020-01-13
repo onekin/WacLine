@@ -2,7 +2,7 @@ const _ = require('lodash')
 const RandomUtils = require('../../utils/RandomUtils')
 const wildcard = require('wildcard')
 
-class LocalStorageClient {
+class BrowserStorageClient {
   constructor (database, manager) {
     this.database = database
     this.manager = manager
@@ -10,7 +10,7 @@ class LocalStorageClient {
 
   createNewAnnotation (annotation, callback) {
     try {
-      let annotationToStore = LocalStorageClient.constructAnnotation({
+      let annotationToStore = BrowserStorageClient.constructAnnotation({
         annotation,
         user: this.database.user,
         annotations: this.database.annotations
@@ -33,7 +33,7 @@ class LocalStorageClient {
       let toStoreAnnotations = []
       for (let i = 0; i < annotations.length; i++) {
         let annotation = annotations[i]
-        let toStoreAnnotation = LocalStorageClient.constructAnnotation({
+        let toStoreAnnotation = BrowserStorageClient.constructAnnotation({
           annotation,
           user: this.database.user,
           annotations: this.database.annotations
@@ -54,7 +54,7 @@ class LocalStorageClient {
     // Check if the required parameter group exists
     if (annotation.group) {
       // TODO Check if annotation follows the standard schema
-      let annotationToCreate = LocalStorageClient.constructEmptyAnnotation()
+      let annotationToCreate = BrowserStorageClient.constructEmptyAnnotation()
       // Override properties of annotation with inserted content
       annotationToCreate = Object.assign(annotationToCreate, annotation)
 
@@ -71,7 +71,7 @@ class LocalStorageClient {
       annotationToCreate.id = RandomUtils.randomUnique(arrayOfIds, 22)
 
       // Permissions
-      LocalStorageClient.setAnnotationPermissions(annotationToCreate, user)
+      BrowserStorageClient.setAnnotationPermissions(annotationToCreate, user)
       // TODO Links property ¿?
       // Return constructed annotation to create
       return annotationToCreate
@@ -224,7 +224,7 @@ class LocalStorageClient {
             })
           }
           // Permissions
-          LocalStorageClient.setAnnotationPermissions(annotationUpdated, currentUser)
+          BrowserStorageClient.setAnnotationPermissions(annotationUpdated, currentUser)
           // Update the annotation from list
           annotations[annotationToUpdateIndex] = annotationUpdated
           // Return deleted annotation
@@ -242,7 +242,7 @@ class LocalStorageClient {
   updateAnnotation (id, annotation, callback) {
     if (_.isString(id) && _.isObject(annotation)) {
       try {
-        let updatedAnnotation = LocalStorageClient.updateAnnotationFromList({
+        let updatedAnnotation = BrowserStorageClient.updateAnnotationFromList({
           id: id,
           annotation: annotation,
           annotations: this.database.annotations,
@@ -294,7 +294,7 @@ class LocalStorageClient {
       return
     }
     try {
-      let deletedAnnotation = LocalStorageClient.deleteAnnotationFromList({
+      let deletedAnnotation = BrowserStorageClient.deleteAnnotationFromList({
         id: annotationId,
         annotations: this.database.annotations,
         currentUser: this.database.user
@@ -322,7 +322,7 @@ class LocalStorageClient {
       let deletedAnnotations = []
       for (let i = 0; i < toDeleteAnnotationIds.length; i++) {
         let toDeleteAnnotationId = toDeleteAnnotationIds[i]
-        let deletedAnnotation = LocalStorageClient.deleteAnnotationFromList({
+        let deletedAnnotation = BrowserStorageClient.deleteAnnotationFromList({
           id: toDeleteAnnotationId,
           annotations: this.database.annotations,
           currentUser: this.database.user
@@ -406,10 +406,10 @@ class LocalStorageClient {
 
   createNewGroup (data, callback) {
     if (_.has(data, 'name')) {
-      let createdGroup = LocalStorageClient.constructGroup({
+      let createdGroup = BrowserStorageClient.constructGroup({
         name: data.name,
         description: data.description,
-        storageUrl: this.manager.storageUrl,
+        annotationServerUrl: this.manager.annotationServerUrl,
         groups: this.database.groups
       })
       this.database.groups.push(createdGroup)
@@ -422,14 +422,14 @@ class LocalStorageClient {
     }
   }
 
-  static constructGroup ({name, description = '', groups, storageUrl}) {
+  static constructGroup ({name, description = '', groups, annotationServerUrl}) {
     // Get a random id
     let arrayOfIds = _.map(groups, 'id')
     let groupId = RandomUtils.randomUnique(arrayOfIds, 8)
     return {
       name: name,
       description: description || '',
-      links: {html: storageUrl + '/groups/' + groupId},
+      links: {html: annotationServerUrl + '/groups/' + groupId},
       id: groupId
     }
   }
@@ -470,4 +470,4 @@ class LocalStorageClient {
   }
 }
 
-module.exports = LocalStorageClient
+module.exports = BrowserStorageClient

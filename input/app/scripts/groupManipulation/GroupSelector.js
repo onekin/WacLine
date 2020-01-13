@@ -14,7 +14,7 @@ const Events = require('../contentScript/Events')
 const CryptoUtils = require('../utils/CryptoUtils')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(ImportGroup, LINE)
 const AnnotationGuide = require('../definition/AnnotationGuide')
@@ -36,11 +36,11 @@ class GroupSelector {
     console.debug('Initializing group selector')
     this.checkIsLoggedIn((err) => {
       if (err) {
-        // Stop propagating the rest of the functions, because it is not logged in storage
-        // Show that user need to log in remote storage to continue
+        // Stop propagating the rest of the functions, because it is not logged in annotation server
+        // Show that user need to log in remote annotation server to continue
         Alerts.errorAlert({
-          title: 'Log in selected storage required',
-          text: chrome.i18n.getMessage('StorageLoginRequired')
+          title: 'Log in selected annotation server required',
+          text: chrome.i18n.getMessage('annotationServerLoginRequired')
         })
       } else {
         // Retrieve user profile (for further uses in other functionalities of the tool)
@@ -94,7 +94,7 @@ class GroupSelector {
                 } else {
                   // PVSCL:IFCOND(Hypothesis,LINE)
                   // Modify group URL in Hypothes.is as it adds the name at the end of the URL
-                  if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
+                  if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
                     group.links.html = group.links.html.substr(0, group.links.html.lastIndexOf('/'))
                   }
                   // PVSCL:ENDCOND
@@ -137,7 +137,7 @@ class GroupSelector {
                   // Nothing to do
                 }
               }
-              // If group cannot be retrieved from saved in extension storage
+              // If group cannot be retrieved from saved in extension annotationServer
               // PVSCL:IFCOND(User, LINE)
               // Try to load a group with defaultName
               if (_.isEmpty(this.currentGroup)) {
@@ -153,11 +153,11 @@ class GroupSelector {
                 // TODO Create default group
                 this.createApplicationBasedGroupForUser((err, group) => {
                   if (err) {
-                    Alerts.errorAlert({text: 'We are unable to create the group. Please check if you are logged in the storage.'})
+                    Alerts.errorAlert({text: 'We are unable to create the group. Please check if you are logged in the annotation server.'})
                   } else {
                     // PVSCL:IFCOND(Hypothesis, LINE)
                     // Modify group URL in hypothesis
-                    if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
+                    if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
                       if (_.has(group, 'links.html')) {
                         group.links.html = group.links.html.substr(0, group.links.html.lastIndexOf('/'))
                       }
@@ -167,15 +167,15 @@ class GroupSelector {
                     callback(null)
                   }
                 })
-              } else { // If group was found in extension storage
+              } else { // If group was found in extension annotation server
                 if (_.isFunction(callback)) {
                   callback()
                 }
               }
               // PVSCL:ELSECOND
-              // PVSCL:IFCOND(Local, LINE)
-              const LocalStorageManager = require('../storage/local/LocalStorageManager')
-              if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups) && LanguageUtils.isInstanceOf(window.abwa.storageManager, LocalStorageManager)) {
+              // PVSCL:IFCOND(BrowserStorage, LINE)
+              const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
+              if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups) && LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, BrowserStorageManager)) {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
               }
               // PVSCL:ENDCOND
@@ -235,7 +235,7 @@ class GroupSelector {
         } else {
           // Set current group
           this.currentGroup = _.find(groups, (group) => { return group.id === annotationGroupId })
-          // Save to chrome storage current group
+          // Save to chrome annotation server current group
           ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
           if (_.isFunction(callback)) {
             callback()
@@ -250,7 +250,7 @@ class GroupSelector {
     $.get(sidebarURL, (html) => {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))
-      if (!window.abwa.storageManager.isLoggedIn()) {
+      if (!window.abwa.annotationServerManager.isLoggedIn()) {
         // PVSCL:IFCOND(Hypothesis,LINE)
         // Display login/sign up form
         $('#notLoggedInGroupContainer').attr('aria-hidden', 'false')
@@ -276,7 +276,7 @@ class GroupSelector {
   // PVSCL:IFCOND(User,LINE)
 
   createApplicationBasedGroupForUser (callback) {
-    window.abwa.storageManager.client.createNewGroup({name: Config.groupName}, callback)
+    window.abwa.annotationServerManager.client.createNewGroup({name: Config.groupName}, callback)
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Manual, LINE)
@@ -483,7 +483,7 @@ class GroupSelector {
         if (err) {
           Alerts.errorAlert({text: 'Unable to create a new group. Please try again or contact developers if the error continues happening.'})
         } else {
-          // Update list of groups from storage
+          // Update list of groups from annotation Server
           this.retrieveGroups(() => {
             // Move group to new created one
             this.setCurrentGroup(result.id, () => {
@@ -520,7 +520,7 @@ class GroupSelector {
           window.alert('Unable to load swal. Please contact developer.')
         } else {
           groupName = LanguageUtils.normalizeString(groupName)
-          window.abwa.storageManager.client.createNewGroup({
+          window.abwa.annotationServerManager.client.createNewGroup({
             name: groupName,
             description: 'A group to conduct a review'
           }, callback)
@@ -564,13 +564,13 @@ class GroupSelector {
             if (err) {
               window.alert('Unable to load alert. Unexpected error, please contact developer.')
             } else {
-              window.abwa.storageManager.client.createNewGroup({name: reviewName}, (err, newGroup) => {
+              window.abwa.annotationServerManager.client.createNewGroup({name: reviewName}, (err, newGroup) => {
                 if (err) {
                   Alerts.errorAlert({text: 'Unable to create a new annotation group. Error: ' + err.message})
                 } else {
                   let guide = AnnotationGuide.fromUserDefinedHighlighterDefinition(jsonObject)
-                  AnnotationGuide.setStorage(newGroup, (storage) => {
-                    guide.storage = storage
+                  AnnotationGuide.setAnnotationServer(newGroup, (annotationServer) => {
+                    guide.annotationServer = annotationServer
                     Alerts.loadingAlert({
                       title: 'Configuration in progress',
                       text: 'We are configuring everything to start reviewing.',
@@ -583,9 +583,9 @@ class GroupSelector {
                           Alerts.errorAlert({text: 'There was an error when configuring Review&Go highlighter'})
                         } else {
                           Alerts.closeAlert()
-                          // Update groups from storage
+                          // Update groups from annotation server
                           this.retrieveGroups(() => {
-                            this.setCurrentGroup(guide.storage.group.id)
+                            this.setCurrentGroup(guide.annotationServer.group.id)
                           })
                         }
                       }
@@ -615,7 +615,7 @@ class GroupSelector {
   // PVSCL:ENDCOND
 
   retrieveGroups (callback) {
-    window.abwa.storageManager.client.getListOfGroups({}, (err, groups) => {
+    window.abwa.annotationServerManager.client.getListOfGroups({}, (err, groups) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -624,7 +624,7 @@ class GroupSelector {
         this.groups = groups
         // PVSCL:IFCOND(Hypothesis,LINE)
         // Remove public group in hypothes.is and modify group URL
-        if (LanguageUtils.isInstanceOf(window.abwa.storageManager, HypothesisClientManager)) {
+        if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
           _.remove(this.groups, (group) => {
             return group.id === '__world__'
           })
@@ -643,7 +643,7 @@ class GroupSelector {
   }
 
   retrieveUserProfile (callback) {
-    window.abwa.storageManager.client.getUserProfile((err, profile) => {
+    window.abwa.annotationServerManager.client.getUserProfile((err, profile) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -713,7 +713,7 @@ class GroupSelector {
           window.alert('Unable to load swal. Please contact developer.')
         } else {
           groupName = LanguageUtils.normalizeString(groupName)
-          window.abwa.storageManager.client.updateGroup(group.id, {
+          window.abwa.annotationServerManager.client.updateGroup(group.id, {
             name: groupName,
             description: group.description || 'A Review&Go group to conduct a review'
           }, callback)
@@ -730,7 +730,7 @@ class GroupSelector {
       text: 'Are you sure that you want to delete the review model. You will lose all the review model and all the annotations done with this review model in all the documents.',
       alertType: Alerts.alertType.warning,
       callback: () => {
-        window.abwa.storageManager.client.removeAMemberFromAGroup({id: group.id, user: this.user}, (err) => {
+        window.abwa.annotationServerManager.client.removeAMemberFromAGroup({id: group.id, user: this.user}, (err) => {
           if (_.isFunction(callback)) {
             if (err) {
               callback(err)

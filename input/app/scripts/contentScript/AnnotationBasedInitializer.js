@@ -12,8 +12,8 @@ class AnnotationBasedInitializer {
     // Check if annotation is in hash params
     let annotationId = AnnotationBasedInitializer.getAnnotationHashParam()
     if (annotationId) {
-      if (window.abwa.storageManager.isLoggedIn() === false) {
-        window.abwa.storageManager.logIn((err, token) => {
+      if (window.abwa.annotationServerManager.isLoggedIn() === false) {
+        window.abwa.annotationServerManager.logIn((err, token) => {
           if (err) {
             Alerts.errorAlert({title: 'Log in is required', text: 'It is necessary to log in Hypothes.is.'})
           } else {
@@ -22,7 +22,7 @@ class AnnotationBasedInitializer {
           }
         })
       } else {
-        window.abwa.storageManager.client.fetchAnnotation(annotationId, (err, annotation) => {
+        window.abwa.annotationServerManager.client.fetchAnnotation(annotationId, (err, annotation) => {
           if (err) {
             // Alerts.errorAlert({title: 'Unable to retrieve ',text:})
           } else {

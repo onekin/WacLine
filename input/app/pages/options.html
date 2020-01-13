@@ -61,11 +61,11 @@
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
        <div class="card">
-        <div class="card-header bg-dark text-white">Annotation storage</div>
+        <div class="card-header bg-dark text-white">Annotation server</div>
         <div class="card-body">
           <div class="form-check">
-            <label for="storageDropdown">Select your annotations storage</label>
-            <select class="form-control" id="storageDropdown">
+            <label for="annotationServerDropdown">Select your annotations server</label>
+            <select class="form-control" id="annotationServerDropdown">
               <option value="PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(0)->pv:Name()->pv:ToLowerCase())" selected="selected">PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(0)->pv:Name())</option>
               <option value="PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(1)->pv:Name()->pv:ToLowerCase())">PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(1)->pv:Name())</option>
             </select>
@@ -73,9 +73,9 @@
         </div>
       </div>
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(Local,LINE)
-      <div id="localConfigurationCard" class="card storageConfiguration">
-        <div class="card-header bg-dark text-white">Local storage</div>
+      // PVSCL:IFCOND(BrowserStorage,LINE)
+      <div id="browserstorageConfigurationCard" class="card annotationServerConfiguration">
+        <div class="card-header bg-dark text-white">Browser storage</div>
         <div class="card-body">
           <div class="form-check">
             <button id="restoreDatabaseButton">Restore database</button>

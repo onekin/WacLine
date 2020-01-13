@@ -68,7 +68,7 @@ class TagManager {
   }
 
   /**
-   * This function retrieves highlighter definition from storage (e.g.: Hypothes.is)
+   * This function retrieves highlighter definition from annotationServer (e.g.: Hypothes.is)
    * @param callback
    */
   getHighlighterDefinition (group, callback) {
@@ -78,7 +78,7 @@ class TagManager {
     } else {
       groupUrl = window.abwa.groupSelector.currentGroup.links.html
     }
-    window.abwa.storageManager.client.searchAnnotations({
+    window.abwa.annotationServerManager.client.searchAnnotations({
       url: groupUrl,
       order: 'desc'
     }, (err, annotations) => {
@@ -108,10 +108,10 @@ class TagManager {
   }
 
   initAllTags (callback) {
-    // Retrieve from storage highlighter definition
+    // Retrieve from annotation server highlighter definition
     this.getHighlighterDefinition(null, (err, highlighterDefinitionAnnotations) => {
       if (err) {
-        Alerts.errorAlert({text: 'Unable to retrieve annotations from storage to initialize highlighter buttons.'}) // TODO i18n
+        Alerts.errorAlert({text: 'Unable to retrieve annotations from annotation server to initialize highlighter buttons.'}) // TODO i18n
       } else {
         let promise = new Promise((resolve, reject) => {
           if (highlighterDefinitionAnnotations.length === 0) {
@@ -128,8 +128,8 @@ class TagManager {
                   text: 'We are configuring everything to start reviewing.',
                   position: Alerts.position.center
                 })
-                AnnotationGuide.setStorage(null, (storage) => {
-                  DefaultHighlighterGenerator.createDefaultAnnotations(storage, (err, annotations) => {
+                AnnotationGuide.setAnnotationServer(null, (annotationServer) => {
+                  DefaultHighlighterGenerator.createDefaultAnnotations(annotationServer, (err, annotations) => {
                     if (err) {
                       reject(new Error('Unable to create default annotations.'))
                     } else {
@@ -143,10 +143,10 @@ class TagManager {
               },
               cancelCallback: () => {
                 // PVSCL:IFCOND(Dynamic,LINE)
-                AnnotationGuide.setStorage(null, (storage) => {
-                  let emptyAnnotationGuide = new AnnotationGuide({storage: storage})
+                AnnotationGuide.setAnnotationServer(null, (annotationServer) => {
+                  let emptyAnnotationGuide = new AnnotationGuide({annotationServer: annotationServer})
                   let emptyAnnotationGuideAnnotation = emptyAnnotationGuide.toAnnotation()
-                  window.abwa.storageManager.client.createNewAnnotation(emptyAnnotationGuideAnnotation, (err, annotation) => {
+                  window.abwa.annotationServerManager.client.createNewAnnotation(emptyAnnotationGuideAnnotation, (err, annotation) => {
                     if (err) {
                       Alerts.errorAlert({text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.'}) // TODO i18n
                     } else {
@@ -485,7 +485,7 @@ class TagManager {
         },
         callback: () => {
           let newCodeAnnotation = newCode.toAnnotation()
-          window.abwa.storageManager.client.createNewAnnotation(newCodeAnnotation, (err, annotation) => {
+          window.abwa.annotationServerManager.client.createNewAnnotation(newCodeAnnotation, (err, annotation) => {
             if (err) {
               Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
             } else {
@@ -531,7 +531,7 @@ class TagManager {
         },
         callback: () => {
           let newThemeAnnotation = newTheme.toAnnotation()
-          window.abwa.storageManager.client.createNewAnnotation(newThemeAnnotation, (err, annotation) => {
+          window.abwa.annotationServerManager.client.createNewAnnotation(newThemeAnnotation, (err, annotation) => {
             if (err) {
               Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
             } else {
@@ -571,7 +571,7 @@ class TagManager {
         if (_.every(codesId, _.isString)) {
           annotationsToDelete = annotationsToDelete.concat(codesId)
         }
-        window.abwa.storageManager.client.deleteAnnotations(annotationsToDelete, (err, result) => {
+        window.abwa.annotationServerManager.client.deleteAnnotations(annotationsToDelete, (err, result) => {
           if (err) {
             Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
           } else {
@@ -593,7 +593,7 @@ class TagManager {
       text: 'Are you sure that you want to remove the code ' + code.name + '. You cannot undo this operation.',
       alertType: Alerts.alertType.warning,
       callback: () => {
-        window.abwa.storageManager.client.deleteAnnotation(code.id, (err, result) => {
+        window.abwa.annotationServerManager.client.deleteAnnotation(code.id, (err, result) => {
           if (err) {
             Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
           } else {

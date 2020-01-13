@@ -141,7 +141,7 @@
 </cm:mimedesc>
       </cm:desc>
     </cm:element>
-    <cm:element cm:id="iKaWQRey8XRPnJnpV" cm:name="Neo4JStorage" cm:type="ps:feature" cm:class="ps:feature">
+    <cm:element cm:id="iKaWQRey8XRPnJnpV" cm:name="Neo4J" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iMoR7e0u_dUgrnNK1" cm:class="ps:parents">
         <cm:relation cm:id="ijea4n_fQ-6oMqCPo" cm:type="ps:parent">
           <cm:target cm:id="ixYV7Q98YsEeTMbBQ">./iL58X6bULcvtAMo6U</cm:target>
@@ -155,10 +155,10 @@
           <cm:constant cm:id="iXLUHm9TNJC266xXH" cm:type="ps:datetime">2019-11-07T11:51:34.620Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i7-an8ddcjIzzmJ3l" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iXaw06UtagWzjxv2R" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iXaw06UtagWzjxv2R" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iJEUFDsQwT_IWZ2Ss" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iC9VM9zlISu9V8DTh" cm:type="ps:datetime">2019-11-07T11:51:34.620Z</cm:constant>
+          <cm:constant cm:id="iC9VM9zlISu9V8DTh" cm:type="ps:datetime">2020-01-13T13:50:34.503Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -218,12 +218,12 @@
           <cm:constant cm:id="izi9GyFJwTwMqIJ5A" cm:type="ps:datetime">2019-11-07T11:51:34.615Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i8WVoBd18UqdJ1kmO" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iplU9l5Qemq1c6sgn" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iplU9l5Qemq1c6sgn" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iJQWZKups0u2y4XLz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iOSbxUKeMIoLeZ-4b" cm:type="ps:datetime">2019-12-17T11:02:19.138Z</cm:constant>
+          <cm:constant cm:id="iOSbxUKeMIoLeZ-4b" cm:type="ps:datetime">2020-01-13T12:35:44.372Z</cm:constant>
         </cm:property>
-        <cm:property cm:id="i5ZzDl1GGb47n7Li9" cm:type="ps:string" cm:name="defaultStorage">
+        <cm:property cm:id="i5ZzDl1GGb47n7Li9" cm:type="ps:string" cm:name="defaultAnnotationServer">
           <cm:constant cm:id="iWEaFogJLO1DOvjAj" cm:type="ps:string">Local</cm:constant>
           <cm:desc>
             <cm:mimedesc cm:id="iecTonNP86jGbS7v7" cm:mimetype="text/html" cm:encoding="utf-8">The value should be one of the selected storages</cm:mimedesc>
