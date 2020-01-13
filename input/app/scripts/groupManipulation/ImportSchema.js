@@ -6,7 +6,7 @@ class ImportSchema {
     // Create highlighter annotations
     let annotations = guide.toAnnotations()
     // Send create highlighter
-    window.abwa.storageManager.client.createNewAnnotations(annotations, (err, annotations) => {
+    window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, annotations) => {
       callback(err, annotations)
     })
   }
@@ -17,7 +17,7 @@ class ImportSchema {
     // Rename current group
     let date = new Date()
     let currentGroupNewName = 'ReviewAndGo-' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + '-' + date.getHours()
-    window.abwa.storageManager.client.updateGroup(currentGroupId, {
+    window.abwa.annotationServerManager.client.updateGroup(currentGroupId, {
       name: currentGroupNewName}, (err, result) => {
       if (err) {
         callback(new Error('Unable to backup current annotation group.'))

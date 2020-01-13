@@ -33,7 +33,7 @@ class PreviousAssignments {
   retrievePreviousAssignments (callback) {
     // Get student id
     let studentId = window.abwa.contentTypeManager.fileMetadata.studentId
-    window.abwa.storageManager.client.searchAnnotations({
+    window.abwa.annotationServerManager.client.searchAnnotations({
       tag: Config.namespace + ':guide',
       group: window.abwa.groupSelector.currentGroup.id
     }, (err, annotations) => {

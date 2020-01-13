@@ -249,7 +249,7 @@ class ContentTypeManager {
     }
   }
 
-  getDocumentURIToSearchInStorage () {
+  getDocumentURIToSearchInAnnotationServer () {
     if (this.documentFormat === ContentTypeManager.documentFormat.pdf) {
       return this.urn
     } else {
@@ -257,7 +257,7 @@ class ContentTypeManager {
     }
   }
 
-  getDocumentURIToSaveInStorage () {
+  getDocumentURIToSaveInAnnotationServer () {
     if (this.doi) {
       return 'https://doi.org/' + this.doi
     } else if (this.url) {

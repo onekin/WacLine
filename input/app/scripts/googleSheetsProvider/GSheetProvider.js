@@ -5,16 +5,16 @@ const GroupInitializer = require('./GroupInitializer')
 const Alerts = require('../utils/Alerts')
 const swal = require('sweetalert2')
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local, LINE)
-const LocalStorageManager = require('../storage/local/LocalStorageManager')
+// PVSCL:IFCOND(BrowserStorage, LINE)
+const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
 
 class GoogleSheetContentScriptManager {
   init (callback) {
     window.googleSheetProvider.googleSheetClientManager = new GoogleSheetsClientManager()
-    this.loadStorage(() => {
+    this.loadAnnotationServer(() => {
       this.initLoginProcess((err, tokens) => {
         if (err) {
           swal('Oops!',
@@ -52,7 +52,7 @@ class GoogleSheetContentScriptManager {
   }
 
   initLoginProcess (callback) {
-    window.googleSheetProvider.storageManager.logIn((err) => {
+    window.googleSheetProvider.annotationServerManager.logIn((err) => {
       if (err) {
         callback(err)
       } else {
@@ -69,15 +69,15 @@ class GoogleSheetContentScriptManager {
     })
   }
 
-  loadStorage (callback) {
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
+  loadAnnotationServer (callback) {
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    window.googleSheetProvider.storageManager = new HypothesisClientManager()
+    window.googleSheetProvider.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Local, LINE)
-    window.googleSheetProvider.storageManager = new LocalStorageManager()
+    // PVSCL:IFCOND(BrowserStorage, LINE)
+    window.googleSheetProvider.annotationServerManager = new BrowserStorageManager()
     // PVSCL:ENDCOND
-    window.googleSheetProvider.storageManager.init((err) => {
+    window.googleSheetProvider.annotationServerManager.init((err) => {
       if (_.isFunction(callback)) {
         if (err) {
           callback(err)
@@ -87,15 +87,15 @@ class GoogleSheetContentScriptManager {
       }
     })
     // PVSCL:ELSECOND
-    chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
-      if (storage === 'hypothesis') {
+    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+      if (annotationServer === 'hypothesis') {
         // Hypothesis
-        window.googleSheetProvider.storageManager = new HypothesisClientManager()
+        window.googleSheetProvider.annotationServerManager = new HypothesisClientManager()
       } else {
-        // Local storage
-        window.googleSheetProvider.storageManager = new LocalStorageManager()
+        // Browser storage
+        window.googleSheetProvider.annotationServerManager = new BrowserStorageManager()
       }
-      window.googleSheetProvider.storageManager.init((err) => {
+      window.googleSheetProvider.annotationServerManager.init((err) => {
         if (_.isFunction(callback)) {
           if (err) {
             callback(err)

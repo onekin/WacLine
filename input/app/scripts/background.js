@@ -24,7 +24,7 @@ const GoogleSheetsManager = require('./background/GoogleSheetsManager')
 const TargetManager = require('./background/TargetManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
-const StorageManager = require('./background/StorageManager')
+const AnnotationServerManager = require('./background/AnnotationServerManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleProvider, LINE)
 const MoodleDownloadManager = require('./background/MoodleDownloadManager')
@@ -62,9 +62,9 @@ class Background {
 
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
-    // Initialize storage manager
-    this.storageManager = new StorageManager()
-    this.storageManager.init()
+    // Initialize annotation server manager
+    this.annotationServerManager = new AnnotationServerManager()
+    this.annotationServerManager.init()
 
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleProvider, LINE)

@@ -11,10 +11,10 @@ const URLUtils = require('../utils/URLUtils')
 const Alerts = require('../utils/Alerts')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
-const Hypothesis = require('../storage/hypothesis/Hypothesis')
+const Hypothesis = require('../annotationServer/hypothesis/Hypothesis')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local, LINE)
-const Local = require('../storage/local/Local')
+// PVSCL:IFCOND(BrowserStorage, LINE)
+const BrowserStorage = require('../annotationServer/browserStorage/BrowserStorage')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Dynamic, LINE)
 const ColorUtils = require('../utils/ColorUtils')
@@ -24,7 +24,7 @@ class AnnotationGuide {
   constructor ({
     id = null,
     name = '',
-    storage = null/* PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL) */,
+    annotationServer = null/* PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL) */,
     moodleEndpoint = null,
     assignmentName = null,
     assignmentId = null,
@@ -36,7 +36,7 @@ class AnnotationGuide {
     this.id = id
     this.name = name
     this.themes = []
-    this.storage = storage
+    this.annotationServer = annotationServer
     // PVSCL:IFCOND(MoodleProvider,LINE)
     this.moodleEndpoint = moodleEndpoint
     this.assignmentName = assignmentName
@@ -78,16 +78,16 @@ class AnnotationGuide {
     // Return the constructed annotation
     return {
       name: this.name,
-      group: this.storage.group.id,
+      group: this.annotationServer.group.id,
       permissions: {
-        read: ['group:' + this.storage.group.id]
+        read: ['group:' + this.annotationServer.group.id]
       },
       references: [],
       motivation: 'defining',
       tags: tags,
       target: [],
       text: jsYaml.dump(textObject),
-      uri: this.storage.group.links.html
+      uri: this.annotationServer.group.links.html
     }
   }
 
@@ -103,8 +103,8 @@ class AnnotationGuide {
   }
 
   static fromAnnotation (annotation, callback) {
-    this.setStorage(null, (storage) => {
-      let annotationGuideOpts = {id: annotation.id, name: annotation.name, storage: storage}
+    this.setAnnotationServer(null, (annotationServer) => {
+      let annotationGuideOpts = {id: annotation.id, name: annotation.name, annotationServer: annotationServer}
       // PVSCL:IFCOND(GSheetProvider or MoodleProvider, LINE)
       // Configuration for gsheet provider or moodle provider is saved in text attribute
       // TODO Maybe this is not the best place to store this configuration, it wa done in this way to be visible in Hypothes.is client, but probably it should be defined in the body of the annotation
@@ -187,8 +187,8 @@ class AnnotationGuide {
     }
   }
 
-  static setStorage (newGroup, callback) {
-    let annotationStorage
+  static setAnnotationServer (newGroup, callback) {
+    let annotationAnnotationServer
     let group
     if (newGroup === null) {
       group = window.abwa.groupSelector.currentGroup
@@ -196,27 +196,27 @@ class AnnotationGuide {
       group = newGroup
     }
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
-    chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
-      if (storage === 'hypothesis') {
+    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+      if (annotationServer === 'hypothesis') {
         // Hypothesis
-        annotationStorage = new Hypothesis({group: group})
+        annotationAnnotationServer = new Hypothesis({group: group})
       } else {
-        // Local storage
-        annotationStorage = new Local({group: group})
+        // Browser storage
+        annotationAnnotationServer = new BrowserStorage({group: group})
       }
       if (_.isFunction(callback)) {
-        callback(annotationStorage)
+        callback(annotationAnnotationServer)
       }
     })
     // PVSCL:ELSECOND
     // PVSCL:IFCOND(Hypothesis,LINE)
-    annotationStorage = new Hypothesis({group: group})
+    annotationAnnotationServer = new Hypothesis({group: group})
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Local,LINE)
-    annotationStorage = new Local({group: group})
+    // PVSCL:IFCOND(BrowserStorage,LINE)
+    annotationAnnotationServer = new BrowserStorage({group: group})
     // PVSCL:ENDCOND
     if (_.isFunction(callback)) {
-      callback(annotationStorage)
+      callback(annotationAnnotationServer)
     }
     // PVSCL:ENDCOND
   }

@@ -1,7 +1,7 @@
-// PVSCL:IFCOND(Local,LINE)
+// PVSCL:IFCOND(BrowserStorage,LINE)
 const Alerts = require('../utils/Alerts')
 const FileUtils = require('../utils/FileUtils')
-const LocalStorageManager = require('../storage/local/LocalStorageManager')
+const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
 const FileSaver = require('file-saver')
 // PVSCL:ENDCOND
 const _ = require('lodash')
@@ -9,26 +9,26 @@ const _ = require('lodash')
 class Options {
   init () {
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
-    // Storage type
-    document.querySelector('#storageDropdown').addEventListener('change', (event) => {
+    // annotationServer type
+    document.querySelector('#annotationServerDropdown').addEventListener('change', (event) => {
       // Get value
       if (event.target.selectedOptions && event.target.selectedOptions[0] && event.target.selectedOptions[0].value) {
-        this.setStorage(event.target.selectedOptions[0].value)
-        // Show/hide configuration for selected storage
-        this.showSelectedStorageConfiguration(event.target.selectedOptions[0].value)
+        this.setAnnotationServer(event.target.selectedOptions[0].value)
+        // Show/hide configuration for selected annotationServer
+        this.showSelectedAnnotationServerConfiguration(event.target.selectedOptions[0].value)
       }
     })
-    chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
-      document.querySelector('#storageDropdown').value = storage
-      this.showSelectedStorageConfiguration(storage)
+    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+      document.querySelector('#annotationServerDropdown').value = annotationServer
+      this.showSelectedAnnotationServerConfiguration(annotationServer)
     })
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Local,LINE)
-    // Local storage restore
+    // PVSCL:IFCOND(BrowserStorage,LINE)
+    // Browser annotationServer restore
     document.querySelector('#restoreDatabaseButton').addEventListener('click', () => {
       Alerts.inputTextAlert({
         title: 'Upload your database backup file',
-        html: 'Danger zone! <br/>This operation will override current local storage database, deleting all the annotations for all your documents. Please make a backup first.',
+        html: 'Danger zone! <br/>This operation will override current browser annotation server database, deleting all the annotations for all your documents. Please make a backup first.',
         type: Alerts.alertType.warning,
         input: 'file',
         callback: (err, file) => {
@@ -53,22 +53,22 @@ class Options {
         }
       })
     })
-    // Local storage backup
+    // Browser storage backup
     document.querySelector('#backupDatabaseButton').addEventListener('click', () => {
       this.backupDatabase()
     })
-    // Local storage delete
+    // Browser storage delete
     document.querySelector('#deleteDatabaseButton').addEventListener('click', () => {
       Alerts.confirmAlert({
         title: 'Deleting your database',
         alertType: Alerts.alertType.warning,
-        text: 'Danger zone! <br/>This operation will override current local storage database, deleting all the annotations for all your documents. Please make a backup first.',
+        text: 'Danger zone! <br/>This operation will override current browser storage database, deleting all the annotations for all your documents. Please make a backup first.',
         callback: () => {
           this.deleteDatabase((err) => {
             if (err) {
               Alerts.errorAlert({text: 'Error deleting the database, please try it again or contact developer.'})
             } else {
-              Alerts.successAlert({text: 'Local storage successfully deleted'})
+              Alerts.successAlert({text: 'Browser storage successfully deleted'})
             }
           })
         }
@@ -76,19 +76,19 @@ class Options {
     })
     // PVSCL:ENDCOND
   }
-  // PVSCL:IFCOND(Local,LINE)
+  // PVSCL:IFCOND(BrowserStorage,LINE)
 
   restoreDatabase (jsonObject, callback) {
-    window.options.localStorage = new LocalStorageManager()
-    window.options.localStorage.init(() => {
-      window.options.localStorage.saveDatabase(jsonObject, callback)
+    window.options.browserStorage = new BrowserStorageManager()
+    window.options.browserStorage.init(() => {
+      window.options.browserStorage.saveDatabase(jsonObject, callback)
     })
   }
 
   backupDatabase () {
-    window.options.localStorage = new LocalStorageManager()
-    window.options.localStorage.init(() => {
-      let stringifyObject = JSON.stringify(window.options.localStorage.annotationsDatabase, null, 2)
+    window.options.browserStorage = new BrowserStorageManager()
+    window.options.browserStorage.init(() => {
+      let stringifyObject = JSON.stringify(window.options.browserStorage.annotationsDatabase, null, 2)
       // Download the file
       let blob = new window.Blob([stringifyObject], {
         type: 'text/plain;charset=utf-8'
@@ -99,35 +99,35 @@ class Options {
   }
 
   deleteDatabase (callback) {
-    window.options.localStorage = new LocalStorageManager()
-    window.options.localStorage.init(() => {
-      window.options.localStorage.cleanDatabase(callback)
+    window.options.browserStorage = new BrowserStorageManager()
+    window.options.browserStorage.init(() => {
+      window.options.browserStorage.cleanDatabase(callback)
     })
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
 
-  setStorage (storage) {
+  setAnnotationServer (annotationServer) {
     chrome.runtime.sendMessage({
-      scope: 'storage',
-      cmd: 'setSelectedStorage',
-      data: {storage: storage}
-    }, ({storage}) => {
-      console.debug('Storage selected ' + storage)
+      scope: 'annotationServer',
+      cmd: 'setSelectedAnnotationServer',
+      data: {annotationServer: annotationServer}
+    }, ({annotationServer}) => {
+      console.debug('Annotation server selected ' + annotationServer)
     })
   }
   // PVSCL:ENDCOND
 
-  showSelectedStorageConfiguration (selectedStorage) {
-    // Hide all storage configurations
-    let storageConfigurationCards = document.querySelectorAll('.storageConfiguration')
-    storageConfigurationCards.forEach((storageConfigurationCard) => {
-      storageConfigurationCard.setAttribute('aria-hidden', 'true')
+  showSelectedAnnotationServerConfiguration (selectedAnnotationServer) {
+    // Hide all annotation server configurations
+    let annotationServerConfigurationCards = document.querySelectorAll('.annotationServerConfiguration')
+    annotationServerConfigurationCards.forEach((annotationServerConfigurationCard) => {
+      annotationServerConfigurationCard.setAttribute('aria-hidden', 'true')
     })
-    // Show corresponding selected storage configuration card
-    let selectedStorageConfigurationCard = document.querySelector('#' + selectedStorage + 'ConfigurationCard')
-    if (_.isElement(selectedStorageConfigurationCard)) {
-      selectedStorageConfigurationCard.setAttribute('aria-hidden', 'false')
+    // Show corresponding selected annotationServer configuration card
+    let selectedAnnotationServerConfigurationCard = document.querySelector('#' + selectedAnnotationServer + 'ConfigurationCard')
+    if (_.isElement(selectedAnnotationServerConfigurationCard)) {
+      selectedAnnotationServerConfigurationCard.setAttribute('aria-hidden', 'false')
     }
   }
 }

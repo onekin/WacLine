@@ -1,10 +1,10 @@
 const TextUtils = require('./utils/URLUtils')
 const Config = require('./Config')
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('./storage/hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('./annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local,LINE)
-const LocalStorageManager = require('./storage/local/LocalStorageManager')
+// PVSCL:IFCOND(BrowserStorage,LINE)
+const BrowserStorageManager = require('./annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
 const _ = require('lodash')
 
@@ -16,8 +16,8 @@ class ScienceDirectContentScript {
       // Activate the extension
       chrome.runtime.sendMessage({scope: 'extension', cmd: 'activatePopup'}, (result) => {
         // Retrieve if annotation is done in current url or in pdf version
-        this.loadStorage(() => {
-          window.scienceDirect.storageManager.client.fetchAnnotation(params[Config.namespace], (err, annotation) => {
+        this.loadAnnotationServer(() => {
+          window.scienceDirect.annotationServerManager.client.fetchAnnotation(params[Config.namespace], (err, annotation) => {
             if (err) {
               console.error(err)
             } else {
@@ -29,15 +29,15 @@ class ScienceDirectContentScript {
     }
   }
 
-  loadStorage (callback) {
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
+  loadAnnotationServer (callback) {
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    window.scienceDirect.storageManager = new HypothesisClientManager()
+    window.scienceDirect.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Local, LINE)
-    window.scienceDirect.storageManager = new LocalStorageManager()
+    // PVSCL:IFCOND(BrowserStorage, LINE)
+    window.scienceDirect.annotationServerManager = new BrowserStorageManager()
     // PVSCL:ENDCOND
-    window.scienceDirect.storageManager.init((err) => {
+    window.scienceDirect.annotationServerManager.init((err) => {
       if (_.isFunction(callback)) {
         if (err) {
           callback(err)
@@ -47,15 +47,15 @@ class ScienceDirectContentScript {
       }
     })
     // PVSCL:ELSECOND
-    chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
-      if (storage === 'hypothesis') {
+    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+      if (annotationServer === 'hypothesis') {
         // Hypothesis
-        window.scienceDirect.storageManager = new HypothesisClientManager()
+        window.scienceDirect.annotationServerManager = new HypothesisClientManager()
       } else {
-        // Local storage
-        window.scienceDirect.storageManager = new LocalStorageManager()
+        // Browser storage
+        window.scienceDirect.annotationServerManager = new BrowserStorageManager()
       }
-      window.scienceDirect.storageManager.init((err) => {
+      window.scienceDirect.annotationServerManager.init((err) => {
         if (_.isFunction(callback)) {
           if (err) {
             callback(err)

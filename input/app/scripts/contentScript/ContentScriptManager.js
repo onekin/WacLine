@@ -15,10 +15,10 @@ const Events = require('./Events')
 const RolesManager = require('./RolesManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../storage/hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local, LINE)
-const LocalStorageManager = require('../storage/local/LocalStorageManager')
+// PVSCL:IFCOND(BrowserStorage, LINE)
+const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(UserFilter, LINE)
 const UserFilter = require('../consumption/filters/UserFilter')
@@ -43,7 +43,7 @@ class ContentScriptManager {
     console.debug('Initializing content script manager')
     this.status = ContentScriptManager.status.initializing
     this.loadContentTypeManager(() => {
-      this.loadStorage(() => {
+      this.loadAnnotationServer(() => {
         window.abwa.sidebar = new Sidebar()
         window.abwa.sidebar.init(() => {
           window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
@@ -358,7 +358,7 @@ class ContentScriptManager {
       // TODO Destroy groupSelector, roleManager,
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
-          this.destroyStorage(() => {
+          this.destroyAnnotationServer(() => {
             this.status = ContentScriptManager.status.notInitialized
             console.debug('Correctly destroyed content script manager')
             if (_.isFunction(callback)) {
@@ -392,15 +392,15 @@ class ContentScriptManager {
     }
   }
 
-  loadStorage (callback) {
+  loadAnnotationServer (callback) {
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    window.abwa.storageManager = new HypothesisClientManager()
+    window.abwa.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Local, LINE)
-    window.abwa.storageManager = new LocalStorageManager()
+    // PVSCL:IFCOND(BrowserStorage, LINE)
+    window.abwa.annotationServerManager = new BrowserStorageManager()
     // PVSCL:ENDCOND
-    window.abwa.storageManager.init((err) => {
+    window.abwa.annotationServerManager.init((err) => {
       if (_.isFunction(callback)) {
         if (err) {
           callback(err)
@@ -410,15 +410,15 @@ class ContentScriptManager {
       }
     })
     // PVSCL:ELSECOND
-    chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
-      if (storage === 'hypothesis') {
+    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+      if (annotationServer === 'hypothesis') {
         // Hypothesis
-        window.abwa.storageManager = new HypothesisClientManager()
+        window.abwa.annotationServerManager = new HypothesisClientManager()
       } else {
-        // Local storage
-        window.abwa.storageManager = new LocalStorageManager()
+        // Browser storage
+        window.abwa.annotationServerManager = new BrowserStorageManager()
       }
-      window.abwa.storageManager.init((err) => {
+      window.abwa.annotationServerManager.init((err) => {
         if (_.isFunction(callback)) {
           if (err) {
             callback(err)
@@ -431,9 +431,9 @@ class ContentScriptManager {
     // PVSCL:ENDCOND
   }
 
-  destroyStorage (callback) {
-    if (window.abwa.storageManager) {
-      window.abwa.storageManager.destroy(callback)
+  destroyAnnotationServer (callback) {
+    if (window.abwa.annotationServerManager) {
+      window.abwa.annotationServerManager.destroy(callback)
     }
   }
 }

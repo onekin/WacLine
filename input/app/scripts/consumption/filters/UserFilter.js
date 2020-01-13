@@ -184,7 +184,7 @@ class UserFilter {
     let input = userFilterElement.querySelector('input')
     input.id = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
     let label = userFilterElement.querySelector('label')
-    label.innerText = name.replace('acct:', '').replace('@hypothes.is', '') // TODO Other storages different to hypothes.is ¿?
+    label.innerText = name.replace('acct:', '').replace('@hypothes.is', '') // TODO Other annotation servers different to hypothes.is ¿?
     label.htmlFor = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
     // Set event handler for input check status
     input.addEventListener('change', (event) => {

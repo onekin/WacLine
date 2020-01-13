@@ -34,16 +34,16 @@ class Code {
     // PVSCL:ENDCOND
     return {
       id: this.id,
-      group: this.theme.annotationGuide.storage.group.id,
+      group: this.theme.annotationGuide.annotationServer.group.id,
       permissions: {
-        read: ['group:' + this.theme.annotationGuide.storage.group.id]
+        read: ['group:' + this.theme.annotationGuide.annotationServer.group.id]
       },
       motivation: 'codebookDevelopment',
       references: [],
       tags: tags,
       target: [],
       text: jsYaml.dump({id: this.id || '', description: this.description}),
-      uri: this.theme.annotationGuide.storage.group.links.html
+      uri: this.theme.annotationGuide.annotationServer.group.links.html
     }
   }
 

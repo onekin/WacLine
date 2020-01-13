@@ -5,15 +5,15 @@ const AnnotationUtils = require('../../utils/AnnotationUtils')
 const AnnotationGuide = require('../../definition/AnnotationGuide')
 const Config = require('../../Config')
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../../storage/hypothesis/HypothesisClientManager')
-const Hypothesis = require('../../storage/hypothesis/Hypothesis')
+const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
+const Hypothesis = require('../../annotationServer/hypothesis/Hypothesis')
 const LanguageUtils = require('../../utils/LanguageUtils')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Local, LINE)
-const Local = require('../../storage/local/Local')
-const LocalStorageManager = require('../../storage/local/LocalStorageManager')
+// PVSCL:IFCOND(BrowserStorage, LINE)
+const BrowserStorage = require('../../annotationServer/browserStorage/BrowserStorage')
+const BrowserStorageManager = require('../../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
 const ChromeStorage = require('../../utils/ChromeStorage')
 // PVSCL:ENDCOND
 
@@ -77,18 +77,18 @@ class CreateHighlighterTask extends Task {
   generateGroup ({rubric, groupName, id, callback}) {
     this.currentPromisesStatus[id] = 'Checking if the group already exists'
     if (_.isFunction(callback)) {
-      this.loadStorage(() => {
+      this.loadAnnotationServer(() => {
         this.initLoginProcess(() => {
           // Create group
-          this.storageClientManager.client.getUserProfile((err, userProfile) => {
+          this.annotationServerClientManager.client.getUserProfile((err, userProfile) => {
             if (_.isFunction(callback)) {
               if (err) {
                 console.error(err)
-                this.currentPromisesStatus[id] = 'An unexpected error occurred when retrieving your user profile. Please check connection with the storage'
+                this.currentPromisesStatus[id] = 'An unexpected error occurred when retrieving your user profile. Please check connection with the annotation server'
                 callback(err)
               } else {
-                this.currentPromisesStatus[id] = 'Checking if the storage is up to date'
-                this.storageClientManager.client.getListOfGroups({}, (err, groups) => {
+                this.currentPromisesStatus[id] = 'Checking if the annotation server is up to date'
+                this.annotationServerClientManager.client.getListOfGroups({}, (err, groups) => {
                   if (err) {
                     if (_.isFunction(callback)) {
                       callback(err)
@@ -101,15 +101,15 @@ class CreateHighlighterTask extends Task {
                     if (_.isEmpty(group)) {
                       this.currentPromisesStatus[id] = 'Creating new group to store annotations'
                       this.createGroup({name: groupName}, (err, group) => {
-                        this.setStorage(group, (storage) => {
+                        this.setAnnotationServer(group, (annotationServer) => {
                           if (err) {
                             console.error('ErrorConfiguringHighlighter')
                             this.currentPromisesStatus[id] = chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')
                             callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
                           } else {
-                            this.currentPromisesStatus[id] = 'Creating rubric highlighter in the storage'
+                            this.currentPromisesStatus[id] = 'Creating rubric highlighter in the annotation server'
                             this.createHighlighterAnnotations({
-                              rubric, storage, userProfile
+                              rubric, annotationServer, userProfile
                             }, () => {
                               callback(null)
                             })
@@ -117,10 +117,10 @@ class CreateHighlighterTask extends Task {
                         })
                       })
                     } else {
-                      this.setStorage(group, (storage) => {
+                      this.setAnnotationServer(group, (annotationServer) => {
                         // Check if highlighter for assignment is already created
-                        this.storageClientManager.client.searchAnnotations({
-                          group: storage.group.id,
+                        this.annotationServerClientManager.client.searchAnnotations({
+                          group: annotationServer.group.id,
                           any: '"cmid:' + rubric.cmid + '"',
                           wildcard_uri: 'https://hypothes.is/groups/*'
                         }, (err, annotations) => {
@@ -128,9 +128,9 @@ class CreateHighlighterTask extends Task {
                             callback(err)
                             this.currentPromisesStatus[id] = chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')
                           } else {
-                            this.currentPromisesStatus[id] = 'Updating rubric highlighter in the storage'
+                            this.currentPromisesStatus[id] = 'Updating rubric highlighter in the annotation server'
                             this.updateHighlighterAnnotations({
-                              rubric, annotations, storage, userProfile
+                              rubric, annotations, annotationServer, userProfile
                             }, () => {
                               callback(null)
                             })
@@ -148,63 +148,63 @@ class CreateHighlighterTask extends Task {
     }
   }
 
-  setStorage (newGroup, callback) {
-    let annotationStorage
+  setAnnotationServer (newGroup, callback) {
+    let annotationAnnotationServer
     let group
     if (newGroup === null) {
       group = window.abwa.groupSelector.currentGroup
     } else {
       group = newGroup
     }
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
-    ChromeStorage.getData('storage.selected', ChromeStorage.sync, (err, storage) => {
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
+    ChromeStorage.getData('annotationServer.selected', ChromeStorage.sync, (err, annotationServer) => {
       if (err) {
-        console.error('ErrorSettingStorage')
+        console.error('ErrorSettingAnnotationServer')
       } else {
-        let actualStore
-        if (storage) {
-          actualStore = JSON.parse(storage.data)
+        let actualAnnotationServer
+        if (annotationServer) {
+          actualAnnotationServer = JSON.parse(annotationServer.data)
         } else {
-          actualStore = 'localStorage'
+          actualAnnotationServer = 'browserStorage'
         }
-        if (actualStore === 'hypothesis') {
+        if (actualAnnotationServer === 'hypothesis') {
           // Hypothesis
-          annotationStorage = new Hypothesis({group: group})
+          annotationAnnotationServer = new Hypothesis({group: group})
         } else {
-          // Local storage
-          annotationStorage = new Local({group: group})
+          // Browser storage
+          annotationAnnotationServer = new BrowserStorage({group: group})
         }
         if (_.isFunction(callback)) {
-          callback(annotationStorage)
+          callback(annotationAnnotationServer)
         }
       }
     })
     // PVSCL:ELSECOND
     // PVSCL:IFCOND(Hypothesis,LINE)
-    annotationStorage = new Hypothesis({group: group})
+    annotationAnnotationServer = new Hypothesis({group: group})
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Local,LINE)
-    annotationStorage = new Local({group: group})
+    // PVSCL:IFCOND(BrowserStorage,LINE)
+    annotationAnnotationServer = new BrowserStorage({group: group})
     // PVSCL:ENDCOND
     if (_.isFunction(callback)) {
-      callback(annotationStorage)
+      callback(annotationAnnotationServer)
     }
     // PVSCL:ENDCOND
   }
 
-  updateHighlighterAnnotations ({rubric, annotations, storage, userProfile}, callback) {
+  updateHighlighterAnnotations ({rubric, annotations, annotationServer, userProfile}, callback) {
     // PVSCL:IFCOND(Hypothesis,LINE)
-    if (LanguageUtils.isInstanceOf(this.storageClientManager, HypothesisClientManager)) {
-      storage.group.links.html = storage.group.links.html.substr(0, storage.group.links.html.lastIndexOf('/'))
+    if (LanguageUtils.isInstanceOf(this.annotationServerClientManager, HypothesisClientManager)) {
+      annotationServer.group.links.html = annotationServer.group.links.html.substr(0, annotationServer.group.links.html.lastIndexOf('/'))
     }
     // PVSCL:ENDCOND
     // Create teacher annotation if not exists
-    this.createTeacherAnnotation({producerId: userProfile.userid, storage: storage}, (err) => {
+    this.createTeacherAnnotation({producerId: userProfile.userid, annotationServer: annotationServer}, (err) => {
       if (err) {
         callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
       } else {
         // Restore object
-        rubric.storage = storage
+        rubric.annotationServer = annotationServer
         rubric = AnnotationGuide.createAnnotationGuideFromObject(rubric)
         // Check annotations pending
         let annotationsPending = _.differenceWith(rubric.toAnnotations(), annotations, AnnotationUtils.areEqual)
@@ -214,11 +214,11 @@ class CreateHighlighterTask extends Task {
           console.debug('Highlighter is already updated, skipping to the next group')
           callback(null, {nothingDone: true})
         } else {
-          this.storageClientManager.client.deleteAnnotations(annotationsToRemove, (err) => {
+          this.annotationServerClientManager.client.deleteAnnotations(annotationsToRemove, (err) => {
             if (err) {
               callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
             } else {
-              this.storageClientManager.client.createNewAnnotations(annotationsPending, (err, createdAnnotations) => {
+              this.annotationServerClientManager.client.createNewAnnotations(annotationsPending, (err, createdAnnotations) => {
                 if (err) {
                   callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
                 } else {
@@ -233,22 +233,22 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  createHighlighterAnnotations ({rubric, storage, userProfile}, callback) {
+  createHighlighterAnnotations ({rubric, annotationServer, userProfile}, callback) {
     // Generate group annotations
-    rubric.storage = storage
+    rubric.annotationServer = annotationServer
     // PVSCL:IFCOND(Hypothesis,LINE)
-    if (LanguageUtils.isInstanceOf(this.storageClientManager, HypothesisClientManager)) {
-      rubric.storage.group.links.html = rubric.storage.group.links.html.substr(0, rubric.storage.group.links.html.lastIndexOf('/'))
+    if (LanguageUtils.isInstanceOf(this.annotationServerClientManager, HypothesisClientManager)) {
+      rubric.annotationServer.group.links.html = rubric.annotationServer.group.links.html.substr(0, rubric.annotationServer.group.links.html.lastIndexOf('/'))
     }
     // PVSCL:ENDCOND
     rubric = AnnotationGuide.createAnnotationGuideFromObject(rubric) // convert to rubric to be able to run toAnnotations() function
     let annotations = rubric.toAnnotations()
-    this.createTeacherAnnotation({producerId: userProfile.userid, storage: storage}, (err) => {
+    this.createTeacherAnnotation({producerId: userProfile.userid, annotationServer: annotationServer}, (err) => {
       if (err) {
         callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
       } else {
         // Create annotations in hypothesis
-        this.storageClientManager.client.createNewAnnotations(annotations, (err, createdAnnotations) => {
+        this.annotationServerClientManager.client.createNewAnnotations(annotations, (err, createdAnnotations) => {
           if (err) {
             callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
           } else {
@@ -261,7 +261,7 @@ class CreateHighlighterTask extends Task {
   }
 
   createGroup ({name, assignmentName = '', student = ''}, callback) {
-    this.storageClientManager.client.createNewGroup({
+    this.annotationServerClientManager.client.createNewGroup({
       name: name, description: 'An resource based generated group to mark the assignment in moodle called ' + assignmentName}, (err, group) => {
       if (err) {
         if (_.isFunction(callback)) {
@@ -275,10 +275,10 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  createTeacherAnnotation ({producerId, storage}, callback) {
-    let teacherAnnotation = this.generateTeacherAnnotation(producerId, storage)
+  createTeacherAnnotation ({producerId, annotationServer}, callback) {
+    let teacherAnnotation = this.generateTeacherAnnotation(producerId, annotationServer)
     // Check if annotation already exists
-    this.storageClientManager.client.searchAnnotations({group: storage.group.id, tags: Config.namespace + ':' + Config.tags.producer}, (err, annotations) => {
+    this.annotationServerClientManager.client.searchAnnotations({group: annotationServer.group.id, tags: Config.namespace + ':' + Config.tags.producer}, (err, annotations) => {
       if (err) {
 
       } else {
@@ -288,7 +288,7 @@ class CreateHighlighterTask extends Task {
             callback()
           }
         } else { // Otherwise, create the annotation
-          this.storageClientManager.client.createNewAnnotation(teacherAnnotation, (err, annotation) => {
+          this.annotationServerClientManager.client.createNewAnnotation(teacherAnnotation, (err, annotation) => {
             if (err) {
               if (_.isFunction(callback)) {
                 callback(err)
@@ -305,29 +305,29 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  generateTeacherAnnotation (producerId, storage) {
+  generateTeacherAnnotation (producerId, annotationServer) {
     return {
-      group: storage.group.id,
+      group: annotationServer.group.id,
       permissions: {
-        read: ['group:' + storage.group.id]
+        read: ['group:' + annotationServer.group.id]
       },
       references: [],
       tags: [Config.namespace + ':' + Config.tags.producer],
       target: [],
       text: 'producerId: ' + producerId,
-      uri: storage.group.links.html // Compatibility with both group representations getGroups and userProfile
+      uri: annotationServer.group.links.html // Compatibility with both group representations getGroups and userProfile
     }
   }
 
-  loadStorage (callback) {
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
+  loadAnnotationServer (callback) {
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    this.storageClientManager = new HypothesisClientManager()
+    this.annotationServerClientManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Local, LINE)
-    this.storageClientManager = new LocalStorageManager()
+    // PVSCL:IFCOND(BrowserStorage, LINE)
+    this.annotationServerClientManager = new BrowserStorageManager()
     // PVSCL:ENDCOND
-    this.storageClientManager.init((err) => {
+    this.annotationServerClientManager.init((err) => {
       if (_.isFunction(callback)) {
         if (err) {
           callback(err)
@@ -337,25 +337,25 @@ class CreateHighlighterTask extends Task {
       }
     })
     // PVSCL:ELSECOND
-    let defaultStorage = Config.defaultStorage
-    ChromeStorage.getData('storage.selected', ChromeStorage.sync, (err, storage) => {
+    let defaultAnnotationServer = Config.defaultAnnotationServer
+    ChromeStorage.getData('annotationServer.selected', ChromeStorage.sync, (err, annotationServer) => {
       if (err) {
         callback(err)
       } else {
         let actualStore
-        if (storage) {
-          actualStore = JSON.parse(storage.data)
+        if (annotationServer) {
+          actualStore = JSON.parse(annotationServer.data)
         } else {
-          actualStore = defaultStorage
+          actualStore = defaultAnnotationServer
         }
         if (actualStore === 'hypothesis') {
           // Hypothesis
-          this.storageClientManager = new HypothesisClientManager()
+          this.annotationServerClientManager = new HypothesisClientManager()
         } else {
-          // Local storage
-          this.storageClientManager = new LocalStorageManager()
+          // Browser storage
+          this.annotationServerClientManager = new BrowserStorageManager()
         }
-        this.storageClientManager.init((err) => {
+        this.annotationServerClientManager.init((err) => {
           if (_.isFunction(callback)) {
             if (err) {
               callback(err)
@@ -370,7 +370,7 @@ class CreateHighlighterTask extends Task {
   }
 
   initLoginProcess (callback) {
-    this.storageClientManager.logIn((err) => {
+    this.annotationServerClientManager.logIn((err) => {
       if (err) {
         callback(err)
       } else {

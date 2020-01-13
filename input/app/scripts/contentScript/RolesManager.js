@@ -30,7 +30,7 @@ class RolesManager {
   }
 
   currentUserIsProducer (callback) {
-    window.abwa.storageManager.client.searchAnnotations({
+    window.abwa.annotationServerManager.client.searchAnnotations({
       url: window.abwa.groupSelector.currentGroup.links.html,
       order: 'desc',
       tags: Config.namespace + ':' + Config.tags.producer

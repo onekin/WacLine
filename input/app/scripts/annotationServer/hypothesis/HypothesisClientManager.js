@@ -2,19 +2,19 @@ const _ = require('lodash')
 
 const HypothesisClient = require('hypothesis-api-client')
 
-const StorageManager = require('../StorageManager')
+const AnnotationServerManager = require('../AnnotationServerManager')
 
 const reloadIntervalInSeconds = 10 // Reload the hypothesis client every 10 seconds
 
-class HypothesisClientManager extends StorageManager {
+class HypothesisClientManager extends AnnotationServerManager {
   constructor () {
     super()
     this.client = null
     this.hypothesisToken = null
     this.reloadInterval = null
-    this.storageMetadata = {
+    this.annotationServerMetadata = {
       annotationUrl: 'https://hypothes.is/api/annotations/',
-      storageUrl: 'https://hypothes.is/api',
+      annotationServerUrl: 'https://hypothes.is/api',
       groupUrl: 'https://hypothes.is/api/groups/',
       userUrl: 'https://hypothes.is/api/users/'
     }
