@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cm:consulmodel xmlns:cm="http://www.pure-systems.com/consul/model" cm:id="iye9kjAySHmnoLq6X" cm:version="1.1" cm:type="ps:configspace"><cm:head></cm:head>
-<cm:elements cm:rootid="iNO-oI4lcaedgCwMO"><cm:element cm:id="iNO-oI4lcaedgCwMO" cm:class="ps:lookup"><cm:relations cm:id="iYqDJwUlnaccss6CL" cm:class="ps:models"><cm:relation cm:id="iVj3LWBd0D37iMb9y" cm:type="ps:used"><cm:target cm:id="i2-qEBnHdX1fomWop">./ii0Y0nO2hxJB8huJ0</cm:target>
-<cm:target cm:id="i6HtnTRbq4AOaCUuP">./iWjm6DMczoOgFgSQN</cm:target>
+<cm:elements cm:rootid="iNO-oI4lcaedgCwMO"><cm:element cm:id="iNO-oI4lcaedgCwMO" cm:class="ps:lookup"><cm:relations cm:id="iYqDJwUlnaccss6CL" cm:class="ps:models"><cm:relation cm:id="iVj3LWBd0D37iMb9y" cm:type="ps:used"><cm:target cm:id="i6HtnTRbq4AOaCUuP">./iWjm6DMczoOgFgSQN</cm:target>
+<cm:target cm:id="iq1rPy7WqNJtMyNjZ">./iyL6fpmI67jM8PBql</cm:target>
+<cm:target cm:id="iDVWwSTLD-8rF8DuA">./iqJTH61G8Tc92rzup</cm:target>
 </cm:relation>
 </cm:relations>
 <cm:properties><cm:property cm:id="iQi_kAHuBoXVO30rd" cm:type="ps:path" cm:name="module_base"><cm:constant cm:id="ixrfvsmJKbwysYZNB" cm:type="ps:path">$(WORKSPACE)</cm:constant>
@@ -24,19 +25,27 @@
 </cm:property>
 </cm:properties>
 </cm:element>
-<cm:element cm:id="ii0Y0nO2hxJB8huJ0" cm:name="iBWRWvwwJAgrORyLO" cm:type="ps:used" cm:class="ps:model"><cm:properties><cm:property cm:id="iH-p-5cL7dOzGa6Tv" cm:type="ps:string" cm:name="model_type"><cm:constant cm:id="i_s8fbkWT21h5QcpW" cm:type="ps:string">ps:fm</cm:constant>
-</cm:property>
-<cm:property cm:id="iZDLHeZPP-qHf-4J7" cm:type="ps:path" cm:name="model_path"><cm:constant cm:id="i68Ot4WR-fzTUPjx4" cm:type="ps:path">$(PROJECT)/WebAnnotator.xfm</cm:constant>
-</cm:property>
-<cm:property cm:id="io-R8MTTIfJ1xvB0k" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="iKGULkhSmzOLlWcxC" cm:type="ps:integer">1</cm:constant>
-</cm:property>
-</cm:properties>
-</cm:element>
 <cm:element cm:id="iWjm6DMczoOgFgSQN" cm:name="iDKkPWYjNaxwLVr6U" cm:type="ps:used" cm:class="ps:model"><cm:properties><cm:property cm:id="i34Z6Y3GLCxglxuvl" cm:type="ps:string" cm:name="model_type"><cm:constant cm:id="ibTPHfUf0QPlBD1bp" cm:type="ps:string">ps:ccfm</cm:constant>
 </cm:property>
 <cm:property cm:id="i0krR5cXmI8wr6gp6" cm:type="ps:path" cm:name="model_path"><cm:constant cm:id="i9z0J_jMsAmxX4gP3" cm:type="ps:path">$(PROJECT)/WebAnnotator.ccfm</cm:constant>
 </cm:property>
-<cm:property cm:id="iBoQS5-K4uxm18Nv9" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="iJksJI_wgxWwXv3Q3" cm:type="ps:integer">1</cm:constant>
+<cm:property cm:id="iBoQS5-K4uxm18Nv9" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="iBrGzTkpeUdcijKKJ" cm:type="ps:integer">1</cm:constant>
+</cm:property>
+</cm:properties>
+</cm:element>
+<cm:element cm:id="iyL6fpmI67jM8PBql" cm:name="iVM-rr85zz2NiNKQB" cm:type="ps:used" cm:class="ps:model"><cm:properties><cm:property cm:id="iq4YsQkzZbyKG7zoq" cm:type="ps:string" cm:name="model_type"><cm:constant cm:id="iFisMS2dNeyb2EgXL" cm:type="ps:string">ps:fm</cm:constant>
+</cm:property>
+<cm:property cm:id="i8n0oSCtqmBn9-R1t" cm:type="ps:path" cm:name="model_path"><cm:constant cm:id="iGlAPfUed_dZTfP0p" cm:type="ps:path">$(PROJECT)/Hosting.xfm</cm:constant>
+</cm:property>
+<cm:property cm:id="irOBscEwVz-SteZqJ" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="iTHNrOzU8Ei2cIHNc" cm:type="ps:integer">1</cm:constant>
+</cm:property>
+</cm:properties>
+</cm:element>
+<cm:element cm:id="iqJTH61G8Tc92rzup" cm:name="iivhJRwmojkiJvYc5" cm:type="ps:used" cm:class="ps:model"><cm:properties><cm:property cm:id="iz9FAtS8WNmhChNYX" cm:type="ps:string" cm:name="model_type"><cm:constant cm:id="iwo0ziYJidAO-aEGM" cm:type="ps:string">ps:fm</cm:constant>
+</cm:property>
+<cm:property cm:id="iYknfWaxRq3uiS8Ml" cm:type="ps:path" cm:name="model_path"><cm:constant cm:id="i07N92uTWCb5GVf3V" cm:type="ps:path">$(PROJECT)/WebAnnotator.xfm</cm:constant>
+</cm:property>
+<cm:property cm:id="i_A4EGzA4V2IkIM1e" cm:type="ps:integer" cm:name="model_rank"><cm:constant cm:id="i_Fq9S-D-YWFQ8F05" cm:type="ps:integer">1</cm:constant>
 </cm:property>
 </cm:properties>
 </cm:element>
