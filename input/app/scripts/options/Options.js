@@ -8,7 +8,7 @@ const _ = require('lodash')
 
 class Options {
   init () {
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
     // Storage type
     document.querySelector('#storageDropdown').addEventListener('change', (event) => {
       // Get value
@@ -105,7 +105,7 @@ class Options {
     })
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+  // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
 
   setStorage (storage) {
     chrome.runtime.sendMessage({

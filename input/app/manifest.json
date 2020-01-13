@@ -50,7 +50,7 @@
       "matches": ["*://link.springer.com/*"],
       "js": ["scripts/springerContentScript.js"],
       "run_at": "document_end"
-    }PVSCL:ENDCONDPVSCL:IFCOND(Manual and Hypothesis and Storage->pv:SelectedChildren()->pv:Size()=1),
+    }PVSCL:ENDCONDPVSCL:IFCOND(Manual and Hypothesis and AnnotationServer->pv:SelectedChildren()->pv:Size()=1),
     {
       "matches": [
         "https://hypothes.is/groups/*/*"
@@ -110,7 +110,7 @@
     ]
   },
   PVSCL:ENDCOND
-  "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]PVSCL:IFCOND(WebAnnotator.WebAnnotator->pv:Attribute('key')<>''),
-  "key": "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('key'))"
+  "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]PVSCL:IFCOND(WebAnnotator.WebAnnotationClient->pv:Attribute('key')<>''),
+  "key": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('key'))"
   PVSCL:ENDCOND
 }

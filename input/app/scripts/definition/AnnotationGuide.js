@@ -195,7 +195,7 @@ class AnnotationGuide {
     } else {
       group = newGroup
     }
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
     chrome.runtime.sendMessage({scope: 'storage', cmd: 'getSelectedStorage'}, ({storage}) => {
       if (storage === 'hypothesis') {
         // Hypothesis

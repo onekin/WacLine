@@ -393,7 +393,7 @@ class ContentScriptManager {
   }
 
   loadStorage (callback) {
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     window.abwa.storageManager = new HypothesisClientManager()
     // PVSCL:ENDCOND

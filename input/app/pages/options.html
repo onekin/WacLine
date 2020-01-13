@@ -20,7 +20,7 @@
 
     <div class="jumbotron">
       <img class="logo" src="../images/icon-38.png">
-      <h2 class="title">PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('appName')) configuration</h2>
+      <h2 class="title">PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appName')) configuration</h2>
       <div class="card">
         <div class="card-header bg-dark text-white">User manual</div>
         <div class="card-body">
@@ -59,15 +59,15 @@
         </div>
       </div>
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1,LINE)
+      // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
        <div class="card">
         <div class="card-header bg-dark text-white">Annotation storage</div>
         <div class="card-body">
           <div class="form-check">
             <label for="storageDropdown">Select your annotations storage</label>
             <select class="form-control" id="storageDropdown">
-              <option value="PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Name()->pv:ToLowerCase())" selected="selected">PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(0)->pv:Name())</option>
-              <option value="PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(1)->pv:Name()->pv:ToLowerCase())">PVSCL:EVAL(Storage->pv:SelectedChildren()->pv:Item(1)->pv:Name())</option>
+              <option value="PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(0)->pv:Name()->pv:ToLowerCase())" selected="selected">PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(0)->pv:Name())</option>
+              <option value="PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(1)->pv:Name()->pv:ToLowerCase())">PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(1)->pv:Name())</option>
             </select>
           </div>
         </div>

@@ -23,7 +23,7 @@ const GoogleSheetsManager = require('./background/GoogleSheetsManager')
 // PVSCL:IFCOND(DOI or NavigationScript, LINE)
 const TargetManager = require('./background/TargetManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1, LINE)
+// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
 const StorageManager = require('./background/StorageManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleProvider, LINE)
@@ -61,7 +61,7 @@ class Background {
     this.targetManager.init()
 
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()>1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
     // Initialize storage manager
     this.storageManager = new StorageManager()
     this.storageManager.init()

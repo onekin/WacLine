@@ -1,18 +1,18 @@
 {
   "appName": {
-    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('appName'))",
+    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appName'))",
     "description": "The name of the application"
   },
   "appShortName": {
-    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('appShortName'))",
+    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))",
     "description": "The short_name (maximum of 12 characters recommended) is a short version of the app's name."
   },
   "appDescription": {
-    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('appDescription'))",
+    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appDescription'))",
     "description": "The description of the application"
   },
   "browserActionTitle": {
-    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotator->pv:Attribute('appName'))",
+    "message": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appName'))",
     "description": "The title of the browser action button"
   },
   "Dimensions": {
