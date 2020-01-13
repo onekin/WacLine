@@ -8,7 +8,7 @@
         <cm:constant cm:id="iDKkPWYjNaxwLVr6U_A_psname_C" cm:type="ps:string">WebAnnotator</cm:constant>
       </cm:property>
       <cm:property cm:id="iDKkPWYjNaxwLVr6U_A_psauthor" cm:type="ps:string" cm:invisible="true" cm:name="ps:author">
-        <cm:constant cm:id="iDKkPWYjNaxwLVr6U_A_psauthor_C" cm:type="ps:string">Xabi</cm:constant>
+        <cm:constant cm:id="iDKkPWYjNaxwLVr6U_A_psauthor_C" cm:type="ps:string">haritz</cm:constant>
       </cm:property>
       <cm:property cm:id="iDKkPWYjNaxwLVr6U_A_pscreated" cm:type="ps:date" cm:invisible="true" cm:name="ps:created">
         <cm:constant cm:id="iDKkPWYjNaxwLVr6U_A_pscreated_C" cm:type="ps:date">2019-05-02T13:36:39Z</cm:constant>
@@ -21,7 +21,7 @@
   <cm:restrictions>
     <cm:restset cm:id="iZCD4ETCRYjgVfL1D">
       <cm:restriction cm:id="i8jAKL1o7AawtbGxf">
-        <cm:script cm:id="iVi-6LvZLCOjfTmD1" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.DeleteGroup</cm:script>
+        <cm:script cm:id="iVi-6LvZLCOjfTmD1" cm:language="ps:pvscl" cm:type="ps:boolean">DeleteAll</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="i6IbwJa5XLp-h1HN5">
@@ -56,7 +56,7 @@
     </cm:restset>
     <cm:restset cm:id="iTIr0hQor1OOmNFIU">
       <cm:restriction cm:id="ix6F5yIJ07KAQ_CNq">
-        <cm:script cm:id="ignydr15dcYrQepbh" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Screenshot</cm:script>
+        <cm:script cm:id="ignydr15dcYrQepbh" cm:language="ps:pvscl" cm:type="ps:boolean">AnnotatedPDF</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="i4eGlUfONcwvxARNU">
@@ -71,22 +71,22 @@
     </cm:restset>
     <cm:restset cm:id="iU02oyTE1QEUqaluU">
       <cm:restriction cm:id="iIqsbXxTiVdXNWujE">
-        <cm:script cm:id="ilr4Ji_9GvHVupN3M" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.ACM</cm:script>
+        <cm:script cm:id="ilr4Ji_9GvHVupN3M" cm:language="ps:pvscl" cm:type="ps:boolean">Hosting.ACM</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="iWIY6bntE6fgmSCdW">
       <cm:restriction cm:id="ic1xDvW2MWA7wIZc_">
-        <cm:script cm:id="iPXos7dMgiLlgaFIZ" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.ScienceDirect</cm:script>
+        <cm:script cm:id="iPXos7dMgiLlgaFIZ" cm:language="ps:pvscl" cm:type="ps:boolean">Hosting.ScienceDirect</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="is9fDG0qsJITFAwZZ">
       <cm:restriction cm:id="iaoLA7Yb70mUJgg2W">
-        <cm:script cm:id="iQjUvBcqhv2q2bxYU" cm:language="ps:pvscl" cm:type="ps:boolean">GSheetProvider or GSheetConsumer</cm:script>
+        <cm:script cm:id="iQjUvBcqhv2q2bxYU" cm:language="ps:pvscl" cm:type="ps:boolean">GoogleSheetProvider or GoogleSheetConsumer</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="iRHlV0vk_prwf4qrs">
       <cm:restriction cm:id="iTiiA7l2u_67CcWo7">
-        <cm:script cm:id="iiArJYccPXnF9FxbG" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Manual and WebAnnotator.Hypothesis and Storage-&gt;pv:SelectedChildren()-&gt;pv:Size()=1</cm:script>
+        <cm:script cm:id="iiArJYccPXnF9FxbG" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Manual and WebAnnotator.Hypothesis and AnnotationServer-&gt;pv:SelectedChildren()-&gt;pv:Size()=1</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="ikM185MrMg7La-CqJ">
@@ -106,7 +106,7 @@
     </cm:restset>
     <cm:restset cm:id="ilUZf7Awy59q9fVuI">
       <cm:restriction cm:id="i7M5stEUxCxeaC_gr">
-        <cm:script cm:id="ilsugGOHPmorw904N" cm:language="ps:pvscl" cm:type="ps:boolean">DOI or NavigationScript</cm:script>
+        <cm:script cm:id="ilsugGOHPmorw904N" cm:language="ps:pvscl" cm:type="ps:boolean">DOI or Hosting</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="ifxtixEBKAL8Fy5EV">
@@ -116,12 +116,12 @@
     </cm:restset>
     <cm:restset cm:id="iVd6Nkous1VUN16rn">
       <cm:restriction cm:id="iqTGlmKp4G3uxOmK4">
-        <cm:script cm:id="i1vODHFA2m2v_kw5r" cm:language="ps:pvscl" cm:type="ps:boolean">GSheetConsumer</cm:script>
+        <cm:script cm:id="i1vODHFA2m2v_kw5r" cm:language="ps:pvscl" cm:type="ps:boolean">GoogleSheetConsumer</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="ixPy4vtR3Y0XH9fF8">
       <cm:restriction cm:id="i0DO446w18oI9MnPv">
-        <cm:script cm:id="i5k9gvtv6u5mL7u5p" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Reply</cm:script>
+        <cm:script cm:id="i5k9gvtv6u5mL7u5p" cm:language="ps:pvscl" cm:type="ps:boolean">Replying</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="iR4x3N5XsCQlUb1e0">
@@ -181,12 +181,12 @@
     </cm:restset>
     <cm:restset cm:id="ieq6ukZpwo6BUjk-l">
       <cm:restriction cm:id="iBFIkbH8Hk4A3JEN_">
-        <cm:script cm:id="iY3NtVrGyN5eS0XTc" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.ImportGroup</cm:script>
+        <cm:script cm:id="iY3NtVrGyN5eS0XTc" cm:language="ps:pvscl" cm:type="ps:boolean">ImportCodebook</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="iJ60CoMmCuSLcckj8">
       <cm:restriction cm:id="iDQU6ztokJd-cxf_Z">
-        <cm:script cm:id="iRbnU2f0vo5Qnr_8b" cm:language="ps:pvscl" cm:type="ps:boolean">Storage-&gt;pv:SelectedChildren()-&gt;pv:Size()&gt;1</cm:script>
+        <cm:script cm:id="iRbnU2f0vo5Qnr_8b" cm:language="ps:pvscl" cm:type="ps:boolean">AnnotationServer-&gt;pv:SelectedChildren()-&gt;pv:Size()&gt;1</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="iCXNM4674MIZU71kH">
@@ -269,9 +269,9 @@
         <cm:script cm:id="iVcm6SqMQK82BcUCX" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.MoodleComment</cm:script>
       </cm:restriction>
     </cm:restset>
-    <cm:restset cm:id="iDehFBQsIBEac0U1m">
-      <cm:restriction cm:id="iubrcuOvzo8MiELNQ">
-        <cm:script cm:id="ipfcfDJt_j-qVt9ju" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.Springer</cm:script>
+    <cm:restset cm:id="iKKHc0MqPfqz3OCGT">
+      <cm:restriction cm:id="istudIWw0JdkzKHSU">
+        <cm:script cm:id="iLxuN_e8TcVEL-MC5" cm:language="ps:pvscl" cm:type="ps:boolean">Hosting.Springer</cm:script>
       </cm:restriction>
     </cm:restset>
   </cm:restrictions>
@@ -289,7 +289,7 @@
           <cm:constant cm:id="itsCX2aYrMBwiZKCaBl2dzTYnKgg" cm:type="ps:string">com.ps.consul.eclipse.ui.sourceimport.JavaConfiguration</cm:constant>
         </cm:property>
         <cm:property cm:id="iiPiigCzv6hH8bS_bEjA5tGnNXXi" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:readonly="true" cm:name="sourceimport:configuration:settings">
-          <cm:constant cm:id="iUWhSwl7Mu7w4jbv8lFNucGIip0h" cm:type="ps:string">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&lt;associations&gt;&lt;association checked=&quot;false&quot; desc=&quot;Other files&quot; ending=&quot;.*&quot; filetype=&quot;undefined&quot; type=&quot;ps:object&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Java source file&quot; ending=&quot;.java&quot; filetype=&quot;impl&quot; type=&quot;ps:class&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Ant build script&quot; ending=&quot;build.xml&quot; filetype=&quot;misc&quot; type=&quot;ps:makefile&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;HTML&quot; ending=&quot;.html&quot; filetype=&quot;misc&quot; type=&quot;ex:html&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;JS&quot; ending=&quot;.js&quot; filetype=&quot;misc&quot; type=&quot;ex:js&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;CSS&quot; ending=&quot;.css&quot; filetype=&quot;misc&quot; type=&quot;ex:css&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;JSON&quot; ending=&quot;.json&quot; filetype=&quot;misc&quot; type=&quot;ex:json&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;IMG&quot; ending=&quot;.png&quot; filetype=&quot;misc&quot; type=&quot;ex:img&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;SCSS&quot; ending=&quot;.scss&quot; filetype=&quot;misc&quot; type=&quot;ex:scss&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;BABELRC&quot; ending=&quot;.babelrc&quot; filetype=&quot;misc&quot; type=&quot;ex:babelrc&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;ESLINTRC&quot; ending=&quot;.eslintrc&quot; filetype=&quot;misc&quot; type=&quot;ex:eslintrc&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;GIT&quot; ending=&quot;.gitignore&quot; filetype=&quot;misc&quot; type=&quot;ex:gitignore&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;BAT&quot; ending=&quot;.bat&quot; filetype=&quot;misc&quot; type=&quot;ex:bat&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;SVG&quot; ending=&quot;.svg&quot; filetype=&quot;misc&quot; type=&quot;ex:svg&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Properties&quot; ending=&quot;.properties&quot; filetype=&quot;misc&quot; type=&quot;ex:properties&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;editorConfig&quot; ending=&quot;.editorconfig&quot; filetype=&quot;misc&quot; type=&quot;ex:editorconfig&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;gif&quot; ending=&quot;.gif&quot; filetype=&quot;misc&quot; type=&quot;ex:gif&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;sh&quot; ending=&quot;.sh&quot; filetype=&quot;misc&quot; type=&quot;ex:sh&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;ps1&quot; ending=&quot;.ps1&quot; filetype=&quot;misc&quot; type=&quot;ex:ps1&quot;/&gt;&lt;pattern/&gt;&lt;switches&gt;&lt;switch name=&quot;HIDE_MT_COMPONENTS&quot;&gt;true&lt;/switch&gt;&lt;switch name=&quot;USE_RELATIVE_PATHS&quot;&gt;true&lt;/switch&gt;&lt;switch name=&quot;USE_SORTING&quot;&gt;true&lt;/switch&gt;&lt;/switches&gt;&lt;values&gt;&lt;value name=&quot;RELATIVE_PATH&quot;&gt;C:\Users\Xabi\pure-variants-workspace-4.0\WebAnnotatorSPL\input&lt;/value&gt;&lt;value name=&quot;RELATIVE_TO&quot;&gt;path&lt;/value&gt;&lt;/values&gt;&lt;/associations&gt;</cm:constant>
+          <cm:constant cm:id="id_kLUDOk5EszYdg_VxQp_n4co3b" cm:type="ps:string">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&lt;associations&gt;&lt;association checked=&quot;false&quot; desc=&quot;Other files&quot; ending=&quot;.*&quot; filetype=&quot;undefined&quot; type=&quot;ps:object&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Java source file&quot; ending=&quot;.java&quot; filetype=&quot;impl&quot; type=&quot;ps:class&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Ant build script&quot; ending=&quot;build.xml&quot; filetype=&quot;misc&quot; type=&quot;ps:makefile&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;HTML&quot; ending=&quot;.html&quot; filetype=&quot;misc&quot; type=&quot;ex:html&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;JS&quot; ending=&quot;.js&quot; filetype=&quot;misc&quot; type=&quot;ex:js&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;CSS&quot; ending=&quot;.css&quot; filetype=&quot;misc&quot; type=&quot;ex:css&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;JSON&quot; ending=&quot;.json&quot; filetype=&quot;misc&quot; type=&quot;ex:json&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;IMG&quot; ending=&quot;.png&quot; filetype=&quot;misc&quot; type=&quot;ex:img&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;SCSS&quot; ending=&quot;.scss&quot; filetype=&quot;misc&quot; type=&quot;ex:scss&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;BABELRC&quot; ending=&quot;.babelrc&quot; filetype=&quot;misc&quot; type=&quot;ex:babelrc&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;ESLINTRC&quot; ending=&quot;.eslintrc&quot; filetype=&quot;misc&quot; type=&quot;ex:eslintrc&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;GIT&quot; ending=&quot;.gitignore&quot; filetype=&quot;misc&quot; type=&quot;ex:gitignore&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;BAT&quot; ending=&quot;.bat&quot; filetype=&quot;misc&quot; type=&quot;ex:bat&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;SVG&quot; ending=&quot;.svg&quot; filetype=&quot;misc&quot; type=&quot;ex:svg&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;Properties&quot; ending=&quot;.properties&quot; filetype=&quot;misc&quot; type=&quot;ex:properties&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;editorConfig&quot; ending=&quot;.editorconfig&quot; filetype=&quot;misc&quot; type=&quot;ex:editorconfig&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;gif&quot; ending=&quot;.gif&quot; filetype=&quot;misc&quot; type=&quot;ex:gif&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;sh&quot; ending=&quot;.sh&quot; filetype=&quot;misc&quot; type=&quot;ex:sh&quot;/&gt;&lt;association checked=&quot;true&quot; desc=&quot;ps1&quot; ending=&quot;.ps1&quot; filetype=&quot;misc&quot; type=&quot;ex:ps1&quot;/&gt;&lt;pattern/&gt;&lt;switches&gt;&lt;switch name=&quot;HIDE_MT_COMPONENTS&quot;&gt;true&lt;/switch&gt;&lt;switch name=&quot;USE_RELATIVE_PATHS&quot;&gt;true&lt;/switch&gt;&lt;switch name=&quot;USE_SORTING&quot;&gt;true&lt;/switch&gt;&lt;/switches&gt;&lt;values&gt;&lt;value name=&quot;RELATIVE_PATH&quot;&gt;/Users/haritz/Documents/workspace/WebAnnotatorSPL/input&lt;/value&gt;&lt;value name=&quot;RELATIVE_TO&quot;&gt;path&lt;/value&gt;&lt;/values&gt;&lt;/associations&gt;</cm:constant>
         </cm:property>
         <cm:property cm:id="iry5fxzU0bgFLS1SR" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ModelSyncStoreID">
           <cm:constant cm:id="i8G5-4Kc09zHeCCEJ" cm:type="ps:string">com.ps.consul.eclipse.ui.sourceimport.SourceImportSyncStore</cm:constant>
@@ -313,10 +313,10 @@
           <cm:constant cm:id="iTBYP0ZDL7onCoeZA" cm:type="ps:datetime">2019-05-02T13:42:05.131Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iUpmCqIR4xxPK4c0C" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iOK3FXHVW4rB1wiWQ" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="iOK3FXHVW4rB1wiWQ" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i8GnwbukRMYcIF-YC" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iUlfgBo6hkeXhboAV" cm:type="ps:datetime">2019-09-26T17:37:09.490Z</cm:constant>
+          <cm:constant cm:id="iUlfgBo6hkeXhboAV" cm:type="ps:datetime">2020-01-13T14:46:25.737Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -4947,6 +4947,7 @@
           <cm:target cm:id="i5Es0OQBwFxgH3n09mJF3fr0TbqIiMP2ntKXCJizM">./iJfqa9qvVLTvOwz4Ok-0ntBFCZha</cm:target>
           <cm:target cm:id="iYbX7aut8qprNB_YJYbzhww9Qj3j">./imlAUIP1r-GWYc6h1Tf6BGr2Cgpp</cm:target>
           <cm:target cm:id="i-xFyKRcmmPQuElAAY2m9vkAZPEk">./it33rBlkZUEZlzxHNuhkiMoo4Iza</cm:target>
+          <cm:target cm:id="ik-iyyICLRcxFKggvzkfMBrEBtde">./ifNIv855pjWJV26SuHCKyXuxuzrf</cm:target>
           <cm:target cm:id="iuvpJXScas0ZSVBxvoJJiz2Bg6ESBu1fbLzrewfUl">./iOGPTigBY2xW0Q_8IacruCUA2YCa</cm:target>
           <cm:target cm:id="iOkRAIybaTR-_ENnthbR6hrKjGitev1gX6o5oSlmd">./iRdtTqhSwROPimJZJMrXfsZnb1yb</cm:target>
           <cm:target cm:id="iJUAhx1JsGq6AGKz3HT2b_tQDRNh">./ihrUxou85Um6kgiJDA-eOTQtkL7m</cm:target>
@@ -4959,7 +4960,7 @@
           <cm:target cm:id="i1nHysu4o7EMzkYr0XS_FURBg19HOA2cGB2gHGiq0">./iNqpLxzPo0mFnPHRHw3a8WmoVqMj</cm:target>
           <cm:target cm:id="ikcz23nqKEhkcptDNI4sKpdHyVBRk6o_pW8BMlIBg">./idPt7JAB_mKs63VYSiOcY3z_gM_d</cm:target>
           <cm:target cm:id="i0Qa9o7E56PBNDkzuCP7vjiRpx4g">./i9FlwfuAtsXqU7901dU_Md_qdq1g</cm:target>
-          <cm:target cm:id="i59k_KKLQMMB4TeIq">./iXJs2Gp02RdUDllvR</cm:target>
+          <cm:target cm:id="iS_spMbceQijttO-dvFO9GT4sEQd">./iG9L7dj2AHIjjgtgjfU90scZ6lCe</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -4976,10 +4977,10 @@
           <cm:constant cm:id="i_FTIe0mgnWNaiK20" cm:type="ps:datetime">2019-05-03T13:43:34.658Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iZ0VuIn5PuktzCTnG" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iW2P_pGbSEcndqn9v" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iW2P_pGbSEcndqn9v" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i0_Bjx9ge1a9md6P-" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iJ5IpKq7sKpPlEfTe" cm:type="ps:datetime">2019-09-02T15:34:53.691Z</cm:constant>
+          <cm:constant cm:id="iJ5IpKq7sKpPlEfTe" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -5095,7 +5096,6 @@
           <cm:target cm:id="izdIhLOQweudo8GXOpHDjmHhWjoo">./iXd4tj5uckIhy8HcohZQgoUaBHRd</cm:target>
           <cm:target cm:id="iN5_FoJW8OAcW39H45-A2GymZqenty2jcUR7UPQMj">./iv0Wt3KjPGqalW0qoGaeWXak52Ik</cm:target>
           <cm:target cm:id="i2nod6--pZSAMWCENpZTRks8VkYsKIOBwx1YS-pNj">./iN88K1hIKS_80BlS0sO8A_LDcy_m</cm:target>
-          <cm:target cm:id="iMjOAodxLfrzws0kY-_gHBgoJWm1DTRru8prewLMj">./iVNvuR51vDGQ3fZqZltuAYFIldib</cm:target>
           <cm:target cm:id="iaWntZCwfkYpJI4kshXhr192T_VmdK5fHcahrIyWS">./i-pSLUMIwvWnI6AsnwiUFT6Grj5d</cm:target>
           <cm:target cm:id="i2Tyw1DBM_VZmfrzwLPlYCNwv_FB2isaacW9pC3Ex">./iOLzyuVRFYWyEgVFwxwAjgBW5Xda</cm:target>
           <cm:target cm:id="iIOkHWh6C14f0cd27OnVxODnsLbo">./iff655EU7OxMd-cJ5ACZNLTRXcdf</cm:target>
@@ -5118,10 +5118,10 @@
           <cm:constant cm:id="iodx8SEOc7_OOWxSs" cm:type="ps:datetime">2019-05-06T16:58:28.286Z</cm:constant>
         </cm:property>
         <cm:property cm:id="inm-_hlGFTf-KJLxR" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ibIvg2OFkaPSXKdtv" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="ibIvg2OFkaPSXKdtv" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iq2LOXfKMz2LQVYmD" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iNi8oxvdlQG_9Mjeg" cm:type="ps:datetime">2019-09-10T13:50:59.667Z</cm:constant>
+          <cm:constant cm:id="iNi8oxvdlQG_9Mjeg" cm:type="ps:datetime">2020-01-13T14:46:25.738Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -5336,55 +5336,6 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iapToh_WRXeuq36eT" cm:mimetype="text/plain" cm:encoding="utf-8">ContentScriptManager.js</cm:mimedesc>
-      </cm:vname>
-    </cm:element>
-    <cm:element cm:id="iVNvuR51vDGQ3fZqZltuAYFIldib" cm:type="ex:js" cm:class="ps:part" cm:default="on">
-      <cm:relations cm:id="iVNvuR51vDGQ3fZqZltuAYFIldibdependecies" cm:class="ps:dependencies">
-      </cm:relations>
-      <cm:relations cm:id="ilY39tu1DcWRAVR9VhrPkIiteksFNjsRAdqndfHvf" cm:class="ps:parents">
-        <cm:relation cm:id="iDNKjOAseyMz2uLx119YSVB3nbqFhZmz2rKJ4Gy0T" cm:type="ps:parent">
-          <cm:target cm:id="iJO7UZC0TNzfbTl5UpJEhxfKPxfFhkIoJOA9_4UPk">./i0UezRkCCmEusErzfncfmrHSZ-qa</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:relations cm:id="imJlcGiseiISRH47oLziIv1VRD36UksseX8hbWS-V" cm:class="ps:children">
-        <cm:relation cm:id="ivLy2H4pJicMjhrSR2ns0ruRQZCvLKjHifbS7PQIi" cm:type="ps:optional">
-          <cm:target cm:id="iw13n0DZS7oChU7Fx5E0T9pB2_VIOzgY8TRXm09Wm">./iJFoO06wP6WXbpcHhwCVmYv7StSk</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:vname>
-        <cm:mimedesc cm:id="iIsj0e7E9aol2aD2O" cm:mimetype="text/plain" cm:encoding="utf-8">ContentTypeManager</cm:mimedesc>
-      </cm:vname>
-    </cm:element>
-    <cm:element cm:id="iJFoO06wP6WXbpcHhwCVmYv7StSk" cm:type="ps:pvscltext" cm:class="ps:source" cm:default="on">
-      <cm:relations cm:id="iJFoO06wP6WXbpcHhwCVmYv7StSkdependecies" cm:class="ps:dependencies">
-      </cm:relations>
-      <cm:relations cm:id="iotGi9F7EiI9FdWOAbacqmZ-pYmgrLzVBmtdWSR7-" cm:class="ps:parents">
-        <cm:relation cm:id="igbqKqeIiQAURHyeby2CxpZjswfOklYfrkcaWOkX8" cm:type="ps:parent">
-          <cm:target cm:id="iH4nZ_FE31DRAodD3z2lY198pxf5ERkw1V7I4hrzw">./iVNvuR51vDGQ3fZqZltuAYFIldib</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:properties>
-        <cm:property cm:id="iw1BdoNdUdc-h0h3CVk-9xWSdvue" cm:type="ps:path" cm:fixed="true" cm:name="file">
-          <cm:constant cm:id="ik8DtVhg2OFRBWHXaMN2htccN3Bk" cm:type="ps:path">ContentTypeManager.js</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iWIrEPWO8vkELJoqtOn3W_W9gRFk" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
-          <cm:constant cm:id="ixsb42_qZ6jTisNr9WZiwJa09Ffp" cm:type="ps:filetype">misc</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iWKknrkZNwS3yavIK" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
-          <cm:constant cm:id="ix3vhv_BtIYMDl5BI" cm:type="ps:string">Xabi</cm:constant>
-        </cm:property>
-        <cm:property cm:id="itBRnr-dbqWwE4KiY" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
-          <cm:constant cm:id="iJiu7uCKoYl-K1dCk" cm:type="ps:datetime">2019-05-15T07:34:57.237Z</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iGxxXAAGW_Wc7tE1i" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ibtzxB4BRduu3j5E9" cm:type="ps:string">Xabi</cm:constant>
-        </cm:property>
-        <cm:property cm:id="i3hXYd9CuMB1lByR7" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0Cm7DhVjhbQKdDeY" cm:type="ps:datetime">2019-05-15T07:34:57.237Z</cm:constant>
-        </cm:property>
-      </cm:properties>
-      <cm:vname>
-        <cm:mimedesc cm:id="ifvBnhxRmdrHyXAhu" cm:mimetype="text/plain" cm:encoding="utf-8">ContentTypeManager.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
     <cm:element cm:id="i-pSLUMIwvWnI6AsnwiUFT6Grj5d" cm:type="ex:js" cm:class="ps:part" cm:default="on">
@@ -24823,67 +24774,396 @@
         <cm:mimedesc cm:id="ihbAnwwSQrPvtxguF" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleComment.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="itqbhx7RwQyHZAurx" cm:type="ps:pvscltext" cm:class="ps:source" cm:default="on">
-      <cm:relations cm:id="iAhulwa3clIHPv9vR" cm:class="ps:dependencies">
+    <cm:element cm:id="ifNIv855pjWJV26SuHCKyXuxuzrf" cm:type="ps:component" cm:class="ps:component" cm:default="on">
+      <cm:relations cm:id="ifNIv855pjWJV26SuHCKyXuxuzrfdependecies" cm:class="ps:dependencies">
       </cm:relations>
-      <cm:relations cm:id="ix6gEwXrRICAuYBgn" cm:class="ps:parents">
-        <cm:relation cm:id="icdFH7jnS_EBi0Rfi" cm:type="ps:parent">
-          <cm:target cm:id="iTo5mOck0TpUa4cIE">./iXJs2Gp02RdUDllvR</cm:target>
+      <cm:relations cm:id="iK5NPuL1n_pygFNR6GO7-kYbG4okYSRhbvLygRkPk" cm:class="ps:parents">
+        <cm:relation cm:id="i6oMjLPG43DvvPAAwxvlImt1nYSpdregHyMrKGycW" cm:type="ps:parent">
+          <cm:target cm:id="iIijYP6AMcqPkJ4WSptWSkI_pQQ-_NP4UR6FxVlGi">./icGR_X9_Zyy0IoAOQZXE1w12CA_f</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i3KvgHioCHccY_5iPV5FH6yYLL1h" cm:class="ps:children">
+        <cm:relation cm:id="i-CEkTz0ZJugdIrZdRpVUNpnEVeb" cm:type="ps:optional">
+          <cm:target cm:id="iiO_DT8Gjh35Vlus17oTW0BOkihd">./ifzHKyDoW7E45kQwYFuGs_ze3oFj</cm:target>
+          <cm:target cm:id="iAtIx0HMUhGDgzC6OIm9ofqda0od">./ikRfcnhMmSlM-wqzRsZonmqygBgn</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
-        <cm:property cm:id="i6sRj6hEIBVB6wDiT" cm:type="ps:path" cm:fixed="true" cm:name="file">
-          <cm:constant cm:id="iU4KweGxxftaEqF3h" cm:type="ps:path">springerContentScript.js</cm:constant>
+        <cm:property cm:id="itAI2Pc2e2kaTUz9XLkuKUwRyrrn" cm:type="ps:directory" cm:inheritable="true" cm:fixed="true" cm:name="srcdir">
+          <cm:constant cm:id="iZXK2evPGa6lblPXSkO6qlGgRQYp" cm:type="ps:directory">app/scripts/target</cm:constant>
         </cm:property>
-        <cm:property cm:id="iwhKeMLmhpGCKMBDj" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
-          <cm:constant cm:id="iYwrMtHQ-xFa7v3jZ" cm:type="ps:filetype">misc</cm:constant>
+        <cm:property cm:id="i5AlqrGXMsRE9BPe1v7_SotAYpkg" cm:type="ps:directory" cm:inheritable="true" cm:fixed="true" cm:name="dir">
+          <cm:constant cm:id="ir0C-KKy7sB2XkfwjP-dihKg--xm" cm:type="ps:directory">app/scripts/target</cm:constant>
         </cm:property>
-        <cm:property cm:id="ics6LPk6VmZBOwZpU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
-          <cm:constant cm:id="iED8t9mRx5X5Z0cSA" cm:type="ps:string">RaulMedeiros</cm:constant>
+        <cm:property cm:id="i_PZGrC_qwnvher2c" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iIEsQeyx6k8b3LjLf" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
-        <cm:property cm:id="iW-CaTRc1_hDo8knd" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
-          <cm:constant cm:id="iNfHx2ykn5gWx2ya4" cm:type="ps:datetime">2019-10-24T07:06:08.295Z</cm:constant>
+        <cm:property cm:id="iQBvl9kavQA5cGEsY" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iUBBZj6MoloNYxnDJ" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
         </cm:property>
-        <cm:property cm:id="ireyl9xwzFJDVvDy9" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iWmig0G8PAWBzBDnP" cm:type="ps:string">RaulMedeiros</cm:constant>
+        <cm:property cm:id="ijxwNZbpS5e9B7Vxr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ix9azJUfiMIwWzudu" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
-        <cm:property cm:id="iLKLn0UmUoCqLFd_X" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="irTpyyN2s16nIDn6u" cm:type="ps:datetime">2019-10-24T07:14:30.106Z</cm:constant>
+        <cm:property cm:id="ikelzPOb8HhO3H4FZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ifrfJ4AtcxdKhyGcy" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
-        <cm:mimedesc cm:id="ivJq7BXJcFCBg2wVg" cm:mimetype="text/plain" cm:encoding="utf-8">springerContentScript.js</cm:mimedesc>
+        <cm:mimedesc cm:id="i-d8ZTMIDOcnAee4m" cm:mimetype="text/plain" cm:encoding="utf-8">target</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iXJs2Gp02RdUDllvR" cm:restriction="iDehFBQsIBEac0U1m" cm:type="ex:js" cm:class="ps:part" cm:default="on">
-      <cm:relations cm:id="iH9FHlLOui5NqQe8o" cm:class="ps:dependencies">
+    <cm:element cm:id="ifzHKyDoW7E45kQwYFuGs_ze3oFj" cm:type="ps:component" cm:class="ps:component" cm:default="on">
+      <cm:relations cm:id="ifzHKyDoW7E45kQwYFuGs_ze3oFjdependecies" cm:class="ps:dependencies">
       </cm:relations>
-      <cm:relations cm:id="iBgr8893TQphRUj9X" cm:class="ps:parents">
-        <cm:relation cm:id="i_zR0dHBSLdouEu0A" cm:type="ps:parent">
-          <cm:target cm:id="i1UqtqlLe3MZTthFI">./icGR_X9_Zyy0IoAOQZXE1w12CA_f</cm:target>
+      <cm:relations cm:id="iK5eHBw4-bGJieXaaUBJi8VgbisnJHiRQ4-RQkcXm" cm:class="ps:parents">
+        <cm:relation cm:id="ikIOkTBU76UywZ8LjxfCh5UjcLzhr8pXC0TV7aWQA" cm:type="ps:parent">
+          <cm:target cm:id="ihXvLmdTBX8vfxv6EVBMzr06E2D4oWS6o09u1P6su">./ifNIv855pjWJV26SuHCKyXuxuzrf</cm:target>
         </cm:relation>
       </cm:relations>
-      <cm:relations cm:id="i2aabvG2g3-gxS_DE" cm:class="ps:children">
-        <cm:relation cm:id="iyuMdeC0tWsJj63WO" cm:type="ps:optional">
-          <cm:target cm:id="iAV0Ry9uAjqJGy6rW">./itqbhx7RwQyHZAurx</cm:target>
+      <cm:relations cm:id="iMQPUJsJMHmJZHs5SiC4yveXPCdf" cm:class="ps:children">
+        <cm:relation cm:id="id7vvM18lBe4CnI1is8bgyATr30c" cm:type="ps:optional">
+          <cm:target cm:id="irjO72g6JEhTdUv9Izm7MpePEc-l">./iD7UURzgFzPCQfyl81hjY1qH0ksa</cm:target>
+          <cm:target cm:id="iWZi_2TruHi2N-ZeQ6ppqoTv5KLb">./iVmFKNMmhHMw5P4nRWxgmJdOjJmf</cm:target>
+          <cm:target cm:id="iXm3qWWi6r8tob8hUtJgqFdjHQ2m">./i6mn_xmnBiHig-JRuyS5XIVYURso</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
-        <cm:property cm:id="iiQ8wY0seenGjbJV0" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
-          <cm:constant cm:id="i5H20HoBzuTej_wwI" cm:type="ps:string">RaulMedeiros</cm:constant>
+        <cm:property cm:id="iFDKcDEyZTro7lMznK7JrIuGJXLc" cm:type="ps:directory" cm:inheritable="true" cm:fixed="true" cm:name="srcdir">
+          <cm:constant cm:id="iKM3kd2jxc3Ze422Ng6S5Ro4w2Sm" cm:type="ps:directory">app/scripts/target/formats</cm:constant>
         </cm:property>
-        <cm:property cm:id="iRLSqJC3yUnQEG70n" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
-          <cm:constant cm:id="iMZ6mNLeNhwS1i-DR" cm:type="ps:datetime">2019-10-24T07:06:08.294Z</cm:constant>
+        <cm:property cm:id="iKuiWW2neVf5jJRiAhwsn5vb2b4c" cm:type="ps:directory" cm:inheritable="true" cm:fixed="true" cm:name="dir">
+          <cm:constant cm:id="iWEJPPRr3_0hnyVpNQtrY6bdEhem" cm:type="ps:directory">app/scripts/target/formats</cm:constant>
         </cm:property>
-        <cm:property cm:id="iXsHKnoosBAk5Hcvt" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iaLHTEoTNKeetJpaz" cm:type="ps:string">RaulMedeiros</cm:constant>
+        <cm:property cm:id="i_kBSDdTfJ58qyuvh" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ir5eS9QmcRKyyb1aK" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
-        <cm:property cm:id="iyFWxuEmGy8fiZryM" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZB8ZbGgBJ0UobBBc" cm:type="ps:datetime">2019-10-24T07:06:29.394Z</cm:constant>
+        <cm:property cm:id="ioRQ7aZe_gCUeyINC" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iZPku17qPbP3AeBh9" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ibgBQNqSS_8zuDb8-" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iE3IK99O6pc7g9OMp" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iCkVjNkE0c6f1uM49" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i7JrzK4oTjfRV-gfx" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
-        <cm:mimedesc cm:id="im-5Zq_ILyCe0fkI7" cm:mimetype="text/plain" cm:encoding="utf-8">springerContentScript</cm:mimedesc>
+        <cm:mimedesc cm:id="iemVsipUSwM5TJrX0" cm:mimetype="text/plain" cm:encoding="utf-8">formats</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i6mn_xmnBiHig-JRuyS5XIVYURso" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+      <cm:relations cm:id="i6mn_xmnBiHig-JRuyS5XIVYURsodependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="ixLQQlsDhO6V7zMququG4kY8V9pvLdWmZ2TgX__nd" cm:class="ps:parents">
+        <cm:relation cm:id="ihrhHW87obq7oM5-p2n7-1DdaGOWSr0lcwLjsjYV7" cm:type="ps:parent">
+          <cm:target cm:id="iEhK5AwdqH4qeA22DV7zgXCJipJV7QQsuA2daKPVB">./ifzHKyDoW7E45kQwYFuGs_ze3oFj</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i4MyDFNW2Z-WbVa4S5L70TsFQuno" cm:class="ps:children">
+        <cm:relation cm:id="ihGmD8KHQ4rwgBLt3j-aGESGzKib" cm:type="ps:optional">
+          <cm:target cm:id="iQzKEmmKwN0TWXMjjUaDFzSwoKah">./ifD70VYJoRe3fTUOV72ndMIPPJ0i</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i_b_uBoYNjTaM5ez7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ivKcvgJtDqTVkIwHK" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ihLKK-GjyJENZbliX" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i6zorNRvWdqrBDanF" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ic_DZLDanEwdywaNs" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="inVd7dPSTuhCSwZVR" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iM6TBWmPSyLzLy9GI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iIj_7rWtsOM87FeZC" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iDbzAbuc9Ym9QzkDR" cm:mimetype="text/plain" cm:encoding="utf-8">TXT</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ifD70VYJoRe3fTUOV72ndMIPPJ0i" cm:type="ps:file" cm:class="ps:source" cm:default="on">
+      <cm:relations cm:id="ifD70VYJoRe3fTUOV72ndMIPPJ0idependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="i5-w1D3jIYC2TjYC329W84o1n6E5ENzq01TURmtLj" cm:class="ps:parents">
+        <cm:relation cm:id="iZCufy2aGgrYShX7EU7Ym3DDhdqEN9VG4V7Rkjccq" cm:type="ps:parent">
+          <cm:target cm:id="ixf196EptiIfXWCI4ndeHoZywkI3DjsJ4frX8KPLP">./i6mn_xmnBiHig-JRuyS5XIVYURso</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i4LXwo11gJeDPtXTWc585z0hHKOa" cm:type="ps:path" cm:fixed="true" cm:name="file">
+          <cm:constant cm:id="iuVYsxT8MQtAGbkcdHAEmdqOX2ib" cm:type="ps:path">TXT.js</cm:constant>
+        </cm:property>
+        <cm:property cm:id="irJuxEx8b_rb7VOfNq2tSeWi8YLj" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
+          <cm:constant cm:id="iH-1fL9xfMH1y5N3pgNwQgvCihMn" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iEZy6GsT5LmQbAqs9" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iDyj0njzdkjElBeVz" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ifkb3x5Oy7M7C7dS4" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iOwVFfa9DuWJZgXer" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iKb_E-xC5-GE47SJm" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iymil4MhjLHn0hmEK" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ie5Xn_GNvMbOniOOd" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iJG507NDt4fsFc0Rx" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iIrdkbl0NHtxd0J_n" cm:mimetype="text/plain" cm:encoding="utf-8">TXT.js</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iD7UURzgFzPCQfyl81hjY1qH0ksa" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+      <cm:relations cm:id="iD7UURzgFzPCQfyl81hjY1qH0ksadependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="isKFhqKgXnZNjlc0DIizgTlQAXCRAfbseW8wfEhaa" cm:class="ps:parents">
+        <cm:relation cm:id="inJTR9pP6xfX8-VaW9V4U3DoZZm4UEN1Ds00ndqjs" cm:type="ps:parent">
+          <cm:target cm:id="iH4ENA2zMWmhb5ov1eb4oLPEhvL19jsodBMpZoZ0D">./ifzHKyDoW7E45kQwYFuGs_ze3oFj</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iBM-Sn1YdFZptXtYxaJIvNEuSLho" cm:class="ps:children">
+        <cm:relation cm:id="icT3QTnemVe3Z2yJFCgtLS-enabo" cm:type="ps:optional">
+          <cm:target cm:id="iHQcGd0irLiu3eXaMdm3HV6_u_Im">./it4B00uE8oBrQLIcAjE9vQZBxKCl</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i6Z4o2Vec-jhBHC4U" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ijo0VLQElpm5RT0nb" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i0AEqaRQlKnC7pp4q" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iqsc9rDxfLbdIj4qD" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iI81F78iIJuVYoUMr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iEhEGYS4up5gZKqhM" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="inIpLjZgrvvyTPZrD" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ij9RRzXcULc0IGqLL" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iQC0wp-wkfvimLMJf" cm:mimetype="text/plain" cm:encoding="utf-8">HTML</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="it4B00uE8oBrQLIcAjE9vQZBxKCl" cm:type="ps:file" cm:class="ps:source" cm:default="on">
+      <cm:relations cm:id="it4B00uE8oBrQLIcAjE9vQZBxKCldependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="i1T9V0n2nP609SRAgu1iI__TRU7pJHO1DlIxLQ6A2" cm:class="ps:parents">
+        <cm:relation cm:id="i0noZvfHi_VkY4UeHmZPQRA3TjIkspZ4UTBO6fbT7" cm:type="ps:parent">
+          <cm:target cm:id="iNPSB1nR6wfywGyCNMP39-podv1LjAwZmR6F3mtxv">./iD7UURzgFzPCQfyl81hjY1qH0ksa</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iA_AuurbyvI8c9ZTWgi_pIrVi-to" cm:type="ps:path" cm:fixed="true" cm:name="file">
+          <cm:constant cm:id="ir_a1zwniPZ3L8-mPxFX1ol1rose" cm:type="ps:path">HTML.js</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-lc_MgGdYgt5cIyow5ovcDAT6Op" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
+          <cm:constant cm:id="i_ONAmhlnRwHXMBi_WzdDIsQdxXn" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iPSQ2Lrl_xZjY_t7P" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i-7kjeixRRZ-FmkH7" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i0NBXNzJ_bvYQMaMY" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iDaBspt0hU_Kecwgp" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iSwYxMneNj5zgVo8i" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iiJEHoV40pa5QjsnD" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ipyp0Rp-fTO6W3cpT" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iDVVN8ybSFQe7BvJ9" cm:type="ps:datetime">2020-01-13T14:46:25.740Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iui3NaSxxpNVXPUO4" cm:mimetype="text/plain" cm:encoding="utf-8">HTML.js</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iVmFKNMmhHMw5P4nRWxgmJdOjJmf" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+      <cm:relations cm:id="iVmFKNMmhHMw5P4nRWxgmJdOjJmfdependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="igb2D-ptKhbpdAgMPoZ0TVRSB09DhptzM19z2VlPk" cm:class="ps:parents">
+        <cm:relation cm:id="ifbv1WmZmjcoJSBD3VRU7aGXmP69Fkc9FI4hr6USR" cm:type="ps:parent">
+          <cm:target cm:id="iHOdGOAvfsKWSZS-Fisre5UZmpJaq2TkYndIyTBbq">./ifzHKyDoW7E45kQwYFuGs_ze3oFj</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iqLIAw_DqW0GraySCW5hhU49N9Ig" cm:class="ps:children">
+        <cm:relation cm:id="ivu-zSTw_G6fR88RtmxtFURyArug" cm:type="ps:optional">
+          <cm:target cm:id="itLDyGtOj5AbYJbEazTSSGXt3qli">./iNim8mySVsUNFQCa9hdg1-IiHv4f</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iDmD-7dS8RUcGxBND" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iWVB3TvmWoBHK2TOk" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="il7GuCIIW5f6qRZmj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iWSUrCrCnBK1QRr9X" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iv8ObB8ppvPeTPvwe" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iqvIkjlGLXih0YFn8" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i8iecyrAIB-Y2s_Ul" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iu4aCbF9qPckQX0li" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ipy6D6ijHM9rWJJch" cm:mimetype="text/plain" cm:encoding="utf-8">PDF</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iNim8mySVsUNFQCa9hdg1-IiHv4f" cm:type="ps:file" cm:class="ps:source" cm:default="on">
+      <cm:relations cm:id="iNim8mySVsUNFQCa9hdg1-IiHv4fdependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="ihrU77UU7t0kIFhzg0TuvyMwLicEhY8A2ExTRcaVR" cm:class="ps:parents">
+        <cm:relation cm:id="ifXKjN5B2eb9pbqYm-p2D2TDN19JOOA8_AMfbgbzM" cm:type="ps:parent">
+          <cm:target cm:id="iXm8Vtunt__JyAwFNrKDxxftKG43DLzpJ_pVlWCRk">./iVmFKNMmhHMw5P4nRWxgmJdOjJmf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ikRoPKdrHZOhNtDO95YRKIu-MWWb" cm:type="ps:path" cm:fixed="true" cm:name="file">
+          <cm:constant cm:id="iahS0_4Zv5VERRuv3WRqOC49YmJc" cm:type="ps:path">PDF.js</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i50AJ1VBfsO7j0vr7enSYL_Ta44n" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
+          <cm:constant cm:id="i0Z0Rc46CQOnkFYVk3D6mesWasbf" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="inVylmQxRJRfUvojj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i9tOSUWQMyLnnhSe7" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iKSPVrlmEQJOSXzC2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iM30JSHwHqp16Y52n" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i6s028kXWwON_krEs" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iNbxjqWHP46E47DLq" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iRHEcQJv2ZMZ-rD7j" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iOYCJ9uwU1UIPw2Yq" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i1agLq08iEOOWUuXT" cm:mimetype="text/plain" cm:encoding="utf-8">PDF.js</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ikRfcnhMmSlM-wqzRsZonmqygBgn" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+      <cm:relations cm:id="ikRfcnhMmSlM-wqzRsZonmqygBgndependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="iQ63T5UwLgbxvJ4WCdqhbHOeHjIpZVBvfiYxLseeX" cm:class="ps:parents">
+        <cm:relation cm:id="iUBdar0K5jI29ZmNzlYdaLPDNuvwL4Eot5oIiSlzM" cm:type="ps:parent">
+          <cm:target cm:id="iLzuv__Ehqe_pfbdaCxFNWmW88pHiZ86-r0B2YCO6">./ifNIv855pjWJV26SuHCKyXuxuzrf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i3ercMMC_v0qu7jwP3EMBcdrMxJp" cm:class="ps:children">
+        <cm:relation cm:id="il4-Y615Yi8odGbpggZGBBL5MQnc" cm:type="ps:optional">
+          <cm:target cm:id="iXcBvnrrNB6W2ETFzxS5RnUYeP2f">./i0Zum3iEb2wShUUP_L-T2GTvyrTg</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iNa2pp_ZjnukoPwY_" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ipkd3ooi4oKgs9HQo" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i96AdCuvjDUH9kKBo" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iJgTCV1MGtxNOqSa6" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="idawGc-WIlE-Y68yM" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iP74YxGHAojimsLOj" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iCp3RoF6qBI6ZqW-C" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ilHAd0umZ5wVamn0A" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i5U5VTrgeGbWqnNyP" cm:mimetype="text/plain" cm:encoding="utf-8">TargetManager</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i0Zum3iEb2wShUUP_L-T2GTvyrTg" cm:type="ps:file" cm:class="ps:source" cm:default="on">
+      <cm:relations cm:id="i0Zum3iEb2wShUUP_L-T2GTvyrTgdependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="iot_pNzvLicjIGOWS8FpJY8re5EExcq6UnZwfpJWC" cm:class="ps:parents">
+        <cm:relation cm:id="i-_pd4EM5RkvLbqHOENpZxvQApdruDNrK4oZmXCdq" cm:type="ps:parent">
+          <cm:target cm:id="i8VdGXmBgisZmoZP6XmTl4-ZCH4Mj4-TRHiDhXC0n">./ikRfcnhMmSlM-wqzRsZonmqygBgn</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iyS0ET_TKl-QJ-u6y2dJQj_tiU6m" cm:type="ps:path" cm:fixed="true" cm:name="file">
+          <cm:constant cm:id="iJ3we7qb6aAAwcbb1k3IoR52vBFo" cm:type="ps:path">TargetManager.js</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iQg7Aip_4A-DUytZHl0XrS2u_S2f" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
+          <cm:constant cm:id="isPTe-OGkIzgT4va9KcaKMtYF8Vb" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYjHnfZBJH0WfQA1C" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iPBViMyzn0D6EwWxQ" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ixUeRjFe2o3kNjKXw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ixfYEFw12xY_Q-3Wm" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwmELHRH0Sw5r7JG1" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i2tlS3iF7I2QxAAqJ" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="imJatyXnwlTHE9MfU" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="idFJ48QiMt1DBWsag" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iEEHKI-9ZiibA7Xhr" cm:mimetype="text/plain" cm:encoding="utf-8">TargetManager.js</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iG9L7dj2AHIjjgtgjfU90scZ6lCe" cm:restriction="iKKHc0MqPfqz3OCGT" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+      <cm:relations cm:id="iG9L7dj2AHIjjgtgjfU90scZ6lCedependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="iz28pcWicENkIzMicvLbWdaXC9FX8FxYCZSuviIuf" cm:class="ps:parents">
+        <cm:relation cm:id="iIOw1XmA2Pkq00DcWTR8pS7jYmJMPmtdqDNYmAwfr" cm:type="ps:parent">
+          <cm:target cm:id="i5Euv_Fvf4EXSnd8VW8u1-VXmN5YSOkls4-bquv-p">./icGR_X9_Zyy0IoAOQZXE1w12CA_f</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iT2f_BkxxZLg_hNTKBcRbG7GEhQm" cm:class="ps:children">
+        <cm:relation cm:id="izgzzagHEI8T2kga9okFCu5VSXYb" cm:type="ps:optional">
+          <cm:target cm:id="ibD2yL9R6H_lDhUeaJVjY08pvL3f">./iTU17usOWRLtkKwCWaqhjDOiVvlk</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iFpDztokrntwgU26h" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="itcUmjSkijQJyhI-P" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i0xxhpESAHraKdF5h" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iqR2hlmaJg_1YIS_q" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJUQOelt22eQ6qTKT" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iSwktL-fr1PMWvveR" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ih165OIwWIQlRepfj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ib36PaPY_5UQQNEtd" cm:type="ps:datetime">2020-01-13T15:20:18.691Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="imRYzyn1YNar8SK53" cm:mimetype="text/plain" cm:encoding="utf-8">springerContentScript</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iTU17usOWRLtkKwCWaqhjDOiVvlk" cm:type="ps:file" cm:class="ps:source" cm:default="on">
+      <cm:relations cm:id="iTU17usOWRLtkKwCWaqhjDOiVvlkdependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="ikYKP09Aw7U3nic6-6Es0QAO6SRNj-FM5AwteXmlY" cm:class="ps:parents">
+        <cm:relation cm:id="iJiy2HO2n5UvLJyuv4E6obW6oW8OklcJO09wfgrkY" cm:type="ps:parent">
+          <cm:target cm:id="iJO2Dz2otygfb0T5EicFN8V9pq0kIaG5E5EYSD3-p">./iG9L7dj2AHIjjgtgjfU90scZ6lCe</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iMQP14neRujat0Fc0oNo-797a2Ua" cm:type="ps:path" cm:fixed="true" cm:name="file">
+          <cm:constant cm:id="iUxDAtnZYoivyQdyCX2TLm0E82kn" cm:type="ps:path">springerContentScript.js</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ix0wwngDd6hKu_bTdQg_RYXvXr3c" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
+          <cm:constant cm:id="iLKgcUpX75ftEh2fO9bOP2IWfF0o" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijoxMKtfIJ4O5Ke9h" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iq_i282VSYvONyOLl" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i6hMFObyeezw6uNN2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ii-4Q89SFoMJz89B-" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iHXaKYQN4PrTdFCly" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iSuhw_Ax8BTej4ttR" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iWVn4TW95_kR-YkGb" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ik5N6y3k--hNSGR0P" cm:type="ps:datetime">2020-01-13T14:46:25.741Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ix7qABUYdIVctR3DL" cm:mimetype="text/plain" cm:encoding="utf-8">springerContentScript.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>

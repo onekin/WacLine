@@ -1,5 +1,14 @@
 const _ = require('lodash')
-const Events = require('./Events')
+const Events = require('../contentScript/Events')
+// PVSCL:IFCOND(PDF, LINE)
+const PDF = require('./formats/PDF')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(PDF, LINE)
+const TXT = require('./formats/TXT')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(PDF, LINE)
+const HTML = require('./formats/HTML')
+// PVSCL:ENDCOND
 const URLUtils = require('../utils/URLUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Alerts = require('../utils/Alerts')
@@ -10,14 +19,14 @@ const RandomUtils = require('../utils/RandomUtils')
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
 const axios = require('axios')
 
-class ContentTypeManager {
+class TargetManager {
   constructor () {
     this.url = null
     this.urlChangeInterval = null
     this.urlParam = null
     this.documentId = null
     this.documentTitle = ''
-    this.documentFormat = ContentTypeManager.documentFormat.html // By default document type is html
+    this.documentFormat = HTML // By default document type is html
     // PVSCL:IFCOND(URN, LINE)
     this.localFile = false
     // PVSCL:ENDCOND
@@ -54,7 +63,7 @@ class ContentTypeManager {
       this.tryToLoadTargetId()
       if (this.url.startsWith('file:///')) {
         this.localFile = true
-      } else if (this.documentFormat !== ContentTypeManager.documentFormat.pdf) { // If document is not pdf, it can change its URL
+      } else if (this.documentFormat !== PDF) { // If document is not pdf, it can change its URL
         // Support in ajax websites web url change, web url can change dynamically, but local files never do
         this.initSupportWebURLChange()
       }
@@ -84,7 +93,7 @@ class ContentTypeManager {
 
   tryToLoadURN () {
     // If document is PDF
-    if (this.documentFormat === ContentTypeManager.documentFormat.pdf) {
+    if (this.documentFormat === PDF) {
       this.fingerprint = window.PDFViewerApplication.pdfDocument.pdfInfo.fingerprint
       this.urn = 'urn:x-pdf:' + this.fingerprint
     } else {
@@ -116,7 +125,7 @@ class ContentTypeManager {
   }
 
   getDocumentURL () {
-    if (this.documentFormat === ContentTypeManager.documentFormat.pdf) {
+    if (this.documentFormat === PDF) {
       return window.PDFViewerApplication.url
     } else {
       return URLUtils.retrieveMainUrl(window.location.href) // TODO Check this, i think this url is not valid
@@ -130,13 +139,13 @@ class ContentTypeManager {
   loadDocumentFormat () {
     return new Promise((resolve) => {
       if (window.location.pathname === '/content/pdfjs/web/viewer.html') {
-        this.documentFormat = ContentTypeManager.documentFormat.pdf
+        this.documentFormat = PDF
         this.waitUntilPDFViewerLoad(() => {
           resolve()
         })
         return true
       } else {
-        this.documentFormat = ContentTypeManager.documentFormat.html
+        this.documentFormat = HTML
         resolve()
       }
     })
@@ -173,7 +182,7 @@ class ContentTypeManager {
   // PVSCL:ENDCOND
 
   destroy (callback) {
-    if (this.documentFormat === ContentTypeManager.documentFormat.pdf) {
+    if (this.documentFormat === PDF) {
       // Reload to original pdf website
       if (_.isUndefined(this.url) || _.isNull(this.url)) {
         window.location.href = window.PDFViewerApplication.baseUrl
@@ -242,15 +251,15 @@ class ContentTypeManager {
   }
 
   getDocumentRootElement () {
-    if (this.documentFormat === ContentTypeManager.documentFormat.pdf) {
+    if (this.documentFormat === PDF) {
       return document.querySelector('#viewer')
-    } else if (this.documentFormat === ContentTypeManager.documentFormat.html) {
+    } else if (this.documentFormat === HTML) {
       return document.body
     }
   }
 
   getDocumentURIToSearchInStorage () {
-    if (this.documentFormat === ContentTypeManager.documentFormat.pdf) {
+    if (this.documentFormat === PDF) {
       return this.urn
     } else {
       return this.url
@@ -371,7 +380,7 @@ class ContentTypeManager {
             if (!this.documentTitle) {
               let promise = new Promise((resolve, reject) => {
                 // Try to load title from pdf metadata
-                if (this.documentFormat === ContentTypeManager.documentFormat.pdf) {
+                if (this.documentFormat === PDF) {
                   this.waitUntilPDFViewerLoad(() => {
                     if (window.PDFViewerApplication.documentInfo.Title) {
                       this.documentTitle = window.PDFViewerApplication.documentInfo.Title
@@ -406,15 +415,4 @@ class ContentTypeManager {
   }
 }
 
-ContentTypeManager.documentFormat = {
-  html: {
-    name: 'html',
-    selectors: ['FragmentSelector', 'RangeSelector', 'TextPositionSelector', 'TextQuoteSelector']
-  },
-  pdf: {
-    name: 'pdf',
-    selectors: ['FragmentSelector', 'TextPositionSelector', 'TextQuoteSelector']
-  }
-}
-
-module.exports = ContentTypeManager
+module.exports = TargetManager

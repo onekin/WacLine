@@ -35,7 +35,7 @@ class MoodleReport {
     annotations = _.flatten(annotations)
     // let annotations = _.flatten(_.map(annotatedThemes, annotatedTheme => annotatedTheme.annotations))
     // Get student id
-    let studentId = window.abwa.contentTypeManager.fileMetadata.studentId
+    let studentId = window.abwa.targetManager.fileMetadata.studentId
     // Filter from search only the annotations which are used to classify and are from this cmid
     let cmid = window.abwa.tagManager.model.highlighterDefinition.cmid
     annotations = _.filter(annotations, (anno) => {

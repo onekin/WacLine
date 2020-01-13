@@ -95,7 +95,7 @@ class TagManager {
         })
         // PVSCL:IFCOND(MoodleURL,LINE)
         // Remove tags which are not for the current assignment
-        let cmid = window.abwa.contentTypeManager.fileMetadata.cmid
+        let cmid = window.abwa.targetManager.fileMetadata.cmid
         annotations = _.filter(annotations, (annotation) => {
           return this.hasATag(annotation, 'cmid:' + cmid)
         })

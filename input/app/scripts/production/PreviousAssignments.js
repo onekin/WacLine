@@ -32,7 +32,7 @@ class PreviousAssignments {
 
   retrievePreviousAssignments (callback) {
     // Get student id
-    let studentId = window.abwa.contentTypeManager.fileMetadata.studentId
+    let studentId = window.abwa.targetManager.fileMetadata.studentId
     window.abwa.storageManager.client.searchAnnotations({
       tag: Config.namespace + ':guide',
       group: window.abwa.groupSelector.currentGroup.id
@@ -47,7 +47,7 @@ class PreviousAssignments {
         for (let i = 0; i < annotations.length; i++) {
           AnnotationGuide.fromAnnotation(annotations[i], (rubric) => {
             // If current assignment is previous assignment, don't add
-            if (window.abwa.contentTypeManager.fileMetadata.cmid !== rubric.cmid) {
+            if (window.abwa.targetManager.fileMetadata.cmid !== rubric.cmid) {
               let previousAssignment = {name: rubric.assignmentName}
               let teacherUrl = rubric.getUrlToStudentAssignmentForTeacher(studentId)
               let studentUrl = rubric.getUrlToStudentAssignmentForStudent(studentId)

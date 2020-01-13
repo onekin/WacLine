@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const ContentTypeManager = require('./ContentTypeManager')
+const TargetManager = require('../target/TargetManager')
 const Sidebar = require('./Sidebar')
 const TagManager = require('./TagManager')
 const Config = require('../Config')
@@ -42,7 +42,7 @@ class ContentScriptManager {
   init () {
     console.debug('Initializing content script manager')
     this.status = ContentScriptManager.status.initializing
-    this.loadContentTypeManager(() => {
+    this.loadTargetManager(() => {
       this.loadStorage(() => {
         window.abwa.sidebar = new Sidebar()
         window.abwa.sidebar.init(() => {
@@ -344,7 +344,7 @@ class ContentScriptManager {
 
   destroy (callback) {
     console.debug('Destroying content script manager')
-    this.destroyContentTypeManager(() => {
+    this.destroyTargetManager(() => {
       this.destroyTagsManager()
       this.destroyContentAnnotator()
       // PVSCL:IFCOND(UserFilter, LINE)
@@ -373,18 +373,18 @@ class ContentScriptManager {
     })
   }
 
-  loadContentTypeManager (callback) {
-    window.abwa.contentTypeManager = new ContentTypeManager()
-    window.abwa.contentTypeManager.init(() => {
+  loadTargetManager (callback) {
+    window.abwa.targetManager = new TargetManager()
+    window.abwa.targetManager.init(() => {
       if (_.isFunction(callback)) {
         callback()
       }
     })
   }
 
-  destroyContentTypeManager (callback) {
-    if (window.abwa.contentTypeManager) {
-      window.abwa.contentTypeManager.destroy(() => {
+  destroyTargetManager (callback) {
+    if (window.abwa.targetManager) {
+      window.abwa.targetManager.destroy(() => {
         if (_.isFunction(callback)) {
           callback()
         }

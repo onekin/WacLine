@@ -273,19 +273,19 @@ class AnnotatedContentManager {
     if (LanguageUtils.isInstanceOf(themeOrCode, AnnotatedTheme)) {
       // If it is the theme, we need to retrieve all the annotations with corresponding theme and annotations done with its children codes
       let annotations = _.filter(themeOrCode.annotations, (annotation) => {
-        return _.intersection(window.abwa.contentTypeManager.getDocumentLink(), _.values(annotation.target[0].source))
+        return _.intersection(window.abwa.targetManager.getDocumentLink(), _.values(annotation.target[0].source))
       })
       // PVSCL:IFCOND(Code, LINE)
       let childAnnotations = _.flatMap(themeOrCode.annotatedCodes.map(annotatedCode =>
         _.filter(annotatedCode.annotations, (annotation) => {
-          return _.intersection(window.abwa.contentTypeManager.getDocumentLink(), _.values(annotation.target[0].source))
+          return _.intersection(window.abwa.targetManager.getDocumentLink(), _.values(annotation.target[0].source))
         })))
       annotations = annotations.concat(childAnnotations)
       // PVSCL:ENDCOND
       return annotations
     } /* PVSCL:IFCOND(Code) */else if (LanguageUtils.isInstanceOf(themeOrCode, AnnotatedCode)) {
       return _.filter(themeOrCode.annotations, (annotation) => {
-        return _.intersection(window.abwa.contentTypeManager.getDocumentLink(), _.values(annotation.target[0].source))
+        return _.intersection(window.abwa.targetManager.getDocumentLink(), _.values(annotation.target[0].source))
       })
     }/* PVSCL:ENDCOND */ else {
       return []

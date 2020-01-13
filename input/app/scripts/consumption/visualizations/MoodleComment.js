@@ -39,9 +39,9 @@ class MoodleComment {
       // Construct annotation link
       let url = MoodleUtils.createURLForAnnotation({
         annotation: event.detail.annotation,
-        studentId: window.abwa.contentTypeManager.fileMetadata.studentId,
-        cmid: window.abwa.contentTypeManager.fileMetadata.cmid,
-        courseId: window.abwa.contentTypeManager.fileMetadata.courseId
+        studentId: window.abwa.targetManager.fileMetadata.studentId,
+        cmid: window.abwa.targetManager.fileMetadata.cmid,
+        courseId: window.abwa.targetManager.fileMetadata.courseId
       })
       // Construct text to send to moodle
       let text = '<a href="' + url + '">' + event.detail.replyAnnotation.text + '</a>'
@@ -49,9 +49,9 @@ class MoodleComment {
       if (event.detail.replyType === 'new') {
         // Call moodle api to create a new comment
         this.moodleClientManager.addSubmissionComment({
-          courseId: window.abwa.contentTypeManager.fileMetadata.courseId,
+          courseId: window.abwa.targetManager.fileMetadata.courseId,
           text: text,
-          studentId: window.abwa.contentTypeManager.fileMetadata.studentId,
+          studentId: window.abwa.targetManager.fileMetadata.studentId,
           itemId: '',
           contextId: '',
           callback: callback

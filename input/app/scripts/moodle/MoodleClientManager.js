@@ -114,8 +114,8 @@ class MoodleClientManager {
       text,
       isTeacher: window.abwa.rolesManager.role === Config.tags.producer,
       callback,
-      contextId: window.abwa.contentTypeManager.fileMetadata.contextId,
-      itemId: window.abwa.contentTypeManager.fileMetadata.itemId
+      contextId: window.abwa.targetManager.fileMetadata.contextId,
+      itemId: window.abwa.targetManager.fileMetadata.itemId
     }, callback)
   }
 

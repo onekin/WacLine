@@ -30,7 +30,7 @@ class ScienceDirectContentScript {
   }
 
   loadStorage (callback) {
-    // PVSCL:IFCOND(Storage->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     window.scienceDirect.storageManager = new HypothesisClientManager()
     // PVSCL:ENDCOND

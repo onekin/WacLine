@@ -1,5 +1,5 @@
 const Alerts = require('../../utils/Alerts')
-const ContentTypeManager = require('../../contentScript/ContentTypeManager')
+const PDF = require('../../target/formats/PDF')
 const FileSaver = require('file-saver')
 const AnnotationUtils = require('../../utils/AnnotationUtils')
 
@@ -11,7 +11,7 @@ class TextSummary {
     let blob = new window.Blob([report], {type: 'text/plain;charset=utf-8'})
     // If document is a PDF, get the title
     let title
-    if (window.abwa.contentTypeManager.documentFormat.pdf === ContentTypeManager.documentFormat.pdf) {
+    if (window.abwa.targetManager.documentFormat.pdf === PDF) {
       title = window.PDFViewerApplication.baseUrl !== null ? window.PDFViewerApplication.baseUrl.split('/')[window.PDFViewerApplication.baseUrl.split('/').length - 1].replace(/\.pdf/i, '') : ''
     } else {
       title = document.title

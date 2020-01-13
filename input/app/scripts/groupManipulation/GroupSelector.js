@@ -197,7 +197,7 @@ class GroupSelector {
     }
     // PVSCL:ELSEIFCOND(MoodleResourceBased)
     // Defines the current group of the highlighter with an a Moodle based group
-    let fileMetadata = window.abwa.contentTypeManager.fileMetadata
+    let fileMetadata = window.abwa.targetManager.fileMetadata
     // Get group name from file metadata
     let groupName = (new URL(fileMetadata.url)).host + fileMetadata.courseId + fileMetadata.studentId
     let hashedGroupName = 'MG' + CryptoUtils.hash(groupName).substring(0, 23)
