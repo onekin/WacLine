@@ -1,4 +1,4 @@
-const Chrome = require('../../utils/ChromeStorage')
+const ChromeStorage = require('../../utils/ChromeStorage')
 const BrowserStorageClient = require('./BrowserStorageClient')
 const AnnotationServerManager = require('../AnnotationServerManager')
 // const mockDatabase = require('./mockDatabase')
