@@ -156,9 +156,8 @@ class Theme {
     })
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(ExportGroup, LINE)
 
-  toObject () {
+  toObjects () {
     let object = {
       name: this.name,
       description: this.description
@@ -173,11 +172,22 @@ class Theme {
           object.codes.push(code.toObject())
         }
       }
-      // PVSCL:ENDCOND
     }
+    // PVSCL:ENDCOND
     return object
   }
-  // PVSCL:ENDCOND
+
+  toObject () {
+    return {
+      name: this.name,
+      description: this.description,
+      id: this.id
+    }
+  }
+
+  getTags () {
+    return [Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name]
+  }
   // PVSCL:IFCOND(MoodleProvider, LINE)
 
   static createThemeFromObject (theme, rubric) {

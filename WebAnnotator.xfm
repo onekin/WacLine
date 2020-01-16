@@ -1253,7 +1253,7 @@
         <cm:mimedesc cm:id="iUMUr-Xdd0o5aOu7a" cm:mimetype="text/plain" cm:encoding="utf-8">Highlighting</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="i7u76IIRg9Qn38BMR" cm:name="LastAnnotation_1" cm:type="ps:feature" cm:class="ps:feature">
+    <cm:element cm:id="i7u76IIRg9Qn38BMR" cm:name="LastAnnotation" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i5XGyIqTn_e0CdU40" cm:class="ps:parents">
         <cm:relation cm:id="ijpmuMMcl64M0oT1h" cm:type="ps:parent">
           <cm:target cm:id="it2oQwDa8rxjFDSwz">./i7DSN7eJJwoP5YQrf</cm:target>
@@ -1270,7 +1270,7 @@
           <cm:constant cm:id="i6c6YjsKuSKnW46rR" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iI6vrqIEbBK1IXIqu" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iGH-2j9V7gmqdDQYn" cm:type="ps:datetime">2019-11-07T11:55:36.476Z</cm:constant>
+          <cm:constant cm:id="iGH-2j9V7gmqdDQYn" cm:type="ps:datetime">2020-01-15T10:05:20.536Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1935,7 +1935,7 @@
         <cm:mimedesc cm:id="i8102UOtNV3XKfvQz" cm:mimetype="text/plain" cm:encoding="utf-8">Operation</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="idx775ZgSbGl_gG97" cm:name="GSheetProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="idx775ZgSbGl_gG97" cm:name="GoogleSheetProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iMVYmjWCo_ymfhJQB" cm:class="ps:parents">
         <cm:relation cm:id="iFrv7VDSCzgWn1HCB" cm:type="ps:parent">
           <cm:target cm:id="ilbB79EHnc7f5ORRA">./iV1VTsMrn7e6nACxf</cm:target>
@@ -1952,14 +1952,14 @@
           <cm:constant cm:id="i6qVjuklYBHC4ymZV" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iilI0eCKYvctJyi4q" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMSALfO69WXZwbzUp" cm:type="ps:datetime">2019-11-13T11:34:26.185Z</cm:constant>
+          <cm:constant cm:id="iMSALfO69WXZwbzUp" cm:type="ps:datetime">2020-01-15T10:04:13.052Z</cm:constant>
         </cm:property>
         <cm:property cm:id="imgLFrqWuPYWn4WSf" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="ixOmPqzOqPX8K_vdL" cm:type="ps:string"></cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
-        <cm:mimedesc cm:id="ikazlRuFBjRaUyrT7" cm:mimetype="text/plain" cm:encoding="utf-8">GSheet</cm:mimedesc>
+        <cm:mimedesc cm:id="ikazlRuFBjRaUyrT7" cm:mimetype="text/plain" cm:encoding="utf-8">GoogleSheet</cm:mimedesc>
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iX-8W4bcYalpm8q9T" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from the cells of the spreadsheet.

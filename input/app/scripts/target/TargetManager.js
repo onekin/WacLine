@@ -1,12 +1,12 @@
 const _ = require('lodash')
-const Events = require('../contentScript/Events')
+const Events = require('../Events')
 // PVSCL:IFCOND(PDF, LINE)
 const PDF = require('./formats/PDF')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(PDF, LINE)
-const TXT = require('./formats/TXT')
+// PVSCL:IFCOND(TXT, LINE)
+// TODO const TXT = require('./formats/TXT')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(PDF, LINE)
+// PVSCL:IFCOND(HTML, LINE)
 const HTML = require('./formats/HTML')
 // PVSCL:ENDCOND
 const URLUtils = require('../utils/URLUtils')
@@ -108,8 +108,8 @@ class TargetManager {
   tryToLoadTargetId () {
     // Wait until updated all annotations is loaded
     this.targetIdEventListener = document.addEventListener(Events.updatedAllAnnotations, () => {
-      if (window.abwa.contentAnnotator.allAnnotations.length > 0) {
-        this.documentId = window.abwa.contentAnnotator.allAnnotations[0].target[0].source.id
+      if (window.abwa.annotationManagement.annotationReader.allAnnotations.length > 0) {
+        this.documentId = window.abwa.annotationManagement.annotationReader.allAnnotations[0].target[0].source.id
       } else {
         this.documentId = RandomUtils.randomString()
       }

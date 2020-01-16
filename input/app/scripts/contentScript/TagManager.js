@@ -3,13 +3,13 @@ const $ = require('jquery')
 const LanguageUtils = require('../utils/LanguageUtils')
 const ColorUtils = require('../utils/ColorUtils')
 const Buttons = require('../definition/Buttons')
-const Events = require('./Events')
+const Events = require('../Events')
 const Alerts = require('../utils/Alerts')
 const Config = require('../Config')
 const AnnotationGuide = require('../definition/AnnotationGuide')
 const Theme = require('../definition/Theme')
 // const AnnotationUtils = require('../utils/AnnotationUtils')
-// PVSCL:IFCOND(User,LINE)
+// PVSCL:IFCOND(BuiltIn,LINE)
 const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Code,LINE)
@@ -115,7 +115,7 @@ class TagManager {
       } else {
         let promise = new Promise((resolve, reject) => {
           if (highlighterDefinitionAnnotations.length === 0) {
-            // PVSCL:IFCOND(User,LINE)
+            // PVSCL:IFCOND(BuiltIn,LINE)
             // TODO Create definition annotations if Definition->Who is User
             let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
             Alerts.confirmAlert({
@@ -142,7 +142,7 @@ class TagManager {
                 })
               },
               cancelCallback: () => {
-                // PVSCL:IFCOND(Dynamic,LINE)
+                // PVSCL:IFCOND(Update,LINE)
                 AnnotationGuide.setAnnotationServer(null, (annotationServer) => {
                   let emptyAnnotationGuide = new AnnotationGuide({annotationServer: annotationServer})
                   let emptyAnnotationGuideAnnotation = emptyAnnotationGuide.toAnnotation()
@@ -241,7 +241,7 @@ class TagManager {
               if (LanguageUtils.isInstanceOf(theme, Theme)) {
                 let id = ''
                 let tags = ''
-                // PVSCL:IFCOND(SingleCode,LINE)
+                // PVSCL:IFCOND(NOT Multivalued,LINE)
                 // First, ask for the currently annotated code
                 let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(themeId)
                 // If there is already a code annotation for this theme, we have to let the tags of the code, to annotate with the current code
@@ -261,8 +261,9 @@ class TagManager {
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
-                LanguageUtils.dispatchCustomEvent(Events.annotate, {
-                  tags: tags,
+                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                  purpose: 'classifying',
+                  theme: theme,
                   id: id
                 })
               }
@@ -286,14 +287,14 @@ class TagManager {
                     // In the last case we do not have to throw codeToAll event, we will do the codeToAll after the annotation is created
                     if (!(document.getSelection().toString().length !== 0 && currentlyAnnotatedCode.code.id !== codeId)) {
                       LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
-                        id: code.id,
+                        codeId: code.id,
                         currentlyAnnotatedCode: currentlyAnnotatedCode
                       })
                     }
                   } else {
                     // In the case that we have annotated with themes until now and there isn't a code annotation yet
                     LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
-                      id: code.id,
+                      codeId: code.id,
                       currentlyAnnotatedCode: currentlyAnnotatedCode
                     })
                   }
@@ -303,9 +304,10 @@ class TagManager {
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
-                LanguageUtils.dispatchCustomEvent(Events.annotate, {
+                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                  purpose: 'classifying',
                   tags: tags,
-                  id: code.id/* PVSCL:IFCOND(SingleCode) */,
+                  codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
                   lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
                 })
               }
@@ -330,9 +332,9 @@ class TagManager {
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
-                LanguageUtils.dispatchCustomEvent(Events.annotate, {
+                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
                   tags: tags,
-                  id: theme.id
+                  codeId: theme.id
                 })
               }
             }
@@ -356,9 +358,9 @@ class TagManager {
               // PVSCL:IFCOND(MoodleURL,LINE)
               tags.push('cmid:' + theme.annotationGuide.cmid)
               // PVSCL:ENDCOND
-              LanguageUtils.dispatchCustomEvent(Events.annotate, {
+              LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
                 tags: tags,
-                id: theme.id
+                codeId: theme.id
               })
             }
           }

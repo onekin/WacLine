@@ -1,4 +1,4 @@
-const Events = require('./Events')
+const Events = require('../Events')
 // PVSCL:IFCOND(SingleCode, LINE) // It is only used by SingleCode
 const Config = require('../Config')
 // PVSCL:ENDCOND
@@ -7,7 +7,7 @@ const Alerts = require('../utils/Alerts')
 // PVSCL:ENDCOND
 const LanguageUtils = require('../utils/LanguageUtils')
 const Theme = require('../definition/Theme')
-// PVSCL:IFCOND(Code, LINE)
+// PVSCL:IFCOND(Hierarchy, LINE)
 const Code = require('../definition/Code')
 // PVSCL:ENDCOND
 const _ = require('lodash')

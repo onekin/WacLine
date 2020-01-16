@@ -47,6 +47,10 @@ class Code {
     }
   }
 
+  getTags () {
+    return [Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + this.name, Config.namespace + ':' + Config.tags.grouped.relation + ':' + this.theme.name]
+  }
+
   static fromAnnotations () {
     // TODO Xabi
   }
@@ -76,15 +80,14 @@ class Code {
       console.error('Unable to retrieve mark from annotation')
     }
   }
-  // PVSCL:IFCOND(ExportGroup, LINE)
 
   toObject () {
     return {
       name: this.name,
-      description: this.description
+      description: this.description,
+      id: this.id
     }
   }
-  // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleProvider, LINE)
 
   static createCodeFromObject (code, theme) {

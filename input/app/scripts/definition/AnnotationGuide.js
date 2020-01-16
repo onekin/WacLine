@@ -220,7 +220,7 @@ class AnnotationGuide {
     }
     // PVSCL:ENDCOND
   }
-  // PVSCL:IFCOND(User or ImportGroup,LINE)
+  // PVSCL:IFCOND(BuiltIn or ImportCodebook,LINE)
 
   static fromUserDefinedHighlighterDefinition (userDefinedHighlighterDefinition) {
     let annotationGuide = new AnnotationGuide({name: userDefinedHighlighterDefinition.name})
@@ -441,7 +441,7 @@ class AnnotationGuide {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(ExportGroup, LINE)
 
-  toObject (name) {
+  toObjects (name) {
     let object = {
       name: name,
       definition: []
@@ -450,7 +450,7 @@ class AnnotationGuide {
     for (let i = 0; i < this.themes.length; i++) {
       let theme = this.themes[i]
       if (LanguageUtils.isInstanceOf(theme, Theme)) {
-        object.definition.push(theme.toObject())
+        object.definition.push(theme.toObjects())
       }
     }
     return object

@@ -99,7 +99,7 @@ class Toolset {
         this.goToLastButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(GSheetConsumer,LINE)
+      // PVSCL:IFCOND(GoogleSheetConsumer,LINE)
       // Set Spreadsheet generation image
       let googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
       this.googleSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)

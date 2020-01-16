@@ -1,6 +1,6 @@
 const $ = require('jquery')
 const _ = require('lodash')
-const Events = require('../../contentScript/Events')
+const Events = require('../../Events')
 const LanguageUtils = require('../../utils/LanguageUtils')
 
 class UserFilter {
@@ -121,14 +121,14 @@ class UserFilter {
       if (_.has(event, 'detail.annotations')) {
         annotations = event.detail.annotations // If is included in the event
       } else {
-        annotations = window.abwa.contentAnnotator.allAnnotations // Or retrieve directly from contentAnnotator
+        annotations = window.abwa.annotationManagement.annotationReader.allAnnotations // Or retrieve directly from annotator reader
       }
       this.updateUsersPanel(annotations)
     }
   }
 
   initUsersPanel () {
-    let annotations = window.abwa.contentAnnotator.allAnnotations
+    let annotations = window.abwa.annotationManagement.annotationReader.allAnnotations
     if (_.isArray(annotations)) {
       // Retrieve users who had annotated the document
       this.allUsers = _.uniq(_.map(annotations, (annotation) => {
