@@ -4,7 +4,7 @@ let defaultAnnotationServer
 // eslint-disable-next-line quotes
 defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:Attribute('defaultAnnotationServer')->pv:ToLowerCase())"
 // PVSCL:ELSECOND
-defaultAnnotationServer = 'PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(0)->pv:Name()->pv:ToLowerCase())'
+defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Item(0)->pv:Name()->pv:ToLowerCase())"
 // PVSCL:ENDCOND
 
 // Tags configuration
