@@ -66,8 +66,7 @@
           <div class="form-check">
             <label for="annotationServerDropdown">Select your annotations server</label>
             <select class="form-control" id="annotationServerDropdown">
-              <option value="PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(0)->pv:SelectedChildren()->pv:Item(0)->pv:Name()->pv:ToLowerCase())" selected="selected">PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(0)->pv:SelectedChildren()->pv:Item(0)->pv:Name())</option>
-              <option value="PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(1)->pv:Name()->pv:ToLowerCase())">PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->pv:Item(1)->pv:Name())</option>
+PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Iterate(as;r=''|r+printOptionRow(as) + '\n'))
             </select>
           </div>
         </div>
