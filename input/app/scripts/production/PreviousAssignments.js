@@ -1,6 +1,6 @@
 const _ = require('lodash')
 const Config = require('../Config')
-const AnnotationGuide = require('../definition/AnnotationGuide')
+const AnnotationGuide = require('../coodebook/Coodebook')
 
 const RETRIEVE_PREVIOUS_ASSIGNMENT_INTERVAL_IN_SECONDS = 60
 

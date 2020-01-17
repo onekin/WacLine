@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const AnnotationGuide = require('../definition/AnnotationGuide')
+const AnnotationGuide = require('../coodebook/Coodebook')
 const Alerts = require('../utils/Alerts')
 
 class GSheetParser {

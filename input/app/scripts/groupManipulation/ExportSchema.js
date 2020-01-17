@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const FileSaver = require('file-saver')
 const Alerts = require('../utils/Alerts')
-const AnnotationGuide = require('../definition/AnnotationGuide')
+const AnnotationGuide = require('../coodebook/Coodebook')
 
 class ExportSchema {
   static exportConfigurationSchemeToJSObject (schemeAnnotations, name, callback) {

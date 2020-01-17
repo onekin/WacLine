@@ -17,7 +17,7 @@ const CryptoUtils = require('../utils/CryptoUtils')
 const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(ImportGroup, LINE)
-const AnnotationGuide = require('../definition/AnnotationGuide')
+const AnnotationGuide = require('../coodebook/Coodebook')
 const ImportSchema = require('./ImportSchema')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(ExportGroup, LINE)

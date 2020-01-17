@@ -1,5 +1,5 @@
 const UserDefinedHighlighterDefinition = require('./UserDefinedHighlighterDefinition')
-const AnnotationGuide = require('./AnnotationGuide')
+const AnnotationGuide = require('./Coodebook')
 
 class DefaultHighlighterGenerator {
   static createDefaultAnnotations (annotationServer, callback) {

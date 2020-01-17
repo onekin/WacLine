@@ -6,9 +6,9 @@ const Config = require('../Config')
 const Alerts = require('../utils/Alerts')
 // PVSCL:ENDCOND
 const LanguageUtils = require('../utils/LanguageUtils')
-const Theme = require('../definition/Theme')
+const Theme = require('../coodebook/Theme')
 // PVSCL:IFCOND(Code, LINE)
-const Code = require('../definition/Code')
+const Code = require('../coodebook/Code')
 // PVSCL:ENDCOND
 const _ = require('lodash')
 

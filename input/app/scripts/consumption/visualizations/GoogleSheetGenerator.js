@@ -3,7 +3,7 @@ const AnnotationUtils = require('../../utils/AnnotationUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
 const Config = require('../../Config')
 const _ = require('lodash')
-const Theme = require('../../definition/Theme')
+const Theme = require('../../coodebook/Theme')
 
 const HyperSheetColors = {
   red: {

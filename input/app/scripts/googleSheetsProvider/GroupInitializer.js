@@ -2,7 +2,7 @@ const _ = require('lodash')
 const swal = require('sweetalert2')
 const Alerts = require('../utils/Alerts')
 const ChromeStorage = require('../utils/ChromeStorage')
-const AnnotationGuide = require('../definition/AnnotationGuide')
+const AnnotationGuide = require('../coodebook/Coodebook')
 const selectedGroupNamespace = 'hypothesis.currentGroup'
 // PVSCL:IFCOND(ApplicationBased, LINE)
 const Config = require('../Config')

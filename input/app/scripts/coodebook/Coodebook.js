@@ -20,7 +20,7 @@ const BrowserStorage = require('../annotationServer/browserStorage/BrowserStorag
 const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
 
-class AnnotationGuide {
+class Coodebook {
   constructor ({
     id = null,
     name = '',
@@ -127,7 +127,7 @@ class AnnotationGuide {
       }
       // PVSCL:ENDCOND
       let guide
-      guide = new AnnotationGuide(annotationGuideOpts)
+      guide = new Coodebook(annotationGuideOpts)
       if (_.isFunction(callback)) {
         callback(guide)
       }
@@ -140,7 +140,7 @@ class AnnotationGuide {
       return _.some(annotation.tags, (tag) => { return tag === Config.namespace + ':guide' })
     })
     if (guideAnnotation.length > 0) {
-      AnnotationGuide.fromAnnotation(guideAnnotation[0], (guide) => {
+      Coodebook.fromAnnotation(guideAnnotation[0], (guide) => {
         // TODO Complete the guide from the annotations
         // For the rest of annotations, get themes and codes
         let themeAnnotations = _.remove(annotations, (annotation) => {
@@ -223,7 +223,7 @@ class AnnotationGuide {
   // PVSCL:IFCOND(User or ImportGroup,LINE)
 
   static fromUserDefinedHighlighterDefinition (userDefinedHighlighterDefinition) {
-    let annotationGuide = new AnnotationGuide({name: userDefinedHighlighterDefinition.name})
+    let annotationGuide = new Coodebook({name: userDefinedHighlighterDefinition.name})
     for (let i = 0; i < userDefinedHighlighterDefinition.definition.length; i++) {
       let themeDefinition = userDefinedHighlighterDefinition.definition[i]
       let theme = new Theme({name: themeDefinition.name, description: themeDefinition.description, annotationGuide})
@@ -245,7 +245,7 @@ class AnnotationGuide {
   // PVSCL:IFCOND(GSheetProvider,LINE)
 
   static fromGSheetProvider (callback) {
-    let annotationGuide = new AnnotationGuide({})
+    let annotationGuide = new Coodebook({})
     annotationGuide.spreadsheetId = this.retrieveSpreadsheetId()
     annotationGuide.sheetId = this.retrieveSheetId()
     this.retrieveCurrentToken((err, token) => {
@@ -431,7 +431,7 @@ class AnnotationGuide {
 
   static createAnnotationGuideFromObject (rubric) {
     // Instance rubric object
-    let instancedAnnotationGuide = Object.assign(new AnnotationGuide(rubric))
+    let instancedAnnotationGuide = Object.assign(new Coodebook(rubric))
     // Instance themes and codes
     for (let i = 0; i < rubric.themes.length; i++) {
       instancedAnnotationGuide.themes[i] = Theme.createThemeFromObject(rubric.themes[i], instancedAnnotationGuide)
@@ -476,4 +476,4 @@ class AnnotationGuide {
   // PVSCL:ENDCOND
 }
 
-module.exports = AnnotationGuide
+module.exports = Coodebook

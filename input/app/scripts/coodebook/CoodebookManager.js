@@ -2,21 +2,21 @@ const _ = require('lodash')
 const $ = require('jquery')
 const LanguageUtils = require('../utils/LanguageUtils')
 const ColorUtils = require('../utils/ColorUtils')
-const Buttons = require('../definition/Buttons')
-const Events = require('./Events')
+const Buttons = require('./Buttons')
+const Events = require('../contentScript/Events')
 const Alerts = require('../utils/Alerts')
 const Config = require('../Config')
-const AnnotationGuide = require('../definition/AnnotationGuide')
-const Theme = require('../definition/Theme')
+const AnnotationGuide = require('./Coodebook')
+const Theme = require('./Theme')
 // const AnnotationUtils = require('../utils/AnnotationUtils')
 // PVSCL:IFCOND(User,LINE)
-const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
+const DefaultHighlighterGenerator = require('./DefaultHighlighterGenerator')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Code,LINE)
-const Code = require('../definition/Code')
+const Code = require('./Code')
 // PVSCL:ENDCOND
 
-class TagManager {
+class CoodebookManager {
   constructor () {
     this.model = {
       highlighterDefinitionAnnotations: [], // Highlighter definition annotations
@@ -26,20 +26,21 @@ class TagManager {
     }
     this.currentTags = []
     this.events = {}
+    this.codebookCreator = new CreateCodebook()
+    this.codebookReader = new ReadCodebook()
+    this.codebookUpdater = new UpdateCodebook()
+    this.codebookDeleter = new DeleteCodebook()
   }
 
   init (callback) {
-    console.debug('Initializing TagManager')
-    this.initTagsStructure(() => {
-      this.initEventHandlers(() => {
-        this.initAllTags(() => {
-          console.debug('Initialized TagManager')
-          if (_.isFunction(callback)) {
-            callback()
-          }
-        })
-      })
-    })
+    this.codebookCreator.init()
+    this.codebookReader.init()
+    this.codebookUpdater.init()
+    this.codebookDeleter.init()
+  }
+
+  destroy () {
+
   }
 
   initTagsStructure (callback) {
@@ -610,4 +611,4 @@ class TagManager {
   // PVSCL:ENDCOND
 }
 
-module.exports = TagManager
+module.exports = CoodebookManager

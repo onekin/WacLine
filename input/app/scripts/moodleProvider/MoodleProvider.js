@@ -8,11 +8,11 @@ const HypothesisClientManager = require('../annotationServer/hypothesis/Hypothes
 const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Code, LINE)
-const Code = require('../definition/Code')
+const Code = require('../coodebook/Code')
 // PVSCL:ENDCOND
 const Alerts = require('../utils/Alerts')
-const AnnotationGuide = require('../definition/AnnotationGuide')
-const Theme = require('../definition/Theme')
+const AnnotationGuide = require('../coodebook/Coodebook')
+const Theme = require('../coodebook/Theme')
 const LanguageUtils = require('../utils/LanguageUtils')
 const CircularJSON = require('circular-json-es6')
 const MoodleScraping = require('./MoodleScraping')
