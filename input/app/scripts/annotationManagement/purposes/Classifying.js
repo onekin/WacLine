@@ -14,7 +14,13 @@ class Classifying extends Body {
     return super.serialize()
   }
 
+  static deserialize (obj) {
+    let code = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(obj.id)
+    return new Classifying({code})
+  }
+
   tooltip () {
+
     // PVSCL:IFCOND(Hierarchy, LINE)
     // TODO
     // PVSCL:ENDCOND

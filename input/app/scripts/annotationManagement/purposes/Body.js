@@ -13,6 +13,10 @@ class Body {
     return obj
   }
 
+  static deserialize (obj) {
+    return new Body(obj.purpose)
+  }
+
   tooltip () {
     return ''
   }

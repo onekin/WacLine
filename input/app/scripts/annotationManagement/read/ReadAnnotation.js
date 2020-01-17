@@ -190,7 +190,7 @@ class ReadAnnotation {
     color = ColorUtils.getDefaultColor()
     // PVSCL:ENDCOND
     // Get the tooltip text for the annotation
-    // let tooltip = this.generateTooltipFromAnnotation()
+    let tooltip = this.generateTooltipFromAnnotation(annotation)
     // Draw the annotation in DOM
     try {
       let highlightedElements = DOMTextUtils.highlightContent(
@@ -222,6 +222,13 @@ class ReadAnnotation {
 
   unHighlightAnnotation (annotation) {
     DOMTextUtils.unHighlightElements([...document.querySelectorAll('[data-annotation-id="' + annotation.id + '"]')])
+  }
+
+  generateTooltipFromAnnotation (annotation) {
+    let tooltipString = ''
+    annotation.body.forEach((body) => {
+
+    })
   }
 
   createContextMenuForAnnotation (annotation) {
