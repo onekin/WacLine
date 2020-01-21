@@ -1,4 +1,4 @@
-const Events = require('./Events')
+const Events = require('../Events')
 // PVSCL:IFCOND(SingleCode, LINE) // It is only used by SingleCode
 const Config = require('../Config')
 // PVSCL:ENDCOND

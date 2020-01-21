@@ -1,7 +1,7 @@
 const AnnotationUtils = require('../utils/AnnotationUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Alerts = require('../utils/Alerts')
-const Events = require('../contentScript/Events')
+const Events = require('../Events')
 const Config = require('../Config')
 const _ = require('lodash')
 // const linkifyUrls = require('linkify-urls')

@@ -1,6 +1,6 @@
 const $ = require('jquery')
 const _ = require('lodash')
-const Events = require('../../contentScript/Events')
+const Events = require('../../Events')
 const LanguageUtils = require('../../utils/LanguageUtils')
 
 class UserFilter {

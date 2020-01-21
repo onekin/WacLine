@@ -5,6 +5,18 @@ const Events = {
   // PVSCL:IFCOND(Validate,LINE)
   annotationValidated: 'annotationValidated',
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Codebook, LINE)
+  createCodebook: 'createCodebook',
+  createCodebook: 'createCodebook',
+  codebookCreated: 'codebookCreated',
+  createTheme: 'createTheme',
+  themeCreated: 'themeCreated',
+  // PVSCL:IFCOND(Hierarchy, LINE)
+  createCode: 'createCode',
+  codeCreated: 'codeCreated',
+  // PVSCL:ENDCOND
+  renameCodebook: 'renameCodebook',
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(SingleCode,LINE)
   codeToAll: 'codeToAll',
   // PVSCL:ENDCOND

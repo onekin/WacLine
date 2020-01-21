@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const Events = require('../contentScript/Events')
+const Events = require('../Events')
 // PVSCL:IFCOND(PDF, LINE)
 const PDF = require('./formats/PDF')
 // PVSCL:ENDCOND

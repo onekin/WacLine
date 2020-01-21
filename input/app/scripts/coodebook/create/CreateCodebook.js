@@ -7,18 +7,18 @@ class CreateCoodebook {
 
   init () {
     // Add event listener for createAnnotation event
-    this.initCreateAnnotationEvent()
+    this.initCreateCoodebookEvent()
   }
 
-  initCreateAnnotationEvent (callback) {
-    this.events.createAnnotationEvent = {element: document, event: Events.createAnnotation, handler: this.createAnnotationEventHandler()}
-    this.events.createAnnotationEvent.element.addEventListener(this.events.createAnnotationEvent.event, this.events.createAnnotationEvent.handler, false)
+  initCreateCoodebookEvent (callback) {
+    this.events.createCoodebookEvent = {element: document, event: Events.createCodebook, handler: this.createCoodebookEventHandler()}
+    this.events.createCoodebookEvent.element.addEventListener(this.events.createCoodebookEvent.event, this.events.createCoodebookEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
     }
   }
 
-  createAnnotationEventHandler () {
+  createCoodebookEventHandler () {
     return (event) => {
       // If selection is child of sidebar, return null
       if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {

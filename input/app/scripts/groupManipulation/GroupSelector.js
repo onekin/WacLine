@@ -8,7 +8,7 @@ const Config = require('../Config')
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Manual, LINE)
-const Events = require('../contentScript/Events')
+const Events = require('../Events')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResourceBased,LINE)
 const CryptoUtils = require('../utils/CryptoUtils')

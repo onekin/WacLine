@@ -9,7 +9,7 @@ const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const {AnnotatedContentManager} = require('./AnnotatedContentManager')
 // PVSCL:IFCOND(Manual, LINE)
-const Events = require('./Events')
+const Events = require('../Events')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleURL, LINE)
 const RolesManager = require('./RolesManager')

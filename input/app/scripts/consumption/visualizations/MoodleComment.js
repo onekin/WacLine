@@ -1,6 +1,6 @@
 const Alerts = require('../../utils/Alerts')
 const MoodleClientManager = require('../../moodle/MoodleClientManager')
-const Events = require('../../contentScript/Events')
+const Events = require('../../Events')
 const _ = require('lodash')
 const MoodleUtils = require('../../moodle/MoodleUtils')
 
