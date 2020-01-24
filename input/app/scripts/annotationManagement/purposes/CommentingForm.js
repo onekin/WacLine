@@ -1,6 +1,5 @@
 const _ = require('lodash')
 const Alerts = require('../../utils/Alerts')
-const Events = require('../../Events')
 const LanguageUtils = require('../../utils/LanguageUtils')
 const Theme = require('../../definition/Theme')
 // PVSCL:IFCOND(Autocomplete,LINE)
@@ -11,20 +10,25 @@ const $ = require('jquery')
 const axios = require('axios')
 const qs = require('qs')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Commenting, LINE)
+const Commenting = require('./Commenting')
+// PVSCL:ENDCOND
 
 class CommentingForm {
   /**
    *
+   * @param annotation annotation that is involved
+   * @param formCallback callback to execute after form is closed
    * @returns {Promise<unknown>}
    */
-  static showCommentingForm (annotation) {
+  static showCommentingForm (annotation, formCallback) {
     return new Promise((resolve, reject) => {
       // Close sidebar if opened
       let sidebarOpen = window.abwa.sidebar.isOpened()
       window.abwa.sidebar.closeSidebar()
       // PVSCL:IFCOND(PreviousAssignments,LINE)
-      let previousAssignments = this.retrievePreviousAssignments()
-      let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
+      let previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
+      let previousAssignmentsUI = window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
       // PVSCL:ENDCOND
       let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
       let title = ''
@@ -52,7 +56,7 @@ class CommentingForm {
         // PVSCL:IFCOND(PreviousAssignments,LINE)
         generateFormObjects['previousAssignmentsUI'] = previousAssignmentsUI
         // PVSCL:ENDCOND
-        let form = CommentingForm.generateCommentFormHTML(generateFormObjects)
+        let form = CommentingForm.generateCommentFormHTML(generateFormObjects, formCallback)
         Alerts.multipleInputAlert({
           title: title,
           html: form.html,
@@ -61,6 +65,10 @@ class CommentingForm {
           preConfirm: form.preConfirm,
           callback: () => {
             form.callback()
+            // Callback retrieved from which opened the form
+            if (_.isFunction(formCallback)) {
+              formCallback(null, {annotation})
+            }
           }
         })
       }
@@ -68,14 +76,14 @@ class CommentingForm {
     })
   }
 
-  static /**
+  /**
    * Generates the HTML for comment form based on annotation, add reference autocomplete,...
    * @param annotation
    * @param showForm
    * @param sidebarOpen
    * @returns {Object}
    */
-  generateCommentFormHTML ({annotation, showForm, sidebarOpen, themeOrCode, previousAssignmentsUI}) {
+  static generateCommentFormHTML ({annotation, showForm, sidebarOpen, themeOrCode, previousAssignmentsUI}, formCallback) {
     let html = ''
     // PVSCL:IFCOND(PreviousAssignments,LINE)
     html += previousAssignmentsUI.outerHTML
@@ -228,10 +236,7 @@ class CommentingForm {
           window.alert('Unable to load alert. Is this an annotable document?')
         } else {
           let bodyToUpdate = []
-          bodyToUpdate.push({
-            purpose: 'commenting',
-            value: preConfirmData.comment
-          })
+          bodyToUpdate.push(new Commenting({value: preConfirmData.comment}))
           // Update annotation
           annotation.text = preConfirmData.comment || ''
           // PVSCL:IFCOND(SuggestedLiterature,LINE)
@@ -241,11 +246,10 @@ class CommentingForm {
           })
           annotation.suggestedLiterature = preConfirmData.literature || []
           // PVSCL:ENDCOND
-          // Update annotation with comment
-          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-            annotation: annotation,
-            body: bodyToUpdate
-          })
+          // TODO assessment category support
+          if (_.isFunction(formCallback)) {
+            formCallback(null, {annotation, bodyToUpdate})
+          }
         }
       }
     }

@@ -2,6 +2,7 @@ const Events = require('../Events')
 const _ = require('lodash')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Alerts = require('../utils/Alerts')
+const Annotation = require('./Annotation')
 
 class UpdateAnnotation {
   constructor () {
@@ -11,6 +12,14 @@ class UpdateAnnotation {
   init () {
     // Add event listener for createAnnotation event
     this.initCreateAnnotationEvent()
+  }
+
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
   }
 
   initCreateAnnotationEvent (callback) {
@@ -31,13 +40,15 @@ class UpdateAnnotation {
       // Send updated annotation to the server
       window.abwa.annotationServerManager.client.updateAnnotation(
         annotation.id,
-        annotation,
+        annotation.serialize(),
         (err, annotation) => {
           if (err) {
             Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
           } else {
+            // Deserialize retrieved annotation from the server
+            let deserializedAnnotation = Annotation.deserialize(annotation)
             // Dispatch annotation created event
-            LanguageUtils.dispatchCustomEvent(Events.annotationUpdated, {annotation: annotation})
+            LanguageUtils.dispatchCustomEvent(Events.annotationUpdated, {annotation: deserializedAnnotation})
           }
         })
     }

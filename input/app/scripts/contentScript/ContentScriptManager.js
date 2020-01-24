@@ -24,7 +24,7 @@ const BrowserStorageManager = require('../annotationServer/browserStorage/Browse
 const UserFilter = require('../annotationManagement/read/UserFilter')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(PreviousAssignments, LINE)
-const PreviousAssignments = require('../production/PreviousAssignments')
+const PreviousAssignments = require('../annotationManagement/purposes/PreviousAssignments')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleReport, LINE)
 const MoodleReport = require('../consumption/visualizations/MoodleReport')

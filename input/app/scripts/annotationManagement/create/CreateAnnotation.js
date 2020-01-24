@@ -2,13 +2,11 @@ const Events = require('../../Events')
 const _ = require('lodash')
 const LanguageUtils = require('../../utils/LanguageUtils')
 const Alerts = require('../../utils/Alerts')
+const Annotation = require('../Annotation')
 const DOMTextUtils = require('../../utils/DOMTextUtils')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
 const PDF = require('../../target/formats/PDF')
 const $ = require('jquery')
-// PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
-// PVSCL:ENDCOND
 // PVSCL:IFCOND(Classifying, LINE)
 const Classifying = require('../purposes/Classifying')
 // PVSCL:ENDCOND
@@ -45,18 +43,20 @@ class CreateAnnotation {
       // Create tags
       let tags = this.obtainTagsToCreateAnnotation(event.detail)
       // Construct the annotation to send to hypothesis
-      let annotation = CreateAnnotation.constructAnnotation({
+      let annotation = new Annotation({
         target: target,
         tags: tags,
         body: body
       })
-      window.abwa.annotationServerManager.client.createNewAnnotation(annotation, (err, annotation) => {
+      window.abwa.annotationServerManager.client.createNewAnnotation(annotation.serialize(), (err, annotation) => {
         if (err) {
           Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
         } else {
           window.getSelection().removeAllRanges()
+          // Deserialize retrieved annotation from the server
+          let deserializedAnnotation = Annotation.deserialize(annotation)
           // Dispatch annotation created event
-          LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: annotation})
+          LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: deserializedAnnotation})
         }
       })
     }
@@ -160,50 +160,12 @@ class CreateAnnotation {
     return selectors
   }
 
-  static constructAnnotation ({target, body = [], tags = []}) {
-    let data = {
-      '@context': 'http://www.w3.org/ns/anno.jsonld',
-      group: window.abwa.groupSelector.currentGroup.id,
-      creator: window.abwa.groupSelector.getCreatorData() || window.abwa.groupSelector.user.userid,
-      document: {},
-      body: body,
-      permissions: {
-        read: ['group:' + window.abwa.groupSelector.currentGroup.id]
-      },
-      references: [],
-      // PVSCL:IFCOND(SuggestedLiterature,LINE)
-      suggestedLiterature: [],
-      // PVSCL:ENDCOND
-      tags: tags,
-      target: target,
-      text: '',
-      uri: window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
-    // PVSCL:IFCOND(Hypothesis, LINE)
-    // As hypothes.is don't follow some attributes of W3C, we must adapt created annotation with its own attributes to set the target source
-    if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
-      // Add uri attribute
-      data.uri = window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
-      // Add document, uris, title, etc.
-      let uris = window.abwa.targetManager.getDocumentURIs()
-      data.document = {}
-      if (uris.urn) {
-        data.document.documentFingerprint = uris.urn
-      }
-      data.document.link = Object.values(uris).map(uri => { return {href: uri} })
-      if (uris.doi) {
-        data.document.dc = { identifier: [uris.doi] }
-        data.document.highwire = { doi: [uris.doi] }
-      }
-      // If document title is retrieved
-      if (_.isString(window.abwa.targetManager.documentTitle)) {
-        data.document.title = window.abwa.targetManager.documentTitle
-      }
-      // Copy to metadata field because hypothes.is doesn't return from its API all the data that it is placed in document
-      data.documentMetadata = data.document
-    }
-    // PVSCL:ENDCOND
-    return data
   }
 }
 

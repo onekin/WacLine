@@ -4,9 +4,12 @@ const LanguageUtils = require('../../utils/LanguageUtils')
 const Events = require('../../Events')
 const _ = require('lodash')
 const UserFilter = require('./UserFilter')
+const Annotation = require('../Annotation')
+const ReplyAnnotation = require('../../production/ReplyAnnotation')
 const $ = require('jquery')
 require('jquery-contextmenu/dist/jquery.contextMenu')
 const CommentingForm = require('../purposes/CommentingForm')
+const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 
 class ReadAnnotation {
   constructor () {
@@ -20,11 +23,65 @@ class ReadAnnotation {
     this.initAnnotationDeletedEventListener()
     // Event listener updated annotation
     this.initAnnotationUpdatedEventListener()
-    this.loadAnnotations()
-    // PVSCL:IFCOND(UserFilter, LINE)
-    this.initUserFilter()
-    this.initUserFilterChangeEvent()
-    // PVSCL:ENDCOND
+    this.loadAnnotations(() => {
+      // PVSCL:IFCOND(UserFilter, LINE)
+      this.initUserFilter()
+      this.initUserFilterChangeEvent()
+      // PVSCL:ENDCOND
+    })
+    this.initAnnotationsObserver()
+  }
+
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
+  }
+
+  /**
+   * Initializes annotations observer, to ensure dynamic web pages maintain highlights on the screen
+   * @param callback Callback when initialization finishes
+   */
+  initAnnotationsObserver (callback) {
+    this.observerInterval = setInterval(() => {
+      // console.debug('Observer interval')
+      // If a swal is displayed, do not execute highlighting observer
+      if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
+        let annotationsToHighlight
+        // PVSCL:IFCOND(UserFilter, LINE)
+        annotationsToHighlight = this.currentAnnotations
+        // PVSCL:ELSECOND
+        annotationsToHighlight = this.allAnnotations
+        // PVSCL:ENDCOND
+        if (annotationsToHighlight) {
+          for (let i = 0; i < this.allAnnotations.length; i++) {
+            let annotation = this.allAnnotations[i]
+            // Search if annotation exist
+            let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
+            // If annotation doesn't exist, try to find it
+            if (!_.isElement(element)) {
+              Promise.resolve().then(() => { this.highlightAnnotation(annotation) })
+            }
+          }
+        }
+      }
+    }, ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS * 1000)
+    // TODO Improve the way to highlight to avoid this interval (when search in PDFs it is highlighted empty element instead of element)
+    this.cleanInterval = setInterval(() => {
+      // console.debug('Clean interval')
+      let highlightedElements = document.querySelectorAll('.highlightedAnnotation')
+      highlightedElements.forEach((element) => {
+        if (element.innerText === '') {
+          $(element).remove()
+        }
+      })
+    }, ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS * 1000)
+    // Callback
+    if (_.isFunction(callback)) {
+      callback()
+    }
   }
 
   // PVSCL:IFCOND(Create, LINE)
@@ -45,7 +102,7 @@ class ReadAnnotation {
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
       // PVSCL:IFCOND(UserFilter, LINE)
       // Enable in user filter the user who has annotated and returns if it was disabled
-      this.userFilter.addFilteredUser(annotation.user)
+      this.userFilter.addFilteredUser(annotation.creator)
       // Retrieve current annotations
       this.currentAnnotations = this.retrieveCurrentAnnotations()
       LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
@@ -90,19 +147,21 @@ class ReadAnnotation {
       uri: window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer(),
       group: window.abwa.groupSelector.currentGroup.id,
       order: 'asc'
-    }, (err, annotations) => {
+    }, (err, annotationObjects) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
         }
       } else {
+        // Deserialize retrieved annotations
+        let annotations = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
         // Search tagged annotations
         let filteringTags = window.abwa.tagManager.getFilteringTagList()
         this.allAnnotations = _.filter(annotations, (annotation) => {
           let tags = annotation.tags
           return !(tags.length > 0 && _.find(filteringTags, tags[0])) || (tags.length > 1 && _.find(filteringTags, tags[1]))
         })
-        // PVSCL:IFCOND( Reply, LINE )
+        // PVSCL:IFCOND(Replying, LINE)
         this.replyAnnotations = _.filter(annotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
         })
@@ -182,7 +241,7 @@ class ReadAnnotation {
     // Annotation color is based on codebook color
     // Get annotated code id
     let bodyWithClassifyingPurpose = _.find(annotation.body, (body) => { return body.purpose === 'classifying' })
-    let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(bodyWithClassifyingPurpose.id)
+    let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
     color = codeOrTheme.color
     // PVSCL:ELSECOND
     // Annotation color used is default in grey
@@ -201,6 +260,8 @@ class ReadAnnotation {
         highlightedElement.style.backgroundColor = color
         // Set purpose color
         highlightedElement.dataset.color = color
+        // Set a tooltip that is shown when user mouseover the annotation
+        highlightedElement.title = tooltip
         // TODO More things
       })
       // FeatureComment: if annotation is mutable, update or delete, the mechanism is a context menu
@@ -226,9 +287,11 @@ class ReadAnnotation {
 
   generateTooltipFromAnnotation (annotation) {
     let tooltipString = ''
+    tooltipString += annotation.creator
     annotation.body.forEach((body) => {
-
+      tooltipString += body.tooltip() + '\n'
     })
+    return tooltipString
   }
 
   createContextMenuForAnnotation (annotation) {
@@ -238,17 +301,16 @@ class ReadAnnotation {
         // Create items for context menu
         let items = {}
         // If current user is the same as author, allow to remove annotation or add a comment
-        if (annotation.user === window.abwa.groupSelector.user.userid) {
+        if (annotation.creator === window.abwa.groupSelector.getCreatorData()) {
           // Check if somebody has replied
           // PVSCL:IFCOND(Replying, LINE)
-          /* if (ReplyAnnotation.hasReplies(annotation, this.replyAnnotations)) {
           if (ReplyAnnotation.hasReplies(annotation, this.replyAnnotations)) {
             items['reply'] = {name: 'Reply'}
           } else {
-            // PVSCL:IFCOND(Comment, LINE)
+            // PVSCL:IFCOND(Commenting, LINE)
             items['comment'] = {name: 'Comment'}
             // PVSCL:ENDCOND
-          } */
+          }
           // PVSCL:ELSEIFCOND(Commenting, LINE)
           items['comment'] = {name: 'Comment'}
           // PVSCL:ENDCOND
@@ -291,7 +353,18 @@ class ReadAnnotation {
               // TODO If you didn't validate, create a replying annotation to validate
             }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
               // Open commenting form
-              CommentingForm.showCommentingForm(annotation)
+              CommentingForm.showCommentingForm(annotation, (err, {annotation, bodyToUpdate}) => {
+                if (err) {
+                  // TODO Show error
+                } else {
+                  if (bodyToUpdate) {
+                    LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+                      annotation: annotation,
+                      body: bodyToUpdate
+                    })
+                  }
+                }
+              })
               // PVSCL:ENDCOND
             }
           },
@@ -364,7 +437,7 @@ class ReadAnnotation {
   retrieveAnnotationsForUsers (users) {
     return _.filter(this.allAnnotations, (annotation) => {
       return _.find(users, (user) => {
-        return annotation.user === user
+        return annotation.creator === user
       })
     })
   }

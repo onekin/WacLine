@@ -5,8 +5,8 @@ const LanguageUtils = require('../../utils/LanguageUtils')
 
 class UserFilter {
   constructor () {
-    this.filteredUsers = null
-    this.allUsers = []
+    this.filteredUsers = [] // Includes only the users that are filtered by
+    this.allUsers = [] // Includes all the users that have created annotation in the document
     this.events = {}
     this.userFilterWrapper = null
     this.usersContainer = null
@@ -25,12 +25,12 @@ class UserFilter {
         this.initAnnotationsUpdatedEventHandler()
         // Init event handler when click in all
         this.initAllFilter()
+        // Init panel construction
+        this.initUsersPanel()
         console.debug('Initialized UserFilter')
         if (_.isFunction(callback)) {
           callback()
         }
-        // Init panel construction (if no annotation event is detected)
-        this.initUsersPanel()
       }
     })
   }
@@ -118,7 +118,7 @@ class UserFilter {
     return (event) => {
       // Retrieve all annotations
       let annotations = []
-      if (_.has(event, 'detail.annotations')) {
+      if (_.hasIn(event, 'detail.annotations')) {
         annotations = event.detail.annotations // If is included in the event
       } else {
         annotations = window.abwa.annotationManagement.annotationReader.allAnnotations // Or retrieve directly from annotator reader
@@ -132,7 +132,7 @@ class UserFilter {
     if (_.isArray(annotations)) {
       // Retrieve users who had annotated the document
       this.allUsers = _.uniq(_.map(annotations, (annotation) => {
-        return annotation.user
+        return annotation.creator
       }))
       this.filteredUsers = _.clone(this.allUsers)
       // Upload sidebar panel with users
@@ -155,7 +155,7 @@ class UserFilter {
     if (_.isArray(annotations)) {
       // Retrieve users who had annotated the document
       this.allUsers = _.uniq(_.map(annotations, (annotation) => {
-        return annotation.user
+        return annotation.creator
       }))
       // Upload sidebar panel with users
       this.usersContainer.innerHTML = '' // Empty the container
@@ -184,7 +184,7 @@ class UserFilter {
     let input = userFilterElement.querySelector('input')
     input.id = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
     let label = userFilterElement.querySelector('label')
-    label.innerText = name.replace('acct:', '').replace('@hypothes.is', '') // TODO Other annotation servers different to hypothes.is ¿?
+    label.innerText = name.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
     label.htmlFor = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
     // Set event handler for input check status
     input.addEventListener('change', (event) => {
@@ -208,6 +208,9 @@ class UserFilter {
     return userFilterElement
   }
 
+  /**
+   * Activate "All" checkbox if all the users' checkboxes are activated
+   */
   checkAllActivated () {
     let allCheckboxes = this.usersContainer.querySelectorAll('input')
     let deactivatedCheckboxes = _.find(allCheckboxes, (checkbox) => { return checkbox.checked === false })

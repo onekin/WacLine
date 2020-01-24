@@ -15,8 +15,8 @@ class HypothesisClientManager extends AnnotationServerManager {
     this.annotationServerMetadata = {
       annotationUrl: 'https://hypothes.is/api/annotations/',
       annotationServerUrl: 'https://hypothes.is/api',
-      groupUrl: 'https://hypothes.is/api/groups/',
-      userUrl: 'https://hypothes.is/api/users/'
+      groupUrl: 'https://hypothes.is/groups/',
+      userUrl: 'https://hypothes.is/users/'
     }
   }
 

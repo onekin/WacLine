@@ -3,12 +3,12 @@ class Body {
     this.purpose = purpose
   }
 
-  populate (data) {
-    this.data = data
+  populate (value) {
+    this.value = value
   }
 
   serialize () {
-    let obj = JSON.parse(JSON.stringify(this.data))
+    let obj = JSON.parse(JSON.stringify(this.value))
     obj['purpose'] = this.purpose
     return obj
   }

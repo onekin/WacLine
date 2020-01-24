@@ -3,7 +3,7 @@ const Body = require('./Body')
 class Commenting extends Body {
   constructor ({purpose = 'commenting', value}) {
     super(purpose)
-    this.data = value
+    this.value = value
   }
 
   populate (code) {
@@ -15,7 +15,7 @@ class Commenting extends Body {
   }
 
   tooltip () {
-    return this.data
+    return 'Comment: ' + this.value
   }
 }
 

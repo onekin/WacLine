@@ -1,6 +1,6 @@
 const _ = require('lodash')
-const Config = require('../Config')
-const AnnotationGuide = require('../definition/AnnotationGuide')
+const Config = require('../../Config')
+const AnnotationGuide = require('../../definition/AnnotationGuide')
 
 const RETRIEVE_PREVIOUS_ASSIGNMENT_INTERVAL_IN_SECONDS = 60
 
@@ -13,13 +13,13 @@ class PreviousAssignments {
   init (callback) {
     console.debug('Initializing previousAssignments')
     // Load previous assignments
-    this.retrievePreviousAssignments(() => {
+    this.reloadPreviousAssignments(() => {
       console.debug('Initialized previousAssignments')
       if (_.isFunction(callback)) {
         callback()
       }
       this.intervals.retrievePreviousAssignment = window.setInterval(() => {
-        this.retrievePreviousAssignments()
+        this.reloadPreviousAssignments()
       }, RETRIEVE_PREVIOUS_ASSIGNMENT_INTERVAL_IN_SECONDS * 1000)
     })
   }
@@ -30,7 +30,7 @@ class PreviousAssignments {
     }
   }
 
-  retrievePreviousAssignments (callback) {
+  reloadPreviousAssignments (callback) {
     // Get student id
     let studentId = window.abwa.targetManager.fileMetadata.studentId
     window.abwa.annotationServerManager.client.searchAnnotations({
@@ -67,6 +67,37 @@ class PreviousAssignments {
         }
       }
     })
+  }
+
+  retrievePreviousAssignments () {
+    return window.abwa.previousAssignments.previousAssignments
+  }
+
+  createPreviousAssignmentsUI (previousAssignments) {
+    let previousAssignmentsContainer = document.createElement('div')
+    previousAssignmentsContainer.className = 'previousAssignmentsContainer'
+    for (let i = 0; i < previousAssignments.length; i++) {
+      let previousAssignment = previousAssignments[i]
+      // Create previous assignment element container
+      let previousAssignmentElement = document.createElement('span')
+      previousAssignmentElement.className = 'previousAssignmentContainer'
+      // Create previous assignment link
+      let previousAssignmentLinkElement = document.createElement('a')
+      previousAssignmentLinkElement.href = previousAssignment.teacherUrl
+      previousAssignmentLinkElement.target = '_blank'
+      previousAssignmentLinkElement.innerText = previousAssignment.name
+      previousAssignmentLinkElement.className = 'previousAssignmentLink'
+      previousAssignmentElement.appendChild(previousAssignmentLinkElement)
+      // Create previous assignment append img
+      let previousAssignmentAppendElement = document.createElement('img')
+      previousAssignmentAppendElement.src = chrome.extension.getURL('images/append.png')
+      previousAssignmentAppendElement.title = 'Append the assignment URL'
+      previousAssignmentAppendElement.className = 'previousAssignmentAppendButton'
+      previousAssignmentAppendElement.dataset.studentUrl = previousAssignment.studentUrl
+      previousAssignmentElement.appendChild(previousAssignmentAppendElement)
+      previousAssignmentsContainer.appendChild(previousAssignmentElement)
+    }
+    return previousAssignmentsContainer
   }
 }
 

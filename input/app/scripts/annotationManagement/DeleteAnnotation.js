@@ -13,6 +13,14 @@ class DeleteAnnotation {
     this.initCreateAnnotationEvent()
   }
 
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
+  }
+
   initCreateAnnotationEvent (callback) {
     this.events.deleteAnnotationEvent = {element: document, event: Events.deleteAnnotation, handler: this.deleteAnnotationEventHandler()}
     this.events.deleteAnnotationEvent.element.addEventListener(this.events.deleteAnnotationEvent.event, this.events.deleteAnnotationEvent.handler, false)
