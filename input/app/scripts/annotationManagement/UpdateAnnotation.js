@@ -32,11 +32,8 @@ class UpdateAnnotation {
 
   updateAnnotationEventHandler () {
     return (event) => {
-      // Get annotation to modify and merge body changes
-      let bodyToUpdate = event.detail.body
+      // Get annotation to update
       let annotation = event.detail.annotation
-      let newBodyForAnnotation = _.uniqBy(_.concat(bodyToUpdate, annotation.body), a => a.purpose)
-      annotation.body = newBodyForAnnotation
       // Send updated annotation to the server
       window.abwa.annotationServerManager.client.updateAnnotation(
         annotation.id,

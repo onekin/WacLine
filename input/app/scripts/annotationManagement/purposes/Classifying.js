@@ -1,5 +1,7 @@
 const Body = require('./Body')
+// PVSCL:IFCOND(Hierarchy, LINE)
 const Code = require('../../definition/Code')
+// PVSCL:ENDCOND
 const Theme = require('../../definition/Theme')
 const LanguageUtils = require('../../utils/LanguageUtils')
 const _ = require('lodash')
@@ -8,7 +10,7 @@ class Classifying extends Body {
   constructor ({purpose = 'classifying', code}) {
     super(purpose)
     if (!_.isEmpty(code)) {
-      if (LanguageUtils.isInstanceOf(code, Code) || LanguageUtils.isInstanceOf(code, Theme)) {
+      if (/* PVSCL:IFCOND(Hierarchy) */LanguageUtils.isInstanceOf(code, Code) || /* PVSCL:ENDCOND */LanguageUtils.isInstanceOf(code, Theme)) {
         this.value = code.toObject()
       } else {
         this.value = code
@@ -33,9 +35,8 @@ class Classifying extends Body {
 
   tooltip () {
     let tooltip = ''
-    // PVSCL:IFCOND(Hierarchy, LINE)
-    // TODO
     let code = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(this.value.id)
+    // PVSCL:IFCOND(Hierarchy, LINE)
     if (LanguageUtils.isInstanceOf(code, Code)) {
       tooltip += 'Code: ' + code.name + 'for Theme: ' + code.theme.name
     } else {

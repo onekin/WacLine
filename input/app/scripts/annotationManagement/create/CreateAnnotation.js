@@ -31,34 +31,47 @@ class CreateAnnotation {
 
   createAnnotationEventHandler () {
     return (event) => {
-      // If selection is child of sidebar, return null
-      if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
-        Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
-        return
-      }
-      // Create target
-      let target = this.obtainTargetToCreateAnnotation(event.detail)
-      // Create body
-      let body = this.obtainBodyToCreateAnnotation(event.detail)
-      // Create tags
-      let tags = this.obtainTagsToCreateAnnotation(event.detail)
-      // Construct the annotation to send to hypothesis
-      let annotation = new Annotation({
-        target: target,
-        tags: tags,
-        body: body
-      })
-      window.abwa.annotationServerManager.client.createNewAnnotation(annotation.serialize(), (err, annotation) => {
-        if (err) {
-          Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
-        } else {
-          window.getSelection().removeAllRanges()
-          // Deserialize retrieved annotation from the server
-          let deserializedAnnotation = Annotation.deserialize(annotation)
-          // Dispatch annotation created event
-          LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: deserializedAnnotation})
+      let annotationToCreate
+      if (event.detail.purpose === 'replying') {
+        // Annotation is already prepared to send to the server
+        annotationToCreate = event.detail.replyingAnnotation
+      } else if (event.detail.purpose === 'classifying') {
+        let target
+        // If selection is child of sidebar, return null
+        if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
+          Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
+          return
         }
-      })
+        // Create target
+        target = this.obtainTargetToCreateAnnotation(event.detail)
+        // Create body
+        let body = this.obtainBodyToCreateAnnotation(event.detail)
+        // Create tags
+        let tags = this.obtainTagsToCreateAnnotation(event.detail)
+        // Construct the annotation to send to hypothesis
+        annotationToCreate = new Annotation({
+          target: target,
+          tags: tags,
+          body: body
+        })
+      } else if (event.detail.purpose === 'assessing') {
+        // TODO
+      }
+      if (annotationToCreate) {
+        window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
+          if (err) {
+            Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
+          } else {
+            window.getSelection().removeAllRanges()
+            // Deserialize retrieved annotation from the server
+            let deserializedAnnotation = Annotation.deserialize(annotation)
+            // Dispatch annotation created event
+            LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: deserializedAnnotation})
+          }
+        })
+      } else {
+        // TODO Show error
+      }
     }
   }
 
@@ -72,8 +85,10 @@ class CreateAnnotation {
       tags = []
     }
     // PVSCL:IFCOND(Classifying, LINE)
-    let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(codeId)
-    tags = tags.concat(codeOrTheme.getTags())
+    if (codeId) {
+      let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(codeId)
+      tags = tags.concat(codeOrTheme.getTags())
+    }
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Assessing, LINE)
 
@@ -87,10 +102,12 @@ class CreateAnnotation {
     // Get bodies and tags for the annotation to be created
     let body = []
     // PVSCL:IFCOND(Classifying, LINE)
-    // Get body and tags for classifying
-    let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(codeId)
-    let classifyingBody = new Classifying({code: codeOrTheme})
-    body.push(classifyingBody.serialize())
+    // Get body for classifying
+    if (codeId) {
+      let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(codeId)
+      let classifyingBody = new Classifying({code: codeOrTheme})
+      body.push(classifyingBody.serialize())
+    }
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Commenting, LINE)
 
@@ -104,20 +121,25 @@ class CreateAnnotation {
     return body
   }
 
-  obtainTargetToCreateAnnotation ({replyingAnnotation}) {
-    let target = [{}]
-    let source = window.abwa.targetManager.getDocumentURIs()
-    // Get document title
-    source['title'] = window.abwa.targetManager.documentTitle || ''
-    // Get UUID for current target
-    source['id'] = window.abwa.targetManager.getDocumentId()
-    target[0].source = source // Add source to the target
-    // PVSCL:IFCOND(Selector, LINE)
-    if (document.getSelection().toString().length > 0) {
-      target[0].selector = CreateAnnotation.getSelectorsOfSelectedTextContent()
+  obtainTargetToCreateAnnotation ({repliedAnnotation}) {
+    if (repliedAnnotation) {
+      // Get replying annotation source and create a target
+      return [{source: repliedAnnotation.target[0].source}]
+    } else {
+      let target = [{}]
+      let source = window.abwa.targetManager.getDocumentURIs()
+      // Get document title
+      source['title'] = window.abwa.targetManager.documentTitle || ''
+      // Get UUID for current target
+      source['id'] = window.abwa.targetManager.getDocumentId()
+      target[0].source = source // Add source to the target
+      // PVSCL:IFCOND(Selector, LINE)
+      if (document.getSelection().toString().length > 0) {
+        target[0].selector = CreateAnnotation.getSelectorsOfSelectedTextContent()
+      }
+      // PVSCL:ENDCOND
+      return target
     }
-    // PVSCL:ENDCOND
-    return target
   }
 
   static getSelectorsOfSelectedTextContent () {

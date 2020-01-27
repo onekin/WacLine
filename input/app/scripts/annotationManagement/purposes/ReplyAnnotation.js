@@ -1,8 +1,9 @@
-const AnnotationUtils = require('../utils/AnnotationUtils')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Alerts = require('../utils/Alerts')
-const Events = require('../Events')
-const Config = require('../Config')
+const AnnotationUtils = require('../../utils/AnnotationUtils')
+const LanguageUtils = require('../../utils/LanguageUtils')
+const Alerts = require('../../utils/Alerts')
+const Events = require('../../Events')
+const Config = require('../../Config')
+const moment = require('moment')
 const _ = require('lodash')
 // const linkifyUrls = require('linkify-urls')
 
@@ -29,7 +30,7 @@ class ReplyAnnotation {
         } else {
           if (_.isEmpty(inputValue)) {
             // The comment you are writing is new
-            const TextAnnotator = require('../contentScript/contentAnnotators/TextAnnotator')
+            const TextAnnotator = require('../../contentScript/contentAnnotators/TextAnnotator')
             let replyAnnotationData = TextAnnotator.constructAnnotation({
               motivation: motivation
             })
@@ -148,7 +149,7 @@ class ReplyAnnotation {
     // Add feedback comment text
     htmlText += ReplyAnnotation.createReplyLog(annotation)
     htmlText += '<hr/>'
-    // get replies for this annotation
+    // Get replies for this annotation
     let replies = ReplyAnnotation.getReplies(annotation, replyAnnotations)
     // What and who
     for (let i = 0; i < replies.length; i++) {
@@ -173,27 +174,35 @@ class ReplyAnnotation {
     let htmlText = ''
     let userSpanClassName = 'reply_user'
     let textSpanClassName = 'reply_text'
+    let dateSpanClassName = 'reply_date'
     // PVSCL:IFCOND( Validate, LINE )
+    // TODO Refactor with the new mechanism to detect validations
     if (reply.motivation === Config.namespace + ':assessing') {
       userSpanClassName += ' reply_validated'
       textSpanClassName += ' reply_validated'
     }
     // PVSCL:ENDCOND
+    // Calculate date
+
     // Add user name
-    if (reply.user === window.abwa.groupSelector.user.userid) {
+    if (reply.creator === window.abwa.groupSelector.getCreatorData()) {
       htmlText += '<span class="' + userSpanClassName + '">You: </span>'
     } else {
-      let username = reply.user.split('acct:')[1].split('@hypothes.is')[0]
+      let username = reply.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
       htmlText += '<span class="' + userSpanClassName + '">' + username + ': </span>'
     }
-    /* let urlizedReplyText = linkifyUrls(reply.text, {
-      attributes: {
-        target: '_blank'
-      }
-    }) */
-    let urlizedReplyText = reply.text
-    // Add comment
-    htmlText += '<span class="' + textSpanClassName + '">' + urlizedReplyText + '</span>'
+    // PVSCL:IFCOND(Commenting, LINE)
+    let replyCommentBody = reply.body.find(body => body.purpose === 'commenting')
+    let textComment = 'No comment'
+    if (replyCommentBody) {
+      textComment = replyCommentBody.value
+    }
+    htmlText += '<span class="' + textSpanClassName + '">' + textComment + '</span>'
+    // PVSCL:ENDCOND
+    if (reply.modified) {
+      htmlText += '<span title="' + moment(reply.modified).format('MMMM Do YYYY, h:mm:ss a') + '" class="' + dateSpanClassName + '">' + moment(reply.modified).fromNow() + '</span>'
+    }
+
     return htmlText
   }
 }

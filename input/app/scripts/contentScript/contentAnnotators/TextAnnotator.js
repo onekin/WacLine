@@ -18,7 +18,7 @@ const Code = require('../../definition/Code')
 const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Reply,LINE)
-const ReplyAnnotation = require('../../production/ReplyAnnotation')
+const ReplyAnnotation = require('../../annotationManagement/purposes/ReplyAnnotation')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(SentimentAnalysis,LINE)
 const axios = require('axios')

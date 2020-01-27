@@ -332,7 +332,9 @@ class TagManager {
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
+                // TODO If navigation is disabled, create annotation
                 LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                  purpose: 'classifying',
                   tags: tags,
                   codeId: theme.id
                 })
@@ -359,6 +361,7 @@ class TagManager {
               tags.push('cmid:' + theme.annotationGuide.cmid)
               // PVSCL:ENDCOND
               LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                purpose: 'classifying',
                 tags: tags,
                 codeId: theme.id
               })

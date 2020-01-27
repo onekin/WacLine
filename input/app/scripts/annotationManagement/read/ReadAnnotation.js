@@ -3,13 +3,21 @@ const DOMTextUtils = require('../../utils/DOMTextUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
 const Events = require('../../Events')
 const _ = require('lodash')
+// PVSCL:IFCOND(UserFilter, LINE)
 const UserFilter = require('./UserFilter')
+// PVSCL:ENDCOND
 const Annotation = require('../Annotation')
-const ReplyAnnotation = require('../../production/ReplyAnnotation')
+// PVSCL:IFCOND(Replying, LINE)
+const ReplyAnnotation = require('../purposes/ReplyAnnotation')
+// PVSCL:ENDCOND
 const $ = require('jquery')
 require('jquery-contextmenu/dist/jquery.contextMenu')
+// PVSCL:IFCOND(Commenting, LINE)
 const CommentingForm = require('../purposes/CommentingForm')
+const Alerts = require('../../utils/Alerts')
+// PVSCL:ENDCOND
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
+const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 5
 
 class ReadAnnotation {
   constructor () {
@@ -30,6 +38,7 @@ class ReadAnnotation {
       // PVSCL:ENDCOND
     })
     this.initAnnotationsObserver()
+    this.initReloadAnnotationsEvent()
   }
 
   destroy () {
@@ -37,6 +46,17 @@ class ReadAnnotation {
     let events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
+  }
+
+  initReloadAnnotationsEvent (callback) {
+    this.reloadInterval = setInterval(() => {
+      this.updateAllAnnotations(() => {
+        console.debug('annotations updated')
+      })
+    }, ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS * 1000)
+    if (_.isFunction(callback)) {
+      callback()
     }
   }
 
@@ -98,6 +118,12 @@ class ReadAnnotation {
       let annotation = event.detail.annotation
       // Add to all annotations list
       this.allAnnotations.push(annotation)
+      // PVSCL:IFCOND(Replying, LINE)
+      // If annotation is replying another annotation, add to reply annotation list
+      if (annotation.references.length > 0) {
+        this.replyAnnotations.push(annotation)
+      }
+      // PVSCL:ENDCOND
       // Dispatch annotations updated event
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
       // PVSCL:IFCOND(UserFilter, LINE)
@@ -128,6 +154,14 @@ class ReadAnnotation {
       _.remove(this.allAnnotations, (currentAnnotation) => {
         return currentAnnotation.id === annotation.id
       })
+      // PVSCL:IFCOND(Replying, LINE)
+      // Remove annotations that reply to this one (if user is the same)
+      _.remove(this.allAnnotations, (currentAnnotation) => {
+        return _.includes(currentAnnotation.references, (refId) => {
+          return annotation.id === refId
+        })
+      })
+      // PVSCL:ENDCOND
       // Dispatch annotations updated event
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
       // PVSCL:IFCOND(UserFilter, LINE)
@@ -235,6 +269,13 @@ class ReadAnnotation {
   }
 
   highlightAnnotation (annotation, callback) {
+    // Check if has selector to highlight, otherwise return
+    if (!_.isObject(annotation.target[0].selector)) {
+      if (_.isFunction(callback)) {
+        callback()
+      }
+      return
+    }
     // Get annotation color for an annotation
     let color
     // PVSCL:IFCOND(Classifying, LINE)
@@ -320,11 +361,7 @@ class ReadAnnotation {
           items['reply'] = {name: 'Reply'}
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(Assessing, LINE)
-          items['assessing'] = {name: 'assessing'}
-          // PVSCL:ENDCOND
-          // If current user is the same as annotation author, allow remove
-          // PVSCL:IFCOND(Delete, LINE)
-          items['delete'] = {name: 'Delete'}
+          items['assess'] = {name: 'Assess'}
           // PVSCL:ENDCOND
         }
         return {
@@ -333,36 +370,57 @@ class ReadAnnotation {
               LanguageUtils.dispatchCustomEvent(Events.deleteAnnotation, {
                 annotation: annotation
               })
-            }/* PVSCL:IFCOND(Replying) */ else if (key === 'replying') {
+            }/* PVSCL:IFCOND(Replying) */ else if (key === 'reply') {
               // TODO Update your last reply if exists, otherwise create a new reply
-              let lastReplyIsYours
-              if (lastReplyIsYours) {
+              let replies = ReplyAnnotation.getReplies(annotation, this.replyAnnotations)
+              // Get last reply and check if it is current user's annotation or not
+              let lastReply = _.last(replies)
+              if (lastReply && lastReply.creator === window.abwa.groupSelector.getCreatorData()) {
                 // Annotation to be updated is the reply
-                LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-                  purpose: 'commenting',
-                  annotation: annotation
-                })
+                let replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
+                let repliesHtml = replyData.htmlText
+                CommentingForm.showCommentingForm(lastReply, (err, replyAnnotation) => {
+                  if (err) {
+                    // Show error
+                    Alerts.errorAlert({text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message})
+                  } else {
+                    LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+                      annotation: replyAnnotation
+                    })
+                  }
+                }, repliesHtml)
               } else {
-                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-                  purpose: 'replying',
-                  replyingAnnotation: annotation
-                })
+                // Annotation to be created is new and replies the previous one
+                // Create target for new reply annotation
+                let target = [{source: annotation.target[0].source}]
+                let replyAnnotation = new Annotation({target: target, references: [annotation.id]})
+                let replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
+                let repliesHtml = replyData.htmlText
+                CommentingForm.showCommentingForm(replyAnnotation, (err, replyAnnotation) => {
+                  if (err) {
+                    // Show error
+                    Alerts.errorAlert({text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message})
+                  } else {
+                    LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                      purpose: 'replying',
+                      replyingAnnotation: replyAnnotation,
+                      repliedAnnotation: annotation
+                    })
+                  }
+                }, repliesHtml)
               }
-            }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Assessing) */ else if (key === 'assessing') {
+            }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Assessing) */ else if (key === 'assess') {
               // TODO If you have validated already, update your annotation
               // TODO If you didn't validate, create a replying annotation to validate
             }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
               // Open commenting form
-              CommentingForm.showCommentingForm(annotation, (err, {annotation, bodyToUpdate}) => {
+              CommentingForm.showCommentingForm(annotation, (err, annotation) => {
                 if (err) {
-                  // TODO Show error
+                  Alerts.errorAlert({text: 'Unexpected error when commenting. Please reload webpage and try again. Error: ' + err.message})
                 } else {
-                  if (bodyToUpdate) {
-                    LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-                      annotation: annotation,
-                      body: bodyToUpdate
-                    })
-                  }
+                  LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+                    annotation: annotation
+                  })
                 }
               })
               // PVSCL:ENDCOND

@@ -19,9 +19,10 @@ class CommentingForm {
    *
    * @param annotation annotation that is involved
    * @param formCallback callback to execute after form is closed
+   * @param addingHtml
    * @returns {Promise<unknown>}
    */
-  static showCommentingForm (annotation, formCallback) {
+  static showCommentingForm (annotation, formCallback, addingHtml) {
     return new Promise((resolve, reject) => {
       // Close sidebar if opened
       let sidebarOpen = window.abwa.sidebar.isOpened()
@@ -56,7 +57,7 @@ class CommentingForm {
         // PVSCL:IFCOND(PreviousAssignments,LINE)
         generateFormObjects['previousAssignmentsUI'] = previousAssignmentsUI
         // PVSCL:ENDCOND
-        let form = CommentingForm.generateCommentFormHTML(generateFormObjects, formCallback)
+        let form = CommentingForm.generateCommentFormHTML(generateFormObjects, formCallback, addingHtml)
         Alerts.multipleInputAlert({
           title: title,
           html: form.html,
@@ -77,14 +78,21 @@ class CommentingForm {
    * @param annotation
    * @param showForm
    * @param sidebarOpen
-   * @returns {Object}
+   * @param themeOrCode
+   * @param previousAssignmentsUI
+   * @param formCallback
+   * @param addingHtml
+   * @returns {{preConfirm: preConfirm, callback: callback, html: (*|string), onBeforeOpen: onBeforeOpen}}
    */
-  static generateCommentFormHTML ({annotation, showForm, sidebarOpen, themeOrCode, previousAssignmentsUI}, formCallback) {
-    let html = ''
+  static generateCommentFormHTML ({annotation, showForm, sidebarOpen, themeOrCode, previousAssignmentsUI}, formCallback, addingHtml) {
+    let html = addingHtml || ''
     // PVSCL:IFCOND(PreviousAssignments,LINE)
     html += previousAssignmentsUI.outerHTML
     // PVSCL:ENDCOND
-    let purposeCommentingBody = annotation.body.find(body => body.purpose === 'commenting')
+    let purposeCommentingBody
+    if (_.isArray(annotation.body)) {
+      purposeCommentingBody = annotation.body.find(body => body.purpose === 'commenting')
+    }
     let commentText = purposeCommentingBody ? purposeCommentingBody.value : ''
     html += '<textarea class="swal2-textarea" data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + commentText + '</textarea>'
     // PVSCL:IFCOND(SuggestedLiterature,LINE)
@@ -243,8 +251,10 @@ class CommentingForm {
           annotation.suggestedLiterature = preConfirmData.literature || []
           // PVSCL:ENDCOND
           // TODO assessment category support
+          // Update annotation's body
+          annotation.body = _.uniqBy(_.concat(bodyToUpdate, annotation.body), a => a.purpose)
           if (_.isFunction(formCallback)) {
-            formCallback(null, {annotation, bodyToUpdate})
+            formCallback(null, annotation)
           }
         }
       }

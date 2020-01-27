@@ -17,7 +17,9 @@ class Annotation {
     },
     target,
     tags = [],
-    creator = window.abwa.groupSelector.getCreatorData() || window.abwa.groupSelector.user.userid
+    creator = window.abwa.groupSelector.getCreatorData() || window.abwa.groupSelector.user.userid,
+    created,
+    modified
   }) {
     if (!_.isArray(target) || _.isEmpty(target[0])) {
       throw new Error('Annotation must have a non-empty target')
@@ -27,9 +29,17 @@ class Annotation {
     this.body = body
     this.references = references
     this.permissions = permissions
-    this.tags = tags
+    this.tags = _.uniq(tags)
     this.creator = creator
     this.group = group
+    let createdDate = Date.parse(created)
+    if (_.isNumber(createdDate)) {
+      this.created = new Date(created)
+    }
+    let modifiedDate = Date.parse(modified)
+    if (_.isNumber(modifiedDate)) {
+      this.modified = new Date(modified)
+    }
   }
 
   serialize () {
@@ -42,7 +52,7 @@ class Annotation {
       permissions: this.permissions || {
         read: ['group:' + window.abwa.groupSelector.currentGroup.id]
       },
-      references: [],
+      references: this.references || [],
       // PVSCL:IFCOND(SuggestedLiterature,LINE)
       suggestedLiterature: [],
       // PVSCL:ENDCOND
@@ -84,9 +94,11 @@ class Annotation {
       group: annotationObject.group,
       creator: annotationObject.creator,
       permissions: annotationObject.permissions,
-      references: annotationObject.permissions,
+      references: annotationObject.references,
       tags: annotationObject.tags,
-      target: annotationObject.target
+      target: annotationObject.target,
+      created: annotationObject.created,
+      modified: annotationObject.updated
     })
     annotation.body = annotationObject.body.map((body) => {
       if (body.purpose === 'classifying') {
