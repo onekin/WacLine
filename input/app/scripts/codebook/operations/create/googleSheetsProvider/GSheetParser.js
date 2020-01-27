@@ -1,10 +1,10 @@
 const _ = require('lodash')
-const AnnotationGuide = require('../coodebook/Coodebook')
-const Alerts = require('../utils/Alerts')
+const Codebook = require('../../model/Codebook')
+const Alerts = require('../../../utils/Alerts')
 
 class GSheetParser {
   parse (callback) {
-    AnnotationGuide.fromGSheetProvider((err, annotationGuide) => {
+    Codebook.fromGSheetProvider((err, annotationGuide) => {
       if (err) {
         console.error(err)
         Alerts.errorAlert({text: err.message})

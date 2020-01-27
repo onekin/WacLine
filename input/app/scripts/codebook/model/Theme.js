@@ -1,10 +1,10 @@
 const jsYaml = require('js-yaml')
 const _ = require('lodash')
 const Config = require('../Config')
-// PVSCL:IFCOND(Dynamic, LINE)
+// PVSCL:IFCOND(CodebookUpdate, LINE)
 const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Code and (ExportGroup or MoodleProvider), LINE)
+// PVSCL:IFCOND(Hierarchy and (ExportGroup or MoodleProvider), LINE)
 const Code = require('./Code')
 // PVSCL:IFCOND(ExportGroup, LINE)
 const LanguageUtils = require('../utils/LanguageUtils')
@@ -17,7 +17,7 @@ class Theme {
     name,
     color,
     annotationGuide,
-    description = ''/* PVSCL:IFCOND(GSheetProvider and Code) */,
+    description = ''/* PVSCL:IFCOND(GSheetProvider and Hierarchy) */,
     multivalued,
     inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
     moodleCriteriaId/* PVSCL:ENDCOND */
@@ -27,10 +27,10 @@ class Theme {
     this.description = description
     this.color = color
     this.annotationGuide = annotationGuide
-    // PVSCL:IFCOND(Code,LINE)
+    // PVSCL:IFCOND(Hierarchy,LINE)
     this.codes = []
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
     this.multivalued = multivalued
     this.inductive = inductive
     // PVSCL:ENDCOND
@@ -43,7 +43,7 @@ class Theme {
     let annotations = []
     // Create its annotations
     annotations.push(this.toAnnotation())
-    // PVSCL:IFCOND(Code,LINE)
+    // PVSCL:IFCOND(Hierarchy,LINE)
     // Create its children annotations
     for (let i = 0; i < this.codes.length; i++) {
       annotations = annotations.concat(this.codes[i].toAnnotations())
@@ -60,7 +60,7 @@ class Theme {
     let cmidTag = 'cmid:' + this.annotationGuide.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
     if (this.multivalued) {
       tags.push(Config.namespace + ':' + Config.tags.statics.multivalued)
     }
@@ -78,7 +78,7 @@ class Theme {
       tags: tags,
       target: [],
       text: jsYaml.dump({
-        id: this.id || ''/* PVSCL:IFCOND(User) */,
+        id: this.id || ''/* PVSCL:IFCOND(BuiltIn) */,
         description: this.description/* PVSCL:ENDCOND */
       }),
       uri: this.annotationGuide.annotationServer.group.links.html
@@ -93,7 +93,7 @@ class Theme {
     let themeTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
     })
-    // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
     let multivaluedTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':multivalued')
     })
@@ -104,7 +104,7 @@ class Theme {
     if (_.isString(themeTag)) {
       let name = themeTag.replace(Config.namespace + ':' + Config.tags.grouped.group + ':', '')
       let config = jsYaml.load(annotation.text)
-      // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+      // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
       // multivalued and inductive
       let multivalued = _.isString(multivaluedTag)
       let inductive = _.isString(inductiveTag)
@@ -119,7 +119,7 @@ class Theme {
           id,
           name,
           description,
-          annotationGuide/* PVSCL:IFCOND(GSheetProvider and Code) */,
+          annotationGuide/* PVSCL:IFCOND(GSheetProvider and Hierarchy) */,
           multivalued,
           inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
           moodleCriteriaId/* PVSCL:ENDCOND */
@@ -131,8 +131,8 @@ class Theme {
       console.error('Unable to retrieve criteria from annotation')
     }
   }
-  // PVSCL:IFCOND(Dynamic, LINE) // Check if it is possible to add codes to the definition model if it is not selected Dynamic feature
-  // PVSCL:IFCOND(Code, LINE)
+  // PVSCL:IFCOND(CodebookUpdate, LINE) // Check if it is possible to add codes to the definition model if it is not selected Dynamic feature
+  // PVSCL:IFCOND(Hierarchy, LINE)
 
   addCode (code) {
     this.codes.push(code)
@@ -147,7 +147,7 @@ class Theme {
   }
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(Dynamic, LINE)
+  // PVSCL:IFCOND(CodebookUpdate, LINE)
 
   reloadColorsForCodes () {
     this.codes.forEach((code, j) => {
@@ -163,7 +163,7 @@ class Theme {
       name: this.name,
       description: this.description
     }
-    // PVSCL:IFCOND(Code, LINE)
+    // PVSCL:IFCOND(Hierarchy, LINE)
     if (this.codes.length > 0) {
       object.codes = []
       // For each level
@@ -184,7 +184,7 @@ class Theme {
     theme.annotationGuide = rubric
     // Instance theme object
     let instancedTheme = Object.assign(new Theme(theme))
-    // PVSCL:IFCOND(Code, LINE)
+    // PVSCL:IFCOND(Hierarchy, LINE)
     // Instance codes
     for (let i = 0; i < theme.codes.length; i++) {
       instancedTheme.codes[i] = Code.createCodeFromObject(theme.codes[i], instancedTheme)

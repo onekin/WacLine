@@ -3,7 +3,7 @@ const Theme = require('./Theme')
 const Config = require('../Config')
 const _ = require('lodash')
 const LanguageUtils = require('../utils/LanguageUtils')
-// PVSCL:IFCOND(Code,LINE)
+// PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('./Code')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GSheetProvider,LINE)
@@ -16,11 +16,11 @@ const Hypothesis = require('../annotationServer/hypothesis/Hypothesis')
 // PVSCL:IFCOND(BrowserStorage, LINE)
 const BrowserStorage = require('../annotationServer/browserStorage/BrowserStorage')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Dynamic, LINE)
+// PVSCL:IFCOND(CodebookUpdate, LINE)
 const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
 
-class Coodebook {
+class Codebook {
   constructor ({
     id = null,
     name = '',
@@ -127,7 +127,7 @@ class Coodebook {
       }
       // PVSCL:ENDCOND
       let guide
-      guide = new Coodebook(annotationGuideOpts)
+      guide = new Codebook(annotationGuideOpts)
       if (_.isFunction(callback)) {
         callback(guide)
       }
@@ -135,12 +135,12 @@ class Coodebook {
   }
 
   static fromAnnotations (annotations, callback) {
-    // return AnnotationGuide
+    // return Codebook
     let guideAnnotation = _.remove(annotations, (annotation) => {
       return _.some(annotation.tags, (tag) => { return tag === Config.namespace + ':guide' })
     })
     if (guideAnnotation.length > 0) {
-      Coodebook.fromAnnotation(guideAnnotation[0], (guide) => {
+      Codebook.fromAnnotation(guideAnnotation[0], (guide) => {
         // TODO Complete the guide from the annotations
         // For the rest of annotations, get themes and codes
         let themeAnnotations = _.remove(annotations, (annotation) => {
@@ -148,7 +148,7 @@ class Coodebook {
             return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
           })
         })
-        // PVSCL:IFCOND(Code,LINE)
+        // PVSCL:IFCOND(Hierarchy,LINE)
         let codeAnnotations = _.remove(annotations, (annotation) => {
           return _.some(annotation.tags, (tag) => {
             return tag.includes(Config.namespace + ':' + Config.tags.grouped.subgroup + ':')
@@ -161,7 +161,7 @@ class Coodebook {
             guide.themes.push(theme)
           }
         }
-        // PVSCL:IFCOND(Code,LINE)
+        // PVSCL:IFCOND(Hierarchy,LINE)
         for (let i = 0; i < codeAnnotations.length; i++) {
           let codeAnnotation = codeAnnotations[i]
           // Get theme corresponding to the level
@@ -220,14 +220,14 @@ class Coodebook {
     }
     // PVSCL:ENDCOND
   }
-  // PVSCL:IFCOND(User or ImportGroup,LINE)
+  // PVSCL:IFCOND(BuiltIn or ImportGroup,LINE)
 
   static fromUserDefinedHighlighterDefinition (userDefinedHighlighterDefinition) {
-    let annotationGuide = new Coodebook({name: userDefinedHighlighterDefinition.name})
+    let annotationGuide = new Codebook({name: userDefinedHighlighterDefinition.name})
     for (let i = 0; i < userDefinedHighlighterDefinition.definition.length; i++) {
       let themeDefinition = userDefinedHighlighterDefinition.definition[i]
       let theme = new Theme({name: themeDefinition.name, description: themeDefinition.description, annotationGuide})
-      // PVSCL:IFCOND(Code,LINE)
+      // PVSCL:IFCOND(Hierarchy,LINE)
       theme.codes = []
       if (_.isArray(themeDefinition.codes)) {
         for (let j = 0; j < themeDefinition.codes.length; j++) {
@@ -245,7 +245,7 @@ class Coodebook {
   // PVSCL:IFCOND(GSheetProvider,LINE)
 
   static fromGSheetProvider (callback) {
-    let annotationGuide = new Coodebook({})
+    let annotationGuide = new Codebook({})
     annotationGuide.spreadsheetId = this.retrieveSpreadsheetId()
     annotationGuide.sheetId = this.retrieveSheetId()
     this.retrieveCurrentToken((err, token) => {
@@ -344,14 +344,14 @@ class Coodebook {
         let themesArray = _.map(_.slice(sheet.data[0].rowData[0].values, 1, indexOfAuthor), 'formattedValue')
         let themes = _.map(_.countBy(themesArray), (numberOfColumns, name) => {
           let theme = new Theme({name: name, annotationGuide})
-          // PVSCL:IFCOND(Code,LINE)
+          // PVSCL:IFCOND(Hierarchy,LINE)
           theme.multivalued = numberOfColumns > 1
           // PVSCL:ENDCOND
           return theme
         })
         // If facets are found, try to find codes for each
         if (themesArray.length > 0) {
-        // PVSCL:IFCOND(Code,LINE)
+        // PVSCL:IFCOND(Hierarchy,LINE)
           // Find codes
           if (sheet.data[0].rowData[1] && sheet.data[0].rowData[1].values) {
             // Get cells for codes
@@ -397,7 +397,7 @@ class Coodebook {
     })
     if (LanguageUtils.isInstanceOf(theme, Theme)) {
       themeOrCodeToReturn = theme
-    } /* PVSCL:IFCOND(Code) */ else {
+    } /* PVSCL:IFCOND(Hierarchy) */ else {
       // Look for code inside themes
       for (let i = 0; i < this.themes.length; i++) {
         let theme = this.themes[i]
@@ -411,7 +411,7 @@ class Coodebook {
     } /* PVSCL:ENDCOND */
     return themeOrCodeToReturn
   }
-  // PVSCL:IFCOND(Dynamic, LINE)
+  // PVSCL:IFCOND(CodebookUpdate, LINE)
 
   addTheme (theme) {
     if (LanguageUtils.isInstanceOf(theme, Theme)) {
@@ -429,14 +429,14 @@ class Coodebook {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleProvider, LINE)
 
-  static createAnnotationGuideFromObject (rubric) {
+  static createCodebookFromObject (rubric) {
     // Instance rubric object
-    let instancedAnnotationGuide = Object.assign(new Coodebook(rubric))
+    let instancedCodebook = Object.assign(new Codebook(rubric))
     // Instance themes and codes
     for (let i = 0; i < rubric.themes.length; i++) {
-      instancedAnnotationGuide.themes[i] = Theme.createThemeFromObject(rubric.themes[i], instancedAnnotationGuide)
+      instancedCodebook.themes[i] = Theme.createThemeFromObject(rubric.themes[i], instancedCodebook)
     }
-    return instancedAnnotationGuide
+    return instancedCodebook
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(ExportGroup, LINE)
@@ -476,4 +476,4 @@ class Coodebook {
   // PVSCL:ENDCOND
 }
 
-module.exports = Coodebook
+module.exports = Codebook

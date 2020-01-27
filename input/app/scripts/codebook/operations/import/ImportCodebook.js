@@ -1,7 +1,7 @@
-const Alerts = require('../utils/Alerts')
-const FileUtils = require('../utils/FileUtils')
+const Alerts = require('../../../utils/Alerts')
+const FileUtils = require('../../../utils/FileUtils')
 
-class ImportSchema {
+class ImportCodebook {
   static createConfigurationAnnotationsFromReview ({guide, callback}) {
     // Create highlighter annotations
     let annotations = guide.toAnnotations()
@@ -55,4 +55,4 @@ class ImportSchema {
   }
 }
 
-module.exports = ImportSchema
+module.exports = ImportCodebook

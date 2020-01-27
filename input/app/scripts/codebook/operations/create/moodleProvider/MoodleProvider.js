@@ -1,19 +1,19 @@
-const MoodleClientManager = require('../moodle/MoodleClientManager')
-const MoodleFunctions = require('../moodle/MoodleFunctions')
+const MoodleClientManager = require('../../../moodle/MoodleClientManager')
+const MoodleFunctions = require('../../../moodle/MoodleFunctions')
 const _ = require('lodash')
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('../../../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
+const BrowserStorageManager = require('../../../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Code, LINE)
-const Code = require('../coodebook/Code')
+const Code = require('../../model/Code')
 // PVSCL:ENDCOND
-const Alerts = require('../utils/Alerts')
-const AnnotationGuide = require('../coodebook/Coodebook')
-const Theme = require('../coodebook/Theme')
-const LanguageUtils = require('../utils/LanguageUtils')
+const Alerts = require('../../../utils/Alerts')
+const Codebook = require('../../model/Codebook')
+const Theme = require('../../model/Theme')
+const LanguageUtils = require('../../../utils/LanguageUtils')
 const CircularJSON = require('circular-json-es6')
 const MoodleScraping = require('./MoodleScraping')
 
@@ -81,7 +81,7 @@ class MoodleProvider {
                   }).then((resolves) => {
                     if (resolves && resolves.length > 1) {
                       let students = null
-                      if (LanguageUtils.isInstanceOf(resolves[0], AnnotationGuide)) {
+                      if (LanguageUtils.isInstanceOf(resolves[0], Codebook)) {
                         this.rubric = resolves[0]
                         students = resolves[1]
                       } else {
@@ -233,7 +233,7 @@ class MoodleProvider {
   }
 
   constructRubricsModel ({moodleRubrics, courseId, assignmentId, callback}) {
-    this.rubric = new AnnotationGuide({
+    this.rubric = new Codebook({
       name: _.get(moodleRubrics, 'areas[0].definitions[0].name'),
       moodleEndpoint: this.moodleEndpoint,
       assignmentName: this.assignmentName,

@@ -1,10 +1,10 @@
 const UserDefinedHighlighterDefinition = require('./UserDefinedHighlighterDefinition')
-const AnnotationGuide = require('./Coodebook')
+const Codebook = require('../../model/Codebook')
 
-class DefaultHighlighterGenerator {
+class BuiltIn {
   static createDefaultAnnotations (annotationServer, callback) {
     // Create annotation guide from user defined highlighter definition
-    let annotationGuide = AnnotationGuide.fromUserDefinedHighlighterDefinition(UserDefinedHighlighterDefinition)
+    let annotationGuide = Codebook.fromUserDefinedHighlighterDefinition(UserDefinedHighlighterDefinition)
     // Create review schema from default criterias
     annotationGuide.annotationServer = annotationServer
     // Create highlighter annotations
@@ -17,4 +17,4 @@ class DefaultHighlighterGenerator {
   }
 }
 
-module.exports = DefaultHighlighterGenerator
+module.exports = BuiltIn
