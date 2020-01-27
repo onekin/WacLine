@@ -10,7 +10,9 @@ class DeleteAnnotation {
 
   init () {
     // Add event listener for createAnnotation event
-    this.initCreateAnnotationEvent()
+    this.initDeleteAnnotationEvent()
+    // Add event listener for deleteAllAnnotations event
+    this.deleteAllAnnotationsEvent()
   }
 
   destroy () {
@@ -21,11 +23,37 @@ class DeleteAnnotation {
     }
   }
 
-  initCreateAnnotationEvent (callback) {
+  initDeleteAnnotationEvent (callback) {
     this.events.deleteAnnotationEvent = {element: document, event: Events.deleteAnnotation, handler: this.deleteAnnotationEventHandler()}
     this.events.deleteAnnotationEvent.element.addEventListener(this.events.deleteAnnotationEvent.event, this.events.deleteAnnotationEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
+    }
+  }
+
+  deleteAllAnnotationsEvent (callback) {
+    this.events.deleteAllAnnotationEvent = {element: document, event: Events.deleteAllAnnotations, handler: this.deleteAllAnnotationsEventHandler()}
+    this.events.deleteAllAnnotationEvent.element.addEventListener(this.events.deleteAllAnnotationEvent.event, this.events.deleteAllAnnotationEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  deleteAllAnnotationsEventHandler () {
+    return () => {
+      // Retrieve all the annotations
+      let allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
+      // Filter by current user's annotations, as other users are not deleteable
+      let annotationsToDelete = allAnnotations.filter(annotation => {
+        return annotation.creator === window.abwa.groupSelector.getCreatorData()
+      })
+      window.abwa.annotationServerManager.client.deleteAnnotations(annotationsToDelete, (err) => {
+        if (err) {
+          Alerts.errorAlert({text: 'Unable to delete all the annotations in the document. Please try it again.'})
+        } else {
+          LanguageUtils.dispatchCustomEvent(Events.deletedAllAnnotations, {annotations: annotationsToDelete})
+        }
+      })
     }
   }
 

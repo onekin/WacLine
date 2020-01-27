@@ -39,7 +39,7 @@ const Events = {
   reply: 'reply',
   // PVSCL:ENDCOND
   tagsUpdated: 'tagsUpdated',
-  // PVSCL:IFCOND(DeleteGroup,LINE)
+  // PVSCL:IFCOND(DeleteAll,LINE)
   deleteAllAnnotations: 'deleteAllAnnotations',
   deletedAllAnnotations: 'deletedAllAnnotations',
   // PVSCL:ENDCOND

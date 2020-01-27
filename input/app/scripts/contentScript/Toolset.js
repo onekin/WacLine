@@ -15,9 +15,9 @@ const Resume = require('../consumption/visualizations/Resume')
 // PVSCL:IFCOND(TextSummary,LINE)
 const TextSummary = require('../consumption/visualizations/TextSummary')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(DeleteGroup,LINE)
-const DeleteGroup = require('../groupManipulation/DeleteGroup')
-// PVSCL:ENDCOND
+const Events = require('../Events')
+const LanguageUtils = require('../utils/LanguageUtils')
+const Alerts = require('../utils/Alerts')
 // PVSCL:IFCOND(MoodleReport,LINE)
 const BackToWorkspace = require('../moodle/BackToWorkspace')
 // PVSCL:ENDCOND
@@ -77,15 +77,15 @@ class Toolset {
         this.textSummaryButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(DeleteGroup,LINE)
-      // Set DeleteGroup image
+      // PVSCL:IFCOND(DeleteAll,LINE)
+      // Set DeleteAll image
       let deleteGroupImageUrl = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteGroupImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.deleteGroupImage.src = deleteGroupImageUrl
       this.deleteGroupImage.title = 'Delete all annotations in document' // TODO i18n
       this.toolsetBody.appendChild(this.deleteGroupImage)
       this.deleteGroupImage.addEventListener('click', () => {
-        this.deleteGroupButtonHandler()
+        this.deleteAllButtonHandler()
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(LastAnnotation,LINE)
@@ -147,9 +147,24 @@ class Toolset {
     TextSummary.generateReview()
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(DeleteGroup,LINE)
-  deleteGroupButtonHandler () {
-    DeleteGroup.deleteAnnotations()
+  // PVSCL:IFCOND(DeleteAll,LINE)
+  deleteAllButtonHandler () {
+    Alerts.confirmAlert({
+      alertType: Alerts.alertType.question,
+      title: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationTitle'),
+      text: chrome.i18n.getMessage('DeleteAllAnnotationsConfirmationMessage'),
+      callback: (err, toDelete) => {
+        // It is run only when the user confirms the dialog, so delete all the annotations
+        if (err) {
+          // Nothing to do
+        } else {
+          // Dispatch delete all annotations event
+          LanguageUtils.dispatchCustomEvent(Events.deleteAllAnnotations)
+          // TODO Check if it is better to maintain the sidebar opened or not
+          window.abwa.sidebar.openSidebar()
+        }
+      }
+    })
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(LastAnnotation,LINE)

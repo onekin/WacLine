@@ -29,6 +29,10 @@ class ReadAnnotation {
     this.initAnnotationCreatedEventListener()
     // Event listener deleted annotation
     this.initAnnotationDeletedEventListener()
+    // PVSCL:IFCOND(DeleteAll, LINE)
+    // Event listener deleted all annotations
+    this.initAllAnnotationsDeletedEventListener()
+    // PVSCL:ENDCOND
     // Event listener updated annotation
     this.initAnnotationUpdatedEventListener()
     this.loadAnnotations(() => {
@@ -530,6 +534,32 @@ class ReadAnnotation {
       // Unhighlight and highlight annotation
       this.unHighlightAnnotation(annotation)
       this.highlightAnnotation(annotation)
+    }
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(DeleteAll, LINE)
+  initAllAnnotationsDeletedEventListener (callback) {
+    this.events.allAnnotationsDeletecEvent = {element: document, event: Events.deletedAllAnnotations, handler: this.allAnnotationsDeletedEventListener()}
+    this.events.allAnnotationsDeletecEvent.element.addEventListener(this.events.allAnnotationsDeletecEvent.event, this.events.allAnnotationsDeletecEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  allAnnotationsDeletedEventListener () {
+    return (event) => {
+      let annotations = event.detail.annotations
+      // Remove deleted annotations from allAnnotations
+      _.pullAllWith(this.allAnnotations, annotations, (a, b) => { return a.id === b.id })
+      // Dispatch annotations updated event
+      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+      // PVSCL:IFCOND(UserFilter, LINE)
+      // Retrieve current annotations
+      this.currentAnnotations = this.retrieveCurrentAnnotations()
+      LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+      // PVSCL:ENDCOND
+      // Unhighlight deleted annotations
+      this.redrawAnnotations()
     }
   }
   // PVSCL:ENDCOND
