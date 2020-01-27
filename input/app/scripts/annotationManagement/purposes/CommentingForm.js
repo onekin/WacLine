@@ -65,10 +65,6 @@ class CommentingForm {
           preConfirm: form.preConfirm,
           callback: () => {
             form.callback()
-            // Callback retrieved from which opened the form
-            if (_.isFunction(formCallback)) {
-              formCallback(null, {annotation})
-            }
           }
         })
       }

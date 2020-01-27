@@ -8,9 +8,7 @@ class Body {
   }
 
   serialize () {
-    let obj = JSON.parse(JSON.stringify(this.value))
-    obj['purpose'] = this.purpose
-    return obj
+    return {purpose: this.purpose, value: this.value}
   }
 
   static deserialize (obj) {

@@ -8,7 +8,7 @@ const HypothesisClientManager = require('../annotationServer/hypothesis/Hypothes
 
 class Annotation {
   constructor ({
-    id: id,
+    id,
     body = [],
     references = [],
     group = window.abwa.groupSelector.currentGroup.id,
@@ -94,7 +94,7 @@ class Annotation {
         let tempBody = JSON.parse(JSON.stringify(body))
         delete tempBody.purpose
         // Create new element of type Classifying
-        return new Classifying({code: tempBody})
+        return new Classifying({code: tempBody.value})
       } else if (body.purpose === 'commenting') {
         return new Commenting({value: body.value})
       }

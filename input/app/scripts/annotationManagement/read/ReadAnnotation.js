@@ -287,7 +287,7 @@ class ReadAnnotation {
 
   generateTooltipFromAnnotation (annotation) {
     let tooltipString = ''
-    tooltipString += annotation.creator
+    tooltipString += 'User: ' + annotation.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '') + '\n'
     annotation.body.forEach((body) => {
       tooltipString += body.tooltip() + '\n'
     })
