@@ -1,4 +1,4 @@
-const GSheetProvider = require('./googleSheetsProvider/GSheetProvider')
+const GSheetProvider = require('./codebook/operations/create/googleSheetsProvider/GSheetProvider')
 const _ = require('lodash')
 
 window.addEventListener('load', () => {

@@ -12,7 +12,7 @@ class MoodleReport {
 
   init (callback) {
     console.debug('Initializing moodle report')
-    this.moodleClientManager = new MoodleClientManager(window.abwa.tagManager.model.highlighterDefinition.moodleEndpoint)
+    this.moodleClientManager = new MoodleClientManager(window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint)
     this.moodleClientManager.init(() => {
       if (_.isFunction(callback)) {
         console.debug('Initialized moodle report')
@@ -37,7 +37,7 @@ class MoodleReport {
     // Get student id
     let studentId = window.abwa.targetManager.fileMetadata.studentId
     // Filter from search only the annotations which are used to classify and are from this cmid
-    let cmid = window.abwa.tagManager.model.highlighterDefinition.cmid
+    let cmid = window.abwa.codebookManager.codebookReader.codebook.cmid
     annotations = _.filter(annotations, (anno) => {
       return anno.uri !== window.abwa.groupSelector.currentGroup.links.html &&
         _.find(anno.tags, (tag) => {
@@ -56,7 +56,7 @@ class MoodleReport {
       } else {
         levelName = null
       }
-      let url = MoodleUtils.createURLForAnnotation({annotation, studentId, courseId: window.abwa.tagManager.model.highlighterDefinition.courseId, cmid: cmid})
+      let url = MoodleUtils.createURLForAnnotation({annotation, studentId, courseId: window.abwa.codebookManager.codebookReader.codebook.courseId, cmid: cmid})
       // Construct feedback
       let text = annotation.text
       let feedbackCommentElement = ''
@@ -78,7 +78,7 @@ class MoodleReport {
     })
     console.log(marks)
     // Reorder criterias as same as are presented in rubric
-    let sortingArr = _.map(window.abwa.tagManager.model.highlighterDefinition.themes, 'name')
+    let sortingArr = _.map(window.abwa.codebookManager.codebookReader.codebook.themes, 'name')
     marks.slice().sort((a, b) => {
       return sortingArr.indexOf(a.criteriaName) - sortingArr.indexOf(b.criteriaName)
     })
@@ -90,7 +90,7 @@ class MoodleReport {
     let moodleGradingData = this.composeMoodleGradingData({
       criterionAndLevels,
       userId: studentId,
-      assignmentId: window.abwa.tagManager.model.highlighterDefinition.assignmentId,
+      assignmentId: window.abwa.codebookManager.codebookReader.codebook.assignmentId,
       feedbackComment: feedbackComment
     })
     // Update student grading in moodle
@@ -108,7 +108,7 @@ class MoodleReport {
   }
 
   getCriterionAndLevel (marks) {
-    let annotationGuide = window.abwa.tagManager.model.highlighterDefinition
+    let annotationGuide = window.abwa.codebookManager.codebookReader.codebook
     let criterionAndLevel = []
     for (let i = 0; i < marks.length; i++) {
       let mark = marks[i]

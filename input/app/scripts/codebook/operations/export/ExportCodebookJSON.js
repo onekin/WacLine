@@ -1,11 +1,11 @@
 const _ = require('lodash')
 const FileSaver = require('file-saver')
-const Alerts = require('../utils/Alerts')
-const AnnotationGuide = require('../definition/AnnotationGuide')
+const Alerts = require('../../../utils/Alerts')
+const Codebook = require('../../model/Codebook')
 
-class ExportSchema {
+class ExportCodebookJSON {
   static exportConfigurationSchemeToJSObject (schemeAnnotations, name, callback) {
-    AnnotationGuide.fromAnnotations(schemeAnnotations, (guide) => {
+    Codebook.fromAnnotations(schemeAnnotations, (guide) => {
       if (_.isFunction(callback)) {
         callback(guide.toObjects(name))
       }
@@ -13,7 +13,7 @@ class ExportSchema {
   }
 
   static exportConfigurationSchemaToJSONFile (schemeAnnotations, group) {
-    ExportSchema.exportConfigurationSchemeToJSObject(schemeAnnotations, group.name, (object) => {
+    ExportCodebookJSON.exportConfigurationSchemeToJSObject(schemeAnnotations, group.name, (object) => {
       if (_.isObject(object)) {
         // Stringify JS object
         let stringifyObject = JSON.stringify(object, null, 2)
@@ -29,4 +29,4 @@ class ExportSchema {
   }
 }
 
-module.exports = ExportSchema
+module.exports = ExportCodebookJSON

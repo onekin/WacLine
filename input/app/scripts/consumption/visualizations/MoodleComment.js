@@ -12,7 +12,7 @@ class MoodleComment {
 
   init (callback) {
     console.debug('Initializing moodle comment')
-    this.moodleClientManager = new MoodleClientManager(window.abwa.tagManager.model.highlighterDefinition.moodleEndpoint)
+    this.moodleClientManager = new MoodleClientManager(window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint)
     this.moodleClientManager.init(() => {
       // Create event for replies
       this.events.replying = {

@@ -1,11 +1,11 @@
 const _ = require('lodash')
 const swal = require('sweetalert2')
-const Alerts = require('../utils/Alerts')
-const ChromeStorage = require('../utils/ChromeStorage')
-const AnnotationGuide = require('../definition/AnnotationGuide')
+const Alerts = require('../../../../utils/Alerts')
+const ChromeStorage = require('../../../../utils/ChromeStorage')
+const Codebook = require('../../../model/Codebook')
 const selectedGroupNamespace = 'hypothesis.currentGroup'
 // PVSCL:IFCOND(ApplicationBased, LINE)
-const Config = require('../Config')
+const Config = require('../../../../Config')
 // PVSCL:ENDCOND
 
 class GroupInitializer {
@@ -103,7 +103,7 @@ class GroupInitializer {
       } else {
         console.debug('Created group in hypothesis: ')
         console.debug(group)
-        AnnotationGuide.setAnnotationServer(group, (annotationServer) => {
+        Codebook.setAnnotationServer(group, (annotationServer) => {
           this.annotationGuide.annotationServer = annotationServer
           if (_.isFunction(callback)) {
             callback()

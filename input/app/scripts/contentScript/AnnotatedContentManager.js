@@ -1,14 +1,14 @@
 const Events = require('../Events')
-// PVSCL:IFCOND(SingleCode, LINE) // It is only used by SingleCode
+// PVSCL:IFCOND(NOT(Multivalued), LINE) // It is only used by SingleCode
 const Config = require('../Config')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(SingleCode, LINE)
+// PVSCL:IFCOND(NOT(Multivalued), LINE)
 const Alerts = require('../utils/Alerts')
 // PVSCL:ENDCOND
 const LanguageUtils = require('../utils/LanguageUtils')
-const Theme = require('../definition/Theme')
+const Theme = require('../codebook/model/Theme')
 // PVSCL:IFCOND(Hierarchy, LINE)
-const Code = require('../definition/Code')
+const Code = require('../codebook/model/Code')
 // PVSCL:ENDCOND
 const _ = require('lodash')
 
@@ -16,11 +16,11 @@ class AnnotatedTheme {
   constructor ({
     theme = null,
     annotations = []
-    /* PVSCL:IFCOND(Code) */, annotatedCodes = []/* PVSCL:ENDCOND */
+    /* PVSCL:IFCOND(Hierarchy) */, annotatedCodes = []/* PVSCL:ENDCOND */
   }) {
     // code
     this.theme = theme
-    // PVSCL:IFCOND(Code, LINE)
+    // PVSCL:IFCOND(Hierarchy, LINE)
     this.annotatedCodes = annotatedCodes
     // PVSCL:ENDCOND
     this.annotations = annotations
@@ -30,7 +30,7 @@ class AnnotatedTheme {
     return !(this.annotations.length === 0)
   }
 }
-// PVSCL:IFCOND(Code, LINE)
+// PVSCL:IFCOND(Hierarchy, LINE)
 
 class AnnotatedCode {
   constructor ({code = null, annotations = []}) {
@@ -49,7 +49,7 @@ class AnnotatedContentManager {
     this.annotatedThemes = {}
     this.events = {}
     // PVSCL:IFCOND(MoodleURL, LINE)
-    this.cmid = window.abwa.tagManager.model.highlighterDefinition.cmid
+    this.cmid = window.abwa.codebookManager.codebookReader.codebook.cmid
     // PVSCL:ENDCOND
   }
 
@@ -101,7 +101,7 @@ class AnnotatedContentManager {
         // Set the annotation group where annotations should be searched from
         call['group'] = window.abwa.groupSelector.currentGroup.id
         call['tags'] = 'cmid:' + this.cmid
-        call['wildcard_uri'] = window.abwa.tagManager.model.highlighterDefinition.moodleEndpoint + '*'
+        call['wildcard_uri'] = window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint + '*'
         window.abwa.annotationServerManager.client.searchAnnotations(call, (err, annotations) => {
           if (err) {
             reject(err)
@@ -137,21 +137,21 @@ class AnnotatedContentManager {
 
   defineStructure () {
     let annotatedThemesStructure
-    // PVSCL:IFCOND(Code, LINE)
-    annotatedThemesStructure = _.map(window.abwa.tagManager.model.highlighterDefinition.themes, (theme) => {
+    // PVSCL:IFCOND(Hierarchy, LINE)
+    annotatedThemesStructure = _.map(window.abwa.codebookManager.codebookReader.codebook.themes, (theme) => {
       let codes = _.map(theme.codes, (code) => {
         return new AnnotatedCode({code: code})
       })
       return new AnnotatedTheme({theme: theme, annotatedCodes: codes})
     })
     // PVSCL:ELSECOND
-    annotatedThemesStructure = _.map(window.abwa.tagManager.model.highlighterDefinition.themes, (theme) => {
+    annotatedThemesStructure = _.map(window.abwa.codebookManager.codebookReader.codebook.themes, (theme) => {
       return new AnnotatedTheme({theme: theme})
     })
     // PVSCL:ENDCOND
     return annotatedThemesStructure
   }
-  // PVSCL:IFCOND(SingleCode, LINE)
+  // PVSCL:IFCOND(NOT(Multivalued), LINE)
 
   codeToAll (code, lastAnnotatedCode) {
     // Update annotatedThemes
@@ -275,7 +275,7 @@ class AnnotatedContentManager {
       let annotations = _.filter(themeOrCode.annotations, (annotation) => {
         return _.intersection(window.abwa.targetManager.getDocumentLink(), _.values(annotation.target[0].source))
       })
-      // PVSCL:IFCOND(Code, LINE)
+      // PVSCL:IFCOND(Hierarchy, LINE)
       let childAnnotations = _.flatMap(themeOrCode.annotatedCodes.map(annotatedCode =>
         _.filter(annotatedCode.annotations, (annotation) => {
           return _.intersection(window.abwa.targetManager.getDocumentLink(), _.values(annotation.target[0].source))
@@ -283,7 +283,7 @@ class AnnotatedContentManager {
       annotations = annotations.concat(childAnnotations)
       // PVSCL:ENDCOND
       return annotations
-    } /* PVSCL:IFCOND(Code) */else if (LanguageUtils.isInstanceOf(themeOrCode, AnnotatedCode)) {
+    } /* PVSCL:IFCOND(Hierarchy) */else if (LanguageUtils.isInstanceOf(themeOrCode, AnnotatedCode)) {
       return _.filter(themeOrCode.annotations, (annotation) => {
         return _.intersection(window.abwa.targetManager.getDocumentLink(), _.values(annotation.target[0].source))
       })
@@ -298,7 +298,7 @@ class AnnotatedContentManager {
    * @param annotatedThemesObject
    */
   getAnnotatedThemeOrCodeFromThemeOrCodeId (themeOrCodeId, annotatedThemesObject = this.annotatedThemes) {
-    let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(themeOrCodeId)
+    let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(themeOrCodeId)
     if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
       // Return annotationTheme with the codeId we need
       return _.find(annotatedThemesObject, (annotatedTheme) => {
@@ -327,12 +327,12 @@ class AnnotatedContentManager {
     // Create event listener for updated all annotations
     this.events.deletedAllAnnotations = {element: document, event: Events.deletedAllAnnotations, handler: this.createDeletedAllAnnotationsEventHandler()}
     this.events.deletedAllAnnotations.element.addEventListener(this.events.deletedAllAnnotations.event, this.events.deletedAllAnnotations.handler, false)
-    // PVSCL:IFCOND(SingleCode, LINE)
+    // PVSCL:IFCOND(NOT(Multivalued), LINE)
 
     // Event for tag manager reloaded
     document.addEventListener(Events.codeToAll, (event) => {
       // Get level for this mark
-      let code = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(event.detail.id)
+      let code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(event.detail.id)
       if (code) {
         // Retrieve criteria from rubric
         this.codeToAll(code, event.detail.currentlyAnnotatedCode)
@@ -462,7 +462,7 @@ class AnnotatedContentManager {
         let annotatedGroupButton = document.querySelectorAll('.tagGroup[data-code-id="' + annotatedTheme.theme.id + '"]')
         let groupNameSpan = annotatedGroupButton[0].querySelector('.groupName')
         groupNameSpan.dataset.numberOfAnnotations = this.getAnnotationsDoneWithThemeOrCodeId(annotatedTheme.theme.id).length
-        // PVSCL:IFCOND(Code, LINE)
+        // PVSCL:IFCOND(Hierarchy, LINE)
         for (let j = 0; j < annotatedTheme.annotatedCodes.length; j++) {
           let annotatedCode = annotatedTheme.annotatedCodes[j]
           let annotatedCodeButton = document.querySelectorAll('.tagButton[data-code-id="' + annotatedCode.code.id + '"]')

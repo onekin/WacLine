@@ -1,6 +1,6 @@
 const _ = require('lodash')
-const Config = require('../../Config')
-const AnnotationGuide = require('../../definition/AnnotationGuide')
+const Config = require('../Config')
+const Codebook = require('../codebook/model/Codebook')
 
 const RETRIEVE_PREVIOUS_ASSIGNMENT_INTERVAL_IN_SECONDS = 60
 
@@ -45,7 +45,7 @@ class PreviousAssignments {
       } else {
         let previousAssignments = []
         for (let i = 0; i < annotations.length; i++) {
-          AnnotationGuide.fromAnnotation(annotations[i], (rubric) => {
+          Codebook.fromAnnotation(annotations[i], (rubric) => {
             // If current assignment is previous assignment, don't add
             if (window.abwa.targetManager.fileMetadata.cmid !== rubric.cmid) {
               let previousAssignment = {name: rubric.assignmentName}

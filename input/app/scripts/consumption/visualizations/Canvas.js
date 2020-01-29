@@ -28,7 +28,7 @@ class Canvas {
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
       let canvasClusters = {}
-      window.abwa.tagManager.model.highlighterDefinition.themes.forEach((theme) => {
+      window.abwa.codebookManager.codebookReader.codebook.themes.forEach((theme) => {
         canvasClusters[theme.name] = theme.codes.map((code) => { return code.name })
         canvasClusters[theme.name].push(theme.name)
       })

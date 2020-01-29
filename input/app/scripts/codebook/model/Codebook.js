@@ -1,26 +1,26 @@
 const jsYaml = require('js-yaml')
 const Theme = require('./Theme')
-const Config = require('../Config')
+const Config = require('../../Config')
 const _ = require('lodash')
-const LanguageUtils = require('../utils/LanguageUtils')
+const LanguageUtils = require('../../utils/LanguageUtils')
 // PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('./Code')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GSheetProvider,LINE)
-const URLUtils = require('../utils/URLUtils')
-const Alerts = require('../utils/Alerts')
+const URLUtils = require('../../utils/URLUtils')
+const Alerts = require('../../utils/Alerts')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
-const Hypothesis = require('../annotationServer/hypothesis/Hypothesis')
+const Hypothesis = require('../../annotationServer/hypothesis/Hypothesis')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorage = require('../annotationServer/browserStorage/BrowserStorage')
+const BrowserStorage = require('../../annotationServer/browserStorage/BrowserStorage')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Dynamic, LINE)
-const ColorUtils = require('../utils/ColorUtils')
+// PVSCL:IFCOND(CodebookUpdate, LINE)
+const ColorUtils = require('../../utils/ColorUtils')
 // PVSCL:ENDCOND
 
-class AnnotationGuide {
+class Codebook {
   constructor ({
     id = null,
     name = '',
@@ -127,7 +127,7 @@ class AnnotationGuide {
       }
       // PVSCL:ENDCOND
       let guide
-      guide = new AnnotationGuide(annotationGuideOpts)
+      guide = new Codebook(annotationGuideOpts)
       if (_.isFunction(callback)) {
         callback(guide)
       }
@@ -135,12 +135,12 @@ class AnnotationGuide {
   }
 
   static fromAnnotations (annotations, callback) {
-    // return AnnotationGuide
+    // return Codebook
     let guideAnnotation = _.remove(annotations, (annotation) => {
       return _.some(annotation.tags, (tag) => { return tag === Config.namespace + ':guide' })
     })
     if (guideAnnotation.length > 0) {
-      AnnotationGuide.fromAnnotation(guideAnnotation[0], (guide) => {
+      Codebook.fromAnnotation(guideAnnotation[0], (guide) => {
         // TODO Complete the guide from the annotations
         // For the rest of annotations, get themes and codes
         let themeAnnotations = _.remove(annotations, (annotation) => {
@@ -223,7 +223,7 @@ class AnnotationGuide {
   // PVSCL:IFCOND(BuiltIn or ImportCodebook,LINE)
 
   static fromUserDefinedHighlighterDefinition (userDefinedHighlighterDefinition) {
-    let annotationGuide = new AnnotationGuide({name: userDefinedHighlighterDefinition.name})
+    let annotationGuide = new Codebook({name: userDefinedHighlighterDefinition.name})
     for (let i = 0; i < userDefinedHighlighterDefinition.definition.length; i++) {
       let themeDefinition = userDefinedHighlighterDefinition.definition[i]
       let theme = new Theme({name: themeDefinition.name, description: themeDefinition.description, annotationGuide})
@@ -245,7 +245,7 @@ class AnnotationGuide {
   // PVSCL:IFCOND(GSheetProvider,LINE)
 
   static fromGSheetProvider (callback) {
-    let annotationGuide = new AnnotationGuide({})
+    let annotationGuide = new Codebook({})
     annotationGuide.spreadsheetId = this.retrieveSpreadsheetId()
     annotationGuide.sheetId = this.retrieveSheetId()
     this.retrieveCurrentToken((err, token) => {
@@ -411,7 +411,7 @@ class AnnotationGuide {
     } /* PVSCL:ENDCOND */
     return themeOrCodeToReturn
   }
-  // PVSCL:IFCOND(Dynamic, LINE)
+  // PVSCL:IFCOND(CodebookUpdate, LINE)
 
   addTheme (theme) {
     if (LanguageUtils.isInstanceOf(theme, Theme)) {
@@ -429,17 +429,17 @@ class AnnotationGuide {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleProvider, LINE)
 
-  static createAnnotationGuideFromObject (rubric) {
+  static createCodebookFromObject (rubric) {
     // Instance rubric object
-    let instancedAnnotationGuide = Object.assign(new AnnotationGuide(rubric))
+    let instancedCodebook = Object.assign(new Codebook(rubric))
     // Instance themes and codes
     for (let i = 0; i < rubric.themes.length; i++) {
-      instancedAnnotationGuide.themes[i] = Theme.createThemeFromObject(rubric.themes[i], instancedAnnotationGuide)
+      instancedCodebook.themes[i] = Theme.createThemeFromObject(rubric.themes[i], instancedCodebook)
     }
-    return instancedAnnotationGuide
+    return instancedCodebook
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(ExportGroup, LINE)
+  // PVSCL:IFCOND(ExportCodebook, LINE)
 
   toObjects (name) {
     let object = {
@@ -476,4 +476,4 @@ class AnnotationGuide {
   // PVSCL:ENDCOND
 }
 
-module.exports = AnnotationGuide
+module.exports = Codebook

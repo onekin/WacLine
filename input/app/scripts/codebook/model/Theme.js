@@ -1,15 +1,13 @@
 const jsYaml = require('js-yaml')
 const _ = require('lodash')
-const Config = require('../Config')
-// PVSCL:IFCOND(Dynamic, LINE)
-const ColorUtils = require('../utils/ColorUtils')
+const Config = require('../../Config')
+// PVSCL:IFCOND(CodebookUpdate, LINE)
+const ColorUtils = require('../../utils/ColorUtils')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Hierarchy and (ExportGroup or MoodleProvider), LINE)
+// PVSCL:IFCOND(Hierarchy and (ExportCodebook or MoodleProvider), LINE)
 const Code = require('./Code')
-// PVSCL:IFCOND(ExportGroup, LINE)
-const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:ENDCOND
-// PVSCL:ENDCOND
+const LanguageUtils = require('../../utils/LanguageUtils')
 
 class Theme {
   constructor ({
@@ -17,7 +15,8 @@ class Theme {
     name,
     color,
     annotationGuide,
-    description = ''/* PVSCL:IFCOND(GSheetProvider and Code) */,
+    createdDate = new Date(),
+    description = ''/* PVSCL:IFCOND(GSheetProvider and Hierarchy) */,
     multivalued,
     inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
     moodleCriteriaId/* PVSCL:ENDCOND */
@@ -27,10 +26,18 @@ class Theme {
     this.description = description
     this.color = color
     this.annotationGuide = annotationGuide
+    if (LanguageUtils.isInstanceOf(createdDate, Date)) {
+      this.createdDate = createdDate
+    } else {
+      let timestamp = Date.parse(createdDate)
+      if (_.isNumber(timestamp)) {
+        this.createdDate = new Date(createdDate)
+      }
+    }
     // PVSCL:IFCOND(Hierarchy,LINE)
     this.codes = []
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
     this.multivalued = multivalued
     this.inductive = inductive
     // PVSCL:ENDCOND
@@ -60,7 +67,7 @@ class Theme {
     let cmidTag = 'cmid:' + this.annotationGuide.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
     if (this.multivalued) {
       tags.push(Config.namespace + ':' + Config.tags.statics.multivalued)
     }
@@ -78,7 +85,7 @@ class Theme {
       tags: tags,
       target: [],
       text: jsYaml.dump({
-        id: this.id || ''/* PVSCL:IFCOND(User) */,
+        id: this.id || ''/* PVSCL:IFCOND(BuiltIn) */,
         description: this.description/* PVSCL:ENDCOND */
       }),
       uri: this.annotationGuide.annotationServer.group.links.html
@@ -93,7 +100,7 @@ class Theme {
     let themeTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
     })
-    // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+    // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
     let multivaluedTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':multivalued')
     })
@@ -104,7 +111,7 @@ class Theme {
     if (_.isString(themeTag)) {
       let name = themeTag.replace(Config.namespace + ':' + Config.tags.grouped.group + ':', '')
       let config = jsYaml.load(annotation.text)
-      // PVSCL:IFCOND(GSheetProvider and Code,LINE)
+      // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
       // multivalued and inductive
       let multivalued = _.isString(multivaluedTag)
       let inductive = _.isString(inductiveTag)
@@ -119,7 +126,8 @@ class Theme {
           id,
           name,
           description,
-          annotationGuide/* PVSCL:IFCOND(GSheetProvider and Code) */,
+          createdDate: annotation.updated,
+          annotationGuide/* PVSCL:IFCOND(GSheetProvider and Hierarchy) */,
           multivalued,
           inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
           moodleCriteriaId/* PVSCL:ENDCOND */
@@ -131,7 +139,7 @@ class Theme {
       console.error('Unable to retrieve criteria from annotation')
     }
   }
-  // PVSCL:IFCOND(Dynamic, LINE) // Check if it is possible to add codes to the definition model if it is not selected Dynamic feature
+  // PVSCL:IFCOND(CodebookUpdate, LINE) // Check if it is possible to add codes to the definition model if it is not selected Dynamic feature
   // PVSCL:IFCOND(Hierarchy, LINE)
 
   addCode (code) {
@@ -147,7 +155,7 @@ class Theme {
   }
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(Dynamic, LINE)
+  // PVSCL:IFCOND(CodebookUpdate, LINE)
 
   reloadColorsForCodes () {
     this.codes.forEach((code, j) => {
@@ -156,6 +164,7 @@ class Theme {
     })
   }
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ExportCodebook, LINE)
 
   toObjects () {
     let object = {

@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const TargetManager = require('../target/TargetManager')
 const Sidebar = require('./Sidebar')
-const TagManager = require('./TagManager')
+const CodebookManager = require('../codebook/CodebookManager')
 const Config = require('../Config')
 const Toolset = require('./Toolset')
 const AnnotationManagement = require('../annotationManagement/AnnotationManagement')
@@ -156,10 +156,10 @@ class ContentScriptManager {
   reloadTagsManager () {
     return new Promise((resolve, reject) => {
       // Destroy current tag manager
-      this.destroyTagsManager()
+      this.destroyCodebookManager()
       // Create a new tag manager for the current group
-      window.abwa.tagManager = new TagManager(Config.namespace, Config.tags) // TODO Depending on the type of annotator
-      window.abwa.tagManager.init((err) => {
+      window.abwa.codebookManager = new CodebookManager(Config.namespace, Config.tags) // TODO Depending on the type of annotator
+      window.abwa.codebookManager.init((err) => {
         if (err) {
           reject(err)
         } else {
@@ -313,9 +313,9 @@ class ContentScriptManager {
     }
   }
 
-  destroyTagsManager () {
-    if (!_.isEmpty(window.abwa.tagManager)) {
-      window.abwa.tagManager.destroy()
+  destroyCodebookManager () {
+    if (!_.isEmpty(window.abwa.codebookManager)) {
+      window.abwa.codebookManager.destroy()
     }
   }
 

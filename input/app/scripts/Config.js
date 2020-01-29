@@ -35,7 +35,7 @@ tags['statics'] = {
 }
 // PVSCL:ENDCOND
 const Config = {
-  // PVSCL:IFCOND(User or ApplicationBased, LINE)
+  // PVSCL:IFCOND(BuiltIn or ApplicationBased, LINE)
   groupName: 'DefaultReviewModel',
   // PVSCL:ENDCOND
   defaultAnnotationServer: defaultAnnotationServer,

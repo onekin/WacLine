@@ -2,7 +2,7 @@ const Task = require('./Task')
 const _ = require('lodash')
 const CryptoUtils = require('../../utils/CryptoUtils')
 const AnnotationUtils = require('../../utils/AnnotationUtils')
-const AnnotationGuide = require('../../definition/AnnotationGuide')
+const Codebook = require('../../codebook/model/Codebook')
 const Config = require('../../Config')
 // PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
@@ -205,7 +205,7 @@ class CreateHighlighterTask extends Task {
       } else {
         // Restore object
         rubric.annotationServer = annotationServer
-        rubric = AnnotationGuide.createAnnotationGuideFromObject(rubric)
+        rubric = Codebook.createCodebookFromObject(rubric)
         // Check annotations pending
         let annotationsPending = _.differenceWith(rubric.toAnnotations(), annotations, AnnotationUtils.areEqual)
         // Check annotations to remove
@@ -241,7 +241,7 @@ class CreateHighlighterTask extends Task {
       rubric.annotationServer.group.links.html = rubric.annotationServer.group.links.html.substr(0, rubric.annotationServer.group.links.html.lastIndexOf('/'))
     }
     // PVSCL:ENDCOND
-    rubric = AnnotationGuide.createAnnotationGuideFromObject(rubric) // convert to rubric to be able to run toAnnotations() function
+    rubric = Codebook.createCodebookFromObject(rubric) // convert to rubric to be able to run toAnnotations() function
     let annotations = rubric.toAnnotations()
     this.createTeacherAnnotation({producerId: userProfile.userid, annotationServer: annotationServer}, (err) => {
       if (err) {

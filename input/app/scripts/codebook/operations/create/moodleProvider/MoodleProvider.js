@@ -1,19 +1,19 @@
-const MoodleClientManager = require('../moodle/MoodleClientManager')
-const MoodleFunctions = require('../moodle/MoodleFunctions')
+const MoodleClientManager = require('../../../../moodle/MoodleClientManager')
+const MoodleFunctions = require('../../../../moodle/MoodleFunctions')
 const _ = require('lodash')
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('../../../../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
+const BrowserStorageManager = require('../../../../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Code, LINE)
-const Code = require('../definition/Code')
+// PVSCL:IFCOND(Hierarchy, LINE)
+const Code = require('../../../model/Code')
 // PVSCL:ENDCOND
-const Alerts = require('../utils/Alerts')
-const AnnotationGuide = require('../definition/AnnotationGuide')
-const Theme = require('../definition/Theme')
-const LanguageUtils = require('../utils/LanguageUtils')
+const Alerts = require('../../../../utils/Alerts')
+const Codebook = require('../../../model/Codebook')
+const Theme = require('../../../model/Theme')
+const LanguageUtils = require('../../../../utils/LanguageUtils')
 const CircularJSON = require('circular-json-es6')
 const MoodleScraping = require('./MoodleScraping')
 
@@ -81,7 +81,7 @@ class MoodleProvider {
                   }).then((resolves) => {
                     if (resolves && resolves.length > 1) {
                       let students = null
-                      if (LanguageUtils.isInstanceOf(resolves[0], AnnotationGuide)) {
+                      if (LanguageUtils.isInstanceOf(resolves[0], Codebook)) {
                         this.rubric = resolves[0]
                         students = resolves[1]
                       } else {
@@ -233,7 +233,7 @@ class MoodleProvider {
   }
 
   constructRubricsModel ({moodleRubrics, courseId, assignmentId, callback}) {
-    this.rubric = new AnnotationGuide({
+    this.rubric = new Codebook({
       name: _.get(moodleRubrics, 'areas[0].definitions[0].name'),
       moodleEndpoint: this.moodleEndpoint,
       assignmentName: this.assignmentName,
@@ -251,7 +251,7 @@ class MoodleProvider {
         for (let i = 0; i < rubricCriteria.length; i++) {
           let moodleCriteria = rubricCriteria[i]
           let criteria = new Theme({name: LanguageUtils.normalizeString(moodleCriteria.description), id: moodleCriteria.id, description: LanguageUtils.normalizeString(moodleCriteria.description), annotationGuide: this.rubric})
-          // PVSCL:IFCOND(Code, LINE)
+          // PVSCL:IFCOND(Hierarchy, LINE)
           for (let j = 0; j < moodleCriteria.levels.length; j++) {
             let moodleLevel = moodleCriteria.levels[j]
             let level = new Code({name: moodleLevel.score, id: moodleLevel.id, description: LanguageUtils.normalizeString(moodleLevel.definition), theme: criteria})

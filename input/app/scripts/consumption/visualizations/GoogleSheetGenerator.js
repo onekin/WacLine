@@ -3,7 +3,7 @@ const AnnotationUtils = require('../../utils/AnnotationUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
 const Config = require('../../Config')
 const _ = require('lodash')
-const Theme = require('../../definition/Theme')
+const Theme = require('../../codebook/model/Theme')
 
 const HyperSheetColors = {
   red: {
@@ -100,7 +100,7 @@ class GoogleSheetGenerator {
       // Calculate for each code which one is the number of columns (multivalued use case)
       let columns = GoogleSheetGenerator.calculateColumns(primaryStudies)
       // First row is for codebook facets
-      let themes = _.filter(window.abwa.tagManager.model.highlighterDefinition.themes, (code) => {
+      let themes = _.filter(window.abwa.codebookManager.codebookReader.codebook.themes, (code) => {
         return code.parentCode === null
       })
       rows.push(GoogleSheetGenerator.createHeaderSpreadsheetRow(themes, columns))
@@ -229,7 +229,7 @@ class GoogleSheetGenerator {
         return codingAnnotation.id === validatedAnnotationId
       })
       // Get code or theme that is classified with
-      let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(codingAnnotation.tagId)
+      let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codingAnnotation.tagId)
       let theme
       let code
       if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
@@ -262,7 +262,7 @@ class GoogleSheetGenerator {
 
   static calculateColumns (primaryStudies) {
     // Get all parent codes
-    let themes = window.abwa.tagManager.model.highlighterDefinition.themes
+    let themes = window.abwa.codebookManager.codebookReader.codebook.themes
     return themes.map((theme) => {
       let primaryStudyWithMaxValuesForThisCode = _.maxBy(primaryStudies, (ps) => {
         if (_.has(ps.codes, theme.id)) {

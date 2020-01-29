@@ -30,6 +30,7 @@ class ReplyAnnotation {
         } else {
           if (_.isEmpty(inputValue)) {
             // The comment you are writing is new
+            // TODO Check why is this requirement here, TextAnnotator is the file to be removed
             const TextAnnotator = require('../../contentScript/contentAnnotators/TextAnnotator')
             let replyAnnotationData = TextAnnotator.constructAnnotation({
               motivation: motivation
@@ -182,8 +183,6 @@ class ReplyAnnotation {
       textSpanClassName += ' reply_validated'
     }
     // PVSCL:ENDCOND
-    // Calculate date
-
     // Add user name
     if (reply.creator === window.abwa.groupSelector.getCreatorData()) {
       htmlText += '<span class="' + userSpanClassName + '">You: </span>'
