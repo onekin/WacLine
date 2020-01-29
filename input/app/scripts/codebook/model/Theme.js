@@ -1,15 +1,13 @@
 const jsYaml = require('js-yaml')
 const _ = require('lodash')
-const Config = require('../Config')
+const Config = require('../../Config')
 // PVSCL:IFCOND(CodebookUpdate, LINE)
-const ColorUtils = require('../utils/ColorUtils')
+const ColorUtils = require('../../utils/ColorUtils')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Hierarchy and (ExportGroup or MoodleProvider), LINE)
+// PVSCL:IFCOND(Hierarchy and (ExportCodebook or MoodleProvider), LINE)
 const Code = require('./Code')
-// PVSCL:IFCOND(ExportGroup, LINE)
-const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:ENDCOND
-// PVSCL:ENDCOND
+const LanguageUtils = require('../../utils/LanguageUtils')
 
 class Theme {
   constructor ({
@@ -17,6 +15,7 @@ class Theme {
     name,
     color,
     annotationGuide,
+    createdDate = new Date(),
     description = ''/* PVSCL:IFCOND(GSheetProvider and Hierarchy) */,
     multivalued,
     inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
@@ -27,6 +26,14 @@ class Theme {
     this.description = description
     this.color = color
     this.annotationGuide = annotationGuide
+    if (LanguageUtils.isInstanceOf(createdDate, Date)) {
+      this.createdDate = createdDate
+    } else {
+      let timestamp = Date.parse(createdDate)
+      if (_.isNumber(timestamp)) {
+        this.createdDate = new Date(createdDate)
+      }
+    }
     // PVSCL:IFCOND(Hierarchy,LINE)
     this.codes = []
     // PVSCL:ENDCOND
@@ -119,6 +126,7 @@ class Theme {
           id,
           name,
           description,
+          createdDate: annotation.updated,
           annotationGuide/* PVSCL:IFCOND(GSheetProvider and Hierarchy) */,
           multivalued,
           inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
@@ -156,7 +164,7 @@ class Theme {
     })
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(ExportGroup, LINE)
+  // PVSCL:IFCOND(ExportCodebook, LINE)
 
   toObject () {
     let object = {

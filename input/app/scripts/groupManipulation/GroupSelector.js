@@ -3,11 +3,11 @@ const $ = require('jquery')
 const Alerts = require('../utils/Alerts')
 const ChromeStorage = require('../utils/ChromeStorage')
 const LanguageUtils = require('../utils/LanguageUtils')
-// PVSCL:IFCOND(User or ApplicationBased, LINE)
+// PVSCL:IFCOND(BuiltIn or ApplicationBased, LINE)
 const Config = require('../Config')
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Manual, LINE)
+// PVSCL:IFCOND(Manual or CodebookDelete or RenameCodebook or ExportCodebook or ImportCodebook, LINE)
 const Events = require('../Events')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResourceBased,LINE)
@@ -16,13 +16,6 @@ const CryptoUtils = require('../utils/CryptoUtils')
 // PVSCL:IFCOND(Hypothesis,LINE)
 const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(ImportGroup, LINE)
-const AnnotationGuide = require('../coodebook/Coodebook')
-const ImportSchema = require('./ImportSchema')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(ExportGroup, LINE)
-const ExportSchema = require('./ExportSchema')
-// PVSCL:ENDCOND
 
 class GroupSelector {
   constructor () {
@@ -30,10 +23,24 @@ class GroupSelector {
     this.groups = null
     this.currentGroup = null
     this.user = {}
+    this.events = {}
   }
 
   init (callback) {
     console.debug('Initializing group selector')
+    // EVENTS
+    // PVSCL:IFCOND(CodebookDelete, LINE)
+    this.initCodebookDeletedEvent()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(RenameCodebook, LINE)
+    this.initCodebookRenamedEvent()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(ImportCodebook, LINE)
+    this.initCodebookImportedEvent()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(ExportCodebook, LINE)
+    this.initCodebookExportedEvent()
+    // PVSCL:ENDCOND
     this.checkIsLoggedIn((err) => {
       if (err) {
         // Stop propagating the rest of the functions, because it is not logged in annotation server
@@ -59,6 +66,34 @@ class GroupSelector {
       }
     })
   }
+  // PVSCL:IFCOND(CodebookDelete, LINE)
+
+  initCodebookDeletedEvent () {
+    this.events.codebookDeletedEvent = {element: document, event: Events.codebookDeleted, handler: this.codebookDeletedEventHandler()}
+    this.events.codebookDeletedEvent.element.addEventListener(this.events.codebookDeletedEvent.event, this.events.codebookDeletedEvent.handler, false)
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(RenameCodebook, LINE)
+
+  initCodebookRenamedEvent () {
+    this.events.codebookRenamedEvent = {element: document, event: Events.codebookRenamed, handler: this.codebookRenamedEventHandler()}
+    this.events.codebookRenamedEvent.element.addEventListener(this.events.codebookRenamedEvent.event, this.events.codebookRenamedEvent.handler, false)
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ImportCodebook, LINE)
+
+  initCodebookImportedEvent () {
+    this.events.codebookImportedEvent = {element: document, event: Events.codebookImported, handler: this.codebookImportedEventHandler()}
+    this.events.codebookImportedEvent.element.addEventListener(this.events.codebookImportedEvent.event, this.events.codebookImportedEvent.handler, false)
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ExportCodebook, LINE)
+
+  initCodebookExportedEvent () {
+    this.events.codebookExportedEvent = {element: document, event: Events.codebookExported, handler: this.codebookExportedEventHandler()}
+    this.events.codebookExportedEvent.element.addEventListener(this.events.codebookExportedEvent.event, this.events.codebookExportedEvent.handler, false)
+  }
+  // PVSCL:ENDCOND
 
   /**
    * This function defines the group of annotations that is selected by default when the application is opened
@@ -84,7 +119,7 @@ class GroupSelector {
                 callback(null)
               }
             } else {
-              // PVSCL:IFCOND(User, LINE)
+              // PVSCL:IFCOND(BuiltIn, LINE)
               // TODO i18n
               Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the extension. We are configuring everything to start reviewing.', position: Alerts.position.center})
               // TODO Create default group
@@ -138,7 +173,7 @@ class GroupSelector {
                 }
               }
               // If group cannot be retrieved from saved in extension annotationServer
-              // PVSCL:IFCOND(User, LINE)
+              // PVSCL:IFCOND(BuiltIn, LINE)
               // Try to load a group with defaultName
               if (_.isEmpty(this.currentGroup)) {
                 this.currentGroup = _.find(window.abwa.groupSelector.groups, (group) => { return group.name === GroupName })
@@ -273,7 +308,7 @@ class GroupSelector {
       }
     })
   }
-  // PVSCL:IFCOND(User,LINE)
+  // PVSCL:IFCOND(BuiltIn,LINE)
 
   createApplicationBasedGroupForUser (callback) {
     window.abwa.annotationServerManager.client.createNewGroup({name: Config.groupName}, callback)
@@ -322,22 +357,22 @@ class GroupSelector {
       nameElement.innerText = group.name
       nameElement.title = 'Move to review model ' + group.name
       nameElement.addEventListener('click', this.createGroupChangeEventHandler(group.id))
-      // PVSCL:IFCOND(RenameGroup or ExportGroup or DropGroup,LINE)
+      // PVSCL:IFCOND(RenameCodebook or ExportCodebook or CodebookDelete,LINE)
       // Toggle
       groupSelectorItem.querySelector('.groupSelectorItemToggle').addEventListener('click', this.createGroupSelectorItemToggleEventHandler(group.id))
       // Options
-      // PVSCL:IFCOND(RenameGroup,LINE)
+      // PVSCL:IFCOND(RenameCodebook,LINE)
       groupSelectorItem.querySelector('.renameGroup').addEventListener('click', this.createGroupSelectorRenameOptionEventHandler(group))
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(ExportGroup,LINE)
+      // PVSCL:IFCOND(ExportCodebook,LINE)
       groupSelectorItem.querySelector('.exportGroup').addEventListener('click', this.createGroupSelectorExportOptionEventHandler(group))
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(DropGroup,LINE)
+      // PVSCL:IFCOND(CodebookDelete,LINE)
       groupSelectorItem.querySelector('.deleteGroup').addEventListener('click', this.createGroupSelectorDeleteOptionEventHandler(group))
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
     }
-    // PVSCL:IFCOND(CreateGroup,LINE)
+    // PVSCL:IFCOND(BuiltIn,LINE)
     // New group button
     let newGroupButton = document.createElement('div')
     newGroupButton.innerText = 'Create review model'
@@ -347,7 +382,7 @@ class GroupSelector {
     newGroupButton.addEventListener('click', this.createNewReviewModelEventHandler())
     groupsContainer.appendChild(newGroupButton)
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(ImportGroup,LINE)
+    // PVSCL:IFCOND(ImportCodebook,LINE)
     // Import button
     let importGroupButton = document.createElement('div')
     importGroupButton.className = 'groupSelectorButton'
@@ -379,6 +414,18 @@ class GroupSelector {
     }
   }
 
+  updateCurrentGroupHandler (groupId) {
+    this.currentGroup = _.find(this.groups, (group) => { return groupId === group.id })
+    ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local, () => {
+      console.debug('Group updated. Name: %s id: %s', this.currentGroup.name, this.currentGroup.id)
+      // Dispatch event
+      LanguageUtils.dispatchCustomEvent(Events.groupChanged, {
+        group: this.currentGroup,
+        time: new Date()
+      })
+    })
+  }
+
   setCurrentGroup (groupId, callback) {
     // Set current group
     let newCurrentGroup = _.find(this.groups, (group) => { return group.id === groupId })
@@ -402,7 +449,7 @@ class GroupSelector {
       }
     })
   }
-  // PVSCL:IFCOND(RenameGroup or ExportGroup or DropGroup,LINE)
+  // PVSCL:IFCOND(RenameCodebook or ExportCodebook or CodebookDelete,LINE)
 
   createGroupSelectorItemToggleEventHandler (groupId) {
     return (e) => {
@@ -415,67 +462,7 @@ class GroupSelector {
     }
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(RenameGroup,LINE)
-
-  createGroupSelectorRenameOptionEventHandler (group) {
-    return () => {
-      this.renameGroup(group, (err, renamedGroup) => {
-        if (err) {
-          Alerts.errorAlert({text: 'Unable to rename group. Error: ' + err.message})
-        } else {
-          this.currentGroup = renamedGroup
-          this.retrieveGroups(() => {
-            this.reloadGroupsContainer(() => {
-              this.container.setAttribute('aria-expanded', 'true')
-              window.abwa.sidebar.openSidebar()
-            })
-          })
-        }
-      })
-    }
-  }
-  // PVSCL:ENDCOND
-  // PVSCL:IFCOND(ExportGroup,LINE)
-
-  createGroupSelectorExportOptionEventHandler (group) {
-    return () => {
-      this.exportCriteriaConfiguration(group, (err) => {
-        if (err) {
-          Alerts.errorAlert({text: 'Error when trying to export review model. Error: ' + err.message})
-        }
-      })
-    }
-  }
-  // PVSCL:ENDCOND
-  // PVSCL:IFCOND(DropGroup,LINE)
-
-  createGroupSelectorDeleteOptionEventHandler (group) {
-    return (e) => {
-      this.deleteGroup(group, (err) => {
-        if (err) {
-          Alerts.errorAlert({text: 'Error when deleting the group: ' + err.message})
-        } else {
-          // If removed group is the current group, current group must defined again
-          if (group.id === this.currentGroup.id) {
-            this.currentGroup = null
-          }
-          // Move to first other group if exists
-          this.defineCurrentGroup(() => {
-            this.reloadGroupsContainer(() => {
-              // Dispatch group has changed
-              this.updateCurrentGroupHandler(this.currentGroup.id)
-              // Expand groups container
-              this.container.setAttribute('aria-expanded', 'false')
-              // Reopen sidebar if closed
-              window.abwa.sidebar.openSidebar()
-            })
-          })
-        }
-      })
-    }
-  }
-  // PVSCL:ENDCOND
-  // PVSCL:IFCOND(CreateGroup,LINE)
+  // PVSCL:IFCOND(BuiltIn,LINE)
 
   createNewReviewModelEventHandler () {
     return () => {
@@ -529,88 +516,105 @@ class GroupSelector {
     })
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(ImportGroup,LINE)
+  // PVSCL:IFCOND(CodebookDelete,LINE)
 
-  createImportGroupButtonEventHandler () {
-    return (e) => {
-      this.importCriteriaConfiguration()
+  createGroupSelectorDeleteOptionEventHandler (group) {
+    return (event) => {
+      LanguageUtils.dispatchCustomEvent(Events.deleteCodebook, {codebook: group, user: this.user})
     }
   }
 
-  importCriteriaConfiguration () {
-    ImportSchema.askUserForConfigurationSchema((err, jsonObject) => {
-      if (err) {
-        Alerts.errorAlert({text: 'Unable to parse json file. Error:<br/>' + err.message})
+  codebookDeletedEventHandler () {
+    return (event) => {
+      if (event.detail.err) {
+        Alerts.errorAlert({text: 'Error when deleting the group: ' + event.detail.err.message})
       } else {
-        Alerts.inputTextAlert({
-          alertType: Alerts.alertType.warning,
-          title: 'Give a name to your imported review model',
-          text: 'When the configuration is imported a new highlighter is created. You can return to your other review models using the sidebar.',
-          inputPlaceholder: 'Type here the name of your review model...',
-          preConfirm: (groupName) => {
-            if (_.isString(groupName)) {
-              if (groupName.length <= 0) {
-                const swal = require('sweetalert2')
-                swal.showValidationMessage('Name cannot be empty.')
-              } else if (groupName.length > 25) {
-                const swal = require('sweetalert2')
-                swal.showValidationMessage('The review model name cannot be higher than 25 characters.')
-              } else {
-                return groupName
-              }
-            }
-          },
-          callback: (err, reviewName) => {
-            if (err) {
-              window.alert('Unable to load alert. Unexpected error, please contact developer.')
-            } else {
-              window.abwa.annotationServerManager.client.createNewGroup({name: reviewName}, (err, newGroup) => {
-                if (err) {
-                  Alerts.errorAlert({text: 'Unable to create a new annotation group. Error: ' + err.message})
-                } else {
-                  let guide = AnnotationGuide.fromUserDefinedHighlighterDefinition(jsonObject)
-                  AnnotationGuide.setAnnotationServer(newGroup, (annotationServer) => {
-                    guide.annotationServer = annotationServer
-                    Alerts.loadingAlert({
-                      title: 'Configuration in progress',
-                      text: 'We are configuring everything to start reviewing.',
-                      position: Alerts.position.center
-                    })
-                    ImportSchema.createConfigurationAnnotationsFromReview({
-                      guide,
-                      callback: (err, annotations) => {
-                        if (err) {
-                          Alerts.errorAlert({text: 'There was an error when configuring Review&Go highlighter'})
-                        } else {
-                          Alerts.closeAlert()
-                          // Update groups from annotation server
-                          this.retrieveGroups(() => {
-                            this.setCurrentGroup(guide.annotationServer.group.id)
-                          })
-                        }
-                      }
-                    })
-                  })
-                }
-              })
-            }
-          }
+        // If removed group is the current group, current group must defined again
+        if (event.detail.group.id === this.currentGroup.id) {
+          this.currentGroup = null
+        }
+        // Move to first other group if exists
+        this.defineCurrentGroup(() => {
+          this.reloadGroupsContainer(() => {
+            // Dispatch group has changed
+            this.updateCurrentGroupHandler(this.currentGroup.id)
+            // Expand groups container
+            this.container.setAttribute('aria-expanded', 'false')
+            // Reopen sidebar if closed
+            window.abwa.sidebar.openSidebar()
+          })
         })
       }
-    })
+    }
   }
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(RenameCodebook,LINE)
 
-  updateCurrentGroupHandler (groupId) {
-    this.currentGroup = _.find(this.groups, (group) => { return groupId === group.id })
-    ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local, () => {
-      console.debug('Group updated. Name: %s id: %s', this.currentGroup.name, this.currentGroup.id)
-      // Dispatch event
-      LanguageUtils.dispatchCustomEvent(Events.groupChanged, {
-        group: this.currentGroup,
-        time: new Date()
+  createGroupSelectorRenameOptionEventHandler (group) {
+    return () => {
+      LanguageUtils.dispatchCustomEvent(Events.renameCodebook, {codebook: group})
+    }
+  }
+
+  codebookRenamedEventHandler () {
+    return (event) => {
+      if (event.detail.err) {
+        Alerts.errorAlert({text: 'Error when renaming the group: ' + event.detail.err.message})
+      } else {
+        this.currentGroup = event.detail.group
+        this.retrieveGroups(() => {
+          this.reloadGroupsContainer(() => {
+            this.container.setAttribute('aria-expanded', 'true')
+            window.abwa.sidebar.openSidebar()
+          })
+        })
+      }
+    }
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ImportCodebook,LINE)
+
+  createImportGroupButtonEventHandler () {
+    return () => {
+      LanguageUtils.dispatchCustomEvent(Events.importCodebook, {importTo: 'JSON'})
+    }
+  }
+
+  codebookImportedEventHandler () {
+    return (event) => {
+      if (event.detail.err) {
+        Alerts.errorAlert({text: 'Error when deleting the group: ' + event.detail.err.message})
+      } else {
+        // Update groups from annotation server
+        this.retrieveGroups(() => {
+          this.setCurrentGroup(event.detail.groupId)
+        })
+      }
+    }
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ExportCodebook,LINE)
+
+  createGroupSelectorExportOptionEventHandler (group) {
+    return () => {
+      window.abwa.codebookManager.codebookReader.getCodebookDefinition(group, (err, groupAnnotations) => {
+        if (err) {
+          Alerts.errorAlert({text: 'Unable to export group.'})
+        } else {
+          // Export codebook
+          LanguageUtils.dispatchCustomEvent(Events.exportCodebook, {exportTo: 'JSON', codebookAnnotations: groupAnnotations, codebook: group})
+        }
       })
-    })
+    }
+  }
+
+  codebookExportedEventHandler () {
+    return (event) => {
+      if (event.detail.err) {
+        Alerts.errorAlert({text: 'Error when trying to export review model. Error: ' + event.detail.err})
+      }
+    }
   }
   // PVSCL:ENDCOND
 
@@ -674,75 +678,6 @@ class GroupSelector {
       return null
     }
   }
-  // PVSCL:IFCOND( ExportGroup, LINE)
-
-  exportCriteriaConfiguration (group, callback) {
-    // Retrieve group annotations
-    window.abwa.tagManager.getHighlighterDefinition(group, (err, groupAnnotations) => {
-      if (err) {
-        Alerts.errorAlert({text: 'Unable to export group.'})
-      } else {
-        // Export scheme
-        ExportSchema.exportConfigurationSchemaToJSONFile(groupAnnotations, group)
-      }
-    })
-  }
-  // PVSCL:ENDCOND
-  // PVSCL:IFCOND( RenameGroup, LINE)
-
-  renameGroup (group, callback) {
-    Alerts.inputTextAlert({
-      title: 'Rename review model ' + group.name,
-      inputPlaceholder: 'Type here the name of your new review model...',
-      inputValue: group.name,
-      preConfirm: (groupName) => {
-        if (_.isString(groupName)) {
-          if (groupName.length <= 0) {
-            const swal = require('sweetalert2')
-            swal.showValidationMessage('Name cannot be empty.')
-          } else if (groupName.length > 25) {
-            const swal = require('sweetalert2')
-            swal.showValidationMessage('The review model name cannot be higher than 25 characters.')
-          } else {
-            return groupName
-          }
-        }
-      },
-      callback: (err, groupName) => {
-        if (err) {
-          window.alert('Unable to load swal. Please contact developer.')
-        } else {
-          groupName = LanguageUtils.normalizeString(groupName)
-          window.abwa.annotationServerManager.client.updateGroup(group.id, {
-            name: groupName,
-            description: group.description || 'A Review&Go group to conduct a review'
-          }, callback)
-        }
-      }
-    })
-  }
-  // PVSCL:ENDCOND
-  // PVSCL:IFCOND( DropGroup, LINE)
-
-  deleteGroup (group, callback) {
-    Alerts.confirmAlert({
-      title: 'Deleting review model ' + group.name,
-      text: 'Are you sure that you want to delete the review model. You will lose all the review model and all the annotations done with this review model in all the documents.',
-      alertType: Alerts.alertType.warning,
-      callback: () => {
-        window.abwa.annotationServerManager.client.removeAMemberFromAGroup({id: group.id, user: this.user}, (err) => {
-          if (_.isFunction(callback)) {
-            if (err) {
-              callback(err)
-            } else {
-              callback(null)
-            }
-          }
-        })
-      }
-    })
-  }
-  // PVSCL:ENDCOND
 
   destroy (callback) {
     // PVSCL:IFCOND( Manual, LINE)

@@ -1,23 +1,70 @@
+const _ = require('lodash')
 const Alerts = require('../../../utils/Alerts')
 const FileUtils = require('../../../utils/FileUtils')
 const Events = require('../../../Events')
-const ImportCodebookJSON = require('./ImportCodebookJSON')
+const Codebook = require('../../model/Codebook')
+const LanguageUtils = require('../../../utils/LanguageUtils')
 
-class ImportCodebook {
-  constructor () {
-    this.events = {}
+class ImportCodebookJSON {
+  static import () {
+    ImportCodebookJSON.askUserForConfigurationSchema((err, jsonObject) => {
+      if (err) {
+        Alerts.errorAlert({text: 'Unable to parse json file. Error:<br/>' + err.message})
+      } else {
+        Alerts.inputTextAlert({
+          alertType: Alerts.alertType.warning,
+          title: 'Give a name to your imported review model',
+          text: 'When the configuration is imported a new highlighter is created. You can return to your other review models using the sidebar.',
+          inputPlaceholder: 'Type here the name of your review model...',
+          preConfirm: (groupName) => {
+            if (_.isString(groupName)) {
+              if (groupName.length <= 0) {
+                const swal = require('sweetalert2')
+                swal.showValidationMessage('Name cannot be empty.')
+              } else if (groupName.length > 25) {
+                const swal = require('sweetalert2')
+                swal.showValidationMessage('The review model name cannot be higher than 25 characters.')
+              } else {
+                return groupName
+              }
+            }
+          },
+          callback: (err, reviewName) => {
+            if (err) {
+              window.alert('Unable to load alert. Unexpected error, please contact developer.')
+            } else {
+              window.abwa.annotationServerManager.client.createNewGroup({name: reviewName}, (err, newGroup) => {
+                if (err) {
+                  Alerts.errorAlert({text: 'Unable to create a new annotation group. Error: ' + err.message})
+                } else {
+                  let guide = Codebook.fromUserDefinedHighlighterDefinition(jsonObject)
+                  Codebook.setAnnotationServer(newGroup, (annotationServer) => {
+                    guide.annotationServer = annotationServer
+                    Alerts.loadingAlert({
+                      title: 'Configuration in progress',
+                      text: 'We are configuring everything to start reviewing.',
+                      position: Alerts.position.center
+                    })
+                    ImportCodebookJSON.createConfigurationAnnotationsFromReview({guide,
+                      callback: (err, annotations) => {
+                        if (err) {
+                          Alerts.errorAlert({text: 'There was an error when configuring Review&Go highlighter'})
+                        } else {
+                          Alerts.closeAlert()
+                          LanguageUtils.dispatchCustomEvent(Events.codebookImported, {groupId: guide.annotationServer.group.id})
+                        }
+                      }
+                    })
+                  })
+                }
+              })
+            }
+          }
+        })
+      }
+    })
   }
 
-  init () {
-    // Add event listener for export codebook event
-    this.initImportCodebookEventHandler()
-  }
-
-  // EVENTS
-  initExportCodebookEventHandler () {
-    this.events.importCodebookEvent = {element: document, event: Events.importCodebook, handler: this.importCodebookEventHandler()}
-    this.events.importCodebookEvent.element.addEventListener(this.events.importCodebookEvent.event, this.events.importCodebookEvent.handler, false)
-  }
   static createConfigurationAnnotationsFromReview ({guide, callback}) {
     // Create highlighter annotations
     let annotations = guide.toAnnotations()
@@ -71,4 +118,4 @@ class ImportCodebook {
   }
 }
 
-module.exports = ImportCodebook
+module.exports = ImportCodebookJSON

@@ -16,7 +16,7 @@ const Resume = require('../consumption/visualizations/Resume')
 const TextSummary = require('../consumption/visualizations/TextSummary')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(DeleteGroup,LINE)
-const DeleteGroup = require('../groupManipulation/DeleteGroup')
+const DeleteGroup = require('../codebook/operations/delete/DeleteGroup')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleReport,LINE)
 const BackToWorkspace = require('../moodle/BackToWorkspace')

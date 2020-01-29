@@ -1,6 +1,6 @@
 const $ = require('jquery')
 const _ = require('lodash')
-const ColorUtils = require('../../utils/ColorUtils')
+const ColorUtils = require('../../../utils/ColorUtils')
 if (!$.contextMenu) {
   require('jquery-contextmenu/dist/jquery.contextMenu')
 }

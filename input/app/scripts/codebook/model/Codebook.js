@@ -1,23 +1,23 @@
 const jsYaml = require('js-yaml')
 const Theme = require('./Theme')
-const Config = require('../Config')
+const Config = require('../../Config')
 const _ = require('lodash')
-const LanguageUtils = require('../utils/LanguageUtils')
+const LanguageUtils = require('../../utils/LanguageUtils')
 // PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('./Code')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GSheetProvider,LINE)
-const URLUtils = require('../utils/URLUtils')
-const Alerts = require('../utils/Alerts')
+const URLUtils = require('../../utils/URLUtils')
+const Alerts = require('../../utils/Alerts')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
-const Hypothesis = require('../annotationServer/hypothesis/Hypothesis')
+const Hypothesis = require('../../annotationServer/hypothesis/Hypothesis')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorage = require('../annotationServer/browserStorage/BrowserStorage')
+const BrowserStorage = require('../../annotationServer/browserStorage/BrowserStorage')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(CodebookUpdate, LINE)
-const ColorUtils = require('../utils/ColorUtils')
+const ColorUtils = require('../../utils/ColorUtils')
 // PVSCL:ENDCOND
 
 class Codebook {
@@ -439,7 +439,7 @@ class Codebook {
     return instancedCodebook
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(ExportGroup, LINE)
+  // PVSCL:IFCOND(ExportCodebook, LINE)
 
   toObject (name) {
     let object = {

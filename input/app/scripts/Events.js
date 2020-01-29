@@ -7,15 +7,33 @@ const Events = {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Codebook, LINE)
   createCodebook: 'createCodebook',
-  createCodebook: 'createCodebook',
   codebookCreated: 'codebookCreated',
   createTheme: 'createTheme',
   themeCreated: 'themeCreated',
+  removeTheme: 'removeTheme',
+  themeRemoved: 'themeRemoved',
   // PVSCL:IFCOND(Hierarchy, LINE)
   createCode: 'createCode',
   codeCreated: 'codeCreated',
+  removeCode: 'removeCode',
+  codeRemoved: 'codeRemoved',
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(RenameCodebook,LINE)
   renameCodebook: 'renameCodebook',
+  codebookRenamed: 'codebookRenamed',
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ExportCodebook,LINE)
+  exportCodebook: 'exportCodebook',
+  codebookExported: 'codebookExported',
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ImportCodebook,LINE)
+  importCodebook: 'importCodebook',
+  codebookImported: 'codebookImported',
+  // PVSCL:ENDCOND
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(CodebookDelete,LINE)
+  deleteCodebook: 'deleteCodebook',
+  codebookDeleted: 'codebookDeleted',
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(SingleCode,LINE)
   codeToAll: 'codeToAll',

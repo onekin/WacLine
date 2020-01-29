@@ -11,7 +11,7 @@ defaultAnnotationServer = 'PVSCL:EVAL(AnnotationServer->pv:SelectedChildren()->p
 let grouped = {
   group: 'theme'
 }
-// PVSCL:IFCOND(Code,LINE)
+// PVSCL:IFCOND(Hierarchy,LINE)
 grouped['subgroup'] = 'code'
 grouped['relation'] = 'isCodeOf'
 // PVSCL:ENDCOND
@@ -32,7 +32,7 @@ tags['statics'] = {
 }
 // PVSCL:ENDCOND
 const Config = {
-  // PVSCL:IFCOND(User or ApplicationBased, LINE)
+  // PVSCL:IFCOND(BuiltIn or ApplicationBased, LINE)
   groupName: 'DefaultReviewModel',
   // PVSCL:ENDCOND
   defaultAnnotationServer: defaultAnnotationServer,

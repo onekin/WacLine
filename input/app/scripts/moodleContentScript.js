@@ -1,6 +1,6 @@
 const _ = require('lodash')
-const MoodleProvider = require('./moodleProvider/MoodleProvider')
-const MoodleAugmentation = require('./moodleProvider/augmentation/MoodleAugmentation')
+const MoodleProvider = require('./codebook/operations/create/moodleProvider/MoodleProvider')
+const MoodleAugmentation = require('./codebook/operations/create/moodleProvider/augmentation/MoodleAugmentation')
 
 window.addEventListener('load', () => {
   console.debug('Loaded moodle content script')

@@ -98,12 +98,12 @@
     "*://www.dropbox.com/s/",
     "*://*.dropboxusercontent.com/*"PVSCL:ENDCOND
   ],
-  PVSCL:IFCOND(GSheetProvider or GSheetConsumer, LINE)
+  PVSCL:IFCOND(GSheetProvider or GoogleSheetConsumer, LINE)
   "oauth2": {
   	PVSCL:IFCOND(GSheetProvider, LINE)
     "client_id": "PVSCL:EVAL(GSheetProvider->pv:Attribute('clientId'))",
-    PVSCL:ELSEIFCOND(GSheetConsumer and not(GSheetProvider))
-    "client_id": "PVSCL:EVAL(GSheetConsumer->pv:Attribute('clientId'))",
+    PVSCL:ELSEIFCOND(GoogleSheetConsumer)
+    "client_id": "PVSCL:EVAL(GoogleSheetConsumer->pv:Attribute('clientId'))",
     PVSCL:ENDCOND
     "scopes": [
       "https://www.googleapis.com/auth/spreadsheets"

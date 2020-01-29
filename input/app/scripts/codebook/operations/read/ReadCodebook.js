@@ -1,20 +1,19 @@
-const Events = require('../../Events')
-const Config = require('../../Config')
+const Events = require('../../../Events')
+const Config = require('../../../Config')
 const Buttons = require('./Buttons')
-const Alerts = require('../../utils/Alerts')
+const Alerts = require('../../../utils/Alerts')
 const $ = require('jquery')
 const _ = require('lodash')
-const Codebook = require('../model/Codebook')
-const Theme = require('../model/Theme')
+const Codebook = require('../../model/Codebook')
+const Theme = require('../../model/Theme')
 // PVSCL:IFCOND(Hierarchy,LINE)
-const Code = require('../model/Code')
+const Code = require('../../model/Code')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(BuiltIn,LINE)
-const BuiltIn = require('../create/builtIn/BuiltIn')
-// PVSCL:ENDCOND
-const ColorUtils = require('../../utils/ColorUtils')
-const LanguageUtils = require('../../utils/LanguageUtils')
+const ColorUtils = require('../../../utils/ColorUtils')
+const LanguageUtils = require('../../../utils/LanguageUtils')
+// PVSCL:IFCOND(CodebookUpdate, LINE)
 const UpdateCodebook = require('../update/UpdateCodebook')
+// PVSCL:ENDCOND
 
 class ReadCodebook {
   constructor () {
@@ -24,6 +23,7 @@ class ReadCodebook {
 
   init () {
     // Add event listener for createAnnotation event
+    this.initCodebookCreatedEvent()
     // PVSCL:IFCOND(CodebookUpdate,LINE)
     this.initThemeCreatedEvent()
     this.initThemeRemovedEvent()
@@ -60,15 +60,18 @@ class ReadCodebook {
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
 
-  loadCodebook (callback) {
+  initCodebookCreatedEvent () {
+    this.events.codebookCreatedEvent = {element: document, event: Events.codebookCreated, handler: this.codebookCreatedEventHandler()}
+    this.events.codebookCreatedEvent.element.addEventListener(this.events.codebookCreatedEvent.event, this.events.codebookCreatedEvent.handler, false)
+  }
+  /**
+   * Loads the codebook inside the sidebar
+   * @param callback
+   */
+  loadCodebook () {
     console.debug('Reading codebook')
     this.initCodebookStructure(() => {
-      this.initCodebookContent(() => {
-        console.debug('Codebook read')
-        if (_.isFunction(callback)) {
-          callback()
-        }
-      })
+      this.initCodebookContent()
     })
   }
 
@@ -91,85 +94,45 @@ class ReadCodebook {
    * This function loads the content of the codebook in the sidebar
    * @param callback
    */
-  initCodebookContent (callback) {
+  initCodebookContent () {
     // Retrieve from annotation server highlighter definition
     this.getCodebookDefinition(null, (err, codebookDefinitionAnnotations) => {
       if (err) {
         Alerts.errorAlert({text: 'Unable to retrieve annotations from annotation server to initialize highlighter buttons.'}) // TODO i18n
       } else {
-        let promise = new Promise((resolve, reject) => {
-          if (codebookDefinitionAnnotations.length === 0) {
-            // PVSCL:IFCOND(BuiltIn,LINE)
-            // TODO Create definition annotations if Definition->Who is User
-            let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
-            Alerts.confirmAlert({
-              title: 'Do you want to create a default annotation codebook?',
-              text: currentGroupName + ' group has not codes to start annotating. Would you like to configure the highlighter?',
-              alertType: Alerts.alertType.question,
-              callback: () => {
-                Alerts.loadingAlert({
-                  title: 'Configuration in progress',
-                  text: 'We are configuring everything to start reviewing.',
-                  position: Alerts.position.center
-                })
-                Codebook.setAnnotationServer(null, (annotationServer) => {
-                  BuiltIn.createDefaultAnnotations(annotationServer, (err, annotations) => {
-                    if (err) {
-                      reject(new Error('Unable to create default annotations.'))
-                    } else {
-                      // Open the sidebar, to notify user that the annotator is correctly created
-                      window.abwa.sidebar.openSidebar()
-                      Alerts.closeAlert()
-                      resolve(annotations)
-                    }
-                  })
-                })
-              },
-              cancelCallback: () => {
-                // PVSCL:IFCOND(CodebookUpdate,LINE)
-                Codebook.setAnnotationServer(null, (annotationServer) => {
-                  let emptyCodebook = new Codebook({annotationServer: annotationServer})
-                  let emptyCodebookAnnotation = emptyCodebook.toAnnotation()
-                  window.abwa.annotationServerManager.client.createNewAnnotation(emptyCodebookAnnotation, (err, annotation) => {
-                    if (err) {
-                      Alerts.errorAlert({text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.'}) // TODO i18n
-                    } else {
-                      // Open the sidebar, to notify user that the annotator is correctly created
-                      window.abwa.sidebar.openSidebar()
-                      resolve([annotation])
-                    }
-                  })
-                })
-                // PVSCL:ENDCOND
-              }
-            })
-            // PVSCL:ELSECOND
-            // TODO Show alert otherwise (no group is defined)
-            Alerts.errorAlert({text: 'No group is defined'})
-            // PVSCL:ENDCOND
-          } else {
-            resolve(codebookDefinitionAnnotations)
-          }
-        })
-        // After creating annotations
-        promise.catch(() => {
-          // TODO
-          Alerts.errorAlert({text: 'There was an error when configuring highlighter'})
-        }).then((annotations) => {
-          // Add to model
-          Codebook.fromAnnotations(annotations, (guide) => {
-            this.codebook = guide
-            // Set colors for each element
-            this.applyColorsToThemes()
-            console.debug(this.codebook)
-            // Populate sidebar buttons container
-            this.createButtons()
-            // this.createTagsButtonsTheme()
-            if (_.isFunction(callback)) {
-              callback()
+        if (codebookDefinitionAnnotations.length === 0) {
+          // PVSCL:IFCOND(BuiltIn,LINE)
+          // TODO Create definition annotations if Definition->Who is User
+          let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
+          Alerts.confirmAlert({
+            title: 'Do you want to create a default annotation codebook?',
+            text: currentGroupName + ' group has not codes to start annotating. Would you like to configure the highlighter?',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            alertType: Alerts.alertType.question,
+            callback: () => {
+              Alerts.loadingAlert({
+                title: 'Configuration in progress',
+                text: 'We are configuring everything to start reviewing.',
+                position: Alerts.position.center
+              })
+              Codebook.setAnnotationServer(null, (annotationServer) => {
+                LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
+              })
+            },
+            cancelCallback: () => {
+              // PVSCL:IFCOND(CodebookUpdate,LINE)
+              LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'emptyCodebook'})
+              // PVSCL:ENDCOND
             }
           })
-        })
+          // PVSCL:ELSECOND
+          // TODO Show alert otherwise (no group is defined)
+          Alerts.errorAlert({text: 'No group is defined'})
+          // PVSCL:ENDCOND
+        } else {
+          LanguageUtils.dispatchCustomEvent(Events.codebookCreated, {annotations: codebookDefinitionAnnotations})
+        }
         // TODO Create data model from highlighter definition
         // TODO Create buttons from data model
       }
@@ -216,6 +179,29 @@ class ReadCodebook {
     })
   }
 
+  codebookCreatedEventHandler () {
+    return (event) => {
+      let annotations = event.detail.annotations
+      // Add to model
+      Codebook.fromAnnotations(annotations, (guide) => {
+        this.codebook = guide
+        // Set colors for each element
+        this.applyColorsToThemes()
+        console.debug(this.codebook)
+        // Populate sidebar buttons container
+        this.createButtons()
+        // this.createTagsButtonsTheme()
+        console.debug('Codebook read')
+        if (_.isFunction(event.detail.callback)) {
+          event.detail.callback()
+        }
+      })
+    }
+  }
+
+  /**
+   * This function adds the buttons that must appear in the sidebar to be able to annotate
+   */
   createButtons () {
     // PVSCL:IFCOND(CodebookUpdate, LINE)
     // Create new theme button
@@ -223,10 +209,29 @@ class ReadCodebook {
     // PVSCL:ENDCOND
     // Create current buttons
     let themes = this.codebook.themes
+    // PVSCL:IFCOND(Alphabetical, LINE)
+    themes = themes.sort((a, b) => a.name.localeCompare(b.name))
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Number, LINE)
+    themes = themes.sort((a, b) => parseFloat(a.name) - parseFloat(b.name))
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Date, LINE)
+    themes = themes.sort((a, b) => a.createdDate - b.createdDate)
+    // PVSCL:ENDCOND
     for (let i = 0; i < themes.length; i++) {
       let theme = themes[i]
       let themeButtonContainer
       // PVSCL:IFCOND(Hierarchy,LINE)
+      let codes = theme.codes
+      // PVSCL:IFCOND(Alphabetical, LINE)
+      codes = codes.sort((a, b) => a.name.localeCompare(b.name))
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Number, LINE)
+      codes = codes.sort((a, b) => parseFloat(a.name) - parseFloat(b.name))
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Date, LINE)
+      codes = codes.sort((a, b) => a.createdDate - b.createdDate)
+      // PVSCL:ENDCOND
       if (theme.codes.length > 0) {
         themeButtonContainer = Buttons.createGroupedButtons({
           id: theme.id,
@@ -234,7 +239,7 @@ class ReadCodebook {
           className: 'codingElement', // TODO
           description: theme.description,
           color: theme.color,
-          childGuideElements: theme.codes,
+          childGuideElements: codes,
           groupHandler: (event) => {
             let themeId = event.target.parentElement.parentElement.dataset.codeId
             if (themeId) {
@@ -312,8 +317,8 @@ class ReadCodebook {
               }
             }
           }/* PVSCL:IFCOND(CodebookUpdate) */,
-          groupRightClickHandler: this.createThemeRightClickHandler(),
-          buttonRightClickHandler: this.createCodeRightClickHandler()/* PVSCL:ENDCOND */
+          groupRightClickHandler: this.themeRightClickHandler(),
+          buttonRightClickHandler: this.codeRightClickHandler()/* PVSCL:ENDCOND */
         })
       } else {
         themeButtonContainer = Buttons.createButton({
@@ -338,7 +343,7 @@ class ReadCodebook {
               }
             }
           }/* PVSCL:IFCOND(CodebookUpdate) */,
-          buttonRightClickHandler: this.createThemeRightClickHandler()/* PVSCL:ENDCOND */
+          buttonRightClickHandler: this.themeRightClickHandler()/* PVSCL:ENDCOND */
         })
       }
       // PVSCL:ELSECOND
@@ -364,7 +369,7 @@ class ReadCodebook {
             }
           }
         }/* PVSCL:IFCOND(CodebookUpdate) */,
-        buttonRightClickHandler: this.createThemeRightClickHandler()/* PVSCL:ENDCOND */
+        buttonRightClickHandler: this.themeRightClickHandler()/* PVSCL:ENDCOND */
       })
       // PVSCL:ENDCOND
       if (_.isElement(themeButtonContainer)) {
@@ -373,23 +378,37 @@ class ReadCodebook {
     }
   }
 
+  /**
+   * Reloads the button if a new button has been added or deleted
+   */
   reloadButtonContainer () {
     this.buttonContainer.innerHTML = ''
     this.createButtons()
   }
 
+  /**
+   * Retrieve tags which has the given namespace
+   * @param annotation, namespace
+   */
   hasANamespace (annotation, namespace) {
     return _.findIndex(annotation.tags, (annotationTag) => {
       return _.startsWith(annotationTag.toLowerCase(), (namespace + ':').toLowerCase())
     }) !== -1
   }
 
+  /**
+   * Returns true if the annotation has the given tag
+   * @param annotation, tag
+   */
   hasATag (annotation, tag) {
     return _.findIndex(annotation.tags, (annotationTag) => {
       return _.startsWith(annotationTag.toLowerCase(), tag.toLowerCase())
     }) !== -1
   }
 
+  /**
+   * This function gives a color to each codebook element
+   */
   applyColorsToThemes () {
     if (this.codebook && this.codebook.themes) {
       let listOfColors = ColorUtils.getDifferentColors(this.codebook.themes.length)
@@ -411,7 +430,10 @@ class ReadCodebook {
     }
   }
 
-  createThemeRightClickHandler () {
+  /**
+   * This function creates the themes right click context menu.
+   */
+  themeRightClickHandler () {
     return (themeId) => {
       let items = {}
       // PVSCL:IFCOND(CodebookUpdate, LINE)
@@ -445,7 +467,10 @@ class ReadCodebook {
   }
   // PVSCL:IFCOND(Hierarchy, LINE)
 
-  createCodeRightClickHandler () {
+  /**
+   * This function creates the codes right click context menu.
+   */
+  codeRightClickHandler () {
     return (codeId) => {
       // Get code from id
       let code = this.codebook.getCodeOrThemeFromId(codeId)
@@ -468,7 +493,11 @@ class ReadCodebook {
     }
   }
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(CodebookUpdate, LINE)
 
+  /**
+   * This function stores the new theme in the codebook and reloads the button container.
+   */
   themeCreatedEventHandler () {
     return (event) => {
       let theme = Theme.fromAnnotation(event.detail.newThemeAnnotation, this.codebook)
@@ -481,6 +510,22 @@ class ReadCodebook {
     }
   }
 
+  /**
+   * This function removes the given theme from the codebook and reloads the button container.
+   */
+  themeRemovedEventHandler () {
+    return (event) => {
+      let theme = event.detail.theme
+      theme.annotationGuide.removeTheme(theme)
+      // Reload button container
+      this.reloadButtonContainer()
+    }
+  }
+
+  /**
+   * This function stores the new code in the codebook and reloads the button container.
+   */
+  // PVSCL:IFCOND(Hierarchy, LINE)
   codeCreatedEventHandler () {
     return (event) => {
       let theme = event.detail.theme
@@ -494,15 +539,9 @@ class ReadCodebook {
     }
   }
 
-  themeRemovedEventHandler () {
-    return (event) => {
-      let theme = event.detail.theme
-      theme.annotationGuide.removeTheme(theme)
-      // Reload button container
-      this.reloadButtonContainer()
-    }
-  }
-
+  /**
+   * This function removes the given code from the codebook and reloads the button container.
+   */
   codeRemovedEventHandler () {
     return (event) => {
       let code = event.detail.code
@@ -511,8 +550,8 @@ class ReadCodebook {
       this.reloadButtonContainer()
     }
   }
-
-
+  // PVSCL:ENDCOND
+  // PVSCL:ENDCOND
 }
 
 module.exports = ReadCodebook

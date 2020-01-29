@@ -1,14 +1,14 @@
 const _ = require('lodash')
-const GoogleSheetsClientManager = require('../../../googleSheets/GoogleSheetsClientManager')
+const GoogleSheetsClientManager = require('../../../../googleSheets/GoogleSheetsClientManager')
 const GSheetParser = require('./GSheetParser')
 const GroupInitializer = require('./GroupInitializer')
-const Alerts = require('../../../utils/Alerts')
+const Alerts = require('../../../../utils/Alerts')
 const swal = require('sweetalert2')
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../../../annotationServer/hypothesis/HypothesisClientManager')
+const HypothesisClientManager = require('../../../../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorageManager = require('../../../annotationServer/browserStorage/BrowserStorageManager')
+const BrowserStorageManager = require('../../../../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
 
 class GoogleSheetContentScriptManager {

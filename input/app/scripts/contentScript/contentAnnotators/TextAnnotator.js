@@ -10,9 +10,9 @@ require('jquery-contextmenu/dist/jquery.contextMenu')
 const _ = require('lodash')
 require('components-jqueryui')
 const Alerts = require('../../utils/Alerts')
-const Theme = require('../../coodebook/Theme')
+const Theme = require('../../codebook/model/Theme')
 // PVSCL:IFCOND(Code,LINE)
-const Code = require('../../coodebook/Code')
+const Code = require('../../codebook/model/Code')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
 const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
@@ -213,7 +213,7 @@ class TextAnnotator extends ContentAnnotator {
       // Get the currently annotatedCode to do comprobations
       let lastAnnotatedCode = event.detail.lastAnnotatedCode
       // Get the code or theme of the selected button
-      let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(event.detail.id)
+      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(event.detail.id)
       // PVSCL:ENDCOND
       // If selection is empty, return null
       if (document.getSelection().toString().length === 0) {
@@ -517,11 +517,8 @@ class TextAnnotator extends ContentAnnotator {
         }
       } else {
         // Search tagged annotations
-        let filteringTags = window.abwa.tagManager.getFilteringTagList()
-        this.allAnnotations = _.filter(annotations, (annotation) => {
-          let tags = annotation.tags
-          return !(tags.length > 0 && _.find(filteringTags, tags[0])) || (tags.length > 1 && _.find(filteringTags, tags[1]))
-        })
+        // let filteringTags = window.abwa.codebookManager.getFilteringTagList()
+        this.allAnnotations = annotations
         // PVSCL:IFCOND( Reply, LINE )
         this.replyAnnotations = _.filter(annotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
@@ -571,7 +568,7 @@ class TextAnnotator extends ContentAnnotator {
   highlightAnnotation (annotation, callback) {
     let classNameToHighlight = this.retrieveHighlightClassName(annotation)
     // Get annotation color for an annotation
-    let tag = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
+    let tag = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(annotation.tagId)
     if (tag) {
       let color = tag.color
       try {
@@ -933,7 +930,7 @@ class TextAnnotator extends ContentAnnotator {
     let previousAssignments = this.retrievePreviousAssignments()
     let previousAssignmentsUI = this.createPreviousAssignmentsUI(previousAssignments)
     // PVSCL:ENDCOND
-    let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
+    let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(annotation.tagId)
     let title = ''
     // PVSCL:IFCOND(MoodleProvider,LINE)
     if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {

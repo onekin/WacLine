@@ -1,6 +1,6 @@
-const Alerts = require('../utils/Alerts')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Events = require('../Events')
+const Alerts = require('../../../utils/Alerts')
+const LanguageUtils = require('../../../utils/LanguageUtils')
+const Events = require('../../../Events')
 
 class DeleteGroup {
   static deleteAnnotations () {

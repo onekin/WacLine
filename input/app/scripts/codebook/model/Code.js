@@ -1,12 +1,14 @@
 const jsYaml = require('js-yaml')
 const _ = require('lodash')
-const Config = require('../Config')
+const Config = require('../../Config')
+const LanguageUtils = require('../../utils/LanguageUtils')
 
 class Code {
   constructor ({
     id,
     name,
     description = '',
+    createdDate = new Date(),
     color, theme/* PVSCL:IFCOND(MoodleProvider) */,
     moodleLevelId/* PVSCL:ENDCOND */}) {
     this.id = id
@@ -14,6 +16,14 @@ class Code {
     this.color = color
     this.theme = theme
     this.description = description
+    if (LanguageUtils.isInstanceOf(createdDate, Date)) {
+      this.createdDate = createdDate
+    } else {
+      let timestamp = Date.parse(createdDate)
+      if (_.isNumber(timestamp)) {
+        this.createdDate = new Date(createdDate)
+      }
+    }
     // PVSCL:IFCOND(MoodleProvider, LINE)
     this.moodleLevelId = moodleLevelId
     // PVSCL:ENDCOND
@@ -64,9 +74,9 @@ class Code {
         let codeToReturn
         // PVSCL:IFCOND(MoodleProvider, LINE)
         let moodleLevelId = config.id
-        codeToReturn = new Code({id, name, description, theme, moodleLevelId})
+        codeToReturn = new Code({id, name, description, theme, moodleLevelId, createdDate: annotation.updated})
         // PVSCL:ELSECOND
-        codeToReturn = new Code({id, name, description, theme})
+        codeToReturn = new Code({id, name, description, theme, createdDate: annotation.updated})
         // PVSCL:ENDCOND
         return codeToReturn
       } else {
@@ -76,7 +86,7 @@ class Code {
       console.error('Unable to retrieve mark from annotation')
     }
   }
-  // PVSCL:IFCOND(ExportGroup, LINE)
+  // PVSCL:IFCOND(ExportCodebook, LINE)
 
   toObject () {
     return {

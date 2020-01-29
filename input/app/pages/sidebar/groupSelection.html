@@ -21,11 +21,11 @@
   <template id="groupSelectorItem" pv:condition="Manual">
     <div class="groupSelectorItemContainer" aria-expanded="false">
       <span class="groupSelectorItemName"></span>
-      <span pv:condition="RenameGroup or ExportGroup or DropGroup" class="groupSelectorItemToggle"></span>
-      <div pv:condition="RenameGroup or ExportGroup or DropGroup" class="groupSelectorItemOptionsContainer">
-        <span pv:condition="RenameGroup" class="groupSelectorItemOption renameGroup" title="Rename model">Rename</span>
-        <span pv:condition="ExportGroup" class="groupSelectorItemOption exportGroup" title="Export model">Export</span>
-        <span pv:condition="DropGroup" class="groupSelectorItemOption deleteGroup" title="Delete model">Delete</span>
+      <span pv:condition="RenameCodebook or ExportCodebook or CodebookDelete" class="groupSelectorItemToggle"></span>
+      <div pv:condition="RenameCodebook or ExportCodebook or CodebookDelete" class="groupSelectorItemOptionsContainer">
+        <span pv:condition="RenameCodebook" class="groupSelectorItemOption renameGroup" title="Rename codebook">Rename</span>
+        <span pv:condition="ExportCodebook" class="groupSelectorItemOption exportGroup" title="Export codebook">Export</span>
+        <span pv:condition="CodebookDelete" class="groupSelectorItemOption deleteGroup" title="Delete codebook">Delete</span>
       </div>
     </div>
   </template>

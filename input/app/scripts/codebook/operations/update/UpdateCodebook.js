@@ -1,15 +1,11 @@
-const Events = require('../../Events')
-const Config = require('../../Config')
-const Buttons = require('./Buttons')
-const Alerts = require('../../utils/Alerts')
-const $ = require('jquery')
+const Events = require('../../../Events')
+const Alerts = require('../../../utils/Alerts')
 const _ = require('lodash')
-const Codebook = require('../model/Codebook')
-const Theme = require('../model/Theme')
+const Theme = require('../../model/Theme')
 // PVSCL:IFCOND(Hierarchy,LINE)
-const Code = require('../model/Code')
+const Code = require('../../model/Code')
 // PVSCL:ENDCOND
-const LanguageUtils = require('../../utils/LanguageUtils')
+const LanguageUtils = require('../../../utils/LanguageUtils')
 
 class UpdateCodebook {
   constructor () {
@@ -58,6 +54,9 @@ class UpdateCodebook {
   }
   // PVSCL:ENDCOND
 
+  /**
+   * This function adds a button in the sidebar that allows to create new themes.
+   */
   static createNewThemeButton () {
     let newThemeButton = document.createElement('button')
     newThemeButton.innerText = 'Create new theme'
@@ -83,13 +82,16 @@ class UpdateCodebook {
           newTheme = new Theme({name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook})
         },
         callback: () => {
-            LanguageUtils.dispatchCustomEvent(Events.createTheme, {theme: newTheme})
+          LanguageUtils.dispatchCustomEvent(Events.createTheme, {theme: newTheme})
         }
       })
     })
     window.abwa.codebookManager.codebookReader.buttonContainer.append(newThemeButton)
   }
 
+  /**
+   * This function creates a new theme when it receives the createTheme event.
+   */
   createNewThemeEventHandler () {
     return (event) => {
       let newThemeAnnotation = event.detail.theme.toAnnotation()
@@ -103,6 +105,10 @@ class UpdateCodebook {
     }
   }
 
+  /**
+   * This function removes a new theme when it receives the removeTheme event.
+   * @param
+   */
   removeThemeEventHandler () {
     return (event) => {
       let theme = event.detail.theme
@@ -122,7 +128,7 @@ class UpdateCodebook {
             if (err) {
               Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
             } else {
-              LanguageUtils.dispatchCustomEvent(Events.themeRemoved, {theme : theme})
+              LanguageUtils.dispatchCustomEvent(Events.themeRemoved, {theme: theme})
             }
           })
         }
@@ -131,11 +137,15 @@ class UpdateCodebook {
   }
   // PVSCL:IFCOND(Hierarchy, LINE)
 
+  /**
+   * This function creates a new code when it receives the createCode event.
+   * @param
+   */
   createCodeEventHandler () {
     return (event) => {
-      let theme = event.details.theme
+      let theme = event.detail.theme
       if (!LanguageUtils.isInstanceOf(theme, Theme)) {
-        callback(new Error('Unable to create new code, theme is not defined.'))
+        Alerts.errorAlert({text: 'Unable to create new code, theme is not defined.'})
       } else {
         let newCode // The code that the user is creating
         // Ask user for name and description
@@ -171,6 +181,10 @@ class UpdateCodebook {
     }
   }
 
+  /**
+   * This function removes a code when it receives the removeCode event.
+   * @param
+   */
   removeCodeEventHandler () {
     return (event) => {
       let code = event.detail.code
@@ -184,7 +198,7 @@ class UpdateCodebook {
             if (err) {
               Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
             } else {
-              LanguageUtils.dispatchCustomEvent(Events.codeRemoved, {code : code})
+              LanguageUtils.dispatchCustomEvent(Events.codeRemoved, {code: code})
             }
           })
         }

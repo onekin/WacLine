@@ -1,6 +1,5 @@
 const Events = require('../../../Events')
-const _ = require('lodash')
-const ExportCodebookJSON = require('./export/ExportCodebookJSON')
+const ExportCodebookJSON = require('./ExportCodebookJSON')
 
 class ExportCodebook {
   constructor () {
@@ -22,10 +21,10 @@ class ExportCodebook {
     return (event) => {
       switch (event.detail.exportTo) {
         case 'JSON':
-          ExportCodebookJSON.exportConfigurationSchemaToJSONFile(event.details.codebookAnnotations, event.details.codebook)
-          break;
-        default:
-          ExportCodebookJSON.exportConfigurationSchemaToJSONFile(event.details.codebookAnnotations, event.details.codebook)
+          ExportCodebookJSON.exportConfigurationSchemaToJSONFile(event.detail.codebookAnnotations, event.detail.codebook)
+          break
+        default :
+          ExportCodebookJSON.exportConfigurationSchemaToJSONFile(event.detail.codebookAnnotations, event.detail.codebook)
       }
     }
   }

@@ -1,6 +1,6 @@
 const _ = require('lodash')
-const Codebook = require('../../model/Codebook')
-const Alerts = require('../../../utils/Alerts')
+const Codebook = require('../../../model/Codebook')
+const Alerts = require('../../../../utils/Alerts')
 
 class GSheetParser {
   parse (callback) {

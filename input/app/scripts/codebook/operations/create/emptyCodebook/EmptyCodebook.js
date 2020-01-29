@@ -1,24 +1,24 @@
-const UserDefinedHighlighterDefinition = require('./UserDefinedHighlighterDefinition')
+const Events = require('../../../../Events')
 const Codebook = require('../../../model/Codebook')
 const Alerts = require('../../../../utils/Alerts')
 const LanguageUtils = require('../../../../utils/LanguageUtils')
 
-class BuiltIn {
-  static createDefaultAnnotations (annotationServer, callback) {
-    // Create annotation guide from user defined highlighter definition
-    let annotationGuide = Codebook.fromUserDefinedHighlighterDefinition(UserDefinedHighlighterDefinition)
-    // Create review schema from default criterias
-    annotationGuide.annotationServer = annotationServer
-    // Create highlighter annotations
-    let annotations = annotationGuide.toAnnotations()
-    // TODO Codes annotations should be related to its corresponding theme: it requires to update Code annotations to relate them by ID instead of by tag
-    // Send create highlighter
-    window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, annotations) => {
-      window.abwa.sidebar.openSidebar()
-      Alerts.closeAlert()
-      LanguageUtils.dispatchCustomEvent(Event.codebookCreated, {annotations: annotations})
+class EmptyCodebook {
+  static createDefaultAnnotations () {
+    Codebook.setAnnotationServer(null, (annotationServer) => {
+      let emptyCodebook = new Codebook({annotationServer: annotationServer})
+      let emptyCodebookAnnotation = emptyCodebook.toAnnotation()
+      window.abwa.annotationServerManager.client.createNewAnnotation(emptyCodebookAnnotation, (err, annotation) => {
+        if (err) {
+          Alerts.errorAlert({text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.'}) // TODO i18n
+        } else {
+          // Open the sidebar, to notify user that the annotator is correctly created
+          window.abwa.sidebar.openSidebar()
+          LanguageUtils.dispatchCustomEvent(Events.codebookCreated, {annotations: annotation})
+        }
+      })
     })
   }
 }
 
-module.exports = BuiltIn
+module.exports = EmptyCodebook

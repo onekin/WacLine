@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const FileSaver = require('file-saver')
-const Alerts = require('../../../../utils/Alerts')
-const Codebook = require('../../../model/Codebook')
+const Alerts = require('../../../utils/Alerts')
+const Codebook = require('../../model/Codebook')
 
 class ExportCodebookJSON {
   static exportConfigurationSchemeToJSObject (schemeAnnotations, name, callback) {
@@ -28,3 +28,5 @@ class ExportCodebookJSON {
     })
   }
 }
+
+module.exports = ExportCodebookJSON
