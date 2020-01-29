@@ -1,7 +1,7 @@
 const ContentAnnotator = require('./ContentAnnotator')
 const PDF = require('../../target/formats/PDF')
 const Config = require('../../Config')
-const Events = require('../Events')
+const Events = require('../../Events')
 const DOMTextUtils = require('../../utils/DOMTextUtils')
 const PDFTextUtils = require('../../utils/PDFTextUtils')
 const LanguageUtils = require('../../utils/LanguageUtils')
@@ -18,7 +18,7 @@ const Code = require('../../definition/Code')
 const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Reply,LINE)
-const ReplyAnnotation = require('../../production/ReplyAnnotation')
+const ReplyAnnotation = require('../../annotationManagement/purposes/ReplyAnnotation')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(SentimentAnalysis,LINE)
 const axios = require('axios')

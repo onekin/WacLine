@@ -7,7 +7,7 @@ class ExportSchema {
   static exportConfigurationSchemeToJSObject (schemeAnnotations, name, callback) {
     AnnotationGuide.fromAnnotations(schemeAnnotations, (guide) => {
       if (_.isFunction(callback)) {
-        callback(guide.toObject(name))
+        callback(guide.toObjects(name))
       }
     })
   }

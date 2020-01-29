@@ -6,6 +6,11 @@
 .reply_text {
   font-size: 70%;
 }
+
+.reply_date {
+  font-size: 70%;
+  margin: 15px;
+}
 PVSCL:IFCOND( Validate, LINE )
 
 .reply_validated {

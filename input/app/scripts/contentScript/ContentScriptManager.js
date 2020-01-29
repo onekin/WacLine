@@ -4,12 +4,12 @@ const Sidebar = require('./Sidebar')
 const TagManager = require('./TagManager')
 const Config = require('../Config')
 const Toolset = require('./Toolset')
-const TextAnnotator = require('./contentAnnotators/TextAnnotator')
+const AnnotationManagement = require('../annotationManagement/AnnotationManagement')
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const {AnnotatedContentManager} = require('./AnnotatedContentManager')
 // PVSCL:IFCOND(Manual, LINE)
-const Events = require('./Events')
+const Events = require('../Events')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleURL, LINE)
 const RolesManager = require('./RolesManager')
@@ -21,10 +21,10 @@ const HypothesisClientManager = require('../annotationServer/hypothesis/Hypothes
 const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(UserFilter, LINE)
-const UserFilter = require('../consumption/filters/UserFilter')
+const UserFilter = require('../annotationManagement/read/UserFilter')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(PreviousAssignments, LINE)
-const PreviousAssignments = require('../production/PreviousAssignments')
+const PreviousAssignments = require('../annotationManagement/purposes/PreviousAssignments')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleReport, LINE)
 const MoodleReport = require('../consumption/visualizations/MoodleReport')
@@ -79,8 +79,14 @@ class ContentScriptManager {
   reloadContentByGroup (callback) {
     // TODO Use async await or promises
     this.reloadTagsManager()
-      .then(() => {
+      /* .then(() => {
         return this.reloadContentAnnotator()
+      }) */
+      .then(() => {
+        return this.reloadToolset()
+      })
+      .then(() => {
+        return this.reloadAnnotationManagement()
       })
       // PVSCL:IFCOND(MoodleReport, LINE)
       .then(() => {
@@ -92,12 +98,10 @@ class ContentScriptManager {
         return this.reloadMoodleComment()
       })
       // PVSCL:ENDCOND
-      .then(() => {
+      // TODO Uncomment
+      /* .then(() => {
         return this.reloadAnnotatedContentManager()
-      })
-      .then(() => {
-        return this.reloadToolset()
-      })
+      }) */
       // PVSCL:IFCOND(UserFilter, LINE)
       .then(() => {
         return this.reloadUserFilter()
@@ -133,13 +137,13 @@ class ContentScriptManager {
     })
   }
 
-  reloadContentAnnotator () {
+  reloadAnnotationManagement () {
     return new Promise((resolve, reject) => {
       // Destroy current content annotator
       this.destroyContentAnnotator()
       // Create a new content annotator for the current group
-      window.abwa.contentAnnotator = new TextAnnotator(Config) // TODO Depending on the type of annotator
-      window.abwa.contentAnnotator.init((err) => {
+      window.abwa.annotationManagement = new AnnotationManagement()
+      window.abwa.annotationManagement.init((err) => {
         if (err) {
           reject(err)
         } else {
@@ -301,6 +305,7 @@ class ContentScriptManager {
     }
   }
   // PVSCL:ENDCOND
+
   destroyContentAnnotator () {
     // Destroy current content annotator
     if (!_.isEmpty(window.abwa.contentAnnotator)) {

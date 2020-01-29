@@ -3,6 +3,10 @@ const Color = require('color')
 const UniqueColors = require('unique-colors')
 
 class ColorUtils {
+  static getDefaultColor () {
+    return 'rgba(150,150,150,0.5)'
+  }
+
   static getRandomColor () {
     let red = (Math.floor(Math.random() * 256))
     let green = (Math.floor(Math.random() * 256))

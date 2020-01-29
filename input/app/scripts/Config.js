@@ -7,11 +7,14 @@ defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:Attribute('defaultAnn
 defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Item(0)->pv:Name()->pv:ToLowerCase())"
 // PVSCL:ENDCOND
 
+// TODO Remove
+defaultAnnotationServer = 'browserstorage'
+
 // Tags configuration
 let grouped = {
   group: 'theme'
 }
-// PVSCL:IFCOND(Code,LINE)
+// PVSCL:IFCOND(Hierarchy,LINE)
 grouped['subgroup'] = 'code'
 grouped['relation'] = 'isCodeOf'
 // PVSCL:ENDCOND

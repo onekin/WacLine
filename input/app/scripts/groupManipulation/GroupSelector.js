@@ -8,7 +8,7 @@ const Config = require('../Config')
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Manual, LINE)
-const Events = require('../contentScript/Events')
+const Events = require('../Events')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResourceBased,LINE)
 const CryptoUtils = require('../utils/CryptoUtils')
@@ -295,8 +295,10 @@ class GroupSelector {
   renderGroupsContainer () {
     // Current group element rendering
     let currentGroupNameElement = document.querySelector('#groupSelectorName')
-    currentGroupNameElement.innerText = this.currentGroup.name
-    currentGroupNameElement.title = this.currentGroup.name
+    if (this.currentGroup) {
+      currentGroupNameElement.innerText = this.currentGroup.name
+      currentGroupNameElement.title = this.currentGroup.name
+    }
     // Toggle functionality
     let toggleElement = document.querySelector('#groupSelectorToggle')
     if (this.groupSelectorToggleClickEvent) {
@@ -337,7 +339,7 @@ class GroupSelector {
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
     }
-    // PVSCL:IFCOND(CreateGroup,LINE)
+    // PVSCL:IFCOND(CodebookCreate,LINE)
     // New group button
     let newGroupButton = document.createElement('div')
     newGroupButton.innerText = 'Create review model'
@@ -347,7 +349,7 @@ class GroupSelector {
     newGroupButton.addEventListener('click', this.createNewReviewModelEventHandler())
     groupsContainer.appendChild(newGroupButton)
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(ImportGroup,LINE)
+    // PVSCL:IFCOND(ImportCodebook,LINE)
     // Import button
     let importGroupButton = document.createElement('div')
     importGroupButton.className = 'groupSelectorButton'
@@ -475,7 +477,7 @@ class GroupSelector {
     }
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(CreateGroup,LINE)
+  // PVSCL:IFCOND(CodebookCreate,LINE)
 
   createNewReviewModelEventHandler () {
     return () => {
@@ -659,17 +661,8 @@ class GroupSelector {
 
   getCreatorData () {
     if (this.user) {
-      if (this.user.metadata) {
-        if (this.user.metadata.orcid) {
-          return 'https://orcid.org/' + this.user.metadata.orcid
-        } else if (this.user.metadata.link) {
-          return this.user.metadata.link
-        } else {
-          return 'https://hypothes.is/users/' + this.user.userid.replace('acct:', '').replace('@hypothes.is', '')
-        }
-      } else {
-        return 'https://hypothes.is/users/' + this.user.userid.replace('acct:', '').replace('@hypothes.is', '')
-      }
+      // TODO Re-enable orcid mechanism to identify
+      return window.abwa.annotationServerManager.annotationServerMetadata.userUrl + this.user.userid.replace('acct:', '').replace('@hypothes.is', '')
     } else {
       return null
     }

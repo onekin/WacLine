@@ -1,7 +1,7 @@
 const $ = require('jquery')
 const _ = require('lodash')
 const LanguageUtils = require('../utils/LanguageUtils')
-const Events = require('./Events')
+const Events = require('../Events')
 
 const RolesManager = require('./RolesManager')
 
