@@ -3,7 +3,7 @@ const Theme = require('./Theme')
 const Config = require('../Config')
 const _ = require('lodash')
 const LanguageUtils = require('../utils/LanguageUtils')
-// PVSCL:IFCOND(Code,LINE)
+// PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('./Code')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GSheetProvider,LINE)
@@ -148,7 +148,7 @@ class AnnotationGuide {
             return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
           })
         })
-        // PVSCL:IFCOND(Code,LINE)
+        // PVSCL:IFCOND(Hierarchy,LINE)
         let codeAnnotations = _.remove(annotations, (annotation) => {
           return _.some(annotation.tags, (tag) => {
             return tag.includes(Config.namespace + ':' + Config.tags.grouped.subgroup + ':')
@@ -161,7 +161,7 @@ class AnnotationGuide {
             guide.themes.push(theme)
           }
         }
-        // PVSCL:IFCOND(Code,LINE)
+        // PVSCL:IFCOND(Hierarchy,LINE)
         for (let i = 0; i < codeAnnotations.length; i++) {
           let codeAnnotation = codeAnnotations[i]
           // Get theme corresponding to the level
@@ -227,7 +227,7 @@ class AnnotationGuide {
     for (let i = 0; i < userDefinedHighlighterDefinition.definition.length; i++) {
       let themeDefinition = userDefinedHighlighterDefinition.definition[i]
       let theme = new Theme({name: themeDefinition.name, description: themeDefinition.description, annotationGuide})
-      // PVSCL:IFCOND(Code,LINE)
+      // PVSCL:IFCOND(Hierarchy,LINE)
       theme.codes = []
       if (_.isArray(themeDefinition.codes)) {
         for (let j = 0; j < themeDefinition.codes.length; j++) {
@@ -344,14 +344,14 @@ class AnnotationGuide {
         let themesArray = _.map(_.slice(sheet.data[0].rowData[0].values, 1, indexOfAuthor), 'formattedValue')
         let themes = _.map(_.countBy(themesArray), (numberOfColumns, name) => {
           let theme = new Theme({name: name, annotationGuide})
-          // PVSCL:IFCOND(Code,LINE)
+          // PVSCL:IFCOND(Hierarchy,LINE)
           theme.multivalued = numberOfColumns > 1
           // PVSCL:ENDCOND
           return theme
         })
         // If facets are found, try to find codes for each
         if (themesArray.length > 0) {
-        // PVSCL:IFCOND(Code,LINE)
+        // PVSCL:IFCOND(Hierarchy,LINE)
           // Find codes
           if (sheet.data[0].rowData[1] && sheet.data[0].rowData[1].values) {
             // Get cells for codes
@@ -397,7 +397,7 @@ class AnnotationGuide {
     })
     if (LanguageUtils.isInstanceOf(theme, Theme)) {
       themeOrCodeToReturn = theme
-    } /* PVSCL:IFCOND(Code) */ else {
+    } /* PVSCL:IFCOND(Hierarchy) */ else {
       // Look for code inside themes
       for (let i = 0; i < this.themes.length; i++) {
         let theme = this.themes[i]

@@ -12,7 +12,7 @@ const Theme = require('../definition/Theme')
 // PVSCL:IFCOND(BuiltIn,LINE)
 const DefaultHighlighterGenerator = require('../definition/DefaultHighlighterGenerator')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Code,LINE)
+// PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('../definition/Code')
 // PVSCL:ENDCOND
 
@@ -225,7 +225,7 @@ class TagManager {
     for (let i = 0; i < themes.length; i++) {
       let theme = themes[i]
       let themeButtonContainer
-      // PVSCL:IFCOND(Code,LINE)
+      // PVSCL:IFCOND(Hierarchy,LINE)
       if (theme.codes.length > 0) {
         themeButtonContainer = Buttons.createGroupedButtons({
           id: theme.id,
@@ -241,7 +241,7 @@ class TagManager {
               if (LanguageUtils.isInstanceOf(theme, Theme)) {
                 let id = ''
                 let tags = ''
-                // PVSCL:IFCOND(NOT Multivalued,LINE)
+                // PVSCL:IFCOND(NOT (Multivalued),LINE)
                 // First, ask for the currently annotated code
                 let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(themeId)
                 // If there is already a code annotation for this theme, we have to let the tags of the code, to annotate with the current code
@@ -396,7 +396,7 @@ class TagManager {
       let listOfColors = ColorUtils.getDifferentColors(this.model.highlighterDefinition.themes.length)
       this.model.highlighterDefinition.themes.forEach((theme) => {
         let color = listOfColors.pop()
-        // PVSCL:IFCOND(Code,LINE)
+        // PVSCL:IFCOND(Hierarchy,LINE)
         // Set a color for each theme
         theme.color = ColorUtils.setAlphaToColor(color, Config.colors.minAlpha)
         // Set color gradient for each code
@@ -411,7 +411,7 @@ class TagManager {
       })
     }
   }
-  // PVSCL:IFCOND(Code and Dynamic, LINE)
+  // PVSCL:IFCOND(Hierarchy and Dynamic, LINE)
 
   createCodeRightClickHandler () {
     return (codeId) => {
@@ -437,13 +437,13 @@ class TagManager {
   createThemeRightClickHandler () {
     return (themeId) => {
       let items = {}
-      // PVSCL:IFCOND(Code, LINE)
+      // PVSCL:IFCOND(Hierarchy, LINE)
       items['createNewCode'] = {name: 'Create new code'}
       // PVSCL:ENDCOND
       items['removeTheme'] = {name: 'Remove theme'}
       return {
         callback: (key) => {
-          // PVSCL:IFCOND(Code, LINE)
+          // PVSCL:IFCOND(Hierarchy, LINE)
           if (key === 'createNewCode') {
             let theme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(themeId)
             if (LanguageUtils.isInstanceOf(theme, Theme)) {
@@ -463,7 +463,7 @@ class TagManager {
     }
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(Code and Dynamic, LINE)
+  // PVSCL:IFCOND(Hierarchy and Dynamic, LINE)
 
   createNewCode ({theme, callback}) {
     if (!LanguageUtils.isInstanceOf(theme, Theme)) {
@@ -589,7 +589,7 @@ class TagManager {
       }
     })
   }
-  // PVSCL:IFCOND(Code, LINE)
+  // PVSCL:IFCOND(Hierarchy, LINE)
 
   removeCode (code) {
     // Ask user is sure to remove

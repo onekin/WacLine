@@ -14,7 +14,7 @@ defaultAnnotationServer = 'browserstorage'
 let grouped = {
   group: 'theme'
 }
-// PVSCL:IFCOND(Code,LINE)
+// PVSCL:IFCOND(Hierarchy,LINE)
 grouped['subgroup'] = 'code'
 grouped['relation'] = 'isCodeOf'
 // PVSCL:ENDCOND

@@ -4,7 +4,7 @@ const Config = require('../Config')
 // PVSCL:IFCOND(Dynamic, LINE)
 const ColorUtils = require('../utils/ColorUtils')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Code and (ExportGroup or MoodleProvider), LINE)
+// PVSCL:IFCOND(Hierarchy and (ExportGroup or MoodleProvider), LINE)
 const Code = require('./Code')
 // PVSCL:IFCOND(ExportGroup, LINE)
 const LanguageUtils = require('../utils/LanguageUtils')
@@ -27,7 +27,7 @@ class Theme {
     this.description = description
     this.color = color
     this.annotationGuide = annotationGuide
-    // PVSCL:IFCOND(Code,LINE)
+    // PVSCL:IFCOND(Hierarchy,LINE)
     this.codes = []
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(GSheetProvider and Code,LINE)
@@ -43,7 +43,7 @@ class Theme {
     let annotations = []
     // Create its annotations
     annotations.push(this.toAnnotation())
-    // PVSCL:IFCOND(Code,LINE)
+    // PVSCL:IFCOND(Hierarchy,LINE)
     // Create its children annotations
     for (let i = 0; i < this.codes.length; i++) {
       annotations = annotations.concat(this.codes[i].toAnnotations())
@@ -132,7 +132,7 @@ class Theme {
     }
   }
   // PVSCL:IFCOND(Dynamic, LINE) // Check if it is possible to add codes to the definition model if it is not selected Dynamic feature
-  // PVSCL:IFCOND(Code, LINE)
+  // PVSCL:IFCOND(Hierarchy, LINE)
 
   addCode (code) {
     this.codes.push(code)
@@ -162,7 +162,7 @@ class Theme {
       name: this.name,
       description: this.description
     }
-    // PVSCL:IFCOND(Code, LINE)
+    // PVSCL:IFCOND(Hierarchy, LINE)
     if (this.codes.length > 0) {
       object.codes = []
       // For each level
@@ -194,7 +194,7 @@ class Theme {
     theme.annotationGuide = rubric
     // Instance theme object
     let instancedTheme = Object.assign(new Theme(theme))
-    // PVSCL:IFCOND(Code, LINE)
+    // PVSCL:IFCOND(Hierarchy, LINE)
     // Instance codes
     for (let i = 0; i < theme.codes.length; i++) {
       instancedTheme.codes[i] = Code.createCodeFromObject(theme.codes[i], instancedTheme)
