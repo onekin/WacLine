@@ -1,10 +1,9 @@
-const Events = require('../../../../Events')
 const Codebook = require('../../../model/Codebook')
 const Alerts = require('../../../../utils/Alerts')
-const LanguageUtils = require('../../../../utils/LanguageUtils')
+const _ = require('lodash')
 
 class EmptyCodebook {
-  static createDefaultAnnotations () {
+  static createDefaultAnnotations (callback) {
     Codebook.setAnnotationServer(null, (annotationServer) => {
       let emptyCodebook = new Codebook({annotationServer: annotationServer})
       let emptyCodebookAnnotation = emptyCodebook.toAnnotation()
@@ -14,7 +13,9 @@ class EmptyCodebook {
         } else {
           // Open the sidebar, to notify user that the annotator is correctly created
           window.abwa.sidebar.openSidebar()
-          LanguageUtils.dispatchCustomEvent(Events.codebookCreated, {annotations: annotation})
+          if (_.isFunction(callback)) {
+            callback()
+          }
         }
       })
     })

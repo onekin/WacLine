@@ -8,6 +8,7 @@ const AnnotationManagement = require('../annotationManagement/AnnotationManageme
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const {AnnotatedContentManager} = require('./AnnotatedContentManager')
+const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:IFCOND(Manual, LINE)
 const Events = require('../Events')
 // PVSCL:ENDCOND
@@ -19,9 +20,6 @@ const HypothesisClientManager = require('../annotationServer/hypothesis/Hypothes
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
 const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(UserFilter, LINE)
-const UserFilter = require('../annotationManagement/read/UserFilter')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(PreviousAssignments, LINE)
 const PreviousAssignments = require('../annotationManagement/purposes/PreviousAssignments')
@@ -66,7 +64,7 @@ class ContentScriptManager {
 
   initListenerForGroupChange () {
     this.events.groupChangedEvent = this.groupChangedEventHandlerCreator()
-    document.addEventListener(Events.groupChanged, this.events.groupChangedEvent, false)
+    LanguageUtils.dispatchCustomEvent(Events.groupChanged, this.events.groupChangedEvent)
   }
 
   groupChangedEventHandlerCreator () {
@@ -78,7 +76,7 @@ class ContentScriptManager {
 
   reloadContentByGroup (callback) {
     // TODO Use async await or promises
-    this.reloadTagsManager()
+    this.reloadCodebookManager()
       /* .then(() => {
         return this.reloadContentAnnotator()
       }) */
@@ -102,11 +100,6 @@ class ContentScriptManager {
       /* .then(() => {
         return this.reloadAnnotatedContentManager()
       }) */
-      // PVSCL:IFCOND(UserFilter, LINE)
-      .then(() => {
-        return this.reloadUserFilter()
-      })
-      // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleURL, LINE)
       .then(() => {
         return this.reloadRolesManager()
@@ -140,7 +133,7 @@ class ContentScriptManager {
   reloadAnnotationManagement () {
     return new Promise((resolve, reject) => {
       // Destroy current content annotator
-      this.destroyContentAnnotator()
+      this.destroyAnnotationManagement()
       // Create a new content annotator for the current group
       window.abwa.annotationManagement = new AnnotationManagement()
       window.abwa.annotationManagement.init((err) => {
@@ -153,7 +146,7 @@ class ContentScriptManager {
     })
   }
 
-  reloadTagsManager () {
+  reloadCodebookManager () {
     return new Promise((resolve, reject) => {
       // Destroy current tag manager
       this.destroyCodebookManager()
@@ -168,24 +161,6 @@ class ContentScriptManager {
       })
     })
   }
-  // PVSCL:IFCOND(UserFilter, LINE)
-
-  reloadUserFilter (callback) {
-    return new Promise((resolve, reject) => {
-      // Destroy current augmentation operations
-      this.destroyUserFilter()
-      // Create augmentation operations for the current group
-      window.abwa.userFilter = new UserFilter(Config)
-      window.abwa.userFilter.init((err) => {
-        if (err) {
-          reject(err)
-        } else {
-          resolve()
-        }
-      })
-    })
-  }
-  // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleReport, LINE)
 
   reloadMoodleReport () {
@@ -278,15 +253,6 @@ class ContentScriptManager {
       })
     })
   }
-  // PVSCL:IFCOND(UserFilter, LINE)
-
-  destroyUserFilter () {
-    // Destroy current augmentation operations
-    if (!_.isEmpty(window.abwa.userFilter)) {
-      window.abwa.userFilter.destroy()
-    }
-  }
-  // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleReport, LINE)
 
   destroyMoodleReport () {
@@ -305,13 +271,6 @@ class ContentScriptManager {
     }
   }
   // PVSCL:ENDCOND
-
-  destroyContentAnnotator () {
-    // Destroy current content annotator
-    if (!_.isEmpty(window.abwa.contentAnnotator)) {
-      window.abwa.contentAnnotator.destroy()
-    }
-  }
 
   destroyCodebookManager () {
     if (!_.isEmpty(window.abwa.codebookManager)) {
@@ -350,8 +309,8 @@ class ContentScriptManager {
   destroy (callback) {
     console.debug('Destroying content script manager')
     this.destroyTargetManager(() => {
-      this.destroyTagsManager()
-      this.destroyContentAnnotator()
+      this.destroyCodebookManager()
+      this.destroyAnnotationManagement()
       // PVSCL:IFCOND(UserFilter, LINE)
       this.destroyUserFilter()
       // PVSCL:ENDCOND
@@ -439,6 +398,12 @@ class ContentScriptManager {
   destroyAnnotationServer (callback) {
     if (window.abwa.annotationServerManager) {
       window.abwa.annotationServerManager.destroy(callback)
+    }
+  }
+
+  destroyAnnotationManagement (callback) {
+    if (window.abwa.annotationManagement) {
+      window.abwa.annotationManagement.destroy(callback)
     }
   }
 }

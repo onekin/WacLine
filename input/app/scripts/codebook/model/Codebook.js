@@ -180,10 +180,12 @@ class Codebook {
           }
         }
         // PVSCL:ENDCOND
-        callback(guide)
+        if (_.isFunction(callback)) {
+          callback(null, guide)
+        }
       })
     } else {
-      callback(null)
+      callback(new Error('No annotations for codebook defined'))
     }
   }
 

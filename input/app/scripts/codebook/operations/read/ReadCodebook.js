@@ -21,7 +21,7 @@ class ReadCodebook {
     this.events = {}
   }
 
-  init () {
+  init (callback) {
     // Add event listener for createAnnotation event
     this.initCodebookCreatedEvent()
     // PVSCL:IFCOND(CodebookUpdate,LINE)
@@ -32,7 +32,15 @@ class ReadCodebook {
     this.initCodeRemovedEvent()
     // PVSCL:ENDCOND
     // PVSCL:ENDCOND
-    this.loadCodebook()
+    this.loadCodebook(callback)
+  }
+
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
   }
 
   // EVENTS
@@ -61,18 +69,39 @@ class ReadCodebook {
   // PVSCL:ENDCOND
 
   initCodebookCreatedEvent () {
-    this.events.codebookCreatedEvent = {element: document, event: Events.codebookCreated, handler: this.codebookCreatedEventHandler()}
-    this.events.codebookCreatedEvent.element.addEventListener(this.events.codebookCreatedEvent.event, this.events.codebookCreatedEvent.handler, false)
+    this.events.codebookReadEvent = {element: document, event: Events.codebookRead, handler: this.codebookReadEventHandler()}
+    this.events.codebookReadEvent.element.addEventListener(this.events.codebookReadEvent.event, this.events.codebookReadEvent.handler, false)
   }
   /**
    * Loads the codebook inside the sidebar
    * @param callback
    */
-  loadCodebook () {
+  loadCodebook (callback) {
     console.debug('Reading codebook')
     this.initCodebookStructure(() => {
-      this.initCodebookContent()
+      this.initFirstCodebookReadEventHandler(() => {
+        this.initCodebookContent()
+      }, callback)
     })
+  }
+
+  initFirstCodebookReadEventHandler (callback, callbackToExecuteAfterRead) {
+    this.events.firstCodebookReadEvent = {element: document, event: Events.codebookRead, handler: this.codebookReadEventListener(callbackToExecuteAfterRead)}
+    this.events.firstCodebookReadEvent.element.addEventListener(this.events.firstCodebookReadEvent.event, this.events.firstCodebookReadEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  codebookReadEventListener (callback) {
+    return (event) => {
+      if (_.isFunction(callback)) {
+        callback()
+      }
+      // Remove codebook read event listener after first read
+      let eventHandlerToDisable = this.events.firstCodebookReadEvent
+      eventHandlerToDisable.element.removeEventListener(eventHandlerToDisable.event, eventHandlerToDisable.handler)
+    }
   }
 
   /**
@@ -94,7 +123,7 @@ class ReadCodebook {
    * This function loads the content of the codebook in the sidebar
    * @param callback
    */
-  initCodebookContent () {
+  initCodebookContent (callback) {
     // Retrieve from annotation server highlighter definition
     this.getCodebookDefinition(null, (err, codebookDefinitionAnnotations) => {
       if (err) {
@@ -102,7 +131,6 @@ class ReadCodebook {
       } else {
         if (codebookDefinitionAnnotations.length === 0) {
           // PVSCL:IFCOND(BuiltIn,LINE)
-          // TODO Create definition annotations if Definition->Who is User
           let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
           Alerts.confirmAlert({
             title: 'Do you want to create a default annotation codebook?',
@@ -131,7 +159,17 @@ class ReadCodebook {
           Alerts.errorAlert({text: 'No group is defined'})
           // PVSCL:ENDCOND
         } else {
-          LanguageUtils.dispatchCustomEvent(Events.codebookCreated, {annotations: codebookDefinitionAnnotations})
+          Codebook.fromAnnotations(codebookDefinitionAnnotations, (err, codebook) => {
+            if (err) {
+              Alerts.errorAlert({text: 'Error parsing codebook. Error: ' + err.message})
+            } else {
+              this.codebook = codebook
+              LanguageUtils.dispatchCustomEvent(Events.codebookRead, {codebook: this.codebook})
+            }
+          })
+        }
+        if (_.isFunction(callback)) {
+          callback()
         }
         // TODO Create data model from highlighter definition
         // TODO Create buttons from data model
@@ -179,23 +217,13 @@ class ReadCodebook {
     })
   }
 
-  codebookCreatedEventHandler () {
+  codebookReadEventHandler () {
     return (event) => {
-      let annotations = event.detail.annotations
-      // Add to model
-      Codebook.fromAnnotations(annotations, (guide) => {
-        this.codebook = guide
-        // Set colors for each element
-        this.applyColorsToThemes()
-        console.debug(this.codebook)
-        // Populate sidebar buttons container
-        this.createButtons()
-        // this.createTagsButtonsTheme()
-        console.debug('Codebook read')
-        if (_.isFunction(event.detail.callback)) {
-          event.detail.callback()
-        }
-      })
+      this.codebook = event.detail.codebook
+      // Set colors for each element
+      this.applyColorsToThemes()
+      // Populate sidebar buttons container
+      this.createButtons()
     }
   }
 
@@ -210,13 +238,13 @@ class ReadCodebook {
     // Create current buttons
     let themes = this.codebook.themes
     // PVSCL:IFCOND(Alphabetical, LINE)
-    themes = themes.sort((a, b) => a.name.localeCompare(b.name))
+    themes.sort((a, b) => a.name.localeCompare(b.name))
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Number, LINE)
-    themes = themes.sort((a, b) => parseFloat(a.name) - parseFloat(b.name))
+    themes.sort((a, b) => parseFloat(a.name) - parseFloat(b.name))
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Date, LINE)
-    themes = themes.sort((a, b) => a.createdDate - b.createdDate)
+    themes.sort((a, b) => a.createdDate - b.createdDate)
     // PVSCL:ENDCOND
     for (let i = 0; i < themes.length; i++) {
       let theme = themes[i]
@@ -267,8 +295,9 @@ class ReadCodebook {
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
-                LanguageUtils.dispatchCustomEvent(Events.annotate, {
-                  tags: tags,
+                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                  purpose: 'classifying',
+                  theme: theme,
                   id: id
                 })
               }
@@ -309,9 +338,10 @@ class ReadCodebook {
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
-                LanguageUtils.dispatchCustomEvent(Events.annotate, {
+                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                  purpose: 'classifying',
                   tags: tags,
-                  id: code.id/* PVSCL:IFCOND(NOT(Multivalued)) */,
+                  codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
                   lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
                 })
               }
@@ -336,9 +366,10 @@ class ReadCodebook {
                 // PVSCL:IFCOND(MoodleURL,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
-                LanguageUtils.dispatchCustomEvent(Events.annotate, {
+                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                  purpose: 'classifying',
                   tags: tags,
-                  id: theme.id
+                  codeId: theme.id
                 })
               }
             }
@@ -362,9 +393,10 @@ class ReadCodebook {
               // PVSCL:IFCOND(MoodleURL,LINE)
               tags.push('cmid:' + theme.annotationGuide.cmid)
               // PVSCL:ENDCOND
-              LanguageUtils.dispatchCustomEvent(Events.annotate, {
+              LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                purpose: 'classifying',
                 tags: tags,
-                id: theme.id
+                codeId: theme.id
               })
             }
           }

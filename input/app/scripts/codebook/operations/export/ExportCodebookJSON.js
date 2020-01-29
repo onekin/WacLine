@@ -5,9 +5,13 @@ const Codebook = require('../../model/Codebook')
 
 class ExportCodebookJSON {
   static exportConfigurationSchemeToJSObject (schemeAnnotations, name, callback) {
-    Codebook.fromAnnotations(schemeAnnotations, (guide) => {
-      if (_.isFunction(callback)) {
-        callback(guide.toObjects(name))
+    Codebook.fromAnnotations(schemeAnnotations, (err, guide) => {
+      if (err) {
+        Alerts.errorAlert({text: 'The codebook scheme is not exported correctly. Error: ' + err.message})
+      } else {
+        if (_.isFunction(callback)) {
+          callback(guide.toObjects(name))
+        }
       }
     })
   }

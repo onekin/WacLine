@@ -1,8 +1,8 @@
 const Body = require('./Body')
 // PVSCL:IFCOND(Hierarchy, LINE)
-const Code = require('../../definition/Code')
+const Code = require('../../codebook/model/Code')
 // PVSCL:ENDCOND
-const Theme = require('../../definition/Theme')
+const Theme = require('../../codebook/model/Theme')
 const LanguageUtils = require('../../utils/LanguageUtils')
 const _ = require('lodash')
 
@@ -29,13 +29,13 @@ class Classifying extends Body {
   }
 
   static deserialize (obj) {
-    let code = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(obj.id)
+    let code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(obj.id)
     return new Classifying({code})
   }
 
   tooltip () {
     let tooltip = ''
-    let code = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(this.value.id)
+    let code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(this.value.id)
     // PVSCL:IFCOND(Hierarchy, LINE)
     if (LanguageUtils.isInstanceOf(code, Code)) {
       tooltip += 'Code: ' + code.name + 'for Theme: ' + code.theme.name

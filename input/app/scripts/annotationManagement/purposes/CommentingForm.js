@@ -1,7 +1,7 @@
 const _ = require('lodash')
 const Alerts = require('../../utils/Alerts')
 const LanguageUtils = require('../../utils/LanguageUtils')
-const Theme = require('../../definition/Theme')
+const Theme = require('../../codebook/model/Theme')
 // PVSCL:IFCOND(Autocomplete,LINE)
 const Awesomplete = require('awesomplete')
 // PVSCL:ENDCOND
@@ -31,7 +31,7 @@ class CommentingForm {
       let previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
       let previousAssignmentsUI = window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
       // PVSCL:ENDCOND
-      let themeOrCode = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(annotation.tagId)
+      let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(annotation.tagId)
       let title = ''
       // PVSCL:IFCOND(MoodleProvider,LINE)
       if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {

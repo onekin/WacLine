@@ -186,17 +186,6 @@ class Theme {
     return object
   }
 
-  toObject () {
-    return {
-      name: this.name,
-      description: this.description,
-      id: this.id
-    }
-  }
-
-  getTags () {
-    return [Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name]
-  }
   // PVSCL:IFCOND(MoodleProvider, LINE)
 
   static createThemeFromObject (theme, rubric) {
@@ -212,6 +201,18 @@ class Theme {
     return instancedTheme
   }
   // PVSCL:ENDCOND
+
+  toObject () {
+    return {
+      name: this.name,
+      description: this.description,
+      id: this.id
+    }
+  }
+
+  getTags () {
+    return [Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name]
+  }
 }
 
 module.exports = Theme

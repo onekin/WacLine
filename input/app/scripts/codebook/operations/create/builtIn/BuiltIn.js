@@ -1,11 +1,10 @@
 const UserDefinedHighlighterDefinition = require('./UserDefinedHighlighterDefinition')
 const Codebook = require('../../../model/Codebook')
 const Alerts = require('../../../../utils/Alerts')
-const LanguageUtils = require('../../../../utils/LanguageUtils')
-const Events = require('../../../../Events')
+const _ = require('lodash')
 
 class BuiltIn {
-  static createDefaultAnnotations () {
+  static createDefaultAnnotations (callback) {
     Codebook.setAnnotationServer(null, (annotationServer) => {
       // Create annotation guide from user defined highlighter definition
       let annotationGuide = Codebook.fromUserDefinedHighlighterDefinition(UserDefinedHighlighterDefinition)
@@ -21,7 +20,9 @@ class BuiltIn {
         } else {
           window.abwa.sidebar.openSidebar()
           Alerts.closeAlert()
-          LanguageUtils.dispatchCustomEvent(Events.codebookCreated, {annotations: annotations})
+          if (_.isFunction(callback)) {
+            callback()
+          }
         }
       })
     })

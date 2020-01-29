@@ -192,15 +192,9 @@ class ReadAnnotation {
         }
       } else {
         // Deserialize retrieved annotations
-        let annotations = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
-        // Search tagged annotations
-        let filteringTags = window.abwa.tagManager.getFilteringTagList()
-        this.allAnnotations = _.filter(annotations, (annotation) => {
-          let tags = annotation.tags
-          return !(tags.length > 0 && _.find(filteringTags, tags[0])) || (tags.length > 1 && _.find(filteringTags, tags[1]))
-        })
+        this.allAnnotations = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
         // PVSCL:IFCOND(Replying, LINE)
-        this.replyAnnotations = _.filter(annotations, (annotation) => {
+        this.replyAnnotations = _.filter(this.allAnnotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
         })
         // PVSCL:ENDCOND
@@ -286,7 +280,7 @@ class ReadAnnotation {
     // Annotation color is based on codebook color
     // Get annotated code id
     let bodyWithClassifyingPurpose = _.find(annotation.body, (body) => { return body.purpose === 'classifying' })
-    let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
+    let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
     color = codeOrTheme.color
     // PVSCL:ELSECOND
     // Annotation color used is default in grey

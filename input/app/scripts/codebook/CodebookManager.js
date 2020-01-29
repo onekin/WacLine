@@ -41,7 +41,11 @@ class CodebookManager {
 
   init (callback) {
     this.codebookCreator.init()
-    this.codebookReader.init()
+    this.codebookReader.init(() => {
+      if (_.isFunction(callback)) {
+        callback()
+      }
+    })
     // PVSCL:IFCOND(CodebookUpdate, LINE)
     this.codebookUpdater.init()
     // PVSCL:ENDCOND
@@ -57,9 +61,6 @@ class CodebookManager {
     // PVSCL:IFCOND(ImportCodebook, LINE)
     this.codebookImporter.init()
     // PVSCL:ENDCOND
-    if (_.isFunction(callback)) {
-      callback()
-    }
   }
 
   destroy () {
@@ -68,11 +69,8 @@ class CodebookManager {
     for (let i = 0; i < codebookCreatorEvents.length; i++) {
       codebookCreatorEvents[i].element.removeEventListener(codebookCreatorEvents[i].event, codebookCreatorEvents[i].handler)
     }
-    // Remove reader event listeners
-    let codebookReaderEvents = _.values(this.codebookReader.events)
-    for (let i = 0; i < codebookCreatorEvents.length; i++) {
-      codebookReaderEvents[i].element.removeEventListener(codebookReaderEvents[i].event, codebookReaderEvents[i].handler)
-    }
+    // Destroy codebook reader
+    this.codebookReader.destroy()
     // PVSCL:IFCOND(CodebookUpdate, LINE)
     // Remove updater event listeners
     let codebookUpdaterEvents = _.values(this.codebookUpdater.events)

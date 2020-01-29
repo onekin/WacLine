@@ -86,7 +86,7 @@ class CreateAnnotation {
     }
     // PVSCL:IFCOND(Classifying, LINE)
     if (codeId) {
-      let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(codeId)
+      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codeId)
       tags = tags.concat(codeOrTheme.getTags())
     }
     // PVSCL:ENDCOND
@@ -104,7 +104,7 @@ class CreateAnnotation {
     // PVSCL:IFCOND(Classifying, LINE)
     // Get body for classifying
     if (codeId) {
-      let codeOrTheme = window.abwa.tagManager.model.highlighterDefinition.getCodeOrThemeFromId(codeId)
+      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codeId)
       let classifyingBody = new Classifying({code: codeOrTheme})
       body.push(classifyingBody.serialize())
     }

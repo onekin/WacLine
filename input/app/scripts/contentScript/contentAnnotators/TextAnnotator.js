@@ -198,7 +198,7 @@ class TextAnnotator extends ContentAnnotator {
   }
 
   initAnnotateEvent (callback) {
-    this.events.annotateEvent = {element: document, event: Events.annotate, handler: this.createAnnotationEventHandler()}
+    this.events.annotateEvent = {element: document, event: Events.createAnnotation, handler: this.createAnnotationEventHandler()}
     this.events.annotateEvent.element.addEventListener(this.events.annotateEvent.event, this.events.annotateEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()

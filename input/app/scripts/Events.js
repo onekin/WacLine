@@ -1,5 +1,4 @@
 const Events = {
-  annotate: 'annotate',
   annotationCreated: 'annotationCreated',
   annotationUpdated: 'annotationUpdated',
   annotationDeleted: 'annotationDeleted',
@@ -62,7 +61,8 @@ const Events = {
   deleteAllAnnotations: 'deleteAllAnnotations',
   deletedAllAnnotations: 'deletedAllAnnotations',
   // PVSCL:ENDCOND
-  updatedCurrentAnnotations: 'updatedCurrentAnnotations'
+  updatedCurrentAnnotations: 'updatedCurrentAnnotations',
+  codebookRead: 'codebookRead'
 }
 
 module.exports = Events
