@@ -15,7 +15,7 @@ class AnnotationBasedInitializer {
       if (window.abwa.annotationServerManager.isLoggedIn() === false) {
         window.abwa.annotationServerManager.logIn((err, token) => {
           if (err) {
-            Alerts.errorAlert({title: 'Log in is required', text: 'It is necessary to log in Hypothes.is.'})
+            Alerts.errorAlert({title: 'Log in is required', text: 'It is necessary to log in your annotation server.'})
           } else {
             // Reload web page
             document.location.reload()

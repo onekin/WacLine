@@ -251,6 +251,13 @@ class ReadCodebook {
       let themeButtonContainer
       // PVSCL:IFCOND(Hierarchy,LINE)
       let codes = theme.codes
+      codes = codes.sort((a, b) => {
+        // PVSCL:IFCOND(Alphabetical, LINE)
+        return a.name.localeCompare(b.name)
+        // PVSCL:ELSEIFCOND(Number, LINE)
+        // PVSCL:ELSEIFCOND(Date, LINE)
+        // PVSCL:ENDCOND
+      })
       // PVSCL:IFCOND(Alphabetical, LINE)
       codes = codes.sort((a, b) => a.name.localeCompare(b.name))
       // PVSCL:ENDCOND
@@ -298,7 +305,7 @@ class ReadCodebook {
                 LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
                   purpose: 'classifying',
                   theme: theme,
-                  id: id
+                  codeId: id
                 })
               }
             }
@@ -328,7 +335,7 @@ class ReadCodebook {
                   } else {
                     // In the case that we have annotated with themes until now and there isn't a code annotation yet
                     LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
-                      id: code.id,
+                      codeId: code.id,
                       currentlyAnnotatedCode: currentlyAnnotatedCode
                     })
                   }

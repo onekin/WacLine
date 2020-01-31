@@ -6,11 +6,11 @@ const Canvas = require('../consumption/visualizations/Canvas')
 // PVSCL:IFCOND(Screenshot,LINE)
 const Screenshots = require('../consumption/visualizations/Screenshots')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(GSheetConsumer,LINE)
+// PVSCL:IFCOND(GoogleSheetConsumer,LINE)
 const GoogleSheetGenerator = require('../consumption/visualizations/GoogleSheetGenerator')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(LastAnnotation,LINE)
-const Resume = require('../consumption/visualizations/Resume')
+const Resume = require('../annotationManagement/read/Resume')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(TextSummary,LINE)
 const TextSummary = require('../consumption/visualizations/TextSummary')
@@ -107,7 +107,7 @@ class Toolset {
       this.googleSheetImage.title = 'Go to last annotation' // TODO i18n
       this.toolsetBody.appendChild(this.googleSheetImage)
       this.googleSheetImage.addEventListener('click', () => {
-        this.generateGoogleSheet()
+        GoogleSheetGenerator.generate()
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleReport,LINE)
@@ -170,11 +170,6 @@ class Toolset {
   // PVSCL:IFCOND(LastAnnotation,LINE)
   goToLastButtonHandler () {
     Resume.resume()
-  }
-  // PVSCL:ENDCOND
-  // PVSCL:IFCOND(GSheetConsumer,LINE)
-  generateGoogleSheet () {
-    GoogleSheetGenerator.generate()
   }
   // PVSCL:ENDCOND
 

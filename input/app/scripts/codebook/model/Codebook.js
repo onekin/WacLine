@@ -6,7 +6,7 @@ const LanguageUtils = require('../../utils/LanguageUtils')
 // PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('./Code')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(GSheetProvider,LINE)
+// PVSCL:IFCOND(GoogleSheetProvider,LINE)
 const URLUtils = require('../../utils/URLUtils')
 const Alerts = require('../../utils/Alerts')
 // PVSCL:ENDCOND
@@ -29,7 +29,7 @@ class Codebook {
     assignmentName = null,
     assignmentId = null,
     courseId = null,
-    cmid = null/* PVSCL:ENDCOND *//* PVSCL:IFCOND(GSheetProvider) */,
+    cmid = null/* PVSCL:ENDCOND *//* PVSCL:IFCOND(GoogleSheetProvider) */,
     spreadsheetId = null,
     sheetId = null/* PVSCL:ENDCOND */
   }) {
@@ -44,7 +44,7 @@ class Codebook {
     this.courseId = courseId
     this.cmid = cmid
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GSheetProvider,LINE)
+    // PVSCL:IFCOND(GoogleSheetProvider,LINE)
     this.spreadsheetId = spreadsheetId
     this.sheetId = sheetId
     // PVSCL:ENDCOND
@@ -69,7 +69,7 @@ class Codebook {
       cmid: this.cmid
     }
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GSheetProvider,LINE)
+    // PVSCL:IFCOND(GoogleSheetProvider,LINE)
     textObject = {
       spreadsheetId: this.spreadsheetId,
       sheetId: this.sheetId
@@ -105,12 +105,12 @@ class Codebook {
   static fromAnnotation (annotation, callback) {
     this.setAnnotationServer(null, (annotationServer) => {
       let annotationGuideOpts = {id: annotation.id, name: annotation.name, annotationServer: annotationServer}
-      // PVSCL:IFCOND(GSheetProvider or MoodleProvider, LINE)
+      // PVSCL:IFCOND(GoogleSheetProvider or MoodleProvider, LINE)
       // Configuration for gsheet provider or moodle provider is saved in text attribute
       // TODO Maybe this is not the best place to store this configuration, it wa done in this way to be visible in Hypothes.is client, but probably it should be defined in the body of the annotation
       let config = jsYaml.load(annotation.text)
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(GSheetProvider, LINE)
+      // PVSCL:IFCOND(GoogleSheetProvider, LINE)
       annotationGuideOpts['spreadsheetId'] = config.spreadsheetId
       annotationGuideOpts['sheetId'] = config.sheetId
       // PVSCL:ENDCOND
@@ -244,7 +244,7 @@ class Codebook {
     return annotationGuide
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(GSheetProvider,LINE)
+  // PVSCL:IFCOND(GoogleSheetProvider,LINE)
 
   static fromGSheetProvider (callback) {
     let annotationGuide = new Codebook({})

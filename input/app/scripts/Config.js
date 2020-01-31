@@ -26,7 +26,7 @@ let tags = {
 tags['producer'] = 'teacher'
 tags['consumer'] = 'student'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(GSheetProvider, LINE)
+// PVSCL:IFCOND(GoogleSheetProvider, LINE)
 tags['statics'] = {
   multivalued: 'multivalued',
   inductive: 'inductive',

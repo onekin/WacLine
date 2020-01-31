@@ -160,10 +160,10 @@ class GoogleSheetGenerator {
 
   static getSLRInfoFromAnnotations (annotations) {
     let codingAnnotations = _.filter(annotations, (annotation) => {
-      return annotation.motivation === 'classifying' || annotation.motivation === Config.namespace + ':classifying'
+      return _.isObject(annotation.body.find(body => body.purpose === 'classifying'))
     })
     let validatingAnnotations = _.filter(annotations, (annotation) => {
-      return annotation.motivation === 'assessing' || annotation.motivation === Config.namespace + ':assessing'
+      return _.isObject(annotation.body.find(body => body.purpose === 'assessing'))
     })
     let anAnnotationForEachPrimaryStudy = _.uniqWith(codingAnnotations, (a, b) => {
       return AnnotationUtils.areFromSameDocument(a, b)
@@ -229,7 +229,8 @@ class GoogleSheetGenerator {
         return codingAnnotation.id === validatedAnnotationId
       })
       // Get code or theme that is classified with
-      let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codingAnnotation.tagId)
+      let codingAnnotationBody = codingAnnotation.body.find(body => body.purpose === 'classifying')
+      let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codingAnnotationBody.value.id)
       let theme
       let code
       if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {

@@ -16,7 +16,7 @@ class Theme {
     color,
     annotationGuide,
     createdDate = new Date(),
-    description = ''/* PVSCL:IFCOND(GSheetProvider and Hierarchy) */,
+    description = ''/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
     multivalued,
     inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
     moodleCriteriaId/* PVSCL:ENDCOND */
@@ -37,7 +37,7 @@ class Theme {
     // PVSCL:IFCOND(Hierarchy,LINE)
     this.codes = []
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
+    // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy,LINE)
     this.multivalued = multivalued
     this.inductive = inductive
     // PVSCL:ENDCOND
@@ -67,7 +67,7 @@ class Theme {
     let cmidTag = 'cmid:' + this.annotationGuide.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
+    // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy,LINE)
     if (this.multivalued) {
       tags.push(Config.namespace + ':' + Config.tags.statics.multivalued)
     }
@@ -100,7 +100,7 @@ class Theme {
     let themeTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
     })
-    // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
+    // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy,LINE)
     let multivaluedTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':multivalued')
     })
@@ -111,7 +111,7 @@ class Theme {
     if (_.isString(themeTag)) {
       let name = themeTag.replace(Config.namespace + ':' + Config.tags.grouped.group + ':', '')
       let config = jsYaml.load(annotation.text)
-      // PVSCL:IFCOND(GSheetProvider and Hierarchy,LINE)
+      // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy,LINE)
       // multivalued and inductive
       let multivalued = _.isString(multivaluedTag)
       let inductive = _.isString(inductiveTag)
@@ -127,7 +127,7 @@ class Theme {
           name,
           description,
           createdDate: annotation.updated,
-          annotationGuide/* PVSCL:IFCOND(GSheetProvider and Hierarchy) */,
+          annotationGuide/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
           multivalued,
           inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
           moodleCriteriaId/* PVSCL:ENDCOND */

@@ -17,7 +17,7 @@ const Popup = require('./popup/Popup')
 // PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisManager = require('./background/HypothesisManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(GSheetProvider or GSheetConsumer, LINE)
+// PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
 const GoogleSheetsManager = require('./background/GoogleSheetsManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(DOI or NavigationScript, LINE)
@@ -49,7 +49,7 @@ class Background {
     this.hypothesisManager.init()
 
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GSheetProvider or GSheetConsumer, LINE)
+    // PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
     // Initialize google sheets manager
     this.googleSheetsManager = new GoogleSheetsManager()
     this.googleSheetsManager.init()

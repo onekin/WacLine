@@ -1,5 +1,5 @@
 const GoogleSheetClient = require('../googleSheets/GoogleSheetClient')
-// PVSCL:IFCOND(GSheetConsumer,LINE)
+// PVSCL:IFCOND(GoogleSheetConsumer,LINE)
 const _ = require('lodash')
 // PVSCL:ENDCOND
 
@@ -29,7 +29,7 @@ class GoogleSheetsManager {
             }
           })
           return true
-        }/* PVSCL:IFCOND(GSheetProvider) */ else if (request.cmd === 'getSpreadsheet') {
+        }/* PVSCL:IFCOND(GoogleSheetProvider) */ else if (request.cmd === 'getSpreadsheet') {
           chrome.identity.getAuthToken({ 'interactive': true }, function (token) {
             if (chrome.runtime.lastError) {
               sendResponse({ error: chrome.runtime.lastError })
@@ -69,7 +69,7 @@ class GoogleSheetsManager {
               }
             }
           })
-        }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(GSheetConsumer) */ else if (request.cmd === 'createSpreadsheet') {
+        }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(GoogleSheetConsumer) */ else if (request.cmd === 'createSpreadsheet') {
           chrome.identity.getAuthToken({ 'interactive': true }, function (token) {
             if (_.isUndefined(token)) {
               sendResponse({error: new Error('Unable to retrieve token, please check if you have synced your browser and your google account. If the application did not ask you for login, please contact developer.')})
