@@ -1,4 +1,5 @@
 const ChromeStorage = require('../../utils/ChromeStorage')
+const URLUtils = require('../../utils/URLUtils')
 const BrowserStorageClient = require('./BrowserStorageClient')
 const AnnotationServerManager = require('../AnnotationServerManager')
 // const mockDatabase = require('./mockDatabase')
@@ -51,6 +52,11 @@ class BrowserStorageManager extends AnnotationServerManager {
         }
       }
     })
+  }
+
+  constructSearchUrl (obj) {
+    let hashParam = URLUtils.objectToParams(obj)
+    return chrome.extension.getURL('content/browserStorage/browserStorageSearch.html') + '#' + hashParam
   }
 
   cleanDatabase (callback) {

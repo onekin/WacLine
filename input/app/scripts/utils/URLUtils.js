@@ -14,7 +14,7 @@ class URLUtils {
       let hash = splittedUrl[1]
       result = hash.split('&').reduce((result, item) => {
         let parts = item.split(separator)
-        result[parts[0]] = parts[1]
+        result[parts[0]] = decodeURIComponent(parts[1])
         return result
       }, {})
     }
@@ -65,6 +65,10 @@ class URLUtils {
     } catch (typeError) {
       return false
     }
+  }
+
+  static objectToParams (obj) {
+    return Object.keys(obj).map(key => key + ':' + encodeURIComponent(obj[key])).join('&')
   }
 }
 

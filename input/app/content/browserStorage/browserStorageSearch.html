@@ -1,0 +1,28 @@
+<html>
+<head>
+  <link rel="stylesheet" href="../../styles/browserStorageSearch.css">
+</head>
+<body>
+<div id="searchAnnotationsContainer">
+  <input type="text" id="searchAnnotationsInput"/>
+</div>
+<div id="searchResult">
+<template id="annotationCardTemplate">
+  <div class="annotationCard">
+    <div class="annotationCardUsername"></div>
+    <div class="annotationCardGroup"></div>
+    <div class="annotationCardDate"></div>
+    <div class="annotationCardExact"></div>
+    <div class="annotationCardComment"></div>
+    <div class="annotationCardTags"></div>
+    <div class="annotationCardLink">
+      <a href="#" target="_blank">
+        <img class= "annotationCardLinkImg" src="../../images/arrowRight.svg"/>
+      </a>
+    </div>
+  </div>
+</template>
+</div>
+<script src="../../scripts/BrowserStorageSearch.js"></script>
+</body>
+</html>

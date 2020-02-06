@@ -46,10 +46,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="ikqisCgm5hSkDYZNJ">./i36v9Ay8VIclaxIo7</cm:target>
           <cm:target cm:id="iMbzMKR28lrZ8YFih">./iq8KhwKzipWRNNLFw</cm:target>
           <cm:target cm:id="iAkqtF6fLM8E1iZ7p">./i8_myHFxfoMjDRua9</cm:target>
-          <cm:target cm:id="iQ0h2MgQ1jZxNFZK4">./ieFZrnU5hSRcf0lcM</cm:target>
         </cm:relation>
         <cm:relation cm:id="iev1lgslEiI_IbVCn" cm:type="ps:optional" cm:range="[0,n]">
           <cm:target cm:id="iYKe0ZzShJsqSwiiR">./iD93S-Zw_CUcdoLrR</cm:target>
+          <cm:target cm:id="isH_TTI_A9fxVssQe">./ieFZrnU5hSRcf0lcM</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -60,10 +60,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="icv3bKA3BND-DPoJI" cm:type="ps:datetime">2019-11-07T11:39:58.469Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iv210VYiJEpozoArk" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="izamyJvttk5t9t1_z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2019-12-17T11:33:09.535Z</cm:constant>
+          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-02-05T12:24:47.321Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipaIptNGXwqXJsHyV" cm:type="ps:string" cm:name="appName">
           <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">WebAnnotator</cm:constant>
@@ -1278,6 +1278,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="it2oQwDa8rxjFDSwz">./i7DSN7eJJwoP5YQrf</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:relations cm:id="iEiSurG_QOAIilPCH" cm:class="ps:dependencies">
+        <cm:relation cm:id="iL6kskCoFijDmT7Cq" cm:type="ps:requires">
+          <cm:target cm:id="iX4fMBTtC6EC7ssr4">iivhJRwmojkiJvYc5/iulCLFSpiQ4oNyrwG</cm:target>
+        </cm:relation>
+      </cm:relations>
       <cm:properties>
         <cm:property cm:id="i4xIiRsucAzPB5KUu" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="iXO2T7CuovbCscAlT" cm:type="ps:string">haritz</cm:constant>
@@ -1286,10 +1291,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iMn_y8erZF0ngCmM9" cm:type="ps:datetime">2019-11-07T11:55:36.476Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i8q2vISCUXT1gC3I3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i6c6YjsKuSKnW46rR" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="i6c6YjsKuSKnW46rR" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="iI6vrqIEbBK1IXIqu" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iGH-2j9V7gmqdDQYn" cm:type="ps:datetime">2020-01-27T17:13:42.044Z</cm:constant>
+          <cm:constant cm:id="iGH-2j9V7gmqdDQYn" cm:type="ps:datetime">2020-02-05T15:19:22.133Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1433,6 +1438,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="iq69Ki5-Tc57Ghdlg">./i14bKbeRjWqUbd0zH</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:relations cm:id="i386BZyPD8u8dIZqC" cm:class="ps:dependencies">
+        <cm:relation cm:id="izLHcbr_gVadNrNBt" cm:type="ps:requires">
+          <cm:target cm:id="iDuDsOZAntWOXOLXM">iivhJRwmojkiJvYc5/i4zTrONY9hhrFIG2J</cm:target>
+        </cm:relation>
+      </cm:relations>
       <cm:properties>
         <cm:property cm:id="iBFLm9XVLJKpdCGyU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="iXTSlhdSv6yfkEdR7" cm:type="ps:string">haritz</cm:constant>
@@ -1441,10 +1451,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ipcbuVoc2rlzgOxUJ" cm:type="ps:datetime">2019-11-07T11:57:45.595Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iVAA-eDfpm8X9kLG7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iVmvoIx3_ZFMFDNAw" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iVmvoIx3_ZFMFDNAw" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="iLKvDu1ufLQQP75l9" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ikp6ENQMkPS6jJURH" cm:type="ps:datetime">2019-11-07T11:57:45.595Z</cm:constant>
+          <cm:constant cm:id="ikp6ENQMkPS6jJURH" cm:type="ps:datetime">2020-02-04T16:01:02.732Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2312,7 +2322,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="iI8j5cx1uXa8Xi6W8" cm:mimetype="text/plain" cm:encoding="utf-8">Presentation</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="ieFZrnU5hSRcf0lcM" cm:name="Codebook" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+    <cm:element cm:id="ieFZrnU5hSRcf0lcM" cm:name="Codebook" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iKgc7IZvUeCXBdIRI" cm:class="ps:children">
         <cm:relation cm:id="iHi_XkaKDUZDg5CeU" cm:type="ps:mandatory" cm:range="n">
           <cm:target cm:id="iDsj2Kooq9UrXPoFm">./io_YSpZJ6bkF4zw2y</cm:target>
@@ -2338,10 +2348,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ii2MyEsquEtkp8Iec" cm:type="ps:datetime">2019-11-07T11:59:22.654Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i6jZWzkfVj7vWgCqL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i4wRslDI1iw78NQn4" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="i4wRslDI1iw78NQn4" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="iQtpVQ1SvAtFBkohn" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ixZ7OeYVwi_nWMMfu" cm:type="ps:datetime">2020-01-30T18:53:15.577Z</cm:constant>
+          <cm:constant cm:id="ixZ7OeYVwi_nWMMfu" cm:type="ps:datetime">2020-02-05T12:24:47.321Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

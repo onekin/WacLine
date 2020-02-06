@@ -78,6 +78,10 @@ class HypothesisClientManager extends AnnotationServerManager {
     return !_.isEmpty(this.hypothesisToken)
   }
 
+  constructSearchUrl ({groupId: groupId}) {
+    return this.annotationServerMetadata.groupUrl + groupId
+  }
+
   logIn (callback) {
     // TODO Check if user grant permission to access hypothesis account
     if (!this.isLoggedIn()) {

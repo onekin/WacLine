@@ -11692,15 +11692,27 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="itc-DmU3R6yLLZ7Nw" cm:type="ps:unselected" cm:class="ps:selection">
+    <cm:element cm:id="itc-DmU3R6yLLZ7Nw" cm:type="ps:selected" cm:class="ps:selection">
       <cm:relations cm:id="iaL5LGEhWr2rmhQub" cm:class="ps:references">
         <cm:relation cm:id="iw6uwQkNhn3-Xwnqp" cm:type="ps:references">
           <cm:target cm:id="iqEj9tuqYG8Fb_wsN">iivhJRwmojkiJvYc5/iDk2GRG_JmFTmVPuB</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
-        <cm:property cm:id="i-C6wJNG03bjc2gzK" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
-          <cm:constant cm:id="iXHnrVxfAUbq6P__p" cm:type="ps:string">ps:auto</cm:constant>
+        <cm:property cm:id="i-C6wJNG03bjc2gzK" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="iXHnrVxfAUbq6P__p" cm:type="ps:string">ps:user</cm:constant>
+        </cm:property>
+        <cm:property cm:id="inDJGXKUaCdC1RBYv" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iNQBvVCcwJquXnD4J" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iWgY_nY5m0IQ_lvSx" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="idsjxyhsdufOAcrSn" cm:type="ps:datetime">2020-02-05T11:03:07.262Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLzAgXnaROg-32Neg" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="isONoN-qPZCQuk-u0" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iW3bKlbUpBikFk8g0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iUilL-Tx7zR4jN75i" cm:type="ps:datetime">2020-02-05T11:03:07.262Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>

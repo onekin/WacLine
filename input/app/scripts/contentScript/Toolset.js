@@ -1,25 +1,28 @@
 const axios = require('axios')
 const _ = require('lodash')
 // PVSCL:IFCOND(Canvas,LINE)
-const Canvas = require('../consumption/visualizations/Canvas')
+const Canvas = require('../annotationManagement/read/Canvas')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Screenshot,LINE)
-const Screenshots = require('../consumption/visualizations/Screenshots')
+const Screenshots = require('../annotationManagement/read/Screenshots')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetConsumer,LINE)
-const GoogleSheetGenerator = require('../consumption/visualizations/GoogleSheetGenerator')
+const GoogleSheetGenerator = require('../annotationManagement/read/GoogleSheetGenerator')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(LastAnnotation,LINE)
 const Resume = require('../annotationManagement/read/Resume')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(TextSummary,LINE)
-const TextSummary = require('../consumption/visualizations/TextSummary')
+const TextSummary = require('../annotationManagement/read/TextSummary')
 // PVSCL:ENDCOND
 const Events = require('../Events')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Alerts = require('../utils/Alerts')
 // PVSCL:IFCOND(MoodleReport,LINE)
 const BackToWorkspace = require('../moodle/BackToWorkspace')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(AnnotationList, LINE)
+const AnnotationList = require('../annotationManagement/read/AnnotationList')
 // PVSCL:ENDCOND
 const $ = require('jquery')
 
@@ -120,6 +123,17 @@ class Toolset {
         this.moodleLink = link
         this.moodleLink.appendChild(this.moodleImage)
         this.toolsetBody.appendChild(this.moodleLink)
+      })
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(AnnotationList,LINE)
+      // Set annotation list image
+      let annotationListImageUrl = chrome.extension.getURL('/images/annotationList.png')
+      this.annotationListImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.annotationListImage.src = annotationListImageUrl
+      this.annotationListImage.title = 'Go to annotation list' // TODO i18n
+      this.toolsetBody.appendChild(this.annotationListImage)
+      this.annotationListImage.addEventListener('click', () => {
+        AnnotationList.openAnnotationList()
       })
       // PVSCL:ENDCOND
       // Check if exist any element in the tools and show it
