@@ -19,7 +19,7 @@
   <div id="main-container" class="container">
 
     <div class="jumbotron">
-      <img class="logo" src="../images/icon-38.png">
+      <img class="logo" src="../images/PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))/icon-38.png">
       <h2 class="title">PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appName')) configuration</h2>
       <div class="card">
         <div class="card-header bg-dark text-white">User manual</div>
@@ -66,7 +66,7 @@
           <div class="form-check">
             <label for="annotationServerDropdown">Select your annotations server</label>
             <select class="form-control" id="annotationServerDropdown">
-PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Iterate(as;r=''|r+printOptionRow(as) + '\n'))
+              PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Iterate(as;r=''|r+printOptionRow(as) + '\n'))
             </select>
           </div>
         </div>
@@ -84,15 +84,6 @@ PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Iter
         </div>
       </div>
       // PVSCL:ENDCOND
-      <div class="card">
-        <div class="card-header bg-dark text-white">File formats</div>
-        <div class="card-body">
-          <div class="form-group">
-            <label for="fileFormats">Which file formats must be treated as plain text files?</label>
-            <input type="text" class="form-control" id="fileFormats" placeholder="Enter a list of file extensions separated by comma: xml,js,csv">
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
