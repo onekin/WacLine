@@ -17,7 +17,11 @@ class AnnotationManagement {
 
   init (callback) {
     this.annotationCreator.init()
-    this.annotationReader.init()
+    this.annotationReader.init((err) => {
+      if (_.isFunction(callback)) {
+        callback(err)
+      }
+    })
     this.annotationUpdater.init()
     this.annotationDeleter.init()
     this.activateSelectionEvent()

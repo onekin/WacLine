@@ -1,15 +1,15 @@
 @import '../../node_modules/jquery-contextmenu/src/sass/jquery.contextMenu';
 @import '../../node_modules/components-jqueryui/themes/base/jquery-ui';
-PVSCL:IFCOND( Autofill, LINE )
+/* PVSCL:IFCOND(Autocomplete, LINE) */
 @import '../../node_modules/awesomplete/awesomplete';
-PVSCL:ENDCOND
+/* PVSCL:ENDCOND */
 
-PVSCL:IFCOND( Manual, LINE )
+/* PVSCL:IFCOND(Manual, LINE) */
 @import './groupSelection';
-PVSCL:ENDCOND
-PVSCL:IFCOND( PreviousAssignments, LINE )
+/* PVSCL:ENDCOND */
+/* PVSCL:IFCOND(PreviousAssignments, LINE) */
 @import './exam';
-PVSCL:ENDCOND
+/* PVSCL:ENDCOND */
 @import './tagWrapper';
 @import './locationManager';
 @import './sidebar';

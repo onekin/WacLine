@@ -12,7 +12,7 @@ const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:IFCOND(Manual, LINE)
 const Events = require('../Events')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleURL, LINE)
+// PVSCL:IFCOND(MoodleResource, LINE)
 const RolesManager = require('./RolesManager')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
@@ -25,10 +25,10 @@ const BrowserStorageManager = require('../annotationServer/browserStorage/Browse
 const PreviousAssignments = require('../annotationManagement/purposes/PreviousAssignments')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleReport, LINE)
-const MoodleReport = require('../consumption/visualizations/MoodleReport')
+const MoodleReport = require('../annotationManagement/read/MoodleReport')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleComment, LINE)
-const MoodleComment = require('../consumption/visualizations/MoodleComment')
+const MoodleComment = require('../annotationManagement/read/MoodleComment')
 // PVSCL:ENDCOND
 
 class ContentScriptManager {
@@ -96,11 +96,10 @@ class ContentScriptManager {
         return this.reloadMoodleComment()
       })
       // PVSCL:ENDCOND
-      // TODO Uncomment
-      /* .then(() => {
+      .then(() => {
         return this.reloadAnnotatedContentManager()
-      }) */
-      // PVSCL:IFCOND(MoodleURL, LINE)
+      })
+      // PVSCL:IFCOND(MoodleResource, LINE)
       .then(() => {
         return this.reloadRolesManager()
       })
@@ -116,7 +115,7 @@ class ContentScriptManager {
 
   reloadAnnotatedContentManager () {
     return new Promise((resolve, reject) => {
-      // TODO Destroy annotated content manager
+      // Destroy annotated content manager
       this.destroyAnnotatedContentManager()
       // Create a new annotated content manager
       window.abwa.annotatedContentManager = new AnnotatedContentManager()
@@ -197,7 +196,7 @@ class ContentScriptManager {
     })
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(MoodleURL, LINE)
+  // PVSCL:IFCOND(MoodleResource, LINE)
 
   reloadRolesManager () {
     return new Promise((resolve, reject) => {
@@ -283,7 +282,7 @@ class ContentScriptManager {
       window.abwa.annotatedContentManager.destroy()
     }
   }
-  // PVSCL:IFCOND(MoodleURL, LINE)
+  // PVSCL:IFCOND(MoodleResource, LINE)
 
   destroyRolesManager () {
     // Destroy current augmentation operations
@@ -315,7 +314,7 @@ class ContentScriptManager {
       this.destroyUserFilter()
       // PVSCL:ENDCOND
       this.destroyToolset()
-      // PVSCL:IFCOND(MoodleURL, LINE)
+      // PVSCL:IFCOND(MoodleResource, LINE)
       this.destroyRolesManager()
       this.destroyPreviousAssignments()
       // PVSCL:ENDCOND

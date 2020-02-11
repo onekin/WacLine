@@ -11,17 +11,17 @@
   font-size: 70%;
   margin: 15px;
 }
-PVSCL:IFCOND( Validate, LINE )
+/* PVSCL:IFCOND(Validate, LINE) */
 
 .reply_validated {
   background-color: rgba(100, 200, 100, 0.6);
 }
-PVSCL:ENDCOND
+/* PVSCL:ENDCOND */
 
 .highlightedAnnotation .highlightedAnnotation{ // TODO
   background-color: transparent !important;
 }
-PVSCL:IFCOND( Autofill, LINE )
+/* PVSCL:IFCOND(Autofill, LINE) */
 
 .swal2-actions {
   z-index: 0 !important;
@@ -34,7 +34,7 @@ PVSCL:IFCOND( Autofill, LINE )
 .awesomplete {
   width: 100%;
 }
-PVSCL:ENDCOND
+/* PVSCL:ENDCOND */
 
 // POLE SELECTION IN COMMENT BOX
 .criterionName{
@@ -55,3 +55,8 @@ PVSCL:ENDCOND
 .poleRadio + .poleImage:hover{
   opacity:1;
 }
+/* PVSCL:IFCOND(Autocomplete, LINE) */
+.awesomplete {
+  width: 100%;
+}
+/* PVSCL:ENDCOND */

@@ -13,6 +13,8 @@ const qs = require('qs')
 // PVSCL:IFCOND(Commenting, LINE)
 const Commenting = require('./Commenting')
 // PVSCL:ENDCOND
+const Annotation = require('../Annotation')
+const Config = require('../../Config')
 
 class CommentingForm {
   /**
@@ -31,7 +33,9 @@ class CommentingForm {
       let previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
       let previousAssignmentsUI = window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
       // PVSCL:ENDCOND
-      let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(annotation.tagId)
+      // Get body for classifying
+      let classifyingBody = annotation.getBodyForPurpose('classifying')
+      let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(classifyingBody.value.id)
       let title = ''
       // PVSCL:IFCOND(MoodleProvider,LINE)
       if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
@@ -121,7 +125,7 @@ class CommentingForm {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Autocomplete,LINE)
       // Load datalist with previously used texts
-      this.retrievePreviouslyUsedComments(themeOrCode).then((previousComments) => {
+      CommentingForm.retrievePreviouslyUsedComments(themeOrCode).then((previousComments) => {
         let awesomeplete = new Awesomplete(document.querySelector('#comment'), {
           list: previousComments,
           minChars: 0
@@ -261,6 +265,48 @@ class CommentingForm {
     }
     return {html: html, onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback}
   }
+
+  // PVSCL:IFCOND(Autocomplete,LINE)
+
+  static retrievePreviouslyUsedComments (themeOrCode) {
+    let tag = ''
+    if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
+      tag = Config.namespace + ':' + Config.tags.grouped.group + ':' + themeOrCode.name
+    } else {
+      tag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + themeOrCode.name
+    }
+    return new Promise((resolve, reject) => {
+      window.abwa.annotationServerManager.client.searchAnnotations({
+        tag: tag
+      }, (err, annotationsRetrieved) => {
+        if (err) {
+          reject(err)
+        } else {
+          // Remove those which are from the classification scheme
+          let annotationsRetrievedFiltered = annotationsRetrieved.filter(a => a.motivation !== 'codebookDevelopment')
+          // Deserialize annotations
+          let annotations = annotationsRetrievedFiltered.map(a => Annotation.deserialize(a))
+          // Filter by purpose classifying
+          annotations = _.filter(annotations, (annotation) => {
+            return annotation.getBodyForPurpose('classifying') && annotation.getBodyForPurpose('commenting')
+          })
+          // Get texts from annotations and send them in callback
+          resolve(_.uniq(_.reject(_.map(annotations, (annotation) => {
+            // Remove other students moodle urls
+            let text = annotation.getBodyForPurpose('commenting').value
+            // TODO With feature AddReference
+            // let regex = /\b(?:https?:\/\/)?[^/:]+\/.*?mod\/assign\/view.php\?id=[0-9]+/g
+            // return text.replace(regex, '')
+            if (text.replace(/ /g, '') !== '') {
+              return text
+            }
+          }), _.isEmpty)))
+        }
+      })
+      return true
+    })
+  }
+  // PVSCL:ENDCOND
 }
 
 module.exports = CommentingForm

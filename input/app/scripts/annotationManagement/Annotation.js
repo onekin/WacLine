@@ -42,6 +42,14 @@ class Annotation {
     }
   }
 
+  getBodyForPurpose (purpose) {
+    if (_.isString(purpose) && _.isArray(this.body)) {
+      return this.body.find((body) => {
+        return body.purpose === purpose
+      })
+    }
+  }
+
   serialize () {
     let data = {
       '@context': 'http://www.w3.org/ns/anno.jsonld',
@@ -100,17 +108,19 @@ class Annotation {
       created: annotationObject.created,
       modified: annotationObject.updated
     })
-    annotation.body = annotationObject.body.map((body) => {
-      if (body.purpose === 'classifying') {
-        // To remove the purpose from the annotation body
-        let tempBody = JSON.parse(JSON.stringify(body))
-        delete tempBody.purpose
-        // Create new element of type Classifying
-        return new Classifying({code: tempBody.value})
-      } else if (body.purpose === 'commenting') {
-        return new Commenting({value: body.value})
-      }
-    })
+    if (_.isArray(annotation.body)) {
+      annotation.body = annotationObject.body.map((body) => {
+        if (body.purpose === 'classifying') {
+          // To remove the purpose from the annotation body
+          let tempBody = JSON.parse(JSON.stringify(body))
+          delete tempBody.purpose
+          // Create new element of type Classifying
+          return new Classifying({code: tempBody.value})
+        } else if (body.purpose === 'commenting') {
+          return new Commenting({value: body.value})
+        }
+      })
+    }
     return annotation
   }
 }
