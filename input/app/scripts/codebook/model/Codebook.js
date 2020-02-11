@@ -24,7 +24,7 @@ class Codebook {
   constructor ({
     id = null,
     name = '',
-    annotationServer = null/* PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL) */,
+    annotationServer = null/* PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleResource) */,
     moodleEndpoint = null,
     assignmentName = null,
     assignmentId = null,
@@ -54,13 +54,13 @@ class Codebook {
     let motivationTag = 'motivation:defining'
     let guideTag = Config.namespace + ':guide'
     let tags = [motivationTag, guideTag]
-    // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL,LINE)
+    // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleResource,LINE)
     let cmidTag = 'cmid:' + this.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
     // Construct text attribute of the annotation
     let textObject = {}
-    // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleURL,LINE)
+    // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleResource,LINE)
     textObject = {
       moodleEndpoint: this.moodleEndpoint,
       assignmentId: this.assignmentId,
@@ -222,7 +222,7 @@ class Codebook {
     }
     // PVSCL:ENDCOND
   }
-  // PVSCL:IFCOND(BuiltIn or ImportCodebook,LINE)
+  // PVSCL:IFCOND(BuiltIn or ImportCodebook or NOT(Codebook),LINE)
 
   static fromUserDefinedHighlighterDefinition (userDefinedHighlighterDefinition) {
     let annotationGuide = new Codebook({name: userDefinedHighlighterDefinition.name})

@@ -3,7 +3,7 @@ const $ = require('jquery')
 const Alerts = require('../utils/Alerts')
 const ChromeStorage = require('../utils/ChromeStorage')
 const LanguageUtils = require('../utils/LanguageUtils')
-// PVSCL:IFCOND(BuiltIn or ApplicationBased, LINE)
+// PVSCL:IFCOND(BuiltIn or ApplicationBased or NOT(Codebook), LINE)
 const Config = require('../Config')
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
@@ -120,7 +120,7 @@ class GroupSelector {
             } else {
               // PVSCL:IFCOND(BuiltIn, LINE)
               // TODO i18n
-              Alerts.loadingAlert({title: 'First time reviewing?', text: 'It seems that it is your first time using the extension. We are configuring everything to start reviewing.', position: Alerts.position.center})
+              Alerts.loadingAlert({title: 'First time annotating?', text: 'It seems that it is your first time using the extension. We are configuring everything to start your annotation activity.', position: Alerts.position.center})
               // TODO Create default group
               this.createApplicationBasedGroupForUser((err, group) => {
                 if (err) {
@@ -144,8 +144,8 @@ class GroupSelector {
         })
       })
     }
-    // PVSCL:ELSEIFCOND(Manual)
-    // Defines the one of the possibles groups as the current group of the highlighter
+    // PVSCL:ELSEIFCOND(Manual OR NOT(Codebook))
+    // TODO Re-describe: Defines one of the possibles groups as the current group of the highlighter
     if (window.abwa.annotationBasedInitializer.initAnnotation) {
       this.defineGroupBasedOnInitAnnotation(callback)
     } else {
@@ -172,7 +172,7 @@ class GroupSelector {
                 }
               }
               // If group cannot be retrieved from saved in extension annotationServer
-              // PVSCL:IFCOND(BuiltIn, LINE)
+              // PVSCL:IFCOND(BuiltIn or NOT(Codebook), LINE)
               // Try to load a group with defaultName
               if (_.isEmpty(this.currentGroup)) {
                 this.currentGroup = _.find(window.abwa.groupSelector.groups, (group) => { return group.name === GroupName })
@@ -180,8 +180,8 @@ class GroupSelector {
               if (_.isEmpty(this.currentGroup)) {
                 // TODO i18n
                 Alerts.loadingAlert({
-                  title: 'First time reviewing?',
-                  text: 'It seems that it is your first time using the extension. We are configuring everything to start reviewing.',
+                  title: 'First time annotating?',
+                  text: 'It seems that it is your first time using the extension. We are configuring everything to start annotation activity.',
                   position: Alerts.position.center
                 })
                 // TODO Create default group
@@ -307,7 +307,7 @@ class GroupSelector {
       }
     })
   }
-  // PVSCL:IFCOND(BuiltIn,LINE)
+  // PVSCL:IFCOND(BuiltIn OR NOT(Codebook),LINE)
 
   createApplicationBasedGroupForUser (callback) {
     window.abwa.annotationServerManager.client.createNewGroup({name: Config.groupName}, callback)

@@ -26,11 +26,17 @@ class TargetManager {
     this.urlParam = null
     this.documentId = null
     this.documentTitle = ''
+    // PVSCL:IFCOND(HTML, LINE)
     this.documentFormat = HTML // By default document type is html
+    // PVSCL:ELSEIFCOND(PDF, LINE)
+    this.documentFormat = PDF // By default document type is pdf
+    // PVSCL:ELSEIFCOND(TXT, LINE)
+    //this.documentFormat = TXT // By default document type is pdf
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(URN, LINE)
     this.localFile = false
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(MoodleURL, LINE)
+    // PVSCL:IFCOND(MoodleResource, LINE)
     this.fileMetadata = {}
     // PVSCL:ENDCOND
   }
@@ -68,7 +74,7 @@ class TargetManager {
         this.initSupportWebURLChange()
       }
       let promise
-      // PVSCL:IFCOND(MoodleURL, LINE)
+      // PVSCL:IFCOND(MoodleResource, LINE)
       promise = this.retrievePromiseLoadMoodleMetadata()
       // PVSCL:ELSECOND
       promise = Promise.resolve()
@@ -78,7 +84,7 @@ class TargetManager {
           callback()
         }
       }).catch((err) => {
-        // PVSCL:IFCOND(MoodleURL, LINE)
+        // PVSCL:IFCOND(MoodleResource, LINE)
         // Warn user document is not from moodle
         Alerts.errorAlert({
           text: 'Try to download the file again from moodle and if the error continues check <a href="https://github.com/haritzmedina/MarkAndGo/wiki/Most-common-errors-in-Mark&Go#file-is-not-from-moodle">this</a>. Error: ' + err.message,
@@ -145,12 +151,16 @@ class TargetManager {
         })
         return true
       } else {
+        // PVSCL:IFCOND(HTML, LINE)
         this.documentFormat = HTML
+        // PVSCL:ELSEIFCOND(TXT, LINE)
+        //this.documentFormat = TXT
+        // PVSCL:ENDCOND
         resolve()
       }
     })
   }
-  // PVSCL:IFCOND(MoodleURL, LINE)
+  // PVSCL:IFCOND(MoodleResource, LINE)
 
   retrievePromiseLoadMoodleMetadata () {
     return new Promise((resolve, reject) => {
@@ -251,11 +261,16 @@ class TargetManager {
   }
 
   getDocumentRootElement () {
+    // PVSCL:IFCOND(PDF)
     if (this.documentFormat === PDF) {
       return document.querySelector('#viewer')
-    } else if (this.documentFormat === HTML) {
+    } /* PVSCL:ELSEIFCOND(HTML) */ else if (this.documentFormat === HTML) {
       return document.body
-    }
+    } /* PVSCL:ELSEIFCOND(TXT) */ /*else if (this.documentFormat === TXT) {
+
+    }*/ /* PVSCL:ELSECOND */ else {
+      Alerts.errorAlert({text: 'The format of the document to be annotated is not supported by the tool yet.'})
+    } /* PVSCL:ENDCOND */
   }
 
   getDocumentURIToSearchInAnnotationServer () {

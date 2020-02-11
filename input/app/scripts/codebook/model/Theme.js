@@ -185,8 +185,9 @@ class Theme {
     // PVSCL:ENDCOND
     return object
   }
+  // PVSCL:ENDCOND
 
-  // PVSCL:IFCOND(MoodleProvider, LINE)
+  // PVSCL:IFCOND(MoodleProvider or ExportCodebook, LINE)
 
   static createThemeFromObject (theme, rubric) {
     theme.annotationGuide = rubric

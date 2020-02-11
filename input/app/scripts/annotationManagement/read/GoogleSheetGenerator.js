@@ -160,10 +160,14 @@ class GoogleSheetGenerator {
 
   static getSLRInfoFromAnnotations (annotations) {
     let codingAnnotations = _.filter(annotations, (annotation) => {
-      return _.isObject(annotation.body.find(body => body.purpose === 'classifying'))
+      if (annotation.body && _.isArray(annotation.body)) {
+        return _.isObject(annotation.body.find(body => body.purpose === 'classifying'))
+      }
     })
     let validatingAnnotations = _.filter(annotations, (annotation) => {
-      return _.isObject(annotation.body.find(body => body.purpose === 'assessing'))
+      if (annotation.body && _.isArray(annotation.body)) {
+        return _.isObject(annotation.body.find(body => body.purpose === 'assessing'))
+      }
     })
     let anAnnotationForEachPrimaryStudy = _.uniqWith(codingAnnotations, (a, b) => {
       return AnnotationUtils.areFromSameDocument(a, b)

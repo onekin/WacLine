@@ -3,7 +3,7 @@ const _ = require('lodash')
 // PVSCL:IFCOND(Canvas,LINE)
 const Canvas = require('../annotationManagement/read/Canvas')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Screenshot,LINE)
+// PVSCL:IFCOND(AnnotatedPDF,LINE)
 const Screenshots = require('../annotationManagement/read/Screenshots')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetConsumer,LINE)
@@ -47,7 +47,7 @@ class Toolset {
       this.toolsetHeader = this.toolsetContainer.querySelector('#toolsetHeader')
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
       let toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
-      // PVSCL:IFCOND(Screenshot,LINE)
+      // PVSCL:IFCOND(AnnotatedPDF, LINE)
       // Set screenshot image
       let screenshotImageUrl = chrome.extension.getURL('/images/screenshot.png')
       this.screenshotImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -146,7 +146,7 @@ class Toolset {
       }
     })
   }
-  // PVSCL:IFCOND(Screenshot,LINE)
+  // PVSCL:IFCOND(AnnotatedPDF,LINE)
   screenshotButtonHandler () {
     Screenshots.takeScreenshot()
   }

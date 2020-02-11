@@ -1,4 +1,5 @@
 const Events = {
+  // Annotation management events
   annotationCreated: 'annotationCreated',
   annotationUpdated: 'annotationUpdated',
   annotationDeleted: 'annotationDeleted',
@@ -8,7 +9,26 @@ const Events = {
   createAnnotation: 'createAnnotation',
   updateAnnotation: 'updateAnnotation',
   deleteAnnotation: 'deleteAnnotation',
+  updatedAllAnnotations: 'updatedAllAnnotations',
+  // PVSCL:IFCOND(UserFilter,LINE)
+  userFilterChange: 'userFilterChange',
+  // PVSCL:ENDCOND
+  updatedDocumentURL: 'updatedDocumentURL',
+  // PVSCL:IFCOND(Comment,LINE)
+  comment: 'annotationComment',
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Reply,LINE)
+  reply: 'reply',
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(DeleteAll,LINE)
+  deleteAllAnnotations: 'deleteAllAnnotations',
+  deletedAllAnnotations: 'deletedAllAnnotations',
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Filter, LINE)
+  updatedCurrentAnnotations: 'updatedCurrentAnnotations',
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(Codebook, LINE)
+  // Annotation codebook management events
   createCodebook: 'createCodebook',
   codebookCreated: 'codebookCreated',
   createTheme: 'createTheme',
@@ -39,30 +59,13 @@ const Events = {
   codebookDeleted: 'codebookDeleted',
   // PVSCL:ENDCOND
   targetChanged: 'targetChanged', // TODO Review if it is used somewhere
-  // PVSCL:IFCOND(SingleCode,LINE)
+  // PVSCL:IFCOND(NOT (Multivalued),LINE)
   codeToAll: 'codeToAll',
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Manual,LINE)
   groupChanged: 'groupChanged',
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(UserFilter,LINE)
-  userFilterChange: 'userFilterChange',
-  // PVSCL:ENDCOND
-  updatedAllAnnotations: 'updatedAllAnnotations',
-  updatedDocumentURL: 'updatedDocumentURL',
-  // PVSCL:IFCOND(Comment,LINE)
-  comment: 'annotationComment',
-  // PVSCL:ENDCOND
-  // PVSCL:IFCOND(Reply,LINE)
-  reply: 'reply',
-  // PVSCL:ENDCOND
-  tagsUpdated: 'tagsUpdated',
-  // PVSCL:IFCOND(DeleteAll,LINE)
-  deleteAllAnnotations: 'deleteAllAnnotations',
-  deletedAllAnnotations: 'deletedAllAnnotations',
-  // PVSCL:ENDCOND
-  updatedCurrentAnnotations: 'updatedCurrentAnnotations',
-  codebookRead: 'codebookRead'
+  codebookRead: 'codebookRead' // Not in codebook variation point because absense of Codebook/Classifying also requires this event currently
 }
 
 module.exports = Events

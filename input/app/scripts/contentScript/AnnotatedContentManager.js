@@ -48,7 +48,7 @@ class AnnotatedContentManager {
   constructor () {
     this.annotatedThemes = {}
     this.events = {}
-    // PVSCL:IFCOND(MoodleURL, LINE)
+    // PVSCL:IFCOND(MoodleResource, LINE)
     this.cmid = window.abwa.codebookManager.codebookReader.codebook.cmid
     // PVSCL:ENDCOND
   }
@@ -94,7 +94,7 @@ class AnnotatedContentManager {
 
   retrieveAnnotationsForAssignment (callback) {
     let promise
-    // PVSCL:IFCOND(MoodleURL, LINE)
+    // PVSCL:IFCOND(MoodleResource, LINE)
     promise = new Promise((resolve, reject) => {
       if (window.abwa.groupSelector.currentGroup.id) {
         let call = {}
@@ -162,7 +162,7 @@ class AnnotatedContentManager {
       Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name,
       Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name
     ]
-    // PVSCL:IFCOND(MoodleURL, LINE)
+    // PVSCL:IFCOND(MoodleResource, LINE)
     newTagList.push('cmid:' + this.cmid)
     // PVSCL:ENDCOND
     if (annotatedTheme.hasAnnotations()) {

@@ -24,7 +24,7 @@ class ReadAnnotation {
     this.events = {}
   }
 
-  init () {
+  init (callback) {
     // Event listener created annotation
     this.initAnnotationCreatedEventListener()
     // Event listener deleted annotation
@@ -34,12 +34,17 @@ class ReadAnnotation {
     this.initAllAnnotationsDeletedEventListener()
     // PVSCL:ENDCOND
     // Event listener updated annotation
+    // PVSCL:IFCOND(Update, LINE)
     this.initAnnotationUpdatedEventListener()
-    this.loadAnnotations(() => {
+    // PVSCL:ENDCOND
+    this.loadAnnotations((err) => {
       // PVSCL:IFCOND(UserFilter, LINE)
       this.initUserFilter()
       this.initUserFilterChangeEvent()
       // PVSCL:ENDCOND
+      if (_.isFunction(callback)) {
+        callback(err)
+      }
     })
     this.initAnnotationsObserver()
     this.initReloadAnnotationsEvent()
@@ -214,6 +219,9 @@ class ReadAnnotation {
   loadAnnotations (callback) {
     this.updateAllAnnotations((err) => {
       if (err) {
+        if (_.isFunction(callback)) {
+          callback(err)
+        }
         // TODO Show user no able to load all annotations
         console.error('Unable to load annotations')
       } else {
@@ -421,8 +429,7 @@ class ReadAnnotation {
                   })
                 }
               })
-              // PVSCL:ENDCOND
-            }
+            } /* PVSCL:ENDCOND */
           },
           items: items
         }

@@ -22,7 +22,7 @@ let tags = {
   grouped: grouped,
   motivation: 'motivation'
 }
-// PVSCL:IFCOND(MoodleURL, LINE)
+// PVSCL:IFCOND(MoodleResource, LINE)
 tags['producer'] = 'teacher'
 tags['consumer'] = 'student'
 // PVSCL:ENDCOND

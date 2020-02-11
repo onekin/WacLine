@@ -1,3 +1,8 @@
+/* For plain text files, must be shown moved to avoid sidebar hides annotable content */
+body > pre {
+  margin-left: 161px;
+}
+
 .reply_user {
   font-size: 70%;
   font-style: oblique;

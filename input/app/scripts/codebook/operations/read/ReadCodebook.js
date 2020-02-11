@@ -154,6 +154,8 @@ class ReadCodebook {
               // PVSCL:ENDCOND
             }
           })
+          // PVSCL:ELSEIFCOND(NOT(Codebook))
+          LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'noCodebook'}) // The parameter howCreate is not really necessary in current implementation
           // PVSCL:ELSECOND
           // TODO Show alert otherwise (no group is defined)
           Alerts.errorAlert({text: 'No group is defined'})
@@ -203,7 +205,7 @@ class ReadCodebook {
         annotations = _.filter(annotations, (annotation) => {
           return !this.hasATag(annotation, 'slr:spreadsheet')
         })
-        // PVSCL:IFCOND(MoodleURL,LINE)
+        // PVSCL:IFCOND(MoodleResource,LINE)
         // Remove tags which are not for the current assignment
         let cmid = window.abwa.targetManager.fileMetadata.cmid
         annotations = _.filter(annotations, (annotation) => {
@@ -220,8 +222,10 @@ class ReadCodebook {
   codebookReadEventHandler () {
     return (event) => {
       this.codebook = event.detail.codebook
+      // PVSCL:IFCOND(Codebook, LINE)
       // Set colors for each element
       this.applyColorsToThemes()
+      // PVSCL:ENDCOND
       // Populate sidebar buttons container
       this.createButtons()
     }
@@ -298,8 +302,8 @@ class ReadCodebook {
                 tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
                 id = themeId
                 // PVSCL:ENDCOND
-                // if we use MoodleURL we push the cmid tag
-                // PVSCL:IFCOND(MoodleURL,LINE)
+                // PVSCL:IFCOND(MoodleResource,LINE)
+                // We are using MoodleResource feature so need to push the cmid tag
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
                 LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
@@ -342,7 +346,7 @@ class ReadCodebook {
                 }
                 // PVSCL:ENDCOND
                 let tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
-                // PVSCL:IFCOND(MoodleURL,LINE)
+                // PVSCL:IFCOND(MoodleResource,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
                 LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
@@ -370,7 +374,7 @@ class ReadCodebook {
               let theme = this.codebook.getCodeOrThemeFromId(themeId)
               if (LanguageUtils.isInstanceOf(theme, Theme)) {
                 let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
-                // PVSCL:IFCOND(MoodleURL,LINE)
+                // PVSCL:IFCOND(MoodleResource,LINE)
                 tags.push('cmid:' + theme.annotationGuide.cmid)
                 // PVSCL:ENDCOND
                 LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
@@ -397,7 +401,7 @@ class ReadCodebook {
             let theme = this.codebook.getCodeOrThemeFromId(themeId)
             if (LanguageUtils.isInstanceOf(theme, Theme)) {
               let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
-              // PVSCL:IFCOND(MoodleURL,LINE)
+              // PVSCL:IFCOND(MoodleResource,LINE)
               tags.push('cmid:' + theme.annotationGuide.cmid)
               // PVSCL:ENDCOND
               LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {

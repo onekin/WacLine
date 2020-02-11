@@ -41,7 +41,7 @@ class CommentingForm {
       if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
         title = themeOrCode.name
       } else {
-        title = themeOrCode.description
+        title = themeOrCode.name + themeOrCode.description
       }
       // PVSCL:ELSECOND
       if (themeOrCode) {
