@@ -1,13 +1,13 @@
 const Body = require('./Body')
 
 class Commenting extends Body {
-  constructor ({purpose = 'commenting', value}) {
+  constructor ({purpose = Commenting.purpose, value}) {
     super(purpose)
     this.value = value
   }
 
-  populate (code) {
-    super.populate(code)
+  populate (text) {
+    super.populate(text)
   }
 
   serialize () {
@@ -18,5 +18,7 @@ class Commenting extends Body {
     return 'Comment: ' + this.value
   }
 }
+
+Commenting.purpose = 'commenting'
 
 module.exports = Commenting

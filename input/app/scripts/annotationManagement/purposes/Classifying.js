@@ -7,7 +7,7 @@ const LanguageUtils = require('../../utils/LanguageUtils')
 const _ = require('lodash')
 
 class Classifying extends Body {
-  constructor ({purpose = 'classifying', code}) {
+  constructor ({purpose = Classifying.purpose, code}) {
     super(purpose)
     if (!_.isEmpty(code)) {
       if (/* PVSCL:IFCOND(Hierarchy) */LanguageUtils.isInstanceOf(code, Code) || /* PVSCL:ENDCOND */LanguageUtils.isInstanceOf(code, Theme)) {
@@ -40,13 +40,23 @@ class Classifying extends Body {
     if (LanguageUtils.isInstanceOf(code, Code)) {
       tooltip += 'Code: ' + code.name + 'for Theme: ' + code.theme.name
     } else {
-      tooltip += 'Theme: ' + code.name
+      if (code) {
+        tooltip += 'Theme: ' + code.name
+      } else {
+        tooltip += 'Deleted theme or code: ' + this.value.name
+      }
     }
     // PVSCL:ELSECOND
-    tooltip += 'Theme: ' + code.name
+    if (code) {
+      tooltip += 'Theme: ' + code.name
+    } else {
+      tooltip += 'Deleted theme: ' + this.value.name
+    }
     // PVSCL:ENDCOND
     return tooltip
   }
 }
+
+Classifying.purpose = 'classifying'
 
 module.exports = Classifying

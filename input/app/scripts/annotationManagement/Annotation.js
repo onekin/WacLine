@@ -45,7 +45,9 @@ class Annotation {
   getBodyForPurpose (purpose) {
     if (_.isString(purpose) && _.isArray(this.body)) {
       return this.body.find((body) => {
-        return body.purpose === purpose
+        if (body && body.purpose) {
+          return body.purpose === purpose
+        }
       })
     }
   }

@@ -15,6 +15,10 @@ const Commenting = require('./Commenting')
 // PVSCL:ENDCOND
 const Annotation = require('../Annotation')
 const Config = require('../../Config')
+// PVSCL:IFCOND(SuggestedLiterature, LINE)
+require('components-jqueryui')
+const SuggestingLiterature = require('./SuggestingLiterature')
+// PVSCL:ENDCOND
 
 class CommentingForm {
   /**
@@ -100,14 +104,20 @@ class CommentingForm {
     let commentText = purposeCommentingBody ? purposeCommentingBody.value : ''
     html += '<textarea class="swal2-textarea" data-minchars="1" data-multiple id="comment" rows="6" autofocus>' + commentText + '</textarea>'
     // PVSCL:IFCOND(SuggestedLiterature,LINE)
-    let suggestedLiteratureHtml = (lit) => {
-      let html = ''
-      lit.forEach((i) => {
-        html += '<li><a class="removeReference"></a><span title="' + lit[i] + '">' + lit[i] + '</span></li>'
-      })
-      return html
+    let suggestedLiteratureHtml = (annotation) => {
+      let litBody = annotation.getBodyForPurpose(SuggestingLiterature.purpose)
+      if (litBody && _.isArray(litBody.value)) {
+        let lit = litBody.value
+        let html = ''
+        lit.forEach((i) => {
+          html += '<li><a class="removeReference"></a><span title="' + lit[i] + '">' + lit[i] + '</span></li>'
+        })
+        return html
+      } else {
+        return ''
+      }
     }
-    html += '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(annotation.suggestedLiterature) + '</ul>'
+    html += '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(annotation) + '</ul>'
     // PVSCL:ENDCOND
     // On before open
     let onBeforeOpen
@@ -198,10 +208,10 @@ class CommentingForm {
     let preConfirmData = {}
     let preConfirm = () => {
       preConfirmData.comment = document.querySelector('#comment').value
-      // PVSCL:IFCOND(SuggestedLiterature,LINE)
+      // PVSCL:IFCOND(SuggestedLiterature, LINE)
       preConfirmData.literature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(SentimentAnalysis,LINE)
+      // PVSCL:IFCOND(SentimentAnalysis, LINE)
       if (preConfirmData.comment !== null && preConfirmData.comment !== '') {
         let settings = {
           method: 'post',
@@ -252,7 +262,12 @@ class CommentingForm {
             purpose: 'linking',
             value: preConfirmData.literature
           })
-          annotation.suggestedLiterature = preConfirmData.literature || []
+          let litBody = annotation.getBodyForPurpose(SuggestingLiterature.purpose)
+          if (litBody) {
+            litBody.value = preConfirmData.literature || []
+          } else {
+            annotation.push(new SuggestingLiterature())
+          }
           // PVSCL:ENDCOND
           // TODO assessment category support
           // Update annotation's body

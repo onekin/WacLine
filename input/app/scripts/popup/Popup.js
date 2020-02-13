@@ -7,7 +7,7 @@ class Popup {
     this.activated = false
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, {action: 'destroyContentScript'}, (response) => {
-        chrome.pageAction.setIcon({tabId: tabs[0].id, path: 'images/icon-38-bw.png'})
+        chrome.pageAction.setIcon({tabId: tabs[0].id, path: "images/PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))/icon-38-bw.png"})
       })
     })
   }
@@ -16,7 +16,7 @@ class Popup {
     this.activated = true
     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
       chrome.tabs.sendMessage(tabs[0].id, {action: 'initContentScript'}, (response) => {
-        chrome.pageAction.setIcon({tabId: tabs[0].id, path: 'images/icon-38.png'})
+        chrome.pageAction.setIcon({tabId: tabs[0].id, path: "images/PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))/icon-38.png"})
       })
     })
   }

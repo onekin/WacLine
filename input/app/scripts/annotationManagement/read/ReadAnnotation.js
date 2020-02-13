@@ -287,9 +287,14 @@ class ReadAnnotation {
     // PVSCL:IFCOND(Classifying, LINE)
     // Annotation color is based on codebook color
     // Get annotated code id
-    let bodyWithClassifyingPurpose = _.find(annotation.body, (body) => { return body.purpose === 'classifying' })
+    let bodyWithClassifyingPurpose = annotation.getBodyForPurpose('classifying')
     let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
-    color = codeOrTheme.color
+    if (codeOrTheme) {
+      color = codeOrTheme.color
+    } else {
+      const ColorUtils = require('../../utils/ColorUtils')
+      color = ColorUtils.getDefaultColor()
+    }
     // PVSCL:ELSECOND
     // Annotation color used is default in grey
     const ColorUtils = require('../../utils/ColorUtils')
@@ -336,7 +341,9 @@ class ReadAnnotation {
     let tooltipString = ''
     tooltipString += 'User: ' + annotation.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '') + '\n'
     annotation.body.forEach((body) => {
-      tooltipString += body.tooltip() + '\n'
+      if (body) {
+        tooltipString += body.tooltip() + '\n'
+      }
     })
     return tooltipString
   }

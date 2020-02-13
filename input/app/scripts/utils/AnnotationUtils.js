@@ -60,17 +60,20 @@ class AnnotationUtils {
 
         for (let k in annotations[a].target) {
           if (annotations[a].target.hasOwnProperty(k)) {
-            if (annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' }) != null) {
+            if (_.isArray(annotations[a].target[k].selector) && annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' }) != null) {
               textQuoteSelector = annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' })
               highlightText = textQuoteSelector.exact
             }
-            if (annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }) != null) {
+            if (_.isArray(annotations[a].target[k].selector) && annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }) != null) {
               pageNumber = annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }).page
             }
           }
         }
-        let comment = annotations[a].text
-        let suggestedLiterature = annotations[a].references || null // TODO When add reference feature is implemented
+        let commentBody = annotations[a].getBodyForPurpose('commenting')
+        let comment = commentBody? commentBody.value : ''
+        const SuggestingLiterature = require('../annotationManagement/purposes/SuggestingLiterature')
+        let suggestedLiteratureBody = annotations[a].getBodyForPurpose(SuggestingLiterature.purpose)
+        let suggestedLiterature = suggestedLiteratureBody ? suggestedLiteratureBody.value : []
         let level = annotations[a].level || null // TODO When add level feature is implemented
         r.insertAnnotation(new Annotation(annotations[a].id, criterion, level, highlightText, pageNumber, comment, suggestedLiterature))
       }
