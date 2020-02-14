@@ -109,8 +109,8 @@ class CommentingForm {
       if (litBody && _.isArray(litBody.value)) {
         let lit = litBody.value
         let html = ''
-        lit.forEach((i) => {
-          html += '<li><a class="removeReference"></a><span title="' + lit[i] + '">' + lit[i] + '</span></li>'
+        lit.forEach((paper) => {
+          html += '<li><a class="removeReference"></a><span title="' + paper + '">' + paper + '</span></li>'
         })
         return html
       } else {
@@ -147,7 +147,7 @@ class CommentingForm {
         })
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(SuggestedLiterature,LINE)
+      // PVSCL:IFCOND(SuggestedLiterature, LINE)
       // Add the option to delete a suggestedLiterature from the comment
       $('.removeReference').on('click', function () {
         $(this).closest('li').remove()
@@ -258,15 +258,11 @@ class CommentingForm {
           // Update annotation
           annotation.text = preConfirmData.comment || ''
           // PVSCL:IFCOND(SuggestedLiterature,LINE)
-          bodyToUpdate.push({
-            purpose: 'linking',
-            value: preConfirmData.literature
-          })
           let litBody = annotation.getBodyForPurpose(SuggestingLiterature.purpose)
           if (litBody) {
             litBody.value = preConfirmData.literature || []
           } else {
-            annotation.push(new SuggestingLiterature())
+            annotation.body.push(new SuggestingLiterature({value: preConfirmData.literature}))
           }
           // PVSCL:ENDCOND
           // TODO assessment category support

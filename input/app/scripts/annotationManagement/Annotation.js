@@ -1,7 +1,14 @@
 const _ = require('lodash')
-const Classifying = require('./purposes/Classifying')
-const Commenting = require('./purposes/Commenting')
 const LanguageUtils = require('../utils/LanguageUtils')
+// PVSCL:IFCOND(Classifying, LINE)
+const Classifying = require('./purposes/Classifying')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Commenting, LINE)
+const Commenting = require('./purposes/Commenting')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(SuggestedLiterature, LINE)
+const SuggestingLiterature = require('./purposes/SuggestingLiterature')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
 const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
@@ -112,15 +119,27 @@ class Annotation {
     })
     if (_.isArray(annotation.body)) {
       annotation.body = annotationObject.body.map((body) => {
-        if (body.purpose === 'classifying') {
+        // PVSCL:IFCOND(Classifying, LINE)
+        if (body.purpose === Classifying.purpose) {
           // To remove the purpose from the annotation body
           let tempBody = JSON.parse(JSON.stringify(body))
           delete tempBody.purpose
           // Create new element of type Classifying
           return new Classifying({code: tempBody.value})
-        } else if (body.purpose === 'commenting') {
+        }
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(Commenting, LINE)
+        if (body.purpose === Commenting.purpose) {
           return new Commenting({value: body.value})
         }
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(SuggestedLiterature, LINE)
+        if (body.purpose === SuggestingLiterature.purpose) {
+          return new SuggestingLiterature({value: body.value})
+        }
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(Assessing, LINE)
+        // PVSCL:ENDCOND
       })
     }
     return annotation
