@@ -6,7 +6,7 @@ const AnnotationUtils = require('../../utils/AnnotationUtils')
 class TextSummary {
   static generateReview () {
     Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
-    let review = AnnotationUtils.parseAnnotations(window.abwa.contentAnnotator.allAnnotations)
+    let review = Review.parseAnnotations(window.abwa.annotationManagement.annotationReader.allAnnotations)
     let report = review.toString()
     let blob = new window.Blob([report], {type: 'text/plain;charset=utf-8'})
     // If document is a PDF, get the title

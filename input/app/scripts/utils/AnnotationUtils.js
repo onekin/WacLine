@@ -1,6 +1,4 @@
 const _ = require('lodash')
-const Config = require('../Config')
-const {Review, Annotation} = require('../exporter/reviewModel.js')
 
 class AnnotationUtils {
   static getTagFromAnnotation (annotation, prefix) {
@@ -34,51 +32,6 @@ class AnnotationUtils {
     } else {
       return false
     }
-  }
-
-  static parseAnnotations (annotations) {
-    // TODO Substitute by (tagId -> name) of the annotation
-    const criterionTag = Config.namespace + ':' + Config.tags.grouped.group + ':'
-    const levelTag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':'
-    let r = new Review()
-
-    for (let a in annotations) {
-      if (annotations.hasOwnProperty(a)) {
-        let criterion = null
-        let annotation = annotations[a]
-        annotation.tags.forEach((tag) => {
-          if (tag.includes(levelTag)) {
-            criterion = tag.replace(levelTag, '').trim()
-          } else if (tag.includes(criterionTag)) {
-            criterion = tag.replace(criterionTag, '').trim()
-          }
-        })
-        // if (criterion == null || level == null) continue
-        let textQuoteSelector = null
-        let highlightText = ''
-        let pageNumber = null
-
-        for (let k in annotations[a].target) {
-          if (annotations[a].target.hasOwnProperty(k)) {
-            if (_.isArray(annotations[a].target[k].selector) && annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' }) != null) {
-              textQuoteSelector = annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' })
-              highlightText = textQuoteSelector.exact
-            }
-            if (_.isArray(annotations[a].target[k].selector) && annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }) != null) {
-              pageNumber = annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }).page
-            }
-          }
-        }
-        let commentBody = annotations[a].getBodyForPurpose('commenting')
-        let comment = commentBody? commentBody.value : ''
-        const SuggestingLiterature = require('../annotationManagement/purposes/SuggestingLiterature')
-        let suggestedLiteratureBody = annotations[a].getBodyForPurpose(SuggestingLiterature.purpose)
-        let suggestedLiterature = suggestedLiteratureBody ? suggestedLiteratureBody.value : []
-        let level = annotations[a].level || null // TODO When add level feature is implemented
-        r.insertAnnotation(new Annotation(annotations[a].id, criterion, level, highlightText, pageNumber, comment, suggestedLiterature))
-      }
-    }
-    return r
   }
 
   static areFromSameDocument (a, b) {

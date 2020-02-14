@@ -373,9 +373,6 @@ class ReadAnnotation {
           // PVSCL:IFCOND(Replying, LINE)
           items['reply'] = {name: 'Reply'}
           // PVSCL:ENDCOND
-          // PVSCL:IFCOND(Assessing, LINE)
-          items['assess'] = {name: 'Assess'}
-          // PVSCL:ENDCOND
         }
         return {
           callback: (key, opt) => {
@@ -384,7 +381,7 @@ class ReadAnnotation {
                 annotation: annotation
               })
             }/* PVSCL:IFCOND(Replying) */ else if (key === 'reply') {
-              // TODO Update your last reply if exists, otherwise create a new reply
+              // Update your last reply if exists, otherwise create a new reply
               let replies = ReplyAnnotation.getReplies(annotation, this.replyAnnotations)
               // Get last reply and check if it is current user's annotation or not
               let lastReply = _.last(replies)
@@ -422,9 +419,6 @@ class ReadAnnotation {
                   }
                 }, repliesHtml)
               }
-            }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Assessing) */ else if (key === 'assess') {
-              // TODO If you have validated already, update your annotation
-              // TODO If you didn't validate, create a replying annotation to validate
             }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
               // Open commenting form
               CommentingForm.showCommentingForm(annotation, (err, annotation) => {

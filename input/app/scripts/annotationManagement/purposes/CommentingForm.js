@@ -15,6 +15,9 @@ const Commenting = require('./Commenting')
 // PVSCL:ENDCOND
 const Annotation = require('../Annotation')
 const Config = require('../../Config')
+// PVSCL:IFCOND(Assessing, LINE)
+const Assessing = require('./Assessing')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(SuggestedLiterature, LINE)
 require('components-jqueryui')
 const SuggestingLiterature = require('./SuggestingLiterature')
@@ -37,19 +40,25 @@ class CommentingForm {
       let previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
       let previousAssignmentsUI = window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Classifying, LINE)
+      // Get the title for form (if it is a classifying annotation, annotation code or theme
+      let title = ''
       // Get body for classifying
       let classifyingBody = annotation.getBodyForPurpose('classifying')
-      let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(classifyingBody.value.id)
-      let title = ''
-      // PVSCL:IFCOND(MoodleProvider,LINE)
-      if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
-        title = themeOrCode.name
-      } else {
-        title = themeOrCode.name + themeOrCode.description
-      }
-      // PVSCL:ELSECOND
-      if (themeOrCode) {
-        title = themeOrCode.name
+      let themeOrCode
+      if (classifyingBody) {
+        themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(classifyingBody.value.id)
+        // PVSCL:IFCOND(MoodleProvider,LINE)
+        if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
+          title = themeOrCode.name
+        } else {
+          title = themeOrCode.name + themeOrCode.description
+        }
+        // PVSCL:ELSECOND
+        if (themeOrCode) {
+          title = themeOrCode.name
+        }
+        // PVSCL:ENDCOND
       }
       // PVSCL:ENDCOND
       let showForm = (preConfirmData) => {
@@ -60,14 +69,16 @@ class CommentingForm {
         // Create form
         let generateFormObjects = {annotation, showForm, sidebarOpen}
         // PVSCL:IFCOND(Autocomplete,LINE)
-        generateFormObjects['themeOrCode'] = themeOrCode
+        if (themeOrCode) {
+          generateFormObjects['themeOrCode'] = themeOrCode
+        }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(PreviousAssignments,LINE)
         generateFormObjects['previousAssignmentsUI'] = previousAssignmentsUI
         // PVSCL:ENDCOND
         let form = CommentingForm.generateCommentFormHTML(generateFormObjects, formCallback, addingHtml)
         Alerts.multipleInputAlert({
-          title: title,
+          title: title || '',
           html: form.html,
           onBeforeOpen: form.onBeforeOpen,
           // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
@@ -97,6 +108,22 @@ class CommentingForm {
     // PVSCL:IFCOND(PreviousAssignments,LINE)
     html += previousAssignmentsUI.outerHTML
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Categorize, LINE)
+    let select = document.createElement('select')
+    select.id = 'categorizeDropdown'
+    let option = document.createElement('option')
+    // Empty option
+    option.text = ''
+    option.value = ''
+    select.add(option)
+    Config.assessmentCategories.forEach(category => {
+      let option = document.createElement('option')
+      option.text = category.name
+      option.value = category.name
+      select.add(option)
+    })
+    html += select.outerHTML
+    // PVSCL:ENDCOND
     let purposeCommentingBody
     if (_.isArray(annotation.body)) {
       purposeCommentingBody = annotation.body.find(body => body.purpose === 'commenting')
@@ -123,6 +150,14 @@ class CommentingForm {
     let onBeforeOpen
     // PVSCL:IFCOND(Autocomplete or SuggestedLiterature or PreviousAssignments,LINE)
     onBeforeOpen = () => {
+      // PVSCL:IFCOND(Categorize, LINE)
+      // Get if annotation has a previous category
+      let assessingBody = annotation.getBodyForPurpose(Assessing.purpose)
+      // Change value to previously selected one
+      if (assessingBody) {
+        document.querySelector('#categorizeDropdown').value = assessingBody.value
+      }
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(PreviousAssignments,LINE)
       let previousAssignmentAppendElements = document.querySelectorAll('.previousAssignmentAppendButton')
       previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
@@ -211,6 +246,9 @@ class CommentingForm {
       // PVSCL:IFCOND(SuggestedLiterature, LINE)
       preConfirmData.literature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Categorize, LINE)
+      preConfirmData.categorizeData = document.querySelector('#categorizeDropdown').value
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(SentimentAnalysis, LINE)
       if (preConfirmData.comment !== null && preConfirmData.comment !== '') {
         let settings = {
@@ -265,7 +303,15 @@ class CommentingForm {
             annotation.body.push(new SuggestingLiterature({value: preConfirmData.literature}))
           }
           // PVSCL:ENDCOND
-          // TODO assessment category support
+          // PVSCL:IFCOND(Assessing, LINE)
+          // Assessment category support
+          let assessmentBody = annotation.getBodyForPurpose(Assessing.purpose)
+          if (assessmentBody) {
+            assessmentBody.value = preConfirmData.categorizeData
+          } else {
+            annotation.body.push(new Assessing({value: preConfirmData.categorizeData}))
+          }
+          // PVSCL:ENDCOND
           // Update annotation's body
           annotation.body = _.uniqBy(_.concat(bodyToUpdate, annotation.body), a => a.purpose)
           if (_.isFunction(formCallback)) {
@@ -281,10 +327,12 @@ class CommentingForm {
 
   static retrievePreviouslyUsedComments (themeOrCode) {
     let tag = ''
-    if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
-      tag = Config.namespace + ':' + Config.tags.grouped.group + ':' + themeOrCode.name
-    } else {
-      tag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + themeOrCode.name
+    if (themeOrCode) {
+      if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
+        tag = Config.namespace + ':' + Config.tags.grouped.group + ':' + themeOrCode.name
+      } else {
+        tag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + themeOrCode.name
+      }
     }
     return new Promise((resolve, reject) => {
       window.abwa.annotationServerManager.client.searchAnnotations({

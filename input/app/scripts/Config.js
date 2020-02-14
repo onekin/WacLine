@@ -46,7 +46,14 @@ const Config = {
   colors: {
     minAlpha: 0.2,
     maxAlpha: 0.8
-  }
+  },
+  assessmentCategories: [{
+    name: 'Minor weakness'
+  },{
+    name: 'Major weakness'
+  },{
+    name: 'Strength'
+  }]
 }
 
 module.exports = Config

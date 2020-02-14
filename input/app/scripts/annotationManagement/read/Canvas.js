@@ -2,10 +2,12 @@ const AnnotationUtils = require('../../utils/AnnotationUtils')
 const Alerts = require('../../utils/Alerts')
 const axios = require('axios')
 
+const {Review, Annotation} = require('../../exporter/reviewModel')
+
 class Canvas {
   static generateCanvas () {
     window.abwa.sidebar.closeSidebar()
-    let review = AnnotationUtils.parseAnnotations(window.abwa.annotationManagement.annotationReader.allAnnotations)
+    let review = Review.parseAnnotations(window.abwa.annotationManagement.annotationReader.allAnnotations)
     let canvasPageURL = chrome.extension.getURL('pages/specific/reviewCanvas.html')
     axios.get(canvasPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)

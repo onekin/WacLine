@@ -9,6 +9,9 @@ const Commenting = require('./purposes/Commenting')
 // PVSCL:IFCOND(SuggestedLiterature, LINE)
 const SuggestingLiterature = require('./purposes/SuggestingLiterature')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Assessing, LINE)
+const Assessing = require('./purposes/Assessing')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
 const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
 // PVSCL:ENDCOND
@@ -139,6 +142,9 @@ class Annotation {
         }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(Assessing, LINE)
+        if (body.purpose === Assessing.purpose) {
+          return new Assessing({value: body.value})
+        }
         // PVSCL:ENDCOND
       })
     }

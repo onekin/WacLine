@@ -1,4 +1,8 @@
 /* eslint-disable */
+const Config = require('../Config')
+// PVSCL:IFCOND(Assessing, LINE)
+const Assessing = require('../annotationManagement/purposes/Assessing')
+// PVSCL:ENDCOND
 
 class Review {
   constructor(){
@@ -147,6 +151,56 @@ class Review {
     t += "\n\n<Comments to editors>";
 
     return t;
+  }
+
+  static parseAnnotations (annotations) {
+    // TODO Substitute by (tagId -> name) of the annotation
+    const criterionTag = Config.namespace + ':' + Config.tags.grouped.group + ':'
+    const levelTag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':'
+    let r = new Review()
+
+    for (let a in annotations) {
+      if (annotations.hasOwnProperty(a)) {
+        let criterion = null
+        let annotation = annotations[a]
+        annotation.tags.forEach((tag) => {
+          if (tag.includes(levelTag)) {
+            criterion = tag.replace(levelTag, '').trim()
+          } else if (tag.includes(criterionTag)) {
+            criterion = tag.replace(criterionTag, '').trim()
+          }
+        })
+        // if (criterion == null || level == null) continue
+        let textQuoteSelector = null
+        let highlightText = ''
+        let pageNumber = null
+
+        for (let k in annotations[a].target) {
+          if (annotations[a].target.hasOwnProperty(k)) {
+            if (_.isArray(annotations[a].target[k].selector) && annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' }) != null) {
+              textQuoteSelector = annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' })
+              highlightText = textQuoteSelector.exact
+            }
+            if (_.isArray(annotations[a].target[k].selector) && annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }) != null) {
+              pageNumber = annotations[a].target[k].selector.find((e) => { return e.type === 'FragmentSelector' }).page
+            }
+          }
+        }
+        let commentBody = annotations[a].getBodyForPurpose('commenting')
+        let comment = commentBody? commentBody.value : ''
+        // PVSCL:IFCOND(SuggestedLiterature, LINE)
+        const SuggestingLiterature = require('../annotationManagement/purposes/SuggestingLiterature')
+        let suggestedLiteratureBody = annotations[a].getBodyForPurpose(SuggestingLiterature.purpose)
+        let suggestedLiterature = suggestedLiteratureBody ? suggestedLiteratureBody.value : []
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(Categorize, LINE)
+        let assessingBody = annotations[a].getBodyForPurpose(Assessing.purpose)
+        let level = assessingBody.value
+        // PVSCL:ENDCOND
+        r.insertAnnotation(new Annotation(annotations[a].id, criterion, level, highlightText, pageNumber, comment, /* PVSCL:IFCOND(SuggestedLiterature) */suggestedLiterature/* PVSCL:ENDCOND */))
+      }
+    }
+    return r
   }
 }
 
