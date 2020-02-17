@@ -195,7 +195,10 @@ class Review {
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(Categorize, LINE)
         let assessingBody = annotations[a].getBodyForPurpose(Assessing.purpose)
-        let level = assessingBody.value
+        let level
+        if (assessingBody) {
+          level = assessingBody.value
+        }
         // PVSCL:ENDCOND
         r.insertAnnotation(new Annotation(annotations[a].id, criterion, level, highlightText, pageNumber, comment, /* PVSCL:IFCOND(SuggestedLiterature) */suggestedLiterature/* PVSCL:ENDCOND */))
       }
