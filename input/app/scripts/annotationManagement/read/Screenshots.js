@@ -4,11 +4,12 @@ const FileSaver = require('file-saver')
 const JsPDF = require('jspdf')
 const Alerts = require('../../utils/Alerts')
 const _ = require('lodash')
+const PDF = require('../../target/formats/PDF')
 
 class Screenshots {
   static takeScreenshot (callback) {
     let promise = null
-    if (window.location.pathname === '/content/pdfjs/web/viewer.html') {
+    if (window.abwa.targetManager.documentFormat === PDF) {
       // Current viewer status
       let currentScale = window.PDFViewerApplication.pdfViewer.currentScale
       window.PDFViewerApplication.pdfViewer.currentScale = 1
@@ -26,7 +27,7 @@ class Screenshots {
       // Create pdf file
       let pdf = new JsPDF('p', 'cm', 'a4', true)
       // Redraw annotations
-      window.abwa.contentAnnotator.redrawAnnotations()
+      window.abwa.annotationManagement.annotationReader.redrawAnnotations()
       // Append rubric
       let criteriaElement = document.querySelector('#buttonContainer')
       if (criteriaElement) {
@@ -44,7 +45,7 @@ class Screenshots {
           // Go to page
           window.PDFViewerApplication.page = d.i + 1
           // Redraw annotations
-          window.abwa.contentAnnotator.redrawAnnotations()
+          window.abwa.annotationManagement.annotationReader.redrawAnnotations()
           setTimeout(() => {
             html2canvas(document.querySelector('.page[data-page-number="' + (d.i + 1) + '"]'), {scale: 1}).then((canvas) => {
               resolve()
