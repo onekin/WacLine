@@ -672,7 +672,7 @@ class GroupSelector {
   }
 
   destroy (callback) {
-    // PVSCL:IFCOND( Manual, LINE)
+    // PVSCL:IFCOND(Manual, LINE)
     // Destroy intervals
     if (this.loggedInInterval) {
       clearInterval(this.loggedInInterval)

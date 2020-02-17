@@ -1,5 +1,6 @@
 const BrowserStorageManager = require('./annotationServer/browserStorage/BrowserStorageManager')
 const URLUtils = require('./utils/URLUtils')
+const Alerts = require('./utils/Alerts')
 const Config = require('./Config')
 const _ = require('lodash')
 
@@ -52,7 +53,7 @@ class BrowserStorageSearch {
       })
       annotationCard.querySelector('.annotationCardDate').innerText = annotation.updated
       if (annotation.target && annotation.target[0] && annotation.target[0].selector) {
-        annotationCard.querySelector('.annotationCardExact').innerText = annotation.target[0].selector.find((selector) => {return selector.type === 'TextQuoteSelector'}).exact
+        annotationCard.querySelector('.annotationCardExact').innerText = annotation.target[0].selector.find((selector) => { return selector.type === 'TextQuoteSelector' }).exact
       }
       if (_.isArray(annotation.body)) {
         let commentBody = annotation.body.find(body => body.purpose === 'commenting')
@@ -73,11 +74,11 @@ class BrowserStorageSearch {
     })
   }
 
-  static setSearchOnEnterClickEventHandler() {
+  static setSearchOnEnterClickEventHandler () {
     document.querySelector('#searchAnnotationsInput').addEventListener('keyup', (event) => {
       if (event.keyCode === 13) {
         // Cancel the default action, if needed
-        event.preventDefault();
+        event.preventDefault()
         // Get element input text
         let queryString = event.target.value
         // TODO Check valid query

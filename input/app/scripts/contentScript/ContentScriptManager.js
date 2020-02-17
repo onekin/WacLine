@@ -8,7 +8,6 @@ const AnnotationManagement = require('../annotationManagement/AnnotationManageme
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const {AnnotatedContentManager} = require('./AnnotatedContentManager')
-const LanguageUtils = require('../utils/LanguageUtils')
 // PVSCL:IFCOND(Manual, LINE)
 const Events = require('../Events')
 // PVSCL:ENDCOND
@@ -63,8 +62,8 @@ class ContentScriptManager {
   // PVSCL:IFCOND(Manual, LINE)
 
   initListenerForGroupChange () {
-    this.events.groupChangedEvent = this.groupChangedEventHandlerCreator()
-    LanguageUtils.dispatchCustomEvent(Events.groupChanged, this.events.groupChangedEvent)
+    this.events.groupChangedEvent = {element: document, event: Events.groupChanged, handler: this.groupChangedEventHandlerCreator()}
+    this.events.groupChangedEvent.element.addEventListener(this.events.groupChangedEvent.event, this.events.groupChangedEvent.handler, false)
   }
 
   groupChangedEventHandlerCreator () {

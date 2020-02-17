@@ -1,5 +1,4 @@
 const Body = require('./Body')
-const _ = require('lodash')
 
 class Assessing extends Body {
   constructor ({purpose = Assessing.purpose, value}) {
@@ -16,7 +15,7 @@ class Assessing extends Body {
   }
 
   static deserialize (obj) {
-    new Assessing({value: obj.value})
+    return new Assessing({value: obj.value})
   }
 
   tooltip () {

@@ -1,5 +1,6 @@
 const Events = require('../../../Events')
 const ImportCodebookJSON = require('./ImportCodebookJSON')
+const _ = require('lodash')
 
 class ImportCodebook {
   constructor () {
@@ -9,6 +10,14 @@ class ImportCodebook {
   init () {
     // Add event listener for export codebook event
     this.initImportCodebookEventHandler()
+  }
+
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
   }
 
   // EVENTS

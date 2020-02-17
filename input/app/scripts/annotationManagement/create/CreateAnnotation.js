@@ -109,15 +109,6 @@ class CreateAnnotation {
       body.push(classifyingBody.serialize())
     }
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Commenting, LINE)
-
-    // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Replying, LINE)
-
-    // PVSCL:ENDCOND
-    // PVSCL:IFCOND(Assessing, LINE)
-
-    // PVSCL:ENDCOND
     return body
   }
 

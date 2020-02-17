@@ -1,6 +1,7 @@
 const Events = require('../../../Events')
 const Alerts = require('../../../utils/Alerts')
 const LanguageUtils = require('../../../utils/LanguageUtils')
+const _ = require('lodash')
 
 class DeleteCodebook {
   constructor () {
@@ -10,6 +11,14 @@ class DeleteCodebook {
   init () {
     // Add event listener for deleteCodebook event
     this.initDeleteCodebookEvent()
+  }
+
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
   }
 
   // EVENTS

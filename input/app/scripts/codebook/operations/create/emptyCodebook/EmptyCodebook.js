@@ -14,7 +14,7 @@ class EmptyCodebook {
           // Open the sidebar, to notify user that the annotator is correctly created
           window.abwa.sidebar.openSidebar()
           if (_.isFunction(callback)) {
-            callback()
+            callback(null, [annotation])
           }
         }
       })

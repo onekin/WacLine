@@ -56,6 +56,10 @@ class ReadAnnotation {
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
+    // Destroy annotations observer
+    clearInterval(this.observerInterval)
+    // Destroy annotations reload interval
+    clearInterval(this.reloadInterval)
   }
 
   initReloadAnnotationsEvent (callback) {
@@ -317,7 +321,7 @@ class ReadAnnotation {
         // TODO More things
       })
       // FeatureComment: if annotation is mutable, update or delete, the mechanism is a context menu
-      // PVSCL:IFCOND(Update OR Delete)
+      // PVSCL:IFCOND(Update OR Delete, LINE)
       // Create context menu event for highlighted elements
       this.createContextMenuForAnnotation(annotation)
       // PVSCL:ENDCOND
@@ -526,7 +530,6 @@ class ReadAnnotation {
       this.allAnnotations.splice(allIndex, 1, annotation)
       // Dispatch annotations updated event
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
-
       // PVSCL:IFCOND(UserFilter, LINE)
       // Retrieve current annotations
       this.currentAnnotations = this.retrieveCurrentAnnotations()

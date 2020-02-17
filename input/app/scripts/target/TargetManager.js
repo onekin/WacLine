@@ -261,8 +261,7 @@ class TargetManager {
   }
 
   getDocumentRootElement () {
-    // PVSCL:IFCOND(PDF)
-    if (this.documentFormat === PDF) {
+    /* PVSCL:IFCOND(PDF) */if (this.documentFormat === PDF) {
       return document.querySelector('#viewer')
     } /* PVSCL:ELSEIFCOND(HTML) */ else if (this.documentFormat === HTML) {
       return document.body

@@ -28,11 +28,10 @@ class AnnotationServerManager {
   }
 
   constructSearchUrl ({
-    groupId: groupId
+    groupId
   }) {
     return this.annotationServerMetadata + groupId
   }
-
 
   destroy (callback) {
     if (_.isFunction(callback)) {

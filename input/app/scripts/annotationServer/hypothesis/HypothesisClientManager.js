@@ -78,7 +78,7 @@ class HypothesisClientManager extends AnnotationServerManager {
     return !_.isEmpty(this.hypothesisToken)
   }
 
-  constructSearchUrl ({groupId: groupId}) {
+  constructSearchUrl ({groupId}) {
     return this.annotationServerMetadata.groupUrl + groupId
   }
 

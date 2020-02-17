@@ -21,7 +21,7 @@ class BuiltIn {
           window.abwa.sidebar.openSidebar()
           Alerts.closeAlert()
           if (_.isFunction(callback)) {
-            callback()
+            callback(null, annotations)
           }
         }
       })

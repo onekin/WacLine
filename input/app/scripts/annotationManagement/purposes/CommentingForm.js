@@ -1,9 +1,14 @@
 const _ = require('lodash')
 const Alerts = require('../../utils/Alerts')
+// PVSCL:IFCOND(MoodleProvider OR Autocomplete, LINE)
 const LanguageUtils = require('../../utils/LanguageUtils')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleProvider, LINE)
 const Theme = require('../../codebook/model/Theme')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Autocomplete,LINE)
 const Awesomplete = require('awesomplete')
+const Annotation = require('../Annotation')
 // PVSCL:ENDCOND
 const $ = require('jquery')
 // PVSCL:IFCOND(SentimentAnalysis,LINE)
@@ -13,7 +18,6 @@ const qs = require('qs')
 // PVSCL:IFCOND(Commenting, LINE)
 const Commenting = require('./Commenting')
 // PVSCL:ENDCOND
-const Annotation = require('../Annotation')
 const Config = require('../../Config')
 // PVSCL:IFCOND(Assessing, LINE)
 const Assessing = require('./Assessing')
@@ -324,7 +328,6 @@ class CommentingForm {
   }
 
   // PVSCL:IFCOND(Autocomplete,LINE)
-
   static retrievePreviouslyUsedComments (themeOrCode) {
     let tag = ''
     if (themeOrCode) {

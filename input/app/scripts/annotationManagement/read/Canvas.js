@@ -1,8 +1,7 @@
-const AnnotationUtils = require('../../utils/AnnotationUtils')
 const Alerts = require('../../utils/Alerts')
 const axios = require('axios')
 
-const {Review, Annotation} = require('../../exporter/reviewModel')
+const {Review} = require('../../exporter/reviewModel')
 
 class Canvas {
   static generateCanvas () {

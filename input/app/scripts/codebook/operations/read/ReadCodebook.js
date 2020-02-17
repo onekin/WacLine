@@ -22,7 +22,8 @@ class ReadCodebook {
   }
 
   init (callback) {
-    // Add event listener for createAnnotation event
+    // Add event listener for codebook read event
+    this.initCodebookReadEvent()
     this.initCodebookCreatedEvent()
     // PVSCL:IFCOND(CodebookUpdate,LINE)
     this.initThemeCreatedEvent()
@@ -41,6 +42,8 @@ class ReadCodebook {
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
+    // Remove buttons container
+    $('#tagsWrapper').remove()
   }
 
   // EVENTS
@@ -68,10 +71,16 @@ class ReadCodebook {
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
 
-  initCodebookCreatedEvent () {
+  initCodebookReadEvent () {
     this.events.codebookReadEvent = {element: document, event: Events.codebookRead, handler: this.codebookReadEventHandler()}
     this.events.codebookReadEvent.element.addEventListener(this.events.codebookReadEvent.event, this.events.codebookReadEvent.handler, false)
   }
+
+  initCodebookCreatedEvent () {
+    this.events.codebookCreatedEvent = {element: document, event: Events.codebookCreated, handler: this.codebookCreatedEventHandler()}
+    this.events.codebookCreatedEvent.element.addEventListener(this.events.codebookCreatedEvent.event, this.events.codebookCreatedEvent.handler, false)
+  }
+
   /**
    * Loads the codebook inside the sidebar
    * @param callback
@@ -595,6 +604,11 @@ class ReadCodebook {
   }
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
+  codebookCreatedEventHandler () {
+    return () => {
+      this.initCodebookContent()
+    }
+  }
 }
 
 module.exports = ReadCodebook

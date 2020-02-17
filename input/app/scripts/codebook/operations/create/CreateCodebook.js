@@ -1,4 +1,5 @@
 const Events = require('../../../Events')
+const _ = require('lodash')
 // PVSCL:IFCOND(BuiltIn, LINE)
 const BuiltIn = require('./builtIn/BuiltIn')
 const EmptyCodebook = require('./emptyCodebook/EmptyCodebook')
@@ -23,6 +24,14 @@ class CreateCodebook {
     this.initCreateCodebookEvent()
   }
 
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
+  }
+
   /**
    * Initializes codebook create event listener
    */
@@ -41,7 +50,7 @@ class CreateCodebook {
             if (err) {
               reject(err)
             } else {
-              resolve()
+              resolve(annotations)
             }
           })
         }

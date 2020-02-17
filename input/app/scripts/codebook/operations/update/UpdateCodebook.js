@@ -22,6 +22,14 @@ class UpdateCodebook {
     // PVSCL:ENDCOND
   }
 
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
+  }
+
   // EVENTS
   initCreateThemeEvent () {
     this.events.createThemeEvent = {element: document, event: Events.createTheme, handler: this.createNewThemeEventHandler()}

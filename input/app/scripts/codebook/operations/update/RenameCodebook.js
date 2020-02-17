@@ -13,6 +13,14 @@ class RenameCodebook {
     this.initRenameCodebookEvent()
   }
 
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
+  }
+
   // EVENTS
   initRenameCodebookEvent () {
     this.events.renameCodebookEvent = {element: document, event: Events.renameCodebook, handler: this.renameCodebookEventHandler()}
@@ -20,7 +28,7 @@ class RenameCodebook {
   }
 
   /**
-   * This function creates a new theme when it receives the createTheme event.
+   * Event handler for renameCodebook.
    */
   renameCodebookEventHandler () {
     return (event) => {

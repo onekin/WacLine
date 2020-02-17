@@ -1,5 +1,4 @@
 const _ = require('lodash')
-const $ = require('jquery')
 const CreateCodebook = require('./operations/create/CreateCodebook')
 const ReadCodebook = require('./operations/read/ReadCodebook')
 // PVSCL:IFCOND(CodebookUpdate, LINE)
@@ -64,22 +63,24 @@ class CodebookManager {
   }
 
   destroy () {
-    // Remove creator event listeners
-    let codebookCreatorEvents = _.values(this.codebookCreator.events)
-    for (let i = 0; i < codebookCreatorEvents.length; i++) {
-      codebookCreatorEvents[i].element.removeEventListener(codebookCreatorEvents[i].event, codebookCreatorEvents[i].handler)
-    }
-    // Destroy codebook reader
+    // Destroy components of codebook
+    this.codebookCreator.destroy()
     this.codebookReader.destroy()
     // PVSCL:IFCOND(CodebookUpdate, LINE)
-    // Remove updater event listeners
-    let codebookUpdaterEvents = _.values(this.codebookUpdater.events)
-    for (let i = 0; i < codebookCreatorEvents.length; i++) {
-      codebookUpdaterEvents[i].element.removeEventListener(codebookUpdaterEvents[i].event, codebookUpdaterEvents[i].handler)
-    }
+    this.codebookUpdater.destroy()
     // PVSCL:ENDCOND
-    // Remove tags wrapper
-    $('#tagsWrapper').remove()
+    // PVSCL:IFCOND(CodebookDelete, LINE)
+    this.codebookDeleter.destroy()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(RenameCodebook, LINE)
+    this.codebookRenamer.destroy()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(ExportCodebook, LINE)
+    this.codebookExporter.destroy()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(ImportCodebook, LINE)
+    this.codebookImporter.destroy()
+    // PVSCL:ENDCOND
   }
 }
 

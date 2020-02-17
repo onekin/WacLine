@@ -1,4 +1,5 @@
 const Events = require('../../../Events')
+const _ = require('lodash')
 const ExportCodebookJSON = require('./ExportCodebookJSON')
 
 class ExportCodebook {
@@ -9,6 +10,14 @@ class ExportCodebook {
   init () {
     // Add event listener for export codebook event
     this.initExportCodebookEventHandler()
+  }
+
+  destroy () {
+    // Remove event listeners
+    let events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
   }
 
   // EVENTS

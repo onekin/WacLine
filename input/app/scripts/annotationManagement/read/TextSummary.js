@@ -1,7 +1,7 @@
 const Alerts = require('../../utils/Alerts')
 const PDF = require('../../target/formats/PDF')
 const FileSaver = require('file-saver')
-const AnnotationUtils = require('../../utils/AnnotationUtils')
+const {Review} = require('../../exporter/reviewModel')
 
 class TextSummary {
   static generateReview () {

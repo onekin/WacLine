@@ -49,9 +49,9 @@ const Config = {
   },
   assessmentCategories: [{
     name: 'Minor weakness'
-  },{
+  }, {
     name: 'Major weakness'
-  },{
+  }, {
     name: 'Strength'
   }]
 }
