@@ -59,7 +59,7 @@ class Codebook {
     tags.push(cmidTag)
     // PVSCL:ENDCOND
     // Construct text attribute of the annotation
-    let textObject = {}
+    let textObject
     // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleResource,LINE)
     textObject = {
       moodleEndpoint: this.moodleEndpoint,
@@ -222,9 +222,9 @@ class Codebook {
     }
     // PVSCL:ENDCOND
   }
-  // PVSCL:IFCOND(BuiltIn or ImportCodebook or NOT(Codebook),LINE)
+  // PVSCL:IFCOND(BuiltIn or ImportCodebook or NOT(Codebook) or ImportAnnotations, LINE)
 
-  static fromUserDefinedHighlighterDefinition (userDefinedHighlighterDefinition) {
+  static fromObjects (userDefinedHighlighterDefinition) {
     let annotationGuide = new Codebook({name: userDefinedHighlighterDefinition.name})
     for (let i = 0; i < userDefinedHighlighterDefinition.definition.length; i++) {
       let themeDefinition = userDefinedHighlighterDefinition.definition[i]
@@ -441,7 +441,7 @@ class Codebook {
     return instancedCodebook
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(ExportCodebook, LINE)
+  // PVSCL:IFCOND(ExportCodebook or Export, LINE)
 
   toObjects (name) {
     let object = {
@@ -476,6 +476,14 @@ class Codebook {
     }
   }
   // PVSCL:ENDCOND
+
+  getThemeByName (name) {
+    if (_.isString(name)) {
+      return this.themes.find(theme => theme.name === name)
+    } else {
+      return null
+    }
+  }
 }
 
 module.exports = Codebook

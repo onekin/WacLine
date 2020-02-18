@@ -48,6 +48,9 @@ class ReadAnnotation {
     })
     this.initAnnotationsObserver()
     this.initReloadAnnotationsEvent()
+    // PVSCL:IFCOND(ImportAnnotations, LINE)
+    this.initAnnotationsImportedEventListener()
+    // PVSCL:ENDCOND
   }
 
   destroy () {
@@ -565,6 +568,23 @@ class ReadAnnotation {
       // PVSCL:ENDCOND
       // Unhighlight deleted annotations
       this.redrawAnnotations()
+    }
+  }
+  // PVSCL:ENDCOND
+
+  // PVSCL:IFCOND(ImportAnnotations, LINE)
+  initAnnotationsImportedEventListener (callback) {
+    this.events.annotationsImportedEvent = {element: document, event: Events.annotationsImported, handler: this.createAnnotationsImportedEventHandler()}
+    this.events.annotationsImportedEvent.element.addEventListener(this.events.annotationsImportedEvent.event, this.events.annotationsImportedEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  createAnnotationsImportedEventHandler () {
+    return (e) => {
+      // Reload annotations
+
     }
   }
   // PVSCL:ENDCOND

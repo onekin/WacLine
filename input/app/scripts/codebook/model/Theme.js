@@ -213,6 +213,16 @@ class Theme {
   getTags () {
     return [Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name]
   }
+
+  // PVSCL:IFCOND(Hierarchy, LINE)
+  getCodeByName (name) {
+    if (_.isString(name)) {
+      return this.codes.find(code => code.name === name)
+    } else {
+      return null
+    }
+  }
+  // PVSCL:ENDCOND
 }
 
 module.exports = Theme

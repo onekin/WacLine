@@ -37,7 +37,7 @@ class ImportCodebookJSON {
                 if (err) {
                   Alerts.errorAlert({text: 'Unable to create a new annotation group. Error: ' + err.message})
                 } else {
-                  let guide = Codebook.fromUserDefinedHighlighterDefinition(jsonObject)
+                  let guide = Codebook.fromObjects(jsonObject)
                   Codebook.setAnnotationServer(newGroup, (annotationServer) => {
                     guide.annotationServer = annotationServer
                     Alerts.loadingAlert({
@@ -46,7 +46,7 @@ class ImportCodebookJSON {
                       position: Alerts.position.center
                     })
                     ImportCodebookJSON.createConfigurationAnnotationsFromReview({guide,
-                      callback: (err, annotations) => {
+                      callback: (err) => {
                         if (err) {
                           Alerts.errorAlert({text: 'There was an error when configuring Review&Go highlighter'})
                         } else {

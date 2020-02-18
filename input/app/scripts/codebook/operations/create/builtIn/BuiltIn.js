@@ -7,7 +7,7 @@ class BuiltIn {
   static createDefaultAnnotations (callback) {
     Codebook.setAnnotationServer(null, (annotationServer) => {
       // Create annotation guide from user defined highlighter definition
-      let annotationGuide = Codebook.fromUserDefinedHighlighterDefinition(UserDefinedHighlighterDefinition)
+      let annotationGuide = Codebook.fromObjects(UserDefinedHighlighterDefinition)
       // Create review schema from default criterias
       annotationGuide.annotationServer = annotationServer
       // Create highlighter annotations

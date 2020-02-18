@@ -1,28 +1,34 @@
 const axios = require('axios')
 const _ = require('lodash')
-// PVSCL:IFCOND(Canvas,LINE)
+// PVSCL:IFCOND(Canvas, LINE)
 const Canvas = require('../annotationManagement/read/Canvas')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(AnnotatedPDF,LINE)
+// PVSCL:IFCOND(AnnotatedPDF, LINE)
 const Screenshots = require('../annotationManagement/read/Screenshots')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(GoogleSheetConsumer,LINE)
+// PVSCL:IFCOND(GoogleSheetConsumer, LINE)
 const GoogleSheetGenerator = require('../annotationManagement/read/GoogleSheetGenerator')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(LastAnnotation,LINE)
+// PVSCL:IFCOND(LastAnnotation, LINE)
 const Resume = require('../annotationManagement/read/Resume')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(TextSummary,LINE)
+// PVSCL:IFCOND(TextSummary, LINE)
 const TextSummary = require('../annotationManagement/read/TextSummary')
 // PVSCL:ENDCOND
 const Events = require('../Events')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Alerts = require('../utils/Alerts')
-// PVSCL:IFCOND(MoodleReport,LINE)
+// PVSCL:IFCOND(MoodleReport, LINE)
 const BackToWorkspace = require('../moodle/BackToWorkspace')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(AnnotationList, LINE)
 const AnnotationList = require('../annotationManagement/read/AnnotationList')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(ImportAnnotations, LINE)
+const AnnotationImporter = require('../importExport/AnnotationImporter')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Export, LINE)
+const AnnotationExporter = require('../importExport/AnnotationExporter')
 // PVSCL:ENDCOND
 const $ = require('jquery')
 
@@ -37,7 +43,7 @@ class Toolset {
       // Get sidebar container
       this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
       // Insert toolset container
-      // PVSCL:IFCOND(Manual,LINE)
+      // PVSCL:IFCOND(Manual, LINE)
       let groupSelectorContainer = this.sidebarContainer.querySelector('#groupSelectorContainer')
       groupSelectorContainer.insertAdjacentHTML('afterend', response.data)
       // PVSCL:ELSECOND
@@ -58,7 +64,7 @@ class Toolset {
         this.screenshotButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(Canvas,LINE)
+      // PVSCL:IFCOND(Canvas, LINE)
       // Set Canvas image
       let canvasImageUrl = chrome.extension.getURL('/images/overview.png')
       this.canvasImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -69,7 +75,7 @@ class Toolset {
         this.canvasButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(TextSummary,LINE)
+      // PVSCL:IFCOND(TextSummary, LINE)
       // Set TextSummary image
       let textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -80,7 +86,7 @@ class Toolset {
         this.textSummaryButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(DeleteAll,LINE)
+      // PVSCL:IFCOND(DeleteAll, LINE)
       // Set DeleteAll image
       let deleteGroupImageUrl = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteGroupImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -91,7 +97,7 @@ class Toolset {
         this.deleteAllButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(LastAnnotation,LINE)
+      // PVSCL:IFCOND(LastAnnotation, LINE)
       // Set GoToLast image
       let goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
       this.goToLastImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -102,7 +108,7 @@ class Toolset {
         this.goToLastButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(GoogleSheetConsumer,LINE)
+      // PVSCL:IFCOND(GoogleSheetConsumer, LINE)
       // Set Spreadsheet generation image
       let googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
       this.googleSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -113,7 +119,7 @@ class Toolset {
         GoogleSheetGenerator.generate()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(MoodleReport,LINE)
+      // PVSCL:IFCOND(MoodleReport, LINE)
       // Set back to moodle icon
       let moodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
       this.moodleImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -125,7 +131,7 @@ class Toolset {
         this.toolsetBody.appendChild(this.moodleLink)
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(AnnotationList,LINE)
+      // PVSCL:IFCOND(AnnotationList, LINE)
       // Set annotation list image
       let annotationListImageUrl = chrome.extension.getURL('/images/annotationList.png')
       this.annotationListImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -135,6 +141,16 @@ class Toolset {
       this.annotationListImage.addEventListener('click', () => {
         AnnotationList.openAnnotationList()
       })
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(JSON OR ImportAnnotations, LINE)
+      let exportImportImageUrl = chrome.extension.getURL('/images/importExport.png')
+      this.exportImportImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.exportImportImage.src = exportImportImageUrl
+      this.exportImportImage.id = 'importExportButton'
+      this.exportImportImage.title = 'Export or import annotations' // TODO i18n
+      this.toolsetBody.appendChild(this.exportImportImage)
+      // Add menu when clicking on the button
+      this.importExportButtonHandler()
       // PVSCL:ENDCOND
       // Check if exist any element in the tools and show it
       if (!_.isEmpty(this.toolsetBody.innerHTML)) {
@@ -146,22 +162,22 @@ class Toolset {
       }
     })
   }
-  // PVSCL:IFCOND(AnnotatedPDF,LINE)
+  // PVSCL:IFCOND(AnnotatedPDF, LINE)
   screenshotButtonHandler () {
     Screenshots.takeScreenshot()
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(Canvas,LINE)
+  // PVSCL:IFCOND(Canvas, LINE)
   canvasButtonHandler () {
     Canvas.generateCanvas()
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(TextSummary,LINE)
+  // PVSCL:IFCOND(TextSummary, LINE)
   textSummaryButtonHandler () {
     TextSummary.generateReview()
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(DeleteAll,LINE)
+  // PVSCL:IFCOND(DeleteAll, LINE)
   deleteAllButtonHandler () {
     Alerts.confirmAlert({
       alertType: Alerts.alertType.question,
@@ -181,7 +197,7 @@ class Toolset {
     })
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(LastAnnotation,LINE)
+  // PVSCL:IFCOND(LastAnnotation, LINE)
   goToLastButtonHandler () {
     Resume.resume()
   }
@@ -208,6 +224,41 @@ class Toolset {
       this.toolsetContainer.remove()
     }
   }
+
+  // PVSCL:IFCOND(ImportAnnotations or JSON, LINE)
+  importExportButtonHandler () {
+    // Create context menu for import export
+    $.contextMenu({
+      selector: '#importExportButton',
+      trigger: 'left',
+      build: () => {
+        // Create items for context menu
+        let items = {}
+        // PVSCL:IFCOND(ImportAnnotations, LINE)
+        items['import'] = {name: 'Import annotations'}
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(JSON, LINE)
+        items['export'] = {name: 'Export annotations in JSON'}
+        // PVSCL:ENDCOND
+        return {
+          callback: (key, opt) => {
+            // PVSCL:IFCOND(ImportAnnotations, LINE)
+            if (key === 'import') {
+              AnnotationImporter.importReviewAnnotations()
+            }
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(JSON, LINE)
+            if (key === 'export') {
+              AnnotationExporter.exportCurrentDocumentAnnotations()
+            }
+            // PVSCL:ENDCOND
+          },
+          items: items
+        }
+      }
+    })
+  }
+  // PVSCL:ENDCOND
 }
 
 module.exports = Toolset
