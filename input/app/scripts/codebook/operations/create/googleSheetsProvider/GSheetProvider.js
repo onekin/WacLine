@@ -109,14 +109,13 @@ class GoogleSheetContentScriptManager {
   }
 
   initGoogleSheetParsing (callback) {
-    window.googleSheetProvider.googleSheetParser = new GSheetParser()
-    window.googleSheetProvider.googleSheetParser.parse((err, annotationGuide) => {
+    GSheetParser.parseCurrentSheet((err, codebook) => {
       if (err) {
         console.error(err)
         Alerts.errorAlert({text: err.message})
       } else {
         window.googleSheetProvider.GroupInitializer = new GroupInitializer()
-        window.googleSheetProvider.GroupInitializer.init(annotationGuide, (err) => {
+        window.googleSheetProvider.GroupInitializer.init(codebook, (err) => {
           if (err) {
             if (_.isFunction(callback)) {
               callback(err)

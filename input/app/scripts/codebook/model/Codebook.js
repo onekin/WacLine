@@ -6,10 +6,6 @@ const LanguageUtils = require('../../utils/LanguageUtils')
 // PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('./Code')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(GoogleSheetProvider,LINE)
-const URLUtils = require('../../utils/URLUtils')
-const Alerts = require('../../utils/Alerts')
-// PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
 const Hypothesis = require('../../annotationServer/hypothesis/Hypothesis')
 // PVSCL:ENDCOND
@@ -246,85 +242,10 @@ class Codebook {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(GoogleSheetProvider,LINE)
 
-  static fromGSheetProvider (callback) {
-    let annotationGuide = new Codebook({})
-    annotationGuide.spreadsheetId = this.retrieveSpreadsheetId()
-    annotationGuide.sheetId = this.retrieveSheetId()
-    this.retrieveCurrentToken((err, token) => {
-      if (err) {
-        callback(err)
-      } else {
-        this.getSpreadsheet(annotationGuide, token, (err, spreadsheet) => {
-          if (err) {
-            callback(err)
-          } else {
-            // Retrieve spreadsheet title
-            // PVSCL:IFCOND(Manual,LINE)
-            annotationGuide.name = spreadsheet.properties.title
-            // PVSCL:ENDCOND
-            // PVSCL:IFCOND(ApplicationBased,LINE)
-            annotationGuide.name = Config.groupName
-            // PVSCL:ENDCOND
-            let themes = this.getThemesAndCodesGSheet(spreadsheet, annotationGuide)
-            if (_.isError(themes)) {
-              callback(err)
-            } else {
-              annotationGuide.themes = themes
-              if (_.isFunction(callback)) {
-                callback(null, annotationGuide)
-              }
-            }
-          }
-        })
-      }
-    })
-  }
-
-  static retrieveSpreadsheetId () {
-    // Get current google sheet id
-    this.spreadsheetId = window.location.href.match(/[-\w]{25,}/)[0]
-    return window.location.href.match(/[-\w]{25,}/)[0]
-  }
-
-  static retrieveSheetId () {
-    let hashParams = URLUtils.extractHashParamsFromUrl(window.location.href, '=')
-    return parseInt(hashParams.gid)
-  }
-
-  static retrieveCurrentToken (callback) {
-    chrome.runtime.sendMessage({scope: 'googleSheets', cmd: 'getToken'}, (result) => {
-      if (_.isFunction(callback)) {
-        if (result.token) {
-          callback(null, result.token)
-        } else {
-          callback(result.error)
-        }
-      }
-    })
-  }
-
-  static getSpreadsheet (annotationGuide, token, callback) {
-    chrome.runtime.sendMessage({
-      scope: 'googleSheets',
-      cmd: 'getSpreadsheet',
-      data: JSON.stringify({
-        spreadsheetId: annotationGuide.spreadsheetId
-      })
-    }, (response) => {
-      if (response.error) {
-        Alerts.errorAlert({
-          text: 'You don\'t have permission to access the spreadsheet! Are you using the same Google account for the spreadsheet and for Google Chrome?<br/>If you don\'t know how to solve this problem: Please create on top right: "Share -> Get shareable link", and give edit permission.' // TODO i18n
-        })
-        callback(new Error('Unable to retrieve spreadsheet data. Permission denied.'))
-      } else {
-        try {
-          let spreadsheet = JSON.parse(response.spreadsheet)
-          callback(null, spreadsheet)
-        } catch (e) {
-          callback(e)
-        }
-      }
-    })
+  static fromGoogleSheet ({spreadsheetId, sheetId, spreadsheet, sheetName}) {
+    let codebook = new Codebook({spreadsheetId, sheetId, name: sheetName})
+    codebook.themes = Codebook.getThemesAndCodesGSheet(spreadsheet, codebook)
+    return codebook
   }
 
   static getThemesAndCodesGSheet (spreadsheet, annotationGuide) {
@@ -333,17 +254,20 @@ class Codebook {
     // Check if exists object
     if (sheet && sheet.data && sheet.data[0] && sheet.data[0].rowData && sheet.data[0].rowData[0] && sheet.data[0].rowData[0].values) {
       // Retrieve index of "Author" column
-      let indexOfAuthor = _.findIndex(sheet.data[0].rowData[0].values, (cell) => {
+      let lastIndex = _.findIndex(sheet.data[0].rowData[0].values, (cell) => {
         if (cell && cell.formattedValue) {
-          return cell.formattedValue.toLowerCase() === 'author'
+          return cell.formattedValue === ''
         } else {
           return false
         }
       })
+      if (lastIndex === -1) {
+        lastIndex = sheet.data[0].rowData[0].values.length
+      }
       // If index of author exists
-      if (indexOfAuthor !== -1) {
+      if (lastIndex > 0) {
         // Retrieve themes. Retrieve elements between 2 column and author column, maps "formattedValue"
-        let themesArray = _.map(_.slice(sheet.data[0].rowData[0].values, 1, indexOfAuthor), 'formattedValue')
+        let themesArray = _.map(_.slice(sheet.data[0].rowData[0].values, 1, lastIndex), 'formattedValue')
         let themes = _.map(_.countBy(themesArray), (numberOfColumns, name) => {
           let theme = new Theme({name: name, annotationGuide})
           // PVSCL:IFCOND(Hierarchy,LINE)
@@ -357,7 +281,7 @@ class Codebook {
           // Find codes
           if (sheet.data[0].rowData[1] && sheet.data[0].rowData[1].values) {
             // Get cells for codes
-            let values = _.slice(sheet.data[0].rowData[1].values, 1, indexOfAuthor)
+            let values = _.slice(sheet.data[0].rowData[1].values, 1, lastIndex)
             // For each cell
             for (let i = 0; i < themesArray.length; i++) {
               // Retrieve its facet
@@ -378,16 +302,13 @@ class Codebook {
           // PVSCL:ENDCOND
           return themes
         } else {
-          Alerts.errorAlert('The spreadsheet hasn\'t the correct structure, you have not defined any facet.')
-          return new Error('No theme defined')
+          return new Error('The spreadsheet hasn\'t the correct structure, you have not defined any facet.')
         }
       } else {
-        Alerts.errorAlert('The spreadsheet hasn\'t the correct structure, "author" column is missing.')
-        return new Error('No author found')
+        return new Error('The spreadsheet\'s first row is empty.')
       }
     } else {
-      Alerts.errorAlert('The spreadsheet hasn\'t the correct structure. The ROW #1 must contain the facets names for your review.')
-      return new Error('Row 1 theme names')
+      return new Error('The spreadsheet hasn\'t the correct structure. The ROW #1 must contain the themes for your codebook.')
     }
   }
   // PVSCL:ENDCOND

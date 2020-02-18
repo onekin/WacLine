@@ -68,11 +68,12 @@ class GroupInitializer {
                 } else {
                   // Save as current group the generated one
                   ChromeStorage.setData(selectedGroupNamespace, {data: JSON.stringify(this.annotationGuide.annotationServer.group)}, ChromeStorage.local)
-                  // When window.focus
-                  let groupUrl = this.annotationGuide.annotationServer.group.links.html
+                  // Get group url
+                  let selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
+                  let groupUrl = selectedAnnotationServerManager.constructSearchUrl({group: this.annotationGuide.annotationServer.group.id})
                   Alerts.successAlert({
                     title: 'Correctly configured', // TODO i18n
-                    text: chrome.i18n.getMessage('ShareHypothesisGroup') + '<br/><a href="' + groupUrl + '" target="_blank">' + groupUrl + '</a>'
+                    text: chrome.i18n.getMessage('VisitTheCreatedGroup') + ' <a href="' + groupUrl + '" target="_blank">here</a>.'
                   })
                   if (_.isFunction(callback)) {
                     callback()
@@ -82,8 +83,10 @@ class GroupInitializer {
             }
           })
         } else {
+          let selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
+          let groupUrl = selectedAnnotationServerManager.constructSearchUrl({group: group.id})
           swal('The group ' + group.name + ' already exists', // TODO i18n
-            chrome.i18n.getMessage('ShareHypothesisGroup') + '<br/><a href="' + group.url + '" target="_blank">' + group.url + '</a>',
+            chrome.i18n.getMessage('VisitTheCreatedGroup') + ' <a href="' + groupUrl + '" target="_blank">here</a>.',
             'info')
           if (_.isFunction(callback)) {
             callback()

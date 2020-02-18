@@ -27,8 +27,8 @@
     "message": "You are not logged in, please login in Hypothes.is or check internet connection.",
     "description": "Message to show when login is required"
   },
-  "ShareHypothesisGroup": {
-    "message": "Copy and share the group with your students to provide the feedback.",
+  "VisitTheCreatedGroup": {
+    "message": "You can start annotating. Visit the created group and share it with your colleagues",
     "description": "Message to show when group is created"
   },
   "errorDeletingHypothesisAnnotation": {

@@ -16,7 +16,7 @@
   "content_scripts": [
     {
       "matches": ["*://*/*"PVSCL:IFCOND(URN), "file:///*/*"PVSCL:ENDCOND],
-      // PVSCL:IFCOND(GSheetProvider,LINE)
+      // PVSCL:IFCOND(GoogleSheetProvider,LINE)
       "exclude_matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*"PVSCL:IFCOND(Manual and Hypothesis), "https://hypothes.is/login"PVSCL:ENDCOND],
       // PVSCL:ELSECOND
       // PVSCL:IFCOND(Manual and Hypothesis and NOT (MoodleProvider),LINE)
@@ -30,7 +30,7 @@
       "css": ["styles/contentScript.css"],
       "run_at": "document_start",
       "all_frames": false
-    }PVSCL:IFCOND(GSheetProvider),
+    }PVSCL:IFCOND(GoogleSheetProvider),
     {
       "matches": ["https://docs.google.com/spreadsheets/d/*", "https://docs.google.com/spreadsheets/u/0/d/*"],
       "js": ["scripts/googleSheetsContentScript.js"],
@@ -98,10 +98,10 @@
     "*://www.dropbox.com/s/",
     "*://*.dropboxusercontent.com/*"PVSCL:ENDCOND
   ],
-  PVSCL:IFCOND(GSheetProvider or GoogleSheetConsumer, LINE)
+  PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
   "oauth2": {
-  	PVSCL:IFCOND(GSheetProvider, LINE)
-    "client_id": "PVSCL:EVAL(GSheetProvider->pv:Attribute('clientId'))",
+  	PVSCL:IFCOND(GoogleSheetProvider, LINE)
+    "client_id": "PVSCL:EVAL(GoogleSheetProvider->pv:Attribute('clientId'))",
     PVSCL:ELSEIFCOND(GoogleSheetConsumer)
     "client_id": "PVSCL:EVAL(GoogleSheetConsumer->pv:Attribute('clientId'))",
     PVSCL:ENDCOND
