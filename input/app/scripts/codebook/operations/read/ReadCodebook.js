@@ -182,8 +182,6 @@ class ReadCodebook {
         if (_.isFunction(callback)) {
           callback()
         }
-        // TODO Create data model from highlighter definition
-        // TODO Create buttons from data model
       }
     })
   }
@@ -329,11 +327,31 @@ class ReadCodebook {
             // We are using MoodleResource feature so need to push the cmid tag
             tags.push('cmid:' + theme.annotationGuide.cmid)
             // PVSCL:ENDCOND
+            // PVSCL:IFCOND(SidebarNavigation, LINE)
+            // Test if text is selected
+            if (document.getSelection().toString().length > 0) {
+              // If selected create annotation
+              LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                purpose: 'classifying',
+                tags: tags,
+                theme: theme,
+                codeId: id
+              })
+            } else {
+              // Else navigate to annotation
+              LanguageUtils.dispatchCustomEvent(Events.navigateToAnnotationByCode, {
+                codeId: theme.id
+              })
+            }
+            // PVSCL:ELSECOND
+            // If selected create annotation
             LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
               purpose: 'classifying',
+              tags: tags,
               theme: theme,
               codeId: id
             })
+            // PVSCL:ENDCOND
           }
         }
       },
@@ -372,12 +390,30 @@ class ReadCodebook {
             // PVSCL:IFCOND(MoodleResource,LINE)
             tags.push('cmid:' + theme.annotationGuide.cmid)
             // PVSCL:ENDCOND
+            // PVSCL:IFCOND(SidebarNavigation, LINE)
+            // Test if text is selected
+            if (document.getSelection().toString().length > 0) {
+              // If selected create annotation
+              LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                purpose: 'classifying',
+                tags: tags,
+                codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
+                lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
+              })
+            } else {
+              // Else navigate to annotation
+              LanguageUtils.dispatchCustomEvent(Events.navigateToAnnotationByCode, {
+                codeId: code.id
+              })
+            }
+            // PVSCL:ELSECOND
             LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
               purpose: 'classifying',
               tags: tags,
               codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
               lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
             })
+            // PVSCL:ENDCOND
           }
         }
       }/* PVSCL:IFCOND(CodebookUpdate) */,
@@ -402,11 +438,28 @@ class ReadCodebook {
             // PVSCL:IFCOND(MoodleResource,LINE)
             tags.push('cmid:' + theme.annotationGuide.cmid)
             // PVSCL:ENDCOND
+            // PVSCL:IFCOND(SidebarNavigation, LINE)
+            // Test if text is selected
+            if (document.getSelection().toString().length > 0) {
+              // If selected create annotation
+              LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                purpose: 'classifying',
+                tags: tags,
+                codeId: theme.id
+              })
+            } else {
+              // Else navigate to annotation
+              LanguageUtils.dispatchCustomEvent(Events.navigateToAnnotationByCode, {
+                codeId: theme.id
+              })
+            }
+            // PVSCL:ELSECOND
             LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
               purpose: 'classifying',
               tags: tags,
               codeId: theme.id
             })
+            // PVSCL:ENDCOND
           }
         }
       }/* PVSCL:IFCOND(CodebookUpdate) */,
@@ -478,6 +531,9 @@ class ReadCodebook {
       // PVSCL:ENDCOND
       items['removeTheme'] = {name: 'Remove theme'}
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(SidebarNavigation, LINE)
+      items['pageAnnotation'] = {name: 'Page annotation'}
+      // PVSCL:ENDCOND
       return {
         callback: (key) => {
           // PVSCL:IFCOND(CodebookUpdate, LINE)
@@ -495,6 +551,18 @@ class ReadCodebook {
               LanguageUtils.dispatchCustomEvent(Events.removeTheme, {theme: theme})
             }
           }
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(SidebarNavigation, LINE)
+          // TODO Page level annotations, take into account that tags are necessary here (take into account Moodle related case)
+          Alerts.infoAlert({text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.'})
+          /* if (key === 'pageAnnotation') {
+            let theme = this.codebook.getCodeOrThemeFromId(themeId)
+            LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+              purpose: 'classifying',
+              theme: theme,
+              codeId: theme.id
+            })
+          } */
           // PVSCL:ENDCOND
         },
         items: items
@@ -515,12 +583,27 @@ class ReadCodebook {
         // PVSCL:IFCOND(CodebookUpdate, LINE)
         items['removeCode'] = {name: 'Remove code'}
         // PVSCL:ENDCOND
+        // PVSCL:IFCOND(SidebarNavigation, LINE)
+        items['pageAnnotation'] = {name: 'Page annotation'}
+        // PVSCL:ENDCOND
         return {
           callback: (key) => {
             // PVSCL:IFCOND(CodebookUpdate, LINE)
             if (key === 'removeCode') {
               LanguageUtils.dispatchCustomEvent(Events.removeCode, {code: code})
             }
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(SidebarNavigation, LINE)
+            // TODO Page level annotations, take into account that tags are necessary here (take into account Moodle related case)
+            Alerts.infoAlert({text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.'})
+            /* if (key === 'pageAnnotation') {
+              let theme = this.codebook.getCodeOrThemeFromId(codeId)
+              LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                purpose: 'classifying',
+                theme: theme,
+                codeId: theme.id
+              })
+            } */
             // PVSCL:ENDCOND
           },
           items: items

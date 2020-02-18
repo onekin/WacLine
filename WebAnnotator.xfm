@@ -357,7 +357,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="iV-7LfJIuH-hQVbS-" cm:mimetype="text/plain" cm:encoding="utf-8">Format</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iulCLFSpiQ4oNyrwG" cm:name="Selector" cm:type="ps:feature" cm:class="ps:feature">
+    <cm:element cm:id="iulCLFSpiQ4oNyrwG" cm:name="Selector" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="irkff01S4xX5sX1Am" cm:class="ps:parents">
         <cm:relation cm:id="i94TdCldzvvr6ywku" cm:type="ps:parent">
           <cm:target cm:id="i7NAeSbjgg3ha2VO8">./i36v9Ay8VIclaxIo7</cm:target>
@@ -371,10 +371,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ix4W3WqNvfV0HbmoM" cm:type="ps:datetime">2019-11-07T11:51:46.871Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iEQXQWaR8vEDQCYHn" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iY27-csrDKRBnAKbT" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iY27-csrDKRBnAKbT" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="i1rsoGCwAL6FvI9FE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iKQYmRd8XRDCwHPlP" cm:type="ps:datetime">2019-11-07T11:52:07.808Z</cm:constant>
+          <cm:constant cm:id="iKQYmRd8XRDCwHPlP" cm:type="ps:datetime">2020-02-18T13:29:43.423Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

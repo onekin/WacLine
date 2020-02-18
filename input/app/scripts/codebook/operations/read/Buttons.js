@@ -325,19 +325,6 @@ class Buttons {
       throw new Error('Button must have an unique id')
     }
   }
-
-  /**
-   * TODO add to button group
-   * @param event
-   */
-  collapseExpandGroupedButtonsHandler (event) {
-    let tagGroup = event.target.parentElement
-    if (tagGroup.getAttribute('aria-expanded') === 'true') {
-      tagGroup.setAttribute('aria-expanded', 'false')
-    } else {
-      tagGroup.setAttribute('aria-expanded', 'true')
-    }
-  }
 }
 
 module.exports = Buttons

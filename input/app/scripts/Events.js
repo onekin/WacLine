@@ -68,6 +68,10 @@ const Events = {
   // PVSCL:IFCOND(ImportAnnotations, LINE)
   annotationsImported: 'annotationsImported',
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(SidebarNavigation, LINE)
+  navigateToAnnotationByCode: 'navigateToAnnotationByCode',
+  // PVSCL:ENDCOND
+  navigateToAnnotation: 'navigateToAnnotation',
   codebookRead: 'codebookRead' // Not in codebook variation point because absense of Codebook/Classifying also requires this event currently
 }
 

@@ -5,6 +5,9 @@ const BrowserStorageManager = require('../annotationServer/browserStorage/Browse
 const FileSaver = require('file-saver')
 // PVSCL:ENDCOND
 const _ = require('lodash')
+// PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
+const URLUtils = require('../utils/URLUtils')
+// PVSCL:ENDCOND
 
 class Options {
   init () {
@@ -103,8 +106,8 @@ class Options {
     })
     // PVSCL:ENDCOND
   }
-  // PVSCL:IFCOND(BrowserStorage,LINE)
 
+  // PVSCL:IFCOND(BrowserStorage,LINE)
   restoreDatabase (jsonObject, callback) {
     window.options.browserStorage = new BrowserStorageManager()
     window.options.browserStorage.init(() => {
@@ -157,8 +160,8 @@ class Options {
       selectedAnnotationServerConfigurationCard.setAttribute('aria-hidden', 'false')
     }
   }
-
   // PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
+
   updateApiSimulationCheckbox () {
     let isChecked = document.querySelector('#apiSimulationCheckbox').checked
     chrome.runtime.sendMessage({
