@@ -86,6 +86,11 @@
     height: 0;
     overflow: hidden;
   }
+
+  .collapseToggle {
+    transform: rotate(180deg);
+    padding-top: 3px;
+  }
 }
 
 .tagButtonContainer{

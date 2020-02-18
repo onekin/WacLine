@@ -281,153 +281,137 @@ class ReadCodebook {
       codes = codes.sort((a, b) => a.createdDate - b.createdDate)
       // PVSCL:ENDCOND
       if (theme.codes.length > 0) {
-        themeButtonContainer = Buttons.createGroupedButtons({
-          id: theme.id,
-          name: theme.name,
-          className: 'codingElement', // TODO
-          description: theme.description,
-          color: theme.color,
-          childGuideElements: codes,
-          groupHandler: (event) => {
-            let themeId = event.target.parentElement.parentElement.dataset.codeId
-            if (themeId) {
-              let theme = this.codebook.getCodeOrThemeFromId(themeId)
-              if (LanguageUtils.isInstanceOf(theme, Theme)) {
-                let id = ''
-                let tags = ''
-                // PVSCL:IFCOND(NOT(Multivalued),LINE)
-                // First, ask for the currently annotated code
-                let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(themeId)
-                // If there is already a code annotation for this theme, we have to let the tags of the code, to annotate with the current code
-                if (currentlyAnnotatedCode) {
-                  tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + currentlyAnnotatedCode.code.name]
-                  id = currentlyAnnotatedCode.code.id
-                  // else, we annotate with the theme
-                } else {
-                  tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
-                  id = themeId
-                }
-                // PVSCL:ELSECOND
-                tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
-                id = themeId
-                // PVSCL:ENDCOND
-                // PVSCL:IFCOND(MoodleResource,LINE)
-                // We are using MoodleResource feature so need to push the cmid tag
-                tags.push('cmid:' + theme.annotationGuide.cmid)
-                // PVSCL:ENDCOND
-                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-                  purpose: 'classifying',
-                  theme: theme,
-                  codeId: id
-                })
-              }
-            }
-          },
-          buttonHandler: (event) => {
-            let codeId = event.target.dataset.codeId
-            if (codeId) {
-              let code = this.codebook.getCodeOrThemeFromId(codeId)
-              if (LanguageUtils.isInstanceOf(code, Code)) {
-                // PVSCL:IFCOND(NOT(Multivalued),LINE)
-                // Get the annotatedTheme object of the code selected
-                let annotatedTheme = window.abwa.annotatedContentManager.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.theme.id)
-                // retrive the annotatedTheme object of the code selected
-                let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(code.theme.id)
-                // We have to throw the event of codeToAll when:
-                // There are still theme annotations or there are annotations of other codes done
-                if ((annotatedTheme.hasAnnotations() || (currentlyAnnotatedCode && currentlyAnnotatedCode.code.id !== codeId))) {
-                  if (currentlyAnnotatedCode) {
-                    // For the case, we are annotating with a code that is not the currently annotated code
-                    // In the last case we do not have to throw codeToAll event, we will do the codeToAll after the annotation is created
-                    if (!(document.getSelection().toString().length !== 0 && currentlyAnnotatedCode.code.id !== codeId)) {
-                      LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
-                        id: code.id,
-                        currentlyAnnotatedCode: currentlyAnnotatedCode
-                      })
-                    }
-                  } else {
-                    // In the case that we have annotated with themes until now and there isn't a code annotation yet
-                    LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
-                      codeId: code.id,
-                      currentlyAnnotatedCode: currentlyAnnotatedCode
-                    })
-                  }
-                }
-                // PVSCL:ENDCOND
-                let tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
-                // PVSCL:IFCOND(MoodleResource,LINE)
-                tags.push('cmid:' + theme.annotationGuide.cmid)
-                // PVSCL:ENDCOND
-                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-                  purpose: 'classifying',
-                  tags: tags,
-                  codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
-                  lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
-                })
-              }
-            }
-          }/* PVSCL:IFCOND(CodebookUpdate) */,
-          groupRightClickHandler: this.themeRightClickHandler(),
-          buttonRightClickHandler: this.codeRightClickHandler()/* PVSCL:ENDCOND */
-        })
+        themeButtonContainer = this.createGroupedThemeButtonContainer(theme, codes)
       } else {
-        themeButtonContainer = Buttons.createButton({
-          id: theme.id,
-          name: theme.name,
-          className: 'codingElement', // TODO
-          description: theme.description,
-          color: theme.color,
-          handler: (event) => {
-            let themeId = event.target.dataset.codeId
-            if (themeId) {
-              let theme = this.codebook.getCodeOrThemeFromId(themeId)
-              if (LanguageUtils.isInstanceOf(theme, Theme)) {
-                let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
-                // PVSCL:IFCOND(MoodleResource,LINE)
-                tags.push('cmid:' + theme.annotationGuide.cmid)
-                // PVSCL:ENDCOND
-                LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-                  purpose: 'classifying',
-                  tags: tags,
-                  codeId: theme.id
-                })
-              }
-            }
-          }/* PVSCL:IFCOND(CodebookUpdate) */,
-          buttonRightClickHandler: this.themeRightClickHandler()/* PVSCL:ENDCOND */
-        })
+        themeButtonContainer = this.createThemeButtonContainer(theme)
       }
       // PVSCL:ELSECOND
-      themeButtonContainer = Buttons.createButton({
-        id: theme.id,
-        name: theme.name,
-        className: 'codingElement', // TODO
-        description: theme.description,
-        color: theme.color,
-        handler: (event) => {
-          let themeId = event.target.dataset.codeId
-          if (themeId) {
-            let theme = this.codebook.getCodeOrThemeFromId(themeId)
-            if (LanguageUtils.isInstanceOf(theme, Theme)) {
-              let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
-              // PVSCL:IFCOND(MoodleResource,LINE)
-              tags.push('cmid:' + theme.annotationGuide.cmid)
-              // PVSCL:ENDCOND
-              LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-                purpose: 'classifying',
-                tags: tags,
-                codeId: theme.id
-              })
-            }
-          }
-        }/* PVSCL:IFCOND(CodebookUpdate) */,
-        buttonRightClickHandler: this.themeRightClickHandler()/* PVSCL:ENDCOND */
-      })
+      themeButtonContainer = this.createThemeButtonContainer(theme)
       // PVSCL:ENDCOND
       if (_.isElement(themeButtonContainer)) {
         this.buttonContainer.append(themeButtonContainer)
       }
     }
+  }
+
+  createGroupedThemeButtonContainer (theme, codes) {
+    return Buttons.createGroupedButtons({
+      id: theme.id,
+      name: theme.name,
+      className: 'codingElement',
+      description: theme.description,
+      color: theme.color,
+      childGuideElements: codes,
+      groupHandler: (event) => {
+        let themeId = event.target.parentElement.parentElement.dataset.codeId
+        if (themeId) {
+          let theme = this.codebook.getCodeOrThemeFromId(themeId)
+          if (LanguageUtils.isInstanceOf(theme, Theme)) {
+            let id = ''
+            let tags = ''
+            // PVSCL:IFCOND(NOT(Multivalued),LINE)
+            // First, ask for the currently annotated code
+            let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(themeId)
+            // If there is already a code annotation for this theme, we have to let the tags of the code, to annotate with the current code
+            if (currentlyAnnotatedCode) {
+              tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + currentlyAnnotatedCode.code.name]
+              id = currentlyAnnotatedCode.code.id
+              // else, we annotate with the theme
+            } else {
+              tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
+              id = themeId
+            }
+            // PVSCL:ELSECOND
+            tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
+            id = themeId
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(MoodleResource,LINE)
+            // We are using MoodleResource feature so need to push the cmid tag
+            tags.push('cmid:' + theme.annotationGuide.cmid)
+            // PVSCL:ENDCOND
+            LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+              purpose: 'classifying',
+              theme: theme,
+              codeId: id
+            })
+          }
+        }
+      },
+      buttonHandler: (event) => {
+        let codeId = event.target.dataset.codeId
+        if (codeId) {
+          let code = this.codebook.getCodeOrThemeFromId(codeId)
+          if (LanguageUtils.isInstanceOf(code, Code)) {
+            // PVSCL:IFCOND(NOT(Multivalued),LINE)
+            // Get the annotatedTheme object of the code selected
+            let annotatedTheme = window.abwa.annotatedContentManager.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.theme.id)
+            // retrive the annotatedTheme object of the code selected
+            let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(code.theme.id)
+            // We have to throw the event of codeToAll when:
+            // There are still theme annotations or there are annotations of other codes done
+            if ((annotatedTheme.hasAnnotations() || (currentlyAnnotatedCode && currentlyAnnotatedCode.code.id !== codeId))) {
+              if (currentlyAnnotatedCode) {
+                // For the case, we are annotating with a code that is not the currently annotated code
+                // In the last case we do not have to throw codeToAll event, we will do the codeToAll after the annotation is created
+                if (!(document.getSelection().toString().length !== 0 && currentlyAnnotatedCode.code.id !== codeId)) {
+                  LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
+                    id: code.id,
+                    currentlyAnnotatedCode: currentlyAnnotatedCode
+                  })
+                }
+              } else {
+                // In the case that we have annotated with themes until now and there isn't a code annotation yet
+                LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
+                  codeId: code.id,
+                  currentlyAnnotatedCode: currentlyAnnotatedCode
+                })
+              }
+            }
+            // PVSCL:ENDCOND
+            let tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
+            // PVSCL:IFCOND(MoodleResource,LINE)
+            tags.push('cmid:' + theme.annotationGuide.cmid)
+            // PVSCL:ENDCOND
+            LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+              purpose: 'classifying',
+              tags: tags,
+              codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
+              lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
+            })
+          }
+        }
+      }/* PVSCL:IFCOND(CodebookUpdate) */,
+      groupRightClickHandler: this.themeRightClickHandler(),
+      buttonRightClickHandler: this.codeRightClickHandler()/* PVSCL:ENDCOND */
+    })
+  }
+
+  createThemeButtonContainer (theme) {
+    return Buttons.createButton({
+      id: theme.id,
+      name: theme.name,
+      className: 'codingElement',
+      description: theme.description,
+      color: theme.color,
+      handler: (event) => {
+        let themeId = event.target.dataset.codeId
+        if (themeId) {
+          let theme = this.codebook.getCodeOrThemeFromId(themeId)
+          if (LanguageUtils.isInstanceOf(theme, Theme)) {
+            let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
+            // PVSCL:IFCOND(MoodleResource,LINE)
+            tags.push('cmid:' + theme.annotationGuide.cmid)
+            // PVSCL:ENDCOND
+            LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+              purpose: 'classifying',
+              tags: tags,
+              codeId: theme.id
+            })
+          }
+        }
+      }/* PVSCL:IFCOND(CodebookUpdate) */,
+      buttonRightClickHandler: this.themeRightClickHandler()/* PVSCL:ENDCOND */
+    })
   }
 
   /**

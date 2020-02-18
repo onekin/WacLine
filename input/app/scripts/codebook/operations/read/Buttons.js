@@ -31,6 +31,14 @@ class Buttons {
           // Create collapse button
           let collapseToogle = document.createElement('span')
           collapseToogle.className = 'collapseToggle'
+          collapseToogle.addEventListener('click', () => {
+            let tagGroup = document.querySelector('.tagGroup[data-code-id=' + id + ']')
+            if (tagGroup.getAttribute('aria-expanded') === 'false') {
+              tagGroup.setAttribute('aria-expanded', 'true')
+            } else {
+              tagGroup.setAttribute('aria-expanded', 'false')
+            }
+          })
           groupNameContainer.appendChild(collapseToogle)
           tagGroup.appendChild(groupNameContainer)
           let tagButtonContainer = document.createElement('div')
