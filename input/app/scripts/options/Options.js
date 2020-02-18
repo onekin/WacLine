@@ -24,6 +24,10 @@ class Options {
     })
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage,LINE)
+    // Browser annotationServer view annotations
+    document.querySelector('#viewAnnotationsButton').addEventListener('click', () => {
+      window.open(chrome.extension.getURL('content/browserStorage/browserStorageSearch.html#'))
+    })
     // Browser annotationServer restore
     document.querySelector('#restoreDatabaseButton').addEventListener('click', () => {
       Alerts.inputTextAlert({

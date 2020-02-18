@@ -19,14 +19,24 @@ class BrowserStorageSearch {
       if (err) {
         Alerts.errorAlert({text: 'Unable to retrieve annotations list. Error: ' + err.message})
       } else {
-        // Search annotations
-        window.browserStorageManager.client.searchAnnotations(query, (err, annotations) => {
-          if (err) {
-            Alerts.errorAlert({text: 'Unable to retrieve annotations. Error: ' + err.message})
-          } else {
-            BrowserStorageSearch.showAnnotationsOnInterface(annotations)
-          }
-        })
+        if (_.has(query, 'id')) {
+          window.browserStorageManager.client.fetchAnnotation(query.id, (err, annotation) => {
+            if (err) {
+              Alerts.errorAlert({text: 'Unable to retrieve annotations. Error: ' + err.message})
+            } else {
+              BrowserStorageSearch.showAnnotationsOnInterface([annotation])
+            }
+          })
+        } else {
+          // Search annotations
+          window.browserStorageManager.client.searchAnnotations(query, (err, annotations) => {
+            if (err) {
+              Alerts.errorAlert({text: 'Unable to retrieve annotations. Error: ' + err.message})
+            } else {
+              BrowserStorageSearch.showAnnotationsOnInterface(annotations)
+            }
+          })
+        }
       }
     })
     // Init on enter key to reload the page with new search
@@ -38,9 +48,10 @@ class BrowserStorageSearch {
   }
 
   static showAnnotationsOnInterface (annotations = []) {
-    // TODO Clone template
     annotations.forEach((annotation) => {
+      // Clone template
       let annotationCard = document.querySelector('#annotationCardTemplate').content.cloneNode(true)
+      annotationCard.id = 'annotationCard_' + annotation.id
       annotationCard.querySelector('.annotationCardUsername').innerText = annotation.creator || annotation.user
       annotationCard.querySelector('.annotationCardUsername').addEventListener('click', () => {
         document.location.href = window.browserStorageManager.constructSearchUrl({user: annotation.creator || annotation.user})

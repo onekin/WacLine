@@ -2,8 +2,6 @@ const _ = require('lodash')
 const Alerts = require('../../utils/Alerts')
 // PVSCL:IFCOND(MoodleProvider OR Autocomplete, LINE)
 const LanguageUtils = require('../../utils/LanguageUtils')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleProvider, LINE)
 const Theme = require('../../codebook/model/Theme')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Autocomplete,LINE)
