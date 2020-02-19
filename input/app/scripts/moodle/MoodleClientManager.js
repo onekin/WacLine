@@ -72,7 +72,7 @@ class MoodleClientManager {
             if (data === null) {
               callback(null)
             } else if (data.exception === 'dml_missing_record_exception') {
-              callback(new Error(chrome.i18n.getMessage('ErrorSavingMarksInMoodle') + chrome.i18n.getMessage('ContactAdministrator')))
+              callback(new Error(chrome.i18n.getMessage('ErrorSavingMarksInMoodle')))
             }
           }
         })

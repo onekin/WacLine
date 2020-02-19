@@ -126,7 +126,7 @@ class MoodleProvider {
                     let reject = _.isArray(rejects) ? rejects[0] : rejects
                     Alerts.errorAlert({
                       title: 'Something went wrong',
-                      text: reject.message + '.\n' + chrome.i18n.getMessage('ContactAdministrator')
+                      text: reject.message + '.\n' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])
                     })
                   })
                 }

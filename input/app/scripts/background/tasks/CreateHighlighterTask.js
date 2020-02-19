@@ -105,7 +105,7 @@ class CreateHighlighterTask extends Task {
                           if (err) {
                             console.error('ErrorConfiguringHighlighter')
                             this.currentPromisesStatus[id] = chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')
-                            callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
+                            callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
                           } else {
                             this.currentPromisesStatus[id] = 'Creating rubric highlighter in the annotation server'
                             this.createHighlighterAnnotations({
@@ -126,7 +126,7 @@ class CreateHighlighterTask extends Task {
                         }, (err, annotations) => {
                           if (err) {
                             callback(err)
-                            this.currentPromisesStatus[id] = chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')
+                            this.currentPromisesStatus[id] = chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])
                           } else {
                             this.currentPromisesStatus[id] = 'Updating rubric highlighter in the annotation server'
                             this.updateHighlighterAnnotations({
@@ -201,7 +201,7 @@ class CreateHighlighterTask extends Task {
     // Create teacher annotation if not exists
     this.createTeacherAnnotation({producerId: userProfile.userid, annotationServer: annotationServer}, (err) => {
       if (err) {
-        callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
+        callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
       } else {
         // Restore object
         rubric.annotationServer = annotationServer
@@ -216,11 +216,11 @@ class CreateHighlighterTask extends Task {
         } else {
           this.annotationServerClientManager.client.deleteAnnotations(annotationsToRemove, (err) => {
             if (err) {
-              callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
+              callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
             } else {
               this.annotationServerClientManager.client.createNewAnnotations(annotationsPending, (err, createdAnnotations) => {
                 if (err) {
-                  callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
+                  callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
                 } else {
                   console.debug('Highlighter for group updated')
                   callback(null)
@@ -245,12 +245,12 @@ class CreateHighlighterTask extends Task {
     let annotations = rubric.toAnnotations()
     this.createTeacherAnnotation({producerId: userProfile.userid, annotationServer: annotationServer}, (err) => {
       if (err) {
-        callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
+        callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
       } else {
         // Create annotations in hypothesis
         this.annotationServerClientManager.client.createNewAnnotations(annotations, (err, createdAnnotations) => {
           if (err) {
-            callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')))
+            callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
           } else {
             console.debug('Group created')
             callback(null)

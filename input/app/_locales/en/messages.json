@@ -105,7 +105,15 @@
   "CurrentSelectionNotAnnotable": {
     "message": "The selected content cannot be highlighted, is not part of the document"
   },
-  "ContactAdministrator": {
-    "message": "If the error continues, please <a href='https://github.com/haritzmedina' target='_blank'>contact to Review&Go developers</a>."
+  "ErrorContactDeveloper": {
+    "message": "If the error continues, please <a href='https://github.com/onekin/WebAnnotatorSPL/issues/new?title=Bug+$errorMessage$&body=%23+How+to+reproduce%0AWrite+here+any+information+related+to+the+error+found%0A%23+Trace%0A%60$errorStacktrace$%60&labels=bug' target='_blank'>open an issue</a>.",
+    "placeholders": {
+      "errorMessage": {
+        "content": "$1"
+      },
+      "errorStacktrace": {
+        "content": "$2"
+      }
+    }
   }
 }

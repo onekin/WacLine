@@ -361,6 +361,7 @@ class ReadCodebook {
           let code = this.codebook.getCodeOrThemeFromId(codeId)
           if (LanguageUtils.isInstanceOf(code, Code)) {
             // PVSCL:IFCOND(NOT(Multivalued),LINE)
+            // The rest of the annotations must be classified with this code too
             // Get the annotatedTheme object of the code selected
             let annotatedTheme = window.abwa.annotatedContentManager.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.theme.id)
             // retrive the annotatedTheme object of the code selected
@@ -371,9 +372,9 @@ class ReadCodebook {
               if (currentlyAnnotatedCode) {
                 // For the case, we are annotating with a code that is not the currently annotated code
                 // In the last case we do not have to throw codeToAll event, we will do the codeToAll after the annotation is created
-                if (!(document.getSelection().toString().length !== 0 && currentlyAnnotatedCode.code.id !== codeId)) {
+                if (currentlyAnnotatedCode.code.id !== codeId) {
                   LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
-                    id: code.id,
+                    codeId: code.id,
                     currentlyAnnotatedCode: currentlyAnnotatedCode
                   })
                 }
@@ -385,7 +386,20 @@ class ReadCodebook {
                 })
               }
             }
-            // PVSCL:ENDCOND
+            // Create new annotation if text selected
+            if (document.getSelection().toString().length > 0) {
+              // Create new annotation
+              let tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
+              // PVSCL:IFCOND(MoodleResource,LINE)
+              tags.push('cmid:' + theme.annotationGuide.cmid)
+              // PVSCL:ENDCOND
+              LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+                purpose: 'classifying',
+                tags: tags,
+                codeId: code.id
+              })
+            }
+            // PVSCL:ELSECOND
             let tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
             // PVSCL:IFCOND(MoodleResource,LINE)
             tags.push('cmid:' + theme.annotationGuide.cmid)
@@ -413,6 +427,7 @@ class ReadCodebook {
               codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
               lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
             })
+            // PVSCL:ENDCOND
             // PVSCL:ENDCOND
           }
         }

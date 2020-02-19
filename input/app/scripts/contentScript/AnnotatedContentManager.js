@@ -11,6 +11,7 @@ const Theme = require('../codebook/model/Theme')
 const Code = require('../codebook/model/Code')
 // PVSCL:ENDCOND
 const _ = require('lodash')
+const Classifying = require('../annotationManagement/purposes/Classifying')
 
 class AnnotatedTheme {
   constructor ({
@@ -115,7 +116,7 @@ class AnnotatedContentManager {
     })
     // PVSCL:ELSECOND
     promise = new Promise((resolve, reject) => {
-      resolve(window.abwa.contentAnnotator.allAnnotations)
+      resolve(window.abwa.annotationManagement.annotationReader.allAnnotations)
     })
     // PVSCL:ENDCOND
     // Return retrieved annotations
@@ -170,12 +171,13 @@ class AnnotatedContentManager {
       // Update all annotations with new tags
       _.forEach(themeAnnotations, (themeAnnotation) => {
         themeAnnotation.tags = newTagList
-        themeAnnotation.tagId = code.id
+        let bodyClassifying = themeAnnotation.getBodyForPurpose(Classifying.purpose)
+        bodyClassifying.value = code.toObject()
         annotatedCode.annotations.push(themeAnnotation)
       })
       this.updateAnnotationsInAnnotationServer(themeAnnotations, () => {
         annotatedTheme.annotations = []
-        window.abwa.contentAnnotator.updateAllAnnotations()
+        window.abwa.annotationManagement.annotationReader.updateAllAnnotations()
         this.reloadTagsChosen()
       })
     }
@@ -184,12 +186,13 @@ class AnnotatedContentManager {
       // Update all annotations with new tags
       _.forEach(lastAnnotatedCodeAnnotations, (lastAnnotatedCodeAnnotation) => {
         lastAnnotatedCodeAnnotation.tags = newTagList
-        lastAnnotatedCodeAnnotation.tagId = code.id
+        let bodyClassifying = lastAnnotatedCodeAnnotation.getBodyForPurpose(Classifying.purpose)
+        bodyClassifying.value = code.toObject()
         annotatedCode.annotations.push(lastAnnotatedCodeAnnotation)
       })
       this.updateAnnotationsInAnnotationServer(lastAnnotatedCodeAnnotations, () => {
         lastAnnotatedCode.annotations = []
-        window.abwa.contentAnnotator.updateAllAnnotations()
+        window.abwa.annotationManagement.annotationReader.updateAllAnnotations()
         this.reloadTagsChosen()
       })
     }
@@ -198,7 +201,7 @@ class AnnotatedContentManager {
     this.updateMoodle((err, result) => {
       if (err) {
         Alerts.errorAlert({
-          text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
+          text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
           title: 'Unable to update marks in moodle'
         })
       } else {
@@ -218,11 +221,11 @@ class AnnotatedContentManager {
     for (let i = 0; i < annotations.length; i++) {
       let annotation = annotations[i]
       promises.push(new Promise((resolve, reject) => {
-        window.abwa.annotationServerManager.client.updateAnnotation(annotation.id, annotation, (err, annotation) => {
+        window.abwa.annotationServerManager.client.updateAnnotation(annotation.id, annotation.serialize(), (err, annotation) => {
           if (err) {
             reject(new Error('Unable to update annotation ' + annotation.id))
           } else {
-            resolve(annotation)
+            resolve(annotation.deserialize())
           }
         })
       }))
@@ -248,7 +251,10 @@ class AnnotatedContentManager {
   // PVSCL:ENDCOND
 
   addAnnotationToAnnotatedThemesOrCode (annotation, annotatedThemesObject = this.annotatedThemes) {
-    let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(annotation.tagId, annotatedThemesObject)
+    // Get classification code
+    let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
+    let codeId = classifyingBody.value.id
+    let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId, annotatedThemesObject)
     if (annotatedThemeOrCode) {
       annotatedThemeOrCode.annotations.push(annotation)
     }
@@ -256,10 +262,15 @@ class AnnotatedContentManager {
   }
 
   removeAnnotationToAnnotatedThemesOrCode (annotation) {
-    let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(annotation.tagId)
-    _.remove(annotatedThemeOrCode.annotations, (anno) => {
-      return anno.id === annotation.id
-    })
+    // Get classification code
+    let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
+    if (classifyingBody) {
+      let codeId = classifyingBody.value.id
+      let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId)
+      _.remove(annotatedThemeOrCode.annotations, (anno) => {
+        return anno.id === annotation.id
+      })
+    }
   }
 
   /**
@@ -328,17 +339,19 @@ class AnnotatedContentManager {
     this.events.deletedAllAnnotations = {element: document, event: Events.deletedAllAnnotations, handler: this.createDeletedAllAnnotationsEventHandler()}
     this.events.deletedAllAnnotations.element.addEventListener(this.events.deletedAllAnnotations.event, this.events.deletedAllAnnotations.handler, false)
     // PVSCL:IFCOND(NOT(Multivalued), LINE)
-
     // Event for tag manager reloaded
     document.addEventListener(Events.codeToAll, (event) => {
       // Get level for this mark
-      let code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(event.detail.id)
+      let code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(event.detail.codeId)
       if (code) {
         // Retrieve criteria from rubric
         this.codeToAll(code, event.detail.currentlyAnnotatedCode)
       } else {
         // Unable to retrieve criteria or level
-        Alerts.errorAlert({title: 'Unable to code to all', text: 'There was an error when trying to mark this assignment, please reload the page and try it again.' + chrome.i18n.getMessage('ContactAdministrator')})
+        Alerts.errorAlert({
+          title: 'Unable to code',
+          text: 'There was an error in coding, please reload the page and try it again.' +
+            chrome.i18n.getMessage('ErrorContactDeveloper', ['codeToAll', encodeURIComponent(new Error().stack)])})
       }
     })
     // PVSCL:ENDCOND
@@ -347,24 +360,29 @@ class AnnotatedContentManager {
     document.addEventListener(Events.comment, (event) => {
       // Retrieve annotation from event
       let annotation = event.detail.annotation
-      let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(annotation.tagId)
-      // Retrieve criteria name for annotation
-      if (annotatedThemeOrCode && annotatedThemeOrCode.annotations.length > 0) {
-        let index = _.findIndex(annotatedThemeOrCode.annotations, (annotationMark) => annotationMark.id === annotation.id)
-        if (index > -1) {
-          annotatedThemeOrCode.annotations[index] = annotation
-        }
-        // Update moodle
-        this.updateMoodle((err) => {
-          if (err) {
-            Alerts.errorAlert({
-              text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again. Error: ' + err.toString(),
-              title: 'Unable to update marks in moodle'
-            })
-          } else {
-            // Do nothing
+      // Get classification code
+      let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
+      if (classifyingBody) {
+        let codeId = classifyingBody.value.id
+        let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId)
+        // Retrieve criteria name for annotation
+        if (annotatedThemeOrCode && annotatedThemeOrCode.annotations.length > 0) {
+          let index = _.findIndex(annotatedThemeOrCode.annotations, (annotationMark) => annotationMark.id === annotation.id)
+          if (index > -1) {
+            annotatedThemeOrCode.annotations[index] = annotation
           }
-        })
+          // Update moodle
+          this.updateMoodle((err) => {
+            if (err) {
+              Alerts.errorAlert({
+                text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again. Error: ' + err.toString() + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
+                title: 'Unable to update marks in moodle'
+              })
+            } else {
+              // Do nothing
+            }
+          })
+        }
       }
     })
     // PVSCL:ENDCOND
@@ -383,10 +401,15 @@ class AnnotatedContentManager {
         let annotation = event.detail.annotation
         this.annotatedThemes = this.addAnnotationToAnnotatedThemesOrCode(annotation)
         if (event.detail.codeToAll) {
-          LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
-            id: annotation.tagId,
-            currentlyAnnotatedCode: event.detail.lastAnnotatedCode
-          })
+          // Get classification code
+          let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
+          if (classifyingBody) {
+            let codeId = classifyingBody.value.id
+            LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
+              codeId: codeId,
+              currentlyAnnotatedCode: event.detail.lastAnnotatedCode
+            })
+          }
         } else {
           this.reloadTagsChosen()
         }
@@ -395,7 +418,7 @@ class AnnotatedContentManager {
       this.updateMoodle((err, result) => {
         if (err) {
           Alerts.errorAlert({
-            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
+            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
             title: 'Unable to update marks in moodle'
           })
         } else {
@@ -417,7 +440,7 @@ class AnnotatedContentManager {
       this.updateMoodle((err, result) => {
         if (err) {
           Alerts.errorAlert({
-            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
+            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
             title: 'Unable to update marks in moodle'
           })
         } else {
@@ -442,7 +465,7 @@ class AnnotatedContentManager {
       this.updateMoodle((err, result) => {
         if (err) {
           Alerts.errorAlert({
-            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.',
+            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
             title: 'Unable to update marks in moodle'
           })
         } else {

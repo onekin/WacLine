@@ -14,7 +14,7 @@
 }
 
 .groupNameContainer {
-  height: 23px;
+  height: 18px;
 }
 
 .groupName{
@@ -27,7 +27,6 @@
   text-align: center;
   width: 130px;
   float: left;
-  padding-top: 3px;
   padding-bottom: 3px;
   margin-bottom: 3px;
   cursor: pointer;
@@ -46,16 +45,15 @@
   float:right;
   transition: transform 0.5s;
   cursor: pointer;
-  margin-top: 3px;
 }
 
 .groupName[data-number-of-annotations]:before {
-  border: 1px solid black;
+  border-right: 1px solid black;
   content: attr(data-number-of-annotations);
-  border-radius: 10px;
+  border-top-left-radius: 3px;
   padding-left: 5px;
   padding-right: 5px;
-  background-color: lightgray;
+  background-color: whitesmoke;
   margin-bottom: auto;
   margin-top: auto;
   color: black;
@@ -65,7 +63,7 @@
 .groupName:before{
   background-size: 20px 20px;
   display: inline-block;
-  height: 15px;
+  height: 18px;
   content:"";
   padding-right: 20px;
   float:left;
@@ -118,12 +116,11 @@
 }
 
 .tagButton[data-number-of-annotations]:before {
-  border: 1px solid black;
+  border-right: 1px solid black;
   content: attr(data-number-of-annotations);
-  border-radius: 10px;
   padding-left: 5px;
   padding-right: 5px;
-  background-color: lightgray;
+  background-color: whitesmoke;
   margin-bottom: auto;
   margin-top: auto;
   color: black;
