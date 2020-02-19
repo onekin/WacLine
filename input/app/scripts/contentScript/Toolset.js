@@ -45,7 +45,7 @@ class Toolset {
       // Insert toolset container
       // PVSCL:IFCOND(Manual, LINE)
       let groupSelectorContainer = this.sidebarContainer.querySelector('#groupSelectorContainer')
-      groupSelectorContainer.insertAdjacentHTML('afterend', response.data)
+      groupSelectorContainer.insertAdjacentHTML('beforebegin', response.data)
       // PVSCL:ELSECOND
       this.sidebarContainer.insertAdjacentHTML('afterbegin', response.data)
       // PVSCL:ENDCOND
@@ -113,7 +113,7 @@ class Toolset {
       let googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
       this.googleSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.googleSheetImage.src = googleSheetImageUrl
-      this.googleSheetImage.title = 'Go to last annotation' // TODO i18n
+      this.googleSheetImage.title = 'Generate a spreadsheet with classified content' // TODO i18n
       this.toolsetBody.appendChild(this.googleSheetImage)
       this.googleSheetImage.addEventListener('click', () => {
         GoogleSheetGenerator.generate()

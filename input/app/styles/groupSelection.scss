@@ -24,6 +24,7 @@ $elementHoverBackgroundColor: rgba(100,100,100,0.8);
 }
 
 #groupSelectorToggle {
+  padding-bottom: 5px;
   background-image: url($chromeExtensionMainURL + 'images/arrowUp.svg');
   background-size: 20px 20px;
   filter: brightness(10.2) sepia(1) hue-rotate(180deg) saturate(5);
@@ -86,7 +87,6 @@ $elementHoverBackgroundColor: rgba(100,100,100,0.8);
 .groupSelectorItemContainer[aria-expanded="false"] {
   .groupSelectorItemToggle {
     transform: rotate(180deg);
-    margin-top: 3px;
   }
   .groupSelectorItemOptionsContainer {
     height: 0;
