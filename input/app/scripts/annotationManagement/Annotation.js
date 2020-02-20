@@ -102,7 +102,7 @@ class Annotation {
         data.document.title = window.abwa.targetManager.documentTitle
       }
       // Copy to metadata field because hypothes.is doesn't return from its API all the data that it is placed in document
-      data.documentMetadata = data.document
+      data.documentMetadata = this.target
     }
     // PVSCL:ENDCOND
     return data
@@ -148,6 +148,9 @@ class Annotation {
         // PVSCL:ENDCOND
       })
     }
+    // PVSCL:IFCOND(Hypothesis, LINE)
+    annotation.target = annotationObject.documentMetadata
+    // PVSCL:ENDCOND
     return annotation
   }
 }

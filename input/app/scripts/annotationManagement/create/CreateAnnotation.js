@@ -54,8 +54,6 @@ class CreateAnnotation {
           tags: tags,
           body: body
         })
-      } else if (event.detail.purpose === 'assessing') {
-        // TODO
       }
       if (annotationToCreate) {
         window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
@@ -70,7 +68,8 @@ class CreateAnnotation {
           }
         })
       } else {
-        // TODO Show error
+        // Show error
+        Alerts.errorAlert({text: 'Unexpected error creating annotation.' + chrome.i18n.getMessage('ErrorContactDeveloper', ['createAnnotation', encodeURIComponent(new Error().stack)])})
       }
     }
   }

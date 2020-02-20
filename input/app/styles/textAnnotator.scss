@@ -16,17 +16,11 @@ body > pre {
   font-size: 70%;
   margin: 15px;
 }
-/* PVSCL:IFCOND(Validate, LINE) */
-
-.reply_validated {
-  background-color: rgba(100, 200, 100, 0.6);
-}
-/* PVSCL:ENDCOND */
 
 .highlightedAnnotation .highlightedAnnotation{ // TODO
   background-color: transparent !important;
 }
-/* PVSCL:IFCOND(Autofill, LINE) */
+/* PVSCL:IFCOND(Autocomplete, LINE) */
 
 .swal2-actions {
   z-index: 0 !important;
