@@ -84,7 +84,7 @@ class MoodleClientManager {
 
   getStudents (courseId, callback) {
     if (_.isFunction(callback)) {
-      let token = this.getTokenFor(MoodleFunctions.updateStudentsGradeWithRubric.wsFunc)
+      let token = this.getTokenFor(MoodleFunctions.getStudents.wsFunc)
       if (_.isString(token)) {
         this.moodleClient.updateToken(token)
         this.moodleClient.getStudents(courseId, callback)

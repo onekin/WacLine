@@ -64,11 +64,11 @@ class MoodleProvider {
                   }))
                   // Get students
                   promises.push(new Promise((resolve, reject) => {
-                    this.getStudents(assignmentData.courseId, (err, rubric) => {
+                    this.getStudents(assignmentData.courseId, (err, students) => {
                       if (err) {
                         reject(err)
                       } else {
-                        resolve(rubric)
+                        resolve(students)
                       }
                     })
                   }))
@@ -98,7 +98,7 @@ class MoodleProvider {
                         } else {
                           let minutes = result.minutes
                           let notFirstTime = false
-                          Alerts.infoAlert2({
+                          Alerts.updateableAlert({
                             title: 'Configuration started',
                             text: 'We are configuring the assignment to mark using Mark&Go.' +
                               `This can take around <b>${minutes} minute(s)</b>.` +
@@ -108,7 +108,7 @@ class MoodleProvider {
                                 if (result.status && result.status === 'Nothing pending' && notFirstTime) {
                                   Alerts.closeAlert()
                                   clearInterval(timerInterval)
-                                  Alerts.infoAlert2({text: 'The assignment is correctly configured', title: 'Configuration finished'})
+                                  Alerts.updateableAlert({text: 'The assignment is correctly configured', title: 'Configuration finished'})
                                 } else if (result.status && result.status === 'CreateHighlighterTask pending') {
                                   notFirstTime = true
                                   swal.getContent().querySelector('span').textContent = result.statusMessage

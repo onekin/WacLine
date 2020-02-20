@@ -49,9 +49,8 @@ class Alerts {
       })
     }
   }
-  // PVSCL:IFCOND(MoodleProvider,LINE)
 
-  static infoAlert2 ({text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), title = 'Info', timerIntervalHandler = null, timerIntervalPeriodInSeconds = 0.1, callback}) {
+  static updateableAlert ({text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), type = Alerts.alertType.info, title = 'Info', timerIntervalHandler = null, timerIntervalPeriodInSeconds = 0.1, callback}) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -85,7 +84,6 @@ class Alerts {
       }
     }
   }
-  // PVSCL:ENDCOND
 
   static errorAlert ({text = chrome.i18n.getMessage('unexpectedError'), title = 'Oops...', callback, onClose}) {
     Alerts.tryToLoadSwal()

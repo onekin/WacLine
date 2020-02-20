@@ -86,10 +86,10 @@
     "storage",PVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer)
     "identity",PVSCL:ENDCOND
     "tabs"PVSCL:IFCOND(URN),
-    "file://*/*"PVSCL:ENDCONDPVSCL:IFCOND(URL),
-    "contextMenus",
     "downloads",
     "notifications",
+    "file://*/*"PVSCL:ENDCONDPVSCL:IFCOND(URL),
+    "contextMenus",
     "webRequest",
     "webRequestBlocking"PVSCL:ENDCONDPVSCL:IFCOND(DOI),
     "*://doi.org/*",

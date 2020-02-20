@@ -1,8 +1,8 @@
 const axios = require('axios')
 const _ = require('lodash')
 const ChromeStorage = require('../utils/ChromeStorage')
-const MoodleFunctions = require('../moodle/MoodleFunctions')
 const MoodleClient = require('../moodle/MoodleClient')
+const MoodleFunctions = require('../moodle/MoodleFunctions')
 
 class MoodleBackgroundManager {
   init () {
@@ -97,7 +97,7 @@ class MoodleBackgroundManager {
             }
           })
         }
-      } return true
+      }
     })
   }
 

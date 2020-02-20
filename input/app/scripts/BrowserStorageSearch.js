@@ -14,7 +14,6 @@ class BrowserStorageSearch {
 
     // Retrieve annotations based on params
     window.browserStorageManager = new BrowserStorageManager()
-    // PVSCL:ENDCOND
     window.browserStorageManager.init((err) => {
       if (err) {
         Alerts.errorAlert({text: 'Unable to retrieve annotations list. Error: ' + err.message})
