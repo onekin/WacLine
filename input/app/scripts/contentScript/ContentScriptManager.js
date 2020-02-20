@@ -216,18 +216,14 @@ class ContentScriptManager {
       // Destroy current content annotator
       this.destroyPreviousAssignments()
       // Create a new content annotator for the current group
-      if (window.abwa.rolesManager.role === Config.tags.producer) {
-        window.abwa.previousAssignments = new PreviousAssignments()
-        window.abwa.previousAssignments.init((err) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve()
-          }
-        })
-      } else {
-        resolve()
-      }
+      window.abwa.previousAssignments = new PreviousAssignments()
+      window.abwa.previousAssignments.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
     })
   }
   // PVSCL:ENDCOND

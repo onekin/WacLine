@@ -83,7 +83,11 @@ class PreviousAssignments {
       previousAssignmentElement.className = 'previousAssignmentContainer'
       // Create previous assignment link
       let previousAssignmentLinkElement = document.createElement('a')
-      previousAssignmentLinkElement.href = previousAssignment.teacherUrl
+      if (window.abwa.rolesManager.role === Config.tags.producer) {
+        previousAssignmentLinkElement.href = previousAssignment.teacherUrl
+      } else {
+        previousAssignmentLinkElement.href = previousAssignment.studentUrl
+      }
       previousAssignmentLinkElement.target = '_blank'
       previousAssignmentLinkElement.innerText = previousAssignment.name
       previousAssignmentLinkElement.className = 'previousAssignmentLink'
@@ -93,7 +97,11 @@ class PreviousAssignments {
       previousAssignmentAppendElement.src = chrome.extension.getURL('images/append.png')
       previousAssignmentAppendElement.title = 'Append the assignment URL'
       previousAssignmentAppendElement.className = 'previousAssignmentAppendButton'
-      previousAssignmentAppendElement.dataset.studentUrl = previousAssignment.studentUrl
+      if (window.abwa.rolesManager.role === Config.tags.producer) {
+        previousAssignmentAppendElement.dataset.studentUrl = previousAssignment.studentUrl
+      } else {
+        previousAssignmentAppendElement.dataset.studentUrl = previousAssignment.teacherUrl
+      }
       previousAssignmentElement.appendChild(previousAssignmentAppendElement)
       previousAssignmentsContainer.appendChild(previousAssignmentElement)
     }
