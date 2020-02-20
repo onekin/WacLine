@@ -82,6 +82,21 @@ class Options {
       })
     })
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Neo4J, LINE)
+    // Neo4J Configuration
+    this.neo4JEndpointElement = document.querySelector('#neo4jEndpoint')
+    this.neo4JTokenElement = document.querySelector('#neo4jToken')
+    this.neo4JUserElement = document.querySelector('#neo4jUser')
+    this.neo4JEndpointElement.addEventListener('keyup', this.createNeo4JConfigurationSaveEventHandler())
+    this.neo4JTokenElement.addEventListener('keyup', this.createNeo4JConfigurationSaveEventHandler())
+    this.neo4JUserElement.addEventListener('keyup', this.createNeo4JConfigurationSaveEventHandler())
+    // Restore form from credentials saved in storage
+    chrome.runtime.sendMessage({scope: 'neo4j', cmd: 'getCredentials'}, ({credentials}) => {
+      this.neo4JEndpointElement.value = credentials.endpoint || ''
+      this.neo4JTokenElement.value = credentials.token || ''
+      this.neo4JUserElement.value = credentials.user || ''
+    })
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleConsumer or MoodleProvider, LINE)
     chrome.runtime.sendMessage({scope: 'moodle', cmd: 'getMoodleCustomEndpoint'}, (endpoint) => {
       document.querySelector('#moodleEndpoint').value = endpoint.endpoint
@@ -145,6 +160,31 @@ class Options {
     }, ({annotationServer}) => {
       console.debug('Annotation server selected ' + annotationServer)
     })
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Neo4J, LINE)
+  createNeo4JConfigurationSaveEventHandler () {
+    return (e) => {
+      this.saveNeo4JConfiguration()
+    }
+  }
+
+  saveNeo4JConfiguration () {
+    // Check validity
+    if (this.neo4JEndpointElement.checkValidity() && this.neo4JTokenElement.checkValidity() && this.neo4JUserElement.checkValidity()) {
+      let credentials = {
+        endpoint: this.neo4JEndpointElement.value,
+        token: this.neo4JTokenElement.value,
+        user: this.neo4JUserElement.value
+      }
+      chrome.runtime.sendMessage({
+        scope: 'neo4j',
+        cmd: 'setCredentials',
+        data: {credentials: credentials}
+      }, ({credentials}) => {
+        console.debug('Saved credentials ' + JSON.stringify(credentials))
+      })
+    }
   }
   // PVSCL:ENDCOND
 

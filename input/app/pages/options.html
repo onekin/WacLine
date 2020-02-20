@@ -85,6 +85,26 @@
         </div>
       </div>
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Neo4J, LINE)
+      <div id="neo4jConfigurationCard" class="card storageConfiguration">
+        <a id="neo4jConfiguration"></a>
+        <div class="card-header bg-dark text-white">Neo4J configuration</div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="neo4jEndpoint" class="requiredFormInput">Endpoint URL</label>
+            <input type="url" class="form-control" id="neo4jEndpoint" placeholder="Enter your neo4j endpoint">
+          </div>
+          <div class="form-group">
+            <label for="neo4jToken" class="requiredFormInput">Token</label>
+            <input type="text" class="form-control" id="neo4jToken" placeholder="Enter your neo4j token">
+          </div>
+          <div class="form-group">
+            <label for="neo4jUser">User</label>
+            <input type="text" class="form-control" id="neo4jUser" placeholder="Enter your username or orcid">
+          </div>
+        </div>
+      </div>
+      // PVSCL:ENDCOND
     </div>
   </div>
 </div>

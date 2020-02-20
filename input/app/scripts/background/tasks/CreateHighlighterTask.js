@@ -165,7 +165,7 @@ class CreateHighlighterTask extends Task {
         if (annotationServer) {
           actualAnnotationServer = JSON.parse(annotationServer.data)
         } else {
-          actualAnnotationServer = 'browserStorage'
+          actualAnnotationServer = 'browserstorage'
         }
         if (actualAnnotationServer === 'hypothesis') {
           // Hypothesis

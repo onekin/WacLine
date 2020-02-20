@@ -17,6 +17,9 @@ const Popup = require('./popup/Popup')
 // PVSCL:IFCOND(Hypothesis, LINE)
 const HypothesisManager = require('./background/HypothesisManager')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Neo4J, LINE)
+const Neo4JManager = require('./background/Neo4JManager')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
 const GoogleSheetsManager = require('./background/GoogleSheetsManager')
 // PVSCL:ENDCOND
@@ -47,6 +50,12 @@ class Background {
     // Initialize hypothesis manager
     this.hypothesisManager = new HypothesisManager()
     this.hypothesisManager.init()
+
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Neo4J, LINE)
+    // Initialize hypothesis manager
+    this.neo4jManager = new Neo4JManager()
+    this.neo4jManager.init()
 
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)

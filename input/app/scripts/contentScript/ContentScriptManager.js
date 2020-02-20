@@ -376,9 +376,16 @@ class ContentScriptManager {
       }
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(BrowserStorage, LINE)
-      if (annotationServer === 'browserStorage') {
+      if (annotationServer === 'browserstorage') {
         // Browser storage
         window.abwa.annotationServerManager = new BrowserStorageManager()
+      }
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Neo4J, LINE)
+      if (annotationServer === 'neo4j') {
+        // Browser storage
+        const Neo4JClientManager = require('../annotationServer/neo4j/Neo4JClientManager')
+        window.abwa.annotationServerManager = new Neo4JClientManager()
       }
       // PVSCL:ENDCOND
       if (window.abwa.annotationServerManager) {

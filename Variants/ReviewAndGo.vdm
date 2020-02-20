@@ -1087,7 +1087,7 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="idfHhHbLBbpoWI3Vq" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="idfHhHbLBbpoWI3Vq" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="ikXAVwR0jibTc3VgE" cm:class="ps:references">
         <cm:relation cm:id="i5okWioz3BBRPEWLm" cm:type="ps:references">
           <cm:target cm:id="if61-AIRb2p7OCkRt">iDKkPWYjNaxwLVr6U/i4nwJo3v678ZM-wOARt4VfjQEB5m</cm:target>
@@ -1291,7 +1291,7 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="iJgBLUBY9RjRE2C4z" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="iJgBLUBY9RjRE2C4z" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="i4tms06XT7nMwWcjZ" cm:class="ps:references">
         <cm:relation cm:id="ieMoTVOU80YQyi8iU" cm:type="ps:references">
           <cm:target cm:id="i_9ewYD-0lNX7n0bk">iDKkPWYjNaxwLVr6U/i6JS7HHs_1ywtkZ9F1_qxanO7Jwe</cm:target>
@@ -1843,7 +1843,7 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="irS-a3wBA3qz88rSO" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="irS-a3wBA3qz88rSO" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="ibCHLCR9gqwx9Amnp" cm:class="ps:references">
         <cm:relation cm:id="iNYvArEIKk6cirBgW" cm:type="ps:references">
           <cm:target cm:id="iT_FclI88rvoCgvze">iDKkPWYjNaxwLVr6U/iAI9L5sW6sMjth30SNilXbxA4oam</cm:target>
@@ -3031,7 +3031,7 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="iWGwssYvqHXfDj1Hr" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="iWGwssYvqHXfDj1Hr" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="iALhtRbfTyTdMEOBu" cm:class="ps:references">
         <cm:relation cm:id="iaa2RHogCKrDYaETr" cm:type="ps:references">
           <cm:target cm:id="iX2AXXPE5A01fgTiu">iDKkPWYjNaxwLVr6U/iIVY77YiovdXDnbJ_CSA18oD5dFa</cm:target>
@@ -5143,7 +5143,7 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="ih_7HtKaOxteNsURg" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="ih_7HtKaOxteNsURg" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="iTveB171LTnxFRt69" cm:class="ps:references">
         <cm:relation cm:id="iqgzwuHcEuOQsVXwq" cm:type="ps:references">
           <cm:target cm:id="iO3qMZ5IlXSUcU96U">iDKkPWYjNaxwLVr6U/iYOVlVJWYS0zZN4yWZn3avMiIpyh</cm:target>
@@ -11750,6 +11750,21 @@
         <cm:property cm:id="iU0nGz8ZAATODgenf" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
           <cm:constant cm:id="iYl4SGSWpivtZ19np" cm:type="ps:string">ps:auto</cm:constant>
         </cm:property>
+        <cm:property cm:id="iCgQVzQiiBZzFy3Bb" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/i5ZzDl1GGb47n7Li9">
+          <cm:constant cm:id="iTHSHAmg0wV4Q9OiS" cm:type="ps:string">Hypothesis</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ipu7oFG1Tw31A3weq" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="izcBrZ3d1pmpU6MRK" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ilCwah3l7Wp7ceGsR" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="idoHivPsc9wchqnBe" cm:type="ps:datetime">2020-02-20T15:13:43.070Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="idO1GQVDl1uCREeXn" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iK4zKenGryjdULAv7" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLAfyzYahsV-W6Cat" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i2uW3uirvS_RWXAba" cm:type="ps:datetime">2020-02-20T15:32:56.225Z</cm:constant>
+        </cm:property>
       </cm:properties>
     </cm:element>
     <cm:element cm:id="iHjprzLo12nPr6gDl" cm:type="ps:selected" cm:class="ps:selection">
@@ -11829,10 +11844,10 @@
           <cm:constant cm:id="i0GGB9TtXQxu4FwMG" cm:type="ps:datetime">2020-01-13T11:05:00.208Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iB7qSSLFIrxN_83kw" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iKCsVZ6CT197MHeu-" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iKCsVZ6CT197MHeu-" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="if_naHdwWL6ulXcM4" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iExSWSSuDjsENLKtH" cm:type="ps:datetime">2020-01-13T11:05:00.208Z</cm:constant>
+          <cm:constant cm:id="iExSWSSuDjsENLKtH" cm:type="ps:datetime">2020-02-20T15:32:45.426Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -11865,10 +11880,10 @@
           <cm:constant cm:id="iPtd877CC1aoCQ86m" cm:type="ps:datetime">2020-01-13T11:05:06.155Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iViGCgaHhpjOk6Uky" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iC_74snsyIjaWfIJ2" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iC_74snsyIjaWfIJ2" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="ihNXXWd3CpaAqcquI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMZm6KxZ5xkx3p2j3" cm:type="ps:datetime">2020-01-13T11:05:06.155Z</cm:constant>
+          <cm:constant cm:id="iMZm6KxZ5xkx3p2j3" cm:type="ps:datetime">2020-02-20T15:32:50.629Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -12803,8 +12818,20 @@
         </cm:relation>
       </cm:relations>
       <cm:properties>
-        <cm:property cm:id="igU3szrQDd0Y8cX5y" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
-          <cm:constant cm:id="iPtwoUOpYvFYHLqgp" cm:type="ps:string">ps:auto</cm:constant>
+        <cm:property cm:id="igU3szrQDd0Y8cX5y" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="iPtwoUOpYvFYHLqgp" cm:type="ps:string">ps:user</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iyb0T6nzlUh5BWRaj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ixNWIZmeDMDO5dojh" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJ8fk7-AKQRv6wQcr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="itQp90MSPpAVgVLTn" cm:type="ps:datetime">2020-02-20T14:27:00.587Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ivaoNMIKRZdzeO5-C" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iQQ-G08ah2tChZN4b" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iELybHQCh0CdHmx9N" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ibLaJVZnK0GU8hTIN" cm:type="ps:datetime">2020-02-20T14:27:01.650Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -15781,6 +15808,30 @@
       <cm:properties>
         <cm:property cm:id="icL-N8WurIu2vCucF" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
           <cm:constant cm:id="i4DwKj1y6DeXu55sj" cm:type="ps:string">ps:implicit</cm:constant>
+        </cm:property>
+      </cm:properties>
+    </cm:element>
+    <cm:element cm:id="iRnJMdAZ2MTl6kyTV" cm:type="ps:unselected" cm:class="ps:selection">
+      <cm:relations cm:id="ioXt32KvB7Iuvuy_Q" cm:class="ps:references">
+        <cm:relation cm:id="ideDLH44VcJc8Jisj" cm:type="ps:references">
+          <cm:target cm:id="i-V9fs74SQH5af6O6">iivhJRwmojkiJvYc5/iKaWQRey8XRPnJnpV</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i6f0dXmbd0pQg-QHi" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="i3rbLw-N0gT2TMsby" cm:type="ps:string">ps:user</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ifAfxCILdZauS6a9g" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ikHkFVCLN7YbKDSTL" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iBbTgNC_L07DRgggI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iDwW2c0jvMGSYWsjo" cm:type="ps:datetime">2020-02-20T15:13:33.190Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i8lY0Q4I_y0HYtYGr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="igTzATtztTxgBQHEh" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ifsc8wiBiUY15lHBz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i6H2LPD7kCq95By-z" cm:type="ps:datetime">2020-02-20T15:32:43.410Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>

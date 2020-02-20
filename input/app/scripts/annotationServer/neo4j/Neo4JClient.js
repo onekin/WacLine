@@ -1,7 +1,7 @@
 /* eslint-disable */
 const _ = require('lodash')
 const axios = require('axios')
-const jsonld = require('jsonld')
+// const jsonld = require('jsonld')
 
 // Configuration constants
 const now = new Date()
@@ -132,10 +132,11 @@ function apiCallJSON (settings, callback) {
         callback(null, [])
       } else {
         // compact a document according to a particular context
-        jsonld.compact(expandedData, { '@context': contextualization }, function (err, compacted) {
+        // TODO To be solved when jsonld dependency get compilable
+        /* jsonld.compact(expandedData, { '@context': contextualization }, function (err, compacted) {
           if (err) console.error('Error compacting: ' + err)
           callback(null, compacted)
-        })
+        }) */
       }
     }
   })

@@ -35,6 +35,7 @@ class AnnotationServerManager {
           })
         }
       }
+      return true
     })
   }
 }
