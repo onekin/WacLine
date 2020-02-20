@@ -2,6 +2,7 @@ const CircularJSON = require('circular-json-es6')
 const ChromeStorage = require('../utils/ChromeStorage')
 const CreateHighlighterTask = require('./tasks/CreateHighlighterTask')
 const _ = require('lodash')
+const Config = require('../Config')
 
 class TaskManager {
   constructor () {

@@ -4,7 +4,7 @@ const Events = require('../Events')
 const PDF = require('./formats/PDF')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(TXT, LINE)
-// TODO const TXT = require('./formats/TXT')
+const TXT = require('./formats/TXT')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(HTML, LINE)
 const HTML = require('./formats/HTML')
@@ -31,7 +31,7 @@ class TargetManager {
     // PVSCL:ELSEIFCOND(PDF, LINE)
     this.documentFormat = PDF // By default document type is pdf
     // PVSCL:ELSEIFCOND(TXT, LINE)
-    //this.documentFormat = TXT // By default document type is pdf
+    // this.documentFormat = TXT // By default document type is txt
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(URN, LINE)
     this.localFile = false
@@ -44,6 +44,8 @@ class TargetManager {
   init (callback) {
     if (document.querySelector('embed[type="application/pdf"]')) {
       window.location = chrome.extension.getURL('content/pdfjs/web/viewer.html') + '?file=' + encodeURIComponent(window.location.href)
+    } else if (this.isPlainTextFile()) {
+      window.location = chrome.extension.getURL('content/plainTextFileViewer/index.html') + '?file=' + encodeURIComponent(window.location.href)
     } else {
       this.reloadTargetInformation(() => {
         if (_.isFunction(callback)) {
@@ -150,11 +152,14 @@ class TargetManager {
           resolve()
         })
         return true
+      } else if (document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') { // TODO Check if document is loaded in content/plainTextFileViewer
+        this.documentFormat = TXT
+        resolve()
       } else {
         // PVSCL:IFCOND(HTML, LINE)
         this.documentFormat = HTML
         // PVSCL:ELSEIFCOND(TXT, LINE)
-        //this.documentFormat = TXT
+        this.documentFormat = TXT
         // PVSCL:ENDCOND
         resolve()
       }
@@ -265,9 +270,9 @@ class TargetManager {
       return document.querySelector('#viewer')
     } /* PVSCL:ELSEIFCOND(HTML) */ else if (this.documentFormat === HTML) {
       return document.body
-    } /* PVSCL:ELSEIFCOND(TXT) */ /*else if (this.documentFormat === TXT) {
-
-    }*/ /* PVSCL:ELSECOND */ else {
+    } /* PVSCL:ELSEIFCOND(TXT) */ else if (this.documentFormat === TXT) {
+      return document.body
+    } /* PVSCL:ELSECOND */ else {
       Alerts.errorAlert({text: 'The format of the document to be annotated is not supported by the tool yet.'})
     } /* PVSCL:ENDCOND */
   }
@@ -350,6 +355,11 @@ class TargetManager {
     if (this.fingerprint) {
       return this.fingerprint
     }
+  }
+
+  isPlainTextFile () {
+    let extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
+    return 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
   }
 
   tryToLoadTitle () {

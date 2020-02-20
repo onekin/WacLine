@@ -1,7 +1,10 @@
 const MoodleClientManager = require('../../moodle/MoodleClientManager')
 const MoodleUtils = require('../../moodle/MoodleUtils')
+const Alerts = require('../../utils/Alerts')
 const _ = require('lodash')
 const Config = require('../../Config')
+const Events = require('../../Events')
+const Commenting = require('../purposes/Commenting')
 // const linkifyUrls = require('linkify-urls')
 
 class MoodleReport {
@@ -19,6 +22,37 @@ class MoodleReport {
         callback()
       }
     })
+    // TODO Listens when annotation is created, updated, deleted or codeToAll
+    this.initEventListeners()
+  }
+
+  initEventListeners (callback) {
+    this.events.annotatedContentManagerUpdatedEvent = {element: document, event: Events.annotatedContentManagerUpdated, handler: this.createUpdateMoodleFromMarksEventListener()}
+    this.events.annotatedContentManagerUpdatedEvent.element.addEventListener(this.events.annotatedContentManagerUpdatedEvent.event, this.events.annotatedContentManagerUpdatedEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  createUpdateMoodleFromMarksEventListener () {
+    return () => {
+      let annotatedThemes = window.abwa.annotatedContentManager.annotatedThemes
+      window.abwa.moodleReport.updateMoodleFromMarks(annotatedThemes, (err) => {
+        if (err) {
+          Alerts.errorAlert({
+            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
+            title: 'Unable to update marks in moodle'
+          })
+        } else {
+          Alerts.temporalAlert({
+            text: 'The mark is updated in moodle',
+            title: 'Correctly marked',
+            type: Alerts.alertType.success,
+            toast: true
+          })
+        }
+      })
+    }
   }
 
   updateMoodleFromMarks (annotatedThemes, callback) {
@@ -58,7 +92,8 @@ class MoodleReport {
       }
       let url = MoodleUtils.createURLForAnnotation({annotation, studentId, courseId: window.abwa.codebookManager.codebookReader.codebook.courseId, cmid: cmid})
       // Construct feedback
-      let text = annotation.text
+      let comment = annotation.getBodyForPurpose(Commenting.purpose)
+      let text = comment ? comment.value : ''
       let feedbackCommentElement = ''
       if (text) {
         /* let urlizedText = linkifyUrls(text, {

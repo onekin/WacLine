@@ -97,7 +97,9 @@ class MoodleClient {
       }]
     }
     axios(settings).then((response) => {
-      callback(null, response.data)
+      axios(settings).then((response) => {
+        callback(null, response.data)
+      })
     })
   }
 

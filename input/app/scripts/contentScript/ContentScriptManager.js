@@ -14,9 +14,6 @@ const Events = require('../Events')
 // PVSCL:IFCOND(MoodleResource, LINE)
 const RolesManager = require('./RolesManager')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
-// PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
 const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
 // PVSCL:ENDCOND
@@ -357,6 +354,7 @@ class ContentScriptManager {
   loadAnnotationServer (callback) {
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
+    const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
     window.abwa.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage, LINE)
@@ -372,23 +370,35 @@ class ContentScriptManager {
       }
     })
     // PVSCL:ELSECOND
+    // More than one annotation servers are selected, retrieve the current selected one
     chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+      // PVSCL:IFCOND(Hypothesis, LINE)
       if (annotationServer === 'hypothesis') {
         // Hypothesis
+        const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
         window.abwa.annotationServerManager = new HypothesisClientManager()
-      } else {
+      }
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(BrowserStorage, LINE)
+      if (annotationServer === 'browserStorage') {
         // Browser storage
         window.abwa.annotationServerManager = new BrowserStorageManager()
       }
-      window.abwa.annotationServerManager.init((err) => {
-        if (_.isFunction(callback)) {
-          if (err) {
-            callback(err)
-          } else {
-            callback()
+      // PVSCL:ENDCOND
+      if (window.abwa.annotationServerManager) {
+        window.abwa.annotationServerManager.init((err) => {
+          if (_.isFunction(callback)) {
+            if (err) {
+              callback(err)
+            } else {
+              callback()
+            }
           }
-        }
-      })
+        })
+      } else {
+        const Alerts = require('../utils/Alerts')
+        Alerts.errorAlert({text: 'Unable to load selected server. Please configure in options page.'})
+      }
     })
     // PVSCL:ENDCOND
   }

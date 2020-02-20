@@ -2,7 +2,6 @@ const jsYaml = require('js-yaml')
 const _ = require('lodash')
 const Config = require('../../Config')
 const LanguageUtils = require('../../utils/LanguageUtils')
-const Theme = require('./Theme')
 
 class Code {
   constructor ({
@@ -105,9 +104,7 @@ class Code {
   static createCodeFromObject (code, theme) {
     // Instance level object
     let instancedCode = Object.assign(new Code({}), code)
-    if (LanguageUtils.isInstanceOf(theme, Theme) && !LanguageUtils.isInstanceOf(instancedCode.theme, Theme)) {
-      instancedCode.theme = theme
-    }
+    instancedCode.theme = theme
     return instancedCode
   }
   // PVSCL:ENDCOND

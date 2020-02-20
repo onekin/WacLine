@@ -61,6 +61,7 @@ const Events = {
   targetChanged: 'targetChanged', // TODO Review if it is used somewhere
   // PVSCL:IFCOND(NOT (Multivalued), LINE)
   codeToAll: 'codeToAll',
+  allCoded: 'allCoded',
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Manual, LINE)
   groupChanged: 'groupChanged',
@@ -71,6 +72,7 @@ const Events = {
   // PVSCL:IFCOND(SidebarNavigation, LINE)
   navigateToAnnotationByCode: 'navigateToAnnotationByCode',
   // PVSCL:ENDCOND
+  annotatedContentManagerUpdated: 'annotatedContentManagerUpdated',
   navigateToAnnotation: 'navigateToAnnotation',
   codebookRead: 'codebookRead' // Not in codebook variation point because absense of Codebook/Classifying also requires this event currently
 }

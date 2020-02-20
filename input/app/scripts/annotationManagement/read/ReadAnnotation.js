@@ -63,6 +63,8 @@ class ReadAnnotation {
     clearInterval(this.observerInterval)
     // Destroy annotations reload interval
     clearInterval(this.reloadInterval)
+    // Destroy annotations clean interval if exist
+    clearInterval(this.cleanInterval)
   }
 
   initReloadAnnotationsEvent (callback) {

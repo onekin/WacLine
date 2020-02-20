@@ -12,6 +12,7 @@ const Code = require('../codebook/model/Code')
 // PVSCL:ENDCOND
 const _ = require('lodash')
 const Classifying = require('../annotationManagement/purposes/Classifying')
+const Annotation = require('../annotationManagement/Annotation')
 
 class AnnotatedTheme {
   constructor ({
@@ -107,7 +108,7 @@ class AnnotatedContentManager {
           if (err) {
             reject(err)
           } else {
-            resolve(annotations)
+            resolve(annotations.map(annotation => Annotation.deserialize(annotation)))
           }
         })
       } else {
@@ -179,6 +180,10 @@ class AnnotatedContentManager {
         annotatedTheme.annotations = []
         window.abwa.annotationManagement.annotationReader.updateAllAnnotations()
         this.reloadTagsChosen()
+        // Dispatch updated content manager event
+        LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, {annotatedThemes: this.annotatedThemes})
+        // Dispatch all coded event
+        LanguageUtils.dispatchCustomEvent(Events.allCoded, {annotatedThemes: this.annotatedThemes})
       })
     }
     if (lastAnnotatedCode && (lastAnnotatedCode.code.id !== code.id)) {
@@ -194,26 +199,12 @@ class AnnotatedContentManager {
         lastAnnotatedCode.annotations = []
         window.abwa.annotationManagement.annotationReader.updateAllAnnotations()
         this.reloadTagsChosen()
+        // Dispatch updated content manager event
+        LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, {annotatedThemes: this.annotatedThemes})
+        // Dispatch all coded event
+        LanguageUtils.dispatchCustomEvent(Events.allCoded, {annotatedThemes: this.annotatedThemes})
       })
     }
-    // PVSCL:IFCOND(MoodleReport, LINE)
-    // Update moodle
-    this.updateMoodle((err, result) => {
-      if (err) {
-        Alerts.errorAlert({
-          text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
-          title: 'Unable to update marks in moodle'
-        })
-      } else {
-        Alerts.temporalAlert({
-          text: 'The mark is updated in moodle',
-          title: 'Correctly marked',
-          type: Alerts.alertType.success,
-          toast: true
-        })
-      }
-    })
-    // PVSCL:ENDCOND
   }
 
   updateAnnotationsInAnnotationServer (annotations, callback) {
@@ -225,7 +216,7 @@ class AnnotatedContentManager {
           if (err) {
             reject(new Error('Unable to update annotation ' + annotation.id))
           } else {
-            resolve(annotation.deserialize())
+            resolve(Annotation.deserialize(annotation))
           }
         })
       }))
@@ -357,7 +348,7 @@ class AnnotatedContentManager {
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleReport, LINE)
     // Set comment in MoodleReport
-    document.addEventListener(Events.comment, (event) => {
+    document.addEventListener(Events.annotationUpdated, (event) => {
       // Retrieve annotation from event
       let annotation = event.detail.annotation
       // Get classification code
@@ -371,28 +362,13 @@ class AnnotatedContentManager {
           if (index > -1) {
             annotatedThemeOrCode.annotations[index] = annotation
           }
-          // Update moodle
-          this.updateMoodle((err) => {
-            if (err) {
-              Alerts.errorAlert({
-                text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again. Error: ' + err.toString() + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
-                title: 'Unable to update marks in moodle'
-              })
-            } else {
-              // Do nothing
-            }
-          })
+          // Dispatch updated content manager event
+          LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, {annotatedThemes: this.annotatedThemes})
         }
       }
     })
     // PVSCL:ENDCOND
   }
-  // PVSCL:IFCOND(MoodleReport, LINE)
-
-  updateMoodle (callback) {
-    window.abwa.moodleReport.updateMoodleFromMarks(this.annotatedThemes, callback)
-  }
-  // PVSCL:ENDCOND
 
   createAnnotationCreatedEventHandler () {
     return (event) => {
@@ -414,18 +390,6 @@ class AnnotatedContentManager {
           this.reloadTagsChosen()
         }
       }
-      // PVSCL:IFCOND(MoodleReport, LINE)
-      this.updateMoodle((err, result) => {
-        if (err) {
-          Alerts.errorAlert({
-            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
-            title: 'Unable to update marks in moodle'
-          })
-        } else {
-          // Do nothing
-        }
-      })
-      // PVSCL:ENDCOND
     }
   }
 
@@ -434,20 +398,10 @@ class AnnotatedContentManager {
       if (event.detail.annotation) {
         let annotation = event.detail.annotation
         this.removeAnnotationToAnnotatedThemesOrCode(annotation)
+        // Dispatch updated content manager event
+        LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, {annotatedThemes: this.annotatedThemes})
       }
       this.reloadTagsChosen()
-      // PVSCL:IFCOND(MoodleReport, LINE)
-      this.updateMoodle((err, result) => {
-        if (err) {
-          Alerts.errorAlert({
-            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
-            title: 'Unable to update marks in moodle'
-          })
-        } else {
-          // Do nothing
-        }
-      })
-      // PVSCL:ENDCOND
     }
   }
 
@@ -461,18 +415,8 @@ class AnnotatedContentManager {
         }
       }
       this.reloadTagsChosen()
-      // PVSCL:IFCOND(MoodleReport, LINE)
-      this.updateMoodle((err, result) => {
-        if (err) {
-          Alerts.errorAlert({
-            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
-            title: 'Unable to update marks in moodle'
-          })
-        } else {
-          // Do nothing
-        }
-      })
-      // PVSCL:ENDCOND
+      // Dispatch updated content manager event
+      LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, {annotatedThemes: this.annotatedThemes})
     }
   }
 

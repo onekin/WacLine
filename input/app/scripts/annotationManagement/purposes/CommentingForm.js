@@ -54,7 +54,7 @@ class CommentingForm {
         if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
           title = themeOrCode.name
         } else {
-          title = themeOrCode.name + themeOrCode.description
+          title = themeOrCode.theme.name + ': ' + themeOrCode.name + ' - ' + themeOrCode.description
         }
         // PVSCL:ELSECOND
         if (themeOrCode) {
@@ -84,10 +84,7 @@ class CommentingForm {
           html: form.html,
           onBeforeOpen: form.onBeforeOpen,
           // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
-          preConfirm: form.preConfirm,
-          callback: () => {
-            form.callback()
-          }
+          preConfirm: form.preConfirm
         })
       }
       showForm()
@@ -354,9 +351,10 @@ class CommentingForm {
           resolve(_.uniq(_.reject(_.map(annotations, (annotation) => {
             // Remove other students moodle urls
             let text = annotation.getBodyForPurpose('commenting').value
-            // TODO With feature AddReference
-            // let regex = /\b(?:https?:\/\/)?[^/:]+\/.*?mod\/assign\/view.php\?id=[0-9]+/g
-            // return text.replace(regex, '')
+            // PVSCL:IFCOND(PreviousAssignments, LINE)
+            let regex = /\b(?:https?:\/\/)?[^/:]+\/.*?mod\/assign\/view.php\?id=[0-9]+/g
+            text = text.replace(regex, '')
+            // PVSCL:ENDCOND
             if (text.replace(/ /g, '') !== '') {
               return text
             }
