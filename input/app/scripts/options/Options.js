@@ -11,7 +11,7 @@ const URLUtils = require('../utils/URLUtils')
 
 class Options {
   init () {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
     // annotationServer type
     document.querySelector('#annotationServerDropdown').addEventListener('change', (event) => {
       // Get value

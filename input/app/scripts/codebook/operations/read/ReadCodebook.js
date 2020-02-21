@@ -151,7 +151,7 @@ class ReadCodebook {
         Alerts.errorAlert({text: 'Unable to retrieve annotations from annotation server to initialize highlighter buttons.'}) // TODO i18n
       } else {
         if (codebookDefinitionAnnotations.length === 0) {
-          // PVSCL:IFCOND(BuiltIn,LINE)
+          // PVSCL:IFCOND(BuiltIn AND NOT(ApplicationBased), LINE)
           let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
           Alerts.confirmAlert({
             title: 'Do you want to create a default annotation codebook?',
@@ -174,6 +174,10 @@ class ReadCodebook {
               LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'emptyCodebook'})
               // PVSCL:ENDCOND
             }
+          })
+          // PVSCL:ELSEIFCOND(ApplicationBased, LINE)
+          Codebook.setAnnotationServer(null, (annotationServer) => {
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
           })
           // PVSCL:ELSEIFCOND(NOT(Codebook))
           LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'noCodebook'}) // The parameter howCreate is not really necessary in current implementation
