@@ -88,8 +88,8 @@ class UpdateCodebook {
       let newTheme
       Alerts.multipleInputAlert({
         title: 'You are creating a new theme: ',
-        html: '<input id="themeName" class="formCodeName" type="text" placeholder="New theme name" value=""/>' +
-          '<textarea id="themeDescription" class="formCodeDescription" placeholder="Please type a description that describes this theme..."></textarea>',
+        html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New theme name" value=""/>' +
+          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="themeDescription" placeholder="Please type a description that describes this theme..."></textarea>',
         preConfirm: () => {
           let themeNameElement = document.querySelector('#themeName')
           let themeName
@@ -139,8 +139,8 @@ class UpdateCodebook {
       // Show form to update theme
       Alerts.multipleInputAlert({
         title: 'You are updating the theme ' + theme.name,
-        html: '<input id="themeName" class="formCodeName" type="text" placeholder="New theme name" value="' + theme.name + '"/>' +
-          '<textarea id="themeDescription" class="formCodeDescription" placeholder="Please type a description that describes this theme...">' + theme.description + '</textarea>',
+        html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" type="text" placeholder="New theme name" value="' + theme.name + '"/>' +
+          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6"  id="themeDescription" placeholder="Please type a description that describes this theme...">' + theme.description + '</textarea>',
         preConfirm: () => {
           let themeNameElement = document.querySelector('#themeName')
           let themeName
@@ -215,8 +215,8 @@ class UpdateCodebook {
         // Ask user for name and description
         Alerts.multipleInputAlert({
           title: 'You are creating a new code for theme: ',
-          html: '<input id="codeName" class="formCodeName" type="text" placeholder="Code name" value=""/>' +
-            '<textarea id="codeDescription" class="formCodeDescription" placeholder="Please type a description that describes this code..."></textarea>',
+          html: '<input autofocus class="formCodeName swal2-input" type="text" id="codeName" type="text" placeholder="Code name" value=""/>' +
+            '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="codeDescription" placeholder="Please type a description that describes this code..."></textarea>',
           preConfirm: () => {
             let codeNameElement = document.querySelector('#codeName')
             let codeName
@@ -252,8 +252,8 @@ class UpdateCodebook {
       // Show form to update theme
       Alerts.multipleInputAlert({
         title: 'You are updating the code ' + code.name + 'pertaining to theme' + code.theme.name,
-        html: '<input id="codeName" class="formCodeName" type="text" placeholder="Code name" value="' + code.name + '"/>' +
-          '<textarea id="codeDescription" class="formCodeDescription" placeholder="Please type a description that describes this code...">' + code.description + '</textarea>',
+        html: '<input autofocus class="formCodeName swal2-input" type="text" id="codeName" type="text" placeholder="Code name" value="' + code.name + '"/>' +
+          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="codeDescription" placeholder="Please type a description that describes this code...">' + code.description + '</textarea>',
         preConfirm: () => {
           let codeNameElement = document.querySelector('#codeName')
           let codeName

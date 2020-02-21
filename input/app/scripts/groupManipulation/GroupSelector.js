@@ -124,7 +124,7 @@ class GroupSelector {
               // TODO Create default group
               this.createApplicationBasedGroupForUser((err, group) => {
                 if (err) {
-                  Alerts.errorAlert({text: 'We are unable to create Hypothes.is group for Review&Go. Please check if you are logged in Hypothes.is.'})
+                  Alerts.errorAlert({text: 'We are unable to create annotation group. Please check if you are logged in your annotation server.'})
                 } else {
                   // PVSCL:IFCOND(Hypothesis,LINE)
                   // Modify group URL in Hypothes.is as it adds the name at the end of the URL
@@ -356,7 +356,7 @@ class GroupSelector {
       // Name
       let nameElement = groupSelectorItem.querySelector('.groupSelectorItemName')
       nameElement.innerText = group.name
-      nameElement.title = 'Move to review model ' + group.name
+      nameElement.title = 'Move to annotation group ' + group.name
       nameElement.addEventListener('click', this.createGroupChangeEventHandler(group.id))
       // PVSCL:IFCOND(RenameCodebook or ExportCodebook or CodebookDelete,LINE)
       // Toggle
@@ -376,10 +376,10 @@ class GroupSelector {
     // PVSCL:IFCOND(BuiltIn,LINE)
     // New group button
     let newGroupButton = document.createElement('div')
-    newGroupButton.innerText = 'Create review model'
+    newGroupButton.innerText = 'Create codebook'
     newGroupButton.id = 'createNewModelButton'
     newGroupButton.className = 'groupSelectorButton'
-    newGroupButton.title = 'Create a new review model'
+    newGroupButton.title = 'Create a new codebook'
     newGroupButton.addEventListener('click', this.createNewReviewModelEventHandler())
     groupsContainer.appendChild(newGroupButton)
     // PVSCL:ENDCOND
@@ -387,7 +387,7 @@ class GroupSelector {
     // Import button
     let importGroupButton = document.createElement('div')
     importGroupButton.className = 'groupSelectorButton'
-    importGroupButton.innerText = 'Import review model'
+    importGroupButton.innerText = 'Import codebook'
     importGroupButton.id = 'importReviewModelButton'
     importGroupButton.addEventListener('click', this.createImportGroupButtonEventHandler())
     groupsContainer.appendChild(importGroupButton)
@@ -488,8 +488,8 @@ class GroupSelector {
 
   createNewGroup (callback) {
     Alerts.inputTextAlert({
-      title: 'Create a new review model',
-      inputPlaceholder: 'Type here the name of your new review model...',
+      title: 'Create a new codebook',
+      inputPlaceholder: 'Type here the name of your new codebook...',
       preConfirm: (groupName) => {
         if (_.isString(groupName)) {
           if (groupName.length <= 0) {
@@ -497,7 +497,7 @@ class GroupSelector {
             swal.showValidationMessage('Name cannot be empty.')
           } else if (groupName.length > 25) {
             const swal = require('sweetalert2')
-            swal.showValidationMessage('The review model name cannot be higher than 25 characters.')
+            swal.showValidationMessage('The codebook name cannot be higher than 25 characters.')
           } else {
             return groupName
           }
@@ -510,7 +510,7 @@ class GroupSelector {
           groupName = LanguageUtils.normalizeString(groupName)
           window.abwa.annotationServerManager.client.createNewGroup({
             name: groupName,
-            description: 'A group to conduct a review'
+            description: 'A group created using annotation tool ' + chrome.runtime.getManifest().name
           }, callback)
         }
       }
@@ -613,7 +613,7 @@ class GroupSelector {
   codebookExportedEventHandler () {
     return (event) => {
       if (event.detail.err) {
-        Alerts.errorAlert({text: 'Error when trying to export review model. Error: ' + event.detail.err})
+        Alerts.errorAlert({text: 'Error when trying to export codebook. Error: ' + event.detail.err})
       }
     }
   }

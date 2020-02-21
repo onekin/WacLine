@@ -32,8 +32,8 @@ class DeleteCodebook {
       let codebook = event.detail.codebook
       let user = event.detail.user
       Alerts.confirmAlert({
-        title: 'Deleting review model ' + codebook.name,
-        text: 'Are you sure that you want to delete the review model. You will lose all the review model and all the annotations done with this review model in all the documents.',
+        title: 'Deleting annotation group ' + codebook.name,
+        text: 'Are you sure that you want to delete this group? Codebook and all the annotations done in all the documents will be erased.',
         alertType: Alerts.alertType.warning,
         callback: () => {
           window.abwa.annotationServerManager.client.removeAMemberFromAGroup({id: codebook.id, user: user}, (err) => {
