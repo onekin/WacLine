@@ -7,6 +7,7 @@ const _ = require('lodash')
 const PDF = require('../target/formats/PDF')
 const Events = require('../Events')
 const Classifying = require('./purposes/Classifying')
+const Annotation = require('./Annotation')
 
 class AnnotationManagement {
   constructor () {
@@ -23,6 +24,11 @@ class AnnotationManagement {
   init (callback) {
     this.annotationCreator.init()
     this.annotationReader.init((err) => {
+      // Navigate to the annotation if initial annotation exist
+      if (window.abwa.annotationBasedInitializer.initAnnotation) {
+        let annotationToNavigate = Annotation.deserialize(window.abwa.annotationBasedInitializer.initAnnotation)
+        this.goToAnnotation(annotationToNavigate)
+      }
       if (_.isFunction(callback)) {
         callback(err)
       }
