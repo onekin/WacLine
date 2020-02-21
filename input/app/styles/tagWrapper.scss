@@ -113,6 +113,9 @@
   max-width: 99%;
   min-width: 99%;
   text-overflow: ellipsis;
+  padding-top: 0;
+  padding-left: 0;
+  padding-bottom: 0;
 }
 
 .tagButton[data-number-of-annotations]:before {
