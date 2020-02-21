@@ -346,6 +346,19 @@ class Codebook {
     }
   }
 
+  updateTheme (theme, previousId) {
+    if (LanguageUtils.isInstanceOf(theme, Theme)) {
+      // Find item index using _.findIndex
+      let index = _.findIndex(this.themes, (it) => {
+        return it.id === theme.id || it.id === previousId
+      })
+      let previousTheme = this.themes[index]
+      // Replace item at index using native splice
+      this.themes.splice(index, 1, theme)
+      theme.color = previousTheme.color
+    }
+  }
+
   removeTheme (theme) {
     _.remove(this.themes, theme)
   }

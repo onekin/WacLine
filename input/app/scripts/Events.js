@@ -31,15 +31,22 @@ const Events = {
   // Annotation codebook management events
   createCodebook: 'createCodebook',
   codebookCreated: 'codebookCreated',
+  // PVSCL:IFCOND(CodebookUpdate, LINE)
+  codebookUpdated: 'codebookUpdated',
   createTheme: 'createTheme',
   themeCreated: 'themeCreated',
   removeTheme: 'removeTheme',
   themeRemoved: 'themeRemoved',
+  updateTheme: 'updateTheme',
+  themeUpdated: 'themeUpdated',
   // PVSCL:IFCOND(Hierarchy, LINE)
   createCode: 'createCode',
   codeCreated: 'codeCreated',
   removeCode: 'removeCode',
   codeRemoved: 'codeRemoved',
+  updateCode: 'updateCode',
+  codeUpdated: 'codeUpdated',
+  // PVSCL:ENDCOND
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(RenameCodebook, LINE)
   renameCodebook: 'renameCodebook',

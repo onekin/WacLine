@@ -76,6 +76,7 @@ class Theme {
     }
     // PVSCL:ENDCOND
     return {
+      id: this.id,
       group: this.annotationGuide.annotationServer.group.id,
       permissions: {
         read: ['group:' + this.annotationGuide.annotationServer.group.id]
@@ -146,6 +147,19 @@ class Theme {
     this.codes.push(code)
     // Re-set colors for each code
     this.reloadColorsForCodes()
+  }
+
+  updateCode (code, previousId) {
+    if (LanguageUtils.isInstanceOf(code, Code)) {
+      // Find item index using _.findIndex
+      let index = _.findIndex(this.codes, (it) => {
+        return it.id === code.id || it.id === previousId
+      })
+      let previousCode = this.codes[index]
+      code.color = previousCode.color
+      // Replace item at index using native splice
+      this.codes.splice(index, 1, code)
+    }
   }
 
   removeCode (code) {

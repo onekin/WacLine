@@ -321,34 +321,42 @@ class AnnotatedContentManager {
     // Create event listener for updated all annotations
     this.events.annotationCreated = {element: document, event: Events.annotationCreated, handler: this.createAnnotationCreatedEventHandler()}
     this.events.annotationCreated.element.addEventListener(this.events.annotationCreated.event, this.events.annotationCreated.handler, false)
-
     // Create event listener for updated all annotations
     this.events.annotationDeleted = {element: document, event: Events.annotationDeleted, handler: this.createDeletedAnnotationEventHandler()}
     this.events.annotationDeleted.element.addEventListener(this.events.annotationDeleted.event, this.events.annotationDeleted.handler, false)
-
     // Create event listener for updated all annotations
     this.events.deletedAllAnnotations = {element: document, event: Events.deletedAllAnnotations, handler: this.createDeletedAllAnnotationsEventHandler()}
     this.events.deletedAllAnnotations.element.addEventListener(this.events.deletedAllAnnotations.event, this.events.deletedAllAnnotations.handler, false)
     // PVSCL:IFCOND(NOT(Multivalued), LINE)
     // Event for tag manager reloaded
-    document.addEventListener(Events.codeToAll, (event) => {
-      // Get level for this mark
-      let code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(event.detail.codeId)
-      if (code) {
-        // Retrieve criteria from rubric
-        this.codeToAll(code, event.detail.currentlyAnnotatedCode)
-      } else {
-        // Unable to retrieve criteria or level
-        Alerts.errorAlert({
-          title: 'Unable to code',
-          text: 'There was an error in coding, please reload the page and try it again.' +
-            chrome.i18n.getMessage('ErrorContactDeveloper', ['codeToAll', encodeURIComponent(new Error().stack)])})
-      }
-    })
+    this.events.codeToAllEvent = {element: document, event: Events.codeToAll, handler: this.createCodeToAllEventHandler()}
+    this.events.codeToAllEvent.element.addEventListener(this.events.codeToAllEvent.event, this.events.codeToAllEvent.handler, false)
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(MoodleReport, LINE)
-    // Set comment in MoodleReport
-    document.addEventListener(Events.annotationUpdated, (event) => {
+    // PVSCL:IFCOND(MoodleReport, LINE) // This one is only related to moodle as is the only feature that requires to take into account the annotated content manager when annotations are updated
+    this.events.annotationUpdatedEvent = {element: document, event: Events.annotationUpdated, handler: this.createAnnotationUpdatedEventHandler()}
+    this.events.annotationUpdatedEvent.element.addEventListener(this.events.annotationUpdatedEvent.event, this.events.annotationUpdatedEvent.handler, false)
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(CodebookUpdate, LINE)
+    this.events.codebookUpdatedEvent = {element: document, event: Events.codebookUpdated, handler: this.createCodebookUpdatedEventHandler()}
+    this.events.codebookUpdatedEvent.element.addEventListener(this.events.codebookUpdatedEvent.event, this.events.codebookUpdatedEvent.handler, false)
+    // PVSCL:ENDCOND
+  }
+
+  // PVSCL:IFCOND(CodebookUpdate, LINE)
+  createCodebookUpdatedEventHandler () {
+    return (event) => {
+      this.updateAnnotationForAssignment(() => {
+        this.reloadTagsChosen()
+        console.debug('Annotated content manager updated')
+        LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, {annotatedThemes: this.annotatedThemes})
+      })
+    }
+  }
+  // PVSCL:ENDCOND
+
+  // PVSCL:IFCOND(MoodleReport, LINE)
+  createAnnotationUpdatedEventHandler () {
+    return (event) => {
       // Retrieve annotation from event
       let annotation = event.detail.annotation
       // Get classification code
@@ -366,8 +374,25 @@ class AnnotatedContentManager {
           LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, {annotatedThemes: this.annotatedThemes})
         }
       }
-    })
-    // PVSCL:ENDCOND
+    }
+  }
+  // PVSCL:ENDCOND
+
+  createCodeToAllEventHandler () {
+    return (event) => {
+      // Get level for this mark
+      let code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(event.detail.codeId)
+      if (code) {
+        // Retrieve criteria from rubric
+        this.codeToAll(code, event.detail.currentlyAnnotatedCode)
+      } else {
+        // Unable to retrieve criteria or level
+        Alerts.errorAlert({
+          title: 'Unable to code',
+          text: 'There was an error in coding, please reload the page and try it again.' +
+            chrome.i18n.getMessage('ErrorContactDeveloper', ['codeToAll', encodeURIComponent(new Error().stack)])})
+      }
+    }
   }
 
   createAnnotationCreatedEventHandler () {

@@ -27,9 +27,11 @@ class ReadCodebook {
     this.initCodebookCreatedEvent()
     // PVSCL:IFCOND(CodebookUpdate,LINE)
     this.initThemeCreatedEvent()
+    this.initThemeUpdatedEvent()
     this.initThemeRemovedEvent()
     // PVSCL:IFCOND(Hierarchy,LINE)
     this.initCodeCreatedEvent()
+    this.initCodeUpdatedEvent()
     this.initCodeRemovedEvent()
     // PVSCL:ENDCOND
     // PVSCL:ENDCOND
@@ -53,6 +55,11 @@ class ReadCodebook {
     this.events.themeCreatedEvent.element.addEventListener(this.events.themeCreatedEvent.event, this.events.themeCreatedEvent.handler, false)
   }
 
+  initThemeUpdatedEvent () {
+    this.events.themeUpdatedEvent = {element: document, event: Events.themeUpdated, handler: this.themeUpdatedEventHandler()}
+    this.events.themeUpdatedEvent.element.addEventListener(this.events.themeUpdatedEvent.event, this.events.themeUpdatedEvent.handler, false)
+  }
+
   initThemeRemovedEvent () {
     this.events.themeRemovedEvent = {element: document, event: Events.themeRemoved, handler: this.themeRemovedEventHandler()}
     this.events.themeRemovedEvent.element.addEventListener(this.events.themeRemovedEvent.event, this.events.themeRemovedEvent.handler, false)
@@ -62,6 +69,11 @@ class ReadCodebook {
   initCodeCreatedEvent () {
     this.events.codeCreatedEvent = {element: document, event: Events.codeCreated, handler: this.codeCreatedEventHandler()}
     this.events.codeCreatedEvent.element.addEventListener(this.events.codeCreatedEvent.event, this.events.codeCreatedEvent.handler, false)
+  }
+
+  initCodeUpdatedEvent () {
+    this.events.codeUpdatedEvent = {element: document, event: Events.codeUpdated, handler: this.codeUpdatedEventHandler()}
+    this.events.codeUpdatedEvent.element.addEventListener(this.events.codeUpdatedEvent.event, this.events.codeUpdatedEvent.handler, false)
   }
 
   initCodeRemovedEvent () {
@@ -544,10 +556,12 @@ class ReadCodebook {
       // PVSCL:IFCOND(Hierarchy, LINE)
       items['createNewCode'] = {name: 'Create new code'}
       // PVSCL:ENDCOND
+      items['updateTheme'] = {name: 'Modify theme'}
       items['removeTheme'] = {name: 'Remove theme'}
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(SidebarNavigation, LINE)
-      items['pageAnnotation'] = {name: 'Page annotation'}
+      // TODO Implement page annotation and uncomment this:
+      // items['pageAnnotation'] = {name: 'Page annotation'}
       // PVSCL:ENDCOND
       return {
         callback: (key) => {
@@ -560,6 +574,10 @@ class ReadCodebook {
             }
           }
           // PVSCL:ENDCOND
+          if (key === 'updateTheme') {
+            let theme = this.codebook.getCodeOrThemeFromId(themeId)
+            LanguageUtils.dispatchCustomEvent(Events.updateTheme, {theme: theme})
+          }
           if (key === 'removeTheme') {
             let theme = this.codebook.getCodeOrThemeFromId(themeId)
             if (LanguageUtils.isInstanceOf(theme, Theme)) {
@@ -568,16 +586,16 @@ class ReadCodebook {
           }
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(SidebarNavigation, LINE)
-          // TODO Page level annotations, take into account that tags are necessary here (take into account Moodle related case)
-          Alerts.infoAlert({text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.'})
-          /* if (key === 'pageAnnotation') {
-            let theme = this.codebook.getCodeOrThemeFromId(themeId)
+          if (key === 'pageAnnotation') {
+            Alerts.infoAlert({text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.'})
+            // TODO Page level annotations, take into account that tags are necessary here (take into account Moodle related case)
+            /* let theme = this.codebook.getCodeOrThemeFromId(themeId)
             LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
               purpose: 'classifying',
               theme: theme,
               codeId: theme.id
-            })
-          } */
+            }) */
+          }
           // PVSCL:ENDCOND
         },
         items: items
@@ -596,6 +614,7 @@ class ReadCodebook {
       if (LanguageUtils.isInstanceOf(code, Code)) {
         let items = {}
         // PVSCL:IFCOND(CodebookUpdate, LINE)
+        items['updateCode'] = {name: 'Modify code'}
         items['removeCode'] = {name: 'Remove code'}
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(SidebarNavigation, LINE)
@@ -607,18 +626,21 @@ class ReadCodebook {
             if (key === 'removeCode') {
               LanguageUtils.dispatchCustomEvent(Events.removeCode, {code: code})
             }
+            if (key === 'updateCode') {
+              LanguageUtils.dispatchCustomEvent(Events.updateCode, {code: code})
+            }
             // PVSCL:ENDCOND
             // PVSCL:IFCOND(SidebarNavigation, LINE)
             // TODO Page level annotations, take into account that tags are necessary here (take into account Moodle related case)
-            Alerts.infoAlert({text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.'})
-            /* if (key === 'pageAnnotation') {
-              let theme = this.codebook.getCodeOrThemeFromId(codeId)
+            if (key === 'pageAnnotation') {
+              Alerts.infoAlert({text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.'})
+              /* let theme = this.codebook.getCodeOrThemeFromId(codeId)
               LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
                 purpose: 'classifying',
                 theme: theme,
                 codeId: theme.id
-              })
-            } */
+              }) */
+            }
             // PVSCL:ENDCOND
           },
           items: items
@@ -639,6 +661,21 @@ class ReadCodebook {
       this.codebook.addTheme(theme)
       // Reload button container
       this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
+      // Open the sidebar
+      window.abwa.sidebar.openSidebar()
+    }
+  }
+
+  themeUpdatedEventHandler () {
+    return (event) => {
+      // Update model
+      this.codebook.updateTheme(event.detail.updatedTheme)
+      // Reload button container
+      this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
       // Open the sidebar
       window.abwa.sidebar.openSidebar()
     }
@@ -653,6 +690,8 @@ class ReadCodebook {
       theme.annotationGuide.removeTheme(theme)
       // Reload button container
       this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
     }
   }
 
@@ -668,7 +707,25 @@ class ReadCodebook {
       theme.addCode(code)
       // Reload button container
       this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
       // Reopen sidebar to see the new added code
+      window.abwa.sidebar.openSidebar()
+    }
+  }
+
+  codeUpdatedEventHandler () {
+    return (event) => {
+      // Update model
+      let code = event.detail.updatedCode
+      let theme = code.theme
+      theme.updateCode(code)
+      this.codebook.updateTheme(theme)
+      // Reload button container
+      this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
+      // Open the sidebar
       window.abwa.sidebar.openSidebar()
     }
   }
@@ -682,6 +739,8 @@ class ReadCodebook {
       code.theme.removeCode(code)
       // Reload button container
       this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
     }
   }
   // PVSCL:ENDCOND

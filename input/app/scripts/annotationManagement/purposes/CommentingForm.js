@@ -84,6 +84,9 @@ class CommentingForm {
           html: form.html,
           onBeforeOpen: form.onBeforeOpen,
           // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
+          callback: () => {
+            form.callback()
+          },
           preConfirm: form.preConfirm
         })
       }

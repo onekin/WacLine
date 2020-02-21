@@ -152,7 +152,8 @@ class TargetManager {
           resolve()
         })
         return true
-      } else if (document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') { // TODO Check if document is loaded in content/plainTextFileViewer
+      } else if (document.body && document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') { // TODO Check if document is loaded in content/plainTextFileViewer
+        // TODO Check if document.body is loaded or not yet
         this.documentFormat = TXT
         resolve()
       } else {

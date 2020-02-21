@@ -46,6 +46,9 @@ class ReadAnnotation {
         callback(err)
       }
     })
+    // PVSCL:IFCOND(CodebookUpdate, LINE)
+    this.initCodebookUpdatedEventListener()
+    // PVSCL:ENDCOND
     this.initAnnotationsObserver()
     this.initReloadAnnotationsEvent()
     // PVSCL:IFCOND(ImportAnnotations, LINE)
@@ -587,6 +590,24 @@ class ReadAnnotation {
     return (e) => {
       // Reload annotations
 
+    }
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(CodebookUpdate, LINE)
+  initCodebookUpdatedEventListener (callback) {
+    this.events.codebookUpdated = {element: document, event: Events.codebookUpdated, handler: this.createCodebookUpdatedEventHandler()}
+    this.events.codebookUpdated.element.addEventListener(this.events.codebookUpdated.event, this.events.codebookUpdated.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  createCodebookUpdatedEventHandler () {
+    return () => {
+      // Reload annotations
+      this.updateAllAnnotations(() => {
+        console.debug('annotations updated')
+      })
     }
   }
   // PVSCL:ENDCOND
