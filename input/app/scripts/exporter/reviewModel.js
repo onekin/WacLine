@@ -200,7 +200,15 @@ class Review {
           level = assessingBody.value
         }
         // PVSCL:ENDCOND
-        r.insertAnnotation(new Annotation(annotations[a].id, criterion, level, highlightText, pageNumber, comment, /* PVSCL:IFCOND(SuggestedLiterature) */suggestedLiterature/* PVSCL:ENDCOND */))
+        r.insertAnnotation(new Annotation({
+          id: annotations[a].id,
+          criterion/* PVSCL:IFCOND(Categorize) */,
+          level/* PVSCL:ENDCOND */,
+          highlightText,
+          pageNumber,
+          comment/* PVSCL:IFCOND(SuggestedLiterature) */,
+          suggestedLiterature/* PVSCL:ENDCOND */
+        }))
       }
     }
     return r
@@ -208,7 +216,7 @@ class Review {
 }
 
 class Annotation {
-  constructor(id,criterion,level,highlightText,page,comment,suggestedLiterature){
+  constructor({id,criterion,level,highlightText,page,comment,suggestedLiterature}){
     this._criterion = criterion
     this._level = level
     this._highlightText = highlightText
@@ -450,8 +458,6 @@ class AnnotationGroup {
         t += '[' + this._annotations[0].criterion + ']'
         break
     } */
-    debugger
-
     for(let i in this._annotations){
       if(this._annotations[i].highlightText===null) continue
       t += '\n\t* '

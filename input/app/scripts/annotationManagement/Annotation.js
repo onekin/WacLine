@@ -149,7 +149,9 @@ class Annotation {
       })
     }
     // PVSCL:IFCOND(Hypothesis, LINE)
-    annotation.target = annotationObject.documentMetadata
+    if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
+      annotation.target = annotationObject.documentMetadata || annotationObject.target
+    }
     // PVSCL:ENDCOND
     return annotation
   }
