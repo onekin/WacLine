@@ -35,6 +35,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
     <cm:restset cm:id="iiZywPZQ7xR1u2IaW">
       <cm:restriction cm:id="izoHZ8FjI38XSDF4O">
         <cm:script cm:id="iOtzVZT3FiyDe-MQ5" cm:language="ps:pvscl" cm:type="ps:boolean">checkDefaultAnnotationServer()</cm:script>
+        <cm:desc>
+          <cm:mimedesc cm:id="iwHjGs8-JEkuXxBaH" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;This function verifies that&lt;/p&gt;</cm:mimedesc>
+          <cm:mimedesc cm:id="is9bXozqMIb2np0Mt" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;This function verifies that defaultAnnotationServer has set a valid annotation server (a selected one name)&lt;/p&gt;</cm:mimedesc>
+        </cm:desc>
       </cm:restriction>
     </cm:restset>
   </cm:restrictions>
@@ -60,24 +65,47 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="icv3bKA3BND-DPoJI" cm:type="ps:datetime">2019-11-07T11:39:58.469Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iv210VYiJEpozoArk" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="izamyJvttk5t9t1_z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-02-06T10:06:12.006Z</cm:constant>
+          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-02-25T16:09:58.520Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipaIptNGXwqXJsHyV" cm:type="ps:string" cm:name="appName">
-          <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">WebAnnotator</cm:constant>
+          <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">Web annotation client</cm:constant>
+          <cm:desc>
+            <cm:mimedesc cm:id="i1oAlSx4Z6u9yNAVq" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;The given name for your web annotation client&lt;/p&gt;</cm:mimedesc>
+          </cm:desc>
         </cm:property>
         <cm:property cm:id="ikd06TuWH0GM-TRbB" cm:type="ps:string" cm:name="appShortName">
           <cm:constant cm:id="i0KxubGKI8HcRImfH" cm:type="ps:string">oa</cm:constant>
+          <cm:desc>
+            <cm:mimedesc cm:id="iDIXQwmIERzjgJmQZ" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;A shorter name or acronym&amp;nbsp;for your web annotation client. It is used to identify your client and your annotations.&lt;/p&gt;</cm:mimedesc>
+          </cm:desc>
         </cm:property>
         <cm:property cm:id="iYoalgh7V2S1hh0Ba" cm:type="ps:string" cm:name="appDescription">
           <cm:constant cm:id="isA9XE5dMHtoswIjh" cm:type="ps:string">Annotate documents online following color coding paradigm</cm:constant>
+          <cm:desc>
+            <cm:mimedesc cm:id="im0UN2cvtiwVCffsY" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;A description of what is your annotation client for. This description will be placed in the Browser extensions store if you decide to publish the extension.&lt;/p&gt;</cm:mimedesc>
+          </cm:desc>
         </cm:property>
-        <cm:property cm:id="iPbotzrtzWXGUgGrQ" cm:type="ps:string" cm:name="key">
+        <cm:property cm:id="iPbotzrtzWXGUgGrQ" cm:type="ps:string" cm:inheritable="true" cm:name="key">
           <cm:constant cm:id="iXFgjBJ-zzXtaLPyv" cm:type="ps:string"></cm:constant>
+          <cm:desc>
+            <cm:mimedesc cm:id="ibnAdbX19_yITjUTu" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;You should set here a private key for your browser extension if it is going to be used installed from folder (not from chrome store) and is going to be used a third-party API (e.g.: Google Sheets) that requires browser extension authentication. See more about keys:&lt;/p&gt;
+&lt;p&gt;* Chrome identity: &lt;a href=&quot;https://developer.chrome.com/apps/identity&quot;&gt;https://developer.chrome.com/apps/identity&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;* Chrome key in manifest: &lt;a href=&quot;https://developer.chrome.com/extensions/manifest/key&quot;&gt;https://developer.chrome.com/extensions/manifest/key&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
+            <cm:mimedesc cm:id="i06Qh_dViPDjqaxTg" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;You can set here a private key for your browser extension if it is going to be used in developer mode, installed from folder (not from chrome store), and is going to be used a third-party API (e.g.: Google Sheets) that requires browser extension authentication. See more about keys:&lt;/p&gt;
+&lt;p&gt;* Chrome identity: &lt;a href=&quot;https://developer.chrome.com/apps/identity&quot;&gt;https://developer.chrome.com/apps/identity&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;* Chrome key in manifest: &lt;a href=&quot;https://developer.chrome.com/extensions/manifest/key&quot;&gt;https://developer.chrome.com/extensions/manifest/key&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
+          </cm:desc>
         </cm:property>
       </cm:properties>
+      <cm:desc>
+        <cm:mimedesc cm:id="ivPMFA_QDzrTznbBC" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;The root feature that groups the rest of the features to define a Web Annotation client in the form of Web Browser extension&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="is4aH0uxjwqzdbvDw" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;The root feature that groups the rest of the features to define a Web Annotation client in the form of Web Browser extension&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iEfgsVnpbEva1d9oR" cm:name="BrowserStorage" cm:type="ps:annotationServer" cm:class="ps:feature">
       <cm:relations cm:id="in91YdJz4hbJAzsfh" cm:class="ps:parents">
@@ -93,15 +121,19 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iKnwIrIHTDaMOzIiB" cm:type="ps:datetime">2019-11-07T11:51:34.616Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipgk7HynJTC9TogM2" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iMheCnv-AumqzFsUX" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iMheCnv-AumqzFsUX" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iFmfx9Tg0hh1zixB8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iw8CeVB-Dmw44pZeW" cm:type="ps:datetime">2020-01-15T15:28:59.512Z</cm:constant>
+          <cm:constant cm:id="iw8CeVB-Dmw44pZeW" cm:type="ps:datetime">2020-02-24T16:08:13.453Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="in2H5gEmQJ8Gaw2AZ" cm:mimetype="text/plain" cm:encoding="utf-8">BrowserStorage</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i3WPhL0NkdjjKX82X" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;Web annotations are stored locally in browser extensions storage. See chrome.storage.local: &lt;a href=&quot;https://developer.chrome.com/apps/storage&quot;&gt;https://developer.chrome.com/apps/storage&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="i1szz0MAV1NoLcluy" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Web annotations are stored locally in browser extensions storage. See chrome.storage.local: &lt;a href=&quot;https://developer.chrome.com/apps/storage&quot;&gt;https://developer.chrome.com/apps/storage&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iMUoI4wgyFYLxNVBr" cm:name="Local" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="ixkgoqWiONVxRfN5l" cm:class="ps:parents">
@@ -125,11 +157,14 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ihg9ZlmXm7NaMlXPL" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="idLNlemORZ2LzA4c0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ipjv0-80hcwEwhKjs" cm:type="ps:datetime">2019-11-07T12:14:10.776Z</cm:constant>
+          <cm:constant cm:id="ipjv0-80hcwEwhKjs" cm:type="ps:datetime">2020-02-25T08:20:41.780Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:desc>
         <cm:mimedesc cm:id="iw73nXUSSSJPrmUmr" cm:mimetype="text/plain" cm:encoding="utf-8">Provides a local storage for annotations, the storage system used is chromestorage.</cm:mimedesc>
+        <cm:mimedesc cm:id="iZP0yt284-MtaKgrr" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;This abstract feature groups annotation servers which store annotations locally (e.g: browser storage or cookies).&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="impMRCbvAxncbYcZx" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;This abstract feature groups annotation servers which store annotations locally (e.g: browser storage or cookies).&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iKPZ7FOheJ8Z7dw0G" cm:name="Hypothesis" cm:type="ps:annotationServer" cm:class="ps:feature" cm:default="off">
@@ -146,10 +181,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iBIvUb7jSVpQEtEul" cm:type="ps:datetime">2019-11-07T11:51:34.619Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i2j6SamNoGy0nW2O0" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i0fARwRG0val5OT2-" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="i0fARwRG0val5OT2-" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i8TELEMIqeqzRzCBV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iINUVTffUJCbQkyxc" cm:type="ps:datetime">2020-01-15T15:29:08.935Z</cm:constant>
+          <cm:constant cm:id="iINUVTffUJCbQkyxc" cm:type="ps:datetime">2020-02-24T16:11:05.482Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -159,6 +194,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="i0Ux3YemKU-OCIVRg" cm:mimetype="text/plain" cm:encoding="utf-8">Store annotations in Hypothes.is web page. In Hypothes.is the annotations are stored in annotations groups, a user can have multiple groups and can share them with other users. With this feature the users can manage and search for annotations in Hypothes.is web page.
 
 </cm:mimedesc>
+        <cm:mimedesc cm:id="iej0rVNc9Br2RJVjS" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;div id=&quot;magicparlabel-5778&quot; class=&quot;standard&quot;&gt;Hypothes.is is a widely-used annotation server that provides an API to manage annotations, groups and users&lt;/div&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iKaWQRey8XRPnJnpV" cm:name="Neo4J" cm:type="ps:annotationServer" cm:class="ps:feature">
@@ -175,10 +211,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iXLUHm9TNJC266xXH" cm:type="ps:datetime">2019-11-07T11:51:34.620Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i7-an8ddcjIzzmJ3l" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iXaw06UtagWzjxv2R" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iXaw06UtagWzjxv2R" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iJEUFDsQwT_IWZ2Ss" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iC9VM9zlISu9V8DTh" cm:type="ps:datetime">2020-01-15T15:29:17.759Z</cm:constant>
+          <cm:constant cm:id="iC9VM9zlISu9V8DTh" cm:type="ps:datetime">2020-02-25T08:58:53.007Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -186,6 +222,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="ikA-Yo1d0dJZbomes" cm:mimetype="text/plain" cm:encoding="utf-8">Annotations are stored in Neo4J graph database.</cm:mimedesc>
+        <cm:mimedesc cm:id="it32BxV8OdPZu90EI" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;Neo4J for annotations&amp;nbsp;is a experimental annotation server that implement Hypothes.is API (&lt;a href=&quot;https://h.readthedocs.io/en/latest/api/&quot;&gt;https://h.readthedocs.io/en/latest/api/&lt;/a&gt;) but using Neo4J as the underlying database.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="idY1h0OG9iswiBlyv" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;This is a pre-alpha feature, it is not reliable and your data can be lost&lt;/span&gt;. Neo4J for annotations&amp;nbsp;is a experimental annotation server that implement Hypothes.is API (&lt;a href=&quot;https://h.readthedocs.io/en/latest/api/&quot;&gt;https://h.readthedocs.io/en/latest/api/&lt;/a&gt;) but using Neo4J as the underlying database.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iL58X6bULcvtAMo6U" cm:name="Remote" cm:type="ps:feature" cm:class="ps:feature">
@@ -211,12 +250,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ikrB9UgMtJS5F6xvx" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iwbNuYsd8LXol8p3j" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iiQpsM9rnXxW9DXUK" cm:type="ps:datetime">2019-11-07T11:51:34.619Z</cm:constant>
+          <cm:constant cm:id="iiQpsM9rnXxW9DXUK" cm:type="ps:datetime">2020-02-24T16:10:43.180Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iKv5awJ602-6L_QRR" cm:mimetype="text/plain" cm:encoding="utf-8">Remote</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="izsNeRa_xiDRnJWle" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups annotation servers hosted and accessible by URL and API&amp;nbsp;on the web (e.g.: Hypothes.is).&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iM2X1UnHUUT1pjL6Y" cm:restriction="iiZywPZQ7xR1u2IaW" cm:name="AnnotationServer" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iPPBEy0yWGsOJiKP1" cm:class="ps:parents">
@@ -238,21 +280,30 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="izi9GyFJwTwMqIJ5A" cm:type="ps:datetime">2019-11-07T11:51:34.615Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i8WVoBd18UqdJ1kmO" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iplU9l5Qemq1c6sgn" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iplU9l5Qemq1c6sgn" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iJQWZKups0u2y4XLz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iOSbxUKeMIoLeZ-4b" cm:type="ps:datetime">2020-01-15T17:42:26.066Z</cm:constant>
+          <cm:constant cm:id="iOSbxUKeMIoLeZ-4b" cm:type="ps:datetime">2020-02-24T16:06:05.192Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i5ZzDl1GGb47n7Li9" cm:type="ps:string" cm:name="defaultAnnotationServer">
           <cm:constant cm:id="iWEaFogJLO1DOvjAj" cm:type="ps:string">BrowserStorage</cm:constant>
           <cm:desc>
-            <cm:mimedesc cm:id="iecTonNP86jGbS7v7" cm:mimetype="text/html" cm:encoding="utf-8">The value should be one of the selected storages</cm:mimedesc>
+            <cm:mimedesc cm:id="iecTonNP86jGbS7v7" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;If multiple annotation servers are selected, it is possible to set which one will be the default annotation server that is configured by default for the user. Users after install the extension are able to modify it in the configuration page of the derived web annotation client.&lt;/p&gt;
+&lt;p&gt;You can set the name of one of the selected annotation servers in Local or Remote (e.g.: Hypothesis). If none is set, automatically the system will set as default one the first selected annotation server.&lt;/p&gt;</cm:mimedesc>
+            <cm:mimedesc cm:id="ieTAlf-wlcnRhKts0" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;If multiple annotation servers are selected, it is possible to set which one will be the default annotation server that is configured by default for the user. Users after install the extension are able to modify it in the configuration page of the derived web annotation client.&lt;/p&gt;
+&lt;p&gt;You can set the name of one of the selected annotation servers in Local or Remote (e.g.: Hypothesis). If none is set, automatically the system will set as default one the first selected annotation server.&lt;/p&gt;</cm:mimedesc>
           </cm:desc>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iiV9kIP59PLzE444h" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotationServer</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i-eaSq2mse_kWBIJE" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;div id=&quot;magicparlabel-4359&quot; class=&quot;standard&quot;&gt;&lt;span style=&quot;font-size: xx-small;&quot;&gt;This abstract feature groups annotation servers. An annotation server is a web server that makes available (stores) and allows annotation management via the protocol described in the W3C recommendations [https://www.w3.org/TR/annotation-protocol/]&lt;/span&gt;&lt;/div&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="i-z93q5_P9IAUaTEt" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;div id=&quot;magicparlabel-4359&quot; class=&quot;standard&quot;&gt;&lt;span style=&quot;font-size: xx-small;&quot;&gt;This abstract feature groups annotation servers. An annotation server is a web server that makes available (stores) and allows annotation management via the protocol described in the W3C recommendations [https://www.w3.org/TR/annotation-protocol/]&lt;/span&gt;&lt;/div&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i2u-xSARpUSgjdOP9" cm:name="PDF" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iewvBkOnw9OT7STMt" cm:class="ps:parents">
@@ -271,12 +322,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="icHpKWB_VO_9oMNEI" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iRlKSAzZona7ANl2k" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i7sObV3cluDi2aEpo" cm:type="ps:datetime">2019-11-07T11:51:46.866Z</cm:constant>
+          <cm:constant cm:id="i7sObV3cluDi2aEpo" cm:type="ps:datetime">2020-02-25T08:24:57.786Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iUhl5r3a5OrF30Wtt" cm:mimetype="text/plain" cm:encoding="utf-8">PDF</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iDhks21pY-IFzLxyE" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If selected, web annotation client will support text annotation in PDF documents.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="imdg4GLfcMhZak4l5" cm:name="HTML" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i3sHA71jUwJwe1nDj" cm:class="ps:parents">
@@ -295,12 +349,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ighe2F7K3zLBFPep3" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iGK8C3jVw7MIoolFS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iPq8eqvOZeeYvhJx4" cm:type="ps:datetime">2019-11-07T11:51:46.868Z</cm:constant>
+          <cm:constant cm:id="iPq8eqvOZeeYvhJx4" cm:type="ps:datetime">2020-02-25T08:25:07.147Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iiFXDXno15Cybeh4q" cm:mimetype="text/plain" cm:encoding="utf-8">HTML</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iwJ01VRbhDy2_FPla" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If selected, web annotation client will support text annotation in HTML documents.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iEJfm9-DcqfmgWXYr" cm:name="TXT" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iyjRv6-Fu2YADyzL-" cm:class="ps:parents">
@@ -319,12 +376,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iQJp2lQ9_0ngLi-rk" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iuxhD6jpa4UEboTw0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i7-Ql9AQHKOgVDa3d" cm:type="ps:datetime">2019-11-07T11:51:46.869Z</cm:constant>
+          <cm:constant cm:id="i7-Ql9AQHKOgVDa3d" cm:type="ps:datetime">2020-02-25T09:00:22.317Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i5LQlosdaq7UhzB39" cm:mimetype="text/plain" cm:encoding="utf-8">TXT</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iphbxycspjRaqTf3B" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;This is a pre-alpha feature, can work unexpectedly&lt;/span&gt;. If selected, web annotation client will support text annotation in plain-text documents (.txt, .xml, .java,...)&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ixlunvy0cZpkuROiF" cm:name="Format" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="ir7yIaN66c2bapQBY" cm:class="ps:parents">
@@ -350,12 +410,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="izu37gDa8PZez8Y9I" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iSwqXubHHzUIjCjXM" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZn5z-BEBukA2wIKi" cm:type="ps:datetime">2019-11-07T11:51:46.865Z</cm:constant>
+          <cm:constant cm:id="iZn5z-BEBukA2wIKi" cm:type="ps:datetime">2020-02-25T09:15:04.680Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iV-7LfJIuH-hQVbS-" cm:mimetype="text/plain" cm:encoding="utf-8">Format</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ilTCsd3TzjxG52Rfq" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature gathers the possible file formats that the web annotation client will support to create annotations over. It is possible to select 1 or more.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iulCLFSpiQ4oNyrwG" cm:name="Selector" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="irkff01S4xX5sX1Am" cm:class="ps:parents">
@@ -371,15 +434,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ix4W3WqNvfV0HbmoM" cm:type="ps:datetime">2019-11-07T11:51:46.871Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iEQXQWaR8vEDQCYHn" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iY27-csrDKRBnAKbT" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="iY27-csrDKRBnAKbT" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i1rsoGCwAL6FvI9FE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iKQYmRd8XRDCwHPlP" cm:type="ps:datetime">2020-02-18T13:29:43.423Z</cm:constant>
+          <cm:constant cm:id="iKQYmRd8XRDCwHPlP" cm:type="ps:datetime">2020-02-25T09:01:38.425Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iVFa2K7zXk6lR5rno" cm:mimetype="text/plain" cm:encoding="utf-8">Selector</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ibkxMgXEp6c3357xX" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature enables text fragments annotations over a document, where the user selects a fragment. If not selected it is only possible to create document level annotations.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ivkR0Fg80lOpvss8j" cm:name="URL" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="it-PKoXeWxubrDB00" cm:class="ps:parents">
@@ -398,7 +464,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iDTbmsvo5m6ObdkKc" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="inNhEBHni5a4vLS8z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iirXuBQXywWGO-U3e" cm:type="ps:datetime">2019-11-07T11:51:46.876Z</cm:constant>
+          <cm:constant cm:id="iirXuBQXywWGO-U3e" cm:type="ps:datetime">2020-02-25T08:51:22.054Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -407,6 +473,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iv0ApTqEmWw8oHkTx" cm:mimetype="text/plain" cm:encoding="utf-8">Identify Web resources by a URL.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="ivGHUDclTargD7rve" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;You should select this feature if you want to annotate documents hosted on the Web with a URL&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iNIFWI_RjLwZRNCwL" cm:name="URN" cm:type="ps:feature" cm:class="ps:feature">
@@ -426,7 +493,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iCUs9cPqHPk3hQIY8" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iCQp5yM5YdlF1sUWX" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="it-YGLHQKOnMSznTx" cm:type="ps:datetime">2019-11-07T11:51:46.877Z</cm:constant>
+          <cm:constant cm:id="it-YGLHQKOnMSznTx" cm:type="ps:datetime">2020-02-25T08:52:02.483Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -435,6 +502,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iagUxGJdXz5gZUgKO" cm:mimetype="text/plain" cm:encoding="utf-8">URNs identify resources in the web, but in contrast to URLs, they do not tell exactly where these resources are located. Therefore, with this feature it will be possible to identify resources that are not in the internet (e.g. local files).
 </cm:mimedesc>
+        <cm:mimedesc cm:id="ie1RXdz9f9xyMwekj" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;You should select this feature if web annotation client must support user&apos;s&amp;nbsp;local filesystem files annotation.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iAltosjho8hLJdnGU" cm:name="DOI" cm:type="ps:feature" cm:class="ps:feature">
@@ -454,7 +522,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ih4YlHmWp25MKErUK" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iJF_I29u_obAEuYji" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iV2PsXsdKFaKVdI2c" cm:type="ps:datetime">2019-11-07T11:51:46.878Z</cm:constant>
+          <cm:constant cm:id="iV2PsXsdKFaKVdI2c" cm:type="ps:datetime">2020-02-25T08:54:46.485Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -464,6 +532,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="idxoDjgurSjMGdFwO" cm:mimetype="text/plain" cm:encoding="utf-8">Identify resources using a Digital Object Identifier (DOI). With this feature it is possible redirecting to a document using a DOI.
 
 </cm:mimedesc>
+        <cm:mimedesc cm:id="iOevlz1B_JI_Pkx_m" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If your annotation client needs to annotate documents that can be identified by Document Object Identifiers (e.g.: research papers), you can select this feature to sync annotations done over the same DOI but in different instances of the document (e.g.: a paper downloaded form ScienceDirect in PDF format and the same paper in HTML format hosted on the Web)&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iQdbsVXouENbMee3e" cm:name="Source" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -490,12 +559,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i4OL17iK8rOERdzSS" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i2KiOtsf5ffd6m-vC" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="izt65x09KcRfk30KK" cm:type="ps:datetime">2019-12-18T14:58:05.606Z</cm:constant>
+          <cm:constant cm:id="izt65x09KcRfk30KK" cm:type="ps:datetime">2020-02-25T08:26:58.085Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iVZitlJNd1-rzLODa" cm:mimetype="text/plain" cm:encoding="utf-8">Source</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="injx2qfNaY7cjWAIn" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;The source feature groups the identifiers that can be used to identify an annotated resource, Internationalized Resource Identifiers (IRIs).&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i36v9Ay8VIclaxIo7" cm:name="Target" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iW3Xk89M5FTbSBClH" cm:class="ps:parents">
@@ -523,12 +595,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ilpbgrT9VavSDHtvt" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ihJAwRqZJXhf9h_BN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iOcCXNTrjlYcRRkWH" cm:type="ps:datetime">2019-11-07T11:51:59.537Z</cm:constant>
+          <cm:constant cm:id="iOcCXNTrjlYcRRkWH" cm:type="ps:datetime">2020-02-25T08:23:02.841Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ize0arwkLpji9ZSOI" cm:mimetype="text/plain" cm:encoding="utf-8">Target</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="imB8RT7LpiJArnhTG" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups features related with resource to be annotatated. Following the W3C recommendation it is possible to annotate resources taking into account like format (PDF, HTML,...) and location (web, localfile,...),...&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ih2dyCeLQVCl7YW4M" cm:name="Classifying" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i4UCTyrEWyKEM3N5O" cm:class="ps:parents">
@@ -549,12 +624,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="io-RwyCNGNBHhtUcJ" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i-6vPOib7cmutOjlL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMG3qrus29IdyPyae" cm:type="ps:datetime">2020-01-30T18:53:15.576Z</cm:constant>
+          <cm:constant cm:id="iMG3qrus29IdyPyae" cm:type="ps:datetime">2020-02-25T09:27:43.983Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iRP4ahDZ5-RqMQ4uU" cm:mimetype="text/plain" cm:encoding="utf-8">Classifying</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iq4-DxNAOvI2OiJEe" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Selecting this feature allow users to create annotations with the purpose of classifying. This feature is related with the codebook.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="imDiekbsxQOEG5Hat" cm:name="SentimentAnalysis" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iPXb2bVDeWeWmgETr" cm:class="ps:parents">
@@ -573,7 +651,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="isECEc45xNRuiWrSR" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ip7xml__7wGkiHQpZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="imGZv5eAIUJ7h3-M8" cm:type="ps:datetime">2019-11-07T11:52:27.893Z</cm:constant>
+          <cm:constant cm:id="imGZv5eAIUJ7h3-M8" cm:type="ps:datetime">2020-02-25T09:43:47.205Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -581,6 +659,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iT6r080aUH98KWoMw" cm:mimetype="text/plain" cm:encoding="utf-8">Realize a sentiment analysis over a comment. If the comment is detected as offensive, the application raises a warning.</cm:mimedesc>
+        <cm:mimedesc cm:id="iho_ysPCeO9qzzDVU" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;This feature verifies the content of user&apos;s comment when creating the annotation and notifies if the comment has a negative or offensive connotation. It is adequate to avoid offensive content when annotation comments are read by third parties or are used as a mechanism for feedback.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iHP3JmF7E_uW0oUXg" cm:name="SuggestedLiterature" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -600,7 +679,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ixWABS3o6vffWi-Yz" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iRIJIlFFHFPOSLyEd" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ioYJECPYL1hgfP90f" cm:type="ps:datetime">2019-11-07T11:52:27.895Z</cm:constant>
+          <cm:constant cm:id="ioYJECPYL1hgfP90f" cm:type="ps:datetime">2020-02-25T09:44:48.595Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -608,6 +687,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iwrC4NDyDTASd6iAy" cm:mimetype="text/plain" cm:encoding="utf-8">Add suggested literature references to the comment.</cm:mimedesc>
+        <cm:mimedesc cm:id="iayJ6M6_bWfSa-1XU" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;This feature provides an in-context literature lookup, simplifying literature suggestion or linking comments with scholarly literature. Currently it supports lookup in DBLP:&amp;nbsp;&lt;a href=&quot;https://dblp.uni-trier.de/&quot;&gt;https://dblp.uni-trier.de/&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i1mmM3Y--SH1eoXIl" cm:name="Autocomplete" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -627,7 +707,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i0u7kQvalCW6--q4E" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iREc1SNNvibJ1Oytp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iyo0__YEp-zraJUZJ" cm:type="ps:datetime">2020-01-08T18:10:09.487Z</cm:constant>
+          <cm:constant cm:id="iyo0__YEp-zraJUZJ" cm:type="ps:datetime">2020-02-25T09:47:16.762Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -636,6 +716,8 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="i5qcshvCmz3OYV0cN" cm:mimetype="text/plain" cm:encoding="utf-8">Based on previous comments, the application recommends possible useful comments to the user.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="i-45_iJ6hhsPAD4sy" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;Provides functionality for comment reuse. It is useful in contexts where the same comment is repeated or reused in multiple annotations.&lt;/p&gt;
+&lt;p class=&quot;itemize_item&quot;&gt;When the user starts writing, the system automatically hints with previously created comments. Comments that can be reused are those which has the same classification if classifying feature is selected, otherwise all the comments done are shown.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="ini7gtBrap5Ux362Y" cm:name="PreviousAssignments" cm:type="ps:feature" cm:class="ps:feature">
@@ -660,12 +742,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iVmDhSPYV6DC7Nhrs" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ia_S9XqS8UF-N42NU" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iTrIaERNIZnqmT-mQ" cm:type="ps:datetime">2019-11-07T11:52:27.897Z</cm:constant>
+          <cm:constant cm:id="iTrIaERNIZnqmT-mQ" cm:type="ps:datetime">2020-02-25T09:48:40.006Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ibFcWGUvw1Hwheyjn" cm:mimetype="text/plain" cm:encoding="utf-8">PreviousAssignments</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iYdsXdo_txbs0rWAx" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature is closely related to Moodle ones. It shows previously assessed assignments to students, where the user can place add a reference in the comment to student&apos;s previous assignments.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i16D2Cp179ierYM5h" cm:name="Commenting" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i31qzx-2gBc3f3DKz" cm:class="ps:parents">
@@ -692,12 +777,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i6vFJ0R5YTHnsspsE" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iKgPOuLA8wPocgQUg" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMwWO75YeG-ETwjsf" cm:type="ps:datetime">2019-11-07T11:52:27.893Z</cm:constant>
+          <cm:constant cm:id="iMwWO75YeG-ETwjsf" cm:type="ps:datetime">2020-02-25T09:43:25.302Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iraqyA6Li-lygrhpB" cm:mimetype="text/plain" cm:encoding="utf-8">Commenting</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ivah9FR3VsQxti752" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Selecting this feature allow users to create annotations with the purpose of commenting. When user right-click over an annotation can click on &quot;comment&quot; button and a form is shown to create a comment. Some practices demand for comments to be assisted to either speed up the commenting process or enhance comments quality, this leads to a further elaboration of this functionality with commenting sub-features.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iTX52aKLiU5bPOxWs" cm:name="Replying" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="if76ls-sVlKCAxgny" cm:class="ps:parents">
@@ -718,17 +806,21 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ijY4bA4vz3fTX2wpo" cm:type="ps:datetime">2019-11-07T11:52:27.899Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i8UyvVFzQOy9d3UCv" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ixF8eN0dNBeWIDLri" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="ixF8eN0dNBeWIDLri" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iTjw5cha98IVEqsP5" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iTFxwjoVQD0YlDrdP" cm:type="ps:datetime">2020-02-14T14:52:34.863Z</cm:constant>
+          <cm:constant cm:id="iTFxwjoVQD0YlDrdP" cm:type="ps:datetime">2020-02-25T09:50:22.323Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iHhuzniUynypGPKV6" cm:mimetype="text/plain" cm:encoding="utf-8">Replying</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iL58gzfnVDjPUI3VN" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;div id=&quot;magicparlabel-14856&quot; class=&quot;standard&quot;&gt;The motivation for when the user intends to reply to a previous statement, either an Annotation or another resource. This feature provides replying annotations (eg.: to maintain an in-context discussion). This features is to be found in social annotation and collaborative annotation where the annotation practice does not end with the annotation but feedback might be required.&lt;/div&gt;
+&lt;div class=&quot;standard&quot;&gt;When user right-clicks on other user&apos;s annotation a button to reply is shown. The commenting form appears to place a new comment to reply the annotation.&lt;/div&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
-    <cm:element cm:id="i4zTrONY9hhrFIG2J" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="i4zTrONY9hhrFIG2J" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="i0Rih-9DHXDFXzcH2" cm:class="ps:parents">
         <cm:relation cm:id="i0jw8HNk-k9kH2wxG" cm:type="ps:parent">
           <cm:target cm:id="igHwDDYRKVEypWy9a">./i3kWFU7xg1gvK1BJS</cm:target>
@@ -745,7 +837,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iQhfceMAbav2NB01w" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iqO7WQR44ygIcfeQt" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iG1leeSsbbFcwe7pz" cm:type="ps:datetime">2019-11-07T11:52:27.901Z</cm:constant>
+          <cm:constant cm:id="iG1leeSsbbFcwe7pz" cm:type="ps:datetime">2020-02-25T09:53:09.646Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -753,6 +845,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iiJ5oY4IdfN6MZyZK" cm:mimetype="text/plain" cm:encoding="utf-8">Categorize the comment.</cm:mimedesc>
+        <cm:mimedesc cm:id="iqNAub4A73Qm7IAsb" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;When assessing a category must be placed. Those categories are static and always the same for all the annotations. You can define your own categories in input/app/scripts/Config.js file in assessmentCategories attribute&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i3kWFU7xg1gvK1BJS" cm:name="Assessing" cm:type="ps:feature" cm:class="ps:feature">
@@ -762,8 +855,8 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iM1m98Wj73NiqNlAX" cm:class="ps:children">
-        <cm:relation cm:id="i9YAUBWAmTSh05PIb" cm:type="ps:optional">
-          <cm:target cm:id="i4Giga6dOj0omBkkQ">./i4zTrONY9hhrFIG2J</cm:target>
+        <cm:relation cm:id="iNIYiXtbiIK2UC_tw" cm:type="ps:mandatory" cm:range="n">
+          <cm:target cm:id="i5scr1UNK1aa9F2zj">./i4zTrONY9hhrFIG2J</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iIax34UMvh-pwMwlU" cm:class="ps:dependencies">
@@ -779,15 +872,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iCq9IoFgX051G1YxD" cm:type="ps:datetime">2019-11-07T11:52:27.900Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ivBl8eLBiJIpJRRPL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iMshjpdXVtnauqI4u" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="iMshjpdXVtnauqI4u" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iqOfYE-OeVlmu0shI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iP3DWUw8HHiKIMg6t" cm:type="ps:datetime">2020-02-14T14:52:20.072Z</cm:constant>
+          <cm:constant cm:id="iP3DWUw8HHiKIMg6t" cm:type="ps:datetime">2020-02-25T09:50:54.784Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iPMxHfnlv72e77Wts" cm:mimetype="text/plain" cm:encoding="utf-8">Assessing</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iXlMdxFQ2fDIe3i6H" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;div id=&quot;magicparlabel-14866&quot; class=&quot;standard&quot;&gt;The motivation for when the user intends to assess the target resource in some way, rather than simply make a comment about it. For example to write a review of a book, or provide an assessment of a student&apos;s work. Assessment is done over already annotated content, so it works as an special case of &lt;em&gt;Replying&lt;/em&gt;&lt;strong&gt;.&lt;/strong&gt;&lt;/div&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iq8KhwKzipWRNNLFw" cm:name="AnnotationPurpose" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iwuH5oKQXM3bibZKR" cm:class="ps:parents">
@@ -814,12 +910,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i_0DWMP0eqN7IhgJr" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ienLCCTIkTsyxQdZe" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iGNXajOFP277PrIkZ" cm:type="ps:datetime">2019-11-07T12:46:54.681Z</cm:constant>
+          <cm:constant cm:id="iGNXajOFP277PrIkZ" cm:type="ps:datetime">2020-02-25T09:25:30.901Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iskC9Ktaw0KpAwckU" cm:mimetype="text/plain" cm:encoding="utf-8">Purpose</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iIOifuSpBKQQC_lzz" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature gathers the possible purposes that the web annotation can create annotations with. This follows the annotation purposes and motivations described in the W3C recommendation: &lt;a href=&quot;https://www.w3.org/TR/annotation-model/#motivation-and-purpose&quot;&gt;https://www.w3.org/TR/annotation-model/#motivation-and-purpose&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iGhbUDem1xU6z--QH" cm:name="Create" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="igbyAhnR60tAnavaC" cm:class="ps:parents">
@@ -838,7 +937,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i3D2akAWBhzDZJDWZ" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="izZj8YRI90OMwfmFw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="irQe9oAAiojebuKaf" cm:type="ps:datetime">2019-11-07T11:53:29.998Z</cm:constant>
+          <cm:constant cm:id="irQe9oAAiojebuKaf" cm:type="ps:datetime">2020-02-25T09:56:12.484Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -846,6 +945,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="i5YVVKJv2f-CqbtuI" cm:mimetype="text/plain" cm:encoding="utf-8">Create an annotation. It is a primary action for a Web annotator, therefore, this feature will be available on all products of the LPS. Annotations can be done in several ways, but for now, only the Color Coding Highlight technique is implemented.</cm:mimedesc>
+        <cm:mimedesc cm:id="iaUAve6nTh9OWEUSQ" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This is a mandatory feature that allows users to create annotations.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i54HQIWWVXxAgTPji" cm:name="DeleteAll" cm:type="ps:toolsetFeature" cm:class="ps:feature">
@@ -865,7 +965,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i5n1ZKjM0JPCdY5R2" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iOkt2TALwAdjv5YuW" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i3vCum9z7oMkGzZUt" cm:type="ps:datetime">2020-01-27T17:14:30.948Z</cm:constant>
+          <cm:constant cm:id="i3vCum9z7oMkGzZUt" cm:type="ps:datetime">2020-02-25T12:51:32.867Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -876,6 +976,8 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
 </cm:mimedesc>
         <cm:mimedesc cm:id="ixUMpE07Y7gFK_FJK" cm:mimetype="text/html" cm:encoding="utf-8">Delete all the annotations within a group.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="i7mw3O3fE7ECuzCJ8" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;If selected, a button is shown in the sidebar toolbar. When clicking on it, web annotation clients deletes all the annotations done&amp;nbsp;within&amp;nbsp;the current&amp;nbsp;document&amp;nbsp;by the user.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="if3jIX_F4ncIu2mq6" cm:name="Delete" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -900,7 +1002,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iGDOD_lD8WjG7vjHn" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iGuz-Q4Pu-bTJYhNW" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iQh6-Urw9lDuCUTBF" cm:type="ps:datetime">2019-11-07T11:53:29.999Z</cm:constant>
+          <cm:constant cm:id="iQh6-Urw9lDuCUTBF" cm:type="ps:datetime">2020-02-25T12:49:52.953Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -908,6 +1010,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="imO18AWL97crbbEwB" cm:mimetype="text/plain" cm:encoding="utf-8">Delete an annotation.</cm:mimedesc>
+        <cm:mimedesc cm:id="iy0bRPgPk-UWptsFz" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This is a mandatory feature that lets users to right-click on an annotation and delete it. It is possible to delete annotations only if the user is the creator of the annotation.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iDk2GRG_JmFTmVPuB" cm:name="Update" cm:type="ps:feature" cm:class="ps:feature">
@@ -927,12 +1030,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iQ4s117IgdpboP4BY" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ixgmDVoIBabTg8bJU" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iUUdREp5U1RmMLBMy" cm:type="ps:datetime">2020-01-30T18:51:46.680Z</cm:constant>
+          <cm:constant cm:id="iUUdREp5U1RmMLBMy" cm:type="ps:datetime">2020-02-25T12:54:00.125Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i-oeFnOTn09j4YG8k" cm:mimetype="text/plain" cm:encoding="utf-8">Update</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i9smD5HaXHYBOSEvT" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature allows users to modify a created annotation. Take into account that currently it is possible to modify a comment, a reply or assessment, but not the classification of an annotation. See issue &lt;a href=&quot;https://github.com/onekin/WebAnnotatorSPL/issues/29&quot;&gt;#29&lt;/a&gt;.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ilm04i-3POhJHchHd" cm:name="ImportAnnotations" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iumcGBJ1MtUW4xlSR" cm:class="ps:parents">
@@ -951,12 +1057,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ixLd21MnHb4_sIaqB" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="isnhTGls7-0L3olWo" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iDzJOZI0Z8rYHW6XB" cm:type="ps:datetime">2019-11-07T11:54:54.174Z</cm:constant>
+          <cm:constant cm:id="iDzJOZI0Z8rYHW6XB" cm:type="ps:datetime">2020-02-25T13:01:42.105Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iDTGjy2BiH_EJPzf5" cm:mimetype="text/plain" cm:encoding="utf-8">Import</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iiwL0Sp76lYPFJyaF" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If this feature is selected, a button is created in the sidebar, which allow users to import annotations in a .json file created previously with Export-&amp;gt;JSON feature. The only supported importing format is JSON-LD following the W3C annotation data model recommendations. Depending on the features selected, some of the annotations&apos; attributes are not imported (e.g.: if you import annotations with comments, but the web annotation client does not have commenting feature selected, it won&apos;t import the comment in the annotation).&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i8_myHFxfoMjDRua9" cm:name="AnnotationOperation" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="i5JCxB5e4BZ3Ik-Og" cm:class="ps:parents">
@@ -985,12 +1094,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i24f47jCCo0nNuIz7" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i4tix4zQkUsUje-je" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i_EmxAzWq2Ne4nR3Z" cm:type="ps:datetime">2020-01-30T18:51:46.679Z</cm:constant>
+          <cm:constant cm:id="i_EmxAzWq2Ne4nR3Z" cm:type="ps:datetime">2020-02-25T09:57:23.293Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iFAOGULWGP1LuZM8F" cm:mimetype="text/plain" cm:encoding="utf-8">Operation</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iXUE_QdEGI9i-4yr3" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;div id=&quot;magicparlabel-15572&quot; class=&quot;standard&quot;&gt;This feature groups operations that can be done over the annotations.&amp;nbsp;&amp;nbsp;The W3C protocol introduces the four CRUD operations for annotations: create, read (a.k.a retrieval), update and delete. See protocol: &lt;a href=&quot;https://www.w3.org/TR/annotation-protocol/#creation-updating-and-deletion-of-annotations&quot;&gt;https://www.w3.org/TR/annotation-protocol/#creation-updating-and-deletion-of-annotations&lt;/a&gt;&lt;/div&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i7eRnuEkO3RqH5A_o" cm:name="Read" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="i0b0Ih0tY7ypfhkEa" cm:class="ps:parents">
@@ -1015,15 +1127,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i8fOPLoVPHIYOKXYv" cm:type="ps:datetime">2019-11-07T11:54:10.430Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i4goW8zRJZNbeII_Z" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ip7mWpb6NXPu7lslW" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="ip7mWpb6NXPu7lslW" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iieuiIPKWzFKpIC25" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ilhnU9CweSvkPhOox" cm:type="ps:datetime">2020-02-11T10:29:37.226Z</cm:constant>
+          <cm:constant cm:id="ilhnU9CweSvkPhOox" cm:type="ps:datetime">2020-02-25T09:57:19.609Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iA_Z83RUduzJPbBgM" cm:mimetype="text/plain" cm:encoding="utf-8">Read</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iftrrXAD2U5vERnWk" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups all the read operations that can be done for annotations.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iD93S-Zw_CUcdoLrR" cm:name="ImportExport" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iVLB1KYrjcL6x1iaQ" cm:class="ps:parents">
@@ -1048,12 +1163,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iiK6a56QOcRNNRboi" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i_nDgP0AN3KbsemLE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iOUSHFVg6yQIcUSR4" cm:type="ps:datetime">2019-11-07T11:54:30.213Z</cm:constant>
+          <cm:constant cm:id="iOUSHFVg6yQIcUSR4" cm:type="ps:datetime">2020-02-25T12:54:36.493Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iVAHAw1mvALW9ZwWX" cm:mimetype="text/plain" cm:encoding="utf-8">ImportExport</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i0m8OPS9d2VybgfhW" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups features related with exporting and importing annotations.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iladiHg5dhy3o4jOc" cm:name="AnnotatedPDF" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iQ5v9N8iW6hPA4-H7" cm:class="ps:parents">
@@ -1072,12 +1190,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iQAcVNJ7hEsEM7HjO" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iaKSIygt0r0jJlGbl" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="igJH_wjHiKiwTOMnj" cm:type="ps:datetime">2020-01-13T16:06:14.700Z</cm:constant>
+          <cm:constant cm:id="igJH_wjHiKiwTOMnj" cm:type="ps:datetime">2020-02-25T13:06:41.833Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iISwcvRjT2TFXjH7B" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotatedPDF</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iH62pvuOhZ7aN34Kn" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature creates a button in the sidebar to export the annotated resource in PDF format with the annotations highlighting the annotated content. Due to lack of a library to&amp;nbsp;augment/extend/annotate PDF documents in javascript/node the exported document is a PDF document with screenshots of the PDF document with the highlighted annotations.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ij2QyVevRHICSjapM" cm:name="AnnotatedResource" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iHRmu5U3UsT_VXSj4" cm:class="ps:parents">
@@ -1101,7 +1222,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="izOV5LrfndlGhADwC" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i3fX_Emu4yUVfKxXK" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iETjg46XHfc81UebG" cm:type="ps:datetime">2019-11-07T11:54:45.182Z</cm:constant>
+          <cm:constant cm:id="iETjg46XHfc81UebG" cm:type="ps:datetime">2020-02-25T13:04:36.422Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1111,6 +1232,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="ihPuzIFMqVTF-0oOE" cm:mimetype="text/plain" cm:encoding="utf-8">Take a screenshot of the annotated document and prints a PDF with the document and the annotations.
 
 </cm:mimedesc>
+        <cm:mimedesc cm:id="izjgwULwU_u6UwITV" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups features that are able to export the annotated target with its annotations (inyecting in the document if possible).&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iHV6Svjo-TRRgF2NH" cm:name="JSON" cm:type="ps:feature" cm:class="ps:feature">
@@ -1130,12 +1252,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iiBmyGTy1h2evY5Mz" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iur2rFphdEP6CaFy3" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iy5Gyx9o0SiIjO2jC" cm:type="ps:datetime">2019-11-07T11:54:45.203Z</cm:constant>
+          <cm:constant cm:id="iy5Gyx9o0SiIjO2jC" cm:type="ps:datetime">2020-02-25T13:08:50.812Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iLGUPEyXyQqIrPUJ7" cm:mimetype="text/plain" cm:encoding="utf-8">JSON</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i8WMtCQhfZ93T8doH" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature creates the functionality to export annotations in&amp;nbsp;json format. A button is created in the sidebar toolbar to let users export annotations&amp;nbsp;to a json file. It can be later be imported again using Import feature.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iqCMPDxu-TOFOI5lL" cm:name="TextSummary" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="isOdDOjZLkmNxBQRK" cm:class="ps:parents">
@@ -1154,7 +1279,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="itSMFkK8TNZpsAcUI" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iwW1SbSAE5TeM4mjL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ioa0iRoz6ddI84zkh" cm:type="ps:datetime">2019-11-07T11:54:45.204Z</cm:constant>
+          <cm:constant cm:id="ioa0iRoz6ddI84zkh" cm:type="ps:datetime">2020-02-25T13:09:48.120Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1163,6 +1288,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="ix3aFO2P_fNTdYLmf" cm:mimetype="text/plain" cm:encoding="utf-8">Print a brief summary about some clustered annotations using a predefined template.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="iRdPC3jUIKo8MVhYz" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Creates a text summary of the annotations done in the current document. Creates a button in the sidebar to let the user create a report of annotation activity, including: each annotation with its comment, annotated text fragment,...&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="imC0TaQUj7PyX6Yzb" cm:name="Export" cm:type="ps:feature" cm:class="ps:feature">
@@ -1189,12 +1315,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iIIxnxpra2QTYv6Vq" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ic-yr2c-20KF-9gLV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iH8zFQ2CsjwCC1hbb" cm:type="ps:datetime">2019-11-07T11:54:45.181Z</cm:constant>
+          <cm:constant cm:id="iH8zFQ2CsjwCC1hbb" cm:type="ps:datetime">2020-02-25T13:03:17.768Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i0erZODrRyKo_yx9E" cm:mimetype="text/plain" cm:encoding="utf-8">Export</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ijKHQxr_PDZL9bEdo" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups features that are able to export annotations to a file format.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ixYZqYCEB5ATYxq38" cm:name="UserFilter" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iCU8x2NhGxT9eQwM1" cm:class="ps:parents">
@@ -1213,7 +1342,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iGD-xM4PXXtjC388R" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i9P7TfHoRrD-S4qaw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iL7M_hR1IWVjbPbyt" cm:type="ps:datetime">2019-11-07T11:55:36.471Z</cm:constant>
+          <cm:constant cm:id="iL7M_hR1IWVjbPbyt" cm:type="ps:datetime">2020-02-25T10:00:58.915Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1223,6 +1352,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="iKYR93GgBNfP37kSk" cm:mimetype="text/plain" cm:encoding="utf-8">Filter annotations based on a user or a group of users. The filtered annotations will be those made by the selected users.
 
 </cm:mimedesc>
+        <cm:mimedesc cm:id="ixOnKt18pduDRJ7cu" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Filtering is done by users. In the sidebar is shown the list of users that have created annotations in the current document, selecting or deselecting them annotations that are done by that creator&amp;nbsp;are shown/hidden.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i4bQlrs2YHC1KbIbc" cm:name="Filter" cm:type="ps:feature" cm:class="ps:feature">
@@ -1247,7 +1377,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iMRDOrFdNc6p9p-ee" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iieR0TManctHPoK7u" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZ7Fl0DY2GmaNfzVQ" cm:type="ps:datetime">2019-11-07T11:55:36.471Z</cm:constant>
+          <cm:constant cm:id="iZ7Fl0DY2GmaNfzVQ" cm:type="ps:datetime">2020-02-25T09:59:48.541Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1256,6 +1386,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iLpPEg9JFD0NXOYNe" cm:mimetype="text/plain" cm:encoding="utf-8">Filter annotations based on some criteria.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="ioLKXUj3diX7UYFjQ" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups possible filtering options for annotations, which let them to hide/unhide annotations on the context.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iJM-ZXPlkf0N1kQZW" cm:name="Highlighting" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -1275,12 +1406,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iM6q1pZTOBQ8US0Gj" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iYy554VGM7eqv_ykI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i6lpf8x7ganxyIzZU" cm:type="ps:datetime">2019-11-11T14:37:02.495Z</cm:constant>
+          <cm:constant cm:id="i6lpf8x7ganxyIzZU" cm:type="ps:datetime">2020-02-25T10:12:39.632Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iUMUr-Xdd0o5aOu7a" cm:mimetype="text/plain" cm:encoding="utf-8">Highlighting</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iP-jDeTVpbIeXkU0k" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This is a mandatory feature that allows annotation visualization highlighted over the annotated target.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i7u76IIRg9Qn38BMR" cm:name="LastAnnotation" cm:type="ps:toolsetFeature" cm:class="ps:feature">
       <cm:relations cm:id="i5XGyIqTn_e0CdU40" cm:class="ps:parents">
@@ -1301,10 +1435,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iMn_y8erZF0ngCmM9" cm:type="ps:datetime">2019-11-07T11:55:36.476Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i8q2vISCUXT1gC3I3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i6c6YjsKuSKnW46rR" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="i6c6YjsKuSKnW46rR" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iI6vrqIEbBK1IXIqu" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iGH-2j9V7gmqdDQYn" cm:type="ps:datetime">2020-02-05T15:19:22.133Z</cm:constant>
+          <cm:constant cm:id="iGH-2j9V7gmqdDQYn" cm:type="ps:datetime">2020-02-25T10:03:48.941Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1313,6 +1447,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="igF2pkpTjgk55pzlI" cm:mimetype="text/plain" cm:encoding="utf-8">Place the user at the location of the last annotation.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="iQjiQSutjrVgLVzoa" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature creates a button in the sidebar that lets the user to go to the most recently created annotation in the document. This can be useful when a long document is annotated and the annotation activity is stopped and resumed later.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iO03Tlk_amWlDoyRX" cm:name="SidebarNavigation" cm:type="ps:feature" cm:class="ps:feature">
@@ -1337,12 +1472,17 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i4I8zp3ex7GrlG5QS" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iiQVQN4GOtVpLjera" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iYEzhO-yEfkixFPs6" cm:type="ps:datetime">2019-11-07T13:01:30.368Z</cm:constant>
+          <cm:constant cm:id="iYEzhO-yEfkixFPs6" cm:type="ps:datetime">2020-02-25T10:07:31.011Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iUmNiduAm1rq02DF5" cm:mimetype="text/plain" cm:encoding="utf-8">SidebarNavigation</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iisPxklVYF9IGHCgR" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature requires classification and consecuently a codebook that is presented in a sidebar. This allows users to use the codebook elements to navigate through the annotations. If clicked on a code, the client will move to an annotation in the document. If clicks again the client will scroll to the next one with the same code.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;Take into account that this currently disables the possibility to create page notes.&lt;/span&gt;&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i-PAhd9FJ1NmvgIJh" cm:name="Canvas" cm:type="ps:toolsetFeature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="ihIu8hv4t75QvtAMz" cm:class="ps:parents">
@@ -1366,7 +1506,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="is_0e1JPFBuhBkDQO" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iy-TP-H87lnt4Oum0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iP4sBtyX3CE9-E0BT" cm:type="ps:datetime">2020-01-27T18:46:42.806Z</cm:constant>
+          <cm:constant cm:id="iP4sBtyX3CE9-E0BT" cm:type="ps:datetime">2020-02-25T10:09:46.157Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1376,6 +1516,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="iYwEm8-VtiB_cN1Q5" cm:mimetype="text/plain" cm:encoding="utf-8">Show an illustration of the annotations within a Canvas model view.
 
 </cm:mimedesc>
+        <cm:mimedesc cm:id="il5lx6DwHrXNJXir4" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;A canvas visualization is a general visualization of the annotation activity. It creates a button in the sidebar. When clicked, a popup is shown with all the annotations done in the current document&amp;nbsp;in a tabular distribution.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i7DSN7eJJwoP5YQrf" cm:name="Navigation" cm:type="ps:feature" cm:class="ps:feature">
@@ -1402,12 +1543,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i4xokChJBZmFaVA0w" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ifWgZEfuVT-yIYuWy" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i507CgZ2IRmGEw7vN" cm:type="ps:datetime">2019-11-07T11:56:19.013Z</cm:constant>
+          <cm:constant cm:id="i507CgZ2IRmGEw7vN" cm:type="ps:datetime">2020-02-25T10:02:08.909Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="izPnD-q26lSie8D9m" cm:mimetype="text/plain" cm:encoding="utf-8">Navigation</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i6e4z8wY_jDGkZ-L8" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups features that let the user navigate throught annotations done on a document.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iN19grbphHN3w26d6" cm:name="Situated" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iqMp0ialKJTQUmqNq" cm:class="ps:parents">
@@ -1435,12 +1579,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="igR3pFM2QIVJpOOid" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i75qunYp2s9ZbCOSA" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="issm0ZttSHEpIWWkC" cm:type="ps:datetime">2019-12-17T11:53:53.254Z</cm:constant>
+          <cm:constant cm:id="issm0ZttSHEpIWWkC" cm:type="ps:datetime">2020-02-25T09:58:54.882Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i2Z5yTXZClXpDQytQ" cm:mimetype="text/plain" cm:encoding="utf-8">Situated</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iDaxwX32TwRZaSMRa" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups how annotations are read in context or when the user is placed over the target document.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i2065vzUUlQLbU8vB" cm:name="IRR" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iP9c1ZRTI0qYrBHWT" cm:class="ps:parents">
@@ -1461,15 +1608,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ipcbuVoc2rlzgOxUJ" cm:type="ps:datetime">2019-11-07T11:57:45.595Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iVAA-eDfpm8X9kLG7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iVmvoIx3_ZFMFDNAw" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="iVmvoIx3_ZFMFDNAw" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iLKvDu1ufLQQP75l9" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ikp6ENQMkPS6jJURH" cm:type="ps:datetime">2020-02-04T16:01:02.732Z</cm:constant>
+          <cm:constant cm:id="ikp6ENQMkPS6jJURH" cm:type="ps:datetime">2020-02-25T10:16:15.586Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ikdDoZnvoFnkCH58o" cm:mimetype="text/plain" cm:encoding="utf-8">IRR</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ibzDQWT8i5XHdHlU1" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;Non-developed feature.&lt;/span&gt; It is a specialization of a spreadsheet visualization where it is shown in the spreadsheet if multiple annotators agree or disagree in classification activity.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i14bKbeRjWqUbd0zH" cm:name="GoogleSheetConsumer" cm:type="ps:toolsetFeature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iWlvyMrgNlFPmfdI1" cm:class="ps:children">
@@ -1480,6 +1630,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:relations cm:id="iY6ypdAR1V_xFbRLV" cm:class="ps:parents">
         <cm:relation cm:id="i1LMRxH-cFMmj5S5s" cm:type="ps:parent">
           <cm:target cm:id="ixLh6QBazolvVwM0p">./itA1S9T7cBw2iXff8</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="itkpwQTcz1202XWC4" cm:class="ps:dependencies">
+        <cm:relation cm:id="iKL48qFyd9SJHWJM9" cm:type="ps:requires">
+          <cm:target cm:id="iOUc8e_FrnLyShJm-">iivhJRwmojkiJvYc5/ieFZrnU5hSRcf0lcM</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -1493,7 +1648,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iyoZcdE6N0v1kCJUO" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iH_O8ySA4PxNGN-59" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="imSNSRsDjKE7_Cmd1" cm:type="ps:datetime">2020-01-27T17:14:04.428Z</cm:constant>
+          <cm:constant cm:id="imSNSRsDjKE7_Cmd1" cm:type="ps:datetime">2020-02-25T10:17:48.272Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ivoGkUam8WoLPHvEr" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="iYopaaPrxFqW84R6a" cm:type="ps:string"></cm:constant>
@@ -1505,6 +1660,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iA9Lfuv6_R0MOgePc" cm:mimetype="text/plain" cm:encoding="utf-8">Show the annotations in the correspondent cells of a spreadsheet.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="iFeJ_RDxnj-MXhv9I" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Creates a spreadsheet out of the annotations done with a codebook&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iscJfRCn09JLPpJJY" cm:name="MoodleReport" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1532,15 +1688,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i86Xy7mo59sMog71w" cm:type="ps:datetime">2019-11-07T11:57:45.597Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iGlH7XF3BBvqXKan3" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="it6_CCr2_HUhvP0xL" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="it6_CCr2_HUhvP0xL" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iDkZgLEd7w2kJgvlS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iHfKSWV8EaPoaticu" cm:type="ps:datetime">2020-01-13T11:01:43.680Z</cm:constant>
+          <cm:constant cm:id="iHfKSWV8EaPoaticu" cm:type="ps:datetime">2020-02-25T10:23:19.108Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i30yTz7HvB5t5Arsv" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleReport</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="inJktM2CgMjjZhfXj" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Web annotation client reports to moodle automatically maps annotation activity to moodle evaluation rubrics. Requires that the codebook was defined using Moodle rubric feature.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iay0jThzzCTt0M6ma" cm:name="MoodleComment" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iUJhnt8WIlo8UrtXJ" cm:class="ps:dependencies">
@@ -1564,15 +1723,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ifwRT4bEDl0lgY004" cm:type="ps:datetime">2019-11-07T11:57:45.605Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iZvnQ4p56i3XSGF7j" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iUCpuJFZrkTd2JSvd" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iUCpuJFZrkTd2JSvd" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iO5VOKIBM8GWx-8iS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iRUZFqG_nraPWUWP6" cm:type="ps:datetime">2020-01-13T11:00:05.141Z</cm:constant>
+          <cm:constant cm:id="iRUZFqG_nraPWUWP6" cm:type="ps:datetime">2020-02-25T10:24:06.141Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iC4YvkFX6pdWN8cJl" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleComment</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i50JLje6CJw9tvObc" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Web annotation client reports automatically to moodle discussion between the teacher and the student to Moodle comments section in the students assignment.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iMpzmjS26NPYu9VTY" cm:name="MindMeisterConsumer" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i05SdndJJvg1lp1ZZ" cm:class="ps:parents">
@@ -1591,12 +1753,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iHkaHzCtOKEJ5rJTu" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iS4oyRwRMy5zcQLtv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i562M8WoxdAeQSU4x" cm:type="ps:datetime">2019-11-07T11:59:04.125Z</cm:constant>
+          <cm:constant cm:id="i562M8WoxdAeQSU4x" cm:type="ps:datetime">2020-02-25T10:21:07.570Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iJSnEu4xASNHorPfF" cm:mimetype="text/plain" cm:encoding="utf-8">MindMeister</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="im1kP7KXu_GQKpjnT" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;Non-developed feature. &lt;span style=&quot;color: #000000;&quot;&gt;This feature creates a mind map in Mindmeister using its API, where annotations, grouping in nodes by the codebook that the user has defined or taken from the one configured from Mindmeister.&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="itA1S9T7cBw2iXff8" cm:name="Outsourced" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iSut-EIYSft4HZ--4" cm:class="ps:parents">
@@ -1622,7 +1787,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="itH2i_hqtAAaCj5Ue" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i8Y5kdZI7rkmhNTa5" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ikYlU8xUQyNTTkHxi" cm:type="ps:datetime">2019-12-17T11:54:04.149Z</cm:constant>
+          <cm:constant cm:id="ikYlU8xUQyNTTkHxi" cm:type="ps:datetime">2020-02-25T10:14:37.933Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1630,6 +1795,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iNoorRXF41HqoLkf6" cm:mimetype="text/plain" cm:encoding="utf-8">The annotations are visualized in different ways in order to satisfy different needs of the users.</cm:mimedesc>
+        <cm:mimedesc cm:id="iMa8AwA9yt-BenWm7" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups mechanisms for visualization of web annotations in a third-party service on the web. Here, it provides no rendering but resort to API-calls to export annotations to third-parties. This requires the existance of a mapping from W3C JSON-LD format (WACline export format) to some API parameter structure.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iQ8yOJfMoM51p9qLP" cm:name="MoodleConsumer" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1660,12 +1826,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i_Y1NpJRN01P3T28l" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="il7S6nMKJ9ZAAKvCF" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iETr_ZhcCdRodipZY" cm:type="ps:datetime">2019-11-07T12:55:23.443Z</cm:constant>
+          <cm:constant cm:id="iETr_ZhcCdRodipZY" cm:type="ps:datetime">2020-02-25T10:21:52.909Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iL-OitP8M2UlD2-xn" cm:mimetype="text/plain" cm:encoding="utf-8">Moodle</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i5JM9a87PKMlvEoOx" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups visualizations from annotations that can be done in Moodle.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iZt_QaIU0OC-6uFyb" cm:name="Manual" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="igsiIdT3m-uFNdgfI" cm:class="ps:parents">
@@ -1684,7 +1853,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="it6X3Ci7uIogRaL3h" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="idlm7didoH3k1l_Sr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i7oKeqi6pV_9ju2UB" cm:type="ps:datetime">2019-11-07T11:59:22.656Z</cm:constant>
+          <cm:constant cm:id="i7oKeqi6pV_9ju2UB" cm:type="ps:datetime">2020-02-25T13:29:40.799Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1692,6 +1861,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iIpiYVLG4JgpExu1j" cm:mimetype="text/plain" cm:encoding="utf-8">The user can choose manually in which group he wants to annotate.</cm:mimedesc>
+        <cm:mimedesc cm:id="i5lOmIFCb8ECxjsM0" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;Usually annotation systems provide a mechanism for the user to choose with which one is going to classify in the annotation activity. In the sidebar it is shown a dropdown list with all&amp;nbsp;the codebooks available to annotate.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iMFQwhQg2WH3TBqpE" cm:name="ApplicationBased" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1711,7 +1881,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="itiWs2dlu1U0OQPMx" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ij-2UuuHfd2oDyEc5" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iYaDJRJ-7DhD-biY_" cm:type="ps:datetime">2019-11-07T11:59:22.658Z</cm:constant>
+          <cm:constant cm:id="iYaDJRJ-7DhD-biY_" cm:type="ps:datetime">2020-02-25T13:32:20.901Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1720,6 +1890,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iMgh2l_mmTGVs2_3X" cm:mimetype="text/plain" cm:encoding="utf-8">The application is in charge of selecting the group.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="il1DF8HiBDOp4ulm8" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;A predefined and unique codebook is defined and always it is used the same. It can be modified if Operation-&amp;gt;Update is selected, but it will be unique in the annotation client.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="icBU8v-JYVylwHG2w" cm:name="MoodleResourceBased" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1744,12 +1915,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iCwJl0YMFU2SzG04U" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i8V-Y9xw4wCZjMs08" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ieO_5hMdqTqDICUhe" cm:type="ps:datetime">2019-11-07T11:59:22.659Z</cm:constant>
+          <cm:constant cm:id="ieO_5hMdqTqDICUhe" cm:type="ps:datetime">2020-02-25T13:35:54.815Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iVpIV3z3-DLJMqKW2" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleResourceBased</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iZ6DpVS0WvJ0MzRKC" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature takes into account the target opened and automatically selects the corresponding codebook to evaluate opened document. The file must be downloaded from Moodle&apos;s student assignment upload page&amp;nbsp;and the system (if codebook is created using Create-&amp;gt;Outsourced-&amp;gt;Moodle) will automatically select and show the codebook to assess that document.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ibvhVSOvqx-0TmtKP" cm:name="CodebookRead" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="ib_hWVB7_UqxFfGNa" cm:class="ps:children">
@@ -1775,7 +1949,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iN14vRJACUoLfREHF" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iOLfamcXk7MBp7vCZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iOdtkLwl9vPw2Sidy" cm:type="ps:datetime">2019-11-07T12:02:08.459Z</cm:constant>
+          <cm:constant cm:id="iOdtkLwl9vPw2Sidy" cm:type="ps:datetime">2020-02-25T13:27:46.755Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1784,6 +1958,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="ihlvzFRUaWC9XAri9" cm:mimetype="text/plain" cm:encoding="utf-8">Provide the user with the option of selecting the group in which the annotations are done.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="imouXNVcE072fMU5N" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups how codebook is selected when a document is opened to be annotated.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i-BUxJ1Ob2OrOYWMg" cm:name="RenameCodebook" cm:type="ps:feature" cm:class="ps:feature">
@@ -1805,10 +1980,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iHhQCYWZ2pA0oYG-I" cm:type="ps:datetime">2019-11-07T11:59:22.660Z</cm:constant>
         </cm:property>
         <cm:property cm:id="izPXAXELnJwYZYQ0h" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iz2Z4ovWggFCOdyVw" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iz2Z4ovWggFCOdyVw" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iBviM-iEUyOif5b10" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ietD_EY0UuPlXUxep" cm:type="ps:datetime">2020-01-13T11:09:43.417Z</cm:constant>
+          <cm:constant cm:id="ietD_EY0UuPlXUxep" cm:type="ps:datetime">2020-02-25T13:20:45.918Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1816,6 +1991,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="ib-4h0ZOUkMeqKY6Q" cm:mimetype="text/plain" cm:encoding="utf-8">Rename a group?</cm:mimedesc>
+        <cm:mimedesc cm:id="iN4puXc2ED_Pv0xlY" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;A codebook has a name that it is set when the codebook is created. This feature allows renaming of the codebook.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iqfzoFbwkQ3zf6BoO" cm:name="ExportCodebook" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1837,10 +2013,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iFIXEQ1Fg2nRFRkx6" cm:type="ps:datetime">2019-11-07T11:59:22.662Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i5dUcvki6DBH8EraD" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iXL-t4NuP2hya_2iS" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iXL-t4NuP2hya_2iS" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iO2u9nLDm2Z-YYqA-" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iDauAfvEm4NX6gEpS" cm:type="ps:datetime">2020-01-13T11:08:32.173Z</cm:constant>
+          <cm:constant cm:id="iDauAfvEm4NX6gEpS" cm:type="ps:datetime">2020-02-25T15:16:14.212Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1848,6 +2024,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="i0ybr1BwjpFL-JcyR" cm:mimetype="text/plain" cm:encoding="utf-8">Export a group into a format that can be imported in a web annotator application.</cm:mimedesc>
+        <cm:mimedesc cm:id="ipJkofwzqN8dmwgFV" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature if selected allows users to export created codebooks to a json file. This one can be shared and imported at any time. The export button is shown opening the codebook selection dropdown (in Manual selection mode) and opening the dropdown of the codebook that you want to export.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="ib3-dlwNr_ia0jptU" cm:name="ImportCodebook" cm:type="ps:feature" cm:class="ps:feature">
@@ -1869,10 +2046,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iUe8rJ5Q54Y-97cso" cm:type="ps:datetime">2019-11-07T11:59:22.663Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i_4o-LtKIlHQ7Ls6v" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iz2miwZalnYYSkCh3" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="iz2miwZalnYYSkCh3" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iFrKihYoWHSedL5yJ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="icojBL3IUmrpiNI5j" cm:type="ps:datetime">2020-01-13T11:08:58.525Z</cm:constant>
+          <cm:constant cm:id="icojBL3IUmrpiNI5j" cm:type="ps:datetime">2020-02-25T15:15:36.887Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1880,6 +2057,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="i2zgmjv7n2xchmQgC" cm:mimetype="text/plain" cm:encoding="utf-8">Import a group into the application.</cm:mimedesc>
+        <cm:mimedesc cm:id="i_wgV6nARi1TeWAIs" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature allows importing of codebooks described in json format and defined by the same (or other) annotation tool created from WacLine. It creates a button that is shown when opening the dropdown of the codebook selection in Manual mode.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="irmd0pttddYIzA1qB" cm:name="CodebookDelete" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1901,15 +2079,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iUbxVFnJeKySzt0X1" cm:type="ps:datetime">2019-11-07T11:59:22.664Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ieXklrtfZgWOWc-ew" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i5SXqSvjaQVTW8IKA" cm:type="ps:string">xabiergarmendia</cm:constant>
+          <cm:constant cm:id="i5SXqSvjaQVTW8IKA" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ikZCxAvMRKV1Tm2tN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ipkt1bKbA6Ete3oua" cm:type="ps:datetime">2020-01-13T10:14:46.701Z</cm:constant>
+          <cm:constant cm:id="ipkt1bKbA6Ete3oua" cm:type="ps:datetime">2020-02-25T13:23:50.686Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i9bQAbnh6Yxr2q9VR" cm:mimetype="text/plain" cm:encoding="utf-8">Delete</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="imWHnFCqDdX4UtEDk" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature provides the functionality to delete a codebook. Currently, it is only possible to delete a codebook if manual selection of codebooks is set. If the annotation server provides mechanisms to delete annotation groups it is possible to delete them manually too.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iQeiEpiGYC0HWicyS" cm:name="CodebookCreate" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="ixEZmX6knSEAiLGlV" cm:class="ps:children">
@@ -1934,7 +2115,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ivzkjkKjIDlxsOvm4" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iNnP5jznHL43uZqRp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iQ_nDiroL64VPNaFC" cm:type="ps:datetime">2019-11-12T15:30:30.122Z</cm:constant>
+          <cm:constant cm:id="iQ_nDiroL64VPNaFC" cm:type="ps:datetime">2020-02-25T13:39:40.263Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1943,6 +2124,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iZl0lUVGxB17yfuhA" cm:mimetype="text/plain" cm:encoding="utf-8">Create a group in which the annotations are done.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="iCg9d8GWbv9YasTdp" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups different mechanisms to create codebooks. All of them are alternative, so only one can be selected.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="io_YSpZJ6bkF4zw2y" cm:name="CodebookOperation" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -1972,12 +2154,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iZ00jeeSediRykxrq" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i5mqLOUrW22AtztFZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="it-VoxINlRGO2YJz3" cm:type="ps:datetime">2019-11-12T15:15:37.008Z</cm:constant>
+          <cm:constant cm:id="it-VoxINlRGO2YJz3" cm:type="ps:datetime">2020-02-25T13:14:24.764Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i8102UOtNV3XKfvQz" cm:mimetype="text/plain" cm:encoding="utf-8">Operation</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iIrD9T4NPSBThN_JR" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;The feature groups the operations that can be done over a codebook, create, read, update and delete.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="idx775ZgSbGl_gG97" cm:name="GoogleSheetProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iMVYmjWCo_ymfhJQB" cm:class="ps:parents">
@@ -1996,10 +2181,13 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i6qVjuklYBHC4ymZV" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iilI0eCKYvctJyi4q" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMSALfO69WXZwbzUp" cm:type="ps:datetime">2020-01-15T10:04:13.052Z</cm:constant>
+          <cm:constant cm:id="iMSALfO69WXZwbzUp" cm:type="ps:datetime">2020-02-25T13:49:10.871Z</cm:constant>
         </cm:property>
         <cm:property cm:id="imgLFrqWuPYWn4WSf" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="ixOmPqzOqPX8K_vdL" cm:type="ps:string"></cm:constant>
+          <cm:desc>
+            <cm:mimedesc cm:id="i7mazcntotS5NySEf" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This attribute is the clientId required to let web annotation client access to the Google Sheets API. You have to create a Google Sheets client to consume google sheets using its API (e.g.: to use this feature). You can find further information of how to create a clientId here: &lt;a href=&quot;https://developers.google.com/sheets/api/guides/authorizing&quot;&gt;https://developers.google.com/sheets/api/guides/authorizing&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
+          </cm:desc>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2008,6 +2196,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iX-8W4bcYalpm8q9T" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from the cells of the spreadsheet.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="igUvUNnzh_ux_CKvC" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature allows creation of codebooks from spreadsheets hosted in Google Sheets. When the user browses a google sheet on the browser, clicking on the extension button will create a codebook based on the information provided in the spreadsheet. This specification must follow a particular structure (first row for Themes and second row using data validation the corresponding codes). You can see a sample spreadsheet here:&amp;nbsp;&lt;a href=&quot;https://docs.google.com/spreadsheets/d/1__DCJvzGya1_an8i-uhF8cOIrLnHr8NuXjkixZsiwWw/edit#gid=0&quot;&gt;https://docs.google.com/spreadsheets/d/1__DCJvzGya1_an8i-uhF8cOIrLnHr8NuXjkixZsiwWw/edit#gid=0&lt;/a&gt;. Further documentation of spreadsheet&amp;nbsp;layout that the client can consume is defined here: &lt;a href=&quot;https://github.com/haritzmedina/highlightAndGo/wiki/For-end-users#spreadsheet-layout&quot;&gt;https://github.com/haritzmedina/highlightAndGo/wiki/For-end-users#spreadsheet-layout&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iY5UzNxKFYLzcy1oG" cm:name="MoodleProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -2027,7 +2216,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iYmkH8GX3MYbx9UBA" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iMe1_6e-wQekLpt0V" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i21piN7nSs5JbWvN_" cm:type="ps:datetime">2019-11-13T11:34:20.569Z</cm:constant>
+          <cm:constant cm:id="i21piN7nSs5JbWvN_" cm:type="ps:datetime">2020-02-25T14:00:24.037Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2036,6 +2225,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iYfZI1S3Kvl6deGf9" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook mapping the rubric of the task that will be performed.
 </cm:mimedesc>
+        <cm:mimedesc cm:id="i02TTJFumpDWXnH3b" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature consumes a rubric defined in Moodle and creates a codebook that allows users to annotate documents. See this video to learn how to create a rubric in Moodle and how codebook is created out of the rubric: &lt;a href=&quot;https://youtu.be/4ZPBlIibqzw?t=19&quot;&gt;https://youtu.be/4ZPBlIibqzw?t=19&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="isIwh-UJzrQOnW-DO" cm:name="MindMeisterProvider" cm:type="ps:feature" cm:class="ps:feature">
@@ -2055,12 +2245,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iLLgA-JHoAWPxRLMk" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="idp3tdbPxOnVeSFoi" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iVTZSot5b6xUcz1oH" cm:type="ps:datetime">2019-11-13T11:34:31.249Z</cm:constant>
+          <cm:constant cm:id="iVTZSot5b6xUcz1oH" cm:type="ps:datetime">2020-02-25T14:00:55.776Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ichTkqACi75mT_iDh" cm:mimetype="text/plain" cm:encoding="utf-8">MindMeister</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iDvou9RJtYRtgHGwR" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;&lt;span style=&quot;color: #ff0000;&quot;&gt;This feature is not implemented yet.&lt;/span&gt; It will be able to consume&amp;nbsp;nodes from&amp;nbsp;mindmap&amp;nbsp;in mindmeister and create a codebook to classify annotations based on ideas defined in the mindmap.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iV1VTsMrn7e6nACxf" cm:name="CodebookOutsourced" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i-IK9Li0oWmfreH7q" cm:class="ps:children">
@@ -2086,12 +2279,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iBxdcy7jf25fZ1pNU" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iJpWm9mAkep5khGRK" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ibxYbcpNPex5WELa1" cm:type="ps:datetime">2020-01-08T18:14:26.112Z</cm:constant>
+          <cm:constant cm:id="ibxYbcpNPex5WELa1" cm:type="ps:datetime">2020-02-25T13:42:16.493Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ipWQ_HdbQ5gMstZXJ" cm:mimetype="text/plain" cm:encoding="utf-8">Outsourced</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iSCGVOUazDZDQSti3" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups features to consume the codebook from a third-party service.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iDY06iZyA7N-YzILL" cm:name="Multivalued" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iRSICnhr3x4y7S1rT" cm:class="ps:parents">
@@ -2107,15 +2303,20 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iKtF0g7QQWmp9jXIG" cm:type="ps:datetime">2019-11-07T11:59:22.675Z</cm:constant>
         </cm:property>
         <cm:property cm:id="if9v2-dcetQtrtc3l" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ikdNTxFWme7RtPKMX" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="ikdNTxFWme7RtPKMX" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iNyKOHt6zkOrE7NaV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iy2xl7tNlsfmDbH76" cm:type="ps:datetime">2020-02-19T14:14:48.488Z</cm:constant>
+          <cm:constant cm:id="iy2xl7tNlsfmDbH76" cm:type="ps:datetime">2020-02-25T14:20:13.683Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i47tHb1wB-FaioD5Q" cm:mimetype="text/plain" cm:encoding="utf-8">Multivalued</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iPfGy3ec5fTE_L-jy" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If the feature is selected, it is possible to classify with more than one code pertaining to a theme in the codebook. For example, a codebook that classifies applications, an application have programming languages, and can be used jointly javascript and typescript. If this feature is selected, it is possible to annotate evidences with both languages.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;If the feature is deselected, it is only possible to classify with one code for each theme in the codebook. For example, a student is evaluated with a criterion, and possible marks are 0, 5 or 10 points. The domain doesn&apos;t allow that the student for a criterion to have more than one mark. So if multivalued is deselected, all the annotations in a theme will have the same code, and if changed it is changed in all the annotations for that theme.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i1x3iYEoGqxxR_L7o" cm:name="CodebookTypology" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="i_CszjxfdSCDGRp30" cm:class="ps:parents">
@@ -2139,12 +2340,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iK2Ya-pY9Y8DFpo9O" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i4kxXcfg_32YDGTBE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="isiPwjaLYxb7fcNEt" cm:type="ps:datetime">2019-11-13T09:46:48.015Z</cm:constant>
+          <cm:constant cm:id="isiPwjaLYxb7fcNEt" cm:type="ps:datetime">2020-02-25T14:03:48.682Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iBvDWMDQu5eDE8eDy" cm:mimetype="text/plain" cm:encoding="utf-8">Typology</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iGCHH4siEa-0on7nP" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups the typology of the Codebook that can be created, e.g.: a taxonomy, a structured vocabulary,...&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iv59_Ug0UN-UPdFmv" cm:name="Alphabetical" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="inWNKyZW2yAofAT_F" cm:class="ps:parents">
@@ -2163,12 +2367,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ijxZxXlPDn17_b_v6" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ioHMn1PxeD6kHfqK8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iOA9v3VogXEyDq568" cm:type="ps:datetime">2019-11-07T11:59:22.679Z</cm:constant>
+          <cm:constant cm:id="iOA9v3VogXEyDq568" cm:type="ps:datetime">2020-02-25T14:22:50.979Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iRuxNgGPOpIaZ3buC" cm:mimetype="text/plain" cm:encoding="utf-8">Alphabetical</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iue-r5jKzECP9Nfuk" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Orders themes and its codes alphabetically, facilitating code look up to annotate.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="idi9dgho2A67zm07I" cm:name="Date" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i3_HTzRUQkHCi4WA4" cm:class="ps:parents">
@@ -2187,12 +2394,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iLC96Uv4UoFPuX-iv" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i_OEDOWHjU_B7s7d8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i1dTGZxs096grOTQQ" cm:type="ps:datetime">2019-11-07T11:59:22.680Z</cm:constant>
+          <cm:constant cm:id="i1dTGZxs096grOTQQ" cm:type="ps:datetime">2020-02-25T14:24:10.051Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iMozKG5dPyM5ZC4-z" cm:mimetype="text/plain" cm:encoding="utf-8">Date</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i_-67yHKD6SIw196B" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Codebook elements are ordered by date, where the most recent one is shown at the top and the oldest one at the bottom. It is useful when new terms are added and the annotation classification practice requires to use the newest ones more frequently.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iulsA5J7emnGLZy5d" cm:name="Number" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i0M45OzsEM58AL3IO" cm:class="ps:parents">
@@ -2211,12 +2421,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ilDY0_gEqawWnFWQa" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iHV4fcXFEqo33xHHi" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iuEp0Zp3Uh1kP8Hef" cm:type="ps:datetime">2019-11-07T11:59:22.681Z</cm:constant>
+          <cm:constant cm:id="iuEp0Zp3Uh1kP8Hef" cm:type="ps:datetime">2020-02-25T14:26:46.774Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="itwZPJLCOedTVfDgW" cm:mimetype="text/plain" cm:encoding="utf-8">Number</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iYn4FIkUAPAXZu-gX" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Codebook is ordered in numerical order. In some cases it more convenient to order by number. E.g.: 2 is lower than 5 and than&amp;nbsp;10 and than 101, but if it is ordered alphabetically it will show 10, 101, 2, 5. This feature will order them correctly from lowest to highest: 2, 5, 10, 101.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i_fDWVAwf7hTsunWS" cm:name="Order" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="i3oWNFcFFDv2f2WBG" cm:class="ps:parents">
@@ -2242,12 +2455,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iHNhLD-hqFJ389Y52" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i-ihcRew3T_PDJM-p" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iLKuAf1UzgIDYQ79m" cm:type="ps:datetime">2019-11-07T11:59:22.677Z</cm:constant>
+          <cm:constant cm:id="iLKuAf1UzgIDYQ79m" cm:type="ps:datetime">2020-02-25T14:22:13.160Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iQNkhvTw96PaYAM_5" cm:mimetype="text/plain" cm:encoding="utf-8">Order</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iB44xHBvDOQt7UGY9" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;How are ordered the codebook elements. In some cases an alphabetical order is more appropriate, while in others a numerical order or order by creation date is preferable.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iQ7weqylRhjWxFRT7" cm:name="Sidebar" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iJs_BeUn5WelPKWhp" cm:class="ps:parents">
@@ -2266,12 +2482,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iz6L9dDxgjtLllNIm" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iGhNfySKZ7fnbcKg1" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i13JiDTepd67_-UoE" cm:type="ps:datetime">2019-11-07T11:59:22.684Z</cm:constant>
+          <cm:constant cm:id="i13JiDTepd67_-UoE" cm:type="ps:datetime">2020-02-25T14:29:56.965Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iu0szNZRhFkXoLogb" cm:mimetype="text/plain" cm:encoding="utf-8">Sidebar</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iXzvyJhLteexsN2hh" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Shows the codebook in the sidebar as buttons in different colors.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iKYgefvL6VodrIIk4" cm:name="Interface" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iX7ZfH6dQL1NBqcDd" cm:class="ps:parents">
@@ -2295,12 +2514,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iLaZNJQZnKTyEsCMS" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iafvs2VhAEkEgBaSd" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ije2pNwRVqQOyhHW8" cm:type="ps:datetime">2019-11-07T11:59:22.683Z</cm:constant>
+          <cm:constant cm:id="ije2pNwRVqQOyhHW8" cm:type="ps:datetime">2020-02-25T14:29:15.575Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iBou7cI0FkHh-bzCy" cm:mimetype="text/plain" cm:encoding="utf-8">Interface</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iMEHUyRpAHpAZquLp" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups codebooks possible representations. Depending on the annotation practice it is more convenient to be placed in the sidebar (e.g.: to allow navigation among codes)&amp;nbsp;as other tools indicate that it is better to show it over the highlight content as a popup (e.g.: to reduce interaction with the mouse). Currently it is only supported the presentation in a sidebar.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iXgPLCFXiXZqhgEtZ" cm:name="Presentation" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
       <cm:relations cm:id="iFdbhTsO8PuNZAbI7" cm:class="ps:parents">
@@ -2325,12 +2547,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ic0GMPKfYzisB7oEp" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i-L50JaL6Fh-xQXsH" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ivBxEwPKemuuXHyR5" cm:type="ps:datetime">2019-11-07T11:59:22.677Z</cm:constant>
+          <cm:constant cm:id="ivBxEwPKemuuXHyR5" cm:type="ps:datetime">2020-02-25T14:21:17.039Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iI8j5cx1uXa8Xi6W8" cm:mimetype="text/plain" cm:encoding="utf-8">Presentation</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i2Uhnt3qNU2eEcCSz" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups how codebook is, captures the GUI variations for the codebook. Interface and order of elements of the codebook.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="ieFZrnU5hSRcf0lcM" cm:name="Codebook" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iKgc7IZvUeCXBdIRI" cm:class="ps:children">
@@ -2361,15 +2586,19 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ii2MyEsquEtkp8Iec" cm:type="ps:datetime">2019-11-07T11:59:22.654Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i6jZWzkfVj7vWgCqL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i4wRslDI1iw78NQn4" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="i4wRslDI1iw78NQn4" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iQtpVQ1SvAtFBkohn" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ixZ7OeYVwi_nWMMfu" cm:type="ps:datetime">2020-02-18T08:44:26.769Z</cm:constant>
+          <cm:constant cm:id="ixZ7OeYVwi_nWMMfu" cm:type="ps:datetime">2020-02-25T13:21:42.072Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="in1JG_YB2Ev-VD3oX" cm:mimetype="text/plain" cm:encoding="utf-8">Codebook</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iQvhHbgk6Sz9JHxxe" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups codebook related features. The codebook captures the practices of conducting classification annotation, collecting a controlled vocabulary or taxonomy used to classify annotations. This feature requires Classifying purpose.&lt;/p&gt;
+&lt;p&gt;Each codebook has its own annotation group, so creating or deleting annotation codebooks implies creation and deletion of groups respectively.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iv-1TW9HrC_mqG0PE" cm:name="BuiltIn" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i_8dT0D0rRduQvJ0g" cm:class="ps:parents">
@@ -2391,15 +2620,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ir_2SQy0OeTTDE0bf" cm:type="ps:datetime">2019-11-07T12:01:19.936Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iT1fpGk_Z_WPGzR02" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i29kZVWYPCo4uup2n" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="i29kZVWYPCo4uup2n" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iRYJQ9vbcgQzea3Jb" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ioCteT6U2q4DrG2vD" cm:type="ps:datetime">2020-02-21T16:14:10.724Z</cm:constant>
+          <cm:constant cm:id="ioCteT6U2q4DrG2vD" cm:type="ps:datetime">2020-02-25T13:40:56.693Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i2_KSJGnC64Nnuv3l" cm:mimetype="text/plain" cm:encoding="utf-8">BuiltIn</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i9ckZBCwXSZCLqr8K" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;&amp;nbsp;The annotation client creates a predefined codebook. This predefined codebook can be modified in file input/app/scripts/codebook/operations/create/builtIn/BuiltInCodebookScheme.js&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iL9clt1_lu8MGDEqZ" cm:name="CodebookUpdate" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="ihZB5M1ZsATrctP6-" cm:class="ps:dependencies">
@@ -2428,12 +2660,16 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iBouChqEyv1Iz-Fvo" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iMumw3as4a3JKKkDq" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iHlMLTSjk7_oajYZ2" cm:type="ps:datetime">2019-11-07T12:13:21.662Z</cm:constant>
+          <cm:constant cm:id="iHlMLTSjk7_oajYZ2" cm:type="ps:datetime">2020-02-25T13:19:53.043Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ivmnwMleu9PaB-Cxh" cm:mimetype="text/plain" cm:encoding="utf-8">Update</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iUIQR7RRu4HK2H2hM" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature permits users to modify the codebook (controlled vocabulary to classify)&amp;nbsp;that they are annotating with. That means that this feature allows&amp;nbsp;creation of new concepts, modification of name and its description and deletion&amp;nbsp;in runtime.&lt;/p&gt;
+&lt;p&gt;Need to mention that modifications and deletions must be done by the creator of the concept in a collaborative setting (e.g.: annotation server Hypothes.is)&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="i2E8IgoKCVFFmVA-u" cm:name="Hierarchy" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i5PYxFXQGziXy9SsT" cm:class="ps:parents">
@@ -2457,12 +2693,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i0AQGrqsqmkVu0zUQ" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="invfJ7Il-ahOs4wn6" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ia__AKHK-6WkXKy66" cm:type="ps:datetime">2019-11-07T12:09:57.674Z</cm:constant>
+          <cm:constant cm:id="ia__AKHK-6WkXKy66" cm:type="ps:datetime">2020-02-25T14:14:51.125Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i6yba5usjVsUyjeBJ" cm:mimetype="text/plain" cm:encoding="utf-8">Hierarchy</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="izlj0Wm_0JHaQz_eS" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If selected, codebooks are able to group codes into themes, creating a hierarchized codebook to classify annotations.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iL9f02WrlfXgKAbG0" cm:name="CodebookImportExport" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="i-zFYtVx4d3989cpL" cm:class="ps:parents">
@@ -2487,12 +2726,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iRC8SGXe9K0A1_thn" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iMIbBdgjDgpsPo6Qk" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMoKYagR1Ij1YeThl" cm:type="ps:datetime">2020-01-10T16:37:05.129Z</cm:constant>
+          <cm:constant cm:id="iMoKYagR1Ij1YeThl" cm:type="ps:datetime">2020-02-25T15:11:27.685Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iEj5TQx9pATLkwyu2" cm:mimetype="text/plain" cm:encoding="utf-8">ImportExport</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="imgbLiySwxTuE5MLF" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups features related to codebook exporting and importing capabilities. This allows easy shareability and reuse&amp;nbsp;of codebooks.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iRrB5fF_dFUOMEiyx" cm:name="Unsituated" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iNvO6Q3wScVR0fyxs" cm:class="ps:parents">
@@ -2513,15 +2755,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iiwvLSip6JGpT6MXE" cm:type="ps:datetime">2020-02-11T10:29:37.226Z</cm:constant>
         </cm:property>
         <cm:property cm:id="inrHpqWdnOswyVg9m" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i1OPAaHsISOLxgOmi" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="i1OPAaHsISOLxgOmi" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iY23FolVcAlrnArRu" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i3hmCICOKZp3JB4Qe" cm:type="ps:datetime">2020-02-11T10:29:49.487Z</cm:constant>
+          <cm:constant cm:id="i3hmCICOKZp3JB4Qe" cm:type="ps:datetime">2020-02-25T12:46:06.565Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i3XcBkzp_jr5cImeY" cm:mimetype="text/plain" cm:encoding="utf-8">Unsituated</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i_MUce6docLuv98PM" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature groups how annotations are read out of context but are not part of a third-party service on the web.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
     <cm:element cm:id="iTZJAJOQLr97OFA91" cm:name="AnnotationList" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="imjWtzgvel_YWircY" cm:class="ps:parents">
@@ -2537,15 +2782,18 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i3p0IvxKd5p3pLdl3" cm:type="ps:datetime">2020-02-11T10:29:49.487Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iuCOcG5-zutqFDdfE" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i3wIrr8ORGBFyjWiW" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="i3wIrr8ORGBFyjWiW" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="itHImikPzXqJusrTz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iQVhrG0VIk7n6-93A" cm:type="ps:datetime">2020-02-11T10:29:49.487Z</cm:constant>
+          <cm:constant cm:id="iQVhrG0VIk7n6-93A" cm:type="ps:datetime">2020-02-25T12:48:58.431Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="idgjSnLCoxI6pabtx" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotationList</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="im5OnTkbSFzngXauy" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature shows a button in the sidebar. If user clicks on it, a new browser tab will be opened and it will show annotations done in form of a list. In this view it is possible to search by user, tag and so on. If browserStorage annotation server is selected, this feature is a pre-alpha feature so may not work as expected in annotation searching.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
   </cm:elements>
 </cm:consulmodel>
