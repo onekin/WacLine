@@ -68,6 +68,12 @@ class ReadAnnotation {
     clearInterval(this.reloadInterval)
     // Destroy annotations clean interval if exist
     clearInterval(this.cleanInterval)
+    // PVSCL:IFCOND(UserFilter, LINE)
+    // Destroy user filter
+    if (this.userFilter) {
+      this.userFilter.destroy()
+    }
+    // PVSCL:ENDCOND
   }
 
   initReloadAnnotationsEvent (callback) {
