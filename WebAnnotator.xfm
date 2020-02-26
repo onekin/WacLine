@@ -437,14 +437,14 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iY27-csrDKRBnAKbT" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i1rsoGCwAL6FvI9FE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iKQYmRd8XRDCwHPlP" cm:type="ps:datetime">2020-02-25T09:01:38.425Z</cm:constant>
+          <cm:constant cm:id="iKQYmRd8XRDCwHPlP" cm:type="ps:datetime">2020-02-26T08:42:06.740Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iVFa2K7zXk6lR5rno" cm:mimetype="text/plain" cm:encoding="utf-8">Selector</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="ibkxMgXEp6c3357xX" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature enables text fragments annotations over a document, where the user selects a fragment. If not selected it is only possible to create document level annotations.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="ibkxMgXEp6c3357xX" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature enables text fragments annotations over a document, where the user selects a fragment.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="ivkR0Fg80lOpvss8j" cm:name="URL" cm:type="ps:feature" cm:class="ps:feature">
@@ -576,12 +576,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="ixe1liqRpnKk9_QmQ" cm:class="ps:children">
-        <cm:relation cm:id="i7Z9pHEGn_yfKRzTl" cm:type="ps:mandatory">
+        <cm:relation cm:id="i7Z9pHEGn_yfKRzTl" cm:type="ps:mandatory" cm:range="n">
           <cm:target cm:id="ihUvs8jLyig1NvhfY">./ixlunvy0cZpkuROiF</cm:target>
           <cm:target cm:id="igZtdrIGimX-vj9co">./iQdbsVXouENbMee3e</cm:target>
-        </cm:relation>
-        <cm:relation cm:id="icrc1w8g5E7L2lv0z" cm:type="ps:optional" cm:range="[0,n]">
-          <cm:target cm:id="igM5ESNSdpFjjzBW0">./iulCLFSpiQ4oNyrwG</cm:target>
+          <cm:target cm:id="i8_TtlER1NQkEUT1X">./iulCLFSpiQ4oNyrwG</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -595,7 +593,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ilpbgrT9VavSDHtvt" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ihJAwRqZJXhf9h_BN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iOcCXNTrjlYcRRkWH" cm:type="ps:datetime">2020-02-25T08:23:02.841Z</cm:constant>
+          <cm:constant cm:id="iOcCXNTrjlYcRRkWH" cm:type="ps:datetime">2020-02-26T08:42:06.739Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
