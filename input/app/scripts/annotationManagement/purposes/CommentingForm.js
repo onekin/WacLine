@@ -209,7 +209,11 @@ class CommentingForm {
         select: function (event, ui) {
           let content = ''
           if (ui.item.info.authors !== null && Array.isArray(ui.item.info.authors.author)) {
-            content += ui.item.info.authors.author.join(', ') + ': '
+            if (_.isObject(ui.item.info.authors.author[0])) {
+              content += ui.item.info.authors.author.map(a => a.text).join(', ') + ': '
+            } else {
+              content += ui.item.info.authors.author.join(', ') + ': '
+            }
           } else if (ui.item.info.authors !== null) {
             content += ui.item.info.authors.author + ': '
           }
