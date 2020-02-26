@@ -205,7 +205,7 @@ class Review {
           criterion/* PVSCL:IFCOND(Categorize) */,
           level/* PVSCL:ENDCOND */,
           highlightText,
-          pageNumber,
+          page: pageNumber,
           comment/* PVSCL:IFCOND(SuggestedLiterature) */,
           suggestedLiterature/* PVSCL:ENDCOND */
         }))
