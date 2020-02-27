@@ -175,32 +175,56 @@ class GroupSelector {
               // PVSCL:IFCOND(BuiltIn or NOT(Codebook), LINE)
               // Try to load a group with defaultName
               if (_.isEmpty(this.currentGroup)) {
-                this.currentGroup = _.find(window.abwa.groupSelector.groups, (group) => { return group.name === GroupName })
-              }
-              if (_.isEmpty(this.currentGroup)) {
-                // TODO i18n
-                Alerts.loadingAlert({
-                  title: 'First time annotating?',
-                  text: 'It seems that it is your first time using the extension. We are configuring everything to start annotation activity.',
-                  position: Alerts.position.center
-                })
-                // TODO Create default group
-                this.createApplicationBasedGroupForUser((err, group) => {
-                  if (err) {
-                    Alerts.errorAlert({text: 'We are unable to create the group. Please check if you are logged in the annotation server.'})
-                  } else {
-                    // PVSCL:IFCOND(Hypothesis, LINE)
-                    // Modify group URL in hypothesis
-                    if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
-                      if (_.has(group, 'links.html')) {
-                        group.links.html = group.links.html.substr(0, group.links.html.lastIndexOf('/'))
+                if (!_.isEmpty(window.abwa.groupSelector.groups)) {
+                  this.currentGroup = _.first(window.abwa.groupSelector.groups)
+                  callback(null)
+                } else {
+                  // TODO i18n
+                  Alerts.inputTextAlert({
+                    title: 'You do not have a group to start annotating, please provide a group name to get started.',
+                    inputPlaceholder: 'Type here the name of your new annotations group...',
+                    showCancelButton: false,
+                    preConfirm: (groupName) => {
+                      if (_.isString(groupName)) {
+                        if (groupName.length <= 0) {
+                          const swal = require('sweetalert2')
+                          swal.showValidationMessage('Name cannot be empty.')
+                        } else if (groupName.length > 25) {
+                          const swal = require('sweetalert2')
+                          swal.showValidationMessage('The name cannot be higher than 25 characters.')
+                        } else {
+                          return groupName
+                        }
+                      }
+                    },
+                    callback: (err, groupName) => {
+                      if (err) {
+                        window.alert('Unable to load swal. Please contact developer.')
+                      } else {
+                        groupName = LanguageUtils.normalizeString(groupName)
+                        window.abwa.annotationServerManager.client.createNewGroup({
+                          name: groupName,
+                          description: 'A group created using annotation tool ' + chrome.runtime.getManifest().name
+                        }, (err, group) => {
+                          if (err) {
+                            Alerts.errorAlert({text: 'We are unable to create the group. Please check if you are logged in the annotation server.'})
+                          } else {
+                            // PVSCL:IFCOND(Hypothesis, LINE)
+                            // Modify group URL in hypothesis
+                            if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
+                              if (_.has(group, 'links.html')) {
+                                group.links.html = group.links.html.substr(0, group.links.html.lastIndexOf('/'))
+                              }
+                            }
+                            // PVSCL:ENDCOND
+                            this.currentGroup = group
+                            callback(null)
+                          }
+                        })
                       }
                     }
-                    // PVSCL:ENDCOND
-                    this.currentGroup = group
-                    callback(null)
-                  }
-                })
+                  })
+                }
               } else { // If group was found in extension annotation server
                 if (_.isFunction(callback)) {
                   callback()
