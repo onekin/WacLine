@@ -624,7 +624,7 @@ class ReadCodebook {
         items['removeCode'] = {name: 'Remove code'}
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(SidebarNavigation, LINE)
-        items['pageAnnotation'] = {name: 'Page annotation'}
+        // items['pageAnnotation'] = {name: 'Page annotation'}
         // PVSCL:ENDCOND
         return {
           callback: (key) => {

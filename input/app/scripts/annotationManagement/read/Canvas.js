@@ -63,7 +63,7 @@ class Canvas {
         }).then((result) => {
           if (result.value) {
             document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
-            window.abwa.contentAnnotator.goToAnnotation(window.abwa.contentAnnotator.allAnnotations.find((e) => { return e.id === annotation.id }))
+            window.abwa.annotationManagement.goToAnnotation(window.abwa.annotationManagement.annotationReader.allAnnotations.find((e) => { return e.id === annotation.id }))
             document.querySelector('#abwaSidebarButton').style.display = 'block'
           }
         })
