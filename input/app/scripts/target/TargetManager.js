@@ -64,7 +64,9 @@ class TargetManager {
     // PVSCL:IFCOND(Dropbox, LINE)
     this.tryToLoadURLParam()
     // PVSCL:ENDCOND
-    this.loadDocumentFormat().then(() => {
+    this.loadDocumentFormat().catch((err) => {
+      Alerts.errorAlert({title: 'Not supported document format', text: err.message})
+    }).then(() => {
       this.tryToLoadTitle()
       this.tryToLoadURL()
       this.tryToLoadURN()
@@ -145,24 +147,28 @@ class TargetManager {
    * @returns {Promise<unknown>}
    */
   loadDocumentFormat () {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (window.location.pathname === '/content/pdfjs/web/viewer.html') {
         this.documentFormat = PDF
         this.waitUntilPDFViewerLoad(() => {
           resolve()
         })
         return true
-      } else if (document.body && document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') { // TODO Check if document is loaded in content/plainTextFileViewer
+      } /* PVSCL:IFCOND(TXT) */else if (document.body && document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') { // TODO Check if document is loaded in content/plainTextFileViewer
         // TODO Check if document.body is loaded or not yet
         this.documentFormat = TXT
         resolve()
-      } else {
+      } /* PVSCL:ENDCOND */else {
         // PVSCL:IFCOND(HTML, LINE)
         this.documentFormat = HTML
         // PVSCL:ELSEIFCOND(TXT, LINE)
         this.documentFormat = TXT
         // PVSCL:ENDCOND
-        resolve()
+        if (_.isEmpty(this.documentFormat)) {
+          reject(new Error('Unable to identify document format. Probably, this document format is not supported by the tool.'))
+        } else {
+          resolve()
+        }
       }
     })
   }
