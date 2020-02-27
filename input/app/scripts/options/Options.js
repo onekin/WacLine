@@ -121,8 +121,8 @@ class Options {
     })
     // PVSCL:ENDCOND
   }
-
   // PVSCL:IFCOND(BrowserStorage,LINE)
+
   restoreDatabase (jsonObject, callback) {
     window.options.browserStorage = new BrowserStorageManager()
     window.options.browserStorage.init(() => {
@@ -163,6 +163,7 @@ class Options {
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Neo4J, LINE)
+
   createNeo4JConfigurationSaveEventHandler () {
     return (e) => {
       this.saveNeo4JConfiguration()
@@ -235,8 +236,8 @@ class Options {
     }
   }
   // PVSCL:ENDCOND
-
   // PVSCL:IFCOND(MoodleResource, LINE)
+
   updateAutoOpenCheckbox () {
     let isChecked = document.querySelector('#autoOpenCheckbox').checked
     chrome.runtime.sendMessage({

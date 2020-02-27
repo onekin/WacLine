@@ -9,7 +9,11 @@ defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:
 
 // Tags configuration
 let grouped = {
+// PVSCL:IFCOND(CodebookTypology->pv:Attribute('name')->pv:ToLowerCase()->pv:Size()>1, LINE)		
+  group: 'PVSCL:EVAL(CodebookTypology->pv:Attribute('name')->pv:ToLowerCase())'
+// PVSCL:ELSECOND
   group: 'theme'
+// PVSCL:ENDCOND
 }
 // PVSCL:IFCOND(Hierarchy,LINE)
 grouped['subgroup'] = 'code'

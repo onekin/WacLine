@@ -1,6 +1,7 @@
 const Events = require('../../../Events')
 const Alerts = require('../../../utils/Alerts')
 const _ = require('lodash')
+const $ = require('jquery')
 const Config = require('../../../Config')
 const Theme = require('../../model/Theme')
 const Classifying = require('../../../annotationManagement/purposes/Classifying')
@@ -81,15 +82,26 @@ class UpdateCodebook {
    */
   static createNewThemeButton () {
     let newThemeButton = document.createElement('button')
-    newThemeButton.innerText = 'Create new theme'
+    newThemeButton.innerText = 'New ' + Config.tags.grouped.group
     newThemeButton.id = 'newThemeButton'
     newThemeButton.className = 'tagButton codingElement'
     newThemeButton.addEventListener('click', () => {
       let newTheme
+      let retrievedThemeName
+      // Get user selected content
+      let selection = document.getSelection()
+
+      // If selection is child of sidebar, return null
+      if ($(selection.anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0 || selection.toString().length < 1) {
+        retrievedThemeName = ''
+      } else {
+        retrievedThemeName = selection.toString().trim().replace(/^\w/, c => c.toUpperCase())
+      }
+      console.log(retrievedThemeName)
       Alerts.multipleInputAlert({
-        title: 'You are creating a new theme: ',
-        html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New theme name" value=""/>' +
-          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="themeDescription" placeholder="Please type a description that describes this theme..."></textarea>',
+        title: 'You are creating a new ' + Config.tags.grouped.group + ': ',
+        html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New ' + Config.tags.grouped.group + ' name" value="' + retrievedThemeName + '"/>' +
+          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="themeDescription" placeholder="Please type a description that describes this ' + Config.tags.grouped.group + '..."></textarea>',
         preConfirm: () => {
           let themeNameElement = document.querySelector('#themeName')
           let themeName
@@ -178,8 +190,8 @@ class UpdateCodebook {
       let theme = event.detail.theme
       // Ask user is sure to remove
       Alerts.confirmAlert({
-        title: 'Removing code ' + theme.name,
-        text: 'Are you sure that you want to remove the theme ' + theme.name + '. All dependant codes will be deleted too. You cannot undo this operation.',
+        title: 'Removing ' + Config.tags.grouped.group + theme.name,
+        text: 'Are you sure that you want to remove the ' + Config.tags.grouped.group + theme.name + '. All dependant codes will be deleted too. You cannot undo this operation.',
         alertType: Alerts.alertType.warning,
         callback: () => {
           let annotationsToDelete = [theme.id]

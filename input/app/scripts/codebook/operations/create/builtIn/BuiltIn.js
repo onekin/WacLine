@@ -1,4 +1,4 @@
-const UserDefinedHighlighterDefinition = require('./BuiltInCodebookScheme')
+const PredefinedScheme = require('./PredefinedScheme')
 const Codebook = require('../../../model/Codebook')
 const Alerts = require('../../../../utils/Alerts')
 const _ = require('lodash')
@@ -7,7 +7,7 @@ class BuiltIn {
   static createDefaultAnnotations (callback) {
     Codebook.setAnnotationServer(null, (annotationServer) => {
       // Create annotation guide from user defined highlighter definition
-      let annotationGuide = Codebook.fromObjects(UserDefinedHighlighterDefinition)
+      let annotationGuide = Codebook.fromObjects(PredefinedScheme)
       // Create review schema from default criterias
       annotationGuide.annotationServer = annotationServer
       // Create highlighter annotations

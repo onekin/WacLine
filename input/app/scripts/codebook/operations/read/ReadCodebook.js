@@ -181,6 +181,8 @@ class ReadCodebook {
           })
           // PVSCL:ELSEIFCOND(NOT(Codebook))
           LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'noCodebook'}) // The parameter howCreate is not really necessary in current implementation
+          // PVSCL:ELSEIFCOND(TopicBased)
+          // TODO The new group creation.
           // PVSCL:ELSECOND
           // TODO Show alert otherwise (no group is defined)
           Alerts.errorAlert({text: 'No group is defined'})
@@ -560,8 +562,8 @@ class ReadCodebook {
       // PVSCL:IFCOND(Hierarchy, LINE)
       items['createNewCode'] = {name: 'Create new code'}
       // PVSCL:ENDCOND
-      items['updateTheme'] = {name: 'Modify theme'}
-      items['removeTheme'] = {name: 'Remove theme'}
+      items['updateTheme'] = {name: 'Modify ' + Config.tags.grouped.group}
+      items['removeTheme'] = {name: 'Remove ' + Config.tags.grouped.group}
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(SidebarNavigation, LINE)
       // TODO Implement page annotation and uncomment this:

@@ -306,7 +306,7 @@ class AnnotatedContentManager {
       return _.find(annotatedThemesObject, (annotatedTheme) => {
         return annotatedTheme.theme.id === themeOrCode.id
       })
-    } else if (LanguageUtils.isInstanceOf(themeOrCode, Code)) {
+    } /* PVSCL:IFCOND(Hierarchy) */else if (LanguageUtils.isInstanceOf(themeOrCode, Code)) {
       // Return annotationCode with the codeId we need
       let annotatedTheme = _.find(annotatedThemesObject, (annotatedTheme) => {
         return annotatedTheme.theme.id === themeOrCode.theme.id
@@ -314,7 +314,7 @@ class AnnotatedContentManager {
       return _.find(annotatedTheme.annotatedCodes, (annotatedCode) => {
         return annotatedCode.code.id === themeOrCode.id
       })
-    }
+    }/* PVSCL:ENDCOND */
   }
 
   initEvents () {

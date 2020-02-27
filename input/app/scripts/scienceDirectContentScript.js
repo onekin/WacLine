@@ -52,8 +52,10 @@ class ScienceDirectContentScript {
         // Hypothesis
         window.scienceDirect.annotationServerManager = new HypothesisClientManager()
       } else {
+        // PVSCL:IFCOND(BrowserStorage,LINE)
         // Browser storage
         window.scienceDirect.annotationServerManager = new BrowserStorageManager()
+        // PVSCL:ENDCOND
       }
       window.scienceDirect.annotationServerManager.init((err) => {
         if (_.isFunction(callback)) {
