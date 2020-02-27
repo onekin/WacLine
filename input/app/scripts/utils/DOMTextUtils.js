@@ -130,6 +130,39 @@ class DOMTextUtils {
     let rangeSelector = _.find(selectors, (selector) => { return selector.type === 'RangeSelector' })
     let textQuoteSelector = _.find(selectors, (selector) => { return selector.type === 'TextQuoteSelector' })
     let textPositionSelector = _.find(selectors, (selector) => { return selector.type === 'TextPositionSelector' })
+    // Check whether the document is PDF or HTML
+    if (_.has(fragmentSelector, 'page')) {
+      // Is PDF
+      return DOMTextUtils.retrieveRangeForPDFDocument({fragmentSelector, textPositionSelector, textQuoteSelector, exhaustive})
+    } else {
+      // Is HTML
+      return DOMTextUtils.retrieveRangeForHTMLDocument({fragmentSelector, textPositionSelector, textQuoteSelector, rangeSelector, exhaustive})
+    }
+  }
+
+  static retrieveRangeForPDFDocument ({fragmentSelector, textPositionSelector, textQuoteSelector, exhaustive}) {
+    let fragmentElement
+    let range
+    if (fragmentSelector.page) {
+      // Check only in corresponding page
+      let pageElement = document.querySelector('.page[data-page-number="' + fragmentSelector.page + '"][data-loaded="true"]')
+      if (_.isElement(pageElement)) {
+        fragmentElement = pageElement
+      } else {
+        console.debug('Document page is not loaded, annotation missing.')
+        return null
+      }
+    }
+    range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(textPositionSelector, textQuoteSelector.exact, fragmentElement)
+    if (!range) {
+      if (exhaustive) { // Try by hard exhaustive
+        range = DOMTextUtils.tryRetrieveRangeTextSelector(fragmentElement, textQuoteSelector)
+      }
+    }
+    return range
+  }
+
+  static retrieveRangeForHTMLDocument ({fragmentSelector, textPositionSelector, textQuoteSelector, rangeSelector, exhaustive}) {
     let range = null
     if (_.isObject(fragmentSelector) || _.isObject(rangeSelector)) { // It is an element of DOM
       let fragmentElement = null
