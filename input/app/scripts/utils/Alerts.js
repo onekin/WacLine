@@ -6,7 +6,7 @@ if (document && document.head) {
 }
 
 class Alerts {
-  static confirmAlert ({alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', reverseButtons, callback, cancelCallback}) {
+  static confirmAlert ({alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', reverseButtons, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback}) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -20,6 +20,8 @@ class Alerts {
         confirmButtonText,
         cancelButtonText,
         reverseButtons,
+        allowOutsideClick,
+        allowEscapeKey,
         showCancelButton: true
       }).then((result) => {
         if (result.value) {
@@ -50,7 +52,7 @@ class Alerts {
     }
   }
 
-  static updateableAlert ({text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), type = Alerts.alertType.info, title = 'Info', timerIntervalHandler = null, timerIntervalPeriodInSeconds = 0.1, callback}) {
+  static updateableAlert ({text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), type = Alerts.alertType.info, title = 'Info', timerIntervalHandler = null, timerIntervalPeriodInSeconds = 0.1, allowOutsideClick = true, allowEscapeKey = true, callback}) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -63,6 +65,8 @@ class Alerts {
           type: Alerts.alertType.info,
           title: title,
           html: text,
+          allowOutsideClick,
+          allowEscapeKey,
           showConfirmButton: true,
           onOpen: () => {
             if (_.isFunction(timerIntervalHandler)) {
@@ -169,7 +173,7 @@ class Alerts {
     }
   }
 
-  static inputTextAlert ({title, input = 'text', type, inputPlaceholder = '', inputValue = '', preConfirm, cancelCallback, showCancelButton = true, html = '', callback}) {
+  static inputTextAlert ({title, input = 'text', type, inputPlaceholder = '', inputValue = '', preConfirm, cancelCallback, showCancelButton = true, html = '', allowOutsideClick = true, allowEscapeKey = true, callback}) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -184,6 +188,8 @@ class Alerts {
         html: html,
         type: type,
         preConfirm: preConfirm,
+        allowOutsideClick,
+        allowEscapeKey,
         showCancelButton: showCancelButton
       }).then((result) => {
         if (result.value) {
@@ -199,7 +205,7 @@ class Alerts {
     }
   }
 
-  static multipleInputAlert ({title = 'Input', html = '', preConfirm, position = Alerts.position.center, onBeforeOpen, showCancelButton = true, callback}) {
+  static multipleInputAlert ({title = 'Input', html = '', preConfirm, position = Alerts.position.center, onBeforeOpen, showCancelButton = true, allowOutsideClick = true, allowEscapeKey = true, callback}) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -213,6 +219,8 @@ class Alerts {
         preConfirm: preConfirm,
         position: position,
         onBeforeOpen: onBeforeOpen,
+        allowOutsideClick,
+        allowEscapeKey,
         showCancelButton: showCancelButton
       }).then(() => {
         if (_.isFunction(callback)) {
