@@ -17,7 +17,11 @@ const CommentingForm = require('../purposes/CommentingForm')
 const Alerts = require('../../utils/Alerts')
 // PVSCL:ENDCOND
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
+// PVSCL:IFCOND(Remote, LINE)
 const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 5
+const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
+const Neo4JClientManager = require('../../annotationServer/neo4j/Neo4JClientManager')
+// PVSCL:ENDCOND
 
 class ReadAnnotation {
   constructor () {
@@ -50,7 +54,12 @@ class ReadAnnotation {
     this.initCodebookUpdatedEventListener()
     // PVSCL:ENDCOND
     this.initAnnotationsObserver()
-    this.initReloadAnnotationsEvent()
+    // PVSCL:IFCOND(Remote, LINE)
+    // TODO Check if client manager is remote
+    if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager) || LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, Neo4JClientManager)) {
+      this.initReloadAnnotationsEvent()
+    }
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(ImportAnnotations, LINE)
     this.initAnnotationsImportedEventListener()
     // PVSCL:ENDCOND
@@ -64,8 +73,12 @@ class ReadAnnotation {
     }
     // Destroy annotations observer
     clearInterval(this.observerInterval)
+    // PVSCL:IFCOND(Remote, LINE)
     // Destroy annotations reload interval
-    clearInterval(this.reloadInterval)
+    if (this.reloadInterval) {
+      clearInterval(this.reloadInterval)
+    }
+    // PVSCL:ENDCOND
     // Destroy annotations clean interval if exist
     clearInterval(this.cleanInterval)
     // PVSCL:IFCOND(UserFilter, LINE)
@@ -75,6 +88,8 @@ class ReadAnnotation {
     }
     // PVSCL:ENDCOND
   }
+
+  // PVSCL:IFCOND(Remote, LINE)
 
   initReloadAnnotationsEvent (callback) {
     this.reloadInterval = setInterval(() => {
@@ -87,6 +102,8 @@ class ReadAnnotation {
     }
   }
 
+  // PVSCL:ENDCOND
+
   /**
    * Initializes annotations observer, to ensure dynamic web pages maintain highlights on the screen
    * @param callback Callback when initialization finishes
@@ -94,23 +111,20 @@ class ReadAnnotation {
   initAnnotationsObserver (callback) {
     this.observerInterval = setInterval(() => {
       // console.debug('Observer interval')
-      // If a swal is displayed, do not execute highlighting observer
-      if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
-        let annotationsToHighlight
-        // PVSCL:IFCOND(UserFilter, LINE)
-        annotationsToHighlight = this.currentAnnotations
-        // PVSCL:ELSECOND
-        annotationsToHighlight = this.allAnnotations
-        // PVSCL:ENDCOND
-        if (annotationsToHighlight) {
-          for (let i = 0; i < this.allAnnotations.length; i++) {
-            let annotation = this.allAnnotations[i]
-            // Search if annotation exist
-            let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
-            // If annotation doesn't exist, try to find it
-            if (!_.isElement(element)) {
-              Promise.resolve().then(() => { this.highlightAnnotation(annotation) })
-            }
+      let annotationsToHighlight
+      // PVSCL:IFCOND(UserFilter, LINE)
+      annotationsToHighlight = this.currentAnnotations
+      // PVSCL:ELSECOND
+      annotationsToHighlight = this.allAnnotations
+      // PVSCL:ENDCOND
+      if (annotationsToHighlight) {
+        for (let i = 0; i < this.allAnnotations.length; i++) {
+          let annotation = this.allAnnotations[i]
+          // Search if annotation exist
+          let element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
+          // If annotation doesn't exist, try to find it
+          if (!_.isElement(element)) {
+            Promise.resolve().then(() => { this.highlightAnnotation(annotation) })
           }
         }
       }
@@ -300,51 +314,57 @@ class ReadAnnotation {
       }
       return
     }
-    // Get annotation color for an annotation
-    let color
-    // PVSCL:IFCOND(Classifying, LINE)
-    // Annotation color is based on codebook color
-    // Get annotated code id
-    let bodyWithClassifyingPurpose = annotation.getBodyForPurpose('classifying')
-    let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
-    if (codeOrTheme) {
-      color = codeOrTheme.color
-    } else {
+    // Check if swal is opened, it is not required to reload annotations if it is opened, and it loses the focus in a form
+    if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
+      // Get annotation color for an annotation
+      let color
+      // PVSCL:IFCOND(Classifying, LINE)
+      // Annotation color is based on codebook color
+      // Get annotated code id
+      let bodyWithClassifyingPurpose = annotation.getBodyForPurpose('classifying')
+      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
+      if (codeOrTheme) {
+        color = codeOrTheme.color
+      } else {
+        const ColorUtils = require('../../utils/ColorUtils')
+        color = ColorUtils.getDefaultColor()
+      }
+      // PVSCL:ELSECOND
+      // Annotation color used is default in grey
       const ColorUtils = require('../../utils/ColorUtils')
       color = ColorUtils.getDefaultColor()
-    }
-    // PVSCL:ELSECOND
-    // Annotation color used is default in grey
-    const ColorUtils = require('../../utils/ColorUtils')
-    color = ColorUtils.getDefaultColor()
-    // PVSCL:ENDCOND
-    // Get the tooltip text for the annotation
-    let tooltip = this.generateTooltipFromAnnotation(annotation)
-    // Draw the annotation in DOM
-    try {
-      let highlightedElements = DOMTextUtils.highlightContent(
-        annotation.target[0].selector, 'highlightedAnnotation', annotation.id)
-      // Highlight in same color as button
-      highlightedElements.forEach(highlightedElement => {
-        // If need to highlight, set the color corresponding to, in other case, maintain its original color
-        highlightedElement.style.backgroundColor = color
-        // Set purpose color
-        highlightedElement.dataset.color = color
-        // Set a tooltip that is shown when user mouseover the annotation
-        highlightedElement.title = tooltip
-        // TODO More things
-      })
-      // FeatureComment: if annotation is mutable, update or delete, the mechanism is a context menu
-      // PVSCL:IFCOND(Update OR Delete, LINE)
-      // Create context menu event for highlighted elements
-      this.createContextMenuForAnnotation(annotation)
       // PVSCL:ENDCOND
-    } catch (e) {
-      // TODO Handle error (maybe send in callback the error ¿?)
-      if (_.isFunction(callback)) {
-        callback(new Error('Element not found'))
+      // Get the tooltip text for the annotation
+      let tooltip = this.generateTooltipFromAnnotation(annotation)
+      // Draw the annotation in DOM
+      try {
+        let highlightedElements = DOMTextUtils.highlightContent(
+          annotation.target[0].selector, 'highlightedAnnotation', annotation.id)
+        // Highlight in same color as button
+        highlightedElements.forEach(highlightedElement => {
+          // If need to highlight, set the color corresponding to, in other case, maintain its original color
+          highlightedElement.style.backgroundColor = color
+          // Set purpose color
+          highlightedElement.dataset.color = color
+          // Set a tooltip that is shown when user mouseover the annotation
+          highlightedElement.title = tooltip
+        })
+        // FeatureComment: if annotation is mutable, update or delete, the mechanism is a context menu
+        // PVSCL:IFCOND(Update OR Delete, LINE)
+        // Create context menu event for highlighted elements
+        this.createContextMenuForAnnotation(annotation)
+        // PVSCL:ENDCOND
+      } catch (e) {
+        // Handle error
+        if (_.isFunction(callback)) {
+          callback(new Error('Element not found'))
+        }
+      } finally {
+        if (_.isFunction(callback)) {
+          callback()
+        }
       }
-    } finally {
+    } else {
       if (_.isFunction(callback)) {
         callback()
       }
