@@ -19,7 +19,8 @@ class Theme {
     description = ''/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
     multivalued,
     inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
-    moodleCriteriaId/* PVSCL:ENDCOND */
+    moodleCriteriaId/* PVSCL:ENDCOND *//* PVSCL:IFCOND(TopicBased) */,
+    isTopic = false/* PVSCL:ENDCOND */
   }) {
     this.id = id
     this.name = name
@@ -43,7 +44,10 @@ class Theme {
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleProvider, LINE)
     this.moodleCriteriaId = moodleCriteriaId
-  // PVSCL:ENDCOND
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(TopicBased, LINE)
+    this.isTopic = isTopic
+    // PVSCL:ENDCOND
   }
 
   toAnnotations () {
@@ -87,14 +91,11 @@ class Theme {
       target: [],
       text: jsYaml.dump({
         id: this.id || ''/* PVSCL:IFCOND(BuiltIn) */,
-        description: this.description/* PVSCL:ENDCOND */
+        description: this.description/* PVSCL:ENDCOND *//* PVSCL:IFCOND(TopicBased) */,
+        isTopic: this.isTopic/* PVSCL:ENDCOND */
       }),
       uri: this.annotationGuide.annotationServer.group.links.html
     }
-  }
-
-  static fromAnnotations () {
-    // TODO Xabi
   }
 
   static fromAnnotation (annotation, annotationGuide = {}) {
@@ -123,6 +124,9 @@ class Theme {
         // PVSCL:IFCOND(MoodleReport,LINE)
         let moodleCriteriaId = config.id
         // PVSCL:ENDCOND
+        // PVSCL:IFCOND(TopicBased,LINE)
+        let isTopic = config.isTopic
+        // PVSCL:ENDCOND
         return new Theme({
           id,
           name,
@@ -131,7 +135,8 @@ class Theme {
           annotationGuide/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
           multivalued,
           inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
-          moodleCriteriaId/* PVSCL:ENDCOND */
+          moodleCriteriaId/* PVSCL:ENDCOND *//* PVSCL:IFCOND(TopicBased) */,
+          isTopic/* PVSCL:ENDCOND */
         })
       } else {
 
@@ -220,7 +225,8 @@ class Theme {
     return {
       name: this.name,
       description: this.description,
-      id: this.id
+      id: this.id/* PVSCL:IFCOND(TopicBased) */,
+      isTopic: this.isTopic/* PVSCL:ENDCOND */
     }
   }
 

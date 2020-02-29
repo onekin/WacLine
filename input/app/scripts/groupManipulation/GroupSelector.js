@@ -180,10 +180,24 @@ class GroupSelector {
                   callback(null)
                 } else {
                   // TODO i18n
+                  let title
+                  // PVSCL:IFCOND(TopicBased)
+                  title = 'What is the topic or the focus question of the concept map?'
+                  // PVSCL:ELSECOND
+                  title = 'You do not have a group to start annotating, please provide a group name to get started.'
+                  // PVSCL:ENDCOND
+                  let inputPlaceholder
+                  // PVSCL:IFCOND(TopicBased)
+                  inputPlaceholder = 'Type here the topic of the map...'
+                  // PVSCL:ELSECOND
+                  inputPlaceholder = 'Type here the name of the group...'
+                  // PVSCL:ENDCOND
                   Alerts.inputTextAlert({
-                    title: 'You do not have a group to start annotating, please provide a group name to get started.',
-                    inputPlaceholder: 'Type here the name of your new annotations group...',
+                    title: title,
+                    inputPlaceholder: inputPlaceholder,
                     showCancelButton: false,
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
                     preConfirm: (groupName) => {
                       if (_.isString(groupName)) {
                         if (groupName.length <= 0) {

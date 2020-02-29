@@ -3,6 +3,9 @@ const _ = require('lodash')
 // PVSCL:IFCOND(BuiltIn, LINE)
 const BuiltIn = require('./builtIn/BuiltIn')
 const EmptyCodebook = require('./emptyCodebook/EmptyCodebook')
+// PVSCL:IFCOND(TopicBased, LINE)
+const TopicBased = require('./topicBased/TopicBased')
+// PVSCL:ENDCOND
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(NOT(Classifying), LINE)
 const NoCodebook = require('./noCodebook/NoCodebook')
@@ -63,6 +66,18 @@ class CreateCodebook {
             }
           })
         }
+        // PVSCL:IFCOND(TopicBased, LINE)
+        let topic = event.detail.topic
+        if (howCreate === 'topicBased') {
+          TopicBased.createDefaultAnnotations(topic,(err, annotations) => {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(annotations)
+            }
+          })
+        }
+        // PVSCL:ENDCOND
         // PVSCL:ELSEIFCOND(NOT(Codebook), LINE)
         NoCodebook.createDefaultAnnotations((err, annotations) => {
           if (err) {

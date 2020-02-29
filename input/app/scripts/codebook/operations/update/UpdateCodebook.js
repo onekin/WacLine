@@ -164,7 +164,15 @@ class UpdateCodebook {
           if (_.isElement(themeDescriptionElement)) {
             themeDescription = themeDescriptionElement.value
           }
+          // PVSCL:IFCOND(TopicBased, LINE)
+          if (theme.isTopic) {
+            themeToUpdate = new Theme({name: themeName, description: themeDescription, isTopic: true, annotationGuide: window.abwa.codebookManager.codebookReader.codebook})
+          } else {
+            themeToUpdate = new Theme({name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook})
+          }
+          // PVSCL:ELSECOND
           themeToUpdate = new Theme({name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook})
+          // PVSCL:ENDCOND
           // PVSCL:IFCOND(Hierarchy, LINE)
           theme.codes.forEach(code => { code.theme = themeToUpdate })
           themeToUpdate.codes = theme.codes

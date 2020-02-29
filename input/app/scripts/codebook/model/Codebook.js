@@ -240,6 +240,15 @@ class Codebook {
     return annotationGuide
   }
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(TopicBased, LINE)
+
+  static fromTopic (topicName) {
+    let annotationGuide = new Codebook({name: topicName + 'concept map'})
+    let theme = new Theme({name: topicName, description: 'Topic of the concept map', isTopic: true, annotationGuide})
+    annotationGuide.themes.push(theme)
+    return annotationGuide
+  }
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(GoogleSheetProvider,LINE)
 
   static fromGoogleSheet ({spreadsheetId, sheetId, spreadsheet, sheetName}) {

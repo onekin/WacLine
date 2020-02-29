@@ -151,8 +151,11 @@ class ReadCodebook {
         Alerts.errorAlert({text: 'Unable to retrieve annotations from annotation server to initialize highlighter buttons.'}) // TODO i18n
       } else {
         if (codebookDefinitionAnnotations.length === 0) {
-          // PVSCL:IFCOND(BuiltIn AND NOT(ApplicationBased), LINE)
           let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
+          // PVSCL:IFCOND(BuiltIn AND NOT(ApplicationBased), LINE)
+          // PVSCL:IFCOND(TopicBased, LINE)
+          LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'topicBased', topic: currentGroupName})
+          // PVSCL:ELSECOND
           Alerts.confirmAlert({
             title: 'Do you want to create a default annotation codebook?',
             text: currentGroupName + ' group has not codes to start annotating. Would you like to configure the highlighter?',
@@ -165,9 +168,7 @@ class ReadCodebook {
                 text: 'We are configuring everything to start reviewing.',
                 position: Alerts.position.center
               })
-              Codebook.setAnnotationServer(null, (annotationServer) => {
-                LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
-              })
+              LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
             },
             cancelCallback: () => {
               // PVSCL:IFCOND(CodebookUpdate,LINE)
@@ -175,14 +176,11 @@ class ReadCodebook {
               // PVSCL:ENDCOND
             }
           })
+          // PVSCL:ENDCOND
           // PVSCL:ELSEIFCOND(ApplicationBased, LINE)
-          Codebook.setAnnotationServer(null, (annotationServer) => {
-            LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
-          })
+          LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
           // PVSCL:ELSEIFCOND(NOT(Codebook))
           LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'noCodebook'}) // The parameter howCreate is not really necessary in current implementation
-          // PVSCL:ELSEIFCOND(TopicBased)
-          // TODO The new group creation.
           // PVSCL:ELSECOND
           // TODO Show alert otherwise (no group is defined)
           Alerts.errorAlert({text: 'No group is defined'})
@@ -266,6 +264,10 @@ class ReadCodebook {
     // PVSCL:ENDCOND
     // Create current buttons
     let themes = this.codebook.themes
+    // PVSCL:IFCOND(TopicBased, LINE)
+    let rootTheme = _.find(themes, (theme) => { return theme.isTopic === true })
+    themes = themes.filter((theme) => { return theme.isTopic === false })
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Alphabetical, LINE)
     themes.sort((a, b) => a.name.localeCompare(b.name))
     // PVSCL:ENDCOND
@@ -275,9 +277,25 @@ class ReadCodebook {
     // PVSCL:IFCOND(Date, LINE)
     themes.sort((a, b) => a.createdDate - b.createdDate)
     // PVSCL:ENDCOND
+    let themeButtonContainer
+    // PVSCL:IFCOND(TopicBased,LINE)
+    if (rootTheme) {
+      let topicHeader = document.createElement('div')
+      topicHeader.className = 'topicBasedHeaders'
+      topicHeader.innerText = 'TOPIC'
+      this.buttonContainer.append(topicHeader)
+      themeButtonContainer = this.createThemeButtonContainer(rootTheme)
+      if (_.isElement(themeButtonContainer)) {
+        this.buttonContainer.append(themeButtonContainer)
+      }
+      let conceptsHeader = document.createElement('div')
+      conceptsHeader.className = 'topicBasedHeaders'
+      conceptsHeader.innerText = 'CONCEPTS'
+      this.buttonContainer.append(conceptsHeader)
+    }
+    // PVSCL:ENDCOND
     for (let i = 0; i < themes.length; i++) {
       let theme = themes[i]
-      let themeButtonContainer
       // PVSCL:IFCOND(Hierarchy,LINE)
       let codes = theme.codes
       codes = codes.sort((a, b) => {
@@ -562,8 +580,18 @@ class ReadCodebook {
       // PVSCL:IFCOND(Hierarchy, LINE)
       items['createNewCode'] = {name: 'Create new code'}
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(TopicBased, LINE)
+      let theme = this.codebook.getCodeOrThemeFromId(themeId)
+      if (!theme.isTopic) {
+        items['updateTheme'] = {name: 'Modify topic'}
+        items['removeTheme'] = {name: 'Remove ' + Config.tags.grouped.group}
+      } else {
+        items['updateTheme'] = {name: 'Modify ' + Config.tags.grouped.group}
+      }
+      // PVSCL:ELSECOND
       items['updateTheme'] = {name: 'Modify ' + Config.tags.grouped.group}
       items['removeTheme'] = {name: 'Remove ' + Config.tags.grouped.group}
+      // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(SidebarNavigation, LINE)
       // TODO Implement page annotation and uncomment this:
