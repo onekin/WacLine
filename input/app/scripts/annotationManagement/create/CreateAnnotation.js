@@ -10,6 +10,9 @@ const $ = require('jquery')
 // PVSCL:IFCOND(Classifying, LINE)
 const Classifying = require('../purposes/Classifying')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Classifying, LINE)
+const Linking = require('../purposes/Linking')
+// PVSCL:ENDCOND
 
 class CreateAnnotation {
   constructor () {
@@ -54,7 +57,26 @@ class CreateAnnotation {
           tags: tags,
           body: body
         })
-      }
+      } /* PVSCL:IFCOND(Linking) */ else if (event.detail.purpose === 'linking') {
+        let target
+        // If selection is child of sidebar, return null
+        if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
+          Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
+          return
+        }
+        // Create target
+        target = this.obtainTargetToCreateAnnotation(event.detail)
+        // Create body
+        let body = this.obtainBodyToCreateAnnotation(event.detail)
+        // Create tags
+        let tags = this.obtainTagsToCreateAnnotation(event.detail)
+        // Construct the annotation to send to hypothesis
+        annotationToCreate = new Annotation({
+          target: target,
+          tags: tags,
+          body: body
+        })
+      } /* PVSCL:ENDCOND */
       if (annotationToCreate) {
         window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
           if (err) {
@@ -95,17 +117,28 @@ class CreateAnnotation {
     return tags
   }
 
-  obtainBodyToCreateAnnotation ({
-    /* PVSCL:IFCOND(Classifying) */codeId /* PVSCL:ENDCOND */
-  }) {
+  obtainBodyToCreateAnnotation (detail) {
     // Get bodies and tags for the annotation to be created
     let body = []
     // PVSCL:IFCOND(Classifying, LINE)
     // Get body for classifying
-    if (codeId) {
-      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codeId)
-      let classifyingBody = new Classifying({code: codeOrTheme})
-      body.push(classifyingBody.serialize())
+    if (detail.purpose === 'classifying') {
+      if (detail.codeId) {
+        let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(detail.codeId)
+        let classifyingBody = new Classifying({code: codeOrTheme})
+        body.push(classifyingBody.serialize())
+      }
+    }
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Linking, LINE)
+    // Get body for classifying
+    if (detail.purpose === 'linking') {
+      if (detail.from && detail.to && detail.linkingWord) {
+        let fromTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(detail.from)
+        let toTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(detail.to)
+        let classifyingBody = new Linking({from: fromTheme, to: toTheme, linkingWordValue: detail.linkingWord})
+        body.push(classifyingBody.serialize())
+      }
     }
     // PVSCL:ENDCOND
     return body

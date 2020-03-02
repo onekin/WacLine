@@ -9,6 +9,9 @@ const Theme = require('../../model/Theme')
 // PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('../../model/Code')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Linking,LINE)
+const LinkingButton = require('../../../annotationManagement/purposes/LinkingButton')
+// PVSCL:ENDCOND
 const ColorUtils = require('../../../utils/ColorUtils')
 const LanguageUtils = require('../../../utils/LanguageUtils')
 // PVSCL:IFCOND(CodebookUpdate, LINE)
@@ -262,6 +265,10 @@ class ReadCodebook {
     // Create new theme button
     UpdateCodebook.createNewThemeButton()
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Linking, LINE)
+    LinkingButton.createNewLinkButton()
+    // PVSCL:ENDCOND
+    // Create new relation button
     // Create current buttons
     let themes = this.codebook.themes
     // PVSCL:IFCOND(TopicBased, LINE)

@@ -90,7 +90,6 @@ class UpdateCodebook {
       let retrievedThemeName
       // Get user selected content
       let selection = document.getSelection()
-
       // If selection is child of sidebar, return null
       if ($(selection.anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0 || selection.toString().length < 1) {
         retrievedThemeName = ''
@@ -108,12 +107,26 @@ class UpdateCodebook {
           if (_.isElement(themeNameElement)) {
             themeName = themeNameElement.value
           }
-          let themeDescriptionElement = document.querySelector('#themeDescription')
-          let themeDescription
-          if (_.isElement(themeDescriptionElement)) {
-            themeDescription = themeDescriptionElement.value
+          if (themeName.length > 0) {
+            if (!this.themeNameExist(themeName)) {
+              let themeDescriptionElement = document.querySelector('#themeDescription')
+              let themeDescription
+              if (_.isElement(themeDescriptionElement)) {
+                themeDescription = themeDescriptionElement.value
+              }
+              newTheme = new Theme({
+                name: themeName,
+                description: themeDescription,
+                annotationGuide: window.abwa.codebookManager.codebookReader.codebook
+              })
+            } else {
+              const swal = require('sweetalert2')
+              swal.showValidationMessage('There exist a ' + Config.tags.grouped.group + ' with the same name. Please select a different name.')
+            }
+          } else {
+            const swal = require('sweetalert2')
+            swal.showValidationMessage('Name cannot be empty.')
           }
-          newTheme = new Theme({name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook})
         },
         callback: () => {
           LanguageUtils.dispatchCustomEvent(Events.createTheme, {theme: newTheme})
@@ -123,6 +136,17 @@ class UpdateCodebook {
     window.abwa.codebookManager.codebookReader.buttonContainer.append(newThemeButton)
   }
 
+  static themeNameExist (newThemeName) {
+    let themes = window.abwa.codebookManager.codebookReader.codebook.themes
+    let theme = _.find(themes, (theme) => {
+      return theme.name === newThemeName
+    })
+    if (theme) {
+      return true
+    } else {
+      return false
+    }
+  }
   /**
    * This function creates a handler to create a new theme when it receives the createTheme event.
    * @return Event
