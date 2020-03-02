@@ -117,7 +117,15 @@ class AnnotatedContentManager {
     })
     // PVSCL:ELSECOND
     promise = new Promise((resolve, reject) => {
-      resolve(window.abwa.annotationManagement.annotationReader.allAnnotations)
+      let allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
+      // PVSCL:IFCOND(Linking, LINE)
+      let contentAnnotations = _.filter(allAnnotations, (annotation) => {
+        return !annotation.body.purpose === 'linking'
+      })
+      resolve(contentAnnotations)
+      // PVSCL:ELSECOND
+      resolve(allAnnotations)
+      // PVSCL:ENDCOND
     })
     // PVSCL:ENDCOND
     // Return retrieved annotations

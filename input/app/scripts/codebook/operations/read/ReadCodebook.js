@@ -217,7 +217,7 @@ class ReadCodebook {
       groupUrl = window.abwa.groupSelector.currentGroup.links.html
     }
     window.abwa.annotationServerManager.client.searchAnnotations({
-      url: groupUrl,
+      group: window.abwa.groupSelector.currentGroup.id,
       order: 'desc'
     }, (err, annotations) => {
       if (err) {

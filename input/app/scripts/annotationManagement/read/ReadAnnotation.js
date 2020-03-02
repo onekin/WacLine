@@ -151,6 +151,12 @@ class ReadAnnotation {
         this.replyAnnotations.push(annotation)
       }
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Linking, LINE)
+      // If annotation is linking annotation, add to linking annotation list
+      if (annotation.body.purpose === 'linking') {
+        this.linkingAnnotations.push(annotation)
+      }
+      // PVSCL:ENDCOND
       // Dispatch annotations updated event
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
       // PVSCL:IFCOND(UserFilter, LINE)
@@ -219,6 +225,11 @@ class ReadAnnotation {
         // PVSCL:IFCOND(Replying, LINE)
         this.replyAnnotations = _.filter(this.allAnnotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
+        })
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(Linking, LINE)
+        this.linkingAnnotations = _.filter(this.allAnnotations, (annotation) => {
+          return annotation.body.purpose === 'linking'
         })
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(UserFilter, LINE)
@@ -306,20 +317,43 @@ class ReadAnnotation {
     // Annotation color is based on codebook color
     // Get annotated code id
     let bodyWithClassifyingPurpose = annotation.getBodyForPurpose('classifying')
-    let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
-    if (codeOrTheme) {
-      color = codeOrTheme.color
-    } else {
-      const ColorUtils = require('../../utils/ColorUtils')
-      color = ColorUtils.getDefaultColor()
+    if (bodyWithClassifyingPurpose) {
+      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
+      if (codeOrTheme) {
+        color = codeOrTheme.color
+      } else {
+        const ColorUtils = require('../../utils/ColorUtils')
+        color = ColorUtils.getDefaultColor()
+      }
     }
     // PVSCL:ELSECOND
     // Annotation color used is default in grey
     const ColorUtils = require('../../utils/ColorUtils')
     color = ColorUtils.getDefaultColor()
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Linking, LINE)
+    // Annotation color is based on codebook color
+    // Get annotated code id
+    let bodyWithLinkingPurpose = annotation.getBodyForPurpose('linking')
+    if (bodyWithLinkingPurpose) {
+      const ColorUtils = require('../../utils/ColorUtils')
+      color = ColorUtils.getDefaultColor()
+    }
+    let tooltip
+    if (!color) {
+      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(annotation.id)
+      if (codeOrTheme) {
+        color = codeOrTheme.color
+        tooltip = codeOrTheme.name
+      } else {
+        const ColorUtils = require('../../utils/ColorUtils')
+        color = ColorUtils.getDefaultColor()
+      }
+    } else {
+      tooltip = this.generateTooltipFromAnnotation(annotation)
+    }
+    // PVSCL:ENDCOND
     // Get the tooltip text for the annotation
-    let tooltip = this.generateTooltipFromAnnotation(annotation)
     // Draw the annotation in DOM
     try {
       let highlightedElements = DOMTextUtils.highlightContent(

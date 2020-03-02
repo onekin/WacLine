@@ -112,7 +112,7 @@ class LinkingForm {
         purpose: 'linking',
         tags: tags,
         from: fromTheme.id,
-        to: toTheme,
+        to: toTheme.id,
         linkingWord: linkingWord
       })
     }

@@ -123,7 +123,7 @@ class Annotation {
       created: annotationObject.created,
       modified: annotationObject.updated
     })
-    if (_.isArray(annotation.body)) {
+    if (_.isArray(annotation.body) && annotationObject.body) {
       annotation.body = annotationObject.body.map((body) => {
         // PVSCL:IFCOND(Classifying, LINE)
         if (body.purpose === Classifying.purpose) {
@@ -151,7 +151,12 @@ class Annotation {
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(Linking, LINE)
         if (body.purpose === Linking.purpose) {
-          return new Linking({fromValue: body.fromValue, toValue: body.toValue, linkingWordValue: body.linkingWordValue})
+          // To remove the purpose from the annotation body
+          let tempBody = JSON.parse(JSON.stringify(body))
+          delete tempBody.purpose
+          console.log(tempBody)
+          // Create new element of type Linking
+          return new Linking({value: tempBody.value})
         }
         // PVSCL:ENDCOND
       })

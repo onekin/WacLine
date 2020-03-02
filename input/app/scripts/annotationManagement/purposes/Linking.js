@@ -1,25 +1,30 @@
 const Body = require('./Body')
 
 class Linking extends Body {
-  constructor ({purpose = Linking.purpose, fromValue, toValue, linkingWordValue}) {
+  constructor ({purpose = Linking.purpose, value}) {
     super(purpose)
-    this.fromValue = fromValue
-    this.toValue = toValue
-    this.linkingWordValue = linkingWordValue
+    this.value = {from: value.from, to: value.to, linkingWord: value.linkingWord}
   }
 
-  populate (fromValue, toValue, linkingWordValue) {
-    this.fromValue = fromValue
-    this.toValue = toValue
-    this.linkingWordValue = linkingWordValue
+  populate (value) {
+    super.populate(value)
   }
 
   serialize () {
-    return {purpose: this.purpose, fromValue: this.fromValue, toValue: this.toValue, linkingWordValue: this.linkingWordValue}
+    return super.serialize()
+  }
+
+  static deserialize (obj) {
+    let from = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(obj.from)
+    let to = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(obj.to)
+    let linkingWord = obj.linkingWord
+    return new Linking({from, to, linkingWord})
   }
 
   tooltip () {
-    return this.fromValue + ' ' + this.linkingWordValue + ' ' + this.toValue
+    let from = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(this.value.from)
+    let to = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(this.value.to)
+    return from.name + ' ' + this.value.linkingWord + ' ' + to.name
   }
 }
 

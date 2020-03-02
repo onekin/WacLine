@@ -134,9 +134,11 @@ class CreateAnnotation {
     // Get body for classifying
     if (detail.purpose === 'linking') {
       if (detail.from && detail.to && detail.linkingWord) {
-        let fromTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(detail.from)
-        let toTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(detail.to)
-        let classifyingBody = new Linking({from: fromTheme, to: toTheme, linkingWordValue: detail.linkingWord})
+        let value = {}
+        value.from = detail.from
+        value.to = detail.to
+        value.linkingWord = detail.linkingWord
+        let classifyingBody = new Linking({value})
         body.push(classifyingBody.serialize())
       }
     }

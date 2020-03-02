@@ -9,6 +9,7 @@ const Annotation = require('../../../annotationManagement/Annotation')
 // PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('../../model/Code')
 // PVSCL:ENDCOND
+const CreateAnnotation = require('../../../annotationManagement/create/CreateAnnotation')
 const LanguageUtils = require('../../../utils/LanguageUtils')
 
 class UpdateCodebook {
@@ -88,6 +89,7 @@ class UpdateCodebook {
     newThemeButton.addEventListener('click', () => {
       let newTheme
       let retrievedThemeName
+      let target = window.abwa.annotationManagement.annotationCreator.obtainTargetToCreateAnnotation({})
       // Get user selected content
       let selection = document.getSelection()
       // If selection is child of sidebar, return null
@@ -96,7 +98,6 @@ class UpdateCodebook {
       } else {
         retrievedThemeName = selection.toString().trim().replace(/^\w/, c => c.toUpperCase())
       }
-      console.log(retrievedThemeName)
       Alerts.multipleInputAlert({
         title: 'You are creating a new ' + Config.tags.grouped.group + ': ',
         html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New ' + Config.tags.grouped.group + ' name" value="' + retrievedThemeName + '"/>' +
@@ -129,7 +130,7 @@ class UpdateCodebook {
           }
         },
         callback: () => {
-          LanguageUtils.dispatchCustomEvent(Events.createTheme, {theme: newTheme})
+          LanguageUtils.dispatchCustomEvent(Events.createTheme, {theme: newTheme, target: target})
         }
       })
     })
@@ -153,7 +154,10 @@ class UpdateCodebook {
    */
   createNewThemeEventHandler () {
     return (event) => {
+      let target = event.detail.target
       let newThemeAnnotation = event.detail.theme.toAnnotation()
+      newThemeAnnotation.target = event.detail.target
+      newThemeAnnotation.uri = /* PVSCL:IFCOND(DOI) */ target[0].source.doi || /* PVSCL:ENDCOND */ target[0].source.url || target[0].source.urn
       window.abwa.annotationServerManager.client.createNewAnnotation(newThemeAnnotation, (err, annotation) => {
         if (err) {
           Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
