@@ -244,10 +244,12 @@ class AnnotatedContentManager {
   addAnnotationToAnnotatedThemesOrCode (annotation, annotatedThemesObject = this.annotatedThemes) {
     // Get classification code
     let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
-    let codeId = classifyingBody.value.id
-    let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId, annotatedThemesObject)
-    if (annotatedThemeOrCode) {
-      annotatedThemeOrCode.annotations.push(annotation)
+    if (classifyingBody) {
+      let codeId = classifyingBody.value.id
+      let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId, annotatedThemesObject)
+      if (annotatedThemeOrCode) {
+        annotatedThemeOrCode.annotations.push(annotation)
+      }
     }
     return annotatedThemesObject
   }
