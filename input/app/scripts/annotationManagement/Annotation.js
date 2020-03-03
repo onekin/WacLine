@@ -82,7 +82,15 @@ class Annotation {
       uri: /* PVSCL:IFCOND(DOI) */ this.target[0].source.doi || /* PVSCL:ENDCOND */ this.target[0].source.url || this.target[0].source.urn
     }
     // PVSCL:IFCOND(Hypothesis, LINE)
-    // As hypothes.is don't follow some attributes of W3C, we must adapt created annotation with its own attributes to set the target source
+    // The following lines are added to maintain compatibility with hypothes.is's data model that doesn't follow the W3C in all their attributes
+    // PVSCL:IFCOND(Commenting, LINE)
+    // Hypothes.is supports comments, but they are not stored in body, they use text
+    let commentingBody = this.getBodyForPurpose(Commenting.purpose)
+    if (commentingBody) {
+      data.text = commentingBody.value
+    }
+    // PVSCL:ENDCOND
+    // Adaptation of target source to hypothes.is's compatible document attribute
     if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
       // Add uri attribute
       data.uri = window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
