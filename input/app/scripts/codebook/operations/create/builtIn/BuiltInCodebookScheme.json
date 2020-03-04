@@ -3,15 +3,19 @@
   "definition": [
     {
       "name": "Presentation",
-      "description": "",
+      "description": "Gathers mistakes and errors related to how the documentation is presented",
       "codes": [
         {
-          "name": "Typos",
-          "description": "Rigorous use of the research methods"
+          "name": "Typo",
+          "description": "A mistake in typing"
         },
         {
-          "name": "OtherCode",
-          "description": "Rigorous use of the research methods"
+          "name": "Grammar error",
+          "description": "A faulty, unconventional or controversial usage in verb tenses"
+        },
+        {
+          "name": "Orthography error",
+          "description": "An error in spelling, hyphenation, capitalization, word breaks, emphasis and punctuation"
         }
       ]
     }
