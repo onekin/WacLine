@@ -12,9 +12,9 @@ const HTML = require('./formats/HTML')
 const URLUtils = require('../utils/URLUtils')
 const LanguageUtils = require('../utils/LanguageUtils')
 const Alerts = require('../utils/Alerts')
+const RandomUtils = require('../utils/RandomUtils')
 // PVSCL:IFCOND(URN, LINE)
 const CryptoUtils = require('../utils/CryptoUtils')
-const RandomUtils = require('../utils/RandomUtils')
 // PVSCL:ENDCOND
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
 const axios = require('axios')
