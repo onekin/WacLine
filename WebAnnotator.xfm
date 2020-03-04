@@ -649,7 +649,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="isECEc45xNRuiWrSR" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ip7xml__7wGkiHQpZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="imGZv5eAIUJ7h3-M8" cm:type="ps:datetime">2020-02-25T09:43:47.205Z</cm:constant>
+          <cm:constant cm:id="imGZv5eAIUJ7h3-M8" cm:type="ps:datetime">2020-03-04T09:34:33.974Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -657,7 +657,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iT6r080aUH98KWoMw" cm:mimetype="text/plain" cm:encoding="utf-8">Realize a sentiment analysis over a comment. If the comment is detected as offensive, the application raises a warning.</cm:mimedesc>
-        <cm:mimedesc cm:id="iho_ysPCeO9qzzDVU" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;This feature verifies the content of user&apos;s comment when creating the annotation and notifies if the comment has a negative or offensive connotation. It is adequate to avoid offensive content when annotation comments are read by third parties or are used as a mechanism for feedback.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iho_ysPCeO9qzzDVU" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;This feature verifies the content of user&apos;s comment when creating the annotation and notifies if the comment has a negative or offensive connotation. It is adequate to avoid offensive content when annotation comments are read by third parties or are used as a mechanism for feedback.&lt;/p&gt;
+&lt;p class=&quot;itemize_item&quot;&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/SentimentAnalysis.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/SentimentAnalysis.png&quot; width=&quot;1286&quot; height=&quot;460&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iHP3JmF7E_uW0oUXg" cm:name="SuggestedLiterature" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -677,7 +679,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ixWABS3o6vffWi-Yz" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iRIJIlFFHFPOSLyEd" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ioYJECPYL1hgfP90f" cm:type="ps:datetime">2020-02-25T09:44:48.595Z</cm:constant>
+          <cm:constant cm:id="ioYJECPYL1hgfP90f" cm:type="ps:datetime">2020-03-04T09:45:15.567Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -685,7 +687,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iwrC4NDyDTASd6iAy" cm:mimetype="text/plain" cm:encoding="utf-8">Add suggested literature references to the comment.</cm:mimedesc>
-        <cm:mimedesc cm:id="iayJ6M6_bWfSa-1XU" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;This feature provides an in-context literature lookup, simplifying literature suggestion or linking comments with scholarly literature. Currently it supports lookup in DBLP:&amp;nbsp;&lt;a href=&quot;https://dblp.uni-trier.de/&quot;&gt;https://dblp.uni-trier.de/&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iayJ6M6_bWfSa-1XU" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;This feature provides an in-context literature lookup, simplifying literature suggestion or linking comments with scholarly literature. Currently it supports lookup in DBLP:&amp;nbsp;&lt;a href=&quot;https://dblp.uni-trier.de/&quot;&gt;https://dblp.uni-trier.de/&lt;/a&gt;&lt;/p&gt;
+&lt;p class=&quot;itemize_item&quot;&gt;&amp;nbsp;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/SuggestingLiterature.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/SuggestingLiterature.png&quot; width=&quot;528&quot; height=&quot;517&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i1mmM3Y--SH1eoXIl" cm:name="Autocomplete" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -705,7 +709,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i0u7kQvalCW6--q4E" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iREc1SNNvibJ1Oytp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iyo0__YEp-zraJUZJ" cm:type="ps:datetime">2020-02-25T09:47:16.762Z</cm:constant>
+          <cm:constant cm:id="iyo0__YEp-zraJUZJ" cm:type="ps:datetime">2020-03-04T08:47:30.868Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -715,7 +719,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="i5qcshvCmz3OYV0cN" cm:mimetype="text/plain" cm:encoding="utf-8">Based on previous comments, the application recommends possible useful comments to the user.
 </cm:mimedesc>
         <cm:mimedesc cm:id="i-45_iJ6hhsPAD4sy" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;Provides functionality for comment reuse. It is useful in contexts where the same comment is repeated or reused in multiple annotations.&lt;/p&gt;
-&lt;p class=&quot;itemize_item&quot;&gt;When the user starts writing, the system automatically hints with previously created comments. Comments that can be reused are those which has the same classification if classifying feature is selected, otherwise all the comments done are shown.&lt;/p&gt;</cm:mimedesc>
+&lt;p class=&quot;itemize_item&quot;&gt;When the user starts writing, the system automatically hints with previously created comments. Comments that can be reused are those which has the same classification if classifying feature is selected, otherwise all the comments done are shown.&lt;/p&gt;
+&lt;p class=&quot;itemize_item&quot;&gt;&lt;img title=&quot;Autocomplete annotation comment&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Autocomplete.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Autocomplete.png&quot; width=&quot;636&quot; height=&quot;419&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="ini7gtBrap5Ux362Y" cm:name="PreviousAssignments" cm:type="ps:feature" cm:class="ps:feature">
@@ -740,14 +746,16 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iVmDhSPYV6DC7Nhrs" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ia_S9XqS8UF-N42NU" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iTrIaERNIZnqmT-mQ" cm:type="ps:datetime">2020-02-25T09:48:40.006Z</cm:constant>
+          <cm:constant cm:id="iTrIaERNIZnqmT-mQ" cm:type="ps:datetime">2020-03-04T09:33:05.504Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ibFcWGUvw1Hwheyjn" cm:mimetype="text/plain" cm:encoding="utf-8">PreviousAssignments</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="iYdsXdo_txbs0rWAx" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature is closely related to Moodle ones. It shows previously assessed assignments to students, where the user can place add a reference in the comment to student&apos;s previous assignments.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iYdsXdo_txbs0rWAx" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature is closely related to Moodle ones. It shows previously assessed assignments to students, where the user can place add a reference in the comment to student&apos;s previous assignments.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/PreviousAssignment.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/PreviousAssignment.png&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i16D2Cp179ierYM5h" cm:name="Commenting" cm:type="ps:feature" cm:class="ps:feature">
@@ -775,14 +783,16 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i6vFJ0R5YTHnsspsE" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iKgPOuLA8wPocgQUg" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMwWO75YeG-ETwjsf" cm:type="ps:datetime">2020-02-25T09:43:25.302Z</cm:constant>
+          <cm:constant cm:id="iMwWO75YeG-ETwjsf" cm:type="ps:datetime">2020-03-04T09:02:30.041Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iraqyA6Li-lygrhpB" cm:mimetype="text/plain" cm:encoding="utf-8">Commenting</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="ivah9FR3VsQxti752" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Selecting this feature allow users to create annotations with the purpose of commenting. When user right-click over an annotation can click on &quot;comment&quot; button and a form is shown to create a comment. Some practices demand for comments to be assisted to either speed up the commenting process or enhance comments quality, this leads to a further elaboration of this functionality with commenting sub-features.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="ivah9FR3VsQxti752" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Selecting this feature allow users to create annotations with the purpose of commenting. When user right-click over an annotation can click on &quot;comment&quot; button and a form is shown to create a comment. Some practices demand for comments to be assisted to either speed up the commenting process or enhance comments quality, this leads to a further elaboration of this functionality with commenting sub-features.&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;img title=&quot;Commenting&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Commenting.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Commenting.png&quot; width=&quot;1150&quot; height=&quot;342&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iTX52aKLiU5bPOxWs" cm:name="Replying" cm:type="ps:feature" cm:class="ps:feature">
@@ -807,7 +817,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ixF8eN0dNBeWIDLri" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iTjw5cha98IVEqsP5" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iTFxwjoVQD0YlDrdP" cm:type="ps:datetime">2020-02-25T09:50:22.323Z</cm:constant>
+          <cm:constant cm:id="iTFxwjoVQD0YlDrdP" cm:type="ps:datetime">2020-03-04T09:33:33.490Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -815,7 +825,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iL58gzfnVDjPUI3VN" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;div id=&quot;magicparlabel-14856&quot; class=&quot;standard&quot;&gt;The motivation for when the user intends to reply to a previous statement, either an Annotation or another resource. This feature provides replying annotations (eg.: to maintain an in-context discussion). This features is to be found in social annotation and collaborative annotation where the annotation practice does not end with the annotation but feedback might be required.&lt;/div&gt;
-&lt;div class=&quot;standard&quot;&gt;When user right-clicks on other user&apos;s annotation a button to reply is shown. The commenting form appears to place a new comment to reply the annotation.&lt;/div&gt;</cm:mimedesc>
+&lt;div class=&quot;standard&quot;&gt;When user right-clicks on other user&apos;s annotation a button to reply is shown. The commenting form appears to place a new comment to reply the annotation.&lt;/div&gt;
+&lt;div class=&quot;standard&quot;&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Replying.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Replying.png&quot; width=&quot;549&quot; height=&quot;439&quot;&gt;
+&lt;/div&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i4zTrONY9hhrFIG2J" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -835,7 +847,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iQhfceMAbav2NB01w" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iqO7WQR44ygIcfeQt" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iG1leeSsbbFcwe7pz" cm:type="ps:datetime">2020-02-25T09:53:09.646Z</cm:constant>
+          <cm:constant cm:id="iG1leeSsbbFcwe7pz" cm:type="ps:datetime">2020-03-04T08:46:14.313Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -843,7 +855,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iiJ5oY4IdfN6MZyZK" cm:mimetype="text/plain" cm:encoding="utf-8">Categorize the comment.</cm:mimedesc>
-        <cm:mimedesc cm:id="iqNAub4A73Qm7IAsb" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;When assessing a category must be placed. Those categories are static and always the same for all the annotations. You can define your own categories in input/app/scripts/Config.js file in assessmentCategories attribute&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iqNAub4A73Qm7IAsb" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;When assessing a category must be placed. Those categories are static and always the same for all the annotations. You can define your own categories in input/app/scripts/Config.js file in assessmentCategories attribute&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;div class=&quot;standard&quot;&gt;&lt;strong&gt;&lt;img title=&quot;Annotation assessment, giving a category&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AssessingCategorize.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AssessingCategorize.png&quot; width=&quot;560&quot; height=&quot;306&quot;&gt;
+&lt;/strong&gt;&lt;/div&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i3kWFU7xg1gvK1BJS" cm:name="Assessing" cm:type="ps:feature" cm:class="ps:feature">
@@ -859,7 +874,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:relations>
       <cm:relations cm:id="iIax34UMvh-pwMwlU" cm:class="ps:dependencies">
         <cm:relation cm:id="iVOc_TJ3fEnLUoJRy" cm:type="ps:requires">
-          <cm:target cm:id="itxl3LAKZbgqXqK7x">iivhJRwmojkiJvYc5/iTX52aKLiU5bPOxWs</cm:target>
+          <cm:target cm:id="iqUnOPIJ34RKPsIhT">iivhJRwmojkiJvYc5/i16D2Cp179ierYM5h</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -873,14 +888,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iMshjpdXVtnauqI4u" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iqOfYE-OeVlmu0shI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iP3DWUw8HHiKIMg6t" cm:type="ps:datetime">2020-02-25T09:50:54.784Z</cm:constant>
+          <cm:constant cm:id="iP3DWUw8HHiKIMg6t" cm:type="ps:datetime">2020-03-04T08:46:08.067Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iPMxHfnlv72e77Wts" cm:mimetype="text/plain" cm:encoding="utf-8">Assessing</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="iXlMdxFQ2fDIe3i6H" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;div id=&quot;magicparlabel-14866&quot; class=&quot;standard&quot;&gt;The motivation for when the user intends to assess the target resource in some way, rather than simply make a comment about it. For example to write a review of a book, or provide an assessment of a student&apos;s work. Assessment is done over already annotated content, so it works as an special case of &lt;em&gt;Replying&lt;/em&gt;&lt;strong&gt;.&lt;/strong&gt;&lt;/div&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iXlMdxFQ2fDIe3i6H" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;div id=&quot;magicparlabel-14866&quot; class=&quot;standard&quot;&gt;The motivation for when the user intends to assess the target resource in some way, rather than simply make a comment about it. For example to write a review of a book, or provide an assessment of a student&apos;s work. Assessment can be done&amp;nbsp;over annotated content (works as&amp;nbsp;a special case of &lt;em&gt;Commenting&lt;/em&gt;)&amp;nbsp;or over&amp;nbsp;other user&apos;s annotation (works as a special case of&amp;nbsp;&lt;em&gt;Replying)&lt;/em&gt;&lt;strong&gt;.&lt;/strong&gt;&lt;/div&gt;
+&lt;div class=&quot;standard&quot;&gt;&amp;nbsp;&lt;/div&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iq8KhwKzipWRNNLFw" cm:name="AnnotationPurpose" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -1055,14 +1071,16 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ixLd21MnHb4_sIaqB" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="isnhTGls7-0L3olWo" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iDzJOZI0Z8rYHW6XB" cm:type="ps:datetime">2020-02-25T13:01:42.105Z</cm:constant>
+          <cm:constant cm:id="iDzJOZI0Z8rYHW6XB" cm:type="ps:datetime">2020-03-04T09:22:27.500Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iDTGjy2BiH_EJPzf5" cm:mimetype="text/plain" cm:encoding="utf-8">Import</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="iiwL0Sp76lYPFJyaF" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If this feature is selected, a button is created in the sidebar, which allow users to import annotations in a .json file created previously with Export-&amp;gt;JSON feature. The only supported importing format is JSON-LD following the W3C annotation data model recommendations. Depending on the features selected, some of the annotations&apos; attributes are not imported (e.g.: if you import annotations with comments, but the web annotation client does not have commenting feature selected, it won&apos;t import the comment in the annotation).&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iiwL0Sp76lYPFJyaF" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If this feature is selected, a button is created in the sidebar, which allow users to import annotations in a .json file created previously with Export-&amp;gt;JSON feature. The only supported importing format is JSON-LD following the W3C annotation data model recommendations. Depending on the features selected, some of the annotations&apos; attributes are not imported (e.g.: if you import annotations with comments, but the web annotation client does not have commenting feature selected, it won&apos;t import the comment in the annotation).&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/ImportExportJSON.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/ImportExportJSON.png&quot; width=&quot;468&quot; height=&quot;276&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i8_myHFxfoMjDRua9" cm:name="AnnotationOperation" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
@@ -1188,14 +1206,16 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iQAcVNJ7hEsEM7HjO" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iaKSIygt0r0jJlGbl" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="igJH_wjHiKiwTOMnj" cm:type="ps:datetime">2020-02-25T13:06:41.833Z</cm:constant>
+          <cm:constant cm:id="igJH_wjHiKiwTOMnj" cm:type="ps:datetime">2020-03-04T08:40:02.565Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iISwcvRjT2TFXjH7B" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotatedPDF</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="iH62pvuOhZ7aN34Kn" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature creates a button in the sidebar to export the annotated resource in PDF format with the annotations highlighting the annotated content. Due to lack of a library to&amp;nbsp;augment/extend/annotate PDF documents in javascript/node the exported document is a PDF document with screenshots of the PDF document with the highlighted annotations.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iH62pvuOhZ7aN34Kn" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature creates a button in the sidebar to export the annotated resource in PDF format with the annotations highlighting the annotated content. Due to lack of a library to&amp;nbsp;augment/extend/annotate PDF documents in javascript/node the exported document is a PDF document with screenshots of the PDF document with the highlighted annotations.&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;AnnotatedPDFImage&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotatedPDF.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotatedPDF.png&quot; width=&quot;307&quot; height=&quot;263&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="ij2QyVevRHICSjapM" cm:name="AnnotatedResource" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1250,14 +1270,16 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iiBmyGTy1h2evY5Mz" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iur2rFphdEP6CaFy3" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iy5Gyx9o0SiIjO2jC" cm:type="ps:datetime">2020-02-25T13:08:50.812Z</cm:constant>
+          <cm:constant cm:id="iy5Gyx9o0SiIjO2jC" cm:type="ps:datetime">2020-03-04T09:22:40.096Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iLGUPEyXyQqIrPUJ7" cm:mimetype="text/plain" cm:encoding="utf-8">JSON</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="i8WMtCQhfZ93T8doH" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature creates the functionality to export annotations in&amp;nbsp;json format. A button is created in the sidebar toolbar to let users export annotations&amp;nbsp;to a json file. It can be later be imported again using Import feature.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="i8WMtCQhfZ93T8doH" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature creates the functionality to export annotations in&amp;nbsp;json format. A button is created in the sidebar toolbar to let users export annotations&amp;nbsp;to a json file. It can be later be imported again using Import feature.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/ImportExportJSON.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/ImportExportJSON.png&quot; width=&quot;468&quot; height=&quot;276&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iqCMPDxu-TOFOI5lL" cm:name="TextSummary" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1277,7 +1299,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="itSMFkK8TNZpsAcUI" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iwW1SbSAE5TeM4mjL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ioa0iRoz6ddI84zkh" cm:type="ps:datetime">2020-02-25T13:09:48.120Z</cm:constant>
+          <cm:constant cm:id="ioa0iRoz6ddI84zkh" cm:type="ps:datetime">2020-03-04T10:10:26.204Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1286,7 +1308,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="ix3aFO2P_fNTdYLmf" cm:mimetype="text/plain" cm:encoding="utf-8">Print a brief summary about some clustered annotations using a predefined template.
 </cm:mimedesc>
-        <cm:mimedesc cm:id="iRdPC3jUIKo8MVhYz" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Creates a text summary of the annotations done in the current document. Creates a button in the sidebar to let the user create a report of annotation activity, including: each annotation with its comment, annotated text fragment,...&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iRdPC3jUIKo8MVhYz" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Creates a text summary of the annotations done in the current document. Creates a button in the sidebar to let the user create a report of annotation activity, including: each annotation with its comment, annotated text fragment,...&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/TextSummary.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/TextSummary.png&quot; width=&quot;1267&quot; height=&quot;692&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="imC0TaQUj7PyX6Yzb" cm:name="Export" cm:type="ps:feature" cm:class="ps:feature">
@@ -1340,7 +1364,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iGD-xM4PXXtjC388R" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i9P7TfHoRrD-S4qaw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iL7M_hR1IWVjbPbyt" cm:type="ps:datetime">2020-02-25T10:00:58.915Z</cm:constant>
+          <cm:constant cm:id="iL7M_hR1IWVjbPbyt" cm:type="ps:datetime">2020-03-04T09:05:15.825Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1350,7 +1374,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="iKYR93GgBNfP37kSk" cm:mimetype="text/plain" cm:encoding="utf-8">Filter annotations based on a user or a group of users. The filtered annotations will be those made by the selected users.
 
 </cm:mimedesc>
-        <cm:mimedesc cm:id="ixOnKt18pduDRJ7cu" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Filtering is done by users. In the sidebar is shown the list of users that have created annotations in the current document, selecting or deselecting them annotations that are done by that creator&amp;nbsp;are shown/hidden.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="ixOnKt18pduDRJ7cu" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Filtering is done by users. In the sidebar is shown the list of users that have created annotations in the current document, selecting or deselecting them annotations that are done by that creator&amp;nbsp;are shown/hidden.&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;Filter by user&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/FilterByUser.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/FilterByUser.png&quot; width=&quot;265&quot; height=&quot;259&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i4bQlrs2YHC1KbIbc" cm:name="Filter" cm:type="ps:feature" cm:class="ps:feature">
@@ -1436,7 +1462,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i6c6YjsKuSKnW46rR" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iI6vrqIEbBK1IXIqu" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iGH-2j9V7gmqdDQYn" cm:type="ps:datetime">2020-02-25T10:03:48.941Z</cm:constant>
+          <cm:constant cm:id="iGH-2j9V7gmqdDQYn" cm:type="ps:datetime">2020-03-04T09:23:54.207Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1445,7 +1471,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="igF2pkpTjgk55pzlI" cm:mimetype="text/plain" cm:encoding="utf-8">Place the user at the location of the last annotation.
 </cm:mimedesc>
-        <cm:mimedesc cm:id="iQjiQSutjrVgLVzoa" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature creates a button in the sidebar that lets the user to go to the most recently created annotation in the document. This can be useful when a long document is annotated and the annotation activity is stopped and resumed later.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iQjiQSutjrVgLVzoa" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature creates a button in the sidebar that lets the user to go to the most recently created annotation in the document. This can be useful when a long document is annotated and the annotation activity is stopped and resumed later.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/LastAnnotation.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/LastAnnotation.png&quot; width=&quot;316&quot; height=&quot;307&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iO03Tlk_amWlDoyRX" cm:name="SidebarNavigation" cm:type="ps:feature" cm:class="ps:feature">
@@ -1504,7 +1532,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="is_0e1JPFBuhBkDQO" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iy-TP-H87lnt4Oum0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iP4sBtyX3CE9-E0BT" cm:type="ps:datetime">2020-02-25T10:09:46.157Z</cm:constant>
+          <cm:constant cm:id="iP4sBtyX3CE9-E0BT" cm:type="ps:datetime">2020-03-04T08:48:11.266Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1514,7 +1542,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="iYwEm8-VtiB_cN1Q5" cm:mimetype="text/plain" cm:encoding="utf-8">Show an illustration of the annotations within a Canvas model view.
 
 </cm:mimedesc>
-        <cm:mimedesc cm:id="il5lx6DwHrXNJXir4" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;A canvas visualization is a general visualization of the annotation activity. It creates a button in the sidebar. When clicked, a popup is shown with all the annotations done in the current document&amp;nbsp;in a tabular distribution.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="il5lx6DwHrXNJXir4" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;A canvas visualization is a general visualization of the annotation activity. It creates a button in the sidebar. When clicked, a popup is shown with all the annotations done in the current document&amp;nbsp;in a tabular distribution.&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;Canvas&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Canvas.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Canvas.png&quot; width=&quot;707&quot; height=&quot;421&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i7DSN7eJJwoP5YQrf" cm:name="Navigation" cm:type="ps:feature" cm:class="ps:feature">
@@ -1646,7 +1676,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iyoZcdE6N0v1kCJUO" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iH_O8ySA4PxNGN-59" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="imSNSRsDjKE7_Cmd1" cm:type="ps:datetime">2020-02-25T10:17:48.272Z</cm:constant>
+          <cm:constant cm:id="imSNSRsDjKE7_Cmd1" cm:type="ps:datetime">2020-03-04T08:44:01.083Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ivoGkUam8WoLPHvEr" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="iYopaaPrxFqW84R6a" cm:type="ps:string"></cm:constant>
@@ -1658,7 +1688,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iA9Lfuv6_R0MOgePc" cm:mimetype="text/plain" cm:encoding="utf-8">Show the annotations in the correspondent cells of a spreadsheet.
 </cm:mimedesc>
-        <cm:mimedesc cm:id="iFeJ_RDxnj-MXhv9I" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Creates a spreadsheet out of the annotations done with a codebook&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="iFeJ_RDxnj-MXhv9I" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Creates a spreadsheet out of the annotations done with a codebook:&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;Annotations to google sheet&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationToSpreadsheet.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationToSpreadsheet.png&quot; width=&quot;1267&quot; height=&quot;679&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iscJfRCn09JLPpJJY" cm:name="MoodleReport" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1689,14 +1721,21 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="it6_CCr2_HUhvP0xL" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iDkZgLEd7w2kJgvlS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iHfKSWV8EaPoaticu" cm:type="ps:datetime">2020-02-25T10:23:19.108Z</cm:constant>
+          <cm:constant cm:id="iHfKSWV8EaPoaticu" cm:type="ps:datetime">2020-03-04T09:27:54.969Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i30yTz7HvB5t5Arsv" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleReport</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="inJktM2CgMjjZhfXj" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Web annotation client reports to moodle automatically maps annotation activity to moodle evaluation rubrics. Requires that the codebook was defined using Moodle rubric feature.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="inJktM2CgMjjZhfXj" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Web annotation client reports to moodle automatically maps annotation activity to moodle evaluation rubrics. Requires that the codebook was defined using Moodle rubric feature.&lt;/p&gt;
+&lt;p&gt;Moodle grades and comments are propagated to grade panel:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/MoodleReport1.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/MoodleReport1.png&quot; width=&quot;1349&quot; height=&quot;727&quot;&gt;
+&lt;/p&gt;
+&lt;p&gt;If feedback comment is activated in moodle, a report with links to evidences is created ready to by consumed by the student:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/MoodleReport2.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/MoodleReport2.png&quot;&gt;
+&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iay0jThzzCTt0M6ma" cm:name="MoodleComment" cm:type="ps:feature" cm:class="ps:feature">
@@ -1724,14 +1763,16 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iUCpuJFZrkTd2JSvd" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iO5VOKIBM8GWx-8iS" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iRUZFqG_nraPWUWP6" cm:type="ps:datetime">2020-02-25T10:24:06.141Z</cm:constant>
+          <cm:constant cm:id="iRUZFqG_nraPWUWP6" cm:type="ps:datetime">2020-03-04T09:26:16.607Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iC4YvkFX6pdWN8cJl" cm:mimetype="text/plain" cm:encoding="utf-8">MoodleComment</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="i50JLje6CJw9tvObc" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Web annotation client reports automatically to moodle discussion between the teacher and the student to Moodle comments section in the students assignment.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="i50JLje6CJw9tvObc" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Web annotation client reports automatically to moodle discussion between the teacher and the student to Moodle comments section in the students assignment.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/MoodleComment.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/MoodleComment.png&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iMpzmjS26NPYu9VTY" cm:name="MindMeisterConsumer" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -1851,7 +1892,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="it6X3Ci7uIogRaL3h" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="idlm7didoH3k1l_Sr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i7oKeqi6pV_9ju2UB" cm:type="ps:datetime">2020-02-25T13:29:40.799Z</cm:constant>
+          <cm:constant cm:id="i7oKeqi6pV_9ju2UB" cm:type="ps:datetime">2020-03-04T09:24:38.887Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1859,7 +1900,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iIpiYVLG4JgpExu1j" cm:mimetype="text/plain" cm:encoding="utf-8">The user can choose manually in which group he wants to annotate.</cm:mimedesc>
-        <cm:mimedesc cm:id="i5lOmIFCb8ECxjsM0" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;Usually annotation systems provide a mechanism for the user to choose with which one is going to classify in the annotation activity. In the sidebar it is shown a dropdown list with all&amp;nbsp;the codebooks available to annotate.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="i5lOmIFCb8ECxjsM0" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p class=&quot;itemize_item&quot;&gt;Usually annotation systems provide a mechanism for the user to choose with which one is going to classify in the annotation activity. In the sidebar it is shown a dropdown list with all&amp;nbsp;the codebooks available to annotate.&lt;/p&gt;
+&lt;p class=&quot;itemize_item&quot;&gt;&lt;img src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Manual.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/Manual.png&quot; width=&quot;227&quot; height=&quot;349&quot;&gt;
+&amp;nbsp;&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iMFQwhQg2WH3TBqpE" cm:name="ApplicationBased" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -2179,7 +2222,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i6qVjuklYBHC4ymZV" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iilI0eCKYvctJyi4q" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMSALfO69WXZwbzUp" cm:type="ps:datetime">2020-02-25T13:49:10.871Z</cm:constant>
+          <cm:constant cm:id="iMSALfO69WXZwbzUp" cm:type="ps:datetime">2020-03-04T08:51:35.522Z</cm:constant>
         </cm:property>
         <cm:property cm:id="imgLFrqWuPYWn4WSf" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="ixOmPqzOqPX8K_vdL" cm:type="ps:string"></cm:constant>
@@ -2194,7 +2237,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iX-8W4bcYalpm8q9T" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook from the cells of the spreadsheet.
 </cm:mimedesc>
-        <cm:mimedesc cm:id="igUvUNnzh_ux_CKvC" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature allows creation of codebooks from spreadsheets hosted in Google Sheets. When the user browses a google sheet on the browser, clicking on the extension button will create a codebook based on the information provided in the spreadsheet. This specification must follow a particular structure (first row for Themes and second row using data validation the corresponding codes). You can see a sample spreadsheet here:&amp;nbsp;&lt;a href=&quot;https://docs.google.com/spreadsheets/d/1__DCJvzGya1_an8i-uhF8cOIrLnHr8NuXjkixZsiwWw/edit#gid=0&quot;&gt;https://docs.google.com/spreadsheets/d/1__DCJvzGya1_an8i-uhF8cOIrLnHr8NuXjkixZsiwWw/edit#gid=0&lt;/a&gt;. Further documentation of spreadsheet&amp;nbsp;layout that the client can consume is defined here: &lt;a href=&quot;https://github.com/haritzmedina/highlightAndGo/wiki/For-end-users#spreadsheet-layout&quot;&gt;https://github.com/haritzmedina/highlightAndGo/wiki/For-end-users#spreadsheet-layout&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="igUvUNnzh_ux_CKvC" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature allows creation of codebooks from spreadsheets hosted in Google Sheets. When the user browses a google sheet on the browser, clicking on the extension button will create a codebook based on the information provided in the spreadsheet. This specification must follow a particular structure (first row for Themes and second row using data validation the corresponding codes). You can see a sample spreadsheet here:&amp;nbsp;&lt;a href=&quot;https://docs.google.com/spreadsheets/d/1__DCJvzGya1_an8i-uhF8cOIrLnHr8NuXjkixZsiwWw/edit#gid=0&quot;&gt;https://docs.google.com/spreadsheets/d/1__DCJvzGya1_an8i-uhF8cOIrLnHr8NuXjkixZsiwWw/edit#gid=0&lt;/a&gt;. Further documentation of spreadsheet&amp;nbsp;layout that the client can consume is defined here: &lt;a href=&quot;https://github.com/haritzmedina/highlightAndGo/wiki/For-end-users#spreadsheet-layout&quot;&gt;https://github.com/haritzmedina/highlightAndGo/wiki/For-end-users#spreadsheet-layout&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;img title=&quot;GoogleSheetCodebook&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookCreateGoogleSheet.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookCreateGoogleSheet.png&quot; width=&quot;1356&quot; height=&quot;761&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iY5UzNxKFYLzcy1oG" cm:name="MoodleProvider" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -2214,7 +2260,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iYmkH8GX3MYbx9UBA" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iMe1_6e-wQekLpt0V" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i21piN7nSs5JbWvN_" cm:type="ps:datetime">2020-02-25T14:00:24.037Z</cm:constant>
+          <cm:constant cm:id="i21piN7nSs5JbWvN_" cm:type="ps:datetime">2020-03-04T08:53:38.337Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2223,7 +2269,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iYfZI1S3Kvl6deGf9" cm:mimetype="text/plain" cm:encoding="utf-8">Load the CodeBook mapping the rubric of the task that will be performed.
 </cm:mimedesc>
-        <cm:mimedesc cm:id="i02TTJFumpDWXnH3b" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature consumes a rubric defined in Moodle and creates a codebook that allows users to annotate documents. See this video to learn how to create a rubric in Moodle and how codebook is created out of the rubric: &lt;a href=&quot;https://youtu.be/4ZPBlIibqzw?t=19&quot;&gt;https://youtu.be/4ZPBlIibqzw?t=19&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="i02TTJFumpDWXnH3b" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature consumes a rubric defined in Moodle and creates a codebook that allows users to annotate documents. See this video to learn how to create a rubric in Moodle and how codebook is created out of the rubric: &lt;a href=&quot;https://youtu.be/4ZPBlIibqzw?t=19&quot;&gt;https://youtu.be/4ZPBlIibqzw?t=19&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;Codebook create from moodle rubric&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookCreateMoodle.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookCreateMoodle.png&quot; width=&quot;1347&quot; height=&quot;754&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="isIwh-UJzrQOnW-DO" cm:name="MindMeisterProvider" cm:type="ps:feature" cm:class="ps:feature">
@@ -2658,7 +2706,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iBouChqEyv1Iz-Fvo" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iMumw3as4a3JKKkDq" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iHlMLTSjk7_oajYZ2" cm:type="ps:datetime">2020-02-25T13:19:53.043Z</cm:constant>
+          <cm:constant cm:id="iHlMLTSjk7_oajYZ2" cm:type="ps:datetime">2020-03-04T08:59:57.513Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2666,7 +2714,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iUIQR7RRu4HK2H2hM" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature permits users to modify the codebook (controlled vocabulary to classify)&amp;nbsp;that they are annotating with. That means that this feature allows&amp;nbsp;creation of new concepts, modification of name and its description and deletion&amp;nbsp;in runtime.&lt;/p&gt;
-&lt;p&gt;Need to mention that modifications and deletions must be done by the creator of the concept in a collaborative setting (e.g.: annotation server Hypothes.is)&lt;/p&gt;</cm:mimedesc>
+&lt;p&gt;Need to mention that modifications and deletions must be done by the creator of the concept in a collaborative setting (e.g.: annotation server Hypothes.is)&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;Codebook update&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookUpdate.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookUpdate.png&quot; width=&quot;323&quot; height=&quot;204&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i2E8IgoKCVFFmVA-u" cm:name="Hierarchy" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -2691,14 +2741,21 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i0AQGrqsqmkVu0zUQ" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="invfJ7Il-ahOs4wn6" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ia__AKHK-6WkXKy66" cm:type="ps:datetime">2020-02-25T14:14:51.125Z</cm:constant>
+          <cm:constant cm:id="ia__AKHK-6WkXKy66" cm:type="ps:datetime">2020-03-04T08:58:26.129Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="i6yba5usjVsUyjeBJ" cm:mimetype="text/plain" cm:encoding="utf-8">Hierarchy</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="izlj0Wm_0JHaQz_eS" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If selected, codebooks are able to group codes into themes, creating a hierarchized codebook to classify annotations.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="izlj0Wm_0JHaQz_eS" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;If selected, codebooks are able to group codes into themes, creating a hierarchized codebook to classify annotations.&lt;/p&gt;
+&lt;p&gt;Codebook if hierarchy is not selected:&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;Codebook no hierarchy&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookNoHierarchy.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookNoHierarchy.png&quot; width=&quot;243&quot; height=&quot;275&quot;&gt;
+&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Codebook with hierarchy selected:&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;Codebook with hierarchy selected&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookWithHierarchy.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/CodebookWithHierarchy.png&quot; width=&quot;256&quot; height=&quot;615&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="iL9f02WrlfXgKAbG0" cm:name="CodebookImportExport" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -2783,14 +2840,20 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i3wIrr8ORGBFyjWiW" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="itHImikPzXqJusrTz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iQVhrG0VIk7n6-93A" cm:type="ps:datetime">2020-02-25T12:48:58.431Z</cm:constant>
+          <cm:constant cm:id="iQVhrG0VIk7n6-93A" cm:type="ps:datetime">2020-03-04T08:42:12.146Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="idgjSnLCoxI6pabtx" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotationList</cm:mimedesc>
       </cm:vname>
       <cm:desc>
-        <cm:mimedesc cm:id="im5OnTkbSFzngXauy" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature shows a button in the sidebar. If user clicks on it, a new browser tab will be opened and it will show annotations done in form of a list. In this view it is possible to search by user, tag and so on. If browserStorage annotation server is selected, this feature is a pre-alpha feature so may not work as expected in annotation searching.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="im5OnTkbSFzngXauy" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;This feature shows a button in the sidebar. If user clicks on it, a new browser tab will be opened and it will show annotations done in form of a list. In this view it is possible to search by user, tag and so on. If browserStorage annotation server is selected, this feature is a pre-alpha feature so may not work as expected in annotation searching.&lt;/p&gt;
+&lt;p&gt;Annotation list with selected annotation server Hypothes.is:&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;Hypothes.is annotation list&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationListHypothesis.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationListHypothesis.png&quot; width=&quot;1212&quot; height=&quot;683&quot;&gt;
+&amp;nbsp;&lt;/p&gt;
+&lt;p&gt;Annotation list with selected annotation server &quot;BrowserStorage&quot;:&lt;/p&gt;
+&lt;p&gt;&lt;img title=&quot;Annotation list browser storage&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationListLocal.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationListLocal.png&quot; width=&quot;1309&quot; height=&quot;589&quot;&gt;
+&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
   </cm:elements>
