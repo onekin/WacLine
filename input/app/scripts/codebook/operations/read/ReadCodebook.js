@@ -22,9 +22,6 @@ class ReadCodebook {
   }
 
   init (callback) {
-    // Add event listener for codebook read event
-    this.initCodebookReadEvent()
-    this.initCodebookCreatedEvent()
     // PVSCL:IFCOND(CodebookUpdate,LINE)
     this.initThemeCreatedEvent()
     this.initThemeUpdatedEvent()
@@ -35,7 +32,11 @@ class ReadCodebook {
     this.initCodeRemovedEvent()
     // PVSCL:ENDCOND
     // PVSCL:ENDCOND
-    this.loadCodebook(callback)
+    this.loadCodebook(() => {
+      // Add event listener for codebook read event
+      this.initCodebookCreatedEvent()
+      this.initCodebookReadEvent(callback)
+    })
   }
 
   destroy () {
@@ -83,9 +84,12 @@ class ReadCodebook {
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
 
-  initCodebookReadEvent () {
+  initCodebookReadEvent (callback) {
     this.events.codebookReadEvent = {element: document, event: Events.codebookRead, handler: this.codebookReadEventHandler()}
     this.events.codebookReadEvent.element.addEventListener(this.events.codebookReadEvent.event, this.events.codebookReadEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
   }
 
   initCodebookCreatedEvent () {
@@ -100,28 +104,26 @@ class ReadCodebook {
   loadCodebook (callback) {
     console.debug('Reading codebook')
     this.initCodebookStructure(() => {
-      this.initFirstCodebookReadEventHandler(() => {
-        this.initCodebookContent()
-      }, callback)
+      this.initCodebookContent(callback)
     })
   }
 
   initFirstCodebookReadEventHandler (callback, callbackToExecuteAfterRead) {
-    this.events.firstCodebookReadEvent = {element: document, event: Events.codebookRead, handler: this.codebookReadEventListener(callbackToExecuteAfterRead)}
+    /* this.events.firstCodebookReadEvent = {element: document, event: Events.codebookRead, handler: this.codebookReadEventListener(callbackToExecuteAfterRead)}
     this.events.firstCodebookReadEvent.element.addEventListener(this.events.firstCodebookReadEvent.event, this.events.firstCodebookReadEvent.handler, false)
-    if (_.isFunction(callback)) {
+    */ if (_.isFunction(callback)) {
       callback()
     }
   }
 
   codebookReadEventListener (callback) {
     return (event) => {
-      if (_.isFunction(callback)) {
-        callback()
-      }
       // Remove codebook read event listener after first read
       let eventHandlerToDisable = this.events.firstCodebookReadEvent
       eventHandlerToDisable.element.removeEventListener(eventHandlerToDisable.event, eventHandlerToDisable.handler)
+      if (_.isFunction(callback)) {
+        callback()
+      }
     }
   }
 
@@ -150,54 +152,66 @@ class ReadCodebook {
       if (err) {
         Alerts.errorAlert({text: 'Unable to retrieve annotations from annotation server to initialize highlighter buttons.'}) // TODO i18n
       } else {
-        if (codebookDefinitionAnnotations.length === 0) {
-          // PVSCL:IFCOND(BuiltIn AND NOT(ApplicationBased), LINE)
-          let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
-          Alerts.confirmAlert({
-            title: 'Do you want to create a default annotation codebook?',
-            text: currentGroupName + ' group has not codes to start annotating. Would you like to configure the highlighter?',
-            confirmButtonText: 'Yes',
-            cancelButtonText: 'No',
-            alertType: Alerts.alertType.question,
-            callback: () => {
-              Alerts.loadingAlert({
-                title: 'Configuration in progress',
-                text: 'We are configuring everything to start reviewing.',
-                position: Alerts.position.center
-              })
-              Codebook.setAnnotationServer(null, (annotationServer) => {
+        let initCodebookPromise = new Promise((resolve, reject) => {
+          if (codebookDefinitionAnnotations.length === 0) {
+            // PVSCL:IFCOND(BuiltIn AND NOT(ApplicationBased), LINE)
+            let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
+            // PVSCL:IFCOND(CodebookUpdate, LINE)
+            // As codebook can be updated, the user can create an empty one and update it later
+            Alerts.confirmAlert({
+              title: 'Do you want to create a default annotation codebook?',
+              text: currentGroupName + ' group has not codes to start annotating. Would you like to configure the highlighter?',
+              confirmButtonText: 'Yes',
+              cancelButtonText: 'No',
+              alertType: Alerts.alertType.question,
+              callback: () => {
+                Alerts.loadingAlert({
+                  title: 'Configuration in progress',
+                  text: 'We are configuring everything to start reviewing.',
+                  position: Alerts.position.center
+                })
                 LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
-              })
-            },
-            cancelCallback: () => {
-              // PVSCL:IFCOND(CodebookUpdate,LINE)
-              LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'emptyCodebook'})
-              // PVSCL:ENDCOND
-            }
-          })
-          // PVSCL:ELSEIFCOND(ApplicationBased, LINE)
-          Codebook.setAnnotationServer(null, (annotationServer) => {
+                resolve()
+              },
+              cancelCallback: () => {
+                // PVSCL:IFCOND(CodebookUpdate,LINE)
+                LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'emptyCodebook'})
+                // PVSCL:ENDCOND
+                resolve()
+              }
+            })
+            // PVSCL:ELSECOND
+            // If codebook is not updateable, it is necessary to create the default one, as otherwise the user can select empty codebook and get an unusable configuration
             LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
-          })
-          // PVSCL:ELSEIFCOND(NOT(Codebook))
-          LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'noCodebook'}) // The parameter howCreate is not really necessary in current implementation
-          // PVSCL:ELSECOND
-          // TODO Show alert otherwise (no group is defined)
-          Alerts.errorAlert({text: 'No group is defined'})
-          // PVSCL:ENDCOND
-        } else {
-          Codebook.fromAnnotations(codebookDefinitionAnnotations, (err, codebook) => {
-            if (err) {
-              Alerts.errorAlert({text: 'Error parsing codebook. Error: ' + err.message})
-            } else {
-              this.codebook = codebook
-              LanguageUtils.dispatchCustomEvent(Events.codebookRead, {codebook: this.codebook})
-            }
-          })
-        }
-        if (_.isFunction(callback)) {
-          callback()
-        }
+            resolve()
+            // PVSCL:ENDCOND
+            // PVSCL:ELSEIFCOND(ApplicationBased, LINE)
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
+            resolve()
+            // PVSCL:ELSEIFCOND(NOT(Codebook))
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'noCodebook'}) // The parameter howCreate is not really necessary in current implementation
+            resolve()
+            // PVSCL:ELSECOND
+            // Show alert no group is defined
+            Alerts.errorAlert({text: 'No group is defined'})
+            // PVSCL:ENDCOND
+          } else {
+            Codebook.fromAnnotations(codebookDefinitionAnnotations, (err, codebook) => {
+              if (err) {
+                Alerts.errorAlert({text: 'Error parsing codebook. Error: ' + err.message})
+              } else {
+                this.codebook = codebook
+                this.renderCodebookInSidebar()
+                resolve()
+              }
+            })
+          }
+        })
+        initCodebookPromise.then(() => {
+          if (_.isFunction(callback)) {
+            callback()
+          }
+        })
       }
     })
   }
@@ -244,14 +258,21 @@ class ReadCodebook {
 
   codebookReadEventHandler () {
     return (event) => {
+      // Get the codebook
       this.codebook = event.detail.codebook
-      // PVSCL:IFCOND(Codebook, LINE)
-      // Set colors for each element
-      this.applyColorsToThemes()
-      // PVSCL:ENDCOND
-      // Populate sidebar buttons container
-      this.createButtons()
+      this.renderCodebookInSidebar()
     }
+  }
+
+  renderCodebookInSidebar () {
+    // Remove buttons from previous codebook if exists
+    this.buttonContainer.innerText = ''
+    // PVSCL:IFCOND(Codebook, LINE)
+    // Set colors for each element
+    this.applyColorsToThemes()
+    // PVSCL:ENDCOND
+    // Populate sidebar buttons container
+    this.createButtons()
   }
 
   /**

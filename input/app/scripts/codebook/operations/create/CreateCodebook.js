@@ -43,8 +43,8 @@ class CreateCodebook {
   createCodebookEventHandler () {
     return (event) => {
       let promise = new Promise((resolve, reject) => {
-        // PVSCL:IFCOND(BuiltIn, LINE)
         let howCreate = event.detail.howCreate
+        // PVSCL:IFCOND(BuiltIn, LINE)
         if (howCreate === 'builtIn') {
           BuiltIn.createDefaultAnnotations((err, annotations) => {
             if (err) {
@@ -64,13 +64,15 @@ class CreateCodebook {
           })
         }
         // PVSCL:ELSEIFCOND(NOT(Codebook), LINE)
-        NoCodebook.createDefaultAnnotations((err, annotations) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(annotations)
-          }
-        })
+        if (howCreate === 'noCodebook') {
+          NoCodebook.createDefaultAnnotations((err, annotations) => {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(annotations)
+            }
+          })
+        }
         // PVSCL:ENDCOND
       })
       promise.catch((err) => {

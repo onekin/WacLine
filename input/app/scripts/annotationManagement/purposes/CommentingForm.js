@@ -42,9 +42,9 @@ class CommentingForm {
       let previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
       let previousAssignmentsUI = window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
       // PVSCL:ENDCOND
+      let title = 'Commenting'
       // PVSCL:IFCOND(Classifying, LINE)
       // Get the title for form (if it is a classifying annotation, annotation code or theme
-      let title = ''
       // Get body for classifying
       let classifyingBody = annotation.getBodyForPurpose('classifying')
       let themeOrCode

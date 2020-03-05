@@ -322,9 +322,14 @@ class ReadAnnotation {
       // Annotation color is based on codebook color
       // Get annotated code id
       let bodyWithClassifyingPurpose = annotation.getBodyForPurpose('classifying')
-      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
-      if (codeOrTheme) {
-        color = codeOrTheme.color
+      if (bodyWithClassifyingPurpose) {
+        let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
+        if (codeOrTheme) {
+          color = codeOrTheme.color
+        } else {
+          const ColorUtils = require('../../utils/ColorUtils')
+          color = ColorUtils.getDefaultColor()
+        }
       } else {
         const ColorUtils = require('../../utils/ColorUtils')
         color = ColorUtils.getDefaultColor()
