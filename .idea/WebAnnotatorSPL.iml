@@ -5,7 +5,13 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/node_modules" />
       <excludeFolder url="file://$MODULE_DIR$/output" />
+      <excludeFolder url="file://$MODULE_DIR$/output/HighlightAndGo/app/scripts" />
+      <excludeFolder url="file://$MODULE_DIR$/output/MarkAndGo/app/scripts" />
+      <excludeFolder url="file://$MODULE_DIR$/output/ReviewAndGo/app/scripts" />
     </content>
+    <content url="file://$MODULE_DIR$/output/HighlightAndGo/app/scripts" />
+    <content url="file://$MODULE_DIR$/output/MarkAndGo/app/scripts" />
+    <content url="file://$MODULE_DIR$/output/ReviewAndGo/app/scripts" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
