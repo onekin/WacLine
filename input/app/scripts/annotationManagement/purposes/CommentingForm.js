@@ -1,114 +1,173 @@
-const _ = require('lodash')
-const Alerts = require('../../utils/Alerts')
+import _ from 'lodash'
+import Alerts from '../../utils/Alerts'
 // PVSCL:IFCOND(MoodleProvider OR Autocomplete, LINE)
-const LanguageUtils = require('../../utils/LanguageUtils')
-const Theme = require('../../codebook/model/Theme')
+import LanguageUtils from '../../utils/LanguageUtils'
+import Theme from '../../codebook/model/Theme'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Autocomplete,LINE)
-const Awesomplete = require('awesomplete')
-const Annotation = require('../Annotation')
+import Awesomplete from 'awesomplete'
+import Annotation from '../Annotation'
 // PVSCL:ENDCOND
-const $ = require('jquery')
+import $ from 'jquery'
 // PVSCL:IFCOND(SentimentAnalysis,LINE)
-const axios = require('axios')
-const qs = require('qs')
+import axios from 'axios'
+import qs from 'qs'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Commenting, LINE)
-const Commenting = require('./Commenting')
+import Commenting from './Commenting'
 // PVSCL:ENDCOND
-const Config = require('../../Config')
+import Config from '../../Config'
 // PVSCL:IFCOND(Assessing, LINE)
-const Assessing = require('./Assessing')
+import Assessing from './Assessing'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(SuggestedLiterature, LINE)
+import SuggestingLiterature from './SuggestingLiterature'
 require('components-jqueryui')
-const SuggestingLiterature = require('./SuggestingLiterature')
 // PVSCL:ENDCOND
 
 class CommentingForm {
   /**
    *
    * @param annotation annotation that is involved
-   * @param formCallback callback to execute after form is closed
+   * @param callback callback to execute after form is closed
    * @param addingHtml
-   * @returns {Promise<unknown>}
    */
-  static showCommentingForm (annotation, formCallback, addingHtml) {
-    return new Promise((resolve, reject) => {
-      // Close sidebar if opened
-      let sidebarOpen = window.abwa.sidebar.isOpened()
-      window.abwa.sidebar.closeSidebar()
+  static showCommentingForm (annotation, callback, addingHtml) {
+    // Save status of sidebar and close it
+    let sidebarStatus = window.abwa.sidebar.isOpened()
+    window.abwa.sidebar.closeSidebar()
+    // PVSCL:IFCOND(PreviousAssignments,LINE)
+    let previousAssignmentsUI = CommentingForm.getPreviousAssignmentsUI()
+    // PVSCL:ENDCOND
+    let title = CommentingForm.getFormTitle(annotation)
+    let showForm = (preConfirmData) => {
+      // Get last call to this form annotation text, not the init one
+      if (_.isObject(preConfirmData) && preConfirmData.comment) {
+        annotation.text = preConfirmData.comment
+      }
+      // Create form
+      let generateFormObjects = {annotation, showForm, sidebarStatus}
+      // PVSCL:IFCOND(Autocomplete,LINE)
+      let themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(annotation)
+      if (themeOrCode) {
+        generateFormObjects['themeOrCode'] = themeOrCode
+      }
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(PreviousAssignments,LINE)
-      let previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
-      let previousAssignmentsUI = window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
+      generateFormObjects['previousAssignmentsUI'] = previousAssignmentsUI
       // PVSCL:ENDCOND
-      let title = 'Commenting'
-      // PVSCL:IFCOND(Classifying, LINE)
-      // Get the title for form (if it is a classifying annotation, annotation code or theme
-      // Get body for classifying
-      let classifyingBody = annotation.getBodyForPurpose('classifying')
-      let themeOrCode
-      if (classifyingBody) {
-        themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(classifyingBody.value.id)
-        // PVSCL:IFCOND(MoodleProvider,LINE)
-        if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
-          title = themeOrCode.name
-        } else {
-          title = themeOrCode.theme.name + ': ' + themeOrCode.name + ' - ' + themeOrCode.description
-        }
-        // PVSCL:ELSECOND
-        if (themeOrCode) {
-          title = themeOrCode.name
-        }
-        // PVSCL:ENDCOND
+      let html = CommentingForm.generateCommentFormHTML({annotation, addingHtml})
+      let swalCallback = CommentingForm.generateCommentFormCallback({annotation, preConfirmData, sidebarStatus, callback})
+      let preConfirm = CommentingForm.generateCommentFormPreConfirm({preConfirmData, swalCallback, showForm})
+      let onBeforeOpen = CommentingForm.generateOnBeforeOpenForm({annotation})
+      Alerts.multipleInputAlert({
+        title: title || '',
+        html: html,
+        onBeforeOpen: onBeforeOpen,
+        // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
+        callback: swalCallback,
+        preConfirm: preConfirm
+      })
+    }
+    showForm()
+  }
+
+  static getFormTitle (annotation) {
+    let title = 'Commenting'
+    // PVSCL:IFCOND(Classifying, LINE)
+    // Get the title for form (if it is a classifying annotation, annotation code or theme
+    // Get body for classifying
+    let themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(annotation)
+    // PVSCL:IFCOND(MoodleProvider,LINE)
+    if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
+      title = themeOrCode.name
+    } else {
+      title = themeOrCode.theme.name + ': ' + themeOrCode.name + ' - ' + themeOrCode.description
+    }
+    // PVSCL:ELSECOND
+    if (themeOrCode) {
+      title = themeOrCode.name
+    }
+    // PVSCL:ENDCOND
+    // PVSCL:ENDCOND
+    return title
+  }
+
+  // PVSCL:IFCOND(Classifying, LINE)
+  static getCodeOrThemeForAnnotation (annotation) {
+    let classifyingBody = annotation.getBodyForPurpose('classifying')
+    let themeOrCode
+    if (classifyingBody) {
+      themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(classifyingBody.value.id)
+    }
+    return themeOrCode
+  }
+  // PVSCL:ENDCOND
+
+  // PVSCL:IFCOND(PreviousAssignments,LINE)
+  static getPreviousAssignmentsUI () {
+    let previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
+    return window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
+  }
+  // PVSCL:ENDCOND
+
+  static generateCommentFormPreConfirm ({preConfirmData, callback, showForm}) {
+    let preConfirm = () => {
+      preConfirmData.comment = document.querySelector('#comment').value
+      // PVSCL:IFCOND(SuggestedLiterature, LINE)
+      preConfirmData.literature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Categorize, LINE)
+      preConfirmData.categorizeData = document.querySelector('#categorizeDropdown').value
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(SentimentAnalysis, LINE)
+      if (preConfirmData.comment !== null && preConfirmData.comment !== '') {
+        CommentingForm.isOffensive(preConfirmData.comment)
+          .then((isOffensive) => {
+            if (isOffensive) {
+              // The comment is negative or offensive
+              Alerts.confirmAlert({
+                text: 'The message may be ofensive. Please modify it.',
+                showCancelButton: true,
+                cancelButtonText: 'Modify comment',
+                confirmButtonText: 'Save as it is',
+                reverseButtons: true,
+                callback: callback,
+                cancelCallback: () => {
+                  showForm(preConfirmData)
+                }
+              })
+            } else {
+              callback()
+            }
+          })
+      } else {
+        // Update annotation
+        callback()
       }
       // PVSCL:ENDCOND
-      let showForm = (preConfirmData) => {
-        // Get last call to this form annotation text, not the init one
-        if (_.isObject(preConfirmData) && preConfirmData.comment) {
-          annotation.text = preConfirmData.comment
-        }
-        // Create form
-        let generateFormObjects = {annotation, showForm, sidebarOpen}
-        // PVSCL:IFCOND(Autocomplete,LINE)
-        if (themeOrCode) {
-          generateFormObjects['themeOrCode'] = themeOrCode
-        }
-        // PVSCL:ENDCOND
-        // PVSCL:IFCOND(PreviousAssignments,LINE)
-        generateFormObjects['previousAssignmentsUI'] = previousAssignmentsUI
-        // PVSCL:ENDCOND
-        let form = CommentingForm.generateCommentFormHTML(generateFormObjects, formCallback, addingHtml)
-        Alerts.multipleInputAlert({
-          title: title || '',
-          html: form.html,
-          onBeforeOpen: form.onBeforeOpen,
-          // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
-          callback: () => {
-            form.callback()
-          },
-          preConfirm: form.preConfirm
-        })
-      }
-      showForm()
+    }
+    return preConfirm
+  }
+
+  static async isOffensive (text) {
+    let settings = {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      url: 'http://text-processing.com/api/sentiment/',
+      data: qs.stringify({text: text})
+    }
+    axios(settings).then((response) => {
+      return response.data && response.data.label === 'neg' && response.data.probability.neg > 0.55
     })
   }
 
-  /**
-   * Generates the HTML for comment form based on annotation, add reference autocomplete,...
-   * @param annotation
-   * @param showForm
-   * @param sidebarOpen
-   * @param themeOrCode
-   * @param previousAssignmentsUI
-   * @param formCallback
-   * @param addingHtml
-   * @returns {{preConfirm: preConfirm, callback: callback, html: (*|string), onBeforeOpen: onBeforeOpen}}
-   */
-  static generateCommentFormHTML ({annotation, showForm, sidebarOpen, themeOrCode, previousAssignmentsUI}, formCallback, addingHtml) {
+  static generateCommentFormHTML ({annotation, addingHtml}) {
     let html = addingHtml || ''
     // PVSCL:IFCOND(PreviousAssignments,LINE)
-    html += previousAssignmentsUI.outerHTML
+    html += CommentingForm.getPreviousAssignmentsUI().outerHTML
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Categorize, LINE)
     let select = document.createElement('select')
@@ -148,6 +207,10 @@ class CommentingForm {
     }
     html += '<input placeholder="Suggest literature from DBLP" id="swal-input1" class="swal2-input"><ul id="literatureList">' + suggestedLiteratureHtml(annotation) + '</ul>'
     // PVSCL:ENDCOND
+    return html
+  }
+
+  static generateOnBeforeOpenForm ({annotation}) {
     // On before open
     let onBeforeOpen
     // PVSCL:IFCOND(Autocomplete or SuggestedLiterature or PreviousAssignments,LINE)
@@ -172,6 +235,7 @@ class CommentingForm {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Autocomplete,LINE)
       // Load datalist with previously used texts
+      let themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(annotation)
       CommentingForm.retrievePreviouslyUsedComments(themeOrCode).then((previousComments) => {
         let awesomeplete = new Awesomplete(document.querySelector('#comment'), {
           list: previousComments,
@@ -245,88 +309,7 @@ class CommentingForm {
     // PVSCL:ELSECOND
     onBeforeOpen = () => {}
     // PVSCL:ENDCOND
-    // Preconfirm
-    let preConfirmData = {}
-    let preConfirm = () => {
-      preConfirmData.comment = document.querySelector('#comment').value
-      // PVSCL:IFCOND(SuggestedLiterature, LINE)
-      preConfirmData.literature = Array.from($('#literatureList li span')).map((e) => { return $(e).attr('title') })
-      // PVSCL:ENDCOND
-      // PVSCL:IFCOND(Categorize, LINE)
-      preConfirmData.categorizeData = document.querySelector('#categorizeDropdown').value
-      // PVSCL:ENDCOND
-      // PVSCL:IFCOND(SentimentAnalysis, LINE)
-      if (preConfirmData.comment !== null && preConfirmData.comment !== '') {
-        let settings = {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          },
-          url: 'http://text-processing.com/api/sentiment/',
-          data: qs.stringify({text: preConfirmData.comment})
-        }
-        axios(settings).then((response) => {
-          if (response.data && response.data.label === 'neg' && response.data.probability.neg > 0.55) {
-            // The comment is negative or offensive
-            Alerts.confirmAlert({
-              text: 'The message may be ofensive. Please modify it.',
-              showCancelButton: true,
-              cancelButtonText: 'Modify comment',
-              confirmButtonText: 'Save as it is',
-              reverseButtons: true,
-              callback: () => {
-                callback()
-              },
-              cancelCallback: () => {
-                showForm(preConfirmData)
-              }
-            })
-          } else {
-            callback()
-          }
-        })
-      } else {
-        // Update annotation
-        callback()
-      }
-      // PVSCL:ENDCOND
-    }
-    // Callback
-    let callback = (err, result) => {
-      if (!_.isUndefined(preConfirmData.comment)) { // It was pressed OK button instead of cancel, so update the annotation
-        if (err) {
-          window.alert('Unable to load alert. Is this an annotable document?')
-        } else {
-          let bodyToUpdate = []
-          bodyToUpdate.push(new Commenting({value: preConfirmData.comment}))
-          // Update annotation
-          annotation.text = preConfirmData.comment || ''
-          // PVSCL:IFCOND(SuggestedLiterature,LINE)
-          let litBody = annotation.getBodyForPurpose(SuggestingLiterature.purpose)
-          if (litBody) {
-            litBody.value = preConfirmData.literature || []
-          } else {
-            annotation.body.push(new SuggestingLiterature({value: preConfirmData.literature}))
-          }
-          // PVSCL:ENDCOND
-          // PVSCL:IFCOND(Assessing, LINE)
-          // Assessment category support
-          let assessmentBody = annotation.getBodyForPurpose(Assessing.purpose)
-          if (assessmentBody) {
-            assessmentBody.value = preConfirmData.categorizeData
-          } else {
-            annotation.body.push(new Assessing({value: preConfirmData.categorizeData}))
-          }
-          // PVSCL:ENDCOND
-          // Update annotation's body
-          annotation.body = _.uniqBy(_.concat(bodyToUpdate, annotation.body), a => a.purpose)
-          if (_.isFunction(formCallback)) {
-            formCallback(null, annotation)
-          }
-        }
-      }
-    }
-    return {html: html, onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback}
+    return onBeforeOpen
   }
 
   // PVSCL:IFCOND(Autocomplete,LINE)
@@ -372,6 +355,47 @@ class CommentingForm {
     })
   }
   // PVSCL:ENDCOND
+
+  static generateCommentFormCallback ({annotation, preConfirmData, callback, sidebarStatus}) {
+    // Callback
+    return (err, result) => {
+      if (!_.isUndefined(preConfirmData.comment)) { // It was pressed OK button instead of cancel, so update the annotation
+        if (err) {
+          window.alert('Unable to load alert. Is this an annotable document?')
+        } else {
+          let bodyToUpdate = []
+          bodyToUpdate.push(new Commenting({value: preConfirmData.comment}))
+          // Update annotation
+          annotation.text = preConfirmData.comment || ''
+          // PVSCL:IFCOND(SuggestedLiterature,LINE)
+          let litBody = annotation.getBodyForPurpose(SuggestingLiterature.purpose)
+          if (litBody) {
+            litBody.value = preConfirmData.literature || []
+          } else {
+            annotation.body.push(new SuggestingLiterature({value: preConfirmData.literature}))
+          }
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(Assessing, LINE)
+          // Assessment category support
+          let assessmentBody = annotation.getBodyForPurpose(Assessing.purpose)
+          if (assessmentBody) {
+            assessmentBody.value = preConfirmData.categorizeData
+          } else {
+            annotation.body.push(new Assessing({value: preConfirmData.categorizeData}))
+          }
+          // PVSCL:ENDCOND
+          // Update annotation's body
+          annotation.body = _.uniqBy(_.concat(bodyToUpdate, annotation.body), a => a.purpose)
+          if (sidebarStatus) {
+            window.abwa.sidebar.openSidebar()
+          }
+          if (_.isFunction(callback)) {
+            callback(null, annotation)
+          }
+        }
+      }
+    }
+  }
 }
 
-module.exports = CommentingForm
+export default CommentingForm
