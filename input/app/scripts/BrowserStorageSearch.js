@@ -1,8 +1,8 @@
-const BrowserStorageManager = require('./annotationServer/browserStorage/BrowserStorageManager')
-const URLUtils = require('./utils/URLUtils')
-const Alerts = require('./utils/Alerts')
-const Config = require('./Config')
-const _ = require('lodash')
+import BrowserStorageManager from './annotationServer/browserStorage/BrowserStorageManager'
+import URLUtils from './utils/URLUtils'
+import Alerts from './utils/Alerts'
+import Config from './Config'
+import _ from 'lodash'
 
 class BrowserStorageSearch {
   static init () {

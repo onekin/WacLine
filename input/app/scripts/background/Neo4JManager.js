@@ -1,4 +1,4 @@
-const ChromeStorage = require('../utils/ChromeStorage')
+import ChromeStorage from '../utils/ChromeStorage'
 
 class Neo4JManager {
   init () {
@@ -36,4 +36,4 @@ class Neo4JManager {
   }
 }
 
-module.exports = Neo4JManager
+export default Neo4JManager

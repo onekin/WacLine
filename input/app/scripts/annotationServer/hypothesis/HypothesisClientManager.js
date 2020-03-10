@@ -1,8 +1,8 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
-const HypothesisClient = require('hypothesis-api-client')
+import HypothesisClient from 'hypothesis-api-client'
 
-const AnnotationServerManager = require('../AnnotationServerManager')
+import AnnotationServerManager from '../AnnotationServerManager'
 
 const reloadIntervalInSeconds = 10 // Reload the hypothesis client every 10 seconds
 
@@ -98,7 +98,7 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 
   askUserToLogInHypothesis (callback) {
-    let swal = require('sweetalert2')
+    const swal = ('sweetalert2')
     // Ask question
     swal({
       title: 'Hypothes.is login required', // TODO i18n
@@ -137,4 +137,4 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 }
 
-module.exports = HypothesisClientManager
+export default HypothesisClientManager

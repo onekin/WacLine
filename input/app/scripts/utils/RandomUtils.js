@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 class RandomUtils {
   static randomString (length = 20, charSet) {
     charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-'
@@ -23,4 +23,4 @@ class RandomUtils {
   }
 }
 
-module.exports = RandomUtils
+export default RandomUtils

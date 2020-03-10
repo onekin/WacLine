@@ -1,12 +1,12 @@
-const TextUtils = require('./utils/URLUtils')
-const Config = require('./Config')
+import TextUtils from './utils/URLUtils'
+import Config from './Config'
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('./annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from './annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage,LINE)
-const BrowserStorageManager = require('./annotationServer/browserStorage/BrowserStorageManager')
+import BrowserStorageManager from './annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
-const _ = require('lodash')
+import _ from 'lodash'
 
 class ScienceDirectContentScript {
   init () {

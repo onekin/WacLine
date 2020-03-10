@@ -4,4 +4,4 @@ class MoodleUtils {
   }
 }
 
-module.exports = MoodleUtils
+export default MoodleUtils

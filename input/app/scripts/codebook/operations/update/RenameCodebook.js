@@ -1,7 +1,7 @@
-const _ = require('lodash')
-const Events = require('../../../Events')
-const Alerts = require('../../../utils/Alerts')
-const LanguageUtils = require('../../../utils/LanguageUtils')
+import _ from 'lodash'
+import Events from '../../../Events'
+import Alerts from '../../../utils/Alerts'
+import LanguageUtils from '../../../utils/LanguageUtils'
 
 class RenameCodebook {
   constructor () {
@@ -73,4 +73,4 @@ class RenameCodebook {
   }
 }
 
-module.exports = RenameCodebook
+export default RenameCodebook

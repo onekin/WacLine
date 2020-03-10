@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 class AnnotationUtils {
   static getTagFromAnnotation (annotation, prefix) {
@@ -94,4 +94,4 @@ class AnnotationUtils {
   }
 }
 
-module.exports = AnnotationUtils
+export default AnnotationUtils

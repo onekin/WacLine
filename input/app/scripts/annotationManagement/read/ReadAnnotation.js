@@ -1,27 +1,27 @@
-const DOMTextUtils = require('../../utils/DOMTextUtils')
+import DOMTextUtils from '../../utils/DOMTextUtils'
 // TODO const PDFTextUtils = require('../../utils/PDFTextUtils')
-const LanguageUtils = require('../../utils/LanguageUtils')
-const Events = require('../../Events')
-const _ = require('lodash')
+import LanguageUtils from '../../utils/LanguageUtils'
+import Events from '../../Events'
+import _ from 'lodash'
 // PVSCL:IFCOND(UserFilter, LINE)
-const UserFilter = require('./UserFilter')
+import UserFilter from './UserFilter'
 // PVSCL:ENDCOND
-const Annotation = require('../Annotation')
+import Annotation from '../Annotation'
 // PVSCL:IFCOND(Replying, LINE)
-const ReplyAnnotation = require('../purposes/ReplyAnnotation')
+import ReplyAnnotation from '../purposes/ReplyAnnotation'
 // PVSCL:ENDCOND
-const $ = require('jquery')
-require('jquery-contextmenu/dist/jquery.contextMenu')
+import $ from 'jquery'
 // PVSCL:IFCOND(Commenting, LINE)
-const CommentingForm = require('../purposes/CommentingForm')
-const Alerts = require('../../utils/Alerts')
+import CommentingForm from '../purposes/CommentingForm'
+import Alerts from '../../utils/Alerts'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Remote, LINE)
+import HypothesisClientManager from '../../annotationServer/hypothesis/HypothesisClientManager'
+import Neo4JClientManager from '../../annotationServer/neo4j/Neo4JClientManager'
+const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 5
 // PVSCL:ENDCOND
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
-// PVSCL:IFCOND(Remote, LINE)
-const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 5
-const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
-const Neo4JClientManager = require('../../annotationServer/neo4j/Neo4JClientManager')
-// PVSCL:ENDCOND
+require('jquery-contextmenu/dist/jquery.contextMenu')
 
 class ReadAnnotation {
   constructor () {
@@ -644,4 +644,4 @@ class ReadAnnotation {
   // PVSCL:ENDCOND
 }
 
-module.exports = ReadAnnotation
+export default ReadAnnotation

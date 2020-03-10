@@ -1,4 +1,4 @@
-const $ = require('jquery')
+import $ from 'jquery'
 require('jquery-csv')
 
 class CSV {
@@ -10,4 +10,4 @@ class CSV {
   }
 }
 
-module.exports = CSV
+export default CSV

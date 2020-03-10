@@ -1,10 +1,10 @@
-const ChromeStorage = require('../../utils/ChromeStorage')
-const URLUtils = require('../../utils/URLUtils')
-const BrowserStorageClient = require('./BrowserStorageClient')
-const AnnotationServerManager = require('../AnnotationServerManager')
+import ChromeStorage from '../../utils/ChromeStorage'
+import URLUtils from '../../utils/URLUtils'
+import BrowserStorageClient from './BrowserStorageClient'
+import AnnotationServerManager from '../AnnotationServerManager'
 // const mockDatabase = require('./mockDatabase')
-const EmptyDatabase = require('./EmptyDatabase')
-const _ = require('lodash')
+import EmptyDatabase from './EmptyDatabase'
+import _ from 'lodash'
 
 class BrowserStorageManager extends AnnotationServerManager {
   constructor () {
@@ -72,4 +72,4 @@ class BrowserStorageManager extends AnnotationServerManager {
   }
 }
 
-module.exports = BrowserStorageManager
+export default BrowserStorageManager

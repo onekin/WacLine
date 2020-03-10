@@ -1,14 +1,14 @@
-const _ = require('lodash')
-const GoogleSheetsClientManager = require('../../../../googleSheets/GoogleSheetsClientManager')
-const GSheetParser = require('./GSheetParser')
-const GroupInitializer = require('./GroupInitializer')
-const Alerts = require('../../../../utils/Alerts')
-const swal = require('sweetalert2')
+import _ from 'lodash'
+import GoogleSheetsClientManager from '../../../../googleSheets/GoogleSheetsClientManager'
+import GSheetParser from './GSheetParser'
+import GroupInitializer from './GroupInitializer'
+import Alerts from '../../../../utils/Alerts'
+import swal from 'sweetalert2'
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../../../../annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from '../../../../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorageManager = require('../../../../annotationServer/browserStorage/BrowserStorageManager')
+import BrowserStorageManager from '../../../../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
 
 class GoogleSheetContentScriptManager {
@@ -131,4 +131,4 @@ class GoogleSheetContentScriptManager {
   }
 }
 
-module.exports = GoogleSheetContentScriptManager
+export default GoogleSheetContentScriptManager

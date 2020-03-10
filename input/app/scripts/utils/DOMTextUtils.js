@@ -1,10 +1,10 @@
+import xpathRange from 'xpath-range'
+import DOM from './DOM'
+import LanguageUtils from './LanguageUtils'
+import $ from 'jquery'
+import _ from 'lodash'
 const domAnchorTextQuote = require('dom-anchor-text-quote')
 const domAnchorTextPosition = require('dom-anchor-text-position')
-const xpathRange = require('xpath-range')
-const DOM = require('./DOM')
-const LanguageUtils = require('./LanguageUtils')
-const $ = require('jquery')
-const _ = require('lodash')
 
 class DOMTextUtils {
   static getFragmentSelector (range) {
@@ -335,4 +335,4 @@ class DOMTextUtils {
   }
 }
 
-module.exports = DOMTextUtils
+export default DOMTextUtils

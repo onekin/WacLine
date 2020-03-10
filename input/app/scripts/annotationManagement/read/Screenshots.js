@@ -1,10 +1,11 @@
-const html2canvas = require('html2canvas')
-window.html2canvas = require('html2canvas')
-const FileSaver = require('file-saver')
-const JsPDF = require('jspdf')
-const Alerts = require('../../utils/Alerts')
-const _ = require('lodash')
-const PDF = require('../../target/formats/PDF')
+import html2canvas from 'html2canvas'
+import FileSaver from 'file-saver'
+import JsPDF from 'jspdf'
+import Alerts from '../../utils/Alerts'
+import _ from 'lodash'
+import PDF from '../../target/formats/PDF'
+
+window.html2canvas = html2canvas
 
 class Screenshots {
   static takeScreenshot (callback) {
@@ -93,4 +94,4 @@ class Screenshots {
   }
 }
 
-module.exports = Screenshots
+export default Screenshots

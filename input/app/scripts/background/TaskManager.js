@@ -1,8 +1,8 @@
-const CircularJSON = require('circular-json-es6')
-const ChromeStorage = require('../utils/ChromeStorage')
-const CreateHighlighterTask = require('./tasks/CreateHighlighterTask')
-const _ = require('lodash')
-const Config = require('../Config')
+import CircularJSON from 'circular-json-es6'
+import ChromeStorage from '../utils/ChromeStorage'
+import CreateHighlighterTask from './tasks/CreateHighlighterTask'
+import _ from 'lodash'
+import Config from '../Config'
 
 class TaskManager {
   constructor () {
@@ -165,4 +165,4 @@ TaskManager.tasks = {
   }
 }
 
-module.exports = TaskManager
+export default TaskManager

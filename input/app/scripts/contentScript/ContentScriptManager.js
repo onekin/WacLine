@@ -1,30 +1,30 @@
-const _ = require('lodash')
-const TargetManager = require('../target/TargetManager')
-const Sidebar = require('./Sidebar')
-const CodebookManager = require('../codebook/CodebookManager')
-const Config = require('../Config')
-const Toolset = require('./Toolset')
-const AnnotationManagement = require('../annotationManagement/AnnotationManagement')
-const GroupSelector = require('../groupManipulation/GroupSelector')
-const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
-const {AnnotatedContentManager} = require('./AnnotatedContentManager')
+import _ from 'lodash'
+import TargetManager from '../target/TargetManager'
+import Sidebar from './Sidebar'
+import CodebookManager from '../codebook/CodebookManager'
+import Config from '../Config'
+import Toolset from './Toolset'
+import AnnotationManagement from '../annotationManagement/AnnotationManagement'
+import GroupSelector from '../groupManipulation/GroupSelector'
+import AnnotationBasedInitializer from './AnnotationBasedInitializer'
+import {AnnotatedContentManager} from './AnnotatedContentManager'
 // PVSCL:IFCOND(Manual, LINE)
-const Events = require('../Events')
+import Events from '../Events'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResource, LINE)
-const RolesManager = require('./RolesManager')
+import RolesManager from './RolesManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
+import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(PreviousAssignments, LINE)
-const PreviousAssignments = require('../annotationManagement/purposes/PreviousAssignments')
+import PreviousAssignments from '../annotationManagement/purposes/PreviousAssignments'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleReport, LINE)
-const MoodleReport = require('../annotationManagement/read/MoodleReport')
+import MoodleReport from '../annotationManagement/read/MoodleReport'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleComment, LINE)
-const MoodleComment = require('../annotationManagement/read/MoodleComment')
+import MoodleComment from '../annotationManagement/read/MoodleComment'
 // PVSCL:ENDCOND
 
 class ContentScriptManager {
@@ -350,7 +350,7 @@ class ContentScriptManager {
   loadAnnotationServer (callback) {
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+    const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager').default
     window.abwa.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage, LINE)
@@ -371,7 +371,7 @@ class ContentScriptManager {
       // PVSCL:IFCOND(Hypothesis, LINE)
       if (annotationServer === 'hypothesis') {
         // Hypothesis
-        const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+        const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager').default
         window.abwa.annotationServerManager = new HypothesisClientManager()
       }
       // PVSCL:ENDCOND
@@ -384,7 +384,7 @@ class ContentScriptManager {
       // PVSCL:IFCOND(Neo4J, LINE)
       if (annotationServer === 'neo4j') {
         // Browser storage
-        const Neo4JClientManager = require('../annotationServer/neo4j/Neo4JClientManager')
+        const Neo4JClientManager = require('../annotationServer/neo4j/Neo4JClientManager').default
         window.abwa.annotationServerManager = new Neo4JClientManager()
       }
       // PVSCL:ENDCOND
@@ -399,7 +399,7 @@ class ContentScriptManager {
           }
         })
       } else {
-        const Alerts = require('../utils/Alerts')
+        const Alerts = require('../utils/Alerts').default
         Alerts.errorAlert({text: 'Unable to load selected server. Please configure in options page.'})
       }
     })
@@ -425,4 +425,4 @@ ContentScriptManager.status = {
   notInitialized: 'notInitialized'
 }
 
-module.exports = ContentScriptManager
+export default ContentScriptManager

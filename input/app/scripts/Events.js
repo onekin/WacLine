@@ -84,4 +84,4 @@ const Events = {
   codebookRead: 'codebookRead' // Not in codebook variation point because absense of Codebook/Classifying also requires this event currently
 }
 
-module.exports = Events
+export default Events

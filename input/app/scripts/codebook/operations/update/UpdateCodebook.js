@@ -1,14 +1,14 @@
-const Events = require('../../../Events')
-const Alerts = require('../../../utils/Alerts')
-const _ = require('lodash')
-const Config = require('../../../Config')
-const Theme = require('../../model/Theme')
-const Classifying = require('../../../annotationManagement/purposes/Classifying')
-const Annotation = require('../../../annotationManagement/Annotation')
+import Events from '../../../Events'
+import Alerts from '../../../utils/Alerts'
+import _ from 'lodash'
+import Config from '../../../Config'
+import Theme from '../../model/Theme'
+import Classifying from '../../../annotationManagement/purposes/Classifying'
+import Annotation from '../../../annotationManagement/Annotation'
 // PVSCL:IFCOND(Hierarchy,LINE)
-const Code = require('../../model/Code')
+import Code from '../../model/Code'
 // PVSCL:ENDCOND
-const LanguageUtils = require('../../../utils/LanguageUtils')
+import LanguageUtils from '../../../utils/LanguageUtils'
 
 class UpdateCodebook {
   constructor () {
@@ -419,4 +419,4 @@ class UpdateCodebook {
   }
 }
 
-module.exports = UpdateCodebook
+export default UpdateCodebook

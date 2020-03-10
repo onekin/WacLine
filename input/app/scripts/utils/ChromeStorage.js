@@ -1,6 +1,6 @@
 'use strict'
 
-const _ = require('lodash')
+import _ from 'lodash'
 
 class ChromeStorage {
   /**
@@ -42,4 +42,4 @@ class ChromeStorage {
 ChromeStorage.local = chrome.storage.local
 ChromeStorage.sync = chrome.storage.sync
 
-module.exports = ChromeStorage
+export default ChromeStorage

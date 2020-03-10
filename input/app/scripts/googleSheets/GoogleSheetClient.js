@@ -1,13 +1,12 @@
+import axios from 'axios'
+import _ from 'lodash'
+
 let $
 if (typeof window === 'undefined') {
   $ = require('jquery')(global.window)
 } else {
   $ = require('jquery')
 }
-
-const axios = require('axios')
-
-const _ = require('lodash')
 
 class GoogleSheetClient {
   constructor (token) {
@@ -294,4 +293,4 @@ class GoogleSheetClient {
   }
 }
 
-module.exports = GoogleSheetClient
+export default GoogleSheetClient

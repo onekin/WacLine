@@ -1,7 +1,7 @@
-const Alerts = require('../../utils/Alerts')
-const PDF = require('../../target/formats/PDF')
-const FileSaver = require('file-saver')
-const {Review} = require('../../exporter/reviewModel')
+import Alerts from '../../utils/Alerts'
+import PDF from '../../target/formats/PDF'
+import FileSaver from 'file-saver'
+import {Review} from '../../exporter/reviewModel'
 
 class TextSummary {
   static generateReview () {
@@ -23,4 +23,4 @@ class TextSummary {
   }
 }
 
-module.exports = TextSummary
+export default TextSummary

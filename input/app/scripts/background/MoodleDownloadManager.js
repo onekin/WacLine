@@ -1,6 +1,6 @@
-const _ = require('lodash')
-const URLUtils = require('../utils/URLUtils')
-const ChromeStorage = require('../utils/ChromeStorage')
+import _ from 'lodash'
+import URLUtils from '../utils/URLUtils'
+import ChromeStorage from '../utils/ChromeStorage'
 
 class MoodleDownloadManager {
   constructor () {
@@ -149,4 +149,4 @@ class MoodleDownloadManager {
 
 const defaultFileExtensionsAsPlainText = 'xml,xsl,xslt,xquery,xsql,'
 
-module.exports = MoodleDownloadManager
+export default MoodleDownloadManager

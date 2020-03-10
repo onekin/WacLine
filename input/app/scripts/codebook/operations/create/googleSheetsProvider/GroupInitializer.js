@@ -1,12 +1,12 @@
-const _ = require('lodash')
-const swal = require('sweetalert2')
-const Alerts = require('../../../../utils/Alerts')
-const ChromeStorage = require('../../../../utils/ChromeStorage')
-const Codebook = require('../../../model/Codebook')
-const selectedGroupNamespace = 'hypothesis.currentGroup'
+import _ from 'lodash'
+import swal from 'sweetalert2'
+import Alerts from '../../../../utils/Alerts'
+import ChromeStorage from '../../../../utils/ChromeStorage'
+import Codebook from '../../../model/Codebook'
 // PVSCL:IFCOND(ApplicationBased, LINE)
-const Config = require('../../../../Config')
+import Config from '../../../../Config'
 // PVSCL:ENDCOND
+const selectedGroupNamespace = 'hypothesis.currentGroup'
 
 class GroupInitializer {
   init (annotationGuide, callback) {
@@ -146,4 +146,4 @@ class GroupInitializer {
   }
 }
 
-module.exports = GroupInitializer
+export default GroupInitializer

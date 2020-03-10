@@ -1,13 +1,13 @@
-const ReadAnnotation = require('./read/ReadAnnotation')
-const CreateAnnotation = require('./create/CreateAnnotation')
-const UpdateAnnotation = require('./UpdateAnnotation')
-const DeleteAnnotation = require('./DeleteAnnotation')
-const $ = require('jquery')
-const _ = require('lodash')
-const PDF = require('../target/formats/PDF')
-const Events = require('../Events')
-const Classifying = require('./purposes/Classifying')
-const Annotation = require('./Annotation')
+import ReadAnnotation from './read/ReadAnnotation'
+import CreateAnnotation from './create/CreateAnnotation'
+import UpdateAnnotation from './UpdateAnnotation'
+import DeleteAnnotation from './DeleteAnnotation'
+import $ from 'jquery'
+import _ from 'lodash'
+import PDF from '../target/formats/PDF'
+import Events from '../Events'
+import Classifying from './purposes/Classifying'
+import Annotation from './Annotation'
 
 class AnnotationManagement {
   constructor () {
@@ -191,4 +191,4 @@ class AnnotationManagement {
   // PVSCL:ENDCOND
 }
 
-module.exports = AnnotationManagement
+export default AnnotationManagement

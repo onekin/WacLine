@@ -4,4 +4,4 @@ class AnnotationServer {
   }
 }
 
-module.exports = AnnotationServer
+export default AnnotationServer

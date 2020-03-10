@@ -1,9 +1,10 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 class URLUtils {
   /**
    * Given a url with format https://domain.org#elem:abc&elem:bcd it returns you the object {elem: 'abc', elem: 'bcd'}
    * @param url
+   * @param separator
    * @returns {{}}
    */
   static extractHashParamsFromUrl (url, separator) {
@@ -72,4 +73,4 @@ class URLUtils {
   }
 }
 
-module.exports = URLUtils
+export default URLUtils

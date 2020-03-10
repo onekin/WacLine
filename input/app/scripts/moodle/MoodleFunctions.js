@@ -1,4 +1,4 @@
-const MoodleClient = require('./MoodleClient')
+import MoodleClient from './MoodleClient'
 
 let moodleClient = new MoodleClient('', '')
 
@@ -25,4 +25,4 @@ const MoodleFunctions = {
   }
 }
 
-module.exports = MoodleFunctions
+export default MoodleFunctions

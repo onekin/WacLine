@@ -1,4 +1,4 @@
-const AnnotationServer = require('../AnnotationServer')
+import AnnotationServer from '../AnnotationServer'
 
 class BrowserStorage extends AnnotationServer {
   constructor ({group}) {
@@ -6,4 +6,4 @@ class BrowserStorage extends AnnotationServer {
   }
 }
 
-module.exports = BrowserStorage
+export default BrowserStorage

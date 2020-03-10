@@ -1,20 +1,20 @@
-const Task = require('./Task')
-const _ = require('lodash')
-const CryptoUtils = require('../../utils/CryptoUtils')
-const AnnotationUtils = require('../../utils/AnnotationUtils')
-const Codebook = require('../../codebook/model/Codebook')
-const Config = require('../../Config')
+import Task from './Task'
+import _ from 'lodash'
+import CryptoUtils from '../../utils/CryptoUtils'
+import AnnotationUtils from '../../utils/AnnotationUtils'
+import Codebook from '../../codebook/model/Codebook'
+import Config from '../../Config'
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
-const Hypothesis = require('../../annotationServer/hypothesis/Hypothesis')
-const LanguageUtils = require('../../utils/LanguageUtils')
+import HypothesisClientManager from '../../annotationServer/hypothesis/HypothesisClientManager'
+import Hypothesis from '../../annotationServer/hypothesis/Hypothesis'
+import LanguageUtils from '../../utils/LanguageUtils'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorage = require('../../annotationServer/browserStorage/BrowserStorage')
-const BrowserStorageManager = require('../../annotationServer/browserStorage/BrowserStorageManager')
+import BrowserStorage from '../../annotationServer/browserStorage/BrowserStorage'
+import BrowserStorageManager from '../../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
-const ChromeStorage = require('../../utils/ChromeStorage')
+import ChromeStorage from '../../utils/ChromeStorage'
 // PVSCL:ENDCOND
 
 class CreateHighlighterTask extends Task {
@@ -397,4 +397,4 @@ class CreateHighlighterTask extends Task {
   }
 }
 
-module.exports = CreateHighlighterTask
+export default CreateHighlighterTask

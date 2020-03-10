@@ -1,20 +1,20 @@
-const _ = require('lodash')
-const CreateCodebook = require('./operations/create/CreateCodebook')
-const ReadCodebook = require('./operations/read/ReadCodebook')
+import _ from 'lodash'
+import CreateCodebook from './operations/create/CreateCodebook'
+import ReadCodebook from './operations/read/ReadCodebook'
 // PVSCL:IFCOND(CodebookUpdate, LINE)
-const UpdateCodebook = require('./operations/update/UpdateCodebook')
+import UpdateCodebook from './operations/update/UpdateCodebook'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(CodebookDelete, LINE)
-const DeleteCodebook = require('./operations/delete/DeleteCodebook')
+import DeleteCodebook from './operations/delete/DeleteCodebook'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(RenameCodebook, LINE)
-const RenameCodebook = require('./operations/update/RenameCodebook')
+import RenameCodebook from './operations/update/RenameCodebook'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(ExportCodebook, LINE)
-const ExportCodebook = require('./operations/export/ExportCodebook')
+import ExportCodebook from './operations/export/ExportCodebook'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(ImportCodebook, LINE)
-const ImportCodebook = require('./operations/import/ImportCodebook')
+import ImportCodebook from './operations/import/ImportCodebook'
 // PVSCL:ENDCOND
 
 class CodebookManager {
@@ -84,4 +84,4 @@ class CodebookManager {
   }
 }
 
-module.exports = CodebookManager
+export default CodebookManager

@@ -1,5 +1,5 @@
-const ChromeStorage = require('../utils/ChromeStorage')
-const Config = require('../Config')
+import ChromeStorage from '../utils/ChromeStorage'
+import Config from '../Config'
 
 class AnnotationServerManager {
   init () {
@@ -40,4 +40,4 @@ class AnnotationServerManager {
   }
 }
 
-module.exports = AnnotationServerManager
+export default AnnotationServerManager

@@ -1,10 +1,10 @@
-const Body = require('./Body')
+import Body from './Body'
 // PVSCL:IFCOND(Hierarchy, LINE)
-const Code = require('../../codebook/model/Code')
+import Code from '../../codebook/model/Code'
 // PVSCL:ENDCOND
-const Theme = require('../../codebook/model/Theme')
-const LanguageUtils = require('../../utils/LanguageUtils')
-const _ = require('lodash')
+import Theme from '../../codebook/model/Theme'
+import LanguageUtils from '../../utils/LanguageUtils'
+import _ from 'lodash'
 
 class Classifying extends Body {
   constructor ({purpose = Classifying.purpose, code}) {
@@ -59,4 +59,4 @@ class Classifying extends Body {
 
 Classifying.purpose = 'classifying'
 
-module.exports = Classifying
+export default Classifying

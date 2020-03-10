@@ -1,7 +1,7 @@
+import ChromeStorage from './utils/ChromeStorage'
+import HypothesisClientManager from './annotationServer/hypothesis/HypothesisClientManager'
+import _ from 'lodash'
 const selectedGroupNamespace = 'hypothesis.currentGroup'
-const ChromeStorage = require('./utils/ChromeStorage')
-const HypothesisClientManager = require('./annotationServer/hypothesis/HypothesisClientManager')
-const _ = require('lodash')
 
 console.log('Loaded hypothesis group content script')
 

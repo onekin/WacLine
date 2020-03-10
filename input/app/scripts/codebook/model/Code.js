@@ -1,7 +1,7 @@
-const jsYaml = require('js-yaml')
-const _ = require('lodash')
-const Config = require('../../Config')
-const LanguageUtils = require('../../utils/LanguageUtils')
+import jsYaml from 'js-yaml'
+import _ from 'lodash'
+import Config from '../../Config'
+import LanguageUtils from '../../utils/LanguageUtils'
 
 class Code {
   constructor ({
@@ -110,4 +110,4 @@ class Code {
   // PVSCL:ENDCOND
 }
 
-module.exports = Code
+export default Code

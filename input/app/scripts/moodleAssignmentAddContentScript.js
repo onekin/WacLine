@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 window.addEventListener('load', () => {
   console.debug('Loaded moodle assignment add content script')

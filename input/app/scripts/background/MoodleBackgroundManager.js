@@ -1,8 +1,8 @@
-const axios = require('axios')
-const _ = require('lodash')
-const ChromeStorage = require('../utils/ChromeStorage')
-const MoodleClient = require('../moodle/MoodleClient')
-const MoodleFunctions = require('../moodle/MoodleFunctions')
+import axios from 'axios'
+import _ from 'lodash'
+import ChromeStorage from '../utils/ChromeStorage'
+import MoodleClient from '../moodle/MoodleClient'
+import MoodleFunctions from '../moodle/MoodleFunctions'
 
 class MoodleBackgroundManager {
   init () {
@@ -172,4 +172,4 @@ class MoodleBackgroundManager {
   }
 }
 
-module.exports = MoodleBackgroundManager
+export default MoodleBackgroundManager

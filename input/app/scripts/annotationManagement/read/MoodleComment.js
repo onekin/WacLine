@@ -1,8 +1,8 @@
-const Commenting = require('../purposes/Commenting')
-const MoodleClientManager = require('../../moodle/MoodleClientManager')
-const Events = require('../../Events')
-const _ = require('lodash')
-const MoodleUtils = require('../../moodle/MoodleUtils')
+import Commenting from '../purposes/Commenting'
+import MoodleClientManager from '../../moodle/MoodleClientManager'
+import Events from '../../Events'
+import _ from 'lodash'
+import MoodleUtils from '../../moodle/MoodleUtils'
 
 class MoodleComment {
   constructor () {
@@ -58,4 +58,4 @@ class MoodleComment {
   }
 }
 
-module.exports = MoodleComment
+export default MoodleComment

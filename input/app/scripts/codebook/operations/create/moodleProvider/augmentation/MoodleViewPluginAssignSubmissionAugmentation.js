@@ -1,5 +1,5 @@
-const _ = require('lodash')
-const MoodleScraping = require('../MoodleScraping')
+import _ from 'lodash'
+import MoodleScraping from '../MoodleScraping'
 
 class MoodleViewPluginAssignSubmissionAugmentation {
   init () {
@@ -26,4 +26,4 @@ class MoodleViewPluginAssignSubmissionAugmentation {
   }
 }
 
-module.exports = MoodleViewPluginAssignSubmissionAugmentation
+export default MoodleViewPluginAssignSubmissionAugmentation

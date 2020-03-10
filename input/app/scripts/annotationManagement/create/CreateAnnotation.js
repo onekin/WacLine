@@ -1,14 +1,14 @@
-const Events = require('../../Events')
-const _ = require('lodash')
-const LanguageUtils = require('../../utils/LanguageUtils')
-const Alerts = require('../../utils/Alerts')
-const Annotation = require('../Annotation')
-const DOMTextUtils = require('../../utils/DOMTextUtils')
-const PDFTextUtils = require('../../utils/PDFTextUtils')
-const PDF = require('../../target/formats/PDF')
-const $ = require('jquery')
+import Events from '../../Events'
+import _ from 'lodash'
+import LanguageUtils from '../../utils/LanguageUtils'
+import Alerts from '../../utils/Alerts'
+import Annotation from '../Annotation'
+import DOMTextUtils from '../../utils/DOMTextUtils'
+import PDFTextUtils from '../../utils/PDFTextUtils'
+import PDF from '../../target/formats/PDF'
+import $ from 'jquery'
 // PVSCL:IFCOND(Classifying, LINE)
-const Classifying = require('../purposes/Classifying')
+import Classifying from '../purposes/Classifying'
 // PVSCL:ENDCOND
 
 class CreateAnnotation {
@@ -181,4 +181,4 @@ class CreateAnnotation {
   }
 }
 
-module.exports = CreateAnnotation
+export default CreateAnnotation

@@ -1,7 +1,7 @@
-const NoCodebookScheme = require('./NoCodebookScheme')
-const Codebook = require('../../../model/Codebook')
-const Alerts = require('../../../../utils/Alerts')
-const _ = require('lodash')
+import NoCodebookScheme from './NoCodebookScheme'
+import Codebook from '../../../model/Codebook'
+import Alerts from '../../../../utils/Alerts'
+import _ from 'lodash'
 
 class NoCodebook {
   static createDefaultAnnotations (callback) {
@@ -29,4 +29,4 @@ class NoCodebook {
   }
 }
 
-module.exports = NoCodebook
+export default NoCodebook

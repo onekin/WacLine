@@ -1,5 +1,5 @@
-const DOM = require('../utils/DOM')
-const $ = require('jquery')
+import DOM from '../utils/DOM'
+import $ from 'jquery'
 const checkHypothesisLoggedIntervalInSeconds = 20 // fetch token every X seconds
 const checkHypothesisLoggedInWhenPromptInSeconds = 0.5 // When user is prompted to login, the checking should be with higher period
 const maxTries = 10 // max tries before deleting the token
@@ -144,4 +144,4 @@ class HypothesisManager {
   }
 }
 
-module.exports = HypothesisManager
+export default HypothesisManager

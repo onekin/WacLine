@@ -20,4 +20,4 @@ class Body {
   }
 }
 
-module.exports = Body
+export default Body

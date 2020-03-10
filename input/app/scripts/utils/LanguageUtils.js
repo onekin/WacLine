@@ -1,7 +1,7 @@
 'use strict'
 
-const jQuery = require('jquery')
-const _ = require('lodash')
+import jQuery from 'jquery'
+import _ from 'lodash'
 
 class LanguageUtils {
   /**
@@ -144,4 +144,4 @@ class LanguageUtils {
   }
 }
 
-module.exports = LanguageUtils
+export default LanguageUtils

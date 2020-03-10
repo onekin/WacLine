@@ -1,10 +1,10 @@
-const MoodleClientManager = require('../../moodle/MoodleClientManager')
-const MoodleUtils = require('../../moodle/MoodleUtils')
-const Alerts = require('../../utils/Alerts')
-const _ = require('lodash')
-const Config = require('../../Config')
-const Events = require('../../Events')
-const Commenting = require('../purposes/Commenting')
+import MoodleClientManager from '../../moodle/MoodleClientManager'
+import MoodleUtils from '../../moodle/MoodleUtils'
+import Alerts from '../../utils/Alerts'
+import _ from 'lodash'
+import Config from '../../Config'
+import Events from '../../Events'
+import Commenting from '../purposes/Commenting'
 // const linkifyUrls = require('linkify-urls')
 
 class MoodleReport {
@@ -241,4 +241,4 @@ class MoodleReport {
   }
 }
 
-module.exports = MoodleReport
+export default MoodleReport

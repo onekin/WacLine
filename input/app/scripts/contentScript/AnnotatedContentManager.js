@@ -1,20 +1,20 @@
-const Events = require('../Events')
+import Events from '../Events'
 // PVSCL:IFCOND(NOT(Multivalued), LINE) // It is only used by SingleCode
-const Config = require('../Config')
+import Config from '../Config'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(NOT(Multivalued), LINE)
-const Alerts = require('../utils/Alerts')
+import Alerts from '../utils/Alerts'
 // PVSCL:ENDCOND
-const LanguageUtils = require('../utils/LanguageUtils')
-const Theme = require('../codebook/model/Theme')
+import LanguageUtils from '../utils/LanguageUtils'
+import Theme from '../codebook/model/Theme'
 // PVSCL:IFCOND(Hierarchy, LINE)
-const Code = require('../codebook/model/Code')
+import Code from '../codebook/model/Code'
 // PVSCL:ENDCOND
-const _ = require('lodash')
-const Classifying = require('../annotationManagement/purposes/Classifying')
-const Annotation = require('../annotationManagement/Annotation')
+import _ from 'lodash'
+import Classifying from '../annotationManagement/purposes/Classifying'
+import Annotation from '../annotationManagement/Annotation'
 
-class AnnotatedTheme {
+export class AnnotatedTheme {
   constructor ({
     theme = null,
     annotations = []
@@ -34,7 +34,7 @@ class AnnotatedTheme {
 }
 // PVSCL:IFCOND(Hierarchy, LINE)
 
-class AnnotatedCode {
+export class AnnotatedCode {
   constructor ({code = null, annotations = []}) {
     this.code = code
     this.annotations = annotations
@@ -46,7 +46,7 @@ class AnnotatedCode {
 }
 // PVSCL:ENDCOND
 
-class AnnotatedContentManager {
+export class AnnotatedContentManager {
   constructor () {
     this.annotatedThemes = {}
     this.events = {}
@@ -470,8 +470,3 @@ class AnnotatedContentManager {
     }
   }
 }
-
-module.exports = {
-  AnnotatedContentManager,
-  AnnotatedTheme/* PVSCL:IFCOND(Code) */,
-  AnnotatedCode/* PVSCL:ENDCOND */}

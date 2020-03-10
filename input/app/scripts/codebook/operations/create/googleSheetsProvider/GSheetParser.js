@@ -1,8 +1,8 @@
-const _ = require('lodash')
-const Codebook = require('../../../model/Codebook')
-const Alerts = require('../../../../utils/Alerts')
-const URLUtils = require('../../../../utils/URLUtils')
-const Config = require('../../../../Config')
+import _ from 'lodash'
+import Codebook from '../../../model/Codebook'
+import Alerts from '../../../../utils/Alerts'
+import URLUtils from '../../../../utils/URLUtils'
+import Config from '../../../../Config'
 
 class GSheetParser {
   static parseCurrentSheet (callback) {
@@ -86,4 +86,4 @@ class GSheetParser {
   }
 }
 
-module.exports = GSheetParser
+export default GSheetParser

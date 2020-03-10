@@ -1,23 +1,23 @@
-const _ = require('lodash')
-const Events = require('../Events')
+import _ from 'lodash'
+import Events from '../Events'
 // PVSCL:IFCOND(PDF, LINE)
-const PDF = require('./formats/PDF')
+import PDF from './formats/PDF'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(TXT, LINE)
-const TXT = require('./formats/TXT')
+import TXT from './formats/TXT'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(HTML, LINE)
-const HTML = require('./formats/HTML')
+import HTML from './formats/HTML'
 // PVSCL:ENDCOND
-const URLUtils = require('../utils/URLUtils')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Alerts = require('../utils/Alerts')
-const RandomUtils = require('../utils/RandomUtils')
+import URLUtils from '../utils/URLUtils'
+import LanguageUtils from '../utils/LanguageUtils'
+import Alerts from '../utils/Alerts'
+import RandomUtils from '../utils/RandomUtils'
 // PVSCL:IFCOND(URN, LINE)
-const CryptoUtils = require('../utils/CryptoUtils')
+import CryptoUtils from '../utils/CryptoUtils'
 // PVSCL:ENDCOND
+import axios from 'axios'
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
-const axios = require('axios')
 
 class TargetManager {
   constructor () {
@@ -446,4 +446,4 @@ class TargetManager {
   }
 }
 
-module.exports = TargetManager
+export default TargetManager

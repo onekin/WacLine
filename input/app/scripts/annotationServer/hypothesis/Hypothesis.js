@@ -1,4 +1,4 @@
-const AnnotationServer = require('../AnnotationServer')
+import AnnotationServer from '../AnnotationServer'
 
 class Hypothesis extends AnnotationServer {
   constructor ({group}) {
@@ -6,4 +6,4 @@ class Hypothesis extends AnnotationServer {
   }
 }
 
-module.exports = Hypothesis
+export default Hypothesis

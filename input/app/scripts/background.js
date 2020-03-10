@@ -1,3 +1,27 @@
+import Popup from './popup/Popup'
+// PVSCL:IFCOND(Hypothesis, LINE)
+import HypothesisManager from './background/HypothesisManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Neo4J, LINE)
+import Neo4JManager from './background/Neo4JManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
+import GoogleSheetsManager from './background/GoogleSheetsManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(DOI or NavigationScript, LINE)
+import TargetManager from './background/TargetManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
+import AnnotationServerManager from './background/AnnotationServerManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleProvider, LINE)
+import MoodleDownloadManager from './background/MoodleDownloadManager'
+import MoodleBackgroundManager from './background/MoodleBackgroundManager'
+import TaskManager from './background/TaskManager'
+// PVSCL:ENDCOND
+
+import _ from 'lodash'
+
 // Enable chromereload by uncommenting this line:
 // import 'chromereload/devonly'
 
@@ -12,30 +36,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 chrome.tabs.onCreated.addListener((tab) => {
 
 })
-
-const Popup = require('./popup/Popup')
-// PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisManager = require('./background/HypothesisManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(Neo4J, LINE)
-const Neo4JManager = require('./background/Neo4JManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
-const GoogleSheetsManager = require('./background/GoogleSheetsManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(DOI or NavigationScript, LINE)
-const TargetManager = require('./background/TargetManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
-const AnnotationServerManager = require('./background/AnnotationServerManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleProvider, LINE)
-const MoodleDownloadManager = require('./background/MoodleDownloadManager')
-const MoodleBackgroundManager = require('./background/MoodleBackgroundManager')
-const TaskManager = require('./background/TaskManager')
-// PVSCL:ENDCOND
-
-const _ = require('lodash')
 
 class Background {
   constructor () {

@@ -1,5 +1,5 @@
-const $ = require('jquery')
-const _ = require('lodash')
+import $ from 'jquery'
+import _ from 'lodash'
 
 class Sidebar {
   init (callback) {
@@ -87,4 +87,4 @@ class Sidebar {
   }
 }
 
-module.exports = Sidebar
+export default Sidebar

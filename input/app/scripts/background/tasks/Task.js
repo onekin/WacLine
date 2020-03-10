@@ -4,4 +4,4 @@ class Task {
   }
 }
 
-module.exports = Task
+export default Task

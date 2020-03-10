@@ -1,7 +1,7 @@
-const Events = require('../../../Events')
-const Alerts = require('../../../utils/Alerts')
-const LanguageUtils = require('../../../utils/LanguageUtils')
-const _ = require('lodash')
+import Events from '../../../Events'
+import Alerts from '../../../utils/Alerts'
+import LanguageUtils from '../../../utils/LanguageUtils'
+import _ from 'lodash'
 
 class DeleteCodebook {
   constructor () {
@@ -49,4 +49,4 @@ class DeleteCodebook {
   }
 }
 
-module.exports = DeleteCodebook
+export default DeleteCodebook

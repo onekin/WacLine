@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 class PDFTextUtils {
   static getFragmentSelector (range) {
@@ -20,4 +20,4 @@ class PDFTextUtils {
   }
 }
 
-module.exports = PDFTextUtils
+export default PDFTextUtils

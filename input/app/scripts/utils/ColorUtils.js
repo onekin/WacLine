@@ -1,6 +1,6 @@
-const ColorHash = require('color-hash')
-const Color = require('color')
-const UniqueColors = require('unique-colors')
+import ColorHash from 'color-hash'
+import Color from 'color'
+import UniqueColors from 'unique-colors'
 
 class ColorUtils {
   static getDefaultColor () {
@@ -52,4 +52,4 @@ class ColorUtils {
   }
 }
 
-module.exports = ColorUtils
+export default ColorUtils

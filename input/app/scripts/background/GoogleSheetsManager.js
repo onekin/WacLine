@@ -1,6 +1,6 @@
-const GoogleSheetClient = require('../googleSheets/GoogleSheetClient')
+import GoogleSheetClient from '../googleSheets/GoogleSheetClient'
 // PVSCL:IFCOND(GoogleSheetConsumer,LINE)
-const _ = require('lodash')
+import _ from 'lodash'
 // PVSCL:ENDCOND
 
 class GoogleSheetsManager {
@@ -103,4 +103,4 @@ class GoogleSheetsManager {
   }
 }
 
-module.exports = GoogleSheetsManager
+export default GoogleSheetsManager

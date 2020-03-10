@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 class MoodleScraping {
   static scrapAssignmentData (callback) {
@@ -70,4 +70,4 @@ class MoodleScraping {
   }
 }
 
-module.exports = MoodleScraping
+export default MoodleScraping

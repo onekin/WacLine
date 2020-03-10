@@ -1,7 +1,7 @@
-const AnnotationUtils = require('../../utils/AnnotationUtils')
-const Config = require('../../Config')
-const moment = require('moment')
-const _ = require('lodash')
+import AnnotationUtils from '../../utils/AnnotationUtils'
+import Config from '../../Config'
+import moment from 'moment'
+import _ from 'lodash'
 
 class ReplyAnnotation {
   /**
@@ -84,4 +84,4 @@ class ReplyAnnotation {
   }
 }
 
-module.exports = ReplyAnnotation
+export default ReplyAnnotation

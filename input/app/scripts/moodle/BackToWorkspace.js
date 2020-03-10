@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 class BackToWorkspace {
   static createWorkspaceLink (callback) {
@@ -15,4 +15,4 @@ class BackToWorkspace {
   }
 }
 
-module.exports = BackToWorkspace
+export default BackToWorkspace

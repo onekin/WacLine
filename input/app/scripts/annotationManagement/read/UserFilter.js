@@ -1,7 +1,7 @@
-const $ = require('jquery')
-const _ = require('lodash')
-const Events = require('../../Events')
-const LanguageUtils = require('../../utils/LanguageUtils')
+import $ from 'jquery'
+import _ from 'lodash'
+import Events from '../../Events'
+import LanguageUtils from '../../utils/LanguageUtils'
 
 class UserFilter {
   constructor () {
@@ -238,4 +238,4 @@ class UserFilter {
   }
 }
 
-module.exports = UserFilter
+export default UserFilter

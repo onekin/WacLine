@@ -1,6 +1,6 @@
-const _ = require('lodash')
-const RandomUtils = require('../../utils/RandomUtils')
-const wildcard = require('wildcard')
+import _ from 'lodash'
+import RandomUtils from '../../utils/RandomUtils'
+import wildcard from 'wildcard'
 
 class BrowserStorageClient {
   constructor (database, manager) {
@@ -470,4 +470,4 @@ class BrowserStorageClient {
   }
 }
 
-module.exports = BrowserStorageClient
+export default BrowserStorageClient

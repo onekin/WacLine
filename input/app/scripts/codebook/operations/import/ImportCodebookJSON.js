@@ -1,9 +1,9 @@
-const _ = require('lodash')
-const Alerts = require('../../../utils/Alerts')
-const FileUtils = require('../../../utils/FileUtils')
-const Events = require('../../../Events')
-const Codebook = require('../../model/Codebook')
-const LanguageUtils = require('../../../utils/LanguageUtils')
+import _ from 'lodash'
+import Alerts from '../../../utils/Alerts'
+import FileUtils from '../../../utils/FileUtils'
+import Events from '../../../Events'
+import Codebook from '../../model/Codebook'
+import LanguageUtils from '../../../utils/LanguageUtils'
 
 class ImportCodebookJSON {
   static import () {
@@ -118,4 +118,4 @@ class ImportCodebookJSON {
   }
 }
 
-module.exports = ImportCodebookJSON
+export default ImportCodebookJSON

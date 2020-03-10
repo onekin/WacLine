@@ -1,6 +1,6 @@
-const _ = require('lodash')
-const GoogleSheetClient = require('./GoogleSheetClient')
-const Alerts = require('../utils/Alerts')
+import _ from 'lodash'
+import GoogleSheetClient from './GoogleSheetClient'
+import Alerts from '../utils/Alerts'
 
 const reloadIntervalInSeconds = 10 // Reload the google sheet client every 10 seconds
 
@@ -114,4 +114,4 @@ class GoogleSheetsClientManager {
   }
 }
 
-module.exports = GoogleSheetsClientManager
+export default GoogleSheetsClientManager

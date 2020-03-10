@@ -1,5 +1,5 @@
-const _ = require('lodash')
-const MoodleScraping = require('../MoodleScraping')
+import _ from 'lodash'
+import MoodleScraping from '../MoodleScraping'
 
 class MoodleGradingAugmentation {
   init () {
@@ -40,4 +40,4 @@ class MoodleGradingAugmentation {
   }
 }
 
-module.exports = MoodleGradingAugmentation
+export default MoodleGradingAugmentation

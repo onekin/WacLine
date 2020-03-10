@@ -1,7 +1,7 @@
-const UserDefinedHighlighterDefinition = require('./BuiltInCodebookScheme')
-const Codebook = require('../../../model/Codebook')
-const Alerts = require('../../../../utils/Alerts')
-const _ = require('lodash')
+import UserDefinedHighlighterDefinition from './BuiltInCodebookScheme'
+import Codebook from '../../../model/Codebook'
+import Alerts from '../../../../utils/Alerts'
+import _ from 'lodash'
 
 class BuiltIn {
   static createDefaultAnnotations (callback) {
@@ -29,4 +29,4 @@ class BuiltIn {
   }
 }
 
-module.exports = BuiltIn
+export default BuiltIn

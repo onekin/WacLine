@@ -1,13 +1,13 @@
-const jsYaml = require('js-yaml')
-const _ = require('lodash')
-const Config = require('../../Config')
+import jsYaml from 'js-yaml'
+import _ from 'lodash'
+import Config from '../../Config'
 // PVSCL:IFCOND(CodebookUpdate, LINE)
-const ColorUtils = require('../../utils/ColorUtils')
+import ColorUtils from '../../utils/ColorUtils'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hierarchy and (ExportCodebook or MoodleProvider), LINE)
-const Code = require('./Code')
+import Code from './Code'
 // PVSCL:ENDCOND
-const LanguageUtils = require('../../utils/LanguageUtils')
+import LanguageUtils from '../../utils/LanguageUtils'
 
 class Theme {
   constructor ({
@@ -239,4 +239,4 @@ class Theme {
   // PVSCL:ENDCOND
 }
 
-module.exports = Theme
+export default Theme

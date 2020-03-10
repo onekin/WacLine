@@ -1,6 +1,6 @@
-const Codebook = require('../../../model/Codebook')
-const Alerts = require('../../../../utils/Alerts')
-const _ = require('lodash')
+import Codebook from '../../../model/Codebook'
+import Alerts from '../../../../utils/Alerts'
+import _ from 'lodash'
 
 class EmptyCodebook {
   static createDefaultAnnotations (callback) {
@@ -22,4 +22,4 @@ class EmptyCodebook {
   }
 }
 
-module.exports = EmptyCodebook
+export default EmptyCodebook

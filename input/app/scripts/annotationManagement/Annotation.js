@@ -1,19 +1,19 @@
-const _ = require('lodash')
-const LanguageUtils = require('../utils/LanguageUtils')
+import _ from 'lodash'
+import LanguageUtils from '../utils/LanguageUtils'
 // PVSCL:IFCOND(Classifying, LINE)
-const Classifying = require('./purposes/Classifying')
+import Classifying from './purposes/Classifying'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Commenting, LINE)
-const Commenting = require('./purposes/Commenting')
+import Commenting from './purposes/Commenting'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(SuggestedLiterature, LINE)
-const SuggestingLiterature = require('./purposes/SuggestingLiterature')
+import SuggestingLiterature from './purposes/SuggestingLiterature'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Assessing, LINE)
-const Assessing = require('./purposes/Assessing')
+import Assessing from './purposes/Assessing'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
 
 class Annotation {
@@ -165,4 +165,4 @@ class Annotation {
   }
 }
 
-module.exports = Annotation
+export default Annotation

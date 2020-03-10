@@ -1,6 +1,6 @@
-const $ = require('jquery')
-const _ = require('lodash')
-const ColorUtils = require('../../../utils/ColorUtils')
+import $ from 'jquery'
+import _ from 'lodash'
+import ColorUtils from '../../../utils/ColorUtils'
 if (!$.contextMenu) {
   require('jquery-contextmenu/dist/jquery.contextMenu')
 }
@@ -327,4 +327,4 @@ class Buttons {
   }
 }
 
-module.exports = Buttons
+export default Buttons

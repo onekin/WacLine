@@ -1,9 +1,9 @@
-const Alerts = require('../../utils/Alerts')
-const AnnotationUtils = require('../../utils/AnnotationUtils')
-const LanguageUtils = require('../../utils/LanguageUtils')
-const Config = require('../../Config')
-const _ = require('lodash')
-const Theme = require('../../codebook/model/Theme')
+import Alerts from '../../utils/Alerts'
+import AnnotationUtils from '../../utils/AnnotationUtils'
+import LanguageUtils from '../../utils/LanguageUtils'
+import Config from '../../Config'
+import _ from 'lodash'
+import Theme from '../../codebook/model/Theme'
 
 const HyperSheetColors = {
   red: {
@@ -536,4 +536,4 @@ class Codes {
   }
 }
 
-module.exports = GoogleSheetGenerator
+export default GoogleSheetGenerator

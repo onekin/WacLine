@@ -1,36 +1,36 @@
-const axios = require('axios')
-const _ = require('lodash')
+import axios from 'axios'
+import _ from 'lodash'
 // PVSCL:IFCOND(Canvas, LINE)
-const Canvas = require('../annotationManagement/read/Canvas')
+import Canvas from '../annotationManagement/read/Canvas'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(AnnotatedPDF, LINE)
-const Screenshots = require('../annotationManagement/read/Screenshots')
+import Screenshots from '../annotationManagement/read/Screenshots'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetConsumer, LINE)
-const GoogleSheetGenerator = require('../annotationManagement/read/GoogleSheetGenerator')
+import GoogleSheetGenerator from '../annotationManagement/read/GoogleSheetGenerator'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(LastAnnotation, LINE)
-const Resume = require('../annotationManagement/read/Resume')
+import Resume from '../annotationManagement/read/Resume'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(TextSummary, LINE)
-const TextSummary = require('../annotationManagement/read/TextSummary')
+import TextSummary from '../annotationManagement/read/TextSummary'
 // PVSCL:ENDCOND
-const Events = require('../Events')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Alerts = require('../utils/Alerts')
+import Events from '../Events'
+import LanguageUtils from '../utils/LanguageUtils'
+import Alerts from '../utils/Alerts'
 // PVSCL:IFCOND(MoodleReport, LINE)
-const BackToWorkspace = require('../moodle/BackToWorkspace')
+import BackToWorkspace from '../moodle/BackToWorkspace'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(AnnotationList, LINE)
-const AnnotationList = require('../annotationManagement/read/AnnotationList')
+import AnnotationList from '../annotationManagement/read/AnnotationList'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(ImportAnnotations, LINE)
-const AnnotationImporter = require('../importExport/AnnotationImporter')
+import AnnotationImporter from '../importExport/AnnotationImporter'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Export, LINE)
-const AnnotationExporter = require('../importExport/AnnotationExporter')
+import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
-const $ = require('jquery')
+import $ from 'jquery'
 
 class Toolset {
   constructor () {
@@ -261,4 +261,4 @@ class Toolset {
   // PVSCL:ENDCOND
 }
 
-module.exports = Toolset
+export default Toolset

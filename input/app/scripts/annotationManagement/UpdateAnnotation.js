@@ -1,8 +1,8 @@
-const Events = require('../Events')
-const _ = require('lodash')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Alerts = require('../utils/Alerts')
-const Annotation = require('./Annotation')
+import Events from '../Events'
+import _ from 'lodash'
+import LanguageUtils from '../utils/LanguageUtils'
+import Alerts from '../utils/Alerts'
+import Annotation from './Annotation'
 
 class UpdateAnnotation {
   constructor () {
@@ -52,4 +52,4 @@ class UpdateAnnotation {
   }
 }
 
-module.exports = UpdateAnnotation
+export default UpdateAnnotation

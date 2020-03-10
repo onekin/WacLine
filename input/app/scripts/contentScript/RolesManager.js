@@ -1,6 +1,6 @@
-const _ = require('lodash')
-const jsYaml = require('js-yaml')
-const Config = require('../Config')
+import _ from 'lodash'
+import jsYaml from 'js-yaml'
+import Config from '../Config'
 
 class RolesManager {
   constructor () {
@@ -63,4 +63,4 @@ RolesManager.roles = {
   'consumer': 'student'
 }
 
-module.exports = RolesManager
+export default RolesManager

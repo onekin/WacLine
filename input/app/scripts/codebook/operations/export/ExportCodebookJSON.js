@@ -1,7 +1,7 @@
-const _ = require('lodash')
-const FileSaver = require('file-saver')
-const Alerts = require('../../../utils/Alerts')
-const Codebook = require('../../model/Codebook')
+import _ from 'lodash'
+import FileSaver from 'file-saver'
+import Alerts from '../../../utils/Alerts'
+import Codebook from '../../model/Codebook'
 
 class ExportCodebookJSON {
   static exportConfigurationSchemeToJSObject (schemeAnnotations, name, callback) {
@@ -33,4 +33,4 @@ class ExportCodebookJSON {
   }
 }
 
-module.exports = ExportCodebookJSON
+export default ExportCodebookJSON

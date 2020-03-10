@@ -1,15 +1,15 @@
-const Events = require('../../../Events')
-const _ = require('lodash')
+import Events from '../../../Events'
+import _ from 'lodash'
 // PVSCL:IFCOND(BuiltIn, LINE)
-const BuiltIn = require('./builtIn/BuiltIn')
-const EmptyCodebook = require('./emptyCodebook/EmptyCodebook')
+import BuiltIn from './builtIn/BuiltIn'
+import EmptyCodebook from './emptyCodebook/EmptyCodebook'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(NOT(Classifying), LINE)
-const NoCodebook = require('./noCodebook/NoCodebook')
+import NoCodebook from './noCodebook/NoCodebook'
 // PVSCL:ENDCOND
-const Codebook = require('../../model/Codebook')
-const LanguageUtils = require('../../../utils/LanguageUtils')
-const Alerts = require('../../../utils/Alerts')
+import Codebook from '../../model/Codebook'
+import LanguageUtils from '../../../utils/LanguageUtils'
+import Alerts from '../../../utils/Alerts'
 
 class CreateCodebook {
   constructor () {
@@ -90,4 +90,4 @@ class CreateCodebook {
   }
 }
 
-module.exports = CreateCodebook
+export default CreateCodebook

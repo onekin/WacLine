@@ -1,18 +1,18 @@
-const Events = require('../../../Events')
-const Config = require('../../../Config')
-const Buttons = require('./Buttons')
-const Alerts = require('../../../utils/Alerts')
-const $ = require('jquery')
-const _ = require('lodash')
-const Codebook = require('../../model/Codebook')
-const Theme = require('../../model/Theme')
+import Events from '../../../Events'
+import Config from '../../../Config'
+import Buttons from './Buttons'
+import Alerts from '../../../utils/Alerts'
+import $ from 'jquery'
+import _ from 'lodash'
+import Codebook from '../../model/Codebook'
+import Theme from '../../model/Theme'
 // PVSCL:IFCOND(Hierarchy,LINE)
-const Code = require('../../model/Code')
+import Code from '../../model/Code'
 // PVSCL:ENDCOND
-const ColorUtils = require('../../../utils/ColorUtils')
-const LanguageUtils = require('../../../utils/LanguageUtils')
+import ColorUtils from '../../../utils/ColorUtils'
+import LanguageUtils from '../../../utils/LanguageUtils'
 // PVSCL:IFCOND(CodebookUpdate, LINE)
-const UpdateCodebook = require('../update/UpdateCodebook')
+import UpdateCodebook from '../update/UpdateCodebook'
 // PVSCL:ENDCOND
 
 class ReadCodebook {
@@ -777,4 +777,4 @@ class ReadCodebook {
   }
 }
 
-module.exports = ReadCodebook
+export default ReadCodebook

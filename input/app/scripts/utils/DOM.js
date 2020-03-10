@@ -1,4 +1,4 @@
-const $ = require('jquery')
+import $ from 'jquery'
 
 class DOM {
   static searchElementByTarget (target) {
@@ -101,4 +101,4 @@ class DOM {
   }
 }
 
-module.exports = DOM
+export default DOM

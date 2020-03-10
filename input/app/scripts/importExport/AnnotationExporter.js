@@ -1,5 +1,5 @@
-const FileSaver = require('file-saver')
-const _ = require('lodash')
+import FileSaver from 'file-saver'
+import _ from 'lodash'
 
 class AnnotationExporter {
   static exportCurrentDocumentAnnotations () {
@@ -29,4 +29,4 @@ class AnnotationExporter {
   }
 }
 
-module.exports = AnnotationExporter
+export default AnnotationExporter

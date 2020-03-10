@@ -1,20 +1,20 @@
-const _ = require('lodash')
-const $ = require('jquery')
-const Alerts = require('../utils/Alerts')
-const ChromeStorage = require('../utils/ChromeStorage')
-const LanguageUtils = require('../utils/LanguageUtils')
-// PVSCL:IFCOND(BuiltIn or ApplicationBased or NOT(Codebook), LINE)
-const Config = require('../Config')
-const GroupName = Config.groupName
-// PVSCL:ENDCOND
+import _ from 'lodash'
+import $ from 'jquery'
+import Alerts from '../utils/Alerts'
+import ChromeStorage from '../utils/ChromeStorage'
+import LanguageUtils from '../utils/LanguageUtils'
 // PVSCL:IFCOND(Manual, LINE)
-const Events = require('../Events')
+import Events from '../Events'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResourceBased,LINE)
-const CryptoUtils = require('../utils/CryptoUtils')
+import CryptoUtils from '../utils/CryptoUtils'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(BuiltIn or ApplicationBased or NOT(Codebook), LINE)
+import Config from '../Config'
+const GroupName = Config.groupName
 // PVSCL:ENDCOND
 
 class GroupSelector {
@@ -208,7 +208,7 @@ class GroupSelector {
               }
               // PVSCL:ELSECOND
               // PVSCL:IFCOND(BrowserStorage, LINE)
-              const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
+              const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager').default
               if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups) && LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, BrowserStorageManager)) {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
               }
@@ -493,10 +493,10 @@ class GroupSelector {
       preConfirm: (groupName) => {
         if (_.isString(groupName)) {
           if (groupName.length <= 0) {
-            const swal = require('sweetalert2')
+            const swal = require('sweetalert2').default
             swal.showValidationMessage('Name cannot be empty.')
           } else if (groupName.length > 25) {
-            const swal = require('sweetalert2')
+            const swal = require('sweetalert2').default
             swal.showValidationMessage('The codebook name cannot be higher than 25 characters.')
           } else {
             return groupName
@@ -684,4 +684,4 @@ class GroupSelector {
   }
 }
 
-module.exports = GroupSelector
+export default GroupSelector

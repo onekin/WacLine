@@ -1,9 +1,9 @@
-const DOI = require('doi-regex')
+import DOI from 'doi-regex'
 // PVSCL:IFCOND(ScienceDirect, LINE)
-const URLUtils = require('../utils/URLUtils')
+import URLUtils from '../utils/URLUtils'
 // PVSCL:ENDCOND
-const Config = require('../Config')
-const _ = require('lodash')
+import Config from '../Config'
+import _ from 'lodash'
 
 class TargetManager {
   constructor () {
@@ -126,4 +126,4 @@ class TargetManager {
   }
 }
 
-module.exports = TargetManager
+export default TargetManager

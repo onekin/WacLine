@@ -1,7 +1,7 @@
-const URLUtils = require('./utils/URLUtils')
-const Config = require('./Config')
-const _ = require('lodash')
-const DOI = require('doi-regex')
+import URLUtils from './utils/URLUtils'
+import Config from './Config'
+import _ from 'lodash'
+import DOI from 'doi-regex'
 
 class ACMContentScript {
   constructor () {

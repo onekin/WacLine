@@ -1,7 +1,7 @@
-const Events = require('../Events')
-const _ = require('lodash')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Alerts = require('../utils/Alerts')
+import Events from '../Events'
+import _ from 'lodash'
+import LanguageUtils from '../utils/LanguageUtils'
+import Alerts from '../utils/Alerts'
 
 class DeleteAnnotation {
   constructor () {
@@ -88,4 +88,4 @@ class DeleteAnnotation {
   }
 }
 
-module.exports = DeleteAnnotation
+export default DeleteAnnotation

@@ -1,8 +1,8 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 let swal = null
 if (document && document.head) {
-  swal = require('sweetalert2')
+  swal = require('sweetalert2').default
 }
 
 class Alerts {
@@ -284,4 +284,4 @@ Alerts.position = {
   bottomEnd: 'bottom-end'
 }
 
-module.exports = Alerts
+export default Alerts

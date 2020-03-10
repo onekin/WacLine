@@ -1,4 +1,4 @@
-const Body = require('./Body')
+import Body from './Body'
 
 class Assessing extends Body {
   constructor ({purpose = Assessing.purpose, value}) {
@@ -25,4 +25,4 @@ class Assessing extends Body {
 
 Assessing.purpose = 'assessing'
 
-module.exports = Assessing
+export default Assessing

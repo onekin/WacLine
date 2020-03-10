@@ -1,9 +1,9 @@
-const $ = require('jquery')
-const _ = require('lodash')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Events = require('../Events')
+import $ from 'jquery'
+import _ from 'lodash'
+import LanguageUtils from '../utils/LanguageUtils'
+import Events from '../Events'
 
-const RolesManager = require('./RolesManager')
+import RolesManager from './RolesManager'
 
 class ModeManager {
   constructor (mode) {
@@ -112,4 +112,4 @@ ModeManager.modes = {
   'view': 'view' // Activated for the author
 }
 
-module.exports = ModeManager
+export default ModeManager

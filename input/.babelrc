@@ -1,14 +1,21 @@
 {
-  "presets": [
-    ["env", {
+  "presets": [[
+    "@babel/preset-env", {
       "targets": {
         "browsers": "last 2 versions"
       },
-      "useBuiltIns": true,
+      "useBuiltIns": "usage",
+      "corejs": {
+        "version": 3
+      },
       "debug": false
-    }]
+    }]],
+    "plugins": [
+     ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-syntax-async-generators"
   ],
-  "plugins": ["transform-es3-property-literals", "babel-plugin-transform-es3-member-expression-literals"],
   "ignore": ["node_modules"],
-  "retainLines": true
+  "retainLines": true,
+  "sourceType": "unambiguous"
 }

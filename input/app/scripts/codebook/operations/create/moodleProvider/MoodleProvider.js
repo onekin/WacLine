@@ -1,21 +1,21 @@
-const MoodleClientManager = require('../../../../moodle/MoodleClientManager')
-const MoodleFunctions = require('../../../../moodle/MoodleFunctions')
-const _ = require('lodash')
+import MoodleClientManager from '../../../../moodle/MoodleClientManager'
+import MoodleFunctions from '../../../../moodle/MoodleFunctions'
+import _ from 'lodash'
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../../../../annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from '../../../../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorageManager = require('../../../../annotationServer/browserStorage/BrowserStorageManager')
+import BrowserStorageManager from '../../../../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hierarchy, LINE)
-const Code = require('../../../model/Code')
+import Code from '../../../model/Code'
 // PVSCL:ENDCOND
-const Alerts = require('../../../../utils/Alerts')
-const Codebook = require('../../../model/Codebook')
-const Theme = require('../../../model/Theme')
-const LanguageUtils = require('../../../../utils/LanguageUtils')
-const CircularJSON = require('circular-json-es6')
-const MoodleScraping = require('./MoodleScraping')
+import Alerts from '../../../../utils/Alerts'
+import Codebook from '../../../model/Codebook'
+import Theme from '../../../model/Theme'
+import LanguageUtils from '../../../../utils/LanguageUtils'
+import CircularJSON from 'circular-json-es6'
+import MoodleScraping from './MoodleScraping'
 
 class MoodleProvider {
   constructor () {
@@ -278,4 +278,4 @@ class MoodleProvider {
   }
 }
 
-module.exports = MoodleProvider
+export default MoodleProvider

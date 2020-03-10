@@ -1,7 +1,7 @@
-const Alerts = require('../utils/Alerts')
-const FileUtils = require('../utils/FileUtils')
-const Codebook = require('../codebook/model/Codebook')
-const _ = require('lodash')
+import Alerts from '../utils/Alerts'
+import FileUtils from '../utils/FileUtils'
+import Codebook from '../codebook/model/Codebook'
+import _ from 'lodash'
 
 class AnnotationImporter {
   static askUserToImportDocumentAnnotations (callback) {
@@ -141,4 +141,4 @@ class AnnotationImporter {
   }
 }
 
-module.exports = AnnotationImporter
+export default AnnotationImporter

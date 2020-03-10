@@ -1,6 +1,6 @@
-const _ = require('lodash')
-const Config = require('../../Config')
-const Codebook = require('../../codebook/model/Codebook')
+import _ from 'lodash'
+import Config from '../../Config'
+import Codebook from '../../codebook/model/Codebook'
 
 const RETRIEVE_PREVIOUS_ASSIGNMENT_INTERVAL_IN_SECONDS = 60
 
@@ -109,4 +109,4 @@ class PreviousAssignments {
   }
 }
 
-module.exports = PreviousAssignments
+export default PreviousAssignments

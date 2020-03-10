@@ -1,7 +1,7 @@
-const URLUtils = require('./utils/URLUtils')
-const _ = require('lodash')
-const DOI = require('doi-regex')
-const Config = require('./Config')
+import URLUtils from './utils/URLUtils'
+import _ from 'lodash'
+import DOI from 'doi-regex'
+import Config from './Config'
 
 class SpringerContentScript {
   constructor () {

@@ -24,4 +24,4 @@ class Popup {
   }
 }
 
-module.exports = Popup
+export default Popup

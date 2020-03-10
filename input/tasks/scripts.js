@@ -7,6 +7,8 @@ import gulpWebpack from 'webpack-stream'
 import plumber from 'gulp-plumber'
 import livereload from 'gulp-livereload'
 import args from './lib/args'
+import 'regenerator-runtime/runtime'
+import 'core-js/stable'
 
 const ENV = args.production ? 'production' : 'development'
 

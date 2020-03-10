@@ -2,9 +2,9 @@
 import 'chromereload/devonly'
 import 'bootstrap/dist/js/bootstrap'
 
-const Popup = require('./popup/Popup')
+import Popup from './popup/Popup'
 
-window.addEventListener('load', (event) => {
+window.addEventListener('load', () => {
   window.popup = new Popup()
   window.popup.init()
 })

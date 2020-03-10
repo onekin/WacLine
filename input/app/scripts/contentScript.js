@@ -1,6 +1,6 @@
-const ContentScriptManager = require('./contentScript/ContentScriptManager')
-const AnnotationBasedInitializer = require('./contentScript/AnnotationBasedInitializer')
-const _ = require('lodash')
+import AnnotationBasedInitializer from './contentScript/AnnotationBasedInitializer'
+import ContentScriptManager from './contentScript/ContentScriptManager'
+import _ from 'lodash'
 
 console.debug('Loaded abwa content script')
 if (_.isEmpty(window.abwa)) {
@@ -29,7 +29,7 @@ if (_.isEmpty(window.abwa)) {
       chrome.runtime.onMessage.addListener((request, sender, sendresponse) => {
         let location = window.location.href + 'url::' + request.url
         if (request.annotationId) {
-          const Config = require('./Config')
+          const Config = require('./Config').default
           location += '&' + Config.urlParamName + ':' + request.annotationId
         }
         window.location.href = location

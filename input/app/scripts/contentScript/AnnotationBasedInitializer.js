@@ -1,7 +1,7 @@
-const _ = require('lodash')
-const URLUtils = require('../utils/URLUtils')
-const Alerts = require('../utils/Alerts')
-const Config = require('../Config')
+import _ from 'lodash'
+import URLUtils from '../utils/URLUtils'
+import Alerts from '../utils/Alerts'
+import Config from '../Config'
 
 class AnnotationBasedInitializer {
   constructor () {
@@ -62,4 +62,4 @@ class AnnotationBasedInitializer {
   }
 }
 
-module.exports = AnnotationBasedInitializer
+export default AnnotationBasedInitializer

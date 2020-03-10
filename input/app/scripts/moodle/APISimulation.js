@@ -1,6 +1,6 @@
-const axios = require('axios')
-const _ = require('lodash')
-const jsonFormData = require('json-form-data')
+import axios from 'axios'
+import _ from 'lodash'
+import jsonFormData from 'json-form-data'
 
 class APISimulation {
   static getRubric (cmids, callback) {
@@ -213,4 +213,4 @@ class APISimulation {
   }
 }
 
-module.exports = APISimulation
+export default APISimulation

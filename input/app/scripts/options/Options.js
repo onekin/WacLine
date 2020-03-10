@@ -1,12 +1,12 @@
 // PVSCL:IFCOND(BrowserStorage,LINE)
-const Alerts = require('../utils/Alerts')
-const FileUtils = require('../utils/FileUtils')
-const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
-const FileSaver = require('file-saver')
+import Alerts from '../utils/Alerts'
+import FileUtils from '../utils/FileUtils'
+import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
+import FileSaver from 'file-saver'
 // PVSCL:ENDCOND
-const _ = require('lodash')
+import _ from 'lodash'
 // PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
-const URLUtils = require('../utils/URLUtils')
+import URLUtils from '../utils/URLUtils'
 // PVSCL:ENDCOND
 
 class Options {
@@ -250,4 +250,4 @@ class Options {
   // PVSCL:ENDCOND
 }
 
-module.exports = Options
+export default Options

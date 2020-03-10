@@ -1,8 +1,8 @@
-const MoodleClient = require('./MoodleClient')
-const _ = require('lodash')
-const MoodleFunctions = require('./MoodleFunctions')
-const APISimulation = require('./APISimulation')
-const Config = require('../Config')
+import MoodleClient from './MoodleClient'
+import _ from 'lodash'
+import MoodleFunctions from './MoodleFunctions'
+import APISimulation from './APISimulation'
+import Config from '../Config'
 // const RolesManager = require('../contentScript/RolesManager')
 
 class MoodleClientManager {
@@ -134,4 +134,4 @@ class MoodleClientManager {
   }
 }
 
-module.exports = MoodleClientManager
+export default MoodleClientManager

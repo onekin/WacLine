@@ -11,4 +11,4 @@ class SheetUtils {
   }
 }
 
-module.exports = SheetUtils
+export default SheetUtils

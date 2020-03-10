@@ -1,6 +1,6 @@
-const _ = require('lodash')
-const axios = require('axios')
-const jsonFormData = require('json-form-data')
+import _ from 'lodash'
+import axios from 'axios'
+import jsonFormData from 'json-form-data'
 
 class MoodleClient {
   constructor (endpoint, token) {
@@ -127,4 +127,4 @@ class MoodleClient {
   }
 }
 
-module.exports = MoodleClient
+export default MoodleClient

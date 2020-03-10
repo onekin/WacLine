@@ -1,19 +1,19 @@
-const jsYaml = require('js-yaml')
-const Theme = require('./Theme')
-const Config = require('../../Config')
-const _ = require('lodash')
-const LanguageUtils = require('../../utils/LanguageUtils')
+import jsYaml from 'js-yaml'
+import Theme from './Theme'
+import Config from '../../Config'
+import _ from 'lodash'
+import LanguageUtils from '../../utils/LanguageUtils'
 // PVSCL:IFCOND(Hierarchy,LINE)
-const Code = require('./Code')
+import Code from './Code'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
-const Hypothesis = require('../../annotationServer/hypothesis/Hypothesis')
+import Hypothesis from '../../annotationServer/hypothesis/Hypothesis'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorage = require('../../annotationServer/browserStorage/BrowserStorage')
+import BrowserStorage from '../../annotationServer/browserStorage/BrowserStorage'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(CodebookUpdate, LINE)
-const ColorUtils = require('../../utils/ColorUtils')
+import ColorUtils from '../../utils/ColorUtils'
 // PVSCL:ENDCOND
 
 class Codebook {
@@ -420,4 +420,4 @@ class Codebook {
   }
 }
 
-module.exports = Codebook
+export default Codebook

@@ -1,6 +1,6 @@
-const Events = require('../../../Events')
-const _ = require('lodash')
-const ExportCodebookJSON = require('./ExportCodebookJSON')
+import Events from '../../../Events'
+import _ from 'lodash'
+import ExportCodebookJSON from './ExportCodebookJSON'
 
 class ExportCodebook {
   constructor () {
@@ -39,4 +39,4 @@ class ExportCodebook {
   }
 }
 
-module.exports = ExportCodebook
+export default ExportCodebook

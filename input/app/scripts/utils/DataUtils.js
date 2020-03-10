@@ -1,6 +1,6 @@
 'use strict'
 
-const LanguageUtils = require('./LanguageUtils')
+import LanguageUtils from './LanguageUtils'
 
 /**
  *
@@ -129,4 +129,4 @@ class DataUtils {
   }
 }
 
-module.exports = DataUtils
+export default DataUtils

@@ -1,10 +1,7 @@
-const _ = require('lodash')
-
-const AnnotationServerManager = require('../AnnotationServerManager')
-const Alerts = require('../../utils/Alerts')
-
-const Neo4JClient = require('./Neo4JClient') // TODO Substitute by the real neo4j client
-
+import _ from 'lodash'
+import AnnotationServerManager from '../AnnotationServerManager'
+import Alerts from '../../utils/Alerts'
+import Neo4JClient from './Neo4JClient' // TODO Substitute by the real neo4j client
 const userLoginCheckIntervalPeriodInSeconds = 5
 
 class Neo4JClientManager extends AnnotationServerManager {
@@ -149,4 +146,4 @@ class Neo4JClientManager extends AnnotationServerManager {
   }
 }
 
-module.exports = Neo4JClientManager
+export default Neo4JClientManager

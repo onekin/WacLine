@@ -8,4 +8,4 @@ class Resume {
   }
 }
 
-module.exports = Resume
+export default Resume

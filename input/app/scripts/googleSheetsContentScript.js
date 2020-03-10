@@ -1,5 +1,5 @@
-const GSheetProvider = require('./codebook/operations/create/googleSheetsProvider/GSheetProvider')
-const _ = require('lodash')
+import GSheetProvider from './codebook/operations/create/googleSheetsProvider/GSheetProvider'
+import _ from 'lodash'
 
 window.addEventListener('load', () => {
   console.debug('Loaded sheet content script')
