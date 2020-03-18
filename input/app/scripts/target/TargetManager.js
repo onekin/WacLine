@@ -204,17 +204,14 @@ class TargetManager {
   // PVSCL:ENDCOND
 
   destroy (callback) {
+    // PVSCL:IFCOND(PDF, LINE)
     if (this.documentFormat === PDF) {
       // Reload to original pdf website
-      if (_.isUndefined(this.url) || _.isNull(this.url)) {
-        window.location.href = window.PDFViewerApplication.baseUrl
-      } else {
-        // Nothing to do, because you are already in the target source url
-      }
-    } else {
-      if (_.isFunction(callback)) {
-        callback()
-      }
+      window.location.href = window.PDFViewerApplication.baseUrl
+    }
+    // PVSCL:ENDCOND
+    if (_.isFunction(callback)) {
+      callback()
     }
     clearInterval(this.urlChangeInterval)
   }
