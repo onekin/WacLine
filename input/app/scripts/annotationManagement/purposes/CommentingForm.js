@@ -40,7 +40,7 @@ class CommentingForm {
     let previousAssignmentsUI = CommentingForm.getPreviousAssignmentsUI()
     // PVSCL:ENDCOND
     let title = CommentingForm.getFormTitle(annotation)
-    let showForm = (preConfirmData) => {
+    let showForm = (preConfirmData = {}) => {
       // Get last call to this form annotation text, not the init one
       if (_.isObject(preConfirmData) && preConfirmData.comment) {
         annotation.text = preConfirmData.comment
@@ -77,7 +77,19 @@ class CommentingForm {
     // PVSCL:IFCOND(Classifying, LINE)
     // Get the title for form (if it is a classifying annotation, annotation code or theme
     // Get body for classifying
-    let themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(annotation)
+    let themeOrCode
+    // PVSCL:IFCOND(Replying, LINE)
+    if (!_.isEmpty(annotation.references)) {
+      // Retrieve annotation that has the classification body
+      let repliedAnnotationId = annotation.references[0]
+      let repliedAnnotation = window.abwa.annotationManagement.annotationReader.allAnnotations.find(a => a.id === repliedAnnotationId)
+      themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(repliedAnnotation)
+    } else {
+      themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(annotation)
+    }
+    // PVSCL:ELSECOND
+    themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(annotation)
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleProvider,LINE)
     if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
       title = themeOrCode.name
@@ -137,13 +149,8 @@ class CommentingForm {
                   showForm(preConfirmData)
                 }
               })
-            } else {
-              callback()
             }
           })
-      } else {
-        // Update annotation
-        callback()
       }
       // PVSCL:ENDCOND
     }
