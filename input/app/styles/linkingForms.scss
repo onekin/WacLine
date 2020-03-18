@@ -1,0 +1,60 @@
+#searchAnnotationsContainer {
+  height: 10%;
+}
+
+#searchAnnotationsInput {
+  font-size: large;
+  margin-top: 20px;
+  left: 50px;
+  padding: 10px;
+  width: 300px;
+}
+
+#searchResult {
+  overflow-y: scroll;
+  max-height: 90%;
+}
+
+.annotationCard {
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 400;
+  border: 1px solid #ececec;
+  list-style: none;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
+  background: #fff;
+  overflow-wrap: break-word;
+}
+
+.annotationCardUsername {
+  color: #202020;
+  font-weight: bold;
+}
+
+.annotationCardGroup {
+  color: #3f3f3f;
+}
+
+.annotationCardExact {
+  padding: 0 10px;
+  overflow-wrap: break-word;
+  color: #a6a6a6;
+  font-family: sans-serif;
+  font-size: 12px;
+  font-style: italic;
+  letter-spacing: .1px;
+  border-left: 3px solid #dbdbdb;
+  margin-bottom: 10px;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.annotationCardDate {
+  font-size: 11px;
+  line-height: 12px;
+  font-weight: 400;
+  letter-spacing: .2px;
+  color: #a6a6a6;
+}
