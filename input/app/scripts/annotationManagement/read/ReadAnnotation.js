@@ -343,8 +343,12 @@ class ReadAnnotation {
       let tooltip = this.generateTooltipFromAnnotation(annotation)
       // Draw the annotation in DOM
       try {
-        let highlightedElements = DOMTextUtils.highlightContent(
-          annotation.target[0].selector, 'highlightedAnnotation', annotation.id)
+        let highlightedElements = DOMTextUtils.highlightContent({
+          selectors: annotation.target[0].selector,
+          className: 'highlightedAnnotation',
+          id: annotation.id,
+          format: window.abwa.targetManager.documentFormat
+        })
         // Highlight in same color as button
         highlightedElements.forEach(highlightedElement => {
           // If need to highlight, set the color corresponding to, in other case, maintain its original color

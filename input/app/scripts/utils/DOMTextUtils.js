@@ -47,11 +47,12 @@ class DOMTextUtils {
    * @param id
    * @param data
    * @param exhaustive Runs all the algorithms until annotation match is found. For intensive CPU webpages maybe you are interested in disable this option. When disable, the last and more CPU use algorithm tryRetrieveRangeTextSelector is not executed
+   * @param format
    * @returns {NodeList}
    * @throws TypeError
    */
-  static highlightContent (selectors, className, id, data, exhaustive = true) {
-    let range = this.retrieveRange(selectors, exhaustive)
+  static highlightContent ({selectors, className, id, data, exhaustive = true, format}) {
+    let range = this.retrieveRange({selectors, exhaustive, format})
     if (range) {
       let nodes = DOM.getLeafNodesInRange(range)
       if (nodes.length > 0) {
@@ -125,18 +126,28 @@ class DOMTextUtils {
     }
   }
 
-  static retrieveRange (selectors, exhaustive = true) {
+  /**
+   * Given a list of selectors and the format of the document, returns the range of selected text fragment in the document
+   * @param selectors
+   * @param exhaustive
+   * @param format
+   * @returns {null}
+   */
+  static retrieveRange ({selectors, exhaustive = true, format}) {
     let fragmentSelector = _.find(selectors, (selector) => { return selector.type === 'FragmentSelector' })
     let rangeSelector = _.find(selectors, (selector) => { return selector.type === 'RangeSelector' })
     let textQuoteSelector = _.find(selectors, (selector) => { return selector.type === 'TextQuoteSelector' })
     let textPositionSelector = _.find(selectors, (selector) => { return selector.type === 'TextPositionSelector' })
-    // Check whether the document is PDF or HTML
-    if (_.has(fragmentSelector, 'page')) {
-      // Is PDF
+    // Check whether the document is PDF, HTML or TXT
+    if (format.name === 'pdf') {
       return DOMTextUtils.retrieveRangeForPDFDocument({fragmentSelector, textPositionSelector, textQuoteSelector, exhaustive})
-    } else {
-      // Is HTML
+    } else if (format.name === 'txt') {
+      return DOMTextUtils.retrieveRangeForTXTDocument({textPositionSelector, textQuoteSelector})
+    } else if (format.name === 'html') {
       return DOMTextUtils.retrieveRangeForHTMLDocument({fragmentSelector, textPositionSelector, textQuoteSelector, rangeSelector, exhaustive})
+    } else {
+      console.error('Document format is not valid')
+      return null
     }
   }
 
@@ -153,10 +164,21 @@ class DOMTextUtils {
         return null
       }
     }
-    range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(textPositionSelector, textQuoteSelector.exact, fragmentElement)
+    range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(textPositionSelector, textQuoteSelector.exact)
     if (!range) {
       if (exhaustive) { // Try by hard exhaustive
         range = DOMTextUtils.tryRetrieveRangeTextSelector(fragmentElement, textQuoteSelector)
+      }
+    }
+    return range
+  }
+
+  static retrieveRangeForTXTDocument ({textPositionSelector, textQuoteSelector}) {
+    let range = null
+    if (_.isObject(textPositionSelector) && _.isObject(textQuoteSelector)) {
+      range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(textPositionSelector, textQuoteSelector.exact)
+      if (!range) {
+        range = DOMTextUtils.tryRetrieveRangeTextSelector(document.body, textQuoteSelector)
       }
     }
     return range
@@ -207,8 +229,14 @@ class DOMTextUtils {
     return range
   }
 
+  /**
+   *
+   * @param textPositionSelector
+   * @param exactText
+   * @returns {null|*}
+   */
   static tryRetrieveRangeTextPositionSelector (textPositionSelector, exactText) {
-    let possibleRange = domAnchorTextPosition.toRange(document.body, textPositionSelector.start, textPositionSelector.end)
+    let possibleRange = domAnchorTextPosition.toRange(document.body, {start: textPositionSelector.start, end: textPositionSelector.end})
     if (possibleRange && possibleRange.toString() === exactText) {
       return possibleRange
     } else {
@@ -232,6 +260,11 @@ class DOMTextUtils {
     return range
   }
 
+  /**
+   *
+   * @param str
+   * @returns {*}
+   */
   static findAllMatches (str) {
     // Get current selection range for set again after the algorithm
     let userSelection = window.getSelection().getRangeAt(0)
