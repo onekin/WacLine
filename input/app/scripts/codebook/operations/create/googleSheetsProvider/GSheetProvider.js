@@ -87,7 +87,7 @@ class GoogleSheetContentScriptManager {
       }
     })
     // PVSCL:ELSECOND
-    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+    chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       if (annotationServer === 'hypothesis') {
         // Hypothesis
         window.googleSheetProvider.annotationServerManager = new HypothesisClientManager()
@@ -112,7 +112,7 @@ class GoogleSheetContentScriptManager {
     GSheetParser.parseCurrentSheet((err, codebook) => {
       if (err) {
         console.error(err)
-        Alerts.errorAlert({text: err.message})
+        Alerts.errorAlert({ text: err.message })
       } else {
         window.googleSheetProvider.GroupInitializer = new GroupInitializer()
         window.googleSheetProvider.GroupInitializer.init(codebook, (err) => {

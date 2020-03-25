@@ -42,11 +42,11 @@ class Annotation {
     this.tags = _.uniq(tags)
     this.creator = creator
     this.group = group
-    let createdDate = Date.parse(created)
+    const createdDate = Date.parse(created)
     if (_.isNumber(createdDate)) {
       this.created = new Date(created)
     }
-    let modifiedDate = Date.parse(modified)
+    const modifiedDate = Date.parse(modified)
     if (_.isNumber(modifiedDate)) {
       this.modified = new Date(modified)
     }
@@ -63,7 +63,7 @@ class Annotation {
   }
 
   serialize () {
-    let data = {
+    const data = {
       '@context': 'http://www.w3.org/ns/anno.jsonld',
       group: this.group || window.abwa.groupSelector.currentGroup.id,
       creator: this.creator || window.abwa.groupSelector.getCreatorData() || window.abwa.groupSelector.user.userid,
@@ -85,7 +85,7 @@ class Annotation {
     // The following lines are added to maintain compatibility with hypothes.is's data model that doesn't follow the W3C in all their attributes
     // PVSCL:IFCOND(Commenting, LINE)
     // Hypothes.is supports comments, but they are not stored in body, they use text
-    let commentingBody = this.getBodyForPurpose(Commenting.purpose)
+    const commentingBody = this.getBodyForPurpose(Commenting.purpose)
     if (commentingBody) {
       data.text = commentingBody.value
     }
@@ -95,12 +95,12 @@ class Annotation {
       // Add uri attribute
       data.uri = window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
       // Add document, uris, title, etc.
-      let uris = window.abwa.targetManager.getDocumentURIs()
+      const uris = window.abwa.targetManager.getDocumentURIs()
       data.document = {}
       if (uris.urn) {
         data.document.documentFingerprint = uris.urn
       }
-      data.document.link = Object.values(uris).map(uri => { return {href: uri} })
+      data.document.link = Object.values(uris).map(uri => { return { href: uri } })
       if (uris.doi) {
         data.document.dc = { identifier: [uris.doi] }
         data.document.highwire = { doi: [uris.doi] }
@@ -117,7 +117,7 @@ class Annotation {
   }
 
   static deserialize (annotationObject) {
-    let annotation = new Annotation({
+    const annotation = new Annotation({
       id: annotationObject.id,
       group: annotationObject.group,
       creator: annotationObject.creator,
@@ -133,25 +133,25 @@ class Annotation {
         // PVSCL:IFCOND(Classifying, LINE)
         if (body.purpose === Classifying.purpose) {
           // To remove the purpose from the annotation body
-          let tempBody = JSON.parse(JSON.stringify(body))
+          const tempBody = JSON.parse(JSON.stringify(body))
           delete tempBody.purpose
           // Create new element of type Classifying
-          return new Classifying({code: tempBody.value})
+          return new Classifying({ code: tempBody.value })
         }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(Commenting, LINE)
         if (body.purpose === Commenting.purpose) {
-          return new Commenting({value: body.value})
+          return new Commenting({ value: body.value })
         }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(SuggestedLiterature, LINE)
         if (body.purpose === SuggestingLiterature.purpose) {
-          return new SuggestingLiterature({value: body.value})
+          return new SuggestingLiterature({ value: body.value })
         }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(Assessing, LINE)
         if (body.purpose === Assessing.purpose) {
-          return new Assessing({value: body.value})
+          return new Assessing({ value: body.value })
         }
         // PVSCL:ENDCOND
       })

@@ -12,9 +12,9 @@ class Screenshots {
     let promise = null
     if (window.abwa.targetManager.documentFormat === PDF) {
       // Current viewer status
-      let currentScale = window.PDFViewerApplication.pdfViewer.currentScale
+      const currentScale = window.PDFViewerApplication.pdfViewer.currentScale
       window.PDFViewerApplication.pdfViewer.currentScale = 1
-      let currentPage = window.PDFViewerApplication.page
+      const currentPage = window.PDFViewerApplication.page
       // Go to first page
       window.PDFViewerApplication.page = 1
 
@@ -26,29 +26,29 @@ class Screenshots {
         }
       })
       // Create pdf file
-      let pdf = new JsPDF('p', 'cm', 'a4', true)
+      const pdf = new JsPDF('p', 'cm', 'a4', true)
       // Redraw annotations
       window.abwa.annotationManagement.annotationReader.redrawAnnotations()
       // Append rubric
-      let criteriaElement = document.querySelector('#buttonContainer')
+      const criteriaElement = document.querySelector('#buttonContainer')
       if (criteriaElement) {
         html2canvas(criteriaElement).then((rubric) => {
-          let offsetWidth = criteriaElement.offsetWidth
-          let offsetHeight = criteriaElement.offsetHeight
+          const offsetWidth = criteriaElement.offsetWidth
+          const offsetHeight = criteriaElement.offsetHeight
           pdf.addImage(rubric.toDataURL(), 'png', 0, 0, 29 * offsetWidth / offsetHeight, 29)
         })
       }
       // Create promises array
-      let promisesData = [...Array(window.PDFViewerApplication.pagesCount).keys()].map((index) => { return {i: index} })
+      const promisesData = [...Array(window.PDFViewerApplication.pagesCount).keys()].map((index) => { return { i: index } })
       // Page screenshot promise
-      let takePDFPageScreenshot = (d) => {
+      const takePDFPageScreenshot = (d) => {
         return new Promise((resolve, reject) => {
           // Go to page
           window.PDFViewerApplication.page = d.i + 1
           // Redraw annotations
           window.abwa.annotationManagement.annotationReader.redrawAnnotations()
           setTimeout(() => {
-            html2canvas(document.querySelector('.page[data-page-number="' + (d.i + 1) + '"]'), {scale: 1}).then((canvas) => {
+            html2canvas(document.querySelector('.page[data-page-number="' + (d.i + 1) + '"]'), { scale: 1 }).then((canvas) => {
               resolve()
               if (!(d.i === 0 && !_.isElement(criteriaElement))) {
                 pdf.addPage()
@@ -61,7 +61,7 @@ class Screenshots {
       // Wait a little bit to draw annotations in first page
       setTimeout(() => {
         // Reduce promise chain
-        let promiseChain = promisesData.reduce(
+        const promiseChain = promisesData.reduce(
           (chain, d) => chain.then(() => {
             return takePDFPageScreenshot(d)
           }), Promise.resolve([])

@@ -37,7 +37,7 @@ class ModeManager {
   }
 
   loadSidebarToggle (callback) {
-    let sidebarURL = chrome.extension.getURL('pages/sidebar/annotatorMode.html')
+    const sidebarURL = chrome.extension.getURL('pages/sidebar/annotatorMode.html')
     $.get(sidebarURL, (html) => {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))
@@ -61,9 +61,9 @@ class ModeManager {
 
   setPanelText () {
     // Mode element
-    let modeHeaderLabel = document.querySelector('#modeHeader label')
+    const modeHeaderLabel = document.querySelector('#modeHeader label')
     modeHeaderLabel.innerText = chrome.i18n.getMessage('Mode')
-    let modeLabel = document.querySelector('#modeLabel')
+    const modeLabel = document.querySelector('#modeLabel')
     if (this.mode === ModeManager.modes.evidencing) {
       modeLabel.innerText = chrome.i18n.getMessage('Evidencing')
     } else {
@@ -72,16 +72,16 @@ class ModeManager {
   }
 
   setEvidencingMode () {
-    let annotatorToggle = document.querySelector('#annotatorToggle')
-    let modeLabel = document.querySelector('#modeLabel')
+    const annotatorToggle = document.querySelector('#annotatorToggle')
+    const modeLabel = document.querySelector('#modeLabel')
     annotatorToggle.checked = false
     modeLabel.innerText = chrome.i18n.getMessage('Evidencing')
     this.mode = ModeManager.modes.evidencing
   }
 
   setMarkingMode () {
-    let annotatorToggle = document.querySelector('#annotatorToggle')
-    let modeLabel = document.querySelector('#modeLabel')
+    const annotatorToggle = document.querySelector('#annotatorToggle')
+    const modeLabel = document.querySelector('#modeLabel')
     annotatorToggle.checked = true
     modeLabel.innerText = chrome.i18n.getMessage('Marking')
     this.mode = ModeManager.modes.mark
@@ -92,14 +92,14 @@ class ModeManager {
   }
 
   initEventHandlers (callback) {
-    let annotatorToggle = document.querySelector('#annotatorToggle')
+    const annotatorToggle = document.querySelector('#annotatorToggle')
     annotatorToggle.addEventListener('click', (event) => {
       if (annotatorToggle.checked) {
         this.setMarkingMode()
       } else {
         this.setEvidencingMode()
       }
-      LanguageUtils.dispatchCustomEvent(Events.modeChanged, {mode: this.mode})
+      LanguageUtils.dispatchCustomEvent(Events.modeChanged, { mode: this.mode })
     })
     if (_.isFunction(callback)) {
       callback()
@@ -108,8 +108,8 @@ class ModeManager {
 }
 
 ModeManager.modes = {
-  'review': 'review', // Activated for the reviewer role
-  'view': 'view' // Activated for the author
+  review: 'review', // Activated for the reviewer role
+  view: 'view' // Activated for the author
 }
 
 export default ModeManager

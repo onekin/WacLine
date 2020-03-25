@@ -58,7 +58,7 @@ class HypothesisClientManager extends AnnotationServerManager {
         })
       }
     } else {
-      chrome.runtime.sendMessage({scope: 'hypothesis', cmd: 'getToken'}, (token) => {
+      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, (token) => {
         if (this.hypothesisToken !== token) {
           this.hypothesisToken = token
           if (this.hypothesisToken) {
@@ -78,7 +78,7 @@ class HypothesisClientManager extends AnnotationServerManager {
     return !_.isEmpty(this.hypothesisToken)
   }
 
-  constructSearchUrl ({groupId}) {
+  constructSearchUrl ({ groupId }) {
     return this.annotationServerMetadata.groupUrl + groupId
   }
 
@@ -108,7 +108,7 @@ class HypothesisClientManager extends AnnotationServerManager {
     }).then((result) => {
       if (result.value) {
         // Prompt hypothesis login form
-        chrome.runtime.sendMessage({scope: 'hypothesis', cmd: 'userLoginForm'}, (result) => {
+        chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'userLoginForm' }, (result) => {
           if (result.error) {
             if (_.isFunction(callback)) {
               callback(new Error(result.error))

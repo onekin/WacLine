@@ -14,7 +14,7 @@ class ExportCodebook {
 
   destroy () {
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
@@ -22,7 +22,7 @@ class ExportCodebook {
 
   // EVENTS
   initExportCodebookEventHandler () {
-    this.events.exportCodebookEvent = {element: document, event: Events.exportCodebook, handler: this.exportCodebookEventHandler()}
+    this.events.exportCodebookEvent = { element: document, event: Events.exportCodebook, handler: this.exportCodebookEventHandler() }
     this.events.exportCodebookEvent.element.addEventListener(this.events.exportCodebookEvent.event, this.events.exportCodebookEvent.handler, false)
   }
 

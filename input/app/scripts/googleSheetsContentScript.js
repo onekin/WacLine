@@ -4,7 +4,7 @@ import _ from 'lodash'
 window.addEventListener('load', () => {
   console.debug('Loaded sheet content script')
   // When page is loaded, popup button should be always deactivated
-  chrome.runtime.sendMessage({scope: 'extension', cmd: 'deactivatePopup'}, (result) => {
+  chrome.runtime.sendMessage({ scope: 'extension', cmd: 'deactivatePopup' }, (result) => {
     console.log('Deactivated popup')
   })
   // When popup button is clicked
@@ -15,7 +15,7 @@ window.addEventListener('load', () => {
         window.googleSheetProvider.contentScriptManager = new GSheetProvider()
         window.googleSheetProvider.contentScriptManager.init(() => {
           // Disable the button of popup
-          chrome.runtime.sendMessage({scope: 'extension', cmd: 'deactivatePopup'}, (result) => {
+          chrome.runtime.sendMessage({ scope: 'extension', cmd: 'deactivatePopup' }, (result) => {
             console.log('Deactivated popup')
           })
           window.googleSheetProvider = null

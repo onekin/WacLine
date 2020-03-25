@@ -9,34 +9,34 @@ const xpathRange = require('xpath-range')
 class DOMTextUtils {
   static getFragmentSelector (range) {
     if (range.commonAncestorContainer) {
-      let parentId = DOM.getParentNodeWithId(range.commonAncestorContainer)
+      const parentId = DOM.getParentNodeWithId(range.commonAncestorContainer)
       if (parentId) {
         return {
-          'conformsTo': 'https://tools.ietf.org/html/rfc3236',
-          'type': 'FragmentSelector',
-          'value': parentId
+          conformsTo: 'https://tools.ietf.org/html/rfc3236',
+          type: 'FragmentSelector',
+          value: parentId
         }
       }
     }
   }
 
   static getRangeSelector (range) {
-    let rangeSelector = xpathRange.fromRange(range)
+    const rangeSelector = xpathRange.fromRange(range)
     LanguageUtils.renameObjectKey(rangeSelector, 'start', 'startContainer')
     LanguageUtils.renameObjectKey(rangeSelector, 'end', 'endContainer')
-    rangeSelector['type'] = 'RangeSelector'
+    rangeSelector.type = 'RangeSelector'
     return rangeSelector
   }
 
   static getTextPositionSelector (range) {
-    let textPositionSelector = domAnchorTextPosition.fromRange(document.body, range)
-    textPositionSelector['type'] = 'TextPositionSelector'
+    const textPositionSelector = domAnchorTextPosition.fromRange(document.body, range)
+    textPositionSelector.type = 'TextPositionSelector'
     return textPositionSelector
   }
 
   static getTextQuoteSelector (range) {
-    let textQuoteSelector = domAnchorTextQuote.fromRange(document.body, range)
-    textQuoteSelector['type'] = 'TextQuoteSelector'
+    const textQuoteSelector = domAnchorTextQuote.fromRange(document.body, range)
+    textQuoteSelector.type = 'TextQuoteSelector'
     return textQuoteSelector
   }
 
@@ -51,24 +51,24 @@ class DOMTextUtils {
    * @returns {NodeList}
    * @throws TypeError
    */
-  static highlightContent ({selectors, className, id, data, exhaustive = true, format}) {
-    let range = this.retrieveRange({selectors, exhaustive, format})
+  static highlightContent ({ selectors, className, id, data, exhaustive = true, format }) {
+    const range = this.retrieveRange({ selectors, exhaustive, format })
     if (range) {
-      let nodes = DOM.getLeafNodesInRange(range)
+      const nodes = DOM.getLeafNodesInRange(range)
       if (nodes.length > 0) {
-        let startNode = nodes.shift()
+        const startNode = nodes.shift()
         if (nodes.length > 0) { // start and end nodes are not the same
-          let endNode = nodes.pop()
-          let nodesBetween = nodes
+          const endNode = nodes.pop()
+          const nodesBetween = nodes
           // Start node
-          let startWrapper = document.createElement('mark')
+          const startWrapper = document.createElement('mark')
           $(startWrapper).addClass(className)
           startWrapper.dataset.annotationId = id
           startWrapper.dataset.startNode = ''
           startWrapper.dataset.highlightClassName = className
           DOMTextUtils.wrapNodeContent(startNode, startWrapper, range.startOffset, startNode.nodeValue.length)
           // End node
-          let endWrapper = document.createElement('mark')
+          const endWrapper = document.createElement('mark')
           $(endWrapper).addClass(className)
           endWrapper.dataset.annotationId = id
           endWrapper.dataset.endNode = ''
@@ -76,10 +76,10 @@ class DOMTextUtils {
           DOMTextUtils.wrapNodeContent(endNode, endWrapper, 0, range.endOffset)
           // Nodes between
           nodesBetween.forEach(nodeBetween => {
-            let leafNodes = this.retrieveLeafNodes(nodeBetween)
+            const leafNodes = this.retrieveLeafNodes(nodeBetween)
             for (let i = 0; i < leafNodes.length; i++) {
               if (leafNodes[i].textContent.length > 0 && (leafNodes[i].parentNode !== endNode && leafNodes[i].parentNode !== startNode)) {
-                let wrapper = document.createElement('mark')
+                const wrapper = document.createElement('mark')
                 $(wrapper).addClass(className)
                 wrapper.dataset.annotationId = id
                 wrapper.dataset.endNode = ''
@@ -89,7 +89,7 @@ class DOMTextUtils {
             }
           })
         } else {
-          let wrapper = document.createElement('mark')
+          const wrapper = document.createElement('mark')
           $(wrapper).addClass(className)
           wrapper.dataset.highlightClassName = className
           wrapper.dataset.annotationId = id
@@ -110,7 +110,7 @@ class DOMTextUtils {
   static wrapNodeContent (node, wrapper, startPosition, endPosition) {
     if (node.nodeType === 3) {
       wrapper.textContent = node.nodeValue.slice(startPosition, endPosition)
-      let nodeArray = [
+      const nodeArray = [
         document.createTextNode(node.nodeValue.slice(0, startPosition)), // Previous to wrapper text
         wrapper.outerHTML, // Highlighted text
         document.createTextNode(node.nodeValue.slice(endPosition, node.nodeValue.length)) // After to wrapper text
@@ -121,7 +121,7 @@ class DOMTextUtils {
       node.parentNode.removeChild(node) // Remove original node
     } else {
       wrapper.innerHTML = node.nodeValue.slice(startPosition, endPosition)
-      let newStringifiedContent = node.nodeValue.slice(0, startPosition) + wrapper.outerHTML + node.nodeValue.slice(endPosition, node.nodeValue.length)
+      const newStringifiedContent = node.nodeValue.slice(0, startPosition) + wrapper.outerHTML + node.nodeValue.slice(endPosition, node.nodeValue.length)
       DOMTextUtils.replaceContent(node, newStringifiedContent)
     }
   }
@@ -133,30 +133,30 @@ class DOMTextUtils {
    * @param format
    * @returns {null}
    */
-  static retrieveRange ({selectors, exhaustive = true, format}) {
-    let fragmentSelector = _.find(selectors, (selector) => { return selector.type === 'FragmentSelector' })
-    let rangeSelector = _.find(selectors, (selector) => { return selector.type === 'RangeSelector' })
-    let textQuoteSelector = _.find(selectors, (selector) => { return selector.type === 'TextQuoteSelector' })
-    let textPositionSelector = _.find(selectors, (selector) => { return selector.type === 'TextPositionSelector' })
+  static retrieveRange ({ selectors, exhaustive = true, format }) {
+    const fragmentSelector = _.find(selectors, (selector) => { return selector.type === 'FragmentSelector' })
+    const rangeSelector = _.find(selectors, (selector) => { return selector.type === 'RangeSelector' })
+    const textQuoteSelector = _.find(selectors, (selector) => { return selector.type === 'TextQuoteSelector' })
+    const textPositionSelector = _.find(selectors, (selector) => { return selector.type === 'TextPositionSelector' })
     // Check whether the document is PDF, HTML or TXT
     if (format.name === 'pdf') {
-      return DOMTextUtils.retrieveRangeForPDFDocument({fragmentSelector, textPositionSelector, textQuoteSelector, exhaustive})
+      return DOMTextUtils.retrieveRangeForPDFDocument({ fragmentSelector, textPositionSelector, textQuoteSelector, exhaustive })
     } else if (format.name === 'txt') {
-      return DOMTextUtils.retrieveRangeForTXTDocument({textPositionSelector, textQuoteSelector})
+      return DOMTextUtils.retrieveRangeForTXTDocument({ textPositionSelector, textQuoteSelector })
     } else if (format.name === 'html') {
-      return DOMTextUtils.retrieveRangeForHTMLDocument({fragmentSelector, textPositionSelector, textQuoteSelector, rangeSelector, exhaustive})
+      return DOMTextUtils.retrieveRangeForHTMLDocument({ fragmentSelector, textPositionSelector, textQuoteSelector, rangeSelector, exhaustive })
     } else {
       console.error('Document format is not valid')
       return null
     }
   }
 
-  static retrieveRangeForPDFDocument ({fragmentSelector, textPositionSelector, textQuoteSelector, exhaustive}) {
+  static retrieveRangeForPDFDocument ({ fragmentSelector, textPositionSelector, textQuoteSelector, exhaustive }) {
     let fragmentElement
     let range
     if (fragmentSelector.page) {
       // Check only in corresponding page
-      let pageElement = document.querySelector('.page[data-page-number="' + fragmentSelector.page + '"][data-loaded="true"]')
+      const pageElement = document.querySelector('.page[data-page-number="' + fragmentSelector.page + '"][data-loaded="true"]')
       if (_.isElement(pageElement)) {
         fragmentElement = pageElement
       } else {
@@ -173,7 +173,7 @@ class DOMTextUtils {
     return range
   }
 
-  static retrieveRangeForTXTDocument ({textPositionSelector, textQuoteSelector}) {
+  static retrieveRangeForTXTDocument ({ textPositionSelector, textQuoteSelector }) {
     let range = null
     if (_.isObject(textPositionSelector) && _.isObject(textQuoteSelector)) {
       range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(textPositionSelector, textQuoteSelector.exact)
@@ -184,7 +184,7 @@ class DOMTextUtils {
     return range
   }
 
-  static retrieveRangeForHTMLDocument ({fragmentSelector, textPositionSelector, textQuoteSelector, rangeSelector, exhaustive}) {
+  static retrieveRangeForHTMLDocument ({ fragmentSelector, textPositionSelector, textQuoteSelector, rangeSelector, exhaustive }) {
     let range = null
     if (_.isObject(fragmentSelector) || _.isObject(rangeSelector)) { // It is an element of DOM
       let fragmentElement = null
@@ -236,7 +236,7 @@ class DOMTextUtils {
    * @returns {null|*}
    */
   static tryRetrieveRangeTextPositionSelector (textPositionSelector, exactText) {
-    let possibleRange = domAnchorTextPosition.toRange(document.body, {start: textPositionSelector.start, end: textPositionSelector.end})
+    const possibleRange = domAnchorTextPosition.toRange(document.body, { start: textPositionSelector.start, end: textPositionSelector.end })
     if (possibleRange && possibleRange.toString() === exactText) {
       return possibleRange
     } else {
@@ -267,9 +267,9 @@ class DOMTextUtils {
    */
   static findAllMatches (str) {
     // Get current selection range for set again after the algorithm
-    let userSelection = window.getSelection().getRangeAt(0)
+    const userSelection = window.getSelection().getRangeAt(0)
     // Find matches using window.find
-    let matches = []
+    const matches = []
     let findResult = document.execCommand('FindString', true, str)
     let currentMatch = window.getSelection().getRangeAt(0).cloneRange()
     // Search forward of the current position
@@ -285,14 +285,14 @@ class DOMTextUtils {
   }
 
   static retrieveRangeTextSelectorUsingNativeFind (exact, textPositionSelector) {
-    let matches = DOMTextUtils.findAllMatches(exact)
+    const matches = DOMTextUtils.findAllMatches(exact)
     if (matches.length === 0) {
       return null
     } else if (matches.length === 1) {
       return matches[0]
     } else if (matches.length > 1) {
       // Try to find by position selector
-      let matchedTextPositionSelectors = _.map(matches, (match) => {
+      const matchedTextPositionSelectors = _.map(matches, (match) => {
         return DOMTextUtils.getTextPositionSelector(match)
       })
       let matchedRange = _.find(matchedTextPositionSelectors, (matchedSelector) => {
@@ -301,7 +301,7 @@ class DOMTextUtils {
       if (matchedRange) {
         return matchedRange
       } else {
-        let range = domAnchorTextPosition.toRange(document.body, textPositionSelector.start, textPositionSelector.end)
+        const range = domAnchorTextPosition.toRange(document.body, textPositionSelector.start, textPositionSelector.end)
         matchedRange = _.find(matches, (matchRange) => {
           return range.startOffset === matchRange.startOffset && range.endOffset === matchRange.endOffset
         })
@@ -318,7 +318,7 @@ class DOMTextUtils {
 
   static replaceContent (oldNode, newNode) {
     // Find a better solution which not creates new elements
-    let span = document.createElement('span')
+    const span = document.createElement('span')
     span.innerHTML = newNode
     oldNode.replaceWith(span)
     $(span.childNodes).unwrap()
@@ -338,7 +338,7 @@ class DOMTextUtils {
     let childNodes = []
     if (element.childNodes.length > 0) {
       for (let i = 0; i < element.childNodes.length; i++) {
-        let childNode = element.childNodes[i]
+        const childNode = element.childNodes[i]
         childNodes = childNodes.concat(this.retrieveLeafNodes(childNode))
       }
     } else {
@@ -349,7 +349,7 @@ class DOMTextUtils {
 
   static unHighlightAllContent (className) {
     // Remove highlighted elements
-    let highlightElements = document.querySelectorAll('.' + className)
+    const highlightElements = document.querySelectorAll('.' + className)
     DOMTextUtils.unHighlightElements(highlightElements)
   }
 
@@ -363,7 +363,7 @@ class DOMTextUtils {
   }
 
   static unHighlightById (id) {
-    let highlightElements = document.querySelectorAll('[data-annotation-id=\'' + id + '\']')
+    const highlightElements = document.querySelectorAll('[data-annotation-id=\'' + id + '\']')
     DOMTextUtils.unHighlightElements(highlightElements)
   }
 }

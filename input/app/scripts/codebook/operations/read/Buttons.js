@@ -9,7 +9,7 @@ if (!$.contextMenu) {
  * A class to collect functionality to create buttons and groups of buttons for the sidebar
  */
 class Buttons {
-  static createGroupedButtons ({id, name, label, data, className, description, color = 'white', childGuideElements, groupHandler, buttonHandler, groupTemplate, groupRightClickHandler, buttonRightClickHandler, ondragstart, ondragover, ondrop}) {
+  static createGroupedButtons ({ id, name, label, data, className, description, color = 'white', childGuideElements, groupHandler, buttonHandler, groupTemplate, groupRightClickHandler, buttonRightClickHandler, ondragstart, ondragover, ondrop }) {
     if (id) {
       let tagGroup
       // Create the container
@@ -22,17 +22,17 @@ class Buttons {
             tagGroup.className += ' ' + className
           }
           // Group name container
-          let groupNameContainer = document.createElement('div')
+          const groupNameContainer = document.createElement('div')
           groupNameContainer.className = 'groupNameContainer'
           // Group name label
-          let groupName = document.createElement('div')
+          const groupName = document.createElement('div')
           groupName.className = 'groupName'
           groupNameContainer.appendChild(groupName)
           // Create collapse button
-          let collapseToogle = document.createElement('span')
+          const collapseToogle = document.createElement('span')
           collapseToogle.className = 'collapseToggle'
           collapseToogle.addEventListener('click', () => {
-            let tagGroup = document.querySelector('.tagGroup[data-code-id=' + id + ']')
+            const tagGroup = document.querySelector('.tagGroup[data-code-id=' + id + ']')
             if (tagGroup.getAttribute('aria-expanded') === 'false') {
               tagGroup.setAttribute('aria-expanded', 'true')
             } else {
@@ -41,7 +41,7 @@ class Buttons {
           })
           groupNameContainer.appendChild(collapseToogle)
           tagGroup.appendChild(groupNameContainer)
-          let tagButtonContainer = document.createElement('div')
+          const tagButtonContainer = document.createElement('div')
           tagButtonContainer.className = 'tagButtonContainer'
           tagGroup.appendChild(tagButtonContainer)
         } else {
@@ -51,16 +51,16 @@ class Buttons {
         tagGroup = $(groupTemplate.content.firstElementChild).clone().get(0)
       }
       if (_.isFunction(data)) {
-        let dataResult = data({codeId: id})
+        const dataResult = data({ codeId: id })
         _.forEach(_.toPairs(dataResult), (pair) => { tagGroup.dataset[pair[0]] = pair[1] })
       }
       tagGroup.dataset.codeName = name
       tagGroup.dataset.codeId = id
-      let tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
-      let groupNameSpan = tagGroup.querySelector('.groupName')
-      let groupNameContainer = tagGroup.querySelector('.groupNameContainer')
+      const tagButtonContainer = $(tagGroup).find('.tagButtonContainer')
+      const groupNameSpan = tagGroup.querySelector('.groupName')
+      const groupNameContainer = tagGroup.querySelector('.groupNameContainer')
       if (_.isFunction(label)) {
-        groupNameSpan.innerText = label({codeId: id, codeName: name})
+        groupNameSpan.innerText = label({ codeId: id, codeName: name })
       } else {
         groupNameSpan.innerText = name
       }
@@ -76,7 +76,7 @@ class Buttons {
       // Tag button background color change
       // TODO It should be better to set it as a CSS property, but currently there is not an option for that
       groupNameContainer.addEventListener('mouseenter', () => {
-        let currentColor = ColorUtils.colorFromString(groupNameContainer.style.backgroundColor)
+        const currentColor = ColorUtils.colorFromString(groupNameContainer.style.backgroundColor)
         if (currentColor.valpha) {
           if (currentColor.alpha(currentColor.valpha + 0.2).isDark()) {
             groupNameSpan.style.color = 'white'
@@ -96,7 +96,7 @@ class Buttons {
       })
       // Set button right click handler
       if (_.isFunction(groupRightClickHandler)) {
-        Buttons.createGroupRightClickHandler({id, className, handler: groupRightClickHandler})
+        Buttons.createGroupRightClickHandler({ id, className, handler: groupRightClickHandler })
       }
       // Drag and drop functions
       if (_.isFunction(ondragstart)) {
@@ -132,9 +132,9 @@ class Buttons {
       // Create buttons and add to the container
       if (_.isArray(childGuideElements) && childGuideElements.length > 0) { // Only create group containers for groups which have elements
         for (let i = 0; i < childGuideElements.length; i++) {
-          let element = childGuideElements[i]
+          const element = childGuideElements[i]
           if (element.childElements && element.childElements.length > 0) {
-            let groupButton = Buttons.createGroupedButtons({
+            const groupButton = Buttons.createGroupedButtons({
               id: element.id,
               name: element.name,
               className: className,
@@ -152,7 +152,7 @@ class Buttons {
             })
             tagButtonContainer.append(groupButton)
           } else {
-            let button = Buttons.createButton({
+            const button = Buttons.createButton({
               id: element.id,
               name: element.name,
               label: label,
@@ -176,7 +176,7 @@ class Buttons {
     }
   }
 
-  static createGroupRightClickHandler ({id, className = 'tagGroup', handler}) {
+  static createGroupRightClickHandler ({ id, className = 'tagGroup', handler }) {
     $.contextMenu({
       selector: '.' + className + '[data-code-id="' + id + '"] > .groupNameContainer > .groupName',
       build: () => {
@@ -185,7 +185,7 @@ class Buttons {
     })
   }
 
-  static createButtonRightClickHandler ({id, className = 'tagButton', handler}) {
+  static createButtonRightClickHandler ({ id, className = 'tagButton', handler }) {
     $.contextMenu({
       selector: '.' + className + '[data-code-id="' + id + '"]',
       build: () => {
@@ -203,7 +203,7 @@ class Buttons {
     }
   }
 
-  static createDropHandler ({id, handler, beforeDrop}) {
+  static createDropHandler ({ id, handler, beforeDrop }) {
     return (event) => {
       if (_.isFunction(beforeDrop)) {
         beforeDrop()
@@ -216,7 +216,7 @@ class Buttons {
     }
   }
 
-  static createButton ({id, name, label, data, className, color = 'rgba(200, 200, 200, 1)', description, handler, buttonTemplate, buttonRightClickHandler, ondragstart, ondragover, ondrop}) {
+  static createButton ({ id, name, label, data, className, color = 'rgba(200, 200, 200, 1)', description, handler, buttonTemplate, buttonRightClickHandler, ondragstart, ondragover, ondrop }) {
     if (id) {
       let tagButton
       // Create the container
@@ -233,13 +233,13 @@ class Buttons {
         $(buttonTemplate.content.firstElementChild).clone().get(0)
       }
       if (_.isFunction(data)) {
-        let dataResult = data({codeId: id})
+        const dataResult = data({ codeId: id })
         _.forEach(_.toPairs(dataResult), (pair) => { tagButton.dataset[pair[0]] = pair[1] })
       }
       tagButton.dataset.codeName = name
       tagButton.dataset.codeId = id
       if (_.isFunction(label)) {
-        tagButton.innerText = label({codeId: id, codeName: name})
+        tagButton.innerText = label({ codeId: id, codeName: name })
       } else {
         tagButton.innerText = name
       }
@@ -257,7 +257,7 @@ class Buttons {
       tagButton.addEventListener('click', handler)
       // Set button right click handler
       if (_.isFunction(buttonRightClickHandler)) {
-        Buttons.createButtonRightClickHandler({id, className, handler: buttonRightClickHandler})
+        Buttons.createButtonRightClickHandler({ id, className, handler: buttonRightClickHandler })
       }
       // Drag and drop functions
       if (_.isFunction(ondragstart)) {
@@ -302,7 +302,7 @@ class Buttons {
       // Tag button background color change
       // TODO It should be better to set it as a CSS property, but currently there is not an option for that
       tagButton.addEventListener('mouseenter', () => {
-        let currentColor = ColorUtils.colorFromString(tagButton.style.backgroundColor)
+        const currentColor = ColorUtils.colorFromString(tagButton.style.backgroundColor)
         if (currentColor.valpha) {
           if (currentColor.opaquer(0.2).isDark()) {
             tagButton.style.color = 'white'

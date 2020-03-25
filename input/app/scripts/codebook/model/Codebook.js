@@ -47,11 +47,11 @@ class Codebook {
   }
 
   toAnnotation () {
-    let motivationTag = 'motivation:defining'
-    let guideTag = Config.namespace + ':guide'
-    let tags = [motivationTag, guideTag]
+    const motivationTag = 'motivation:defining'
+    const guideTag = Config.namespace + ':guide'
+    const tags = [motivationTag, guideTag]
     // PVSCL:IFCOND(MoodleProvider or MoodleReport or MoodleResource,LINE)
-    let cmidTag = 'cmid:' + this.cmid
+    const cmidTag = 'cmid:' + this.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
     // Construct text attribute of the annotation
@@ -100,26 +100,26 @@ class Codebook {
 
   static fromAnnotation (annotation, callback) {
     this.setAnnotationServer(null, (annotationServer) => {
-      let annotationGuideOpts = {id: annotation.id, name: annotation.name, annotationServer: annotationServer}
+      const annotationGuideOpts = { id: annotation.id, name: annotation.name, annotationServer: annotationServer }
       // PVSCL:IFCOND(GoogleSheetProvider or MoodleProvider, LINE)
       // Configuration for gsheet provider or moodle provider is saved in text attribute
       // TODO Maybe this is not the best place to store this configuration, it wa done in this way to be visible in Hypothes.is client, but probably it should be defined in the body of the annotation
-      let config = jsYaml.load(annotation.text)
+      const config = jsYaml.load(annotation.text)
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(GoogleSheetProvider, LINE)
-      annotationGuideOpts['spreadsheetId'] = config.spreadsheetId
-      annotationGuideOpts['sheetId'] = config.sheetId
+      annotationGuideOpts.spreadsheetId = config.spreadsheetId
+      annotationGuideOpts.sheetId = config.sheetId
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleProvider, LINE)
-      annotationGuideOpts['moodleEndpoint'] = config.moodleEndpoint
-      annotationGuideOpts['assignmentId'] = config.assignmentId
-      annotationGuideOpts['assignmentName'] = config.assignmentName
-      annotationGuideOpts['courseId'] = config.courseId
-      let cmidTag = _.find(annotation.tags, (tag) => {
+      annotationGuideOpts.moodleEndpoint = config.moodleEndpoint
+      annotationGuideOpts.assignmentId = config.assignmentId
+      annotationGuideOpts.assignmentName = config.assignmentName
+      annotationGuideOpts.courseId = config.courseId
+      const cmidTag = _.find(annotation.tags, (tag) => {
         return tag.includes('cmid:')
       })
       if (_.isString(cmidTag)) {
-        annotationGuideOpts['cmid'] = cmidTag.replace('cmid:', '')
+        annotationGuideOpts.cmid = cmidTag.replace('cmid:', '')
       }
       // PVSCL:ENDCOND
       let guide
@@ -132,43 +132,43 @@ class Codebook {
 
   static fromAnnotations (annotations, callback) {
     // return Codebook
-    let guideAnnotation = _.remove(annotations, (annotation) => {
+    const guideAnnotation = _.remove(annotations, (annotation) => {
       return _.some(annotation.tags, (tag) => { return tag === Config.namespace + ':guide' })
     })
     if (guideAnnotation.length > 0) {
       Codebook.fromAnnotation(guideAnnotation[0], (guide) => {
         // TODO Complete the guide from the annotations
         // For the rest of annotations, get themes and codes
-        let themeAnnotations = _.remove(annotations, (annotation) => {
+        const themeAnnotations = _.remove(annotations, (annotation) => {
           return _.some(annotation.tags, (tag) => {
             return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
           })
         })
         // PVSCL:IFCOND(Hierarchy,LINE)
-        let codeAnnotations = _.remove(annotations, (annotation) => {
+        const codeAnnotations = _.remove(annotations, (annotation) => {
           return _.some(annotation.tags, (tag) => {
             return tag.includes(Config.namespace + ':' + Config.tags.grouped.subgroup + ':')
           })
         })
         // PVSCL:ENDCOND
         for (let i = 0; i < themeAnnotations.length; i++) {
-          let theme = Theme.fromAnnotation(themeAnnotations[i], guide)
+          const theme = Theme.fromAnnotation(themeAnnotations[i], guide)
           if (LanguageUtils.isInstanceOf(theme, Theme)) {
             guide.themes.push(theme)
           }
         }
         // PVSCL:IFCOND(Hierarchy,LINE)
         for (let i = 0; i < codeAnnotations.length; i++) {
-          let codeAnnotation = codeAnnotations[i]
+          const codeAnnotation = codeAnnotations[i]
           // Get theme corresponding to the level
-          let themeTag = _.find(codeAnnotation.tags, (tag) => {
+          const themeTag = _.find(codeAnnotation.tags, (tag) => {
             return tag.includes(Config.namespace + ':' + Config.tags.grouped.relation + ':')
           })
-          let themeName = themeTag.replace(Config.namespace + ':' + Config.tags.grouped.relation + ':', '')
-          let theme = _.find(guide.themes, (theme) => {
+          const themeName = themeTag.replace(Config.namespace + ':' + Config.tags.grouped.relation + ':', '')
+          const theme = _.find(guide.themes, (theme) => {
             return theme.name === themeName
           })
-          let code = Code.fromAnnotation(codeAnnotation, theme)
+          const code = Code.fromAnnotation(codeAnnotation, theme)
           if (LanguageUtils.isInstanceOf(theme, Theme)) {
             theme.codes.push(code)
           } else {
@@ -194,13 +194,13 @@ class Codebook {
       group = newGroup
     }
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
-    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+    chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       if (annotationServer === 'hypothesis') {
         // Hypothesis
-        annotationAnnotationServer = new Hypothesis({group: group})
+        annotationAnnotationServer = new Hypothesis({ group: group })
       } else {
         // Browser storage
-        annotationAnnotationServer = new BrowserStorage({group: group})
+        annotationAnnotationServer = new BrowserStorage({ group: group })
       }
       if (_.isFunction(callback)) {
         callback(annotationAnnotationServer)
@@ -208,10 +208,10 @@ class Codebook {
     })
     // PVSCL:ELSECOND
     // PVSCL:IFCOND(Hypothesis,LINE)
-    annotationAnnotationServer = new Hypothesis({group: group})
+    annotationAnnotationServer = new Hypothesis({ group: group })
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage,LINE)
-    annotationAnnotationServer = new BrowserStorage({group: group})
+    annotationAnnotationServer = new BrowserStorage({ group: group })
     // PVSCL:ENDCOND
     if (_.isFunction(callback)) {
       callback(annotationAnnotationServer)
@@ -221,16 +221,16 @@ class Codebook {
   // PVSCL:IFCOND(BuiltIn or ImportCodebook or NOT(Codebook) or ImportAnnotations, LINE)
 
   static fromObjects (userDefinedHighlighterDefinition) {
-    let annotationGuide = new Codebook({name: userDefinedHighlighterDefinition.name})
+    const annotationGuide = new Codebook({ name: userDefinedHighlighterDefinition.name })
     for (let i = 0; i < userDefinedHighlighterDefinition.definition.length; i++) {
-      let themeDefinition = userDefinedHighlighterDefinition.definition[i]
-      let theme = new Theme({name: themeDefinition.name, description: themeDefinition.description, annotationGuide})
+      const themeDefinition = userDefinedHighlighterDefinition.definition[i]
+      const theme = new Theme({ name: themeDefinition.name, description: themeDefinition.description, annotationGuide })
       // PVSCL:IFCOND(Hierarchy,LINE)
       theme.codes = []
       if (_.isArray(themeDefinition.codes)) {
         for (let j = 0; j < themeDefinition.codes.length; j++) {
-          let codeDefinition = themeDefinition.codes[j]
-          let code = new Code({name: codeDefinition.name, description: codeDefinition.description, theme: theme})
+          const codeDefinition = themeDefinition.codes[j]
+          const code = new Code({ name: codeDefinition.name, description: codeDefinition.description, theme: theme })
           theme.codes.push(code)
         }
       }
@@ -242,15 +242,15 @@ class Codebook {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(GoogleSheetProvider,LINE)
 
-  static fromGoogleSheet ({spreadsheetId, sheetId, spreadsheet, sheetName}) {
-    let codebook = new Codebook({spreadsheetId, sheetId, name: sheetName})
+  static fromGoogleSheet ({ spreadsheetId, sheetId, spreadsheet, sheetName }) {
+    const codebook = new Codebook({ spreadsheetId, sheetId, name: sheetName })
     codebook.themes = Codebook.getThemesAndCodesGSheet(spreadsheet, codebook)
     return codebook
   }
 
   static getThemesAndCodesGSheet (spreadsheet, annotationGuide) {
     // Find current sheet
-    let sheet = _.find(spreadsheet.sheets, (sheet) => { return sheet.properties.sheetId === annotationGuide.sheetId })
+    const sheet = _.find(spreadsheet.sheets, (sheet) => { return sheet.properties.sheetId === annotationGuide.sheetId })
     // Check if exists object
     if (sheet && sheet.data && sheet.data[0] && sheet.data[0].rowData && sheet.data[0].rowData[0] && sheet.data[0].rowData[0].values) {
       // Retrieve index of "Author" column
@@ -267,9 +267,9 @@ class Codebook {
       // If index of author exists
       if (lastIndex > 0) {
         // Retrieve themes. Retrieve elements between 2 column and author column, maps "formattedValue"
-        let themesArray = _.map(_.slice(sheet.data[0].rowData[0].values, 1, lastIndex), 'formattedValue')
-        let themes = _.map(_.countBy(themesArray), (numberOfColumns, name) => {
-          let theme = new Theme({name: name, annotationGuide})
+        const themesArray = _.map(_.slice(sheet.data[0].rowData[0].values, 1, lastIndex), 'formattedValue')
+        const themes = _.map(_.countBy(themesArray), (numberOfColumns, name) => {
+          const theme = new Theme({ name: name, annotationGuide })
           // PVSCL:IFCOND(Hierarchy,LINE)
           theme.multivalued = numberOfColumns > 1
           // PVSCL:ENDCOND
@@ -281,18 +281,18 @@ class Codebook {
           // Find codes
           if (sheet.data[0].rowData[1] && sheet.data[0].rowData[1].values) {
             // Get cells for codes
-            let values = _.slice(sheet.data[0].rowData[1].values, 1, lastIndex)
+            const values = _.slice(sheet.data[0].rowData[1].values, 1, lastIndex)
             // For each cell
             for (let i = 0; i < themesArray.length; i++) {
               // Retrieve its facet
-              let currentThemeName = themesArray[i]
+              const currentThemeName = themesArray[i]
               // If theme of current row is text and is a facet and is not already set the possible codes
-              let currentTheme = _.find(themes, (facet) => { return facet.name === currentThemeName })
+              const currentTheme = _.find(themes, (facet) => { return facet.name === currentThemeName })
               if (_.isString(currentThemeName) && currentTheme && currentTheme.codes.length === 0) {
                 // If cell has data validation "ONE_OF_LIST"
                 if (_.isObject(values[i]) && _.isObject(values[i].dataValidation) && values[i].dataValidation.condition.type === 'ONE_OF_LIST') {
                   currentTheme.inductive = false
-                  currentTheme.codes = _.map(values[i].dataValidation.condition.values, (value) => { return new Code({name: value.userEnteredValue, theme: currentTheme}) })
+                  currentTheme.codes = _.map(values[i].dataValidation.condition.values, (value) => { return new Code({ name: value.userEnteredValue, theme: currentTheme }) })
                 } else { // If cell has not data validation
                   currentTheme.inductive = true
                 }
@@ -315,7 +315,7 @@ class Codebook {
 
   getCodeOrThemeFromId (id) {
     let themeOrCodeToReturn = null
-    let theme = _.find(this.themes, (theme) => {
+    const theme = _.find(this.themes, (theme) => {
       return theme.id === id
     })
     if (LanguageUtils.isInstanceOf(theme, Theme)) {
@@ -323,8 +323,8 @@ class Codebook {
     } /* PVSCL:IFCOND(Hierarchy) */ else {
       // Look for code inside themes
       for (let i = 0; i < this.themes.length; i++) {
-        let theme = this.themes[i]
-        let code = _.find(theme.codes, (code) => {
+        const theme = this.themes[i]
+        const code = _.find(theme.codes, (code) => {
           return code.id === id
         })
         if (LanguageUtils.isInstanceOf(code, Code)) {
@@ -340,8 +340,8 @@ class Codebook {
     if (LanguageUtils.isInstanceOf(theme, Theme)) {
       this.themes.push(theme)
       // Get new color for the theme
-      let colors = ColorUtils.getDifferentColors(this.themes.length)
-      let lastColor = colors.pop()
+      const colors = ColorUtils.getDifferentColors(this.themes.length)
+      const lastColor = colors.pop()
       theme.color = ColorUtils.setAlphaToColor(lastColor, Config.colors.minAlpha)
     }
   }
@@ -349,10 +349,10 @@ class Codebook {
   updateTheme (theme, previousId) {
     if (LanguageUtils.isInstanceOf(theme, Theme)) {
       // Find item index using _.findIndex
-      let index = _.findIndex(this.themes, (it) => {
+      const index = _.findIndex(this.themes, (it) => {
         return it.id === theme.id || it.id === previousId
       })
-      let previousTheme = this.themes[index]
+      const previousTheme = this.themes[index]
       // Replace item at index using native splice
       this.themes.splice(index, 1, theme)
       theme.color = previousTheme.color
@@ -367,7 +367,7 @@ class Codebook {
 
   static createCodebookFromObject (rubric) {
     // Instance rubric object
-    let instancedCodebook = Object.assign(new Codebook(rubric))
+    const instancedCodebook = Object.assign(new Codebook(rubric))
     // Instance themes and codes
     for (let i = 0; i < rubric.themes.length; i++) {
       instancedCodebook.themes[i] = Theme.createThemeFromObject(rubric.themes[i], instancedCodebook)
@@ -378,13 +378,13 @@ class Codebook {
   // PVSCL:IFCOND(ExportCodebook or Export, LINE)
 
   toObjects (name) {
-    let object = {
+    const object = {
       name: name,
       definition: []
     }
     // For each criteria create the object
     for (let i = 0; i < this.themes.length; i++) {
-      let theme = this.themes[i]
+      const theme = this.themes[i]
       if (LanguageUtils.isInstanceOf(theme, Theme)) {
         object.definition.push(theme.toObjects())
       }

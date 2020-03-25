@@ -8,23 +8,23 @@ defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:
 // PVSCL:ENDCOND
 
 // Tags configuration
-let grouped = {
+const grouped = {
   group: 'theme'
 }
 // PVSCL:IFCOND(Hierarchy,LINE)
-grouped['subgroup'] = 'code'
-grouped['relation'] = 'isCodeOf'
+grouped.subgroup = 'code'
+grouped.relation = 'isCodeOf'
 // PVSCL:ENDCOND
-let tags = {
+const tags = {
   grouped: grouped,
   motivation: 'motivation'
 }
 // PVSCL:IFCOND(MoodleResource, LINE)
-tags['producer'] = 'teacher'
-tags['consumer'] = 'student'
+tags.producer = 'teacher'
+tags.consumer = 'student'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetProvider, LINE)
-tags['statics'] = {
+tags.statics = {
   multivalued: 'multivalued',
   inductive: 'inductive',
   validated: 'validated',

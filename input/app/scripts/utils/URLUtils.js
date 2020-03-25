@@ -9,12 +9,12 @@ class URLUtils {
    */
   static extractHashParamsFromUrl (url, separator) {
     separator = separator || ':'
-    let splittedUrl = url.split('#')
+    const splittedUrl = url.split('#')
     let result = null
     if (splittedUrl.length > 1) {
-      let hash = splittedUrl[1]
+      const hash = splittedUrl[1]
       result = hash.split('&').reduce((result, item) => {
-        let parts = item.split(separator)
+        const parts = item.split(separator)
         result[parts[0]] = decodeURIComponent(parts[1])
         return result
       }, {})
@@ -61,7 +61,7 @@ class URLUtils {
 
   static isUrl (string) {
     try {
-      let url = new URL(string)
+      const url = new URL(string)
       return url.href === string
     } catch (typeError) {
       return false

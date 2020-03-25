@@ -1,7 +1,7 @@
 class FileUtils {
   static readTextFile (file, callback) {
     try {
-      let reader = new window.FileReader()
+      const reader = new window.FileReader()
       // Closure to capture the file information.
       reader.onload = (e) => {
         if (e && e.target && e.target.result) {
@@ -20,7 +20,7 @@ class FileUtils {
         callback(err)
       } else {
         try {
-          let json = JSON.parse(text)
+          const json = JSON.parse(text)
           callback(null, json)
         } catch (err) {
           callback(err)

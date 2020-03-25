@@ -32,7 +32,7 @@ class GroupInitializer {
           callback(err)
         }
       } else {
-        let group = _.find(groups, (group) => {
+        const group = _.find(groups, (group) => {
           let isGroupNameEqual
           // PVSCL:IFCOND(ApplicationBased, LINE)
           isGroupNameEqual = group.name === Config.groupName
@@ -67,10 +67,10 @@ class GroupInitializer {
                   }
                 } else {
                   // Save as current group the generated one
-                  ChromeStorage.setData(selectedGroupNamespace, {data: JSON.stringify(this.annotationGuide.annotationServer.group)}, ChromeStorage.local)
+                  ChromeStorage.setData(selectedGroupNamespace, { data: JSON.stringify(this.annotationGuide.annotationServer.group) }, ChromeStorage.local)
                   // Get group url
-                  let selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
-                  let groupUrl = selectedAnnotationServerManager.constructSearchUrl({group: this.annotationGuide.annotationServer.group.id})
+                  const selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
+                  const groupUrl = selectedAnnotationServerManager.constructSearchUrl({ group: this.annotationGuide.annotationServer.group.id })
                   Alerts.successAlert({
                     title: 'Correctly configured', // TODO i18n
                     text: chrome.i18n.getMessage('VisitTheCreatedGroup') + ' <a href="' + groupUrl + '" target="_blank">here</a>.'
@@ -83,8 +83,8 @@ class GroupInitializer {
             }
           })
         } else {
-          let selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
-          let groupUrl = selectedAnnotationServerManager.constructSearchUrl({group: group.id})
+          const selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
+          const groupUrl = selectedAnnotationServerManager.constructSearchUrl({ group: group.id })
           swal('The group ' + group.name + ' already exists', // TODO i18n
             chrome.i18n.getMessage('VisitTheCreatedGroup') + ' <a href="' + groupUrl + '" target="_blank">here</a>.',
             'info')
@@ -98,7 +98,7 @@ class GroupInitializer {
   }
 
   createGroup (callback) {
-    window.googleSheetProvider.annotationServerManager.client.createNewGroup({name: this.annotationGuide.name}, (err, group) => {
+    window.googleSheetProvider.annotationServerManager.client.createNewGroup({ name: this.annotationGuide.name }, (err, group) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -117,7 +117,7 @@ class GroupInitializer {
   }
 
   createFacetsAndCodes (callback) {
-    let annotations = this.annotationGuide.toAnnotations()
+    const annotations = this.annotationGuide.toAnnotations()
     console.debug('Generated dimensions and categories annotations: ')
     console.debug(annotations)
     window.googleSheetProvider.annotationServerManager.client.createNewAnnotations(annotations, (err) => {

@@ -9,7 +9,7 @@ class ImportCodebookJSON {
   static import () {
     ImportCodebookJSON.askUserForConfigurationSchema((err, jsonObject) => {
       if (err) {
-        Alerts.errorAlert({text: 'Unable to parse json file. Error:<br/>' + err.message})
+        Alerts.errorAlert({ text: 'Unable to parse json file. Error:<br/>' + err.message })
       } else {
         Alerts.inputTextAlert({
           alertType: Alerts.alertType.warning,
@@ -33,11 +33,11 @@ class ImportCodebookJSON {
             if (err) {
               window.alert('Unable to load alert. Unexpected error, please contact developer.')
             } else {
-              window.abwa.annotationServerManager.client.createNewGroup({name: reviewName}, (err, newGroup) => {
+              window.abwa.annotationServerManager.client.createNewGroup({ name: reviewName }, (err, newGroup) => {
                 if (err) {
-                  Alerts.errorAlert({text: 'Unable to create a new annotation group. Error: ' + err.message})
+                  Alerts.errorAlert({ text: 'Unable to create a new annotation group. Error: ' + err.message })
                 } else {
-                  let guide = Codebook.fromObjects(jsonObject)
+                  const guide = Codebook.fromObjects(jsonObject)
                   Codebook.setAnnotationServer(newGroup, (annotationServer) => {
                     guide.annotationServer = annotationServer
                     Alerts.loadingAlert({
@@ -45,13 +45,14 @@ class ImportCodebookJSON {
                       text: 'We are configuring everything to start reviewing.',
                       position: Alerts.position.center
                     })
-                    ImportCodebookJSON.createConfigurationAnnotationsFromReview({guide,
+                    ImportCodebookJSON.createConfigurationAnnotationsFromReview({
+                      guide,
                       callback: (err) => {
                         if (err) {
-                          Alerts.errorAlert({text: 'There was an error when configuring Review&Go highlighter'})
+                          Alerts.errorAlert({ text: 'There was an error when configuring Review&Go highlighter' })
                         } else {
                           Alerts.closeAlert()
-                          LanguageUtils.dispatchCustomEvent(Events.codebookImported, {groupId: guide.annotationServer.group.id})
+                          LanguageUtils.dispatchCustomEvent(Events.codebookImported, { groupId: guide.annotationServer.group.id })
                         }
                       }
                     })
@@ -65,9 +66,9 @@ class ImportCodebookJSON {
     })
   }
 
-  static createConfigurationAnnotationsFromReview ({guide, callback}) {
+  static createConfigurationAnnotationsFromReview ({ guide, callback }) {
     // Create highlighter annotations
-    let annotations = guide.toAnnotations()
+    const annotations = guide.toAnnotations()
     // Send create highlighter
     window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, annotations) => {
       callback(err, annotations)
@@ -76,12 +77,11 @@ class ImportCodebookJSON {
 
   static backupReviewGroup (callback) {
     // Get current group id
-    let currentGroupId = window.abwa.groupSelector.currentGroup.id
+    const currentGroupId = window.abwa.groupSelector.currentGroup.id
     // Rename current group
-    let date = new Date()
-    let currentGroupNewName = 'ReviewAndGo-' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + '-' + date.getHours()
-    window.abwa.annotationServerManager.client.updateGroup(currentGroupId, {
-      name: currentGroupNewName}, (err, result) => {
+    const date = new Date()
+    const currentGroupNewName = 'ReviewAndGo-' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + '-' + date.getHours()
+    window.abwa.annotationServerManager.client.updateGroup(currentGroupId, { name: currentGroupNewName }, (err, result) => {
       if (err) {
         callback(new Error('Unable to backup current annotation group.'))
       } else {

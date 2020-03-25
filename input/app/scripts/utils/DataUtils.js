@@ -7,7 +7,7 @@ import LanguageUtils from './LanguageUtils'
  */
 class DataUtils {
   static shuffle (originalArray) {
-    let array = originalArray.slice()
+    const array = originalArray.slice()
     let currentIndex = array.length
     let temporaryValue
     let randomIndex
@@ -32,7 +32,7 @@ class DataUtils {
   }
 
   static removeByExample (array, props) {
-    let removableObjects = DataUtils.filterArray(array, props, {index: true})
+    const removableObjects = DataUtils.filterArray(array, props, { index: true })
     for (let i = 0; i < removableObjects.length; i++) {
       array.splice(removableObjects[i].index, 1)
     }
@@ -43,21 +43,21 @@ class DataUtils {
   }
 
   static queryIndexByExample (array, props) {
-    return DataUtils.filterArray(array, props, {index: true})[0].index
+    return DataUtils.filterArray(array, props, { index: true })[0].index
   }
 
   static queryByContains (array, props, customComparison) {
     if (customComparison) {
-      return DataUtils.filterArray(array, props, {contains: true, properties: {comparison: customComparison}})
+      return DataUtils.filterArray(array, props, { contains: true, properties: { comparison: customComparison } })
     } else {
-      return DataUtils.filterArray(array, props, {contains: true})
+      return DataUtils.filterArray(array, props, { contains: true })
     }
   }
 
   static filterArray (array, props, opts) {
-    let filteredArray = []
+    const filteredArray = []
     for (let i = 0; i < array.length; i++) {
-      let elem = array[i]
+      const elem = array[i]
       let matchedElem = null
       // Filter type (contains at least one prop, or all the props)
       if (opts && opts.contains) {
@@ -72,7 +72,7 @@ class DataUtils {
       // If a result is matched, add it
       if (matchedElem) {
         if (opts && opts.index) {
-          filteredArray.push({index: i, obj: elem})
+          filteredArray.push({ index: i, obj: elem })
         } else {
           filteredArray.push(elem)
         }
@@ -82,9 +82,9 @@ class DataUtils {
   }
 
   static arePropertiesIncluded (objectSource, properties) {
-    let keys = Object.keys(properties)
+    const keys = Object.keys(properties)
     for (let i = 0; i < keys.length; i++) {
-      let key = keys[i]
+      const key = keys[i]
       if (objectSource[key] !== properties[key]) {
         return false
       }
@@ -93,9 +93,9 @@ class DataUtils {
   }
 
   static isPropertyIncluded (objectSource, properties, opts) {
-    let keys = Object.keys(properties)
+    const keys = Object.keys(properties)
     for (let i = 0; i < keys.length; i++) {
-      let key = keys[i]
+      const key = keys[i]
       // TODO FIXIT!!! Incluye texto, no texto igual
       if (opts.properties && opts.properties.comparison && LanguageUtils.isFunction(opts.properties.comparison)) {
         if (opts.properties.comparison(objectSource[key], properties[key])) {

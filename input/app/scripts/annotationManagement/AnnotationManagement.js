@@ -26,7 +26,7 @@ class AnnotationManagement {
     this.annotationReader.init((err) => {
       // Navigate to the annotation if initial annotation exist
       if (window.abwa.annotationBasedInitializer.initAnnotation) {
-        let annotationToNavigate = Annotation.deserialize(window.abwa.annotationBasedInitializer.initAnnotation)
+        const annotationToNavigate = Annotation.deserialize(window.abwa.annotationBasedInitializer.initAnnotation)
         this.goToAnnotation(annotationToNavigate)
       }
       if (_.isFunction(callback)) {
@@ -42,7 +42,7 @@ class AnnotationManagement {
   }
 
   activateSelectionEvent (callback) {
-    this.events.mouseUpOnDocumentHandler = {element: document, event: 'mouseup', handler: this.mouseUpOnDocumentHandlerConstructor()}
+    this.events.mouseUpOnDocumentHandler = { element: document, event: 'mouseup', handler: this.mouseUpOnDocumentHandlerConstructor() }
     this.events.mouseUpOnDocumentHandler.element.addEventListener(this.events.mouseUpOnDocumentHandler.event, this.events.mouseUpOnDocumentHandler.handler)
     if (_.isFunction(callback)) {
       callback()
@@ -78,7 +78,7 @@ class AnnotationManagement {
     this.annotationUpdater.destroy()
     this.annotationDeleter.destroy()
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
@@ -87,10 +87,10 @@ class AnnotationManagement {
   goToAnnotation (annotation) {
     // If document is pdf, the DOM is dynamic, we must scroll to annotation using PDF.js FindController
     if (window.abwa.targetManager.documentFormat === PDF) {
-      let queryTextSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
+      const queryTextSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
       if (queryTextSelector && queryTextSelector.exact) {
         // Get page for the annotation
-        let fragmentSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'FragmentSelector' })
+        const fragmentSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'FragmentSelector' })
         if (fragmentSelector && fragmentSelector.page) {
           // Check if annotation was found by 'find' command, otherwise go to page
           if (window.PDFViewerApplication.page !== fragmentSelector.page) {
@@ -98,12 +98,12 @@ class AnnotationManagement {
             this.annotationReader.redrawAnnotations()
           }
         }
-        window.PDFViewerApplication.findController.executeCommand('find', {query: queryTextSelector.exact, phraseSearch: true})
+        window.PDFViewerApplication.findController.executeCommand('find', { query: queryTextSelector.exact, phraseSearch: true })
         // Timeout to remove highlight used by PDF.js
         this.removeFindTagsInPDFs()
       }
     } else { // Else, try to find the annotation by data-annotation-id element attribute
-      let firstElementToScroll = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
+      const firstElementToScroll = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
       // If go to annotation is done by init annotation and it is not found, wait for some seconds for ajax content to be loaded and try again to go to annotation
       if (!_.isElement(firstElementToScroll) && !_.isNumber(this.initializationTimeout)) { // It is done only once, if timeout does not exist previously (otherwise it won't finish never calling goToAnnotation
         this.initializationTimeout = setTimeout(() => {
@@ -111,7 +111,7 @@ class AnnotationManagement {
           this.initAnnotatorByAnnotation()
         }, 2000)
       } else {
-        firstElementToScroll.scrollIntoView({behavior: 'smooth', block: 'center'})
+        firstElementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' })
       }
     }
   }
@@ -137,7 +137,7 @@ class AnnotationManagement {
   // PVSCL:IFCOND(SidebarNavigation, LINE)
   initNavigationToAnnotationByCodeEventListener (callback) {
     // Get all annotations with code or theme
-    this.events.navigateToAnnotationByCodeEvent = {element: document, event: Events.navigateToAnnotationByCode, handler: this.createNavigationToAnnotationByCodeEventListener()}
+    this.events.navigateToAnnotationByCodeEvent = { element: document, event: Events.navigateToAnnotationByCode, handler: this.createNavigationToAnnotationByCodeEventListener() }
     this.events.navigateToAnnotationByCodeEvent.element.addEventListener(this.events.navigateToAnnotationByCodeEvent.event, this.events.navigateToAnnotationByCodeEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -146,7 +146,7 @@ class AnnotationManagement {
 
   createNavigationToAnnotationByCodeEventListener () {
     return (event) => {
-      let codeId = event.detail.codeId
+      const codeId = event.detail.codeId
       // Get all the annotations with that code id
       let navegableAnnotations
       // PVSCL:IFCOND(UserFilter, LINE)
@@ -154,7 +154,7 @@ class AnnotationManagement {
       // PVSCL:ELSECOND
       navegableAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
       // PVSCL:ENDCOND
-      let annotations = navegableAnnotations.filter((annotation) => {
+      const annotations = navegableAnnotations.filter((annotation) => {
         // Take only those with selector
         if (annotation.target[0].selector && _.isArray(annotation.body)) {
           return annotation.body.find(body => {
@@ -171,7 +171,7 @@ class AnnotationManagement {
         }
       })
       if (annotations.length) {
-        let index = _.findIndex(annotations, (a) => {
+        const index = _.findIndex(annotations, (a) => {
           if (this.lastVisitedAnnotation) {
             return this.lastVisitedAnnotation.id === a.id
           } else {

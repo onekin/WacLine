@@ -40,7 +40,7 @@ class BrowserStorageManager extends AnnotationServerManager {
   }
 
   saveDatabase (database, callback) {
-    let stringifiedDatabase = JSON.stringify(database)
+    const stringifiedDatabase = JSON.stringify(database)
     ChromeStorage.setData('db.annotations', stringifiedDatabase, ChromeStorage.local, (err) => {
       if (err) {
         if (_.isFunction(callback)) {
@@ -55,7 +55,7 @@ class BrowserStorageManager extends AnnotationServerManager {
   }
 
   constructSearchUrl (obj) {
-    let hashParam = URLUtils.objectToParams(obj)
+    const hashParam = URLUtils.objectToParams(obj)
     return chrome.extension.getURL('content/browserStorage/browserStorageSearch.html') + '#' + hashParam
   }
 

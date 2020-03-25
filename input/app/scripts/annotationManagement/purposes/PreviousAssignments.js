@@ -32,7 +32,7 @@ class PreviousAssignments {
 
   reloadPreviousAssignments (callback) {
     // Get student id
-    let studentId = window.abwa.targetManager.fileMetadata.studentId
+    const studentId = window.abwa.targetManager.fileMetadata.studentId
     window.abwa.annotationServerManager.client.searchAnnotations({
       tag: Config.namespace + ':guide',
       group: window.abwa.groupSelector.currentGroup.id
@@ -43,14 +43,14 @@ class PreviousAssignments {
           callback(err)
         }
       } else {
-        let previousAssignments = []
+        const previousAssignments = []
         for (let i = 0; i < annotations.length; i++) {
           Codebook.fromAnnotation(annotations[i], (rubric) => {
             // If current assignment is previous assignment, don't add
             if (window.abwa.targetManager.fileMetadata.cmid !== rubric.cmid) {
-              let previousAssignment = {name: rubric.assignmentName}
-              let teacherUrl = rubric.getUrlToStudentAssignmentForTeacher(studentId)
-              let studentUrl = rubric.getUrlToStudentAssignmentForStudent(studentId)
+              const previousAssignment = { name: rubric.assignmentName }
+              const teacherUrl = rubric.getUrlToStudentAssignmentForTeacher(studentId)
+              const studentUrl = rubric.getUrlToStudentAssignmentForStudent(studentId)
               // If it is unable to retrieve the URL, don't add
               if (!_.isNull(teacherUrl) && !_.isNull(studentUrl)) {
                 previousAssignment.teacherUrl = teacherUrl
@@ -74,15 +74,15 @@ class PreviousAssignments {
   }
 
   createPreviousAssignmentsUI (previousAssignments) {
-    let previousAssignmentsContainer = document.createElement('div')
+    const previousAssignmentsContainer = document.createElement('div')
     previousAssignmentsContainer.className = 'previousAssignmentsContainer'
     for (let i = 0; i < previousAssignments.length; i++) {
-      let previousAssignment = previousAssignments[i]
+      const previousAssignment = previousAssignments[i]
       // Create previous assignment element container
-      let previousAssignmentElement = document.createElement('span')
+      const previousAssignmentElement = document.createElement('span')
       previousAssignmentElement.className = 'previousAssignmentContainer'
       // Create previous assignment link
-      let previousAssignmentLinkElement = document.createElement('a')
+      const previousAssignmentLinkElement = document.createElement('a')
       if (window.abwa.rolesManager.role === Config.tags.producer) {
         previousAssignmentLinkElement.href = previousAssignment.teacherUrl
       } else {
@@ -93,7 +93,7 @@ class PreviousAssignments {
       previousAssignmentLinkElement.className = 'previousAssignmentLink'
       previousAssignmentElement.appendChild(previousAssignmentLinkElement)
       // Create previous assignment append img
-      let previousAssignmentAppendElement = document.createElement('img')
+      const previousAssignmentAppendElement = document.createElement('img')
       previousAssignmentAppendElement.src = chrome.extension.getURL('images/append.png')
       previousAssignmentAppendElement.title = 'Append the assignment URL'
       previousAssignmentAppendElement.className = 'previousAssignmentAppendButton'

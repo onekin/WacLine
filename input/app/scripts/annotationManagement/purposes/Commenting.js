@@ -1,7 +1,7 @@
 import Body from './Body'
 
 class Commenting extends Body {
-  constructor ({purpose = Commenting.purpose, value}) {
+  constructor ({ purpose = Commenting.purpose, value }) {
     super(purpose)
     this.value = value
   }

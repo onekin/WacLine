@@ -10,12 +10,12 @@ class AnnotationBasedInitializer {
 
   init (callback) {
     // Check if annotation is in hash params
-    let annotationId = AnnotationBasedInitializer.getAnnotationHashParam()
+    const annotationId = AnnotationBasedInitializer.getAnnotationHashParam()
     if (annotationId) {
       if (window.abwa.annotationServerManager.isLoggedIn() === false) {
         window.abwa.annotationServerManager.logIn((err, token) => {
           if (err) {
-            Alerts.errorAlert({title: 'Log in is required', text: 'It is necessary to log in your annotation server.'})
+            Alerts.errorAlert({ title: 'Log in is required', text: 'It is necessary to log in your annotation server.' })
           } else {
             // Reload web page
             document.location.reload()
@@ -42,8 +42,8 @@ class AnnotationBasedInitializer {
 
   static getAnnotationHashParam () {
     // Check if annotation is in hash params
-    let decodedUri = decodeURIComponent(window.location.href)
-    let params = URLUtils.extractHashParamsFromUrl(decodedUri)
+    const decodedUri = decodeURIComponent(window.location.href)
+    const params = URLUtils.extractHashParamsFromUrl(decodedUri)
     if (!_.isEmpty(params) && _.has(params, Config.urlParamName)) {
       return params[Config.urlParamName]
     } else {
@@ -52,10 +52,10 @@ class AnnotationBasedInitializer {
   }
 
   static isAutoOpenHashParam () {
-    let decodedUri = decodeURIComponent(window.location.href)
-    let params = URLUtils.extractHashParamsFromUrl(decodedUri)
+    const decodedUri = decodeURIComponent(window.location.href)
+    const params = URLUtils.extractHashParamsFromUrl(decodedUri)
     if (!_.isEmpty(params) && _.has(params, 'autoOpen')) {
-      return params['autoOpen']
+      return params.autoOpen
     } else {
       return false
     }

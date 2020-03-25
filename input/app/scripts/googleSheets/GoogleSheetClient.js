@@ -22,7 +22,7 @@ class GoogleSheetClient {
       method: 'POST',
       url: this.baseURI,
       headers: {
-        'Authorization': 'Bearer ' + this.token,
+        Authorization: 'Bearer ' + this.token,
         'Content-Type': '*/*',
         'Access-Control-Allow-Origin': '*'
       },
@@ -40,17 +40,17 @@ class GoogleSheetClient {
    * @param callback
    */
   updateSheetCells (data = {}, callback) {
-    let spreadsheetId = data.spreadsheetId
-    let sheetId = data.sheetId || 0
-    let rows = data.rows
-    let rowIndex = data.rowIndex
-    let columnIndex = data.columnIndex
+    const spreadsheetId = data.spreadsheetId
+    const sheetId = data.sheetId || 0
+    const rows = data.rows
+    const rowIndex = data.rowIndex
+    const columnIndex = data.columnIndex
     if (spreadsheetId && _.isEmpty(sheetId) && _.isArray(rows) && _.isNumber(rowIndex) && _.isNumber(columnIndex)) {
-      let settings = {
-        'async': true,
-        'crossDomain': true,
-        'url': this.baseURI + '/' + spreadsheetId + ':batchUpdate',
-        'data': JSON.stringify({
+      const settings = {
+        async: true,
+        crossDomain: true,
+        url: this.baseURI + '/' + spreadsheetId + ':batchUpdate',
+        data: JSON.stringify({
           requests: [
             {
               updateCells: {
@@ -65,9 +65,9 @@ class GoogleSheetClient {
             }
           ]
         }),
-        'method': 'POST',
-        'headers': {
-          'Authorization': 'Bearer ' + this.token,
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + this.token,
           'Content-Type': 'application/json',
           'Cache-Control': 'no-cache'
         }
@@ -91,7 +91,7 @@ class GoogleSheetClient {
       method: 'GET',
       url: this.baseURI + '/' + spreadsheetId,
       headers: {
-        'Authorization': 'Bearer ' + this.token,
+        Authorization: 'Bearer ' + this.token,
         'Content-Type': 'application/json'
       },
       data: {
@@ -110,7 +110,7 @@ class GoogleSheetClient {
         callback(err)
       } else {
         // Retrieve sheet by id if defined
-        let sheet = _.find(result.sheets, (sheet) => { return sheet.properties.sheetId === parseInt(sheetData.sheetId) })
+        const sheet = _.find(result.sheets, (sheet) => { return sheet.properties.sheetId === parseInt(sheetData.sheetId) })
         if (_.isFunction(callback)) {
           callback(null, sheet)
         }
@@ -124,8 +124,8 @@ class GoogleSheetClient {
       return cell.hyperlink
     } else {
       if (!_.isEmpty(cell.userEnteredValue) && !_.isEmpty(cell.userEnteredValue.formulaValue)) {
-        let value = cell.userEnteredValue.formulaValue
-        let hyperlinkMatch = value.match(/=hyperlink\("([^"]+)"/i)
+        const value = cell.userEnteredValue.formulaValue
+        const hyperlinkMatch = value.match(/=hyperlink\("([^"]+)"/i)
         if (!_.isEmpty(hyperlinkMatch) && hyperlinkMatch.length > 1) {
           return hyperlinkMatch[1].replace(/(^\w+:|^)\/\//, '')
         }
@@ -140,7 +140,7 @@ class GoogleSheetClient {
       method: 'POST',
       url: 'https://sheets.googleapis.com/v4/spreadsheets/' + data.spreadsheetId + ':batchUpdate',
       headers: {
-        'Authorization': 'Bearer ' + this.token,
+        Authorization: 'Bearer ' + this.token,
         'Content-Type': 'application/json'
       },
       data: JSON.stringify({
@@ -159,9 +159,9 @@ class GoogleSheetClient {
   }
 
   updateCell (data, callback) {
-    let requests = []
+    const requests = []
     requests.push(this.createRequestUpdateCell(data))
-    let batchUpdateData = {
+    const batchUpdateData = {
       spreadsheetId: data.spreadsheetId,
       requests: requests
     }
@@ -192,38 +192,38 @@ class GoogleSheetClient {
       if (!_.isNaN(_.toNumber(data.value))) { // If is a number, change
         formulaValue = '=HYPERLINK("' + data.link + '"; ' + _.toNumber(data.value) + ')'
       }
-      userEnteredValue = {'formulaValue': formulaValue}
+      userEnteredValue = { formulaValue: formulaValue }
     } else {
-      userEnteredValue = {'stringValue': data.value}
+      userEnteredValue = { stringValue: data.value }
     }
     return {
-      'repeatCell': {
-        'range': {
-          'sheetId': data.sheetId,
-          'startRowIndex': data.row,
-          'endRowIndex': data.row + data.numberOfRows,
-          'startColumnIndex': data.column,
-          'endColumnIndex': data.column + data.numberOfColumns
+      repeatCell: {
+        range: {
+          sheetId: data.sheetId,
+          startRowIndex: data.row,
+          endRowIndex: data.row + data.numberOfRows,
+          startColumnIndex: data.column,
+          endColumnIndex: data.column + data.numberOfColumns
         },
-        'cell': {
-          'userEnteredFormat': {
-            'backgroundColor': data.backgroundColor
+        cell: {
+          userEnteredFormat: {
+            backgroundColor: data.backgroundColor
           },
-          'userEnteredValue': userEnteredValue
+          userEnteredValue: userEnteredValue
         },
-        'fields': 'userEnteredFormat(backgroundColor), userEnteredValue(formulaValue)'
+        fields: 'userEnteredFormat(backgroundColor), userEnteredValue(formulaValue)'
       }
     }
   }
 
   createRequestUpdateCells (data) {
     return {
-      'updateCells': {
-        'rows': {
-          'values': data.cells
+      updateCells: {
+        rows: {
+          values: data.cells
         },
-        'fields': '*',
-        'range': data.range
+        fields: '*',
+        range: data.range
       }
     }
   }
@@ -241,23 +241,23 @@ class GoogleSheetClient {
     data.destinationNumberOfRows = _.isNumber(data.destinationNumberOfRows) ? data.destinationNumberOfRows : 1
     data.pasteType = _.isString(data.pasteType) ? data.pasteType : 'PASTE_NORMAL'
     return {
-      'copyPaste': {
-        'source': {
-          'sheetId': data.sheetId,
-          'startRowIndex': data.sourceRow,
-          'endRowIndex': data.sourceRow + data.sourceNumberOfRows,
-          'startColumnIndex': data.sourceColumn,
-          'endColumnIndex': data.sourceColumn + data.sourceNumberOfColumns
+      copyPaste: {
+        source: {
+          sheetId: data.sheetId,
+          startRowIndex: data.sourceRow,
+          endRowIndex: data.sourceRow + data.sourceNumberOfRows,
+          startColumnIndex: data.sourceColumn,
+          endColumnIndex: data.sourceColumn + data.sourceNumberOfColumns
         },
-        'destination': {
-          'sheetId': data.sheetId,
-          'startRowIndex': data.destinationRow,
-          'endRowIndex': data.destinationRow + data.destinationNumberOfRows,
-          'startColumnIndex': data.destinationColumn,
-          'endColumnIndex': data.destinationColumn + data.destinationNumberOfColumns
+        destination: {
+          sheetId: data.sheetId,
+          startRowIndex: data.destinationRow,
+          endRowIndex: data.destinationRow + data.destinationNumberOfRows,
+          startColumnIndex: data.destinationColumn,
+          endColumnIndex: data.destinationColumn + data.destinationNumberOfColumns
         },
-        'pasteType': data.pasteType,
-        'pasteOrientation': 'NORMAL'
+        pasteType: data.pasteType,
+        pasteOrientation: 'NORMAL'
       }
     }
   }
@@ -269,10 +269,10 @@ class GoogleSheetClient {
    */
   createRequestAppendEmptyColumn (data) {
     return {
-      'appendDimension': {
-        'sheetId': data.sheetId,
-        'dimension': 'COLUMNS',
-        'length': data.length
+      appendDimension: {
+        sheetId: data.sheetId,
+        dimension: 'COLUMNS',
+        length: data.length
       }
     }
   }
@@ -280,14 +280,14 @@ class GoogleSheetClient {
   createRequestInsertEmptyColumn (data) {
     data.numberOfColumns = _.isNumber(data.numberOfColumns) ? data.numberOfColumns : 0
     return {
-      'insertDimension': {
-        'range': {
-          'sheetId': data.sheetId,
-          'dimension': 'COLUMNS',
-          'startIndex': data.startIndex,
-          'endIndex': data.startIndex + data.numberOfColumns
+      insertDimension: {
+        range: {
+          sheetId: data.sheetId,
+          dimension: 'COLUMNS',
+          startIndex: data.startIndex,
+          endIndex: data.startIndex + data.numberOfColumns
         },
-        'inheritFromBefore': false
+        inheritFromBefore: false
       }
     }
   }

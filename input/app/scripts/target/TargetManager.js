@@ -65,7 +65,7 @@ class TargetManager {
     this.tryToLoadURLParam()
     // PVSCL:ENDCOND
     this.loadDocumentFormat().catch((err) => {
-      Alerts.errorAlert({title: 'Not supported document format', text: err.message})
+      Alerts.errorAlert({ title: 'Not supported document format', text: err.message })
     }).then(() => {
       this.tryToLoadTitle()
       this.tryToLoadURL()
@@ -95,7 +95,7 @@ class TargetManager {
           title: 'This file is not downloaded from moodle'
         })
         // PVSCL:ELSECOND
-        Alerts.errorAlert({text: 'Unexpected error: ' + err.message})
+        Alerts.errorAlert({ text: 'Unexpected error: ' + err.message })
         // PVSCL:ENDCOND
       })
     })
@@ -182,7 +182,7 @@ class TargetManager {
       } else {
         url = URLUtils.retrieveMainUrl(window.location.href)
       }
-      chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: url}}, (fileMetadata) => {
+      chrome.runtime.sendMessage({ scope: 'annotationFile', cmd: 'fileMetadata', data: { filepath: url } }, (fileMetadata) => {
         if (_.isEmpty(fileMetadata)) {
           this.url = URLUtils.retrieveMainUrl(window.location.href)
           // Metadata is not loaded
@@ -217,7 +217,7 @@ class TargetManager {
   }
 
   waitUntilPDFViewerLoad (callback) {
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
       if (_.isObject(window.PDFViewerApplication.pdfDocument)) {
         clearInterval(interval)
         if (_.isFunction(callback)) {
@@ -230,8 +230,8 @@ class TargetManager {
 
   tryToLoadDoi () {
     // Try to load doi from hash param
-    let decodedUri = decodeURIComponent(window.location.href)
-    let params = URLUtils.extractHashParamsFromUrl(decodedUri)
+    const decodedUri = decodeURIComponent(window.location.href)
+    const params = URLUtils.extractHashParamsFromUrl(decodedUri)
     if (!_.isEmpty(params) && !_.isEmpty(params.doi)) {
       this.doi = decodeURIComponent(params.doi)
     }
@@ -251,9 +251,9 @@ class TargetManager {
   // PVSCL:ENDCOND
 
   tryToLoadURLParam () {
-    let decodedUri = decodeURIComponent(window.location.href)
+    const decodedUri = decodeURIComponent(window.location.href)
     console.log(decodedUri)
-    let params = URLUtils.extractHashParamsFromUrl(decodedUri, '::')
+    const params = URLUtils.extractHashParamsFromUrl(decodedUri, '::')
     console.log(params)
     if (!_.isEmpty(params) && !_.isEmpty(params.url)) {
       console.debug(params.url)
@@ -277,7 +277,7 @@ class TargetManager {
     } /* PVSCL:ELSEIFCOND(TXT) */ else if (this.documentFormat === TXT) {
       return document.body
     } /* PVSCL:ELSECOND */ else {
-      Alerts.errorAlert({text: 'The format of the document to be annotated is not supported by the tool yet.'})
+      Alerts.errorAlert({ text: 'The format of the document to be annotated is not supported by the tool yet.' })
     } /* PVSCL:ENDCOND */
   }
 
@@ -307,14 +307,14 @@ class TargetManager {
   initSupportWebURLChange () {
     if (_.isEmpty(this.urlChangeInterval)) {
       this.urlChangeInterval = setInterval(() => {
-        let newUrl = this.getDocumentURL()
+        const newUrl = this.getDocumentURL()
         if (newUrl !== this.url) {
           console.debug('Document URL updated from %s to %s', this.url, newUrl)
           this.url = newUrl
           // Reload target information
           this.reloadTargetInformation(() => {
             // Dispatch event
-            LanguageUtils.dispatchCustomEvent(Events.updatedDocumentURL, {url: this.url})
+            LanguageUtils.dispatchCustomEvent(Events.updatedDocumentURL, { url: this.url })
           })
         }
       }, URL_CHANGE_INTERVAL_IN_SECONDS * 1000)
@@ -323,35 +323,35 @@ class TargetManager {
   // PVSCL:IFCOND(URN, LINE)
 
   tryToLoadPlainTextFingerprint () {
-    let fileTextContentElement = document.querySelector('body > pre')
+    const fileTextContentElement = document.querySelector('body > pre')
     if (fileTextContentElement) {
-      let fileTextContent = fileTextContentElement.innerText
+      const fileTextContent = fileTextContentElement.innerText
       return CryptoUtils.hash(fileTextContent.innerText)
     }
   }
   // PVSCL:ENDCOND
 
   getDocumentURIs () {
-    let uris = {}
+    const uris = {}
     if (this.doi) {
-      uris['doi'] = 'https://doi.org/' + this.doi
+      uris.doi = 'https://doi.org/' + this.doi
     }
     if (this.url) {
-      uris['url'] = this.url
+      uris.url = this.url
     }
     if (this.urn) {
-      uris['urn'] = this.urn
+      uris.urn = this.urn
     }
     if (this.citationPdf) {
-      uris['citationPdf'] = this.citationPdf
+      uris.citationPdf = this.citationPdf
     }
     return uris
   }
 
   getDocumentLink () {
-    let uris = this.getDocumentURIs()
+    const uris = this.getDocumentURIs()
     return _.values(uris, (uri) => {
-      return {href: uri}
+      return { href: uri }
     })
   }
 
@@ -362,21 +362,21 @@ class TargetManager {
   }
 
   isPlainTextFile () {
-    let extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
+    const extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
     return 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
   }
 
   tryToLoadTitle () {
     // Try to load by doi
-    let promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       if (this.doi) {
-        let settings = {
-          'async': true,
-          'crossDomain': true,
-          'url': 'https://doi.org/' + this.doi,
-          'method': 'GET',
-          'headers': {
-            'Accept': 'application/json',
+        const settings = {
+          async: true,
+          crossDomain: true,
+          url: 'https://doi.org/' + this.doi,
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
             'Content-Type': 'application/json',
             'Cache-Control': 'no-cache'
           }
@@ -396,17 +396,17 @@ class TargetManager {
       // Try to load title from page metadata
       if (_.isEmpty(this.documentTitle)) {
         try {
-          let documentTitleElement = document.querySelector('meta[name="citation_title"]')
+          const documentTitleElement = document.querySelector('meta[name="citation_title"]')
           if (!_.isNull(documentTitleElement)) {
             this.documentTitle = documentTitleElement.content
           }
           if (!this.documentTitle) {
-            let documentTitleElement = document.querySelector('meta[property="og:title"]')
+            const documentTitleElement = document.querySelector('meta[property="og:title"]')
             if (!_.isNull(documentTitleElement)) {
               this.documentTitle = documentTitleElement.content
             }
             if (!this.documentTitle) {
-              let promise = new Promise((resolve, reject) => {
+              const promise = new Promise((resolve, reject) => {
                 // Try to load title from pdf metadata
                 if (this.documentFormat === PDF) {
                   this.waitUntilPDFViewerLoad(() => {

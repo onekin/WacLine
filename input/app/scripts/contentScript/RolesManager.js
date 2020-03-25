@@ -41,7 +41,7 @@ class RolesManager {
         }
       } else {
         if (annotations.length > 0) {
-          let params = jsYaml.load(annotations[0].text)
+          const params = jsYaml.load(annotations[0].text)
           callback(null, params.producerId === window.abwa.groupSelector.user.userid) // Return if current user is producer
         } else {
           if (_.isFunction(callback)) {
@@ -59,8 +59,8 @@ class RolesManager {
 }
 
 RolesManager.roles = {
-  'producer': 'teacher',
-  'consumer': 'student'
+  producer: 'teacher',
+  consumer: 'student'
 }
 
 export default RolesManager

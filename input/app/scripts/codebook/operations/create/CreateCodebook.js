@@ -26,7 +26,7 @@ class CreateCodebook {
 
   destroy () {
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
@@ -36,14 +36,14 @@ class CreateCodebook {
    * Initializes codebook create event listener
    */
   initCreateCodebookEvent () {
-    this.events.createCodebook = {element: document, event: Events.createCodebook, handler: this.createCodebookEventHandler()}
+    this.events.createCodebook = { element: document, event: Events.createCodebook, handler: this.createCodebookEventHandler() }
     this.events.createCodebook.element.addEventListener(this.events.createCodebook.event, this.events.createCodebook.handler, false)
   }
 
   createCodebookEventHandler () {
     return (event) => {
-      let promise = new Promise((resolve, reject) => {
-        let howCreate = event.detail.howCreate
+      const promise = new Promise((resolve, reject) => {
+        const howCreate = event.detail.howCreate
         // PVSCL:IFCOND(BuiltIn, LINE)
         if (howCreate === 'builtIn') {
           BuiltIn.createDefaultAnnotations((err, annotations) => {
@@ -76,13 +76,13 @@ class CreateCodebook {
         // PVSCL:ENDCOND
       })
       promise.catch((err) => {
-        Alerts.errorAlert({text: err})
+        Alerts.errorAlert({ text: err })
       }).then((annotations) => {
         Codebook.fromAnnotations(annotations, (err, codebook) => {
           if (err) {
-            Alerts.errorAlert({text: 'Unable to create a codebook. Error: ' + err.message})
+            Alerts.errorAlert({ text: 'Unable to create a codebook. Error: ' + err.message })
           } else {
-            LanguageUtils.dispatchCustomEvent(Events.codebookCreated, {codebook: codebook})
+            LanguageUtils.dispatchCustomEvent(Events.codebookCreated, { codebook: codebook })
           }
         })
       })

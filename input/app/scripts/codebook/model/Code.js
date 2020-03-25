@@ -10,7 +10,8 @@ class Code {
     description = '',
     createdDate = new Date(),
     color, theme/* PVSCL:IFCOND(MoodleProvider) */,
-    moodleLevelId/* PVSCL:ENDCOND */}) {
+    moodleLevelId/* PVSCL:ENDCOND */
+  }) {
     this.id = id
     this.name = name
     this.color = color
@@ -19,7 +20,7 @@ class Code {
     if (LanguageUtils.isInstanceOf(createdDate, Date)) {
       this.createdDate = createdDate
     } else {
-      let timestamp = Date.parse(createdDate)
+      const timestamp = Date.parse(createdDate)
       if (_.isNumber(timestamp)) {
         this.createdDate = new Date(createdDate)
       }
@@ -34,12 +35,12 @@ class Code {
   }
 
   toAnnotation () {
-    let codeTag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + this.name
-    let isCodeOfTag = Config.namespace + ':' + Config.tags.grouped.relation + ':' + this.theme.name
-    let motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'codebookDevelopment'
-    let tags = [codeTag, isCodeOfTag, motivationTag]
+    const codeTag = Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + this.name
+    const isCodeOfTag = Config.namespace + ':' + Config.tags.grouped.relation + ':' + this.theme.name
+    const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'codebookDevelopment'
+    const tags = [codeTag, isCodeOfTag, motivationTag]
     // PVSCL:IFCOND(MoodleProvider, LINE)
-    let cmidTag = 'cmid:' + this.theme.annotationGuide.cmid
+    const cmidTag = 'cmid:' + this.theme.annotationGuide.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
     return {
@@ -52,7 +53,7 @@ class Code {
       references: [],
       tags: tags,
       target: [],
-      text: jsYaml.dump({id: this.id || '', description: this.description}),
+      text: jsYaml.dump({ id: this.id || '', description: this.description }),
       uri: this.theme.annotationGuide.annotationServer.group.links.html
     }
   }
@@ -66,21 +67,21 @@ class Code {
   }
 
   static fromAnnotation (annotation, theme = {}) {
-    let codeTag = _.find(annotation.tags, (tag) => {
+    const codeTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':' + Config.tags.grouped.subgroup + ':')
     })
     if (_.isString(codeTag)) {
-      let name = codeTag.replace(Config.namespace + ':' + Config.tags.grouped.subgroup + ':', '')
-      let config = jsYaml.load(annotation.text)
+      const name = codeTag.replace(Config.namespace + ':' + Config.tags.grouped.subgroup + ':', '')
+      const config = jsYaml.load(annotation.text)
       if (_.isObject(config)) {
-        let description = config.description
-        let id = annotation.id
+        const description = config.description
+        const id = annotation.id
         let codeToReturn
         // PVSCL:IFCOND(MoodleProvider, LINE)
-        let moodleLevelId = config.id
-        codeToReturn = new Code({id, name, description, theme, moodleLevelId, createdDate: annotation.updated})
+        const moodleLevelId = config.id
+        codeToReturn = new Code({ id, name, description, theme, moodleLevelId, createdDate: annotation.updated })
         // PVSCL:ELSECOND
-        codeToReturn = new Code({id, name, description, theme, createdDate: annotation.updated})
+        codeToReturn = new Code({ id, name, description, theme, createdDate: annotation.updated })
         // PVSCL:ENDCOND
         return codeToReturn
       } else {
@@ -103,7 +104,7 @@ class Code {
 
   static createCodeFromObject (code, theme) {
     // Instance level object
-    let instancedCode = Object.assign(new Code({}), code)
+    const instancedCode = Object.assign(new Code({}), code)
     instancedCode.theme = theme
     return instancedCode
   }

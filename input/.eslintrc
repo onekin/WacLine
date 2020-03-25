@@ -8,5 +8,11 @@
     "crypto": true
   },
   "parser": "babel-eslint",
-  "plugins": []
+  "plugins": [],
+  "rules": {
+    "no-unused-vars": "off",
+    "no-multiple-empty-lines": "off",
+    "padded-blocks": "off",
+    "prefer-const": "off"
+  }
 }

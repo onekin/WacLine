@@ -1,7 +1,7 @@
 import Body from './Body'
 
 class Assessing extends Body {
-  constructor ({purpose = Assessing.purpose, value}) {
+  constructor ({ purpose = Assessing.purpose, value }) {
     super(purpose)
     this.value = value
   }
@@ -15,7 +15,7 @@ class Assessing extends Body {
   }
 
   static deserialize (obj) {
-    return new Assessing({value: obj.value})
+    return new Assessing({ value: obj.value })
   }
 
   tooltip () {

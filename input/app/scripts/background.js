@@ -98,7 +98,7 @@ class Background {
         // Check if permission to access file URL is enabled
         chrome.extension.isAllowedFileSchemeAccess((isAllowedAccess) => {
           if (isAllowedAccess === false) {
-            chrome.tabs.create({url: chrome.runtime.getURL('pages/filePermission.html')})
+            chrome.tabs.create({ url: chrome.runtime.getURL('pages/filePermission.html') })
           } else {
             if (this.tabs[tab.id]) {
               if (this.tabs[tab.id].activated) {
@@ -166,9 +166,9 @@ class Background {
           sendResponse(true)
         } else if (request.cmd === 'amIActivated') {
           if (this.tabs[sender.tab.id].activated) {
-            sendResponse({activated: true})
+            sendResponse({ activated: true })
           } else {
-            sendResponse({activated: false})
+            sendResponse({ activated: false })
           }
         }
       }

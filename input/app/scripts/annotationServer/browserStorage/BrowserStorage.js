@@ -1,8 +1,8 @@
 import AnnotationServer from '../AnnotationServer'
 
 class BrowserStorage extends AnnotationServer {
-  constructor ({group}) {
-    super({group})
+  constructor ({ group }) {
+    super({ group })
   }
 }
 

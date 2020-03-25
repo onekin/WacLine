@@ -6,7 +6,7 @@ import $ from 'jquery'
 import _ from 'lodash'
 import Codebook from '../../model/Codebook'
 import Theme from '../../model/Theme'
-// PVSCL:IFCOND(Hierarchy,LINE)
+// PVSCL:IFCOND(Hierarchy, LINE)
 import Code from '../../model/Code'
 // PVSCL:ENDCOND
 import ColorUtils from '../../../utils/ColorUtils'
@@ -41,7 +41,7 @@ class ReadCodebook {
 
   destroy () {
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
@@ -52,40 +52,40 @@ class ReadCodebook {
   // EVENTS
   // PVSCL:IFCOND(CodebookUpdate,LINE)
   initThemeCreatedEvent () {
-    this.events.themeCreatedEvent = {element: document, event: Events.themeCreated, handler: this.themeCreatedEventHandler()}
+    this.events.themeCreatedEvent = { element: document, event: Events.themeCreated, handler: this.themeCreatedEventHandler() }
     this.events.themeCreatedEvent.element.addEventListener(this.events.themeCreatedEvent.event, this.events.themeCreatedEvent.handler, false)
   }
 
   initThemeUpdatedEvent () {
-    this.events.themeUpdatedEvent = {element: document, event: Events.themeUpdated, handler: this.themeUpdatedEventHandler()}
+    this.events.themeUpdatedEvent = { element: document, event: Events.themeUpdated, handler: this.themeUpdatedEventHandler() }
     this.events.themeUpdatedEvent.element.addEventListener(this.events.themeUpdatedEvent.event, this.events.themeUpdatedEvent.handler, false)
   }
 
   initThemeRemovedEvent () {
-    this.events.themeRemovedEvent = {element: document, event: Events.themeRemoved, handler: this.themeRemovedEventHandler()}
+    this.events.themeRemovedEvent = { element: document, event: Events.themeRemoved, handler: this.themeRemovedEventHandler() }
     this.events.themeRemovedEvent.element.addEventListener(this.events.themeRemovedEvent.event, this.events.themeRemovedEvent.handler, false)
   }
   // PVSCL:IFCOND(Hierarchy,LINE)
 
   initCodeCreatedEvent () {
-    this.events.codeCreatedEvent = {element: document, event: Events.codeCreated, handler: this.codeCreatedEventHandler()}
+    this.events.codeCreatedEvent = { element: document, event: Events.codeCreated, handler: this.codeCreatedEventHandler() }
     this.events.codeCreatedEvent.element.addEventListener(this.events.codeCreatedEvent.event, this.events.codeCreatedEvent.handler, false)
   }
 
   initCodeUpdatedEvent () {
-    this.events.codeUpdatedEvent = {element: document, event: Events.codeUpdated, handler: this.codeUpdatedEventHandler()}
+    this.events.codeUpdatedEvent = { element: document, event: Events.codeUpdated, handler: this.codeUpdatedEventHandler() }
     this.events.codeUpdatedEvent.element.addEventListener(this.events.codeUpdatedEvent.event, this.events.codeUpdatedEvent.handler, false)
   }
 
   initCodeRemovedEvent () {
-    this.events.codeRemovedEvent = {element: document, event: Events.codeRemoved, handler: this.codeRemovedEventHandler()}
+    this.events.codeRemovedEvent = { element: document, event: Events.codeRemoved, handler: this.codeRemovedEventHandler() }
     this.events.codeRemovedEvent.element.addEventListener(this.events.codeRemovedEvent.event, this.events.codeRemovedEvent.handler, false)
   }
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
 
   initCodebookReadEvent (callback) {
-    this.events.codebookReadEvent = {element: document, event: Events.codebookRead, handler: this.codebookReadEventHandler()}
+    this.events.codebookReadEvent = { element: document, event: Events.codebookRead, handler: this.codebookReadEventHandler() }
     this.events.codebookReadEvent.element.addEventListener(this.events.codebookReadEvent.event, this.events.codebookReadEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -93,7 +93,7 @@ class ReadCodebook {
   }
 
   initCodebookCreatedEvent () {
-    this.events.codebookCreatedEvent = {element: document, event: Events.codebookCreated, handler: this.codebookCreatedEventHandler()}
+    this.events.codebookCreatedEvent = { element: document, event: Events.codebookCreated, handler: this.codebookCreatedEventHandler() }
     this.events.codebookCreatedEvent.element.addEventListener(this.events.codebookCreatedEvent.event, this.events.codebookCreatedEvent.handler, false)
   }
 
@@ -119,7 +119,7 @@ class ReadCodebook {
   codebookReadEventListener (callback) {
     return (event) => {
       // Remove codebook read event listener after first read
-      let eventHandlerToDisable = this.events.firstCodebookReadEvent
+      const eventHandlerToDisable = this.events.firstCodebookReadEvent
       eventHandlerToDisable.element.removeEventListener(eventHandlerToDisable.event, eventHandlerToDisable.handler)
       if (_.isFunction(callback)) {
         callback()
@@ -132,7 +132,7 @@ class ReadCodebook {
    * @param callback
    */
   initCodebookStructure (callback) {
-    let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/tagWrapper.html')
+    const tagWrapperUrl = chrome.extension.getURL('pages/sidebar/tagWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       $('#abwaSidebarContainer').append($.parseHTML(html))
       this.buttonContainer = document.querySelector('#buttonContainer')
@@ -150,12 +150,12 @@ class ReadCodebook {
     // Retrieve from annotation server highlighter definition
     this.getCodebookDefinition(null, (err, codebookDefinitionAnnotations) => {
       if (err) {
-        Alerts.errorAlert({text: 'Unable to retrieve annotations from annotation server to initialize highlighter buttons.'}) // TODO i18n
+        Alerts.errorAlert({ text: 'Unable to retrieve annotations from annotation server to initialize highlighter buttons.' }) // TODO i18n
       } else {
-        let initCodebookPromise = new Promise((resolve, reject) => {
+        const initCodebookPromise = new Promise((resolve, reject) => {
           if (codebookDefinitionAnnotations.length === 0) {
             // PVSCL:IFCOND(BuiltIn AND NOT(ApplicationBased), LINE)
-            let currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
+            const currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
             // PVSCL:IFCOND(CodebookUpdate, LINE)
             // As codebook can be updated, the user can create an empty one and update it later
             Alerts.confirmAlert({
@@ -170,35 +170,35 @@ class ReadCodebook {
                   text: 'We are configuring everything to start reviewing.',
                   position: Alerts.position.center
                 })
-                LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
+                LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'builtIn' })
                 resolve()
               },
               cancelCallback: () => {
                 // PVSCL:IFCOND(CodebookUpdate,LINE)
-                LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'emptyCodebook'})
+                LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'emptyCodebook' })
                 // PVSCL:ENDCOND
                 resolve()
               }
             })
             // PVSCL:ELSECOND
             // If codebook is not updateable, it is necessary to create the default one, as otherwise the user can select empty codebook and get an unusable configuration
-            LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'builtIn' })
             resolve()
             // PVSCL:ENDCOND
             // PVSCL:ELSEIFCOND(ApplicationBased, LINE)
-            LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'builtIn'})
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'builtIn' })
             resolve()
             // PVSCL:ELSEIFCOND(NOT(Codebook))
-            LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'noCodebook'}) // The parameter howCreate is not really necessary in current implementation
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'noCodebook' }) // The parameter howCreate is not really necessary in current implementation
             resolve()
             // PVSCL:ELSECOND
             // Show alert no group is defined
-            Alerts.errorAlert({text: 'No group is defined'})
+            Alerts.errorAlert({ text: 'No group is defined' })
             // PVSCL:ENDCOND
           } else {
             Codebook.fromAnnotations(codebookDefinitionAnnotations, (err, codebook) => {
               if (err) {
-                Alerts.errorAlert({text: 'Error parsing codebook. Error: ' + err.message})
+                Alerts.errorAlert({ text: 'Error parsing codebook. Error: ' + err.message })
               } else {
                 this.codebook = codebook
                 this.renderCodebookInSidebar()
@@ -232,7 +232,7 @@ class ReadCodebook {
       order: 'desc'
     }, (err, annotations) => {
       if (err) {
-        Alerts.errorAlert({text: 'Unable to construct the highlighter. Please reload webpage and try it again.'})
+        Alerts.errorAlert({ text: 'Unable to construct the highlighter. Please reload webpage and try it again.' })
       } else {
         // Retrieve tags which has the namespace
         annotations = _.filter(annotations, (annotation) => {
@@ -244,7 +244,7 @@ class ReadCodebook {
         })
         // PVSCL:IFCOND(MoodleResource,LINE)
         // Remove tags which are not for the current assignment
-        let cmid = window.abwa.targetManager.fileMetadata.cmid
+        const cmid = window.abwa.targetManager.fileMetadata.cmid
         annotations = _.filter(annotations, (annotation) => {
           return this.hasATag(annotation, 'cmid:' + cmid)
         })
@@ -284,7 +284,7 @@ class ReadCodebook {
     UpdateCodebook.createNewThemeButton()
     // PVSCL:ENDCOND
     // Create current buttons
-    let themes = this.codebook.themes
+    const themes = this.codebook.themes
     // PVSCL:IFCOND(Alphabetical, LINE)
     themes.sort((a, b) => a.name.localeCompare(b.name))
     // PVSCL:ENDCOND
@@ -295,7 +295,7 @@ class ReadCodebook {
     themes.sort((a, b) => a.createdDate - b.createdDate)
     // PVSCL:ENDCOND
     for (let i = 0; i < themes.length; i++) {
-      let theme = themes[i]
+      const theme = themes[i]
       let themeButtonContainer
       // PVSCL:IFCOND(Hierarchy,LINE)
       let codes = theme.codes
@@ -338,15 +338,15 @@ class ReadCodebook {
       color: theme.color,
       childGuideElements: codes,
       groupHandler: (event) => {
-        let themeId = event.target.parentElement.parentElement.dataset.codeId
+        const themeId = event.target.parentElement.parentElement.dataset.codeId
         if (themeId) {
-          let theme = this.codebook.getCodeOrThemeFromId(themeId)
+          const theme = this.codebook.getCodeOrThemeFromId(themeId)
           if (LanguageUtils.isInstanceOf(theme, Theme)) {
             let id = ''
             let tags = ''
             // PVSCL:IFCOND(NOT(Multivalued),LINE)
             // First, ask for the currently annotated code
-            let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(themeId)
+            const currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(themeId)
             // If there is already a code annotation for this theme, we have to let the tags of the code, to annotate with the current code
             if (currentlyAnnotatedCode) {
               tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + currentlyAnnotatedCode.code.name]
@@ -393,16 +393,16 @@ class ReadCodebook {
         }
       },
       buttonHandler: (event) => {
-        let codeId = event.target.dataset.codeId
+        const codeId = event.target.dataset.codeId
         if (codeId) {
-          let code = this.codebook.getCodeOrThemeFromId(codeId)
+          const code = this.codebook.getCodeOrThemeFromId(codeId)
           if (LanguageUtils.isInstanceOf(code, Code)) {
             // PVSCL:IFCOND(NOT(Multivalued),LINE)
             // The rest of the annotations must be classified with this code too
             // Get the annotatedTheme object of the code selected
-            let annotatedTheme = window.abwa.annotatedContentManager.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.theme.id)
+            const annotatedTheme = window.abwa.annotatedContentManager.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.theme.id)
             // retrive the annotatedTheme object of the code selected
-            let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(code.theme.id)
+            const currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(code.theme.id)
             // We have to throw the event of codeToAll when:
             // There are still theme annotations or there are annotations of other codes done
             if ((annotatedTheme.hasAnnotations() || (currentlyAnnotatedCode && currentlyAnnotatedCode.code.id !== codeId))) {
@@ -426,7 +426,7 @@ class ReadCodebook {
             // Create new annotation if text selected
             if (document.getSelection().toString().length > 0) {
               // Create new annotation
-              let tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
+              const tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
               // PVSCL:IFCOND(MoodleResource,LINE)
               tags.push('cmid:' + theme.annotationGuide.cmid)
               // PVSCL:ENDCOND
@@ -437,7 +437,7 @@ class ReadCodebook {
               })
             }
             // PVSCL:ELSECOND
-            let tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
+            const tags = [Config.namespace + ':' + Config.tags.grouped.relation + ':' + code.theme.name, Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + code.name]
             // PVSCL:IFCOND(MoodleResource,LINE)
             tags.push('cmid:' + theme.annotationGuide.cmid)
             // PVSCL:ENDCOND
@@ -482,11 +482,11 @@ class ReadCodebook {
       description: theme.description,
       color: theme.color,
       handler: (event) => {
-        let themeId = event.target.dataset.codeId
+        const themeId = event.target.dataset.codeId
         if (themeId) {
-          let theme = this.codebook.getCodeOrThemeFromId(themeId)
+          const theme = this.codebook.getCodeOrThemeFromId(themeId)
           if (LanguageUtils.isInstanceOf(theme, Theme)) {
-            let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
+            const tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name]
             // PVSCL:IFCOND(MoodleResource,LINE)
             tags.push('cmid:' + theme.annotationGuide.cmid)
             // PVSCL:ENDCOND
@@ -552,16 +552,16 @@ class ReadCodebook {
    */
   applyColorsToThemes () {
     if (this.codebook && this.codebook.themes) {
-      let listOfColors = ColorUtils.getDifferentColors(this.codebook.themes.length)
+      const listOfColors = ColorUtils.getDifferentColors(this.codebook.themes.length)
       this.codebook.themes.forEach((theme) => {
-        let color = listOfColors.pop()
+        const color = listOfColors.pop()
         // PVSCL:IFCOND(Hierarchy,LINE)
         // Set a color for each theme
         theme.color = ColorUtils.setAlphaToColor(color, Config.colors.minAlpha)
         // Set color gradient for each code
-        let numberOfCodes = theme.codes.length
+        const numberOfCodes = theme.codes.length
         theme.codes.forEach((code, j) => {
-          let alphaForChild = (Config.colors.maxAlpha - Config.colors.minAlpha) / numberOfCodes * (j + 1) + Config.colors.minAlpha
+          const alphaForChild = (Config.colors.maxAlpha - Config.colors.minAlpha) / numberOfCodes * (j + 1) + Config.colors.minAlpha
           code.color = ColorUtils.setAlphaToColor(color, alphaForChild)
         })
         // PVSCL:ELSECOND
@@ -576,13 +576,13 @@ class ReadCodebook {
    */
   themeRightClickHandler () {
     return (themeId) => {
-      let items = {}
+      const items = {}
       // PVSCL:IFCOND(CodebookUpdate, LINE)
       // PVSCL:IFCOND(Hierarchy, LINE)
-      items['createNewCode'] = {name: 'Create new code'}
+      items.createNewCode = { name: 'Create new code' }
       // PVSCL:ENDCOND
-      items['updateTheme'] = {name: 'Modify theme'}
-      items['removeTheme'] = {name: 'Remove theme'}
+      items.updateTheme = { name: 'Modify theme' }
+      items.removeTheme = { name: 'Remove theme' }
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(SidebarNavigation, LINE)
       // TODO Implement page annotation and uncomment this:
@@ -593,26 +593,26 @@ class ReadCodebook {
           // PVSCL:IFCOND(CodebookUpdate, LINE)
           // PVSCL:IFCOND(Hierarchy, LINE)
           if (key === 'createNewCode') {
-            let theme = this.codebook.getCodeOrThemeFromId(themeId)
+            const theme = this.codebook.getCodeOrThemeFromId(themeId)
             if (LanguageUtils.isInstanceOf(theme, Theme)) {
-              LanguageUtils.dispatchCustomEvent(Events.createCode, {theme: theme})
+              LanguageUtils.dispatchCustomEvent(Events.createCode, { theme: theme })
             }
           }
           // PVSCL:ENDCOND
           if (key === 'updateTheme') {
-            let theme = this.codebook.getCodeOrThemeFromId(themeId)
-            LanguageUtils.dispatchCustomEvent(Events.updateTheme, {theme: theme})
+            const theme = this.codebook.getCodeOrThemeFromId(themeId)
+            LanguageUtils.dispatchCustomEvent(Events.updateTheme, { theme: theme })
           }
           if (key === 'removeTheme') {
-            let theme = this.codebook.getCodeOrThemeFromId(themeId)
+            const theme = this.codebook.getCodeOrThemeFromId(themeId)
             if (LanguageUtils.isInstanceOf(theme, Theme)) {
-              LanguageUtils.dispatchCustomEvent(Events.removeTheme, {theme: theme})
+              LanguageUtils.dispatchCustomEvent(Events.removeTheme, { theme: theme })
             }
           }
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(SidebarNavigation, LINE)
           if (key === 'pageAnnotation') {
-            Alerts.infoAlert({text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.'})
+            Alerts.infoAlert({ text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.' })
             // TODO Page level annotations, take into account that tags are necessary here (take into account Moodle related case)
             /* let theme = this.codebook.getCodeOrThemeFromId(themeId)
             LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
@@ -635,12 +635,12 @@ class ReadCodebook {
   codeRightClickHandler () {
     return (codeId) => {
       // Get code from id
-      let code = this.codebook.getCodeOrThemeFromId(codeId)
+      const code = this.codebook.getCodeOrThemeFromId(codeId)
       if (LanguageUtils.isInstanceOf(code, Code)) {
-        let items = {}
+        const items = {}
         // PVSCL:IFCOND(CodebookUpdate, LINE)
-        items['updateCode'] = {name: 'Modify code'}
-        items['removeCode'] = {name: 'Remove code'}
+        items.updateCode = { name: 'Modify code' }
+        items.removeCode = { name: 'Remove code' }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(SidebarNavigation, LINE)
         // items['pageAnnotation'] = {name: 'Page annotation'}
@@ -649,16 +649,16 @@ class ReadCodebook {
           callback: (key) => {
             // PVSCL:IFCOND(CodebookUpdate, LINE)
             if (key === 'removeCode') {
-              LanguageUtils.dispatchCustomEvent(Events.removeCode, {code: code})
+              LanguageUtils.dispatchCustomEvent(Events.removeCode, { code: code })
             }
             if (key === 'updateCode') {
-              LanguageUtils.dispatchCustomEvent(Events.updateCode, {code: code})
+              LanguageUtils.dispatchCustomEvent(Events.updateCode, { code: code })
             }
             // PVSCL:ENDCOND
             // PVSCL:IFCOND(SidebarNavigation, LINE)
             // TODO Page level annotations, take into account that tags are necessary here (take into account Moodle related case)
             if (key === 'pageAnnotation') {
-              Alerts.infoAlert({text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.'})
+              Alerts.infoAlert({ text: 'If sidebar navigation is active, it is not possible to make page level annotations yet.' })
               /* let theme = this.codebook.getCodeOrThemeFromId(codeId)
               LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
                 purpose: 'classifying',
@@ -681,13 +681,13 @@ class ReadCodebook {
    */
   themeCreatedEventHandler () {
     return (event) => {
-      let theme = Theme.fromAnnotation(event.detail.newThemeAnnotation, this.codebook)
+      const theme = Theme.fromAnnotation(event.detail.newThemeAnnotation, this.codebook)
       // Add to the model the new theme
       this.codebook.addTheme(theme)
       // Reload button container
       this.reloadButtonContainer()
       // Dispatch codebook updated event
-      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
       // Open the sidebar
       window.abwa.sidebar.openSidebar()
     }
@@ -700,7 +700,7 @@ class ReadCodebook {
       // Reload button container
       this.reloadButtonContainer()
       // Dispatch codebook updated event
-      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
       // Open the sidebar
       window.abwa.sidebar.openSidebar()
     }
@@ -711,12 +711,12 @@ class ReadCodebook {
    */
   themeRemovedEventHandler () {
     return (event) => {
-      let theme = event.detail.theme
+      const theme = event.detail.theme
       theme.annotationGuide.removeTheme(theme)
       // Reload button container
       this.reloadButtonContainer()
       // Dispatch codebook updated event
-      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
     }
   }
 
@@ -726,14 +726,14 @@ class ReadCodebook {
   // PVSCL:IFCOND(Hierarchy, LINE)
   codeCreatedEventHandler () {
     return (event) => {
-      let theme = event.detail.theme
-      let code = Code.fromAnnotation(event.detail.newCodeAnnotation, theme)
+      const theme = event.detail.theme
+      const code = Code.fromAnnotation(event.detail.newCodeAnnotation, theme)
       // Add to the model the new theme
       theme.addCode(code)
       // Reload button container
       this.reloadButtonContainer()
       // Dispatch codebook updated event
-      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
       // Reopen sidebar to see the new added code
       window.abwa.sidebar.openSidebar()
     }
@@ -742,14 +742,14 @@ class ReadCodebook {
   codeUpdatedEventHandler () {
     return (event) => {
       // Update model
-      let code = event.detail.updatedCode
-      let theme = code.theme
+      const code = event.detail.updatedCode
+      const theme = code.theme
       theme.updateCode(code)
       this.codebook.updateTheme(theme)
       // Reload button container
       this.reloadButtonContainer()
       // Dispatch codebook updated event
-      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
       // Open the sidebar
       window.abwa.sidebar.openSidebar()
     }
@@ -760,16 +760,21 @@ class ReadCodebook {
    */
   codeRemovedEventHandler () {
     return (event) => {
-      let code = event.detail.code
+      const code = event.detail.code
       code.theme.removeCode(code)
       // Reload button container
       this.reloadButtonContainer()
       // Dispatch codebook updated event
-      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, {codebook: this.codebook})
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
     }
   }
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
+
+  /**
+   * Creates event handler for event CodebookCreated
+   * @returns {function(...[*]=)}
+   */
   codebookCreatedEventHandler () {
     return () => {
       this.initCodebookContent()

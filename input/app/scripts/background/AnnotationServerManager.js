@@ -13,24 +13,24 @@ class AnnotationServerManager {
         if (request.cmd === 'getSelectedAnnotationServer') {
           ChromeStorage.getData('annotationServer.selected', ChromeStorage.sync, (err, annotationServer) => {
             if (err) {
-              sendResponse({err: err})
+              sendResponse({ err: err })
             } else {
               if (annotationServer) {
-                let parsedAnnotationServer = JSON.parse(annotationServer.data)
-                sendResponse({annotationServer: parsedAnnotationServer || ''})
+                const parsedAnnotationServer = JSON.parse(annotationServer.data)
+                sendResponse({ annotationServer: parsedAnnotationServer || '' })
               } else {
-                let defaultAnnotationServer = Config.defaultAnnotationServer
-                sendResponse({annotationServer: defaultAnnotationServer})
+                const defaultAnnotationServer = Config.defaultAnnotationServer
+                sendResponse({ annotationServer: defaultAnnotationServer })
               }
             }
           })
         } else if (request.cmd === 'setSelectedAnnotationServer') {
-          let selectedAnnotationServer = request.data.annotationServer
-          ChromeStorage.setData('annotationServer.selected', {data: JSON.stringify(selectedAnnotationServer)}, ChromeStorage.sync, (err) => {
+          const selectedAnnotationServer = request.data.annotationServer
+          ChromeStorage.setData('annotationServer.selected', { data: JSON.stringify(selectedAnnotationServer) }, ChromeStorage.sync, (err) => {
             if (err) {
-              sendResponse({err: err})
+              sendResponse({ err: err })
             } else {
-              sendResponse({annotationServer: selectedAnnotationServer})
+              sendResponse({ annotationServer: selectedAnnotationServer })
             }
           })
         }

@@ -23,15 +23,15 @@ window.addEventListener('load', () => {
             if (err) {
               console.error('Error while retrieving user profile in hypothesis')
             } else {
-              let urlSplit = window.location.href.split('/')
-              let indexOfGroups = _.indexOf(urlSplit, 'groups')
+              const urlSplit = window.location.href.split('/')
+              const indexOfGroups = _.indexOf(urlSplit, 'groups')
               if (urlSplit[indexOfGroups + 1]) {
-                let groupId = urlSplit[indexOfGroups + 1]
+                const groupId = urlSplit[indexOfGroups + 1]
                 // Set current group
-                let group = _.find(userProfile.groups, (group) => { return group.id === groupId })
+                const group = _.find(userProfile.groups, (group) => { return group.id === groupId })
                 if (group) {
                   // Save to chrome storage current group
-                  ChromeStorage.setData(selectedGroupNamespace, {data: JSON.stringify(group)}, ChromeStorage.local, () => {
+                  ChromeStorage.setData(selectedGroupNamespace, { data: JSON.stringify(group) }, ChromeStorage.local, () => {
                     console.log('Set as group: ' + group.name)
                   })
                 }

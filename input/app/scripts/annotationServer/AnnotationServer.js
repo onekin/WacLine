@@ -1,5 +1,5 @@
 class AnnotationServer {
-  constructor ({group}) {
+  constructor ({ group }) {
     this.group = group
   }
 }

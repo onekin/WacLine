@@ -49,7 +49,7 @@ class GoogleSheetsClientManager {
 
   logInSilentGoogleSheets (callback) {
     // Promise if user has not given permissions in google sheets
-    chrome.runtime.sendMessage({scope: 'googleSheets', cmd: 'getTokenSilent'}, (result) => {
+    chrome.runtime.sendMessage({ scope: 'googleSheets', cmd: 'getTokenSilent' }, (result) => {
       if (result.token) {
         if (_.isFunction(callback)) {
           callback(null, result.token)
@@ -64,7 +64,7 @@ class GoogleSheetsClientManager {
    */
   logInGoogleSheets (callback) {
     // Promise if user has not given permissions in google sheets
-    chrome.runtime.sendMessage({scope: 'googleSheets', cmd: 'getTokenSilent'}, (result) => {
+    chrome.runtime.sendMessage({ scope: 'googleSheets', cmd: 'getTokenSilent' }, (result) => {
       if (result.token) {
         if (_.isFunction(callback)) {
           callback(null, result.token)
@@ -94,7 +94,7 @@ class GoogleSheetsClientManager {
           callback(new Error('Unable to create message to ask for login'))
         } else {
           if (result) {
-            chrome.runtime.sendMessage({scope: 'googleSheets', cmd: 'getToken'}, (result) => {
+            chrome.runtime.sendMessage({ scope: 'googleSheets', cmd: 'getToken' }, (result) => {
               if (result.error) {
                 if (_.isFunction(callback)) {
                   callback(result.error)

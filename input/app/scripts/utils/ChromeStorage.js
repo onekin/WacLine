@@ -13,7 +13,7 @@ class ChromeStorage {
    */
   static setData (namespace, data, storageArea, callback) {
     // Create to be saved object
-    let obj = {}
+    const obj = {}
     obj[namespace] = data
     storageArea.set(obj, () => {
       // Execute callback and return error if happened

@@ -44,7 +44,7 @@ class Toolset {
       this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
       // Insert toolset container
       // PVSCL:IFCOND(Manual, LINE)
-      let groupSelectorContainer = this.sidebarContainer.querySelector('#groupSelectorContainer')
+      const groupSelectorContainer = this.sidebarContainer.querySelector('#groupSelectorContainer')
       groupSelectorContainer.insertAdjacentHTML('beforebegin', response.data)
       // PVSCL:ELSECOND
       this.sidebarContainer.insertAdjacentHTML('afterbegin', response.data)
@@ -52,10 +52,10 @@ class Toolset {
       this.toolsetContainer = this.sidebarContainer.querySelector('#toolset')
       this.toolsetHeader = this.toolsetContainer.querySelector('#toolsetHeader')
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
-      let toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
+      const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
       // PVSCL:IFCOND(AnnotatedPDF, LINE)
       // Set screenshot image
-      let screenshotImageUrl = chrome.extension.getURL('/images/screenshot.png')
+      const screenshotImageUrl = chrome.extension.getURL('/images/screenshot.png')
       this.screenshotImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.screenshotImage.src = screenshotImageUrl
       this.screenshotImage.title = 'Take a screenshot of the current document' // TODO i18n
@@ -66,7 +66,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Canvas, LINE)
       // Set Canvas image
-      let canvasImageUrl = chrome.extension.getURL('/images/overview.png')
+      const canvasImageUrl = chrome.extension.getURL('/images/overview.png')
       this.canvasImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.canvasImage.src = canvasImageUrl
       this.canvasImage.title = 'Generate canvas' // TODO i18n
@@ -77,7 +77,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(TextSummary, LINE)
       // Set TextSummary image
-      let textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
+      const textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.textSummaryImage.src = textSummaryImageUrl
       this.textSummaryImage.title = 'Generate review report' // TODO i18n
@@ -88,7 +88,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(DeleteAll, LINE)
       // Set DeleteAll image
-      let deleteGroupImageUrl = chrome.extension.getURL('/images/deleteAnnotations.png')
+      const deleteGroupImageUrl = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteGroupImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.deleteGroupImage.src = deleteGroupImageUrl
       this.deleteGroupImage.title = 'Delete all annotations in document' // TODO i18n
@@ -99,7 +99,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(LastAnnotation, LINE)
       // Set GoToLast image
-      let goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
+      const goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
       this.goToLastImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.goToLastImage.src = goToLastImageUrl
       this.goToLastImage.title = 'Go to last annotation' // TODO i18n
@@ -110,7 +110,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(GoogleSheetConsumer, LINE)
       // Set Spreadsheet generation image
-      let googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
+      const googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
       this.googleSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.googleSheetImage.src = googleSheetImageUrl
       this.googleSheetImage.title = 'Generate a spreadsheet with classified content' // TODO i18n
@@ -121,7 +121,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleReport, LINE)
       // Set back to moodle icon
-      let moodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
+      const moodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
       this.moodleImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.moodleImage.src = moodleImageUrl
       this.moodleImage.title = 'Back to moodle' // TODO i18n
@@ -133,7 +133,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(AnnotationList, LINE)
       // Set annotation list image
-      let annotationListImageUrl = chrome.extension.getURL('/images/annotationList.png')
+      const annotationListImageUrl = chrome.extension.getURL('/images/annotationList.png')
       this.annotationListImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.annotationListImage.src = annotationListImageUrl
       this.annotationListImage.title = 'Go to annotation list' // TODO i18n
@@ -143,7 +143,7 @@ class Toolset {
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(JSON OR ImportAnnotations, LINE)
-      let exportImportImageUrl = chrome.extension.getURL('/images/importExport.png')
+      const exportImportImageUrl = chrome.extension.getURL('/images/importExport.png')
       this.exportImportImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.exportImportImage.src = exportImportImageUrl
       this.exportImportImage.id = 'importExportButton'
@@ -162,20 +162,24 @@ class Toolset {
       }
     })
   }
+
   // PVSCL:IFCOND(AnnotatedPDF, LINE)
   screenshotButtonHandler () {
     Screenshots.takeScreenshot()
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Canvas, LINE)
   canvasButtonHandler () {
     Canvas.generateCanvas()
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(TextSummary, LINE)
   textSummaryButtonHandler () {
     TextSummary.generateReview()
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(DeleteAll, LINE)
   deleteAllButtonHandler () {
@@ -196,6 +200,7 @@ class Toolset {
       }
     })
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(LastAnnotation, LINE)
   goToLastButtonHandler () {
@@ -233,12 +238,12 @@ class Toolset {
       trigger: 'left',
       build: () => {
         // Create items for context menu
-        let items = {}
+        const items = {}
         // PVSCL:IFCOND(ImportAnnotations, LINE)
-        items['import'] = {name: 'Import annotations'}
+        items.import = { name: 'Import annotations' }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(JSON, LINE)
-        items['export'] = {name: 'Export annotations in JSON'}
+        items.export = { name: 'Export annotations in JSON' }
         // PVSCL:ENDCOND
         return {
           callback: (key, opt) => {

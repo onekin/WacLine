@@ -7,7 +7,7 @@ import Toolset from './Toolset'
 import AnnotationManagement from '../annotationManagement/AnnotationManagement'
 import GroupSelector from '../groupManipulation/GroupSelector'
 import AnnotationBasedInitializer from './AnnotationBasedInitializer'
-import {AnnotatedContentManager} from './AnnotatedContentManager'
+import { AnnotatedContentManager } from './AnnotatedContentManager'
 // PVSCL:IFCOND(Manual, LINE)
 import Events from '../Events'
 // PVSCL:ENDCOND
@@ -59,7 +59,7 @@ class ContentScriptManager {
   // PVSCL:IFCOND(Manual, LINE)
 
   initListenerForGroupChange () {
-    this.events.groupChangedEvent = {element: document, event: Events.groupChanged, handler: this.groupChangedEventHandlerCreator()}
+    this.events.groupChangedEvent = { element: document, event: Events.groupChanged, handler: this.groupChangedEventHandlerCreator() }
     this.events.groupChangedEvent.element.addEventListener(this.events.groupChangedEvent.event, this.events.groupChangedEvent.handler, false)
   }
 
@@ -367,7 +367,7 @@ class ContentScriptManager {
     })
     // PVSCL:ELSECOND
     // More than one annotation servers are selected, retrieve the current selected one
-    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+    chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       // PVSCL:IFCOND(Hypothesis, LINE)
       if (annotationServer === 'hypothesis') {
         // Hypothesis
@@ -400,7 +400,7 @@ class ContentScriptManager {
         })
       } else {
         const Alerts = require('../utils/Alerts').default
-        Alerts.errorAlert({text: 'Unable to load selected server. Please configure in options page.'})
+        Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in options page.' })
       }
     })
     // PVSCL:ENDCOND

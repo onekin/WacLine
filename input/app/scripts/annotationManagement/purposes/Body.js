@@ -8,7 +8,7 @@ class Body {
   }
 
   serialize () {
-    return {purpose: this.purpose, value: this.value}
+    return { purpose: this.purpose, value: this.value }
   }
 
   static deserialize (obj) {

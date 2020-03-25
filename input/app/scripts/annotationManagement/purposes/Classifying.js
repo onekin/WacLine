@@ -7,7 +7,7 @@ import LanguageUtils from '../../utils/LanguageUtils'
 import _ from 'lodash'
 
 class Classifying extends Body {
-  constructor ({purpose = Classifying.purpose, code}) {
+  constructor ({ purpose = Classifying.purpose, code }) {
     super(purpose)
     if (!_.isEmpty(code)) {
       if (/* PVSCL:IFCOND(Hierarchy) */LanguageUtils.isInstanceOf(code, Code) || /* PVSCL:ENDCOND */LanguageUtils.isInstanceOf(code, Theme)) {
@@ -29,13 +29,13 @@ class Classifying extends Body {
   }
 
   static deserialize (obj) {
-    let code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(obj.id)
-    return new Classifying({code})
+    const code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(obj.id)
+    return new Classifying({ code })
   }
 
   tooltip () {
     let tooltip = ''
-    let code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(this.value.id)
+    const code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(this.value.id)
     // PVSCL:IFCOND(Hierarchy, LINE)
     if (LanguageUtils.isInstanceOf(code, Code)) {
       tooltip += 'Code: ' + code.name + ' for theme: ' + code.theme.name

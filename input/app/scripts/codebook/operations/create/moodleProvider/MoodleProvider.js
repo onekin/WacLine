@@ -28,7 +28,8 @@ class MoodleProvider {
 
   init (callback) {
     // Ask for configuration
-    Alerts.confirmAlert({title: 'Mark&Go assignment configuration',
+    Alerts.confirmAlert({
+      title: 'Mark&Go assignment configuration',
       text: 'Do you want to configure this assignment to mark using Mark&Go?',
       cancelCallback: () => {
         callback(null)
@@ -48,10 +49,10 @@ class MoodleProvider {
               this.moodleClientManager.init((err) => {
                 if (err) {
                   // Unable to init moodle client manager
-                  Alerts.errorAlert({text: 'Unable to retrieve rubric from moodle, have you the required permissions to get the rubric via API?'})
+                  Alerts.errorAlert({ text: 'Unable to retrieve rubric from moodle, have you the required permissions to get the rubric via API?' })
                   callback(err)
                 } else {
-                  let promises = []
+                  const promises = []
                   // Get rubric
                   promises.push(new Promise((resolve, reject) => {
                     this.getRubric(assignmentData.cmid, assignmentData.courseId, (err, rubric) => {
@@ -73,7 +74,7 @@ class MoodleProvider {
                     })
                   }))
                   Promise.all(promises).catch((rejects) => {
-                    let reject = _.isArray(rejects) ? rejects[0] : rejects
+                    const reject = _.isArray(rejects) ? rejects[0] : rejects
                     Alerts.errorAlert({
                       title: 'Something went wrong',
                       text: reject.message
@@ -89,14 +90,14 @@ class MoodleProvider {
                         students = resolves[0]
                       }
                       // Send task to background
-                      chrome.runtime.sendMessage({scope: 'task', cmd: 'createHighlighters', data: {rubric: CircularJSON.stringifyStrict(this.rubric), students: students, courseId: assignmentData.courseId}}, (result) => {
+                      chrome.runtime.sendMessage({ scope: 'task', cmd: 'createHighlighters', data: { rubric: CircularJSON.stringifyStrict(this.rubric), students: students, courseId: assignmentData.courseId } }, (result) => {
                         if (result.err) {
                           Alerts.errorAlert({
                             title: 'Something went wrong',
                             text: 'Error when sending createHighlighters to the background. Please try it again.'
                           })
                         } else {
-                          let minutes = result.minutes
+                          const minutes = result.minutes
                           let notFirstTime = false
                           Alerts.updateableAlert({
                             title: 'Configuration started',
@@ -104,11 +105,11 @@ class MoodleProvider {
                               `This can take around <b>${minutes} minute(s)</b>.` +
                               'You can close this window, we will notify you when it is finished.<br/>Current status: <span></span>',
                             timerIntervalHandler: (swal, timerInterval) => {
-                              chrome.runtime.sendMessage({scope: 'task', cmd: 'getCurrentTaskStatus'}, (result) => {
+                              chrome.runtime.sendMessage({ scope: 'task', cmd: 'getCurrentTaskStatus' }, (result) => {
                                 if (result.status && result.status === 'Nothing pending' && notFirstTime) {
                                   Alerts.closeAlert()
                                   clearInterval(timerInterval)
-                                  Alerts.updateableAlert({text: 'The assignment is correctly configured', title: 'Configuration finished'})
+                                  Alerts.updateableAlert({ text: 'The assignment is correctly configured', title: 'Configuration finished' })
                                 } else if (result.status && result.status === 'CreateHighlighterTask pending') {
                                   notFirstTime = true
                                   swal.getContent().querySelector('span').textContent = result.statusMessage
@@ -123,7 +124,7 @@ class MoodleProvider {
                       })
                     }
                   }).catch((rejects) => {
-                    let reject = _.isArray(rejects) ? rejects[0] : rejects
+                    const reject = _.isArray(rejects) ? rejects[0] : rejects
                     Alerts.errorAlert({
                       title: 'Something went wrong',
                       text: reject.message + '.\n' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])
@@ -148,7 +149,7 @@ class MoodleProvider {
             if (err) {
               callback(new Error('Unable to retrieve assignment id from Moodle. Check if you have the permission: ' + MoodleFunctions.getCourseModuleInfo.wsFunc))
             } else {
-              let assignmentId = cmidInfo.cm.instance
+              const assignmentId = cmidInfo.cm.instance
               this.constructRubricsModel({
                 moodleRubrics: rubrics,
                 courseId: courseId,
@@ -199,7 +200,7 @@ class MoodleProvider {
       })
     })
     // PVSCL:ELSECOND
-    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+    chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       if (annotationServer === 'hypothesis') {
         // Hypothesis
         this.AnnotationServerClientManager = new HypothesisClientManager()
@@ -232,7 +233,7 @@ class MoodleProvider {
     })
   }
 
-  constructRubricsModel ({moodleRubrics, courseId, assignmentId, callback}) {
+  constructRubricsModel ({ moodleRubrics, courseId, assignmentId, callback }) {
     this.rubric = new Codebook({
       name: _.get(moodleRubrics, 'areas[0].definitions[0].name'),
       moodleEndpoint: this.moodleEndpoint,
@@ -241,20 +242,20 @@ class MoodleProvider {
     })
     // Ensure a rubric is retrieved
     if (moodleRubrics.areas[0].activemethod === 'rubric') {
-      let rubricCriteria = _.get(moodleRubrics, 'areas[0].definitions[0].rubric.rubric_criteria')
-      let rubricCmid = _.get(moodleRubrics, 'areas[0].cmid')
+      const rubricCriteria = _.get(moodleRubrics, 'areas[0].definitions[0].rubric.rubric_criteria')
+      const rubricCmid = _.get(moodleRubrics, 'areas[0].cmid')
       if (!_.isUndefined(rubricCriteria) && !_.isUndefined(assignmentId) && !_.isUndefined(rubricCmid)) {
         // Set assignment id
         this.rubric.assignmentId = assignmentId
         this.rubric.cmid = moodleRubrics.areas[0].cmid
         // Generate rubric model
         for (let i = 0; i < rubricCriteria.length; i++) {
-          let moodleCriteria = rubricCriteria[i]
-          let criteria = new Theme({name: LanguageUtils.normalizeString(moodleCriteria.description), id: moodleCriteria.id, description: LanguageUtils.normalizeString(moodleCriteria.description), annotationGuide: this.rubric})
+          const moodleCriteria = rubricCriteria[i]
+          const criteria = new Theme({ name: LanguageUtils.normalizeString(moodleCriteria.description), id: moodleCriteria.id, description: LanguageUtils.normalizeString(moodleCriteria.description), annotationGuide: this.rubric })
           // PVSCL:IFCOND(Hierarchy, LINE)
           for (let j = 0; j < moodleCriteria.levels.length; j++) {
-            let moodleLevel = moodleCriteria.levels[j]
-            let level = new Code({name: moodleLevel.score, id: moodleLevel.id, description: LanguageUtils.normalizeString(moodleLevel.definition), theme: criteria})
+            const moodleLevel = moodleCriteria.levels[j]
+            const level = new Code({ name: moodleLevel.score, id: moodleLevel.id, description: LanguageUtils.normalizeString(moodleLevel.definition), theme: criteria })
             criteria.codes.push(level)
           }
           // PVSCL:ENDCOND
@@ -263,14 +264,14 @@ class MoodleProvider {
         callback(null, this.rubric)
       } else {
         // Message user assignment has not a rubric associated
-        Alerts.errorAlert({text: 'This assignment has not a rubric.'}) // TODO i18n
+        Alerts.errorAlert({ text: 'This assignment has not a rubric.' }) // TODO i18n
         if (_.isFunction(callback)) {
           callback()
         }
       }
     } else {
       // Message user assignment has not a rubric associated
-      Alerts.errorAlert({text: 'This assignment has not a rubric.'}) // TODO i18n
+      Alerts.errorAlert({ text: 'This assignment has not a rubric.' }) // TODO i18n
       if (_.isFunction(callback)) {
         callback()
       }

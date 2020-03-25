@@ -22,7 +22,7 @@ gulp.task('scripts', () => {
     .pipe(gulpWebpack({
       devtool: args.sourcemaps ? 'inline-source-map' : false,
       watch: args.watch,
-      mode: 'development', // TODO Set to ENV. Currently uglify is not encoding contentScript.js in UTF-8
+      mode: ENV, // TODO Set to ENV. Currently uglify is not encoding contentScript.js in UTF-8
       plugins: [
         new webpack.ProvidePlugin({
           $: 'jquery',
@@ -43,8 +43,14 @@ gulp.task('scripts', () => {
           enforce: 'pre'
         }, {
           test: /\.js$/,
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          query: { compact: false }
         }]
+      },
+      optimization: {
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
+        splitChunks: false
       }
     },
     webpack,

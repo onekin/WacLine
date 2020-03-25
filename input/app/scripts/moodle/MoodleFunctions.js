@@ -1,6 +1,6 @@
 import MoodleClient from './MoodleClient'
 
-let moodleClient = new MoodleClient('', '')
+const moodleClient = new MoodleClient('', '')
 
 const MoodleFunctions = {
   updateStudentsGradeWithRubric: {

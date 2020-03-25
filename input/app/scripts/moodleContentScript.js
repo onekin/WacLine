@@ -5,7 +5,7 @@ import MoodleAugmentation from './codebook/operations/create/moodleProvider/augm
 window.addEventListener('load', () => {
   console.debug('Loaded moodle content script')
   // When page is loaded, popup button should be always deactivated
-  chrome.runtime.sendMessage({scope: 'extension', cmd: 'deactivatePopup'}, (result) => {
+  chrome.runtime.sendMessage({ scope: 'extension', cmd: 'deactivatePopup' }, (result) => {
     console.log('Deactivated popup')
   })
   // When popup button is clicked
@@ -16,7 +16,7 @@ window.addEventListener('load', () => {
         window.mag.moodleContentScript = new MoodleProvider()
         window.mag.moodleContentScript.init(() => {
           // Disable the button of popup
-          chrome.runtime.sendMessage({scope: 'extension', cmd: 'deactivatePopup'}, (result) => {
+          chrome.runtime.sendMessage({ scope: 'extension', cmd: 'deactivatePopup' }, (result) => {
             console.log('Deactivated popup')
           })
           window.mag = null

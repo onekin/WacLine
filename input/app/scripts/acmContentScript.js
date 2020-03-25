@@ -10,7 +10,7 @@ class ACMContentScript {
 
   init () {
     // Get url params
-    let params = URLUtils.extractHashParamsFromUrl(window.location.href)
+    const params = URLUtils.extractHashParamsFromUrl(window.location.href)
     // Get document doi
     if (!_.isEmpty(params) && !_.isEmpty(params.doi)) {
       this.doi = params.doi
@@ -19,12 +19,12 @@ class ACMContentScript {
       this.doi = this.findDoi()
     }
     // Get pdf link element
-    let pdfLinkElement = this.getPdfLinkElement()
+    const pdfLinkElement = this.getPdfLinkElement()
     if (pdfLinkElement) {
       // Get if this tab has an annotation to open
       if (!_.isEmpty(params) && !_.isEmpty(params[Config.urlParamName])) {
         // Activate the extension
-        chrome.runtime.sendMessage({scope: 'extension', cmd: 'activatePopup'}, (result) => {
+        chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, (result) => {
           console.log('Activated popup')
           // Retrieve pdf url
           let pdfUrl = pdfLinkElement.href

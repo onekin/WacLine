@@ -5,11 +5,11 @@ import _ from 'lodash'
 class EmptyCodebook {
   static createDefaultAnnotations (callback) {
     Codebook.setAnnotationServer(null, (annotationServer) => {
-      let emptyCodebook = new Codebook({annotationServer: annotationServer})
-      let emptyCodebookAnnotation = emptyCodebook.toAnnotation()
+      const emptyCodebook = new Codebook({ annotationServer: annotationServer })
+      const emptyCodebookAnnotation = emptyCodebook.toAnnotation()
       window.abwa.annotationServerManager.client.createNewAnnotation(emptyCodebookAnnotation, (err, annotation) => {
         if (err) {
-          Alerts.errorAlert({text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.'}) // TODO i18n
+          Alerts.errorAlert({ text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.' }) // TODO i18n
         } else {
           // Open the sidebar, to notify user that the annotator is correctly created
           window.abwa.sidebar.openSidebar()

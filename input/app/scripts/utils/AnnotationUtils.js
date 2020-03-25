@@ -8,7 +8,7 @@ class AnnotationUtils {
   }
 
   static getTagSubstringFromAnnotation (annotation, prefix) {
-    let tag = AnnotationUtils.getTagFromAnnotation(annotation, prefix)
+    const tag = AnnotationUtils.getTagFromAnnotation(annotation, prefix)
     if (tag) {
       return tag.replace(prefix, '')
     } else {
@@ -17,7 +17,7 @@ class AnnotationUtils {
   }
 
   static modifyTag (annotation, oldTag, newTag) {
-    let index = _.findIndex(annotation.tags, (tag) => { return oldTag === tag })
+    const index = _.findIndex(annotation.tags, (tag) => { return oldTag === tag })
     if (index > -1) {
       annotation.tags[index] = newTag
       return annotation
@@ -58,14 +58,14 @@ class AnnotationUtils {
    */
   static getReliableURItoLocateTarget (annotation) {
     if (_.has(annotation, 'target[0].source')) {
-      let source = annotation.target[0].source
+      const source = annotation.target[0].source
       // The most reliable source is DOI
       if (source.doi) {
         return source.doi
       }
       // The next more reliable URI is the URL, but only if it is not a local URL (protocol = file:) or is URN (protocol = urn:)
       if (source.url) {
-        let protocol = new URL(source.url).protocol
+        const protocol = new URL(source.url).protocol
         if (protocol !== 'file:' && protocol !== 'urn:') {
           return source.url
         }
@@ -73,14 +73,14 @@ class AnnotationUtils {
     }
     // For Hypothes.is it is not stored in source, is stored in documentMetadata
     if (_.has(annotation, 'documentMetadata')) {
-      let documentMetadata = annotation.documentMetadata
+      const documentMetadata = annotation.documentMetadata
       // The most reliable source is DOI
       if (_.has(documentMetadata, 'dc.identifier[0]')) {
         return documentMetadata.dc.identifier[0]
       }
       // The next more reliable URI is the URL, but only if it is not a local URL (protocol = file:)
-      let reliableURL = annotation.documentMetadata.link.find(link => {
-        let protocol = new URL(link.href).protocol
+      const reliableURL = annotation.documentMetadata.link.find(link => {
+        const protocol = new URL(link.href).protocol
         return protocol !== 'urn:' && protocol !== 'file:'
       })
       if (reliableURL) {

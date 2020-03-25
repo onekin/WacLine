@@ -6,7 +6,7 @@ class DateUtils {
     let dd = date.getDate()
     let mm = date.getMonth() + 1 // January is 0!
 
-    let yyyy = date.getFullYear()
+    const yyyy = date.getFullYear()
     if (dd < 10) {
       dd = '0' + dd
     }
