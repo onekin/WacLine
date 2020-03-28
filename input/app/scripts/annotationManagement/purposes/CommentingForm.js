@@ -226,8 +226,7 @@ class CommentingForm {
 
   static generateOnBeforeOpenForm ({ annotation }) {
     // On before open
-    let onBeforeOpen
-    onBeforeOpen = () => {
+    let onBeforeOpen = () => {
       // PVSCL:IFCOND(Categorize, LINE)
       // Get if annotation has a previous category
       const assessingBody = annotation.getBodyForPurpose(Assessing.purpose)
