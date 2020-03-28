@@ -227,7 +227,6 @@ class CommentingForm {
   static generateOnBeforeOpenForm ({ annotation }) {
     // On before open
     let onBeforeOpen
-    // PVSCL:IFCOND(Autocomplete or SuggestedLiterature or PreviousAssignments,LINE)
     onBeforeOpen = () => {
       // PVSCL:IFCOND(Categorize, LINE)
       // Get if annotation has a previous category
@@ -320,8 +319,6 @@ class CommentingForm {
       })
       // PVSCL:ENDCOND
     }
-    // PVSCL:ELSECOND
-    onBeforeOpen = () => {}
     // PVSCL:ENDCOND
     return onBeforeOpen
   }
