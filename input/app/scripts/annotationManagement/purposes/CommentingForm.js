@@ -227,24 +227,6 @@ class CommentingForm {
   static generateOnBeforeOpenForm ({ annotation }) {
     // On before open
     let onBeforeOpen = () => {
-      // PVSCL:IFCOND(Categorize, LINE)
-      // Get if annotation has a previous category
-      const assessingBody = annotation.getBodyForPurpose(Assessing.purpose)
-      // Change value to previously selected one
-      if (assessingBody) {
-        document.querySelector('#categorizeDropdown').value = assessingBody.value
-      }
-      // PVSCL:ENDCOND
-      // PVSCL:IFCOND(PreviousAssignments,LINE)
-      const previousAssignmentAppendElements = document.querySelectorAll('.previousAssignmentAppendButton')
-      previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
-        previousAssignmentAppendElement.addEventListener('click', () => {
-          // Append url to comment
-          const commentTextarea = document.querySelector('#comment')
-          commentTextarea.value = commentTextarea.value + previousAssignmentAppendElement.dataset.studentUrl
-        })
-      })
-      // PVSCL:ENDCOND
       // PVSCL:IFCOND(Autocomplete,LINE)
       // Load datalist with previously used texts
       const themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(annotation)
@@ -317,8 +299,25 @@ class CommentingForm {
         }
       })
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Categorize, LINE)
+      // Get if annotation has a previous category
+      const assessingBody = annotation.getBodyForPurpose(Assessing.purpose)
+      // Change value to previously selected one
+      if (assessingBody) {
+        document.querySelector('#categorizeDropdown').value = assessingBody.value
+      }
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(PreviousAssignments,LINE)
+      const previousAssignmentAppendElements = document.querySelectorAll('.previousAssignmentAppendButton')
+      previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
+        previousAssignmentAppendElement.addEventListener('click', () => {
+          // Append url to comment
+          const commentTextarea = document.querySelector('#comment')
+          commentTextarea.value = commentTextarea.value + previousAssignmentAppendElement.dataset.studentUrl
+        })
+      })
+      // PVSCL:ENDCOND
     }
-    // PVSCL:ENDCOND
     return onBeforeOpen
   }
 
