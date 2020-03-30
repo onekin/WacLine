@@ -4,21 +4,26 @@
 WacLine is a Software Product Line to manage heterogeneity in Web Annotation domain. Specifically, WacLine allows configuration and automatically generation of customized web annotation clients to conduct annotation activities in specific domains. Created annotation clients are browser extensions currently compatible with Chromium-like web browsers (Google Chrome, Opera,...).
 
 ## Feature model
+In the following image you can see the feature model diagram with the most relevant features 
 The documentation for all the features can be found [here](./featureModel/).
 
 ## Configure your own product using WacLine
 ### Requirements
-* Pure::variants v4.0: Our SPL is build on top of [pure::variants](https://www.pure-systems.com/). Pure::variants is an eclipse plugin for development and deployment of products lines and software families.
-  * [Evaluation Software](https://www.pure-systems.com/downloads-6.html) to develop it. 
-* NodeJS v10 (planned an update to v12): required to compile the resultant generated products. You can use [nvm](https://github.com/nvm-sh/nvm) to manage multiple installations of nodeJS.
+See the requirements for contributors and annotation clients developers [here](https://github.com/onekin/WacLine#requirements-for-contributors-and-annotation-clients-developers).
 
 ### Video
-The following video demonstrates how to configure a product using WacLine over pure::variants.
+The following video demonstrates how to configure a product using WacLine.
 [![video.png](video.png)](https://go.haritzmedina.com/waclineVideo)
 
 ## Available variants
-### Highlight&Go
+### Highlight&Go [![Highlight&Go icon][highlightAndGoIcon]](https://rebrand.ly/highlightAndGo)
+Highlight&Go is a web annotation client to facilitate data extraction in Secondary Studies.
 
-### Mark&Go
+### Mark&Go [![Mark&Go icon][markAndGoIcon]](https://rebrand.ly/markAndGo)
+Mark&Go is a web annotation client to let teachers mark students assignments through semantic annotations based on evaluation rubrics.
+### Review&Go [![Review&Go icon][reviewAndGoIcon]](https://rebrand.ly/reviewAndGo)
+Review&Go is a web annotation client to review research papers using annotations.
 
-### Review&Go
+[highlightAndGoIcon]: https://raw.githubusercontent.com/onekin/WacLine/master/input/app/images/hag/icon-38.png
+[markAndGoIcon]: https://raw.githubusercontent.com/onekin/WacLine/master/input/app/images/mag/icon-38.png
+[reviewAndGoIcon]: https://raw.githubusercontent.com/onekin/WacLine/master/input/app/images/rag/icon-38.png
