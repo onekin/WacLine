@@ -22,15 +22,15 @@ The following video demonstrates how to configure a product using WacLine.
 ## Available variants
 ### Highlight&Go [![Highlight&Go icon][highlightAndGoIcon]](https://rebrand.ly/highlightAndGo)
 Highlight&Go is a web annotation client to facilitate data extraction in Secondary Studies.
-[![assets/HighlightAndGoScreenshot.png](assets/HighlightAndGoScreenshot.png | width=400))](./assets/HighlightAndGoScreenshot.png)
+[![assets/HighlightAndGoScreenshot.png](assets/HighlightAndGoScreenshot.png))](./assets/HighlightAndGoScreenshot.png)
 
 ### Mark&Go [![Mark&Go icon][markAndGoIcon]](https://rebrand.ly/markAndGo)
 Mark&Go is a web annotation client to let teachers mark students assignments through semantic annotations based on evaluation rubrics.
-[![assets/MarkAndGoScreenshot.png](assets/MarkAndGoScreenshot.png | width=400)](./assets/MarkAndGoScreenshot.png)
+[![assets/MarkAndGoScreenshot.png](assets/MarkAndGoScreenshot.png)](./assets/MarkAndGoScreenshot.png)
 
 ### Review&Go [![Review&Go icon][reviewAndGoIcon]](https://rebrand.ly/reviewAndGo)
 Review&Go is a web annotation client to review research papers using annotations.
-[![assets/ReviewAndGoScreenshot.png](assets/ReviewAndGoScreenshot.png | width=400)](./assets/ReviewAndGoScreenshot.png)
+[![assets/ReviewAndGoScreenshot.png](assets/ReviewAndGoScreenshot.png)](./assets/ReviewAndGoScreenshot.png)
 
 [highlightAndGoIcon]: https://raw.githubusercontent.com/onekin/WacLine/master/input/app/images/hag/icon-38.png
 [markAndGoIcon]: https://raw.githubusercontent.com/onekin/WacLine/master/input/app/images/mag/icon-38.png
