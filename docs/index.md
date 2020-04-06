@@ -22,7 +22,7 @@ The following video demonstrates how to configure a product using WacLine.
 ## Available variants
 ### Highlight&Go [![Highlight&Go icon][highlightAndGoIcon]](https://rebrand.ly/highlightAndGo)
 Highlight&Go is a web annotation client to facilitate data extraction in Secondary Studies.
-[![assets/HighlightAndGoScreenshot.png](assets/HighlightAndGoScreenshot.png))](./assets/HighlightAndGoScreenshot.png)
+[![assets/HighlightAndGoScreenshot.png](assets/HighlightAndGoScreenshot.png)](./assets/HighlightAndGoScreenshot.png)
 
 ### Mark&Go [![Mark&Go icon][markAndGoIcon]](https://rebrand.ly/markAndGo)
 Mark&Go is a web annotation client to let teachers mark students assignments through semantic annotations based on evaluation rubrics.
