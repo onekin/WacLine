@@ -21,6 +21,7 @@ class Annotation {
     id,
     body = [],
     references = [],
+    links =[],
     group = window.abwa.groupSelector.currentGroup.id,
     permissions = {
       read: ['group:' + window.abwa.groupSelector.currentGroup.id]
@@ -38,6 +39,7 @@ class Annotation {
     this.id = id
     this.body = body
     this.references = references
+    this.links = links
     this.permissions = permissions
     this.tags = _.uniq(tags)
     this.creator = creator
