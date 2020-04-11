@@ -20,6 +20,7 @@ const Events = {
   // PVSCL:IFCOND(Reply, LINE)
   reply: 'reply',
   // PVSCL:ENDCOND
+  link: 'link',
   // PVSCL:IFCOND(DeleteAll, LINE)
   deleteAllAnnotations: 'deleteAllAnnotations',
   deletedAllAnnotations: 'deletedAllAnnotations',

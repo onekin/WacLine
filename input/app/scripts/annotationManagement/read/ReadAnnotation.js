@@ -15,6 +15,7 @@ import $ from 'jquery'
 import CommentingForm from '../purposes/CommentingForm'
 import Alerts from '../../utils/Alerts'
 // PVSCL:ENDCOND
+import LinkingForm from '../purposes/LinkingForm'
 // PVSCL:IFCOND(Remote, LINE)
 import HypothesisClientManager from '../../annotationServer/hypothesis/HypothesisClientManager'
 import Neo4JClientManager from '../../annotationServer/neo4j/Neo4JClientManager'
@@ -412,7 +413,7 @@ class ReadAnnotation {
             // PVSCL:IFCOND(Commenting, LINE)
             items.comment = { name: 'Comment' }
             // PVSCL:ENDCOND 
-            items.link = { name: 'Link' }
+            
           }
           // PVSCL:ELSEIFCOND(Commenting, LINE)
           items.comment = { name: 'Comment' }
@@ -422,6 +423,7 @@ class ReadAnnotation {
           // PVSCL:IFCOND(Replying, LINE)
           items.reply = { name: 'Reply' }
           // PVSCL:ENDCOND
+          items.link = { name: 'Link' }
          
         }
         return {
