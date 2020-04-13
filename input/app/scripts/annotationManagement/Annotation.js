@@ -21,7 +21,7 @@ class Annotation {
     id,
     body = [],
     references = [],
-    links =[],
+    links = [],
     group = window.abwa.groupSelector.currentGroup.id,
     permissions = {
       read: ['group:' + window.abwa.groupSelector.currentGroup.id]

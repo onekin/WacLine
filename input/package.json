@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "This is a product to conduct web annotation",
   "scripts": {
-    "start": "npm run dev:chrome",
+    "start": "npm run dev:chrome ",
     "build": "npm run build:chrome",
     "build:chrome": "gulp pack --production --vendor=chrome",
     "build:firefox": "gulp pack --production --vendor=firefox",
@@ -15,7 +15,7 @@
     "dev:firefox": "gulp --watch --vendor=firefox",
     "dev:opera": "gulp --watch --vendor=opera",
     "dev:edge": "gulp --watch --vendor=edge",
-    "lint": "standard"
+    "lint": "standart"
   },
   "standard": {
     "globals": [

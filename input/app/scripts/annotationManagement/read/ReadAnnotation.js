@@ -412,8 +412,8 @@ class ReadAnnotation {
           } else {
             // PVSCL:IFCOND(Commenting, LINE)
             items.comment = { name: 'Comment' }
-            // PVSCL:ENDCOND 
-            
+            // PVSCL:ENDCOND
+
           }
           // PVSCL:ELSEIFCOND(Commenting, LINE)
           items.comment = { name: 'Comment' }
@@ -424,7 +424,7 @@ class ReadAnnotation {
           items.reply = { name: 'Reply' }
           // PVSCL:ENDCOND
           items.link = { name: 'Link' }
-         
+
         }
         return {
           callback: (key, opt) => {
@@ -482,9 +482,9 @@ class ReadAnnotation {
                   })
                 }
               })
-            } /* PVSCL:ENDCOND */ else if (key === 'link'){
+            } /* PVSCL:ENDCOND */ else if (key === 'link') {
               LinkingForm.showLinkingForm(annotation, (err, annotation) => {
-                if(err){
+                if (err) {
                   Alerts.errorAlert({ text: 'Unexpected error when linking. Please reload webpage and try again. Error: ' + err.message })
                 } else {
                   LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
