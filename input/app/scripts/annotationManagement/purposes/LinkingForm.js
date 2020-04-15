@@ -35,16 +35,15 @@ class LinkingForm {
     const title = LinkingForm.getFormTitle(annotation)
     const showForm = (preConfirmData = {}) => {
       if (_.isObject(preConfirmData) && preConfirmData.linkAnnotation) {
-        // annotation.links.push(preConfirmData.linkAnnotation)
+        // bAnnotation = preConfirmData
       }
       const generateFormObjects = { annotation, showForm, sidebarStatus }
       const html = LinkingForm.generateLinkFormHTML({ annotation })
-      const swalCallback = LinkingForm.generateLinkFormCallback({ annotation, preConfirmData, sidebarStatus, callback })
-      const preConfirm = LinkingForm.generateLinkFormPreConfirm({ preConfirmData, swalCallback, showForm })
+      // const swalCallback = LinkingForm.generateLinkFormCallback({ annotation, bAnnotation, sidebarStatus, callback })
+      const preConfirm = LinkingForm.generateLinkFormPreConfirm({ annotation, preConfirmData, callback, sidebarStatus })
       Alerts.multipleInputAlert({
         title: title || '',
         html: html,
-        callback: swalCallback,
         preConfirm: preConfirm
       })
     }
@@ -64,23 +63,43 @@ class LinkingForm {
 
   }
 
-  static generateLinkFormPreConfirm ({ preConfirmData, callback, showForm }) {
+  static generateLinkFormPreConfirm ({ annotation, preConfirmData, callback, sidebarStatus }) {
     const preConfirm = () => {
       preConfirmData.linkAnnotation = document.querySelector('#categorizeDropdown').value
-      return preConfirm
+      if (preConfirmData.linkAnnotation != null) {
+        console.log('Haciendo link')
+        annotation.annotationlinks.push(preConfirmData.linkAnnotation)
+        let bAnnotation = window.abwa.annotationManagement.annotationReader.allAnnotations.find(a => a.id === preConfirmData.linkAnnotation)
+        bAnnotation.annotationlinks.push(annotation.id)
+        console.log('links ' + annotation.id + ': ' + annotation.annotationlinks.length + ' links ' + bAnnotation.id + ': ' + bAnnotation.annotationlinks.length)
+
+        if (sidebarStatus) {
+          window.abwa.sidebar.openSidebar()
+        }
+        if (_.isFunction(callback)) {
+          console.log('UPDATING ANNOTATIONS')
+          callback(null, annotation, bAnnotation)
+        }
+      }
     }
+    return preConfirm
   }
+
+
 
   static generateLinkFormHTML ({ annotation }) {
     let html = ''
     const select = document.createElement('select')
     select.id = 'categorizeDropdown'
     window.abwa.annotationManagement.annotationReader.allAnnotations.forEach(a => {
-      const option = document.createElement('option')
-      option.text = a.id
-      option.value = a.id
-      select.add(option)
+      if (a.id !== annotation.id) {
+        const option = document.createElement('option')
+        option.text = a.id
+        option.value = a.id
+        select.add(option)
+      }
     })
+
     html += select.outerHTML
 
     return html
@@ -97,25 +116,19 @@ class LinkingForm {
   }
   // PVSCL:ENDCOND
 
-  static generateLinkFormCallback ({ annotation, preConfirmData, callback, sidebarStatus }) {
+  static generateLinkFormCallback ({ annotation, bAnnotation, callback, sidebarStatus }) {
     // Callback
-    return (err, result) => {
-      if (!_.isUndefined(preConfirmData.linkAnnotation)) {
-        if (err) {
-          window.alert('Unable to load alert.')
-        } else {
-          annotation.links.push(preConfirmData.linkAnnotation)
-          let bAnnotation = window.abwa.annotationManagement.annotationReader.allAnnotations.find(a => a.id === preConfirmData.linkAnnotation)
-          bAnnotation.links.push(annotation.id)
-          if (sidebarStatus) {
-            window.abwa.sidebar.openSidebar()
-          }
-          if (_.isFunction(callback)) {
-            callback(null, annotation)
-          }
-        }
+    return (_err, result) => {
+      console.log('UPDATING ANNOTATIONS')
+      if (sidebarStatus) {
+        window.abwa.sidebar.openSidebar()
+      }
+      if (_.isFunction(callback)) {
+        callback(null, annotation, bAnnotation)
       }
     }
   }
 }
+
+
 export default LinkingForm

@@ -364,6 +364,7 @@ class ReadCodebook {
             // We are using MoodleResource feature so need to push the cmid tag
             tags.push('cmid:' + theme.annotationGuide.cmid)
             // PVSCL:ENDCOND
+
             // PVSCL:IFCOND(SidebarNavigation, LINE)
             // Test if text is selected
             if (document.getSelection().toString().length > 0) {

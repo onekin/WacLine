@@ -419,6 +419,7 @@ class ReadAnnotation {
           items.comment = { name: 'Comment' }
           // PVSCL:ENDCOND
           items.delete = { name: 'Delete' }
+          items.link = { name: 'Link' }
         } else {
           // PVSCL:IFCOND(Replying, LINE)
           items.reply = { name: 'Reply' }
@@ -483,12 +484,15 @@ class ReadAnnotation {
                 }
               })
             } /* PVSCL:ENDCOND */ else if (key === 'link') {
-              LinkingForm.showLinkingForm(annotation, (err, annotation) => {
+              LinkingForm.showLinkingForm(annotation, (err, annotation, bannotation) => {
                 if (err) {
                   Alerts.errorAlert({ text: 'Unexpected error when linking. Please reload webpage and try again. Error: ' + err.message })
                 } else {
                   LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
                     annotation: annotation
+                  })
+                  LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+                    annotation: bannotation
                   })
                 }
               })

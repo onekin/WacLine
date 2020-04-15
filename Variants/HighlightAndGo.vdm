@@ -9134,8 +9134,20 @@
         </cm:relation>
       </cm:relations>
       <cm:properties>
-        <cm:property cm:id="iGwT1aF3Df7Fyqjb5" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
+        <cm:property cm:id="iGwT1aF3Df7Fyqjb5" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
           <cm:constant cm:id="iMOLzN1HjXZwkyabq" cm:type="ps:string">ps:auto</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iIbKzbWPqfgkYGbv7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="is02UXGqhNCKuuCv3" cm:type="ps:string">aitor</cm:constant>
+        </cm:property>
+        <cm:property cm:id="inma5qpguM7AwNcP-" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iz7i2WsHoBsLnCWmW" cm:type="ps:datetime">2020-04-15T07:46:26.980Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDYJaAGaTANrwqJ-p" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iF_DCIJrRm1Xmp2lU" cm:type="ps:string">aitor</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ity_fk3irdV_Djlo9" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iPw7Je6JlCgMIprpB" cm:type="ps:datetime">2020-04-15T07:46:28.167Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
