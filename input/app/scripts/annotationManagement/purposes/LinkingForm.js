@@ -19,6 +19,7 @@ import Commenting from './Commenting'
 import Config from '../../Config'
 // PVSCL:IFCOND(Assessing, LINE)
 import Assessing from './Assessing'
+
 // PVSCL:ENDCOND
 
 require('components-jqueryui')
@@ -38,12 +39,15 @@ class LinkingForm {
         // bAnnotation = preConfirmData
       }
       const generateFormObjects = { annotation, showForm, sidebarStatus }
+      const linksHtml = LinkingForm.generateShowLinksHtml({ annotation })
+      const onBeforeOpen = LinkingForm.generateOnBeforeOpen({ linksHtml })
       const html = LinkingForm.generateLinkFormHTML({ annotation })
       // const swalCallback = LinkingForm.generateLinkFormCallback({ annotation, bAnnotation, sidebarStatus, callback })
       const preConfirm = LinkingForm.generateLinkFormPreConfirm({ annotation, preConfirmData, callback, sidebarStatus })
       Alerts.multipleInputAlert({
         title: title || '',
         html: html,
+        onBeforeOpen: onBeforeOpen,
         preConfirm: preConfirm
       })
     }
@@ -63,13 +67,15 @@ class LinkingForm {
 
   }
 
+
+
   static generateLinkFormPreConfirm ({ annotation, preConfirmData, callback, sidebarStatus }) {
     const preConfirm = () => {
       preConfirmData.linkAnnotation = document.querySelector('#categorizeDropdown').value
       if (preConfirmData.linkAnnotation != null) {
         console.log('Haciendo link')
         annotation.annotationlinks.push(preConfirmData.linkAnnotation)
-        let bAnnotation = window.abwa.annotationManagement.annotationReader.allAnnotations.find(a => a.id === preConfirmData.linkAnnotation)
+        let bAnnotation = window.abwa.annotationManagement.annotationReader.allServerAnnotations.find(a => a.id === preConfirmData.linkAnnotation)
         bAnnotation.annotationlinks.push(annotation.id)
         console.log('links ' + annotation.id + ': ' + annotation.annotationlinks.length + ' links ' + bAnnotation.id + ': ' + bAnnotation.annotationlinks.length)
 
@@ -85,21 +91,95 @@ class LinkingForm {
     return preConfirm
   }
 
+  static generateShowLinksHtml ({ annotation }) {
+    let links = {}
+    let html = '<div id="table-div" style="overflow:auto;" >'
+    annotation.annotationlinks.forEach((link) => {
+      let targetAnnotation = _.find(window.abwa.annotationManagement.annotationReader.allServerAnnotations, (a) => { return a.id === link })
+      let text = ''
+      targetAnnotation.target[0].selector.forEach((select) => {
+        if (select.type === 'TextQuoteSelector') {
+          text = select.exact
+        }
 
+      })
+      if (links[targetAnnotation.target[0].source.title]) {
+        links[targetAnnotation.target[0].source.title].push(text)
+      } else {
+        links[targetAnnotation.target[0].source.title] = [targetAnnotation]
+      }
+    })
+    for (const [key, values] of Object.entries(links)) {
+      const title = document.createElement('h6')
+      title.innerText = key
+      const ul = document.createElement('ul')
+      values.forEach((an) => {
+        const li = document.createElement('li')
+        li.id = an.id
+        // li.onclick = window.abwa.annotationManagement.goToAnnotation(an)
+        li.innerText = _.find(an.target[0].selector, (s) => { return s.type === 'TextQuoteSelector' }).exact
+        ul.appendChild(li)
+      })
+      html += title.outerHTML + ul.outerHTML
+
+    }
+    html += '</div>'
+    return html
+  }
+
+
+  static generateOnBeforeOpen ({ linksHtml }) {
+    const onBefore = () => {
+      let btn = document.querySelector('#buttonLinks')
+      btn.addEventListener('click', () => {
+        Alerts.multipleInputAlert({
+          title: 'Links',
+          html: linksHtml,
+          onBeforeOpen: () => {
+            document.getElementById('table-div').getElementsByTagName('ul').forEach((ul) => {
+              ul.onclick = (e) => {
+                Alerts.closeAlert()
+                window.abwa.annotationManagement.goToAnnotation(window.abwa.annotationManagement.annotationReader.allServerAnnotations.find((annot) => { return annot.id === e.target.id }))
+              }
+            })
+
+          }
+
+        })
+      })
+    }
+    return onBefore
+  }
 
   static generateLinkFormHTML ({ annotation }) {
     let html = ''
+
     const select = document.createElement('select')
     select.id = 'categorizeDropdown'
-    window.abwa.annotationManagement.annotationReader.allAnnotations.forEach(a => {
-      if (a.id !== annotation.id) {
+    const button = document.createElement('button')
+    button.innerText = 'Show Links'
+    button.id = 'buttonLinks'
+    // button.onclick = () => { alert('HOLA') }
+
+    window.abwa.annotationManagement.annotationReader.allServerAnnotations.forEach(a => {
+      if (a.id !== annotation.id && !annotation.annotationlinks.includes(a.id)) {
         const option = document.createElement('option')
-        option.text = a.id
+        let text = ''
+        a.target[0].selector.forEach((select) => {
+          if (select.type === 'TextQuoteSelector') {
+            if (select.exact.length > 25) {
+              text = select.exact.slice(0, 22) + '...'
+            } else {
+              text = select.exact
+            }
+          }
+        })
+        option.text = a.target[0].source.title + '||' + text
         option.value = a.id
         select.add(option)
       }
     })
-
+    html += button.outerHTML
     html += select.outerHTML
 
     return html

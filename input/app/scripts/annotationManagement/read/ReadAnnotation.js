@@ -146,6 +146,12 @@ class ReadAnnotation {
     }
   }
 
+  retrieveAnnotationByID ({ annotationID }) {
+    // eslint-disable-next-line no-unused-expressions
+    let annotation = this.allServerAnnotations.find((a) => { a.id === annotationID })
+    return annotation
+  }
+
   // PVSCL:IFCOND(Create, LINE)
   initAnnotationCreatedEventListener (callback) {
     this.events.annotationCreatedEvent = { element: document, event: Events.annotationCreated, handler: this.createdAnnotationHandler() }
@@ -160,6 +166,8 @@ class ReadAnnotation {
       const annotation = event.detail.annotation
       // Add to all annotations list
       this.allAnnotations.push(annotation)
+      // MODULO LINK
+      this.allServerAnnotations.push(annotation)
       // PVSCL:IFCOND(Replying, LINE)
       // If annotation is replying another annotation, add to reply annotation list
       if (annotation.references.length > 0) {
@@ -197,6 +205,9 @@ class ReadAnnotation {
       _.remove(this.allAnnotations, (currentAnnotation) => {
         return currentAnnotation.id === annotation.id
       })
+      _.remove(this.allServerAnnotations, (currentAnnotation) => {
+        return currentAnnotation.id === annotation.id
+      })
       // PVSCL:IFCOND(Replying, LINE)
       // Remove annotations that reply to this one (if user is the same)
       _.remove(this.allAnnotations, (currentAnnotation) => {
@@ -205,8 +216,21 @@ class ReadAnnotation {
         })
       })
       // PVSCL:ENDCOND
+
+      // LINK MODULE
+
+      this.allServerAnnotations.forEach((a) => {
+        a.annotationlinks = a.annotationlinks.filter((link) => link !== annotation.id)
+        LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, { annotation: a })
+      })
+      this.allAnnotations.forEach((a) => _.remove(a.annotationlinks, (link) => { return link === annotation.id }))
+
       // Dispatch annotations updated event
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, { annotations: this.allAnnotations })
+
+      // LINK MODULE
+
+
       // PVSCL:IFCOND(UserFilter, LINE)
       // Retrieve current annotations
       this.currentAnnotations = this.retrieveCurrentAnnotations()
@@ -232,6 +256,9 @@ class ReadAnnotation {
       } else {
         // Deserialize retrieved annotations
         this.allAnnotations = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
+        _.remove(this.allAnnotations, (currentAnnotation) => {
+          return currentAnnotation.target[0].source.url !== window.abwa.targetManager.getDocumentURL()
+        })
         // PVSCL:IFCOND(Replying, LINE)
         this.replyAnnotations = _.filter(this.allAnnotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
@@ -242,6 +269,7 @@ class ReadAnnotation {
         // PVSCL:ENDCOND
         // Redraw all annotations
         this.redrawAnnotations()
+        this.loadAllAnnotations()
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, { annotations: this.allAnnotations })
         if (_.isFunction(callback)) {
           callback(null, this.allAnnotations)
@@ -249,6 +277,42 @@ class ReadAnnotation {
       }
     })
   }
+
+  retrieveAllAnnotations (callback) {
+    let promise = new Promise((resolve, reject) => {
+      if (window.abwa.groupSelector.currentGroup.id) {
+        const call = {}
+        // Set the annotation group where annotations should be searched from
+        call.group = window.abwa.groupSelector.currentGroup.id
+        window.abwa.annotationServerManager.client.searchAnnotations(call, (err, annotations) => {
+          if (err) {
+            reject(err)
+          }
+          annotations = _.filter(annotations, (a) => { return !_.isUndefined(a.body) })
+          resolve(annotations.map(annotation => Annotation.deserialize(annotation)))
+        })
+      } else {
+        resolve([])
+      }
+    })
+    promise.catch((err) => {
+      callback(err)
+    }).then((annotations) => {
+      callback(null, annotations)
+    })
+  }
+
+  loadAllAnnotations () {
+    this.retrieveAllAnnotations((err, annotations) => {
+      if (err) {
+        // TODO Unable to retrieve all annotations
+      } else {
+        this.allServerAnnotations = annotations
+      }
+
+    })
+  }
+
 
   loadAnnotations (callback) {
     this.updateAllAnnotations((err) => {
@@ -484,16 +548,17 @@ class ReadAnnotation {
                 }
               })
             } /* PVSCL:ENDCOND */ else if (key === 'link') {
-              LinkingForm.showLinkingForm(annotation, (err, annotation, bannotation) => {
+              LinkingForm.showLinkingForm(annotation, (err, aAnnotation, bAnnotation) => {
                 if (err) {
                   Alerts.errorAlert({ text: 'Unexpected error when linking. Please reload webpage and try again. Error: ' + err.message })
                 } else {
                   LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-                    annotation: annotation
+                    annotation: aAnnotation
                   })
                   LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-                    annotation: bannotation
+                    annotation: bAnnotation
                   })
+                  // window.abwa.annotationManagement.annotationReader.updateAllAnnotations()
                 }
               })
             }
