@@ -19,6 +19,7 @@ import Commenting from './Commenting'
 import Config from '../../Config'
 // PVSCL:IFCOND(Assessing, LINE)
 import Assessing from './Assessing'
+import Popup from '../../popup/Popup'
 
 // PVSCL:ENDCOND
 
@@ -118,6 +119,7 @@ class LinkingForm {
         li.id = an.id
         // li.onclick = window.abwa.annotationManagement.goToAnnotation(an)
         li.innerText = _.find(an.target[0].selector, (s) => { return s.type === 'TextQuoteSelector' }).exact
+        li.style = 'cursor: pointer;'
         ul.appendChild(li)
       })
       html += title.outerHTML + ul.outerHTML
@@ -139,7 +141,8 @@ class LinkingForm {
             document.getElementById('table-div').getElementsByTagName('ul').forEach((ul) => {
               ul.onclick = (e) => {
                 Alerts.closeAlert()
-                window.abwa.annotationManagement.goToAnnotation(window.abwa.annotationManagement.annotationReader.allServerAnnotations.find((annot) => { return annot.id === e.target.id }))
+                let targetAnnotation = window.abwa.annotationManagement.annotationReader.allServerAnnotations.find((annot) => { return annot.id === e.target.id })
+                window.open((targetAnnotation.target[0].source.url || targetAnnotation.target[0].source.uri) + '#' + Config.urlParamName + ':' + targetAnnotation.id)
               }
             })
 

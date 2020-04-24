@@ -146,11 +146,12 @@ class ReadAnnotation {
     }
   }
 
-  retrieveAnnotationByID ({ annotationID }) {
+  /* retrieveAnnotationByID ({ annotationID }) {
     // eslint-disable-next-line no-unused-expressions
     let annotation = this.allServerAnnotations.find((a) => { a.id === annotationID })
     return annotation
   }
+  */
 
   // PVSCL:IFCOND(Create, LINE)
   initAnnotationCreatedEventListener (callback) {
@@ -205,6 +206,7 @@ class ReadAnnotation {
       _.remove(this.allAnnotations, (currentAnnotation) => {
         return currentAnnotation.id === annotation.id
       })
+      // LINK
       _.remove(this.allServerAnnotations, (currentAnnotation) => {
         return currentAnnotation.id === annotation.id
       })
@@ -223,12 +225,14 @@ class ReadAnnotation {
         a.annotationlinks = a.annotationlinks.filter((link) => link !== annotation.id)
         LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, { annotation: a })
       })
+
       this.allAnnotations.forEach((a) => _.remove(a.annotationlinks, (link) => { return link === annotation.id }))
 
       // Dispatch annotations updated event
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, { annotations: this.allAnnotations })
 
-      // LINK MODULE
+
+
 
 
       // PVSCL:IFCOND(UserFilter, LINE)
@@ -256,9 +260,6 @@ class ReadAnnotation {
       } else {
         // Deserialize retrieved annotations
         this.allAnnotations = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
-        _.remove(this.allAnnotations, (currentAnnotation) => {
-          return currentAnnotation.target[0].source.url !== window.abwa.targetManager.getDocumentURL()
-        })
         // PVSCL:IFCOND(Replying, LINE)
         this.replyAnnotations = _.filter(this.allAnnotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
@@ -267,9 +268,10 @@ class ReadAnnotation {
         // PVSCL:IFCOND(UserFilter, LINE)
         this.currentAnnotations = this.retrieveCurrentAnnotations()
         // PVSCL:ENDCOND
+        // LINK
+        this.loadAllAnnotations()
         // Redraw all annotations
         this.redrawAnnotations()
-        this.loadAllAnnotations()
         LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, { annotations: this.allAnnotations })
         if (_.isFunction(callback)) {
           callback(null, this.allAnnotations)
@@ -312,6 +314,7 @@ class ReadAnnotation {
 
     })
   }
+
 
 
   loadAnnotations (callback) {
@@ -558,7 +561,6 @@ class ReadAnnotation {
                   LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
                     annotation: bAnnotation
                   })
-                  // window.abwa.annotationManagement.annotationReader.updateAllAnnotations()
                 }
               })
             }

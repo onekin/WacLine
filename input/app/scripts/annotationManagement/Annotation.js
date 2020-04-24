@@ -103,7 +103,13 @@ class Annotation {
       // Add uri attribute
       // data.uri = window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
       // Add document, uris, title, etc.
-      const uris = window.abwa.targetManager.getDocumentURIs()
+      let uris = {}
+      if (this.target) {
+        if (this.target[0].source.url) { uris.url = this.target[0].source.url }
+        if (this.target[0].source.urn) { uris.urn = this.target[0].source.urn }
+      } else {
+        uris = window.abwa.targetManager.getDocumentURIs()
+      }
       data.document = {}
       if (uris.urn) {
         data.document.documentFingerprint = uris.urn
