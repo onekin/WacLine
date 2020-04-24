@@ -242,7 +242,7 @@ class CommentingForm {
         })
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(SuggestedLiterature, LINE)
+      // PVSCL:IFCOND(LookupLiterature, LINE)
       // Add the option to delete a suggestedLiterature from the comment
       $('.removeReference').on('click', function () {
         $(this).closest('li').remove()
