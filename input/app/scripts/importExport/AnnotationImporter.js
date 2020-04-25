@@ -78,7 +78,7 @@ class AnnotationImporter {
                             jsonObject.documentAnnotations.forEach((annotation) => {
                               let classifyingBody = annotation.body.find(body => body.purpose === 'classifying')
                               if (classifyingBody) {
-                                let code = classifyingBody.value
+                                let code = classifyingBody.value.code
                                 let codeName = code.name
                                 let theme
                                 // Get the theme which is annotation classified
@@ -104,7 +104,7 @@ class AnnotationImporter {
                                 // PVSCL:ENDCOND
                                 // Update annotation value
                                 if (codeOrTheme) {
-                                  annotation.body[annotation.body.findIndex(body => body.purpose === 'classifying')].value = codeOrTheme.toObject()
+                                  annotation.body[annotation.body.findIndex(body => body.purpose === 'classifying')].value.code = codeOrTheme.toObject()
                                 }
                               }
                               // Set group to annotations

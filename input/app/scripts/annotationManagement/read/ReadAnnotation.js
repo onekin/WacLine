@@ -16,6 +16,10 @@ require('jquery-contextmenu/dist/jquery.contextMenu')
 const CommentingForm = require('../purposes/CommentingForm')
 const Alerts = require('../../utils/Alerts')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(CXLExport, LINE)
+const Linking = require('../../annotationManagement/purposes/Linking')
+const Classifying = require('../../annotationManagement/purposes/Classifying')
+// PVSCL:ENDCOND
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 5
 
@@ -29,6 +33,8 @@ class ReadAnnotation {
     this.initAnnotationCreatedEventListener()
     // Event listener deleted annotation
     this.initAnnotationDeletedEventListener()
+    // Event listener deleted annotations
+    this.initAnnotationsDeletedEventListener()
     // PVSCL:IFCOND(DeleteAll, LINE)
     // Event listener deleted all annotations
     this.initAllAnnotationsDeletedEventListener()
@@ -180,6 +186,14 @@ class ReadAnnotation {
     }
   }
 
+  initAnnotationsDeletedEventListener (callback) {
+    this.events.annotationsDeletedEvent = {element: document, event: Events.annotationsDeleted, handler: this.deletedAnnotationsHandler()}
+    this.events.annotationsDeletedEvent.element.addEventListener(this.events.annotationsDeletedEvent.event, this.events.annotationsDeletedEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
   deletedAnnotationHandler () {
     return (event) => {
       let annotation = event.detail.annotation
@@ -205,13 +219,49 @@ class ReadAnnotation {
       this.unHighlightAnnotation(annotation)
     }
   }
+
+  deletedAnnotationsHandler () {
+    return (event) => {
+      let annotations = event.detail.annotations
+      for (let i = 0; i < annotations.length; i++) {
+        let annotation = annotations[i]
+        // Remove annotation from allAnnotations
+        _.remove(this.allAnnotations, (currentAnnotation) => {
+          return currentAnnotation.id === annotation.id
+        })
+        // PVSCL:IFCOND(Replying, LINE)
+        // Remove annotations that reply to this one (if user is the same)
+        _.remove(this.allAnnotations, (currentAnnotation) => {
+          return _.includes(currentAnnotation.references, (refId) => {
+            return annotation.id === refId
+          })
+        })
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(Linking, LINE)
+        _.remove(this.groupLinkingAnnotations, (currentAnnotation) => {
+          return currentAnnotation.id === annotation.id
+        })
+        // PVSCL:ENDCOND
+        this.unHighlightAnnotation(annotation)
+      }
+      // Dispatch annotations updated event
+      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+      // PVSCL:IFCOND(UserFilter, LINE)
+      // Retrieve current annotations
+      this.currentAnnotations = this.retrieveCurrentAnnotations()
+      LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+      // PVSCL:ENDCOND
+    }
+  }
   // PVSCL:ENDCOND
 
   updateAllAnnotations (callback) {
     // Retrieve annotations for current url and group
     window.abwa.annotationServerManager.client.searchAnnotations({
+      // PVSCL:IFCOND(NOT(CXLExport), LINE)
       url: window.abwa.targetManager.getDocumentURIToSearchInAnnotationServer(),
       uri: window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer(),
+      // PVSCL:ENDCOND
       group: window.abwa.groupSelector.currentGroup.id,
       order: 'asc'
     }, (err, annotationObjects) => {
@@ -220,16 +270,30 @@ class ReadAnnotation {
           callback(err)
         }
       } else {
+        // PVSCL:IFCOND(CXLExport, LINE)
+        // this.annotationObjects = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
+        let currentResourceAnnotations = _.filter(annotationObjects, (annotationObject) => {
+          return annotationObject.uri === window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
+        })
+        this.allGroupAnnotations = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
+        this.allAnnotations = currentResourceAnnotations.map(currentResourceAnnotation => Annotation.deserialize(currentResourceAnnotation))
+        this.groupLinkingAnnotations = _.filter(this.allGroupAnnotations, (annotation) => {
+          if (annotation.body.length > 0) {
+            return LanguageUtils.isInstanceOf(annotation.body[0], Linking)
+          }
+        })
+        this.groupClassifiyingAnnotations = _.filter(this.allGroupAnnotations, (annotation) => {
+          if (annotation.body.length > 0) {
+            return LanguageUtils.isInstanceOf(annotation.body[0], Classifying)
+          }
+        })
+        // PVSCL:ELSECOND
         // Deserialize retrieved annotations
         this.allAnnotations = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
+        // PVSCL:ENDCOND
         // PVSCL:IFCOND(Replying, LINE)
         this.replyAnnotations = _.filter(this.allAnnotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
-        })
-        // PVSCL:ENDCOND
-        // PVSCL:IFCOND(Linking, LINE)
-        this.linkingAnnotations = _.filter(this.allAnnotations, (annotation) => {
-          return annotation.body.purpose === 'linking'
         })
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(UserFilter, LINE)
@@ -318,7 +382,7 @@ class ReadAnnotation {
     // Get annotated code id
     let bodyWithClassifyingPurpose = annotation.getBodyForPurpose('classifying')
     if (bodyWithClassifyingPurpose) {
-      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.id)
+      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(bodyWithClassifyingPurpose.value.code.id)
       if (codeOrTheme) {
         color = codeOrTheme.color
       } else {
@@ -339,21 +403,9 @@ class ReadAnnotation {
       const ColorUtils = require('../../utils/ColorUtils')
       color = ColorUtils.getDefaultColor()
     }
-    let tooltip
-    if (!color) {
-      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(annotation.id)
-      if (codeOrTheme) {
-        color = codeOrTheme.color
-        tooltip = codeOrTheme.name
-      } else {
-        const ColorUtils = require('../../utils/ColorUtils')
-        color = ColorUtils.getDefaultColor()
-      }
-    } else {
-      tooltip = this.generateTooltipFromAnnotation(annotation)
-    }
     // PVSCL:ENDCOND
     // Get the tooltip text for the annotation
+    let tooltip = this.generateTooltipFromAnnotation(annotation)
     // Draw the annotation in DOM
     try {
       let highlightedElements = DOMTextUtils.highlightContent(
@@ -421,6 +473,13 @@ class ReadAnnotation {
           items['comment'] = {name: 'Comment'}
           // PVSCL:ENDCOND
           items['delete'] = {name: 'Delete'}
+          // PVSCL:IFCOND(EvidenceAnnotations, LINE)
+          if (annotation.body[0].value.addToCXL) {
+            items['evidenceAnnotations'] = {name: 'Remove annotation from map'}
+          } else {
+            items['evidenceAnnotations'] = {name: 'Add annotation to map'}
+          }
+          // PVSCL:ENDCOND
         } else {
           // PVSCL:IFCOND(Replying, LINE)
           items['reply'] = {name: 'Reply'}
@@ -481,6 +540,21 @@ class ReadAnnotation {
                     annotation: annotation
                   })
                 }
+              })
+            } /* PVSCL:ENDCOND *//* PVSCL:IFCOND(EvidenceAnnotations) */ else if (key === 'evidenceAnnotations') {
+              if (annotation.body[0].value.addToCXL) {
+                annotation.body[0].value.addToCXL = false
+                LanguageUtils.dispatchCustomEvent(Events.evidenceAnnotationRemoved, {
+                  annotation: annotation
+                })
+              } else {
+                annotation.body[0].value.addToCXL = true
+                LanguageUtils.dispatchCustomEvent(Events.evidenceAnnotationAdded, {
+                  annotation: annotation
+                })
+              }
+              LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+                annotation: annotation
               })
             } /* PVSCL:ENDCOND */
           },
@@ -591,6 +665,7 @@ class ReadAnnotation {
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(DeleteAll, LINE)
+
   initAllAnnotationsDeletedEventListener (callback) {
     this.events.allAnnotationsDeletecEvent = {element: document, event: Events.deletedAllAnnotations, handler: this.allAnnotationsDeletedEventListener()}
     this.events.allAnnotationsDeletecEvent.element.addEventListener(this.events.allAnnotationsDeletecEvent.event, this.events.allAnnotationsDeletecEvent.handler, false)
@@ -616,8 +691,8 @@ class ReadAnnotation {
     }
   }
   // PVSCL:ENDCOND
-
   // PVSCL:IFCOND(ImportAnnotations, LINE)
+
   initAnnotationsImportedEventListener (callback) {
     this.events.annotationsImportedEvent = {element: document, event: Events.annotationsImported, handler: this.createAnnotationsImportedEventHandler()}
     this.events.annotationsImportedEvent.element.addEventListener(this.events.annotationsImportedEvent.event, this.events.annotationsImportedEvent.handler, false)
@@ -634,6 +709,7 @@ class ReadAnnotation {
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(CodebookUpdate, LINE)
+
   initCodebookUpdatedEventListener (callback) {
     this.events.codebookUpdated = {element: document, event: Events.codebookUpdated, handler: this.createCodebookUpdatedEventHandler()}
     this.events.codebookUpdated.element.addEventListener(this.events.codebookUpdated.event, this.events.codebookUpdated.handler, false)

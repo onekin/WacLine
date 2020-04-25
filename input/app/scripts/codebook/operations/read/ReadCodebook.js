@@ -38,6 +38,10 @@ class ReadCodebook {
     this.initCodeRemovedEvent()
     // PVSCL:ENDCOND
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Linking AND NOT(Hierarchy) ,LINE)
+    this.initRelationshipsLoadedEvent()
+    this.initRelationshipAddedEvent()
+    // PVSCL:ENDCOND
     this.loadCodebook(callback)
   }
 
@@ -52,6 +56,29 @@ class ReadCodebook {
   }
 
   // EVENTS
+  // PVSCL:IFCOND(Linking AND NOT(Hierarchy), LINE)
+
+  initRelationshipsLoadedEvent () {
+    this.events.relationshipsLoadedEvent = {element: document, event: Events.relationshipsLoaded, handler: this.relationshipsLoadedEventHandler()}
+    this.events.relationshipsLoadedEvent.element.addEventListener(this.events.relationshipsLoadedEvent.event, this.events.relationshipsLoadedEvent.handler, false)
+  }
+
+  initRelationshipAddedEvent () {
+    this.events.relationshipAddedEvent = {element: document, event: Events.relationshipAdded, handler: this.relationshipAddedEventHandler()}
+    this.events.relationshipAddedEvent.element.addEventListener(this.events.relationshipAddedEvent.event, this.events.relationshipAddedEvent.handler, false)
+  }
+
+  initRelationshipUpdatedEvent () {
+    this.events.relationshipUpdatedEvent = {element: document, event: Events.relationshipUpdated, handler: this.relationshipUpdatedEventHandler()}
+    this.events.relationshipUpdatedEvent.element.addEventListener(this.events.relationshipUpdatedEvent.event, this.events.relationshipUpdatedEvent.handler, false)
+  }
+
+  initRelationshipDeletedEvent () {
+    this.events.relationshipDeletedEvent = {element: document, event: Events.relationshipDeleted, handler: this.relationshipDeletedEventHandler()}
+    this.events.relationshipDeletedEvent.element.addEventListener(this.events.relationshipDeletedEvent.event, this.events.relationshipDeletedEvent.handler, false)
+  }
+  // PVSCL:ENDCOND
+
   // PVSCL:IFCOND(CodebookUpdate,LINE)
   initThemeCreatedEvent () {
     this.events.themeCreatedEvent = {element: document, event: Events.themeCreated, handler: this.themeCreatedEventHandler()}
@@ -217,7 +244,7 @@ class ReadCodebook {
       groupUrl = window.abwa.groupSelector.currentGroup.links.html
     }
     window.abwa.annotationServerManager.client.searchAnnotations({
-      group: window.abwa.groupSelector.currentGroup.id,
+      url: groupUrl,
       order: 'desc'
     }, (err, annotations) => {
       if (err) {
@@ -287,18 +314,18 @@ class ReadCodebook {
     let themeButtonContainer
     // PVSCL:IFCOND(TopicBased,LINE)
     if (rootTheme) {
-      let topicHeader = document.createElement('div')
+      /* let topicHeader = document.createElement('div')
       topicHeader.className = 'topicBasedHeaders'
       topicHeader.innerText = 'TOPIC'
-      this.buttonContainer.append(topicHeader)
+      this.buttonContainer.append(topicHeader) */
       themeButtonContainer = this.createThemeButtonContainer(rootTheme)
       if (_.isElement(themeButtonContainer)) {
         this.buttonContainer.append(themeButtonContainer)
       }
-      let conceptsHeader = document.createElement('div')
+      /* let conceptsHeader = document.createElement('div')
       conceptsHeader.className = 'topicBasedHeaders'
       conceptsHeader.innerText = 'CONCEPTS'
-      this.buttonContainer.append(conceptsHeader)
+      this.buttonContainer.append(conceptsHeader) */
     }
     // PVSCL:ENDCOND
     for (let i = 0; i < themes.length; i++) {
@@ -378,7 +405,8 @@ class ReadCodebook {
                 purpose: 'classifying',
                 tags: tags,
                 theme: theme,
-                codeId: id
+                codeId: id/* PVSCL:IFCOND(EvidenceAnnotations) */,
+                addToCXL: false /* PVSCL:ENDCOND */
               })
             } else {
               // Else navigate to annotation
@@ -392,7 +420,8 @@ class ReadCodebook {
               purpose: 'classifying',
               tags: tags,
               theme: theme,
-              codeId: id
+              codeId: id/* PVSCL:IFCOND(EvidenceAnnotations) */,
+              addToCXL: false /* PVSCL:ENDCOND */
             })
             // PVSCL:ENDCOND
           }
@@ -439,7 +468,8 @@ class ReadCodebook {
               LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
                 purpose: 'classifying',
                 tags: tags,
-                codeId: code.id
+                codeId: code.id/* PVSCL:IFCOND(EvidenceAnnotations) */,
+                addToCXL: false /* PVSCL:ENDCOND */
               })
             }
             // PVSCL:ELSECOND
@@ -455,7 +485,8 @@ class ReadCodebook {
                 purpose: 'classifying',
                 tags: tags,
                 codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
-                lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
+                lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND *//* PVSCL:IFCOND(EvidenceAnnotations) */,
+                addToCXL: false /* PVSCL:ENDCOND */
               })
             } else {
               // Else navigate to annotation
@@ -468,7 +499,8 @@ class ReadCodebook {
               purpose: 'classifying',
               tags: tags,
               codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
-              lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND */
+              lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND *//* PVSCL:IFCOND(EvidenceAnnotations) */,
+              addToCXL: false /* PVSCL:ENDCOND */
             })
             // PVSCL:ENDCOND
             // PVSCL:ENDCOND
@@ -503,7 +535,8 @@ class ReadCodebook {
               LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
                 purpose: 'classifying',
                 tags: tags,
-                codeId: theme.id
+                codeId: theme.id/* PVSCL:IFCOND(EvidenceAnnotations) */,
+                addToCXL: false /* PVSCL:ENDCOND */
               })
             } else {
               // Else navigate to annotation
@@ -515,7 +548,8 @@ class ReadCodebook {
             LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
               purpose: 'classifying',
               tags: tags,
-              codeId: theme.id
+              codeId: theme.id/* PVSCL:IFCOND(EvidenceAnnotations) */,
+              addToCXL: false /* PVSCL:ENDCOND */
             })
             // PVSCL:ENDCOND
           }
@@ -592,12 +626,21 @@ class ReadCodebook {
       if (!theme.isTopic) {
         items['updateTheme'] = {name: 'Modify topic'}
         items['removeTheme'] = {name: 'Remove ' + Config.tags.grouped.group}
+        // PVSCL:IFCOND(Linking,LINE)
+        items['manageRelationships'] = {name: 'Manage links'}
+        // PVSCL:ENDCOND
       } else {
         items['updateTheme'] = {name: 'Modify ' + Config.tags.grouped.group}
+        // PVSCL:IFCOND(Linking,LINE)
+        items['manageRelationships'] = {name: 'Manage links'}
+        // PVSCL:ENDCOND
       }
       // PVSCL:ELSECOND
       items['updateTheme'] = {name: 'Modify ' + Config.tags.grouped.group}
       items['removeTheme'] = {name: 'Remove ' + Config.tags.grouped.group}
+      // PVSCL:IFCOND(Linking,LINE)
+      items['manageRelationships'] = {name: 'Manage links'}
+      // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(SidebarNavigation, LINE)
@@ -625,6 +668,14 @@ class ReadCodebook {
               LanguageUtils.dispatchCustomEvent(Events.removeTheme, {theme: theme})
             }
           }
+          // PVSCL:IFCOND(Linking, LINE)
+          if (key === 'manageRelationships') {
+            let theme = this.codebook.getCodeOrThemeFromId(themeId)
+            if (LanguageUtils.isInstanceOf(theme, Theme)) {
+              window.abwa.mapContentManager.manageRelationships(theme)
+            }
+          }
+          // PVSCL:ENDCOND
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(SidebarNavigation, LINE)
           if (key === 'pageAnnotation') {
@@ -700,6 +751,13 @@ class ReadCodebook {
       let theme = Theme.fromAnnotation(event.detail.newThemeAnnotation, this.codebook)
       // Add to the model the new theme
       this.codebook.addTheme(theme)
+      // Create theme annotation
+      LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+        purpose: 'classifying',
+        target: event.detail.target,
+        codeId: theme.id/* PVSCL:IFCOND(EvidenceAnnotations) */,
+        addToCXL: true /* PVSCL:ENDCOND */
+      })
       // Reload button container
       this.reloadButtonContainer()
       // Dispatch codebook updated event
@@ -791,6 +849,68 @@ class ReadCodebook {
       this.initCodebookContent()
     }
   }
+  // PVSCL:IFCOND(Linking AND NOT(Hierarchy), LINE)
+
+  relationshipsLoadedEventHandler () {
+    return (event) => {
+      let relations = window.abwa.mapContentManager.relationships
+      for (let i = 0; i < relations.length; i++) {
+        let relation = relations[i]
+        // Get button
+        let themeButton = document.querySelectorAll('.tagButton[data-code-id="' + relation.fromConcept.id + '"]')
+        // Add relation to tooltip
+        if (themeButton[0].title.includes('Relationships:')) {
+          themeButton[0].title += '\n' + relation.linkingWord + ' ' + relation.toConcept.name
+        } else {
+          themeButton[0].title = '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
+        }
+      }
+    }
+  }
+
+  relationshipAddedEventHandler () {
+    return (event) => {
+      let relation = event.detail.relation
+      let themeButton = document.querySelectorAll('.tagButton[data-code-id="' + relation.fromConcept.id + '"]')
+      // Add relation to tooltip
+      if (themeButton[0].title.includes('Relationships:')) {
+        themeButton[0].title += '\n' + relation.linkingWord + ' ' + relation.toConcept.name
+      } else {
+        themeButton[0].title += '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
+      }
+    }
+  }
+
+  relationshipUpdatedEventHandler () {
+    return (event) => {
+      let relation = event.detail.relation
+      for (let i = 0; i < relations.length; i++) {
+        let relation = relations[i]
+        // Get button
+        let themeButton = document.querySelectorAll('.tagButton[data-code-id="' + relation.fromConcept.id + '"]')
+        // Add relation to tooltip
+        if (themeButton[0].title.includes('Relationships:')) {
+          themeButton[0].title += '\n' + relation.linkingWord + ' ' + relation.toConcept.name
+        } else {
+          themeButton[0].title = '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
+        }
+      }
+    }
+  }
+
+  relationshipDeletedEventHandler () {
+    return (event) => {
+      let relation = event.detail.relation
+      let themeButton = document.querySelectorAll('.tagButton[data-code-id="' + relation.fromConcept.id + '"]')
+      // Add relation to tooltip
+      if (themeButton[0].title.includes('Relationships:')) {
+        themeButton[0].title += '\n' + relation.linkingWord + ' ' + relation.toConcept.name
+      } else {
+        themeButton[0].title += '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
+      }
+    }
+  }
+  // PVSCL:ENDCOND
 }
 
 module.exports = ReadCodebook

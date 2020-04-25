@@ -8,6 +8,9 @@ const AnnotationManagement = require('../annotationManagement/AnnotationManageme
 const GroupSelector = require('../groupManipulation/GroupSelector')
 const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
 const {AnnotatedContentManager} = require('./AnnotatedContentManager')
+// PVSCL:IFCOND(CXLExport, LINE)
+const {MapContentManager} = require('./MapContentManager')
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Manual, LINE)
 const Events = require('../Events')
 // PVSCL:ENDCOND
@@ -87,6 +90,11 @@ class ContentScriptManager {
         return this.reloadMoodleReport()
       })
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(CXLExport, LINE)
+      .then(() => {
+        return this.reloadMapContentManager()
+      })
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleComment, LINE)
       .then(() => {
         return this.reloadMoodleComment()
@@ -156,6 +164,24 @@ class ContentScriptManager {
       })
     })
   }
+  // PVSCL:IFCOND(CXLExport, LINE)
+
+  reloadMapContentManager () {
+    return new Promise((resolve, reject) => {
+      // Destroy current content annotator
+      this.destroyMapContentManager()
+      // Create a new content annotator for the current group
+      window.abwa.mapContentManager = new MapContentManager()
+      window.abwa.mapContentManager.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleReport, LINE)
 
   reloadMoodleReport () {
@@ -244,6 +270,15 @@ class ContentScriptManager {
       })
     })
   }
+  // PVSCL:IFCOND(CXLExport, LINE)
+
+  destroyMapContentManager () {
+    // Destroy current map content
+    if (!_.isEmpty(window.abwa.mapContentManager)) {
+      window.abwa.mapContentManager.destroy()
+    }
+  }
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleReport, LINE)
 
   destroyMoodleReport () {

@@ -39,6 +39,16 @@ const Config = {
   // PVSCL:IFCOND(BuiltIn or ApplicationBased OR NOT(Codebook), LINE)
   groupName: 'DefaultReviewModel',
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Codebook, LINE)
+  codebook: 'PVSCL:EVAL(Codebook->pv:Attribute('name')->pv:ToLowerCase())',
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Codebook, LINE)
+  cmapCloudConfiguration: {
+    user: 'highlight02x@gmail.com',
+    password: 'producto1',
+    uid: '1cf684dc-1764-4e5b-8122-7235ca19c37a'
+  },
+  // PVSCL:ENDCOND
   defaultAnnotationServer: defaultAnnotationServer,
   namespace: 'oa',
   // eslint-disable-next-line quotes

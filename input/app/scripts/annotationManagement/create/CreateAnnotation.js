@@ -10,7 +10,7 @@ const $ = require('jquery')
 // PVSCL:IFCOND(Classifying, LINE)
 const Classifying = require('../purposes/Classifying')
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Classifying, LINE)
+// PVSCL:IFCOND(Linking, LINE)
 const Linking = require('../purposes/Linking')
 // PVSCL:ENDCOND
 
@@ -38,7 +38,7 @@ class CreateAnnotation {
       if (event.detail.purpose === 'replying') {
         // Annotation is already prepared to send to the server
         annotationToCreate = event.detail.replyingAnnotation
-      } else if (event.detail.purpose === 'classifying') {
+      } else if (event.detail.purpose === 'classifying' || event.detail.purpose === 'linking') {
         let target
         // If selection is child of sidebar, return null
         if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
@@ -57,26 +57,7 @@ class CreateAnnotation {
           tags: tags,
           body: body
         })
-      } /* PVSCL:IFCOND(Linking) */ else if (event.detail.purpose === 'linking') {
-        let target
-        // If selection is child of sidebar, return null
-        if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
-          Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
-          return
-        }
-        // Create target
-        target = this.obtainTargetToCreateAnnotation(event.detail)
-        // Create body
-        let body = this.obtainBodyToCreateAnnotation(event.detail)
-        // Create tags
-        let tags = this.obtainTagsToCreateAnnotation(event.detail)
-        // Construct the annotation to send to hypothesis
-        annotationToCreate = new Annotation({
-          target: target,
-          tags: tags,
-          body: body
-        })
-      } /* PVSCL:ENDCOND */
+      }
       if (annotationToCreate) {
         window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
           if (err) {
@@ -87,6 +68,14 @@ class CreateAnnotation {
             let deserializedAnnotation = Annotation.deserialize(annotation)
             // Dispatch annotation created event
             LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: deserializedAnnotation})
+            // PVSCL:IFCOND(Linking, LINE)
+            if (deserializedAnnotation.body) {
+              let bodyWithLinkingPurpose = deserializedAnnotation.getBodyForPurpose('linking')
+              if (bodyWithLinkingPurpose) {
+                LanguageUtils.dispatchCustomEvent(Events.linkAnnotationCreated, {annotation: deserializedAnnotation})
+              }
+            }
+          // PVSCL:ENDCOND
           }
         })
       } else {
@@ -125,7 +114,14 @@ class CreateAnnotation {
     if (detail.purpose === 'classifying') {
       if (detail.codeId) {
         let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(detail.codeId)
-        let classifyingBody = new Classifying({code: codeOrTheme})
+        let value = {}
+        value.code = codeOrTheme
+        // PVSCL:IFCOND(EvidenceAnnotations, LINE)
+        if (detail.addToCXL != null) {
+          value.addToCXL = detail.addToCXL
+        }
+        // PVSCL:ENDCOND
+        let classifyingBody = new Classifying({value})
         body.push(classifyingBody.serialize())
       }
     }
@@ -138,6 +134,11 @@ class CreateAnnotation {
         value.from = detail.from
         value.to = detail.to
         value.linkingWord = detail.linkingWord
+        // PVSCL:IFCOND(EvidenceAnnotations, LINE)
+        if (detail.addToCXL != null) {
+          value.addToCXL = detail.addToCXL
+        }
+        // PVSCL:ENDCOND
         let classifyingBody = new Linking({value})
         body.push(classifyingBody.serialize())
       }
@@ -146,23 +147,25 @@ class CreateAnnotation {
     return body
   }
 
-  obtainTargetToCreateAnnotation ({repliedAnnotation}) {
+  obtainTargetToCreateAnnotation ({repliedAnnotation, target}) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
       return [{source: repliedAnnotation.target[0].source}]
     } else {
-      let target = [{}]
-      let source = window.abwa.targetManager.getDocumentURIs()
-      // Get document title
-      source['title'] = window.abwa.targetManager.documentTitle || ''
-      // Get UUID for current target
-      source['id'] = window.abwa.targetManager.getDocumentId()
-      target[0].source = source // Add source to the target
-      // PVSCL:IFCOND(Selector, LINE)
-      if (document.getSelection().toString().length > 0) {
-        target[0].selector = CreateAnnotation.getSelectorsOfSelectedTextContent()
+      if (!target) {
+        target = [{}]
+        let source = window.abwa.targetManager.getDocumentURIs()
+        // Get document title
+        source['title'] = window.abwa.targetManager.documentTitle || ''
+        // Get UUID for current target
+        source['id'] = window.abwa.targetManager.getDocumentId()
+        target[0].source = source // Add source to the target
+        // PVSCL:IFCOND(Selector, LINE)
+        if (document.getSelection().toString().length > 0) {
+          target[0].selector = CreateAnnotation.getSelectorsOfSelectedTextContent()
+        }
+        // PVSCL:ENDCOND
       }
-      // PVSCL:ENDCOND
       return target
     }
   }

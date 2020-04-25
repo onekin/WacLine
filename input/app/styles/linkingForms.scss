@@ -1,60 +1,48 @@
-#searchAnnotationsContainer {
-  height: 10%;
+@import "./variables";
+
+.editRelation3Btn {
+  background-image: url($chromeExtensionMainURL + '/images/editBtn.png'); /* 16px x 16px chrome.extension.getURL('/images/generator.png')*/
 }
 
-#searchAnnotationsInput {
-  font-size: large;
-  margin-top: 20px;
-  left: 50px;
-  padding: 10px;
-  width: 300px;
+.linkFormSpan {
+  width: 160px;
+  display: inline-block;
 }
 
-#searchResult {
-  overflow-y: scroll;
-  max-height: 90%;
+.linkWordSpan {
+  width: 110px;
+  display: inline-block;
 }
 
-.annotationCard {
-  font-size: 13px;
-  line-height: 15px;
-  font-weight: 400;
-  border: 1px solid #ececec;
-  list-style: none;
-  padding: 15px;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 1px 0 rgba(0,0,0,.1);
-  background: #fff;
-  overflow-wrap: break-word;
+.relationDiv {
+  text-align: left;
+  font-size: 14px;
+  border-style: solid;
+  border-color: black;
 }
 
-.annotationCardUsername {
-  color: #202020;
+.relationDivHeader {
+  text-align: left;
+  font-size: 14px;
+}
+
+.relationSpanHeader {
   font-weight: bold;
+  text-decoration: underline;
 }
 
-.annotationCardGroup {
-  color: #3f3f3f;
+.large-swal {
+  width:750px !important;
 }
 
-.annotationCardExact {
-  padding: 0 10px;
-  overflow-wrap: break-word;
-  color: #a6a6a6;
-  font-family: sans-serif;
-  font-size: 12px;
-  font-style: italic;
-  letter-spacing: .1px;
-  border-left: 3px solid #dbdbdb;
-  margin-bottom: 10px;
-  margin-left: 0;
-  margin-right: 0;
+.dltRelationBtn {
+  float: right;
 }
 
-.annotationCardDate {
-  font-size: 11px;
-  line-height: 12px;
-  font-weight: 400;
-  letter-spacing: .2px;
-  color: #a6a6a6;
+.editRelationBtn {
+  float: right;
+}
+
+.swapRelationBtn {
+  float: right;
 }

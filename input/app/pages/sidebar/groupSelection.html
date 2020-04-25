@@ -1,5 +1,6 @@
 <div id="groupSelectorContainer">
-  <div pv:condition="Hypothesis" id="notLoggedInGroupContainer" class="sidebarContainer" aria-hidden="true">
+  // PVSCL:IFCOND(Hypothesis, LINE)
+  <div id="notLoggedInGroupContainer" class="sidebarContainer" aria-hidden="true">
     <div id="hypothesisLogin" class="containerHeader">
       Please log in your chosen annotation server
     </div>
@@ -8,7 +9,9 @@
       <a href="https://hypothes.is/login" target="_blank">Log in</a> / <a href="https://hypothes.is/signup" target="_blank">Sign up</a>
     </div>
   </div>
-  <div id="loggedInGroupContainer" pv:condition="Manual" class="sidebarContainer">
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Manual, LINE)
+  <div id="loggedInGroupContainer" class="sidebarContainer">
     <div id="groupSelectorContainerHeader" class="containerHeader">
       <div id="groupSelector" aria-expanded="false">
         <span id="groupSelectorName"></span>
@@ -18,15 +21,24 @@
       </div>
     </div>
   </div>
-  <template id="groupSelectorItem" pv:condition="Manual">
+  <template id="groupSelectorItem">
     <div class="groupSelectorItemContainer" aria-expanded="false">
       <span class="groupSelectorItemName"></span>
+      // PVSCL:IFCOND(RenameCodebook or ExportCodebook or CodebookDelete, LINE)
       <span pv:condition="RenameCodebook or ExportCodebook or CodebookDelete" class="groupSelectorItemToggle"></span>
       <div pv:condition="RenameCodebook or ExportCodebook or CodebookDelete" class="groupSelectorItemOptionsContainer">
+        // PVSCL:IFCOND(RenameCodebook, LINE)
         <span pv:condition="RenameCodebook" class="groupSelectorItemOption renameGroup" title="Rename codebook">Rename</span>
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(ExportCodebook, LINE)
         <span pv:condition="ExportCodebook" class="groupSelectorItemOption exportGroup" title="Export codebook">Export</span>
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(CodebookDelete, LINE)
         <span pv:condition="CodebookDelete" class="groupSelectorItemOption deleteGroup" title="Delete codebook">Delete</span>
+        // PVSCL:ENDCOND
       </div>
+      // PVSCL:ENDCOND
     </div>
   </template>
+  // PVSCL:ENDCOND
 </div>

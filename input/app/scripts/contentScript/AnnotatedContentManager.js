@@ -12,6 +12,9 @@ const Code = require('../codebook/model/Code')
 // PVSCL:ENDCOND
 const _ = require('lodash')
 const Classifying = require('../annotationManagement/purposes/Classifying')
+// PVSCL:IFCOND(Linking, LINE)
+const Linking = require('../annotationManagement/purposes/Linking')
+// PVSCL:ENDCOND
 const Annotation = require('../annotationManagement/Annotation')
 
 class AnnotatedTheme {
@@ -120,7 +123,9 @@ class AnnotatedContentManager {
       let allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
       // PVSCL:IFCOND(Linking, LINE)
       let contentAnnotations = _.filter(allAnnotations, (annotation) => {
-        return !annotation.body.purpose === 'linking'
+        if (annotation.body.length > 0) {
+          return !LanguageUtils.isInstanceOf(annotation.body[0], Linking)
+        }
       })
       resolve(contentAnnotations)
       // PVSCL:ELSECOND
@@ -252,19 +257,21 @@ class AnnotatedContentManager {
   addAnnotationToAnnotatedThemesOrCode (annotation, annotatedThemesObject = this.annotatedThemes) {
     // Get classification code
     let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
-    let codeId = classifyingBody.value.id
-    let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId, annotatedThemesObject)
-    if (annotatedThemeOrCode) {
-      annotatedThemeOrCode.annotations.push(annotation)
+    if (classifyingBody) {
+      let codeId = classifyingBody.value.code.id
+      let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId, annotatedThemesObject)
+      if (annotatedThemeOrCode) {
+        annotatedThemeOrCode.annotations.push(annotation)
+      }
+      return annotatedThemesObject
     }
-    return annotatedThemesObject
   }
 
   removeAnnotationToAnnotatedThemesOrCode (annotation) {
     // Get classification code
     let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
     if (classifyingBody) {
-      let codeId = classifyingBody.value.id
+      let codeId = classifyingBody.value.code.id
       let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId)
       _.remove(annotatedThemeOrCode.annotations, (anno) => {
         return anno.id === annotation.id
@@ -370,7 +377,7 @@ class AnnotatedContentManager {
       // Get classification code
       let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
       if (classifyingBody) {
-        let codeId = classifyingBody.value.id
+        let codeId = classifyingBody.value.code.id
         let annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId)
         // Retrieve criteria name for annotation
         if (annotatedThemeOrCode && annotatedThemeOrCode.annotations.length > 0) {
@@ -408,19 +415,19 @@ class AnnotatedContentManager {
       // Add event to the codings list
       if (event.detail.annotation) {
         let annotation = event.detail.annotation
-        this.annotatedThemes = this.addAnnotationToAnnotatedThemesOrCode(annotation)
-        if (event.detail.codeToAll) {
-          // Get classification code
-          let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
-          if (classifyingBody) {
-            let codeId = classifyingBody.value.id
+        let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
+        if (classifyingBody) {
+          this.annotatedThemes = this.addAnnotationToAnnotatedThemesOrCode(annotation)
+          if (event.detail.codeToAll) {
+            // Get classification code
+            let codeId = classifyingBody.value.code.id
             LanguageUtils.dispatchCustomEvent(Events.codeToAll, {
               codeId: codeId,
               currentlyAnnotatedCode: event.detail.lastAnnotatedCode
             })
+          } else {
+            this.reloadTagsChosen()
           }
-        } else {
-          this.reloadTagsChosen()
         }
       }
     }

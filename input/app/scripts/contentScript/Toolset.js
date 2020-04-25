@@ -30,6 +30,9 @@ const AnnotationImporter = require('../importExport/AnnotationImporter')
 // PVSCL:IFCOND(Export, LINE)
 const AnnotationExporter = require('../importExport/AnnotationExporter')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(CXLExport, LINE)
+const CXLExporter = require('../importExport/cmap/CXLExporter')
+// PVSCL:ENDCOND
 const $ = require('jquery')
 
 class Toolset {
@@ -152,6 +155,26 @@ class Toolset {
       // Add menu when clicking on the button
       this.importExportButtonHandler()
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(CXLExportArchiveFile, LINE)
+      let cxlArchiveFileImageUrl = chrome.extension.getURL('/images/cxl.png')
+      this.cxlArchiveFileImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.cxlArchiveFileImage.src = cxlArchiveFileImageUrl
+      this.cxlArchiveFileImage.id = 'cxlArchiveFileButton'
+      this.cxlArchiveFileImage.title = 'Export resources to an archive file on the local file system'
+      this.toolsetBody.appendChild(this.cxlArchiveFileImage)
+      // Add menu when clicking on the button
+      this.CXLArchiveFileButtonHandler()
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+      let cxlCloudImageUrl = chrome.extension.getURL('/images/cmapCloud.png')
+      this.cxlCloudImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.cxlCloudImage.src = cxlCloudImageUrl
+      this.cxlCloudImage.id = 'cxlCloudButton'
+      this.cxlCloudImage.title = 'Export map to CmapCloud' // TODO i18n
+      this.toolsetBody.appendChild(this.cxlCloudImage)
+      // Add menu when clicking on the button
+      this.CXLCloudButtonHandler()
+      // PVSCL:ENDCOND
       // Check if exist any element in the tools and show it
       if (!_.isEmpty(this.toolsetBody.innerHTML)) {
         this.show()
@@ -251,6 +274,120 @@ class Toolset {
             if (key === 'export') {
               AnnotationExporter.exportCurrentDocumentAnnotations()
             }
+            // PVSCL:ENDCOND
+          },
+          items: items
+        }
+      }
+    })
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(CXLExportArchiveFile, LINE)
+
+  CXLArchiveFileButtonHandler () {
+    // Create context menu for import export
+    $.contextMenu({
+      selector: '#cxlArchiveFileButton',
+      trigger: 'left',
+      build: () => {
+        // Create items for context menu
+        let items = {}
+        // PVSCL:IFCOND(CXLImport, LINE)
+        items['import'] = {name: 'Import CXL'}
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(CXLExport, LINE)
+        // PVSCL:IFCOND(EvidenceAnnotations, LINE)
+        // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
+        items['exportWithToolURL'] = {name: 'Export CXL with tool URLs'}
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
+        items['exportWithHypothesisURL'] = {name: 'Export CXL with Hypothes.is URLs'}
+        // PVSCL:ENDCOND
+        // PVSCL:ELSECOND
+        items['export'] = {name: 'Export CXL'}
+        // PVSCL:ENDCOND
+        // PVSCL:ENDCOND
+        return {
+          callback: (key, opt) => {
+            // PVSCL:IFCOND(CXLImport, LINE)
+            if (key === 'import') {
+              // AnnotationImporter.importReviewAnnotations()
+            }
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(CXLExport, LINE)
+            // PVSCL:IFCOND(EvidenceAnnotations, LINE)
+            // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
+            if (key === 'exportWithHypothesisURL') {
+              CXLExporter.exportCXLFile('archiveFile', 'hypothesis')
+            }
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
+            if (key === 'exportWithToolURL') {
+              CXLExporter.exportCXLFile('archiveFile', 'tool')
+            }
+            // PVSCL:ENDCOND
+            // PVSCL:ELSECOND
+            if (key === 'export') {
+              CXLExporter.exportCXLFile('archiveFile')
+            }
+            // PVSCL:ENDCOND
+            // PVSCL:ENDCOND
+          },
+          items: items
+        }
+      }
+    })
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(CXLExportArchiveFile, LINE)
+
+  CXLCloudButtonHandler () {
+    // Create context menu for import export
+    $.contextMenu({
+      selector: '#cxlCloudButton',
+      trigger: 'left',
+      build: () => {
+        // Create items for context menu
+        let items = {}
+        // PVSCL:IFCOND(CXLImport, LINE)
+        items['import'] = {name: 'Import CXL'}
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(CXLExport, LINE)
+        // PVSCL:IFCOND(EvidenceAnnotations, LINE)
+        // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
+        items['exportWithToolURL'] = {name: 'Export CXL with tool URLs'}
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
+        items['exportWithHypothesisURL'] = {name: 'Export CXL with Hypothes.is URLs'}
+        // PVSCL:ENDCOND
+        // PVSCL:ELSECOND
+        items['export'] = {name: 'Export CXL'}
+        // PVSCL:ENDCOND
+        // PVSCL:ENDCOND
+        return {
+          callback: (key, opt) => {
+            // PVSCL:IFCOND(CXLImport, LINE)
+            if (key === 'import') {
+              // AnnotationImporter.importReviewAnnotations()
+            }
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(CXLExport, LINE)
+            // PVSCL:IFCOND(EvidenceAnnotations, LINE)
+            // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
+            if (key === 'exportWithHypothesisURL') {
+              CXLExporter.exportCXLFile('cmapCloud', 'hypothesis')
+            }
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
+            if (key === 'exportWithToolURL') {
+              CXLExporter.exportCXLFile('cmapCloud', 'tool')
+            }
+            // PVSCL:ENDCOND
+            // PVSCL:ELSECOND
+            if (key === 'export') {
+              CXLExporter.exportCXLFile('cmapCloud')
+            }
+            // PVSCL:ENDCOND
             // PVSCL:ENDCOND
           },
           items: items

@@ -3,6 +3,7 @@ const Events = {
   annotationCreated: 'annotationCreated',
   annotationUpdated: 'annotationUpdated',
   annotationDeleted: 'annotationDeleted',
+  annotationsDeleted: 'annotationsDeleted',
   // PVSCL:IFCOND(Validate, LINE)
   annotationValidated: 'annotationValidated',
   // PVSCL:ENDCOND
@@ -12,6 +13,10 @@ const Events = {
   updatedAllAnnotations: 'updatedAllAnnotations',
   // PVSCL:IFCOND(UserFilter, LINE)
   userFilterChange: 'userFilterChange',
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(EvidenceAnnotations,LINE)
+  evidenceAnnotationAdded: 'evidenceAnnotationAdded',
+  evidenceAnnotationRemoved: 'evidenceAnnotationRemoved',
   // PVSCL:ENDCOND
   updatedDocumentURL: 'updatedDocumentURL',
   // PVSCL:IFCOND(Comment, LINE)
@@ -26,6 +31,15 @@ const Events = {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Filter, LINE)
   updatedCurrentAnnotations: 'updatedCurrentAnnotations',
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Linking, LINE)
+  relationshipAdded: 'relationshipAdded',
+  relationshipsLoaded: 'relationshipsLoaded',
+  relationshipUpdated: 'relationshipUpdated',
+  relationshipDeleted: 'relationshipDeleted',
+  linkAnnotationCreated: 'linkAnnotationCreated',
+  linkAnnotationDeleted: 'linkAnnotationDeleted',
+  linkAnnotationUpdated: 'linkAnnotationUpdated',
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Codebook, LINE)
   // Annotation codebook management events

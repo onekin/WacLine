@@ -49,7 +49,7 @@ class CommentingForm {
       let classifyingBody = annotation.getBodyForPurpose('classifying')
       let themeOrCode
       if (classifyingBody) {
-        themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(classifyingBody.value.id)
+        themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(classifyingBody.value.code.id)
         // PVSCL:IFCOND(MoodleProvider,LINE)
         if (themeOrCode && LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
           title = themeOrCode.name

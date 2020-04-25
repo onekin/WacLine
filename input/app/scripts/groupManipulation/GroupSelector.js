@@ -414,7 +414,7 @@ class GroupSelector {
     // PVSCL:IFCOND(BuiltIn,LINE)
     // New group button
     let newGroupButton = document.createElement('div')
-    newGroupButton.innerText = 'Create codebook'
+    newGroupButton.innerText = 'Create ' + Config.codebook
     newGroupButton.id = 'createNewModelButton'
     newGroupButton.className = 'groupSelectorButton'
     newGroupButton.title = 'Create a new codebook'
@@ -525,9 +525,18 @@ class GroupSelector {
   }
 
   createNewGroup (callback) {
+    let title
+    let inputPlaceholder
+    // PVSCL:IFCOND(TopicBased, LINE)
+    title = 'What is the topic or the focus question?'
+    inputPlaceholder = 'Type here the topic ...'
+    // PVSCL:ELSECOND
+    title = 'Create a new codebook'
+    inputPlaceholder = 'Type here the new codebook name...'
+    // PVSCL:ENDCOND
     Alerts.inputTextAlert({
-      title: 'Create a new codebook',
-      inputPlaceholder: 'Type here the name of your new codebook...',
+      title: title,
+      inputPlaceholder: inputPlaceholder,
       preConfirm: (groupName) => {
         if (_.isString(groupName)) {
           if (groupName.length <= 0) {

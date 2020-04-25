@@ -9,7 +9,6 @@ const Annotation = require('../../../annotationManagement/Annotation')
 // PVSCL:IFCOND(Hierarchy,LINE)
 const Code = require('../../model/Code')
 // PVSCL:ENDCOND
-const CreateAnnotation = require('../../../annotationManagement/create/CreateAnnotation')
 const LanguageUtils = require('../../../utils/LanguageUtils')
 
 class UpdateCodebook {
@@ -131,6 +130,9 @@ class UpdateCodebook {
         },
         callback: () => {
           LanguageUtils.dispatchCustomEvent(Events.createTheme, {theme: newTheme, target: target})
+        },
+        cancelCallback: () => {
+          console.log('new theme canceled')
         }
       })
     })
@@ -154,15 +156,12 @@ class UpdateCodebook {
    */
   createNewThemeEventHandler () {
     return (event) => {
-      let target = event.detail.target
       let newThemeAnnotation = event.detail.theme.toAnnotation()
-      newThemeAnnotation.target = event.detail.target
-      newThemeAnnotation.uri = /* PVSCL:IFCOND(DOI) */ target[0].source.doi || /* PVSCL:ENDCOND */ target[0].source.url || target[0].source.urn
       window.abwa.annotationServerManager.client.createNewAnnotation(newThemeAnnotation, (err, annotation) => {
         if (err) {
           Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
         } else {
-          LanguageUtils.dispatchCustomEvent(Events.themeCreated, {newThemeAnnotation: annotation})
+          LanguageUtils.dispatchCustomEvent(Events.themeCreated, {newThemeAnnotation: annotation, target: event.detail.target})
         }
       })
     }
@@ -212,6 +211,9 @@ class UpdateCodebook {
           this.updateCodebookTheme(themeToUpdate)
           // Update all annotations done with this theme
           this.updateAnnotationsWithTheme(themeToUpdate)
+        },
+        cancelCallback: () => {
+          // showForm(preConfirmData)
         }
       })
     }
@@ -236,6 +238,19 @@ class UpdateCodebook {
           if (_.every(codesId, _.isString)) {
             annotationsToDelete = annotationsToDelete.concat(codesId)
           }
+          // Get linking annotions made with removed theme
+          // PVSCL:IFCOND(Linking, LINE)
+          let groupLinkingAnnotations = window.abwa.annotationManagement.annotationReader.groupLinkingAnnotations
+          let linkingAnnotationToRemove = _.filter(groupLinkingAnnotations, (linkingAnnotation) => {
+            let linkingBody = linkingAnnotation.body[0]
+            return linkingBody.value.from.id === theme.id || linkingBody.value.to === theme.id
+          })
+          console.log(linkingAnnotationToRemove)
+          let linkingsId = _.map(linkingAnnotationToRemove, (annotation) => { return annotation.id })
+          if (_.every(linkingsId, _.isString)) {
+            annotationsToDelete = annotationsToDelete.concat(linkingsId)
+          }
+          // PVSCL:ENDCOND
           window.abwa.annotationServerManager.client.deleteAnnotations(annotationsToDelete, (err, result) => {
             if (err) {
               Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
@@ -433,15 +448,15 @@ class UpdateCodebook {
       annotations = annotations.map(annotation => {
         let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
         if (classifyingBody) {
-          if (classifyingBody.value.id === theme.id) {
-            classifyingBody.value = theme.toObject()
+          if (classifyingBody.value.code.id === theme.id) {
+            classifyingBody.value.code = theme.toObject()
             return annotation
           } else {
             /* PVSCL:IFCOND(Hierarchy, LINE) */
-            if (classifyingBody.value.theme && classifyingBody.value.theme.id === theme.id) {
-              let code = theme.codes.find(code => code.id === classifyingBody.value.id)
+            if (classifyingBody.value.code.theme && classifyingBody.value.code.theme.id === theme.id) {
+              let code = theme.codes.find(code => code.id === classifyingBody.value.code.id)
               if (code) {
-                classifyingBody.value = code.toObject()
+                classifyingBody.value.code = code.toObject()
                 return annotation
               }
             }

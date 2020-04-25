@@ -82,41 +82,47 @@ class LinkingForm {
         retrievedLW = selection.toString().trim()
       }
       document.querySelector('#linkingWord').value = retrievedLW
+      onBeforeOpen.target = window.abwa.annotationManagement.annotationCreator.obtainTargetToCreateAnnotation({})
     }
     // Preconfirm
     // Preconfirm
     let preConfirmData = {}
     let preConfirm = () => {
-      preConfirmData.from = document.querySelector('#categorizeDropdownFrom').value
+      let from = document.querySelector('#categorizeDropdownFrom').value
       preConfirmData.linkingWord = document.querySelector('#linkingWord').value
-      preConfirmData.to = document.querySelector('#categorizeDropdownTo').value
-      let fromTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(preConfirmData.from)
-      let toTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(preConfirmData.to)
-      if (preConfirmData.from === preConfirmData.to) {
+      let to = document.querySelector('#categorizeDropdownTo').value
+      preConfirmData.fromTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(from)
+      preConfirmData.toTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(to)
+      if (from === to) {
         const swal = require('sweetalert2')
         swal.showValidationMessage('You have to make the relation between two different concepts.')
-      } /* PVSCL:IFCOND(TopicBased) */ else if (toTheme.isTopic) {
+      } /* PVSCL:IFCOND(TopicBased) */ else if (preConfirmData.toTheme.isTopic) {
         const swal = require('sweetalert2')
         swal.showValidationMessage('You cannot select the topic concept as to part of the relation.')
       } /* PVSCL:ENDCOND */ else {
-        callback(fromTheme, toTheme, preConfirmData.linkingWord)
+        // callback(fromTheme, toTheme, preConfirmData.linkingWord)
       }
     }
     // Callback
-    let callback = (fromTheme, toTheme, linkingWord) => {
+    let callback = () => {
       // TODO comprobar que no existe
-      let tags = ['from' + ':' + fromTheme.name]
-      tags.push('linkingWord:' + linkingWord)
-      tags.push('to:' + toTheme.name)
+      let tags = ['from' + ':' + preConfirmData.fromTheme.name]
+      tags.push('linkingWord:' + preConfirmData.linkingWord)
+      tags.push('to:' + preConfirmData.toTheme.name)
       LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
         purpose: 'linking',
         tags: tags,
-        from: fromTheme.id,
-        to: toTheme.id,
-        linkingWord: linkingWord
+        from: preConfirmData.fromTheme.id,
+        to: preConfirmData.toTheme.id,
+        linkingWord: preConfirmData.linkingWord,
+        target: onBeforeOpen.target/* PVSCL:IFCOND(EvidenceAnnotations) */,
+        addToCXL: true /* PVSCL:ENDCOND */
       })
     }
-    return {html: html, onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback}
+    let cancelCallback = () => {
+      console.log('new link canceled')
+    }
+    return {html: html, onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback, cancelCallback: cancelCallback}
   }
 }
 

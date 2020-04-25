@@ -11,7 +11,7 @@ class UpdateAnnotation {
 
   init () {
     // Add event listener for createAnnotation event
-    this.initCreateAnnotationEvent()
+    this.initUpdateAnnotationEvent()
   }
 
   destroy () {
@@ -22,7 +22,7 @@ class UpdateAnnotation {
     }
   }
 
-  initCreateAnnotationEvent (callback) {
+  initUpdateAnnotationEvent (callback) {
     this.events.updateAnnotationEvent = {element: document, event: Events.updateAnnotation, handler: this.updateAnnotationEventHandler()}
     this.events.updateAnnotationEvent.element.addEventListener(this.events.updateAnnotationEvent.event, this.events.updateAnnotationEvent.handler, false)
     if (_.isFunction(callback)) {

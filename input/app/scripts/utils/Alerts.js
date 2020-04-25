@@ -205,7 +205,7 @@ class Alerts {
     }
   }
 
-  static multipleInputAlert ({title = 'Input', html = '', preConfirm, position = Alerts.position.center, onBeforeOpen, showCancelButton = true, allowOutsideClick = true, allowEscapeKey = true, callback}) {
+  static multipleInputAlert ({title = 'Input', html = '', preConfirm, position = Alerts.position.center, onBeforeOpen, showCancelButton = true, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback, customClass}) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -221,10 +221,17 @@ class Alerts {
         onBeforeOpen: onBeforeOpen,
         allowOutsideClick,
         allowEscapeKey,
+        customClass: customClass,
         showCancelButton: showCancelButton
-      }).then(() => {
-        if (_.isFunction(callback)) {
-          callback(null)
+      }).then((result) => {
+        if (result.value) {
+          if (_.isFunction(callback)) {
+            callback(null, result.value)
+          }
+        } else {
+          if (_.isFunction(cancelCallback)) {
+            cancelCallback(null)
+          }
         }
       })
     }

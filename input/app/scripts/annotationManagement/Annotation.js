@@ -121,7 +121,8 @@ class Annotation {
       tags: annotationObject.tags,
       target: annotationObject.target,
       created: annotationObject.created,
-      modified: annotationObject.updated
+      modified: annotationObject.updated,
+      evidence: annotationObject.links
     })
     if (_.isArray(annotation.body) && annotationObject.body) {
       annotation.body = annotationObject.body.map((body) => {
@@ -131,7 +132,7 @@ class Annotation {
           let tempBody = JSON.parse(JSON.stringify(body))
           delete tempBody.purpose
           // Create new element of type Classifying
-          return new Classifying({code: tempBody.value})
+          return new Classifying({value: tempBody.value})
         }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(Commenting, LINE)
@@ -154,7 +155,6 @@ class Annotation {
           // To remove the purpose from the annotation body
           let tempBody = JSON.parse(JSON.stringify(body))
           delete tempBody.purpose
-          console.log(tempBody)
           // Create new element of type Linking
           return new Linking({value: tempBody.value})
         }

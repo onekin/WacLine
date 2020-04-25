@@ -234,7 +234,7 @@ class GoogleSheetGenerator {
       })
       // Get code or theme that is classified with
       let codingAnnotationBody = codingAnnotation.body.find(body => body.purpose === 'classifying')
-      let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codingAnnotationBody.value.id)
+      let themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codingAnnotationBody.value.code.id)
       let theme
       let code
       if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
