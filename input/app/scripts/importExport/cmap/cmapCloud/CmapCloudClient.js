@@ -1,130 +1,160 @@
 const _ = require('lodash')
-const axios = require('axios/index')
-const jsonFormData = require('json-form-data')
+const LanguageUtils = require('../../../utils/LanguageUtils')
+const token = require('basic-auth-token')
+const $ = require('jquery')
 
-class MoodleClient {
-  constructor (endpoint, token) {
-    this.endpoint = endpoint
-    this.token = token
+class CmapCloudClient {
+  constructor (user, password, uid) {
+    this.user = user
+    this.password = password
+    this.uid = uid
+    this.basicAuth = token(this.user, this.password)
   }
 
-  updateToken (token) {
-    this.token = token
-  }
-
-  updateEndpoint (endpoint) {
-    this.endpoint = endpoint
-  }
-
-  init () {
-
-  }
-
-  getRubric (cmids, callback) {
-    let settings = {
-      'async': true,
-      'crossDomain': true,
-      'url': this.endpoint + '/webservice/rest/server.php?',
-      'params': {
-        'wstoken': this.token,
-        'wsfunction': 'core_grading_get_definitions',
-        'areaname': 'submissions',
-        'cmids[0]': cmids,
-        'moodlewsrestformat': 'json',
-        'activeonly': 0
-      },
-      'method': 'GET',
-      'headers': {
-        'Cache-Control': 'no-cache'
-      }
-    }
-    axios(settings).then((response) => {
-      if (_.isFunction(callback)) {
-        callback(null, response.data)
+  getRootFolderInfor (callback) {
+    chrome.runtime.sendMessage({
+      scope: 'cmapCloud',
+      cmd: 'getRootFolderInfo',
+      data: {uid: this.uid}
+    }, (response) => {
+      if (response.info) {
+        let parser = new DOMParser()
+        let xmlDoc = parser.parseFromString(response.info,'text/xml')
+        callback(xmlDoc)
+        // validated
+      } else if (response.err) {
+        // Not validated
+        callback(null)
       }
     })
   }
 
-  getCmidInfo (cmid, callback) {
-    let data = {cmid: cmid}
+  createFolder (folderName, callback) {
     let settings = {
-      'async': true,
-      'crossDomain': true,
-      'url': this.endpoint + 'webservice/rest/server.php?',
+      'url': 'https://cmapscloud.ihmc.us:443/resources/id=uid=' + this.uid + ',ou=users,dc=cmapcloud,dc=ihmc,dc=us/?cmd=create.folder.with.name&name=' + folderName + '&userDN=uid=' + this.uid + ',ou=users,dc=cmapcloud,dc=ihmc,dc=us',
       'method': 'POST',
-      'params': {
-        'wstoken': this.token,
-        'wsfunction': 'core_course_get_course_module',
-        'moodlewsrestformat': 'json'
-      },
+      'timeout': 0,
       'headers': {
-        'cache-control': 'no-cache',
-        'Content-Type': 'multipart/form-data'
+        'Authorization': 'Basic ' + this.basicAuth,
+        'Content-Type': 'application/xml'
       },
-      'processData': false,
-      'contentType': false,
-      'mimeType': 'multipart/form-data',
-      'data': data,
-      'transformRequest': [(data) => {
-        return jsonFormData(data)
-      }]
+      'data': '<res-meta xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\">\n' +
+        '<dc:title>CreateFolder</dc:title>\n' +
+        '<dc:format>x-nlk-project/x-binary</dc:format>\n' +
+        '<dc:description>No description</dc:description>\n' +
+        '<dc:creator>\n' +
+        '\t<vCard:FN>uid=' + this.uid + ',ou=users,dc=cmapcloud,dc=ihmc,dc=us</vCard:FN>\n' +
+        '\t<vCard:EMAIL />\n' +
+        '</dc:creator>\n' +
+        '<dcterms:rightsHolder>\n' +
+        '\t<vCard:FN>uid=' + this.uid + ',ou=users,dc=cmapcloud,dc=ihmc,dc=us</vCard:FN>\n' +
+        '\t<vCard:EMAIL />\n' +
+        '</dcterms:rightsHolder>\n' +
+        '</res-meta>\n' +
+        '\n' +
+        '<acl-info inherit=\"true\" />'
     }
-    axios(settings).then((response) => {
+
+    $.ajax(settings).done(function (response) {
       if (_.isFunction(callback)) {
-        callback(null, response.data)
+        callback(response)
       }
     })
   }
 
-  updateStudentGradeWithRubric (data, callback) {
+  uploadWebResource (folderID, resource, callback) {
     let settings = {
-      'async': true,
-      'crossDomain': true,
-      'url': this.endpoint + '/webservice/rest/server.php?',
+      'url': 'https://cmapscloud.ihmc.us:443/resources/rid=' + folderID + '/?cmd=begin.creating.resource',
       'method': 'POST',
+      'timeout': 0,
       'headers': {
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'multipart/form-data'
+        'Authorization': 'Basic ' + this.basicAuth,
+        'Content-Type': 'application/xml'
       },
-      'params': {
-        'wstoken': this.token,
-        'wsfunction': 'mod_assign_save_grade',
-        'moodlewsrestformat': 'json'
-      },
-      'data': data,
-      'transformRequest': [(data) => {
-        return jsonFormData(data)
-      }]
+      'data': '<res-meta xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\">\n' +
+        '<dc:title>' + resource.name + '</dc:title>\n' +
+        '<dc:description>No description</dc:description>\n' +
+        '<dc:format>text/x-url</dc:format>\n' +
+        '</res-meta>'
     }
-    axios(settings).then((response) => {
-      axios(settings).then((response) => {
-        callback(null, response.data)
-      })
+
+    $.ajax(settings).done((token) => {
+      this.uploadWebResourceBody(token, resource, callback)
     })
   }
 
-  getStudents (courseId, callback) {
+  uploadWebResourceBody (token, resource, callback) {
     let settings = {
-      'async': true,
-      'crossDomain': true,
-      'url': this.endpoint + '/webservice/rest/server.php?',
-      'params': {
-        'wstoken': this.token,
-        'wsfunction': 'core_enrol_get_enrolled_users',
-        'courseid': courseId,
-        'moodlewsrestformat': 'json'
-      },
-      'method': 'GET',
+      'url': 'https://cmapscloud.ihmc.us:443/resources/rid=' + token + '/?cmd=write.resource.part&partname=url&mimetype=text/x-url',
+      'method': 'POST',
+      'timeout': 0,
       'headers': {
-        'Cache-Control': 'no-cache'
-      }
+        'Authorization': 'Basic ' + this.basicAuth,
+        'Content-Type': 'text/plain'
+      },
+      'data': resource.direction + '\n' +
+        '[DEFAULT]\n' +
+        'BASEURL=' + resource.direction + '\n' +
+        '[InternetShortcut]\n' +
+        'URL=' + resource.direction
     }
-    axios(settings).then((response) => {
+
+    $.ajax(settings).done((response) => {
+      this.uploadConfirm(token, callback)
+    })
+  }
+
+  uploadConfirm (token, callback) {
+    let settings = {
+      'url': 'https://cmapscloud.ihmc.us:443/resources/rid=' + token + '/?cmd=done.saving.resource',
+      'method': 'POST',
+      'timeout': 0
+    }
+
+    $.ajax(settings).done(function (response) {
       if (_.isFunction(callback)) {
-        callback(null, response.data)
+        callback(response)
       }
+    })
+  }
+
+  uploadMap (folderID, map, callback) {
+    let settings = {
+      'url': 'https://cmapscloud.ihmc.us:443/resources/rid=' + folderID + '/?cmd=begin.creating.resource',
+      'method': 'POST',
+      'timeout': 0,
+      'headers': {
+        'Authorization': 'Basic ' + this.basicAuth,
+        'Content-Type': 'application/xml'
+      },
+      'data': '<res-meta xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\">\n' +
+        '<dc:title>' + LanguageUtils.camelize(window.abwa.groupSelector.currentGroup.name) + '</dc:title>\n' +
+        '<dc:description>No description</dc:description>\n' +
+        '<dc:format>x-cmap/x-storable</dc:format>\n' +
+        '</res-meta>'
+    }
+
+    $.ajax(settings).done((token) => {
+      this.uploadMapBody(token, map, callback)
+    })
+  }
+
+  uploadMapBody (token, map, callback) {
+    let settings = {
+      'url': 'https://cmapscloud.ihmc.us:443/resources/rid=' + token + '/?cmd=write.resource.part&partname=cmap&mimetype=XML',
+      'method': 'POST',
+      'timeout': 0,
+      'headers': {
+        'Authorization': 'Basic ' + this.basicAuth,
+        'Content-Type': 'text/plain'
+      },
+      'data': map
+    }
+
+    $.ajax(settings).done((response) => {
+      this.uploadConfirm(token, callback)
     })
   }
 }
 
-module.exports = MoodleClient
+module.exports = CmapCloudClient

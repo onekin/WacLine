@@ -85,6 +85,27 @@
         </div>
       </div>
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+      <div id="cmapCloudConfigurationCard" class="card storageConfiguration">
+        <a id="cmapCloudConfiguration"></a>
+        <div class="card-header bg-dark text-white">Cmap Cloud configuration</div>
+        <div class="card-body">
+          <div class="form-group">
+            <label id="cmapCloudUser" class="requiredFormInput">Username</label>
+            <input type="text" class="form-control" id="cmapCloudUserValue" placeholder="Enter your CmapCloud account email">
+          </div>
+          <div class="form-group">
+            <label id="cmapCloudPassword" class="requiredFormInput">Password</label>
+            <input type="password" class="form-control" id="cmapCloudPasswordValue" placeholder="Enter your CmapCloud account password">
+          </div>
+          <div class="form-group">
+            <label id="uidValue"></label>
+          </div>
+          <button id="checkCmapValues">Validate account</button>
+          <label id="cmapCloudMessage"></label>
+        </div>
+      </div>
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(Neo4J, LINE)
       <div id="neo4jConfigurationCard" class="card storageConfiguration">
         <a id="neo4jConfiguration"></a>

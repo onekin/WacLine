@@ -32,6 +32,7 @@ const AnnotationExporter = require('../importExport/AnnotationExporter')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(CXLExport, LINE)
 const CXLExporter = require('../importExport/cmap/CXLExporter')
+const Config = require('../Config')
 // PVSCL:ENDCOND
 const $ = require('jquery')
 
@@ -339,7 +340,7 @@ class Toolset {
     })
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(CXLExportArchiveFile, LINE)
+  // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
 
   CXLCloudButtonHandler () {
     // Create context menu for import export
@@ -372,23 +373,35 @@ class Toolset {
             }
             // PVSCL:ENDCOND
             // PVSCL:IFCOND(CXLExport, LINE)
-            // PVSCL:IFCOND(EvidenceAnnotations, LINE)
-            // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
-            if (key === 'exportWithHypothesisURL') {
-              CXLExporter.exportCXLFile('cmapCloud', 'hypothesis')
-            }
-            // PVSCL:ENDCOND
-            // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
-            if (key === 'exportWithToolURL') {
-              CXLExporter.exportCXLFile('cmapCloud', 'tool')
-            }
-            // PVSCL:ENDCOND
-            // PVSCL:ELSECOND
-            if (key === 'export') {
-              CXLExporter.exportCXLFile('cmapCloud')
-            }
-            // PVSCL:ENDCOND
-            // PVSCL:ENDCOND
+            chrome.runtime.sendMessage({scope: 'cmapCloud', cmd: 'getUserData'}, (response) => {
+              if (response.data) {
+                let data = response.data
+                if (data.userData.user && data.userData.password && data.userData.uid) {
+                  // PVSCL:IFCOND(EvidenceAnnotations, LINE)
+                  // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
+                  if (key === 'exportWithHypothesisURL') {
+                    CXLExporter.exportCXLFile('cmapCloud', 'hypothesis', data.userData)
+                  }
+                  // PVSCL:ENDCOND
+                  // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
+                  if (key === 'exportWithToolURL') {
+                    CXLExporter.exportCXLFile('cmapCloud', 'tool', data.userData)
+                  }
+                  // PVSCL:ENDCOND
+                  // PVSCL:ELSECOND
+                  if (key === 'export') {
+                    CXLExporter.exportCXLFile('cmapCloud', data.userData)
+                  }
+                  // PVSCL:ENDCOND
+                  // PVSCL:ENDCOND
+                }
+              } else {
+                let callback = () => {
+                  window.open(chrome.extension.getURL('pages/options.html#cmapCloudConfiguration'))
+                }
+                Alerts.infoAlert({text: 'Please, provide us your Cmap Cloud login credentials in the configuration page of the Web extension.', title: 'We need your Cmap Cloud credentials', callback: callback()})
+              }
+            })
           },
           items: items
         }

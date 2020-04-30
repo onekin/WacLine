@@ -1,9 +1,11 @@
 const ExportCXLArchiveFile = require('./ExportCXLArchiveFile')
+const ExportCmapCloud = require('./cmapCloud/ExportCmapCloud')
 const HypothesisURL = require('./evidenceAnnotation/HypothesisURL')
 const ToolURL = require('./evidenceAnnotation/ToolURL')
+const LanguageUtils = require('../../utils/LanguageUtils')
 
 class CXLExporter {
-  static exportCXLFile (exportType/* PVSCL:IFCOND(EvidenceAnnotations) */, evidenceAnnotations/* PVSCL:ENDCOND */) {
+  static exportCXLFile (exportType/* PVSCL:IFCOND(EvidenceAnnotations) */, evidenceAnnotations/* PVSCL:ENDCOND *//* PVSCL:IFCOND(EvidenceAnnotations) */, userData/* PVSCL:ENDCOND */) {
     // Get annotations from tag manager and content annotator
     let concepts = window.abwa.mapContentManager.concepts
     // PVSCL:IFCOND(Linking, LINE)
@@ -15,8 +17,8 @@ class CXLExporter {
     let xmlDoc = document.implementation.createDocument(null, 'cmap', null)
     let cmapElement = xmlDoc.firstChild
     // Create processing instruction
-    let pi = xmlDoc.createProcessingInstruction('xml', 'version=\'1.0\' encoding=\'UTF-8\'')
-    xmlDoc.insertBefore(pi, xmlDoc.firstChild)
+    // let pi = xmlDoc.createProcessingInstruction('xml', 'version="1.0" encoding="UTF-8"')
+    // xmlDoc.insertBefore(pi, xmlDoc.firstChild)
 
     // Create map xmlns:dcterms attribute
     let att = document.createAttribute('xmlns:dcterms')
@@ -44,7 +46,7 @@ class CXLExporter {
 
     // Set title
     let title = xmlDoc.createElement('dc:title')
-    title.textContent = window.abwa.groupSelector.currentGroup.name
+    title.textContent = LanguageUtils.camelize(window.abwa.groupSelector.currentGroup.name)
     metadata.appendChild(title)
 
     // Set description
@@ -69,7 +71,11 @@ class CXLExporter {
     let connectionList = xmlDoc.createElement('connection-list')
     map.appendChild(connectionList)
     // PVSCL:ENDCOND
-
+    // PVSCL:IFCOND(EvidenceAnnotations and CXLExportCmapCloud, LINE)
+    // resource-group-list
+    let resourceGroupList = xmlDoc.createElement('resource-group-list')
+    map.appendChild(resourceGroupList)
+    // PVSCL:ENDCOND
     // concept appearance list
     let conceptAppearanceList = xmlDoc.createElement('concept-appearance-list')
     map.appendChild(conceptAppearanceList)
@@ -83,7 +89,28 @@ class CXLExporter {
     let connectionAppearanceList = xmlDoc.createElement('connection-appearance-list')
     map.appendChild(connectionAppearanceList)
     // PVSCL:ENDCOND
+    // styleSheetList
+    let styleSheetList = xmlDoc.createElement('style-sheet-list')
 
+    let styleSheetDefault = xmlDoc.createElement('style-sheet')
+    let styleSheetIdDefault = document.createAttribute('id')
+    styleSheetIdDefault.value = '_Default_'
+    styleSheetDefault.setAttributeNode(styleSheetIdDefault)
+
+    let mapStyle = xmlDoc.createElement('map-style')
+    let mapStyleBackgroundColor = document.createAttribute('background-color')
+    mapStyleBackgroundColor.value = '255,255,255,255'
+    mapStyle.setAttributeNode(mapStyleBackgroundColor)
+    styleSheetDefault.appendChild(mapStyle)
+
+    let styleSheetLatest = xmlDoc.createElement('style-sheet')
+    let styleSheetIdLatest = document.createAttribute('id')
+    styleSheetIdLatest.value = '_LatestChanges_'
+    styleSheetLatest.setAttributeNode(styleSheetIdLatest)
+
+    styleSheetList.appendChild(styleSheetDefault)
+    styleSheetList.appendChild(styleSheetLatest)
+    map.appendChild(styleSheetList)
     // Add concepts
     for (let i = 0; i < concepts.length; i++) {
       let concept = concepts[i]
@@ -97,7 +124,8 @@ class CXLExporter {
       conceptList.appendChild(conceptElement)
       let conceptAppearance = xmlDoc.createElement('concept-appearance')
       id = document.createAttribute('id')
-      id.value = concept.theme.id
+      let elementID = concept.theme.id
+      id.value = elementID
       conceptAppearance.setAttributeNode(id)
       conceptAppearanceList.appendChild(conceptAppearance)
       if (concept.evidenceAnnotations.length > 0) {
@@ -105,20 +133,19 @@ class CXLExporter {
           let annotation = concept.evidenceAnnotations[i]
           let name
           if (i === 0) {
-            name = concept.theme.name
+            name = LanguageUtils.camelize(concept.theme.name)
           } else {
-            name = concept.theme.name + i
+            name = LanguageUtils.camelize(concept.theme.name + i)
           }
           let url
           if (evidenceAnnotations === 'hypothesis') {
-            url = new ToolURL({name, annotation})
+            url = new HypothesisURL({elementID, name, annotation})
           } else if (evidenceAnnotations === 'tool') {
-            url = new ToolURL({name, annotation})
+            url = new ToolURL({elementID, name, annotation})
           }
           urlFiles.push(url)
         }
       }
-      console.log(urlFiles)
     }
     // PVSCL:IFCOND(Linking, LINE)
 
@@ -129,7 +156,8 @@ class CXLExporter {
       let relation = relationships[i]
       let linkingElement = xmlDoc.createElement('linking-phrase')
       let id = document.createAttribute('id')
-      id.value = relation.id
+      let elementID = relation.id
+      id.value = elementID
       linkingElement.setAttributeNode(id)
       let label = document.createAttribute('label')
       label.value = relation.linkingWord
@@ -145,20 +173,19 @@ class CXLExporter {
           let annotation = relation.evidenceAnnotations[i]
           let name
           if (i === 0) {
-            name = relation.fromConcept.name + 'To' + relation.toConcept.name
+            name = LanguageUtils.camelize(relation.fromConcept.name) + '_To_' + LanguageUtils.camelize(relation.toConcept.name)
           } else {
-            name = relation.fromConcept.name + 'To' + relation.toConcept.name + i
+            name = LanguageUtils.camelize(relation.fromConcept.name) + '_To_' + LanguageUtils.camelize(relation.toConcept.name + i)
           }
           let url
           if (evidenceAnnotations === 'hypothesis') {
-            url = new HypothesisURL({name, annotation})
+            url = new HypothesisURL({elementID, name, annotation})
           } else if (evidenceAnnotations === 'tool') {
-            url = new ToolURL({name, annotation})
+            url = new ToolURL({elementID, name, annotation})
           }
           urlFiles.push(url)
         }
       }
-      console.log(urlFiles)
 
       // Connection
       // From
@@ -218,19 +245,26 @@ class CXLExporter {
       connectionID++
     }
     // PVSCL:ENDCOND
-    let stringifyObject = new XMLSerializer().serializeToString(xmlDoc)
+
+    // Create cmap-parts-list
+    let cmapPartsList = xmlDoc.createElement('cmap-parts-list')
+    // Annotations
+    let annotation = xmlDoc.createElement('annotations')
+    let annotationXmlns = document.createAttribute('xmlns')
+    annotationXmlns.value = 'http://cmap.ihmc.us/xml/cmap/'
+    annotation.setAttributeNode(annotationXmlns)
+    let annotationList = xmlDoc.createElement('annotation-list')
+    annotation.appendChild(annotationList)
+    let annotationAppearanceList = xmlDoc.createElement('annotation-appearance-list')
+    annotation.appendChild(annotationAppearanceList)
+    cmapPartsList.appendChild(annotation)
+    cmapElement.appendChild(cmapPartsList)
 
     if (exportType === 'archiveFile') {
-      ExportCXLArchiveFile.export(stringifyObject, urlFiles)
+      ExportCXLArchiveFile.export(xmlDoc, urlFiles)
     } else if (exportType === 'cmapCloud') {
-      console.log('Export to Cmap cloud')
+      ExportCmapCloud.export(xmlDoc, urlFiles, userData)
     }
-    // let uid = '1cf684dc-1764-4e5b-8122-7235ca19c37a'
-    // let user = 'highlight01x@gmail.com'
-    // let pass = 'producto1'
-    // let auth = token(user, pass)
-    // => aGlnaGxpZ2h0MDF4QGdtYWlsLmNvbTpwcm9kdWN0bzE="
-    // console.log(auth)
   }
 }
 

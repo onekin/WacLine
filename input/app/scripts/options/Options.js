@@ -8,6 +8,7 @@ const _ = require('lodash')
 // PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
 const URLUtils = require('../utils/URLUtils')
 // PVSCL:ENDCOND
+const $ = require('jquery')
 
 class Options {
   init () {
@@ -21,7 +22,10 @@ class Options {
         this.showSelectedAnnotationServerConfiguration(event.target.selectedOptions[0].value)
       }
     })
-    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+    chrome.runtime.sendMessage({
+      scope: 'annotationServer',
+      cmd: 'getSelectedAnnotationServer'
+    }, ({annotationServer}) => {
       document.querySelector('#annotationServerDropdown').value = annotationServer
       this.showSelectedAnnotationServerConfiguration(annotationServer)
     })
@@ -82,6 +86,35 @@ class Options {
       })
     })
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+    // TODO Restore form from credentials saved in storage
+    let cmapCloudButton = document.querySelector('#checkCmapValues')
+    chrome.runtime.sendMessage({scope: 'cmapCloud', cmd: 'getUserData'}, (response) => {
+      if (response.data) {
+        let data = response.data
+        if (data.userData.user && data.userData.password && data.userData.uid) {
+          document.querySelector('#cmapCloudUserValue').value = data.userData.user
+          document.querySelector('#cmapCloudPasswordValue').value = data.userData.password
+          document.querySelector('#uidValue').innerHTML = 'User ID: ' + data.userData.uid
+          $('#cmapCloudUserValue').prop('readonly', true)
+          $('#cmapCloudPasswordValue').prop('readonly', true)
+          cmapCloudButton.innerHTML = 'Change user credentials'
+        }
+      }
+    })
+    // Button listener
+    cmapCloudButton.addEventListener('click', () => {
+      if (cmapCloudButton.innerHTML === 'Change user credentials') {
+        $('#cmapCloudUserValue').prop('readonly', false)
+        $('#cmapCloudPasswordValue').prop('readonly', false)
+        document.querySelector('#checkCmapValues').innerHTML = 'Validate account'
+      } else if (cmapCloudButton.innerHTML === 'Validate account') {
+        let userInputToValidate = document.querySelector('#cmapCloudUserValue').value
+        let passwordInputToValidate = document.querySelector('#cmapCloudPasswordValue').value
+        this.checkCmapCloudValues(userInputToValidate, passwordInputToValidate)
+      }
+    })
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Neo4J, LINE)
     // Neo4J Configuration
     this.neo4JEndpointElement = document.querySelector('#neo4jEndpoint')
@@ -121,8 +154,8 @@ class Options {
     })
     // PVSCL:ENDCOND
   }
-  // PVSCL:IFCOND(BrowserStorage,LINE)
 
+  // PVSCL:IFCOND(BrowserStorage,LINE)
   restoreDatabase (jsonObject, callback) {
     window.options.browserStorage = new BrowserStorageManager()
     window.options.browserStorage.init(() => {
@@ -149,18 +182,19 @@ class Options {
       window.options.browserStorage.cleanDatabase(callback)
     })
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
 
   setAnnotationServer (annotationServer) {
     chrome.runtime.sendMessage({
-      scope: 'annotationServer',
-      cmd: 'setSelectedAnnotationServer',
-      data: {annotationServer: annotationServer}
-    }, ({annotationServer}) => {
+      scope: 'cmapCloud',
+      cmd: 'getUserData'
+    }, ({data}) => {
       console.debug('Annotation server selected ' + annotationServer)
     })
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Neo4J, LINE)
 
@@ -187,6 +221,7 @@ class Options {
       })
     }
   }
+
   // PVSCL:ENDCOND
 
   showSelectedAnnotationServerConfiguration (selectedAnnotationServer) {
@@ -201,6 +236,7 @@ class Options {
       selectedAnnotationServerConfigurationCard.setAttribute('aria-hidden', 'false')
     }
   }
+
   // PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
 
   updateApiSimulationCheckbox () {
@@ -235,6 +271,7 @@ class Options {
       Alerts.errorAlert({error: 'URL is malformed'}) // TODO i18n
     }
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleResource, LINE)
 
@@ -246,6 +283,32 @@ class Options {
       data: {isActivated: isChecked}
     }, (response) => {
       console.debug('Api simulation is updated to: ' + response.activated)
+    })
+  }
+
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+  checkCmapCloudValues (user, password) {
+    document.querySelector('#uidValue').className = 'textMessage'
+    document.querySelector('#uidValue').innerHTML = 'Validating given credentials ... wait a moment please.'
+    chrome.runtime.sendMessage({
+      scope: 'cmapCloud',
+      cmd: 'getUserUid',
+      data: {user: user, password: password}
+    }, (response) => {
+      if (response.userData) {
+        if (response.userData.uid) {
+          document.querySelector('#uidValue').innerHTML = 'User ID: ' + response.userData.uid
+          $('#cmapCloudUserValue').prop('readonly', true)
+          $('#cmapCloudPasswordValue').prop('readonly', true)
+          document.querySelector('#checkCmapValues').innerHTML = 'Change user credentials'
+        }
+        // validated
+      } else if (response.err) {
+        // Not validated
+        document.querySelector('#uidValue').className = 'errorMessage'
+        document.querySelector('#uidValue').innerHTML = 'Unable to retrieve the user id for the given credentials.'
+      }
     })
   }
   // PVSCL:ENDCOND

@@ -44,7 +44,7 @@ const Config = {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Codebook, LINE)
   cmapCloudConfiguration: {
-    user: 'highlight02x@gmail.com',
+    user: 'highlight01x@gmail.com',
     password: 'producto1',
     uid: '1cf684dc-1764-4e5b-8122-7235ca19c37a'
   },

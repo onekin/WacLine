@@ -1,267 +1,157 @@
-// const FileSaver = require('file-saver')
+const Config = require('../../../Config')
+const CmapCloudClient = require('./CmapCloudClient')
 const _ = require('lodash')
-const $ = require('jquery')
-// const JSZip = require('jszip')
-const HypothesisURL = require('./evidenceAnnotation/HypothesisURL')
-const ToolURL = require('./evidenceAnnotation/ToolURL')
+const Alerts = require('../../../utils/Alerts')
+const LanguageUtils = require('../../../utils/LanguageUtils')
+const FileSaver = require('file-saver')
 
-class CXLExporter {
-  static exportCXLFile (exportType/* PVSCL:IFCOND(EvidenceAnnotations) */, evidenceAnnotations/* PVSCL:ENDCOND */) {
-    // Get annotations from tag manager and content annotator
-    let concepts = window.abwa.mapContentManager.concepts
-    // PVSCL:IFCOND(Linking, LINE)
-    let relationships = window.abwa.mapContentManager.relationships
-    // PVSCL:ENDCOND
-    // PVSCL:IFCOND(EvidenceAnnotations)
-    let urlFiles = []
-    // PVSCL:ENDCOND
-    let xmlDoc = document.implementation.createDocument(null, 'cmap', null)
-    let cmapElement = xmlDoc.firstChild
-    // Create processing instruction
-    let pi = xmlDoc.createProcessingInstruction('xml', 'version=\'1.0\' encoding=\'UTF-8\'')
-    xmlDoc.insertBefore(pi, xmlDoc.firstChild)
-
-    // Create map xmlns:dcterms attribute
-    let att = document.createAttribute('xmlns:dcterms')
-    att.value = 'http://purl.org/dc/terms/'
-    cmapElement.setAttributeNode(att)
-
-    // Create map xmlns attribute
-    let att1 = document.createAttribute('xmlns')
-    att1.value = 'http://cmap.ihmc.us/xml/cmap/'
-    cmapElement.setAttributeNode(att1)
-
-    // Create map xmlns:dc attribute
-    let att2 = document.createAttribute('xmlns:dc')
-    att2.value = 'http://purl.org/dc/elements/1.1/'
-    cmapElement.setAttributeNode(att2)
-
-    // Create map xmlns:vcard attribute
-    let att3 = document.createAttribute('xmlns:vcard')
-    att3.value = 'http://www.w3.org/2001/vcard-rdf/3.0#'
-    cmapElement.setAttributeNode(att3)
-
-    // Create metadata
-    let metadata = xmlDoc.createElement('res-meta')
-    cmapElement.appendChild(metadata)
-
-    // Set title
-    let title = xmlDoc.createElement('dc:title')
-    title.textContent = window.abwa.groupSelector.currentGroup.name
-    metadata.appendChild(title)
-
-    // Set description
-    let description = xmlDoc.createElement('dc:description')
-    description.textContent = window.abwa.groupSelector.currentGroup.name
-    metadata.appendChild(description)
-
-    // Create map
-    let map = xmlDoc.createElement('map')
-    cmapElement.appendChild(map)
-
-    // Concept list
-    let conceptList = xmlDoc.createElement('concept-list')
-    map.appendChild(conceptList)
-    // PVSCL:IFCOND(Linking, LINE)
-
-    // linking phrase list
-    let linkingPhraseList = xmlDoc.createElement('linking-phrase-list')
-    map.appendChild(linkingPhraseList)
-
-    // connection list
-    let connectionList = xmlDoc.createElement('connection-list')
-    map.appendChild(connectionList)
-    // PVSCL:ENDCOND
-
-    // concept appearance list
-    let conceptAppearanceList = xmlDoc.createElement('concept-appearance-list')
-    map.appendChild(conceptAppearanceList)
-    // PVSCL:IFCOND(Linking, LINE)
-
-    // linking appearance list
-    let linkingAppearanceList = xmlDoc.createElement('linking-phrase-appearance-list')
-    map.appendChild(linkingAppearanceList)
-
-    // connection appearance list
-    let connectionAppearanceList = xmlDoc.createElement('connection-appearance-list')
-    map.appendChild(connectionAppearanceList)
-    // PVSCL:ENDCOND
-
-    // Add concepts
-    for (let i = 0; i < concepts.length; i++) {
-      let concept = concepts[i]
-      let conceptElement = xmlDoc.createElement('concept')
-      let id = document.createAttribute('id')
-      id.value = concept.theme.id
-      conceptElement.setAttributeNode(id)
-      let label = document.createAttribute('label')
-      label.value = concept.theme.name
-      conceptElement.setAttributeNode(label)
-      conceptList.appendChild(conceptElement)
-      let conceptAppearance = xmlDoc.createElement('concept-appearance')
-      id = document.createAttribute('id')
-      id.value = concept.theme.id
-      conceptAppearance.setAttributeNode(id)
-      conceptAppearanceList.appendChild(conceptAppearance)
-      if (concept.evidenceAnnotations.length > 0) {
-        for (let i = 0; i < concept.evidenceAnnotations.length; i++) {
-          let annotation = concept.evidenceAnnotations[i]
-          let name
-          if (i === 0) {
-            name = concept.theme.name
-          } else {
-            name = concept.theme.name + i
+class ExportCmapCloud {
+  static export (xmlDoc, urlFiles, userData) {
+    let user = userData.user
+    let pass = userData.password
+    let uid = userData.uid
+    let cmapCloudClient = new CmapCloudClient(user, pass, uid)
+    cmapCloudClient.getRootFolderInfor((data) => {
+      console.log(data)
+      let folderName = this.getFolderName(data)
+      console.log(folderName)
+      cmapCloudClient.createFolder(folderName, (newFolderData) => {
+        let folderID = this.getFolderID(newFolderData)
+        console.log(folderID)
+        let beginPromises = []
+        for (let i = 0; i < urlFiles.length; i++) {
+          let urlFile = urlFiles[i]
+          let beginPromise = new Promise((resolve, reject) => {
+            cmapCloudClient.uploadWebResource(folderID, urlFile, (data) => {
+              resolve(data)
+            })
+          })
+          beginPromises.push(beginPromise)
+        }
+        Promise.all(beginPromises).then(createdResources => {
+          // Results
+          console.log(createdResources)
+          let createdResourcesID = _.map(createdResources, (res) => {
+            let retrieve = res.all[3].innerHTML.match(/id=[\s\S]*.url/)[0]
+            let resourceIDName = retrieve.replace('.url', '').replace('id=', '')
+            return resourceIDName
+          })
+          console.log(createdResourcesID)
+          for (let j = 0; j < createdResourcesID.length; j++) {
+            let id = createdResourcesID[j].split('/')[0]
+            let name = createdResourcesID[j].split('/')[1]
+            console.log(id + ' ' + name)
+            let urlFile = _.find(urlFiles, (file) => {
+              return file.name === name
+            })
+            if (urlFile) {
+              urlFile.id = id
+            }
           }
-          let url
-          if (evidenceAnnotations === 'hypothesis') {
-            url = new ToolURL({name, annotation})
-          } else if (evidenceAnnotations === 'tool') {
-            url = new ToolURL({name, annotation})
-          }
-          urlFiles.push(url)
+          // Add resource-group-list
+          console.log(urlFiles)
+          let map = this.referenceURLIntoMap(xmlDoc, urlFiles, folderID)
+          cmapCloudClient.uploadMap(folderID, map, (data) => {
+            let mapString = new XMLSerializer().serializeToString(xmlDoc)
+            let blob = new window.Blob([mapString], {
+              type: 'text/plain;charset=utf-8'
+            })
+            FileSaver.saveAs(blob, LanguageUtils.camelize(folderName) + '.cxl')
+            Alerts.infoAlert({text: 'You have available your resource in CmapCloud in ' + folderName + ' folder.\n Please move the downloaded map to the corresponding CmapCloud folder.', title: 'Completed'})
+          })
+        }, reason => {
+          console.log(reason)
+        })
+      })
+    })
+  }
+
+  static getFolderName (data) {
+    let folderName
+    let elements = data.getElementsByTagName('res-meta')
+    if (elements.length > 0) {
+      console.log(elements)
+      let folderElements = _.map(_.filter(elements, (element) => {
+        if (element.attributes.format) {
+          return element.attributes.format.nodeValue === 'x-nlk-project/x-binary'
+        }
+      }), (folderElement) => {
+        return folderElement.attributes.title.nodeValue
+      })
+      let candidateName
+      let foundFolder
+      let i = 1
+      while (true) {
+        candidateName = window.abwa.groupSelector.currentGroup.name + '_v.' + i
+        foundFolder = _.filter(folderElements, (folderName) => {
+          return folderName === candidateName
+        })
+        if (foundFolder.length === 0) {
+          return candidateName
+        } else {
+          i++
         }
       }
-      console.log(urlFiles)
+    } else {
+      folderName = window.abwa.groupSelector.currentGroup.name + '_v.1'
+      return folderName
     }
-    // PVSCL:IFCOND(Linking, LINE)
+  }
 
-    // Add linking phrase
-    let connectionID = 1
-    for (let i = 0; i < relationships.length; i++) {
-      // Linking phrase
-      let relation = relationships[i]
-      let linkingElement = xmlDoc.createElement('linking-phrase')
-      let id = document.createAttribute('id')
-      id.value = relation.id
-      linkingElement.setAttributeNode(id)
-      let label = document.createAttribute('label')
-      label.value = relation.linkingWord
-      linkingElement.setAttributeNode(label)
-      linkingPhraseList.appendChild(linkingElement)
-      let linkingAppearance = xmlDoc.createElement('linking-phrase-appearance')
-      id = document.createAttribute('id')
-      id.value = relation.id
-      linkingAppearance.setAttributeNode(id)
-      linkingAppearanceList.appendChild(linkingAppearance)
-      if (relation.evidenceAnnotations.length > 0) {
-        for (let i = 0; i < relation.evidenceAnnotations.length; i++) {
-          let annotation = relation.evidenceAnnotations[i]
-          let name
-          if (i === 0) {
-            name = relation.fromConcept.name + 'To' + relation.toConcept.name
-          } else {
-            name = relation.fromConcept.name + 'To' + relation.toConcept.name + i
-          }
-          let url
-          if (evidenceAnnotations === 'hypothesis') {
-            url = new HypothesisURL({name, annotation})
-          } else if (evidenceAnnotations === 'tool') {
-            url = new ToolURL({name, annotation})
-          }
-          urlFiles.push(url)
-        }
+  static getFolderID (data) {
+    let identifier = data.getElementsByTagName('dc:identifier')[0].innerHTML.match(/id=(\w+)-(\w+)-(\w+)/)[0]
+    let folderID = identifier.toString().replace('id=', '')
+    return folderID
+  }
+
+  static referenceURLIntoMap (xmlDoc, urlFiles, folderID) {
+    let resourceGroupListElement = xmlDoc.getElementsByTagName('resource-group-list')[0]
+    console.log(resourceGroupListElement)
+    let resourcesMap = _.chain(urlFiles)
+      .groupBy('parentId')
+      .toPairs()
+      .map(pair => _.zipObject(['parentId', 'urls'], pair))
+      .value()
+    for (let i = 0; i < resourcesMap.length; i++) {
+      let resource = resourcesMap[i]
+      let resourceGroupElement = xmlDoc.createElement('resource-group')
+      let resourceGroupIdAttribute = document.createAttribute('parent-id')
+      resourceGroupIdAttribute.value = resource.parentId
+      resourceGroupElement.setAttributeNode(resourceGroupIdAttribute)
+      let groupTypeIdAttribute = document.createAttribute('group-type')
+      groupTypeIdAttribute.value = 'text-and-image'
+      resourceGroupElement.setAttributeNode(groupTypeIdAttribute)
+      for (let j = 0; j < resource.urls.length; j++) {
+        let url = resource.urls[j]
+        let resourceElement = xmlDoc.createElement('resource')
+        let resourceElementLabelAttribute = document.createAttribute('label')
+        resourceElementLabelAttribute.value = url.name
+        resourceElement.setAttributeNode(resourceElementLabelAttribute)
+        let resourceElementNameAttribute = document.createAttribute('resource-name')
+        resourceElementNameAttribute.value = url.name
+        resourceElement.setAttributeNode(resourceElementNameAttribute)
+        let resourceElementURLAttribute = document.createAttribute('resource-url')
+        resourceElementURLAttribute.value = 'https://cmapscloud.ihmc.us:443/id=' + url.id + '/' + url.name + '.url?redirect'
+        resourceElement.setAttributeNode(resourceElementURLAttribute)
+        let resourceElementIdAttribute = document.createAttribute('resource-id')
+        resourceElementIdAttribute.value = url.id
+        resourceElement.setAttributeNode(resourceElementIdAttribute)
+        let resourceFolderIdAttribute = document.createAttribute('resource-folder-id')
+        resourceFolderIdAttribute.value = folderID
+        resourceElement.setAttributeNode(resourceFolderIdAttribute)
+        let resourceServerIdAttribute = document.createAttribute('resource-server-id')
+        resourceServerIdAttribute.value = '1MHZH5RK6-2C8DRLF-1'
+        resourceElement.setAttributeNode(resourceServerIdAttribute)
+        let resourceElementMimetypeAttribute = document.createAttribute('resource-mimetype')
+        resourceElementMimetypeAttribute.value = 'text/x-url'
+        resourceElement.setAttributeNode(resourceElementMimetypeAttribute)
+        resourceGroupElement.appendChild(resourceElement)
       }
-      console.log(urlFiles)
-
-      // Connection
-      // From
-      let connectionElement = xmlDoc.createElement('connection')
-      id = document.createAttribute('id')
-      id.value = connectionID.toString()
-      connectionElement.setAttributeNode(id)
-      let fromID = document.createAttribute('from-id')
-      fromID.value = relation.fromConcept.id
-      connectionElement.setAttributeNode(fromID)
-      let toID = document.createAttribute('to-id')
-      toID.value = relation.id
-      connectionElement.setAttributeNode(toID)
-      connectionList.appendChild(connectionElement)
-      let connectionAppearanceElement = xmlDoc.createElement('connection-appearance')
-      id = document.createAttribute('id')
-      id.value = connectionID.toString()
-      connectionAppearanceElement.setAttributeNode(id)
-      let fromPos = document.createAttribute('from-pos')
-      fromPos.value = 'center'
-      connectionAppearanceElement.setAttributeNode(fromPos)
-      let toPos = document.createAttribute('to-pos')
-      toPos.value = 'center'
-      connectionAppearanceElement.setAttributeNode(toPos)
-      let arrow = document.createAttribute('arrowhead')
-      arrow.value = 'yes'
-      connectionAppearanceElement.setAttributeNode(arrow)
-      connectionAppearanceList.appendChild(connectionAppearanceElement)
-      connectionID++
-
-      // To
-      connectionElement = xmlDoc.createElement('connection')
-      id = document.createAttribute('id')
-      id.value = connectionID.toString()
-      connectionElement.setAttributeNode(id)
-      fromID = document.createAttribute('from-id')
-      fromID.value = relation.id
-      connectionElement.setAttributeNode(fromID)
-      toID = document.createAttribute('to-id')
-      toID.value = relation.toConcept.id
-      connectionElement.setAttributeNode(toID)
-      connectionList.appendChild(connectionElement)
-      connectionAppearanceElement = xmlDoc.createElement('connection-appearance')
-      id = document.createAttribute('id')
-      id.value = connectionID.toString()
-      connectionAppearanceElement.setAttributeNode(id)
-      fromPos = document.createAttribute('from-pos')
-      fromPos.value = 'center'
-      connectionAppearanceElement.setAttributeNode(fromPos)
-      toPos = document.createAttribute('to-pos')
-      toPos.value = 'center'
-      connectionAppearanceElement.setAttributeNode(toPos)
-      arrow = document.createAttribute('arrowhead')
-      arrow.value = 'yes'
-      connectionAppearanceElement.setAttributeNode(arrow)
-      connectionAppearanceList.appendChild(connectionAppearanceElement)
-      connectionID++
+      resourceGroupListElement.appendChild(resourceGroupElement)
     }
-    // PVSCL:ENDCOND
-    let stringifyObject = new XMLSerializer().serializeToString(xmlDoc)
-    // PVSCL:IFCOND(Linking, LINE)
-    let uid = '1cf684dc-1764-4e5b-8122-7235ca19c37a'
-    let user = 'highlight01x@gmail.com'
-    let pass = 'producto1'
-    let auth = token(user, pass)
-    // => aGlnaGxpZ2h0MDF4QGdtYWlsLmNvbTpwcm9kdWN0bzE="
-    console.log(auth)
-    /* let blob = new window.Blob([stringifyObject], {
-      type: 'text/plain;charset=utf-8'
-    }) */
-    // PVSCL:IFCOND(EvidenceAnnotations, LINE)
-    /* let zip = new JSZip()
-    zip.file(window.abwa.groupSelector.currentGroup.name.replace(' ', '') + '.cxl', blob)
-    for (let i = 0; i < urlFiles.length; i++) {
-      let urlFile = urlFiles[i]
-      zip.file(urlFile.name.replace(' ', '') + '.url', urlFile.content)
-    } */
-    // zip.file('Hello.txt', 'Hello World\n')
-    // zip.generateAsync({type: 'blob'}).then(function (zipFile) {
-    // see FileSaver.js
-    // FileSaver.saveAs(zipFile, 'generatedMap.zip')
-    // })
-    // PVSCL:ELSECOND
-    // FileSaver.saveAs(blob, 'newMap' + '.cxl')
-    // PVSCL:ENDCOND
-    /* let settings = {
-      'url': 'https://cmapscloud.ihmc.us:443/resources/id=uid=' + uid + ',ou=users,dc=cmapcloud,dc=ihmc,dc=us/?cmd=create.folder.with.name&name=Xabier&userDN=uid=' + uid + ',ou=users,dc=cmapcloud,dc=ihmc,dc=us',
-      'method': 'POST',
-      'timeout': 0,
-      'headers': {
-        'Authorization': 'Basic ' + auth,
-        'Content-Type': 'application/xml'
-      },
-      'data': '<res-meta xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:dcterms=\"http://purl.org/dc/terms/\" xmlns:vCard=\"http://www.w3.org/2001/vcard-rdf/3.0#\">\n<dc:title>CreateFolder</dc:title>\n<dc:format>x-nlk-project/x-binary</dc:format>\n<dc:description>No description</dc:description>\n<dc:creator>\n\t<vCard:FN>uid=1cf684dc-1764-4e5b-8122-7235ca19c37a,ou=users,dc=cmapcloud,dc=ihmc,dc=us</vCard:FN>\n\t<vCard:EMAIL />\n</dc:creator>\n<dcterms:rightsHolder>\n\t<vCard:FN>uid=1cf684dc-1764-4e5b-8122-7235ca19c37a,ou=users,dc=cmapcloud,dc=ihmc,dc=us</vCard:FN>\n\t<vCard:EMAIL />\n</dcterms:rightsHolder>\n</res-meta>\n\n<acl-info>\n\t<ldap-acl-entry user-id=\"EHU\" user-dn=\"uid=1cf684dc-1764-4e5b-8122-7235ca19c37a,ou=users,dc=cmapcloud,dc=ihmc,dc=us\">\n\t\t<permission id=\"admin\" />\n\t</ldap-acl-entry>\n</acl-info>'
-    }
-
-    $.ajax(settings).done(function (response) {
-      console.log(response)
-    }) */
+    let mapString = new XMLSerializer().serializeToString(xmlDoc)
+    return mapString
   }
 }
 
-module.exports = CXLExporter
+module.exports = ExportCmapCloud

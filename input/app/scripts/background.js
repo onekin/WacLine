@@ -34,6 +34,9 @@ const MoodleDownloadManager = require('./background/MoodleDownloadManager')
 const MoodleBackgroundManager = require('./background/MoodleBackgroundManager')
 const TaskManager = require('./background/TaskManager')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+const CmapCloudBackgroundManager = require('./background/CmapCloudBackgroundManager')
+// PVSCL:ENDCOND
 
 const _ = require('lodash')
 
@@ -68,6 +71,12 @@ class Background {
     // Initialize doi manager
     this.targetManager = new TargetManager()
     this.targetManager.init()
+
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+    // Initialize cmapCloud manager
+    this.cmapCloudManager = new CmapCloudBackgroundManager()
+    this.cmapCloudManager.init()
 
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
