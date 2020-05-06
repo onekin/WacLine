@@ -43,7 +43,7 @@ class Theme {
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleProvider, LINE)
     this.moodleCriteriaId = moodleCriteriaId
-  // PVSCL:ENDCOND
+    // PVSCL:ENDCOND
   }
 
   toAnnotations () {
