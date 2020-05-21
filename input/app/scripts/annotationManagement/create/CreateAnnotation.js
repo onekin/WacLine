@@ -64,11 +64,12 @@ class CreateAnnotation {
             window.getSelection().removeAllRanges()
             // Deserialize retrieved annotation from the server
             const deserializedAnnotation = Annotation.deserialize(annotation)
-            // SESSION MODULE
+            // PVSCL:IFCOND(Session, LINE)
             if (window.abwa.sessionManagement.sessionReader.currentSession.sessionURIs.length === 0 || window.abwa.sessionManagement.sessionReader.currentSession.sessionURIs.filter((url) => { return url.source === deserializedAnnotation.target[0].source.url }).length < 1) {
               window.abwa.sessionManagement.sessionReader.currentSession.sessionURIs.push({ source: deserializedAnnotation.target[0].source.url, title: deserializedAnnotation.target[0].source.title })
               LanguageUtils.dispatchCustomEvent(Events.updateSession, { session: window.abwa.sessionManagement.sessionReader.currentSession })
             }
+            // PVSCL:ENDCOND
             // Dispatch annotation created event
             LanguageUtils.dispatchCustomEvent(Events.annotationCreated, { annotation: deserializedAnnotation })
           }
@@ -95,9 +96,10 @@ class CreateAnnotation {
       tags = tags.concat(codeOrTheme.getTags())
     }
     // PVSCL:ENDCOND
-    // SESSION MODULE
+    // PVSCL:IFCOND(Session, LINE)
     const sessionTag = Config.namespace + ':session:' + window.abwa.sessionManagement.sessionReader.currentSession.id
     tags.push(sessionTag)
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Assessing, LINE)
 
     // PVSCL:ENDCOND

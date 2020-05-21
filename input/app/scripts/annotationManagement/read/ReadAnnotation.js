@@ -42,8 +42,9 @@ class ReadAnnotation {
     this.initAllAnnotationsDeletedEventListener()
     // PVSCL:ENDCOND
     // Event listener updated annotation
-    // SESSION MODULE
+    // PVSCL:IFCOND(Session, LINE)
     this.initTransferCurrentSessionAnnotationsEventListener()
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Update, LINE)
     this.initAnnotationUpdatedEventListener()
     // PVSCL:ENDCOND
@@ -249,7 +250,7 @@ class ReadAnnotation {
   }
   // PVSCL:ENDCOND
 
-  // SESSION MODULE
+  // PVSCL:IFCOND(Session, LINE)
 
   initTransferCurrentSessionAnnotationsEventListener () {
     this.events.transferCurrentSessionAnnotationsEvent = { element: document, event: Events.transferCurrentSessionAnnotations, handler: this.transferCurrentSessionAnnotationsHandler() }
@@ -273,6 +274,7 @@ class ReadAnnotation {
     }
 
   }
+  // PVSCL:ENDCOND
 
   updateAllAnnotations (callback) {
     // Retrieve annotations for current url and group
@@ -289,10 +291,11 @@ class ReadAnnotation {
       } else {
         // Deserialize retrieved annotations
         this.allAnnotations = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
-        // SESSION MODULE
+        // PVSCL:IFCOND(Session, LINE)
         this.allAnnotations = _.filter(this.allAnnotations, (a) => {
           return a.tags.includes(Config.namespace + ':session:' + window.abwa.sessionManagement.sessionReader.currentSession.id)
         })
+        // PVSCL:ENDCOND
         // PVSCL:IFCOND(Replying, LINE)
         this.replyAnnotations = _.filter(this.allAnnotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
@@ -314,6 +317,7 @@ class ReadAnnotation {
     })
   }
 
+  // PVSCL:IFCOND(Session, LINE)
   retrieveAllAnnotationsFromSession (session, callback) {
     let promise = new Promise((resolve, reject) => {
       if (window.abwa.groupSelector.currentGroup.id) {
@@ -339,6 +343,7 @@ class ReadAnnotation {
       callback(null, annotations)
     })
   }
+  // PVSCL:ENDCOND
 
 
 
@@ -424,10 +429,11 @@ class ReadAnnotation {
     // PVSCL:ELSECOND
     currentAnnotations = this.allAnnotations
     // PVSCL:ENDCOND
-    // SESSION MODULE
+    // PVSCL:IFCOND(Session, LINE)
     currentAnnotations = _.filter(currentAnnotations, (a) => {
       return a.tags.includes(Config.namespace + ':session:' + window.abwa.sessionManagement.sessionReader.currentSession.id)
     })
+    // PVSCL:ENDCOND
     return currentAnnotations
   }
 
