@@ -20,7 +20,9 @@ const Events = {
   // PVSCL:IFCOND(Reply, LINE)
   reply: 'reply',
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Linking,LINE)
   link: 'link',
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(DeleteAll, LINE)
   deleteAllAnnotations: 'deleteAllAnnotations',
   deletedAllAnnotations: 'deletedAllAnnotations',
@@ -62,6 +64,14 @@ const Events = {
   codebookImported: 'codebookImported',
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
+  // SESSION
+  createSession: 'createSession',
+  sessionCreated: 'sessionCreated',
+  updateSession: 'updateSession',
+  sessionUpdated: 'sessionUpdated',
+  sessionDeleted: 'sessionDeleted',
+  deleteSession: 'deleteSession',
+  transferCurrentSessionAnnotations: 'transferCurrentSessionAnnotations',
   // PVSCL:IFCOND(CodebookDelete, LINE)
   deleteCodebook: 'deleteCodebook',
   codebookDeleted: 'codebookDeleted',

@@ -1,3 +1,4 @@
+
 import _ from 'lodash'
 import $ from 'jquery'
 import Alerts from '../utils/Alerts'
@@ -319,7 +320,7 @@ class GroupSelector {
     this.retrieveGroups(() => {
       this.container = document.querySelector('#groupSelector')
       this.container.setAttribute('aria-expanded', 'false')
-      this.renderGroupsContainer()
+      // this.renderGroupsContainer()
       if (_.isFunction(callback)) {
         callback()
       }

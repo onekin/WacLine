@@ -9,18 +9,17 @@
         target="_blank">Sign up</a>
     </div>
   </div>
-  <div id="loggedInGroupContainer" pv:condition="Manual" class="sidebarContainer">
+  <div id="loggedInGroupContainer"  class="sidebarContainer">
     <div id="groupSelectorContainerHeader" class="containerHeader">
       <div id="groupSelector" aria-expanded="false">
-          <div id="groupSelectorContainerSelector" class="sidebarContainer">
-            </div>
-        <span id="groupSelectorToggle"></span>
         <span id="groupSelectorName"></span>
-        
+        <span id="groupSelectorToggle"></span>
+        <div id="groupSelectorContainerSelector" class="sidebarContainer">
+            </div>
       </div>
     </div>
   </div>
-  <template id="groupSelectorItem" pv:condition="Manual">
+  <template id="groupSelectorItem">
     <div class="groupSelectorItemContainer" aria-expanded="false">
       <span class="groupSelectorItemName"></span>
       <span pv:condition="RenameCodebook or ExportCodebook or CodebookDelete" class="groupSelectorItemToggle"></span>

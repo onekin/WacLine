@@ -105,7 +105,7 @@ class LinkingForm {
 
       })
       if (links[targetAnnotation.target[0].source.title]) {
-        links[targetAnnotation.target[0].source.title].push(text)
+        links[targetAnnotation.target[0].source.title].push(targetAnnotation)
       } else {
         links[targetAnnotation.target[0].source.title] = [targetAnnotation]
       }
@@ -119,7 +119,7 @@ class LinkingForm {
         li.id = an.id
         // li.onclick = window.abwa.annotationManagement.goToAnnotation(an)
         li.innerText = _.find(an.target[0].selector, (s) => { return s.type === 'TextQuoteSelector' }).exact
-        li.style = 'cursor: pointer;'
+        li.style = 'cursor: pointer; font-size:10px'
         ul.appendChild(li)
       })
       html += title.outerHTML + ul.outerHTML
@@ -182,7 +182,7 @@ class LinkingForm {
         select.add(option)
       }
     })
-    html += button.outerHTML
+    html += button.outerHTML + '<br>'
     html += select.outerHTML
 
     return html

@@ -21,7 +21,9 @@ class Annotation {
     id,
     body = [],
     references = [],
+    // PVSCL:IFCOND(Linking,LINE)
     annotationlinks = [],
+    // PVSCL:ENDCOND
     group = window.abwa.groupSelector.currentGroup.id,
     permissions = {
       read: ['group:' + window.abwa.groupSelector.currentGroup.id]
@@ -39,7 +41,9 @@ class Annotation {
     this.id = id
     this.body = body
     this.references = references
+    // PVSCL:IFCOND(Linking,LINE)
     this.annotationlinks = annotationlinks
+    // PVSCL:ENDCOND
     this.permissions = permissions
     this.tags = _.uniq(tags)
     this.creator = creator
@@ -80,7 +84,9 @@ class Annotation {
         read: ['group:' + window.abwa.groupSelector.currentGroup.id]
       },
       references: this.references || [],
+      // PVSCL:IFCOND(Linking,LINE)
       annotationlinks: this.annotationlinks || [],
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(SuggestedLiterature,LINE)
       suggestedLiterature: [],
       // PVSCL:ENDCOND
@@ -139,7 +145,9 @@ class Annotation {
       creator: annotationObject.creator,
       permissions: annotationObject.permissions,
       references: annotationObject.references,
+      // PVSCL:IFCOND(Linking,LINE)
       annotationlinks: annotationObject.annotationlinks,
+      // PVSCL:ENDCOND
       tags: annotationObject.tags,
       target: annotationObject.target,
       created: annotationObject.created,

@@ -10,6 +10,7 @@ import $ from 'jquery'
 // PVSCL:IFCOND(Classifying, LINE)
 import Classifying from '../purposes/Classifying'
 // PVSCL:ENDCOND
+import Config from '../../Config'
 
 class CreateAnnotation {
   constructor () {
@@ -63,6 +64,11 @@ class CreateAnnotation {
             window.getSelection().removeAllRanges()
             // Deserialize retrieved annotation from the server
             const deserializedAnnotation = Annotation.deserialize(annotation)
+            // SESSION MODULE
+            if (window.abwa.sessionManagement.sessionReader.currentSession.sessionURIs.length === 0 || window.abwa.sessionManagement.sessionReader.currentSession.sessionURIs.filter((url) => { return url.source === deserializedAnnotation.target[0].source.url }).length < 1) {
+              window.abwa.sessionManagement.sessionReader.currentSession.sessionURIs.push({ source: deserializedAnnotation.target[0].source.url, title: deserializedAnnotation.target[0].source.title })
+              LanguageUtils.dispatchCustomEvent(Events.updateSession, { session: window.abwa.sessionManagement.sessionReader.currentSession })
+            }
             // Dispatch annotation created event
             LanguageUtils.dispatchCustomEvent(Events.annotationCreated, { annotation: deserializedAnnotation })
           }
@@ -89,6 +95,9 @@ class CreateAnnotation {
       tags = tags.concat(codeOrTheme.getTags())
     }
     // PVSCL:ENDCOND
+    // SESSION MODULE
+    const sessionTag = Config.namespace + ':session:' + window.abwa.sessionManagement.sessionReader.currentSession.id
+    tags.push(sessionTag)
     // PVSCL:IFCOND(Assessing, LINE)
 
     // PVSCL:ENDCOND

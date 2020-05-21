@@ -911,6 +911,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="iYvNxbTMbmeR9MrTQ">./i16D2Cp179ierYM5h</cm:target>
           <cm:target cm:id="ii_-qcu_r_Ri3DsSQ">./iTX52aKLiU5bPOxWs</cm:target>
           <cm:target cm:id="iYMyaZ7mnK_NLPo-a">./i3kWFU7xg1gvK1BJS</cm:target>
+          <cm:target cm:id="iLYhvTwfAbyNwmnhH">./il2Gd46tq9EXknAUf</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -921,10 +922,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i6GEfsiIyoDOsMF7F" cm:type="ps:datetime">2019-11-07T11:52:27.890Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iUU9cPSNrNCLKoTMQ" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i_0DWMP0eqN7IhgJr" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="i_0DWMP0eqN7IhgJr" cm:type="ps:string">aitor</cm:constant>
         </cm:property>
         <cm:property cm:id="ienLCCTIkTsyxQdZe" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iGNXajOFP277PrIkZ" cm:type="ps:datetime">2020-02-25T09:25:30.901Z</cm:constant>
+          <cm:constant cm:id="iGNXajOFP277PrIkZ" cm:type="ps:datetime">2020-05-11T09:08:45.481Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2855,6 +2856,32 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
 &lt;p&gt;&lt;img title=&quot;Annotation list browser storage&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationListLocal.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationListLocal.png&quot; width=&quot;1309&quot; height=&quot;589&quot;&gt;
 &lt;/p&gt;</cm:mimedesc>
       </cm:desc>
+    </cm:element>
+    <cm:element cm:id="il2Gd46tq9EXknAUf" cm:name="Linking" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i488S3_14lbSYTsJl" cm:class="ps:parents">
+        <cm:relation cm:id="iqyDN5kb6f5156m8p" cm:type="ps:parent">
+          <cm:target cm:id="i4DtaBN9rNPkBS2wI">./iq8KhwKzipWRNNLFw</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iWSOtIBCHXqdXjJ_d" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ia6sWN34-WcjGJ0Bb" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iigMPdWGyKbSMK_Nz" cm:type="ps:string">aitor</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iCgcXiag5U7_ZMHgv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="imeHk4wKYHuiA5S2B" cm:type="ps:datetime">2020-05-11T09:08:45.481Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4bfdNgPsHwxcCWP0" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="idMRgovxL-Ko59PRD" cm:type="ps:string">aitor</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-b3dOqR5X_P2pKXj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iHpyXeenEFBffzGh-" cm:type="ps:datetime">2020-05-11T09:08:45.481Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i4c3Kw79Q-sw4PP8T" cm:mimetype="text/plain" cm:encoding="utf-8">Linking</cm:mimedesc>
+      </cm:vname>
     </cm:element>
   </cm:elements>
 </cm:consulmodel>
