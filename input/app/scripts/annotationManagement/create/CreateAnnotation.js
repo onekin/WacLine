@@ -75,7 +75,15 @@ class CreateAnnotation {
                 LanguageUtils.dispatchCustomEvent(Events.linkAnnotationCreated, {annotation: deserializedAnnotation})
               }
             }
-          // PVSCL:ENDCOND
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(EvidenceAnnotations, LINE)
+            if (deserializedAnnotation.body) {
+              let bodyWithClassifyingPurpose = deserializedAnnotation.getBodyForPurpose('classifying')
+              if (bodyWithClassifyingPurpose) {
+                LanguageUtils.dispatchCustomEvent(Events.evidenceAnnotationAdded, {annotation: deserializedAnnotation})
+              }
+            }
+            // PVSCL:ENDCOND
           }
         })
       } else {
@@ -139,8 +147,8 @@ class CreateAnnotation {
           value.addToCXL = detail.addToCXL
         }
         // PVSCL:ENDCOND
-        let classifyingBody = new Linking({value})
-        body.push(classifyingBody.serialize())
+        let linkingBody = new Linking({value})
+        body.push(linkingBody.serialize())
       }
     }
     // PVSCL:ENDCOND

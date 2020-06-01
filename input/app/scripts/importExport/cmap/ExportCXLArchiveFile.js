@@ -14,12 +14,12 @@ class ExportCXLArchiveFile {
     zip.file(window.abwa.groupSelector.currentGroup.name.replace(' ', '') + '.cxl', blob)
     for (let i = 0; i < urlFiles.length; i++) {
       let urlFile = urlFiles[i]
-      zip.file(urlFile.name.replace(' ', '') + '.url', urlFile.content)
+      zip.file(urlFile.name + '.url', urlFile.content)
     }
     // zip.file('Hello.txt', 'Hello World\n')
     zip.generateAsync({type: 'blob'}).then(function (zipFile) {
       // see FileSaver.js
-      FileSaver.saveAs(zipFile, LanguageUtils.camelize(window.abwa.groupSelector.currentGroup.name) + '.cxl')
+      FileSaver.saveAs(zipFile, LanguageUtils.camelize(window.abwa.groupSelector.currentGroup.name) + '.zip')
     })
     // PVSCL:ELSECOND
     FileSaver.saveAs(blob, LanguageUtils.camelize(window.abwa.groupSelector.currentGroup.name) + '.cxl')

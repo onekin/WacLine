@@ -171,19 +171,21 @@ class CXLExporter {
       if (relation.evidenceAnnotations.length > 0) {
         for (let i = 0; i < relation.evidenceAnnotations.length; i++) {
           let annotation = relation.evidenceAnnotations[i]
-          let name
-          if (i === 0) {
-            name = LanguageUtils.camelize(relation.fromConcept.name) + '_To_' + LanguageUtils.camelize(relation.toConcept.name)
-          } else {
-            name = LanguageUtils.camelize(relation.fromConcept.name) + '_To_' + LanguageUtils.camelize(relation.toConcept.name + i)
+          if (annotation.target.length > 0) {
+            let name
+            if (i === 0) {
+              name = LanguageUtils.camelize(relation.fromConcept.name) + '_To_' + LanguageUtils.camelize(relation.toConcept.name)
+            } else {
+              name = LanguageUtils.camelize(relation.fromConcept.name) + '_To_' + LanguageUtils.camelize(relation.toConcept.name + i)
+            }
+            let url
+            if (evidenceAnnotations === 'hypothesis') {
+              url = new HypothesisURL({elementID, name, annotation})
+            } else if (evidenceAnnotations === 'tool') {
+              url = new ToolURL({elementID, name, annotation})
+            }
+            urlFiles.push(url)
           }
-          let url
-          if (evidenceAnnotations === 'hypothesis') {
-            url = new HypothesisURL({elementID, name, annotation})
-          } else if (evidenceAnnotations === 'tool') {
-            url = new ToolURL({elementID, name, annotation})
-          }
-          urlFiles.push(url)
         }
       }
 

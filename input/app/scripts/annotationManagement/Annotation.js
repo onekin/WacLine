@@ -34,9 +34,11 @@ class Annotation {
     created,
     modified
   }) {
+    // PVSCL:IFCOND(NOT(CXLImport), LINE)
     if (!_.isArray(target) || _.isEmpty(target[0])) {
       throw new Error('Annotation must have a non-empty target')
     }
+    // PVSCL:ENDCOND
     this.target = target
     this.id = id
     this.body = body

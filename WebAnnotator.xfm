@@ -935,10 +935,16 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="i-oeFnOTn09j4YG8k" cm:mimetype="text/plain" cm:encoding="utf-8">Update</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="ilm04i-3POhJHchHd" cm:name="ImportAnnotations" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="ilm04i-3POhJHchHd" cm:name="ImportAnno" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iumcGBJ1MtUW4xlSR" cm:class="ps:parents">
         <cm:relation cm:id="ifN7_hTBI7UP6f2vl" cm:type="ps:parent">
           <cm:target cm:id="igLKWd_pkFO6tEi3E">./iD93S-Zw_CUcdoLrR</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="imAEtKfzeaOSFd4wr" cm:class="ps:children">
+        <cm:relation cm:id="iWoJOxJz64LBuO_4B" cm:type="ps:optional">
+          <cm:target cm:id="isRAdq8a2XsXG-k6v">./if_WlSvX4Bi7IZ3YT</cm:target>
+          <cm:target cm:id="i0s0Bd8Rj0CcUXuKD">./i2ovRAQmwd5ajfOOg</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -949,10 +955,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iDN1nIr3OQQ1dhWxZ" cm:type="ps:datetime">2019-11-07T11:53:30.004Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i7WmCg9acq32DPC3m" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ixLd21MnHb4_sIaqB" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="ixLd21MnHb4_sIaqB" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="isnhTGls7-0L3olWo" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iDzJOZI0Z8rYHW6XB" cm:type="ps:datetime">2019-11-07T11:54:54.174Z</cm:constant>
+          <cm:constant cm:id="iDzJOZI0Z8rYHW6XB" cm:type="ps:datetime">2020-05-29T14:01:31.804Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2679,9 +2685,12 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iTNPOOYx7JN0cFg2A" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="iK3vL1QeymNVNmm1F" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ibkRMJKzAZKV23NzS" cm:type="ps:datetime">2020-04-01T15:19:41.778Z</cm:constant>
+          <cm:constant cm:id="ibkRMJKzAZKV23NzS" cm:type="ps:datetime">2020-05-17T17:43:22.820Z</cm:constant>
         </cm:property>
       </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ihZjOAEIEzVJy5t9O" cm:mimetype="text/plain" cm:encoding="utf-8">Hypothesis</cm:mimedesc>
+      </cm:vname>
     </cm:element>
     <cm:element cm:id="iscU36z-yQ_EcsJtj" cm:name="ToolEvidenceAnnotations" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iTpOdpPmyW2zxuCgA" cm:class="ps:parents">
@@ -2700,9 +2709,12 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="izq56a3BFm6L81vXf" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="iM_s6ehQft9soOPhb" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iGcdaQ3bgK7Rp2dzl" cm:type="ps:datetime">2020-04-01T15:19:46.410Z</cm:constant>
+          <cm:constant cm:id="iGcdaQ3bgK7Rp2dzl" cm:type="ps:datetime">2020-05-17T17:43:38.492Z</cm:constant>
         </cm:property>
       </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iDRhLIlezjZNL1Soc" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotationTool</cm:mimedesc>
+      </cm:vname>
     </cm:element>
     <cm:element cm:id="iO5EUyuDHKquEBKo2" cm:name="CXLExportArchiveFile" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iqej2n9FBVOM8kC9g" cm:class="ps:parents">
@@ -2750,6 +2762,54 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iiUgd7hpgeFX6NWG_" cm:mimetype="text/plain" cm:encoding="utf-8">ExportCmapCloud</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="if_WlSvX4Bi7IZ3YT" cm:name="CXLImport" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iDlLHE-yO0TUNf_41" cm:class="ps:parents">
+        <cm:relation cm:id="imPUXg4grz9lbjcPX" cm:type="ps:parent">
+          <cm:target cm:id="iZ9qdR61n8XjzMsLb">./ilm04i-3POhJHchHd</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iNJeYhC9DjhAT96_D" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i2lj_nnnW6sgsCrg8" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iyHJtl6kPhvIpDHah" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iq6wi3fSF1mjIlrh0" cm:type="ps:datetime">2020-05-29T13:48:27.238Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iD9b6hTFm0A2YN-tt" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iaObO2sPDPNU2ue81" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="id6Bh_3kAyqt1BCBB" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iWYYuPO-z-MU18ahM" cm:type="ps:datetime">2020-05-29T13:48:27.238Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ilGzz6shIWo35a0UX" cm:mimetype="text/plain" cm:encoding="utf-8">CXLImport</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i2ovRAQmwd5ajfOOg" cm:name="ImportAnnotations" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i6Q3SZwSTa6qApWND" cm:class="ps:parents">
+        <cm:relation cm:id="iS2IvuI-ikr8NIRzo" cm:type="ps:parent">
+          <cm:target cm:id="iASCYRM9SRcOX-cP-">./ilm04i-3POhJHchHd</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iBmpQLOXr69TLGrCB" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ilTsu3jcxjR7rr-Ga" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ik7xYNAdsqVQ8W5NH" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="inrGH0VOERYw2IHzq" cm:type="ps:datetime">2020-05-29T14:00:00.817Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNwlcwlLRL_qJk7Qt" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ifvzS3q4x-Ya7KJ2t" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iLx9Z_dI2e5-uDqTv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iEAlgMksBZ_MO4-3e" cm:type="ps:datetime">2020-05-29T14:01:48.588Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iR3gwxO9a9_lQDKpz" cm:mimetype="text/plain" cm:encoding="utf-8">JSON</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>

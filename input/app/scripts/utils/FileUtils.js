@@ -1,3 +1,4 @@
+
 class FileUtils {
   static readTextFile (file, callback) {
     try {
@@ -28,6 +29,29 @@ class FileUtils {
       }
     })
   }
+  // PVSCL:IFCOND(CXLImport, LINE)
+
+  static readCXLFile (file, callback) {
+    FileUtils.readTextFile(file, (err, text) => {
+      if (err) {
+        callback(err)
+      } else {
+        let extension = (file.name.substring(file.name.lastIndexOf('.'))).toLowerCase()
+        if (extension === '.cxl') {
+          try {
+            let parser = new DOMParser()
+            let xmlDoc = parser.parseFromString(text, 'text/xml')
+            callback(null, xmlDoc)
+          } catch (err) {
+            callback(err)
+          }
+        } else {
+          callback(new Error('The file must have .cxl extension'))
+        }
+      }
+    })
+  }
+// PVSCL:ENDCOND
 }
 
 module.exports = FileUtils

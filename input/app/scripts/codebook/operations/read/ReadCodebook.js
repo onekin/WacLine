@@ -406,7 +406,7 @@ class ReadCodebook {
                 tags: tags,
                 theme: theme,
                 codeId: id/* PVSCL:IFCOND(EvidenceAnnotations) */,
-                addToCXL: false /* PVSCL:ENDCOND */
+                addToCXL: true /* PVSCL:ENDCOND */
               })
             } else {
               // Else navigate to annotation
@@ -421,7 +421,7 @@ class ReadCodebook {
               tags: tags,
               theme: theme,
               codeId: id/* PVSCL:IFCOND(EvidenceAnnotations) */,
-              addToCXL: false /* PVSCL:ENDCOND */
+              addToCXL: true /* PVSCL:ENDCOND */
             })
             // PVSCL:ENDCOND
           }
@@ -469,7 +469,7 @@ class ReadCodebook {
                 purpose: 'classifying',
                 tags: tags,
                 codeId: code.id/* PVSCL:IFCOND(EvidenceAnnotations) */,
-                addToCXL: false /* PVSCL:ENDCOND */
+                addToCXL: true /* PVSCL:ENDCOND */
               })
             }
             // PVSCL:ELSECOND
@@ -486,7 +486,7 @@ class ReadCodebook {
                 tags: tags,
                 codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
                 lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND *//* PVSCL:IFCOND(EvidenceAnnotations) */,
-                addToCXL: false /* PVSCL:ENDCOND */
+                addToCXL: true /* PVSCL:ENDCOND */
               })
             } else {
               // Else navigate to annotation
@@ -500,7 +500,7 @@ class ReadCodebook {
               tags: tags,
               codeId: code.id/* PVSCL:IFCOND(NOT (Multivalued)) */,
               lastAnnotatedCode: currentlyAnnotatedCode/* PVSCL:ENDCOND *//* PVSCL:IFCOND(EvidenceAnnotations) */,
-              addToCXL: false /* PVSCL:ENDCOND */
+              addToCXL: true /* PVSCL:ENDCOND */
             })
             // PVSCL:ENDCOND
             // PVSCL:ENDCOND
@@ -536,7 +536,7 @@ class ReadCodebook {
                 purpose: 'classifying',
                 tags: tags,
                 codeId: theme.id/* PVSCL:IFCOND(EvidenceAnnotations) */,
-                addToCXL: false /* PVSCL:ENDCOND */
+                addToCXL: true /* PVSCL:ENDCOND */
               })
             } else {
               // Else navigate to annotation
@@ -549,7 +549,7 @@ class ReadCodebook {
               purpose: 'classifying',
               tags: tags,
               codeId: theme.id/* PVSCL:IFCOND(EvidenceAnnotations) */,
-              addToCXL: false /* PVSCL:ENDCOND */
+              addToCXL: true /* PVSCL:ENDCOND */
             })
             // PVSCL:ENDCOND
           }

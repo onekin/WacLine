@@ -62,7 +62,7 @@
         </cm:relation>
       </cm:relations>
       <cm:properties>
-        <cm:property cm:id="iYJ5jd9UFDPfbLEw8" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
+        <cm:property cm:id="iYJ5jd9UFDPfbLEw8" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
           <cm:constant cm:id="iaDVSD6tSTJfJALfa" cm:type="ps:string">ps:auto</cm:constant>
         </cm:property>
         <cm:property cm:id="ikeiHS1BoBRAojtNc" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/ipaIptNGXwqXJsHyV">
@@ -78,7 +78,7 @@
           <cm:constant cm:id="i0nOl3e7KP1TTb9rK" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="iAs39e5sQ_NxhlFQv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iN1wnmEQ6UOvnDBYC" cm:type="ps:datetime">2020-02-26T17:36:01.674Z</cm:constant>
+          <cm:constant cm:id="iN1wnmEQ6UOvnDBYC" cm:type="ps:datetime">2020-05-12T09:25:09.903Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iWJuxDiwLkyeNzFxk" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/ikd06TuWH0GM-TRbB">
           <cm:constant cm:id="ioGS5hLGB_iFK8d0Y" cm:type="ps:string">oa</cm:constant>
@@ -167,8 +167,8 @@
         </cm:relation>
       </cm:relations>
       <cm:properties>
-        <cm:property cm:id="i-JVzB_-KvvqkaNq8" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
-          <cm:constant cm:id="itLhOjb1UChb1nvcD" cm:type="ps:string">ps:auto</cm:constant>
+        <cm:property cm:id="i-JVzB_-KvvqkaNq8" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="itLhOjb1UChb1nvcD" cm:type="ps:string">ps:user</cm:constant>
         </cm:property>
         <cm:property cm:id="i27-HpjZC4K4xtFo7" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/i5ZzDl1GGb47n7Li9">
           <cm:constant cm:id="ifFgirO6Xvi4erzz9" cm:type="ps:string">Hypothesis</cm:constant>
@@ -183,7 +183,7 @@
           <cm:constant cm:id="iKu7fzzyh_WzPn2lz" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="iSKvTJQGLHIs0fdWD" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ilZ2Ze2yNyTdkr4r0" cm:type="ps:datetime">2020-02-26T16:58:22.346Z</cm:constant>
+          <cm:constant cm:id="ilZ2Ze2yNyTdkr4r0" cm:type="ps:datetime">2020-05-18T10:27:13.265Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -11559,10 +11559,10 @@
           <cm:constant cm:id="iUfqVI0qjFXvXLQgb" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="iMTKUlgtndOOa9Vid" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ifxCvhQDCVN8HEZ_C" cm:type="ps:datetime">2020-03-16T11:40:27.683Z</cm:constant>
+          <cm:constant cm:id="ifxCvhQDCVN8HEZ_C" cm:type="ps:datetime">2020-05-31T16:28:00.854Z</cm:constant>
         </cm:property>
-        <cm:property cm:id="i6XdLwD7ZG7dNPtof" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/igSL0rUVYLimd1aHh">
-          <cm:constant cm:id="iHLXRV1tykiZJXUyM" cm:type="ps:string">conceptual map</cm:constant>
+        <cm:property cm:id="i6XdLwD7ZG7dNPtof" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/igSL0rUVYLimd1aHh">
+          <cm:constant cm:id="iHLXRV1tykiZJXUyM" cm:type="ps:string">concept map</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -11576,7 +11576,7 @@
         <cm:property cm:id="iITNLAjNGtQDE8MxW" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
           <cm:constant cm:id="iFsBGnEvnmhV_lGRA" cm:type="ps:string">ps:auto</cm:constant>
         </cm:property>
-        <cm:property cm:id="iukHvmpZOJTKoC3tg" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/ir0gyFe6QSJ4SOwA1">
+        <cm:property cm:id="iukHvmpZOJTKoC3tg" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/ir0gyFe6QSJ4SOwA1">
           <cm:constant cm:id="ikLV41fweDZKGtkqz" cm:type="ps:string">concept</cm:constant>
         </cm:property>
         <cm:property cm:id="iFSdXutljHc0XhXMk" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
@@ -11589,7 +11589,7 @@
           <cm:constant cm:id="iN6OrZDIVIUmsIZ2u" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="ieTNp87lWxJJfwhTu" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iI9DNp9vjsGQ4lziI" cm:type="ps:datetime">2020-02-26T21:16:50.452Z</cm:constant>
+          <cm:constant cm:id="iI9DNp9vjsGQ4lziI" cm:type="ps:datetime">2020-05-31T16:28:18.001Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -13113,7 +13113,7 @@
           <cm:constant cm:id="iH6-KNOrxWPtPfJzK" cm:type="ps:string">Xabi</cm:constant>
         </cm:property>
         <cm:property cm:id="iyc1uAsHROiNYqYk0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iplGPq0BcCRmM4y3m" cm:type="ps:datetime">2020-02-27T22:06:45.164Z</cm:constant>
+          <cm:constant cm:id="iplGPq0BcCRmM4y3m" cm:type="ps:datetime">2020-06-01T07:24:07.924Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -13129,7 +13129,7 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="il7GPAciYf3pynelT" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="il7GPAciYf3pynelT" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="ibBWbMR1RVxGA1QA7" cm:class="ps:references">
         <cm:relation cm:id="iYSvS9aIIZibBEGPK" cm:type="ps:references">
           <cm:target cm:id="iF2XjWDUh5MkkWbBX">iDKkPWYjNaxwLVr6U/iJ2bAEE2onLTcLi6HOmrj4k4ao-l</cm:target>
@@ -13153,7 +13153,7 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="iFrDscJMFtHZ2w2zK" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="iFrDscJMFtHZ2w2zK" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="iPJBCiQ0nrkzlTfRN" cm:class="ps:references">
         <cm:relation cm:id="iOEgHx0aq_7P8gPYv" cm:type="ps:references">
           <cm:target cm:id="i9cjwqNtmqE4IEc9T">iDKkPWYjNaxwLVr6U/idSYOerAnh4JCKIKJFSbjVVvrqdn</cm:target>
@@ -13165,7 +13165,7 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="iBtm8XjIS4Dzk_0RO" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="iBtm8XjIS4Dzk_0RO" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="iYOxs5k13ODgJ_ML1" cm:class="ps:references">
         <cm:relation cm:id="i1EtO9oyFC2cwvQG_" cm:type="ps:references">
           <cm:target cm:id="ibviIOjusR_vQ7LiN">iDKkPWYjNaxwLVr6U/iiHLNW9Ukfzewk3xd-vE1v8uJEIi</cm:target>
@@ -22714,6 +22714,30 @@
       <cm:properties>
         <cm:property cm:id="ii9WYGlGM7nxhmiAD" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
           <cm:constant cm:id="ibllyv6P9psj9By0y" cm:type="ps:string">ps:implicit</cm:constant>
+        </cm:property>
+      </cm:properties>
+    </cm:element>
+    <cm:element cm:id="iGdtEX94LdZETcajS" cm:type="ps:selected" cm:class="ps:selection">
+      <cm:relations cm:id="i6OLtDFCjfa2CQjqI" cm:class="ps:references">
+        <cm:relation cm:id="ii-G2U1J3VWDxSNMn" cm:type="ps:references">
+          <cm:target cm:id="imG5T7kENV2wJ6fWq">iivhJRwmojkiJvYc5/if_WlSvX4Bi7IZ3YT</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iC_Dmj_eLjhVrh_Oy" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="iHbP2GoJdwx-JptVT" cm:type="ps:string">ps:user</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i_CBAqB5n1L2iMbAn" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iQKOxE54Kyq08RVNB" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ioMO_7DPCX382sbqb" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iio1iowZ9HWyoj7qN" cm:type="ps:datetime">2020-05-29T15:02:24.876Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYd879exIkQ9r0-Fq" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i0WhJ3uE4QOKbNwyz" cm:type="ps:string">Xabi</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iz_RxJS4FE2xBaTUE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="irqNNdWrLMrH908dV" cm:type="ps:datetime">2020-05-29T15:07:11.475Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>

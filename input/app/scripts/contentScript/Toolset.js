@@ -32,7 +32,9 @@ const AnnotationExporter = require('../importExport/AnnotationExporter')
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(CXLExport, LINE)
 const CXLExporter = require('../importExport/cmap/CXLExporter')
-const Config = require('../Config')
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(CXLImport, LINE)
+const CXLImporter = require('../importExport/cmap/CXLImporter')
 // PVSCL:ENDCOND
 const $ = require('jquery')
 
@@ -156,7 +158,7 @@ class Toolset {
       // Add menu when clicking on the button
       this.importExportButtonHandler()
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(CXLExportArchiveFile, LINE)
+      // PVSCL:IFCOND(CXLExportArchiveFile OR CXLImport, LINE)
       let cxlArchiveFileImageUrl = chrome.extension.getURL('/images/cxl.png')
       this.cxlArchiveFileImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.cxlArchiveFileImage.src = cxlArchiveFileImageUrl
@@ -312,7 +314,7 @@ class Toolset {
           callback: (key, opt) => {
             // PVSCL:IFCOND(CXLImport, LINE)
             if (key === 'import') {
-              // AnnotationImporter.importReviewAnnotations()
+              CXLImporter.importCXLfile()
             }
             // PVSCL:ENDCOND
             // PVSCL:IFCOND(CXLExport, LINE)
@@ -350,9 +352,6 @@ class Toolset {
       build: () => {
         // Create items for context menu
         let items = {}
-        // PVSCL:IFCOND(CXLImport, LINE)
-        items['import'] = {name: 'Import CXL'}
-        // PVSCL:ENDCOND
         // PVSCL:IFCOND(CXLExport, LINE)
         // PVSCL:IFCOND(EvidenceAnnotations, LINE)
         // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)

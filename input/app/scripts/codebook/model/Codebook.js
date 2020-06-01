@@ -321,7 +321,19 @@ class Codebook {
     }
   }
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(CXLImport, LINE)
 
+  static fromCXLFile (conceptList, name) {
+    let annotationGuide = new Codebook({name: name})
+    for (let i = 0; i < conceptList.childNodes.length; i++) {
+      let concept = conceptList.childNodes[i]
+      let conceptName = concept.getAttribute('label')
+      let theme = new Theme({name: conceptName, annotationGuide})
+      annotationGuide.themes.push(theme)
+    }
+    return annotationGuide
+  }
+  // PVSCL:ENDCOND
   getCodeOrThemeFromId (id) {
     let themeOrCodeToReturn = null
     let theme = _.find(this.themes, (theme) => {
