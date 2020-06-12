@@ -30,6 +30,9 @@ import AnnotationImporter from '../importExport/AnnotationImporter'
 // PVSCL:IFCOND(Export, LINE)
 import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(DocExporter, LINE)
+import DocxExporter from '../DocxExporter/DocxExporter'
+// PVSCL:ENDCOND
 import $ from 'jquery'
 
 class Toolset {
@@ -62,6 +65,16 @@ class Toolset {
       this.toolsetBody.appendChild(this.screenshotImage)
       this.screenshotImage.addEventListener('click', () => {
         this.screenshotButtonHandler()
+      })
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(DocExporter, LINE)
+      const docxExporterImageUrl = chrome.extension.getURL('/images/docexport.png')
+      this.docxExporterImageUrl = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.docxExporterImageUrl.src = docxExporterImageUrl
+      this.docxExporterImageUrl.title = 'Export to Word document'
+      this.toolsetBody.appendChild(this.docxExporterImageUrl)
+      this.docxExporterImageUrl.addEventListener('click', () => {
+        this.docxExportButtonHandler()
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Canvas, LINE)
@@ -163,6 +176,10 @@ class Toolset {
     })
   }
 
+  docxExportButtonHandler () {
+    DocxExporter.exportAllAnnotationsToDocx()
+  }
+
   // PVSCL:IFCOND(AnnotatedPDF, LINE)
   screenshotButtonHandler () {
     Screenshots.takeScreenshot()
@@ -229,6 +246,7 @@ class Toolset {
       this.toolsetContainer.remove()
     }
   }
+
 
   // PVSCL:IFCOND(ImportAnnotations or JSON, LINE)
   importExportButtonHandler () {

@@ -159,10 +159,11 @@ class LinkingForm {
 
     const select = document.createElement('select')
     select.id = 'categorizeDropdown'
+    select.style = 'max-width=100%;'
     const button = document.createElement('button')
     button.innerText = 'Show Links'
     button.id = 'buttonLinks'
-    // button.onclick = () => { alert('HOLA') }
+
 
     window.abwa.annotationManagement.annotationReader.allServerAnnotations.forEach(a => {
       if (a.id !== annotation.id && !annotation.annotationlinks.includes(a.id)) {
@@ -177,12 +178,13 @@ class LinkingForm {
             }
           }
         })
-        option.text = a.target[0].source.title + '||' + text
+        option.text = a.target[0].source.title.slice(0, 20) + '...-' + a.body[0].value.name + '-' + text
         option.value = a.id
         select.add(option)
       }
     })
-    html += button.outerHTML + '<br>'
+    html += button.outerHTML + '<br><br>'
+    html += '<span>Select one annotation to link: </span><br>'
     html += select.outerHTML
 
     return html
