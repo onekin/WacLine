@@ -28,6 +28,9 @@ class Session {
         read: ['group:' + this.group]
       },
       references: [],
+      // IFCOND:(Hypothesis, LINE)
+      uri: window.abwa.groupSelector.currentGroup.links.html,
+      // ENDCOND
       motivation: 'defining',
       tags: tags,
       target: [],

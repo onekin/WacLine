@@ -74,13 +74,14 @@ class DocxExporter {
 
       exp.annotations.forEach((a, i) => {
         let ind = i + 1
-        parser.push({ from: a.id, to: index + '.' + ind })
+        let ind1 = index + 1
+        parser.push({ from: a.id, to: ind1 + '.' + ind })
         linksExport.map((link) => {
           let pars = parser.filter(p => p.from === a.id)[0]
           if (link.a === pars.from) { link.a = pars.to }
           if (link.b === pars.from) { link.b = pars.to }
         })
-        a.id = index + '.' + i
+        a.id = ind1 + '.' + ind
         a.annotationlinks.forEach((l) => {
           linksExport.push({ a: a.id, b: l })
         })

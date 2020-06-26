@@ -178,7 +178,13 @@ class LinkingForm {
             }
           }
         })
-        option.text = a.target[0].source.title.slice(0, 20) + '...-' + a.body[0].value.name + '-' + text
+        let tit = ''
+        if (a.target[0].source.title.length > 23) {
+          tit = a.target[0].source.title.slice(0, 20) + '...'
+        } else {
+          tit = a.target[0].source.title
+        }
+        option.text = tit + '-' + a.body[0].value.name + '-' + text
         option.value = a.id
         select.add(option)
       }
