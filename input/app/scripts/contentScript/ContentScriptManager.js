@@ -8,6 +8,9 @@ import AnnotationManagement from '../annotationManagement/AnnotationManagement'
 import GroupSelector from '../groupManipulation/GroupSelector'
 import AnnotationBasedInitializer from './AnnotationBasedInitializer'
 import { AnnotatedContentManager } from './AnnotatedContentManager'
+// PVSCL:IFCOND(Marking, LINE)
+import FinalGrade from '../annotationManagement/read/FinalGrade'
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Manual, LINE)
 import Events from '../Events'
 // PVSCL:ENDCOND
@@ -49,6 +52,9 @@ class ContentScriptManager {
               // PVSCL:IFCOND(Manual,LINE)
               // Initialize listener for group change to reload the content
               this.initListenerForGroupChange()
+              // PVSCL:ENDCOND
+              // PVSCL:IFCOND(Marking, LINE)
+              this.initFinalGrade()
               // PVSCL:ENDCOND
             })
           })
@@ -108,6 +114,13 @@ class ContentScriptManager {
         console.debug('Initialized content script manager')
       })
   }
+
+  // PVSCL:IFCOND(Marking, LINE)
+  initFinalGrade () {
+    window.abwa.finalGrade = new FinalGrade()
+    window.abwa.finalGrade.init()
+  }
+  // PVSCL:ENDCOND
 
   reloadAnnotatedContentManager () {
     return new Promise((resolve, reject) => {

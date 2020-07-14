@@ -3,8 +3,12 @@ import DOMTextUtils from '../../utils/DOMTextUtils'
 import LanguageUtils from '../../utils/LanguageUtils'
 import Events from '../../Events'
 import _ from 'lodash'
+import Alerts from '../../utils/Alerts'
 // PVSCL:IFCOND(UserFilter, LINE)
 import UserFilter from './UserFilter'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Marking, LINE)
+import FinalGrade from './FinalGrade'
 // PVSCL:ENDCOND
 import Annotation from '../Annotation'
 // PVSCL:IFCOND(Replying, LINE)
@@ -13,7 +17,6 @@ import ReplyAnnotation from '../purposes/ReplyAnnotation'
 import $ from 'jquery'
 // PVSCL:IFCOND(Commenting, LINE)
 import CommentingForm from '../purposes/CommentingForm'
-import Alerts from '../../utils/Alerts'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Remote, LINE)
 import HypothesisClientManager from '../../annotationServer/hypothesis/HypothesisClientManager'
@@ -519,6 +522,9 @@ class ReadAnnotation {
     // Create augmentation operations for the current group
     this.userFilter = new UserFilter()
     this.userFilter.init()
+    // PVSCL:IFCOND(Marking, LINE)
+    this.finalGrade = new FinalGrade()
+    // PVSCL:ENDCOND
   }
 
   initUserFilterChangeEvent (callback) {

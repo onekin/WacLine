@@ -20,6 +20,9 @@ class UpdateCodebook {
     this.initCreateThemeEvent()
     this.initRemoveThemeEvent()
     this.initUpdateThemeEvent()
+    // PVSCL:IFCOND(Marking,LINE)
+    this.initUpdateGradeEvent()
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Hierarchy,LINE)
     this.initCreateCodeEvent()
     this.initRemoveCodeEvent()
@@ -44,6 +47,13 @@ class UpdateCodebook {
     this.events.updateThemeEvent = { element: document, event: Events.updateTheme, handler: this.createUpdateThemeEventHandler() }
     this.events.updateThemeEvent.element.addEventListener(this.events.updateThemeEvent.event, this.events.updateThemeEvent.handler, false)
   }
+
+  // PVSCL:IFCOND(Marking,LINE)
+  initUpdateGradeEvent () {
+    this.events.updateGradeEvent = { element: document, event: Events.updateGrade, handler: this.createUpdateGradeEventHandler() }
+    this.events.updateGradeEvent.element.addEventListener(this.events.updateGradeEvent.event, this.events.updateGradeEvent.handler, false)
+  }
+  // PVSCL:ENDCOND
 
   initRemoveThemeEvent (callback) {
     this.events.removeThemeEvent = { element: document, event: Events.removeTheme, handler: this.removeThemeEventHandler() }
@@ -101,7 +111,7 @@ class UpdateCodebook {
           if (_.isElement(themeDescriptionElement)) {
             themeDescription = themeDescriptionElement.value
           }
-          newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook })
+          newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook/* PVSCL:IFCOND(PublicPrivate) */, publicPrivate: false/* PVSCL:ENDCOND */ })
         },
         callback: () => {
           LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
@@ -118,6 +128,9 @@ class UpdateCodebook {
   createNewThemeEventHandler () {
     return (event) => {
       const newThemeAnnotation = event.detail.theme.toAnnotation()
+      // PVSCL:IFCOND(PublicPrivate, LINE)
+      newThemeAnnotation.tags.push(Config.namespace + ':isPublic:false')
+      // PVSCL:ENDCOND
       window.abwa.annotationServerManager.client.createNewAnnotation(newThemeAnnotation, (err, annotation) => {
         if (err) {
           Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })
@@ -152,7 +165,7 @@ class UpdateCodebook {
           if (_.isElement(themeDescriptionElement)) {
             themeDescription = themeDescriptionElement.value
           }
-          themeToUpdate = new Theme({ name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook })
+          themeToUpdate = new Theme({ name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook /* PVSCL:IFCOND(PublicPrivate) */, publicPrivate: theme.publicPrivate/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Marking) */, grade: theme.grade, weight: theme.weight/* PVSCL:ENDCOND */ })
           // PVSCL:IFCOND(Hierarchy, LINE)
           theme.codes.forEach(code => { code.theme = themeToUpdate })
           themeToUpdate.codes = theme.codes
@@ -168,6 +181,31 @@ class UpdateCodebook {
       })
     }
   }
+
+  // PVSCL:IFCOND(Marking,LINE)
+  /**
+   * This function creates a handler to update a new garde when it receives the updateGrade event.
+   * @return Event
+   */
+  createUpdateGradeEventHandler () {
+    return (event) => {
+      const theme = event.detail.theme
+      let themeToUpdate
+
+      themeToUpdate = new Theme({ name: theme.name, description: theme.description, annotationGuide: window.abwa.codebookManager.codebookReader.codebook /* PVSCL:IFCOND(PublicPrivate) */, publicPrivate: theme.publicPrivate/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Marking) */, grade: theme.grade, weight: theme.weight/* PVSCL:ENDCOND */ })
+      // PVSCL:IFCOND(Hierarchy, LINE)
+      theme.codes.forEach(code => { code.theme = themeToUpdate })
+      themeToUpdate.codes = theme.codes
+      // PVSCL:ENDCOND
+      themeToUpdate.id = theme.id
+
+      // Update codebook
+      this.updateCodebookTheme(themeToUpdate)
+      // Update all annotations done with this theme
+      this.updateAnnotationsWithTheme(themeToUpdate)
+    }
+  }
+  // PVSCL:ENDCOND
 
   /**
    * This function creates a handler to remove a theme when it receives the removeTheme event.
@@ -232,6 +270,9 @@ class UpdateCodebook {
           },
           callback: () => {
             const newCodeAnnotation = newCode.toAnnotation()
+            // PVSCL:IFCOND(PublicPrivate, LINE)
+            newCodeAnnotation.tags.push(Config.namespace + ':isPublic:false')
+            // PVSCL:ENDCOND
             window.abwa.annotationServerManager.client.createNewAnnotation(newCodeAnnotation, (err, annotation) => {
               if (err) {
                 Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })

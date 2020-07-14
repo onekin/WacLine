@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/2.1.0/UML" xmi:id="_SDGBgCSlEdyiEL8o1uJgCw">
+  <packagedElement xmi:type="uml:Package" xmi:id="_trv_kCSlEdyiEL8o1uJgCw" name="ps">
+    <packagedElement xmi:type="uml:Stereotype" xmi:id="_2RLkUCSlEdyiEL8o1uJgCw" name="namespace"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_71ktUCSlEeyiEL9o1uJgCw" name="variant">
+      <generalization xmi:id="_CMjKICSmEdyiEL8o1uJgCw">
+        <general xmi:type="uml:Class" href="TypeModel.uml#_XDObISy8Edmtv9ebugdNAg"/>
+      </generalization>
+      <ownedAttribute xmi:id="_t1NoICSmEdyiEL8o1uJgCw" name="ps:vdmid">
+        <eAnnotations xmi:id="_KGKVQCSnEdyiEL8o1uJgCw" source="extended"/>
+        <eAnnotations xmi:id="_WZUI8CSnEdyiEL8o1uJgCw" source="fixed"/>
+        <ownedComment xmi:id="_ZS-dsCSnEdyiEL8o1uJgCw">
+          <body>The ID of the referenced VDM</body>
+        </ownedComment>
+        <type xmi:type="uml:Class" href="TypeModel.uml#_9Gs64CwPEdmdtOzN278pqQ"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_0EVAUCSnEdyiEL8o1uJgCw" name="ps:vdmpath">
+        <eAnnotations xmi:id="_0EVAUSSnEdyiEL8o1uJgCw" source="extended"/>
+        <eAnnotations xmi:id="_0EVAUiSnEdyiEL8o1uJgCw" source="fixed"/>
+        <ownedComment xmi:id="_0EVAUySnEdyiEL8o1uJgCw">
+          <body>The workspace relativ path to the referenced VDM</body>
+        </ownedComment>
+        <type xmi:type="uml:Class" href="TypeModel.uml#_lWGXACwQEdmdtOzN278pqQ"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_2tks0E_QEdyWiOrzPZ22tg" name="variantcollection">
+      <generalization xmi:id="_2tks0U_QEdyWiOrzPZ22tg">
+        <general xmi:type="uml:Class" href="TypeModel.uml#_XDObISy8Edmtv9ebugdNAg"/>
+      </generalization>
+      <ownedAttribute xmi:id="_2tks0k_QEdyWiOrzPZ22tg" name="ps:configspaceid">
+        <eAnnotations xmi:id="_2tks00_QEdyWiOrzPZ22tg" source="extended"/>
+        <eAnnotations xmi:id="_2tks1E_QEdyWiOrzPZ22tg" source="fixed"/>
+        <ownedComment xmi:id="_2tks1U_QEdyWiOrzPZ22tg">
+          <body>The ID of the referenced ConfigSpace</body>
+        </ownedComment>
+        <type xmi:type="uml:Class" href="TypeModel.uml#_9Gs64CwPEdmdtOzN278pqQ"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_2tks1k_QEdyWiOrzPZ22tg" name="ps:configspacepath">
+        <eAnnotations xmi:id="_2tks10_QEdyWiOrzPZ22tg" source="extended"/>
+        <eAnnotations xmi:id="_2tks2E_QEdyWiOrzPZ22tg" source="fixed"/>
+        <ownedComment xmi:id="_2tks2U_QEdyWiOrzPZ22tg">
+          <body>The workspace relativ path to the referenced ConfigSpace</body>
+        </ownedComment>
+        <type xmi:type="uml:Class" href="TypeModel.uml#_lWGXACwQEdmdtOzN278pqQ"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_2tks2k_QEdyWiOrzPZ22tg" name="ps:variationtype" type="_ZAmTME9QEd2axNSUlgD6Og">
+        <eAnnotations xmi:id="_2tks20_QEdyWiOrzPZ22tg" source="extended"/>
+        <eAnnotations xmi:id="_2tks3E_QEdyWiOrzPZ22tg" source="fixed"/>
+        <ownedComment xmi:id="_2tks3U_QEdyWiOrzPZ22tg">
+          <body>The variation type for the children of this collection.</body>
+        </ownedComment>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_MRQHsURYEd2J1bUsgIGSgQ" name="instance">
+      <generalization xmi:id="_S6r50ERYEd2J1bUsgIGSgQ">
+        <general xmi:type="uml:Class" href="TypeModel.uml#_XDObISy8Edmtv9ebugdNAg"/>
+      </generalization>
+      <ownedAttribute xmi:id="_mzZwsERYEd2J1bUsgIGSgQ" name="ps:configspaceid">
+        <eAnnotations xmi:id="_G6vgkERZEd2J1bUsgIGSgQ" source="extended"/>
+        <eAnnotations xmi:id="_IRnM4ERZEd2J1bUsgIGSgQ" source="fixed"/>
+        <type xmi:type="uml:Class" href="TypeModel.uml#_9Gs64CwPEdmdtOzN278pqQ"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_qt5QUERYEd2J1bUsgIGSgQ" name="ps:configspacepath">
+        <eAnnotations xmi:id="_JctuEERZEd2J1bUsgIGSgQ" source="extended"/>
+        <eAnnotations xmi:id="_KcM1IERZEd2J1bUsgIGSgQ" source="fixed"/>
+        <type xmi:type="uml:Class" href="TypeModel.uml#_lWGXACwQEdmdtOzN278pqQ"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_ZAmTME9QEd2axNSUlgD6Og" name="variationtype">
+      <generalization xmi:id="_dT-M4E9QEd2axNSUlgD6Og">
+        <general xmi:type="uml:Class" href="TypeModel.uml#_9Gs64CwPEdmdtOzN278pqQ"/>
+      </generalization>
+      <nestedClassifier xmi:type="uml:Enumeration" xmi:id="_r0da0E9QEd2axNSUlgD6Og" name="values">
+        <ownedLiteral xmi:id="_vTrTsE9QEd2axNSUlgD6Og" name="ps:alternative"/>
+        <ownedLiteral xmi:id="_yO1dQE9QEd2axNSUlgD6Og" name="ps:mandatory"/>
+        <ownedLiteral xmi:id="_ydvb8E9QEd2axNSUlgD6Og" name="ps:optional"/>
+        <ownedLiteral xmi:id="_yoBZUE9QEd2axNSUlgD6Og" name="ps:or"/>
+      </nestedClassifier>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>

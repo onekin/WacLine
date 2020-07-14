@@ -27,7 +27,8 @@ class Codebook {
     courseId = null,
     cmid = null/* PVSCL:ENDCOND *//* PVSCL:IFCOND(GoogleSheetProvider) */,
     spreadsheetId = null,
-    sheetId = null/* PVSCL:ENDCOND */
+    sheetId = null/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Marking) */,
+    grade = 0.0/* PVSCL:ENDCOND */
   }) {
     this.id = id
     this.name = name
@@ -43,6 +44,9 @@ class Codebook {
     // PVSCL:IFCOND(GoogleSheetProvider,LINE)
     this.spreadsheetId = spreadsheetId
     this.sheetId = sheetId
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Marking,LINE)
+    this.grade = grade
     // PVSCL:ENDCOND
   }
 
@@ -62,7 +66,8 @@ class Codebook {
       assignmentId: this.assignmentId,
       assignmentName: this.assignmentName,
       courseId: this.courseId,
-      cmid: this.cmid
+      cmid: this.cmid/* PVSCL:IFCOND(Marking) */,
+      grade: this.grade/* PVSCL:ENDCOND */
     }
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(GoogleSheetProvider,LINE)
@@ -83,7 +88,8 @@ class Codebook {
       tags: tags,
       target: [],
       text: jsYaml.dump(textObject),
-      uri: this.annotationServer.group.links.html
+      uri: this.annotationServer.group.links.html/* PVSCL:IFCOND(Marking) */,
+      grade: this.grade/* PVSCL:ENDCOND */
     }
   }
 
@@ -100,7 +106,7 @@ class Codebook {
 
   static fromAnnotation (annotation, callback) {
     this.setAnnotationServer(null, (annotationServer) => {
-      const annotationGuideOpts = { id: annotation.id, name: annotation.name, annotationServer: annotationServer }
+      const annotationGuideOpts = { id: annotation.id, name: annotation.name, annotationServer: annotationServer /* PVSCL:IFCOND(Marking) */, grade: annotation.grade/* PVSCL:ENDCOND */ }
       // PVSCL:IFCOND(GoogleSheetProvider or MoodleProvider, LINE)
       // Configuration for gsheet provider or moodle provider is saved in text attribute
       // TODO Maybe this is not the best place to store this configuration, it wa done in this way to be visible in Hypothes.is client, but probably it should be defined in the body of the annotation
@@ -224,13 +230,16 @@ class Codebook {
     const annotationGuide = new Codebook({ name: userDefinedHighlighterDefinition.name })
     for (let i = 0; i < userDefinedHighlighterDefinition.definition.length; i++) {
       const themeDefinition = userDefinedHighlighterDefinition.definition[i]
-      const theme = new Theme({ name: themeDefinition.name, description: themeDefinition.description, annotationGuide })
+      // PVSCL:IFCOND(PublicPrivate,LINE)
+      const publicPrivate = themeDefinition.publicPrivate ? themeDefinition.publicPrivate : false
+      // PVSCL:ENDCOND
+      const theme = new Theme({ name: themeDefinition.name, description: themeDefinition.description, annotationGuide/* PVSCL:IFCOND(PublicPrivate) */, publicPrivate: publicPrivate/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Marking) */, grade: 0.0, weight: themeDefinition.weight/* PVSCL:ENDCOND */ })
       // PVSCL:IFCOND(Hierarchy,LINE)
       theme.codes = []
       if (_.isArray(themeDefinition.codes)) {
         for (let j = 0; j < themeDefinition.codes.length; j++) {
           const codeDefinition = themeDefinition.codes[j]
-          const code = new Code({ name: codeDefinition.name, description: codeDefinition.description, theme: theme })
+          const code = new Code({ name: codeDefinition.name, description: codeDefinition.description, theme: theme/* PVSCL:IFCOND(PublicPrivate) */, publicPrivate: publicPrivate/* PVSCL:ENDCOND */ })
           theme.codes.push(code)
         }
       }
@@ -356,6 +365,19 @@ class Codebook {
       // Replace item at index using native splice
       this.themes.splice(index, 1, theme)
       theme.color = previousTheme.color
+      // PVSCL:IFCOND(Marking,LINE)
+      // Update Codebook Final Grade
+      this.grade = Number(theme.grade) * (Number(theme.weight) / 10)
+      for (let i = 0; i < this.themes.length; i++) {
+        if ((theme.name !== this.themes[i].name)) {
+          this.grade = Number(this.grade) + (Number(this.themes[i].grade) * (Number(this.themes[i].weight) / 10))
+          this.grade = this.grade.toFixed(2)
+        }
+      }
+      if (Number(this.grade) > 10) {
+        this.grade = 10
+      }
+      // PVSCL:ENDCOND
     }
   }
 
@@ -379,7 +401,8 @@ class Codebook {
 
   toObjects (name) {
     const object = {
-      name: name,
+      name: name/* PVSCL:IFCOND(Marking) */,
+      grade: this.grade/* PVSCL:ENDCOND */,
       definition: []
     }
     // For each criteria create the object

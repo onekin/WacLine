@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin 
+  id="com.ps.consul.eclipse.ui.transform.javascript.serverplugin" 
+  name="Client Transformation Module" 
+  version="1.0.0" 
+  provider-name="pure-systems GmbH">
+  
+  <extension 
+    id="Java Script Transformation Module" 
+    name="Java Script Transformation Module" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="Java Script Transformation Module" 
+      version="1.0" 
+      include="/variant"
+      exclude=""
+      type="client"
+      id="com.ps.consul.eclipse.ui.transform.javascript.modul"
+      update="true"
+      image="javascript_module">
+      
+      <description>Triggers the transformation of Javascript code.</description>
+
+      <parameters>
+        <parameter name="javascriptfile" type="ps:path" optional="false">
+          <description>The Javascript file name.</description>
+        </parameter>
+        <parameter name="outputfile" type="ps:path" optional="true">
+          <description>The output file name.</description>
+        </parameter>
+      </parameters>
+      
+    </module>
+    
+  </extension>
+
+</plugin>

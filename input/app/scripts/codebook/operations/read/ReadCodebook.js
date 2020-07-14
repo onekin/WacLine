@@ -14,6 +14,9 @@ import LanguageUtils from '../../../utils/LanguageUtils'
 // PVSCL:IFCOND(CodebookUpdate, LINE)
 import UpdateCodebook from '../update/UpdateCodebook'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(PublicPrivate, LINE)
+import GradingForm from '../../../annotationManagement/purposes/GradingForm'
+// PVSCL:ENDCOND
 
 class ReadCodebook {
   constructor () {
@@ -165,12 +168,40 @@ class ReadCodebook {
               cancelButtonText: 'No',
               alertType: Alerts.alertType.question,
               callback: () => {
-                Alerts.loadingAlert({
-                  title: 'Configuration in progress',
-                  text: 'We are configuring everything to start reviewing.',
-                  position: Alerts.position.center
+                // PVSCL:IFCOND(PublicPrivate, LINE)
+                Alerts.inputTextAlert({
+                  title: 'Upload this document review file',
+                  html: 'Here you can upload your json file with the codebook for this document.',
+                  input: 'file',
+                  callback: (err, file) => {
+                  // PVSCL:ENDCOND
+                    Alerts.loadingAlert({
+                      title: 'Configuration in progress',
+                      text: 'We are configuring everything to start reviewing.',
+                      position: Alerts.position.center
+                    })
+                    // PVSCL:IFCOND(PublicPrivate, LINE)
+                    if (err) {
+                      window.alert('An unexpected error happened when trying to load the alert.')
+                    } else {
+                      // Read json file
+                      const reader = new window.FileReader()
+                      // Closure to capture the file information.
+                      reader.onload = (e) => {
+                        if (e && e.target && e.target.result) {
+                          let jsonObject = JSON.parse(e.target.result)
+                          LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'publicPrivate', path: jsonObject })
+                        }
+                      }
+                      reader.readAsText(file)
+                    }
+                    resolve()
+                  }
                 })
+                // PVSCL:ENDCOND
+                // PVSCL:IFCOND(BuiltIn AND NOT(PublicPrivate), LINE)
                 LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'builtIn' })
+                // PVSCL:ENDCOND
                 resolve()
               },
               cancelCallback: () => {
@@ -588,6 +619,12 @@ class ReadCodebook {
       // TODO Implement page annotation and uncomment this:
       // items['pageAnnotation'] = {name: 'Page annotation'}
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(PublicPrivate, LINE)
+      if (this.codebook.getCodeOrThemeFromId(themeId).publicPrivate) {
+        items.blank = { name: ' ---------------------' }
+        items.updateGrade = { name: 'Grade' }
+      }
+      // PVSCL:ENDCOND
       return {
         callback: (key) => {
           // PVSCL:IFCOND(CodebookUpdate, LINE)
@@ -620,6 +657,21 @@ class ReadCodebook {
               theme: theme,
               codeId: theme.id
             }) */
+          }
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(PublicPrivate, LINE)
+          if (key === 'updateGrade') {
+            const theme = this.codebook.getCodeOrThemeFromId(themeId)
+            // Open grading form
+            GradingForm.showGradingForm(theme, (err, theme) => {
+              if (err) {
+                Alerts.errorAlert({ text: 'Unexpected error when grading. Please reload webpage and try again. Error: ' + err.message })
+              } else {
+                LanguageUtils.dispatchCustomEvent(Events.updateGrade, {
+                  theme: theme
+                })
+              }
+            })
           }
           // PVSCL:ENDCOND
         },
@@ -701,6 +753,9 @@ class ReadCodebook {
       this.reloadButtonContainer()
       // Dispatch codebook updated event
       LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+      // PVSCL:IFCOND(Marking, LINE)
+      LanguageUtils.dispatchCustomEvent(Events.updatedGrade, { codebook: this.codebook })
+      // PVSCL:ENDCOND
       // Open the sidebar
       window.abwa.sidebar.openSidebar()
     }

@@ -31,6 +31,9 @@ import AnnotationImporter from '../importExport/AnnotationImporter'
 import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
 import $ from 'jquery'
+// PVSCL:IFCOND(Docx, LINE)
+import DocxExporter from '../docxExporter/DocxExporter'
+// PVSCL:ENDCOND
 
 class Toolset {
   constructor () {
@@ -117,6 +120,17 @@ class Toolset {
       this.toolsetBody.appendChild(this.googleSheetImage)
       this.googleSheetImage.addEventListener('click', () => {
         GoogleSheetGenerator.generate()
+      })
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Docx, LINE)
+      const microsoftWordImageUrl = chrome.extension.getURL('/images/microsoftWord.svg')
+      this.microsoftWordImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.microsoftWordImage.src = microsoftWordImageUrl
+      this.microsoftWordImage.title = 'Generate a document with classified content' // TODO i18n
+      this.toolsetBody.appendChild(this.microsoftWordImage)
+      this.microsoftWordImage.addEventListener('click', () => {
+        let docExp = new DocxExporter()
+        docExp.exportToDocx()
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleReport, LINE)

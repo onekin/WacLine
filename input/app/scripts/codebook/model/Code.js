@@ -9,14 +9,19 @@ class Code {
     name,
     description = '',
     createdDate = new Date(),
-    color, theme/* PVSCL:IFCOND(MoodleProvider) */,
-    moodleLevelId/* PVSCL:ENDCOND */
+    color,
+    theme/* PVSCL:IFCOND(MoodleProvider) */,
+    moodleLevelId/* PVSCL:ENDCOND *//* PVSCL:IFCOND(PublicPrivate) */,
+    publicPrivate/* PVSCL:ENDCOND */
   }) {
     this.id = id
     this.name = name
     this.color = color
     this.theme = theme
     this.description = description
+    // PVSCL:IFCOND(PublicPrivate, LINE)
+    this.publicPrivate = publicPrivate
+    // PVSCL:ENDCOND
     if (LanguageUtils.isInstanceOf(createdDate, Date)) {
       this.createdDate = createdDate
     } else {
@@ -53,13 +58,17 @@ class Code {
       references: [],
       tags: tags,
       target: [],
+      // PVSCL:IFCOND(PublicPrivate, LINE)
+      publicPrivate: this.publicPrivate,
+      // PVSCL:ENDCOND
       text: jsYaml.dump({ id: this.id || '', description: this.description }),
       uri: this.theme.annotationGuide.annotationServer.group.links.html
     }
   }
 
   getTags () {
-    return [Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + this.name, Config.namespace + ':' + Config.tags.grouped.relation + ':' + this.theme.name]
+    let tags = [Config.namespace + ':' + Config.tags.grouped.subgroup + ':' + this.name, Config.namespace + ':' + Config.tags.grouped.relation + ':' + this.theme.name/* PVSCL:IFCOND(PublicPrivate) */, Config.namespace + ':isPublic:' + this.publicPrivate/* PVSCL:ENDCOND */]
+    return tags
   }
 
   static fromAnnotations () {
@@ -79,9 +88,9 @@ class Code {
         let codeToReturn
         // PVSCL:IFCOND(MoodleProvider, LINE)
         const moodleLevelId = config.id
-        codeToReturn = new Code({ id, name, description, theme, moodleLevelId, createdDate: annotation.updated })
+        codeToReturn = new Code({ id, name, description, theme, moodleLevelId, createdDate: annotation.updated/* PVSCL:IFCOND(PublicPrivate) */, publicPrivate: annotation.publicPrivate/* PVSCL:ENDCOND */ })
         // PVSCL:ELSECOND
-        codeToReturn = new Code({ id, name, description, theme, createdDate: annotation.updated })
+        codeToReturn = new Code({ id, name, description, theme, createdDate: annotation.updated/* PVSCL:IFCOND(PublicPrivate) */, publicPrivate: annotation.publicPrivate/* PVSCL:ENDCOND */ })
         // PVSCL:ENDCOND
         return codeToReturn
       } else {

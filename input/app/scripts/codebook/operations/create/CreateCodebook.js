@@ -10,6 +10,9 @@ import NoCodebook from './noCodebook/NoCodebook'
 import Codebook from '../../model/Codebook'
 import LanguageUtils from '../../../utils/LanguageUtils'
 import Alerts from '../../../utils/Alerts'
+// PVSCL:IFCOND(PublicPrivate, LINE)
+import PublicPrivate from './publicPrivate/PublicPrivate'
+// PVSCL:ENDCOND
 
 class CreateCodebook {
   constructor () {
@@ -54,6 +57,18 @@ class CreateCodebook {
             }
           })
         }
+        // PVSCL:IFCOND(PublicPrivate, LINE)
+        if (howCreate === 'publicPrivate') {
+          const publicPrivate = new PublicPrivate({ path: event.detail.path })
+          publicPrivate.createDefaultAnnotations((err, annotations) => {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(annotations)
+            }
+          })
+        }
+        // PVSCL:ENDCOND
         if (howCreate === 'emptyCodebook') {
           EmptyCodebook.createDefaultAnnotations((err, annotations) => {
             if (err) {

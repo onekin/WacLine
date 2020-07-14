@@ -19,13 +19,23 @@ class Theme {
     description = ''/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
     multivalued,
     inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
-    moodleCriteriaId/* PVSCL:ENDCOND */
+    moodleCriteriaId /* PVSCL:ENDCOND *//* PVSCL:IFCOND(PublicPrivate) */,
+    publicPrivate/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Marking) */,
+    grade,
+    weight/* PVSCL:ENDCOND */
   }) {
     this.id = id
     this.name = name
     this.description = description
     this.color = color
     this.annotationGuide = annotationGuide
+    // PVSCL:IFCOND(PublicPrivate,LINE)
+    this.publicPrivate = publicPrivate
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Marking,LINE)
+    this.grade = grade
+    this.weight = weight
+    // PVSCL:ENDCOND
     if (LanguageUtils.isInstanceOf(createdDate, Date)) {
       this.createdDate = createdDate
     } else {
@@ -84,7 +94,10 @@ class Theme {
       motivation: 'codebookDevelopment',
       references: [],
       tags: tags,
-      target: [],
+      target: [], /* PVSCL:IFCOND(PublicPrivate) */
+      publicPrivate: this.publicPrivate, /* PVSCL:ENDCOND *//* PVSCL:IFCOND(Marking) */
+      grade: this.grade,
+      weight: this.weight, /* PVSCL:ENDCOND */
       text: jsYaml.dump({
         id: this.id || ''/* PVSCL:IFCOND(BuiltIn) */,
         description: this.description/* PVSCL:ENDCOND */
@@ -131,7 +144,10 @@ class Theme {
           annotationGuide/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
           multivalued,
           inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
-          moodleCriteriaId/* PVSCL:ENDCOND */
+          moodleCriteriaId/* PVSCL:ENDCOND *//* PVSCL:IFCOND(PublicPrivate) */,
+          publicPrivate: annotation.publicPrivate/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Marking) */,
+          grade: annotation.grade,
+          weight: annotation.weight/* PVSCL:ENDCOND */
         })
       } else {
 
@@ -183,7 +199,11 @@ class Theme {
   toObjects () {
     const object = {
       name: this.name,
-      description: this.description
+      description: this.description/* PVSCL:IFCOND(PublicPrivate) */,
+      publicPrivate: this.publicPrivate/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Marking) */,
+      grade: this.grade,
+      weight: this.weight/* PVSCL:ENDCOND */,
+      annotations: []
     }
     // PVSCL:IFCOND(Hierarchy, LINE)
     if (this.codes.length > 0) {
@@ -220,12 +240,16 @@ class Theme {
     return {
       name: this.name,
       description: this.description,
-      id: this.id
+      id: this.id/* PVSCL:IFCOND(PublicPrivate) */,
+      publicPrivate: this.publicPrivate/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Marking) */,
+      grade: this.grade,
+      weight: this.weight/* PVSCL:ENDCOND */
     }
   }
 
   getTags () {
-    return [Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name]
+    let tags = [Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name/* PVSCL:IFCOND(PublicPrivate) */, Config.namespace + ':isPublic:' + this.publicPrivate/* PVSCL:ENDCOND */]
+    return tags
   }
 
   // PVSCL:IFCOND(Hierarchy, LINE)

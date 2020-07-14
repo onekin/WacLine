@@ -10,6 +10,9 @@
 /* PVSCL:IFCOND(PreviousAssignments, LINE) */
 @import './exam';
 /* PVSCL:ENDCOND */
+/* PVSCL:IFCOND(Marking, LINE) */
+@import './finalGrade';
+/* PVSCL:ENDCOND */
 @import './tagWrapper';
 @import './locationManager';
 @import './sidebar';

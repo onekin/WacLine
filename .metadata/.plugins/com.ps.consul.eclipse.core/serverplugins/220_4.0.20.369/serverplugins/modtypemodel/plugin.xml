@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin 
+  id="com.ps.consul.eclipse.ui.modularisation.typemodel" 
+  name="pure::variants - Modularisation Type Model Plugin" 
+  version="1.0.1" 
+  provider-name="pure-systems GmbH">
+  
+  <extension point="com.ps.consul.typemodel.extension">
+    <typemodel location="ModTypeModel.uml"/>
+  </extension>
+  
+</plugin>

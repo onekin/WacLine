@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin 
+  id="com.ps.consul.eclipse.ui.transform.serverplugin" 
+  name="Client Transformation Server Plugins" 
+  version="3.2.10" 
+  provider-name="pure-systems GmbH">
+  
+  <extension 
+    id="com.ps.consul.eclipse.ui.transform.sub" 
+    name="com.ps.consul.eclipse.ui.transform.sub" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="Reuse Transformation" 
+      version="1.0" 
+      include="/variant"
+      exclude=""
+      type="client"
+      id="com.ps.consul.eclipse.ui.transform.sub.module">
+      
+      <description>Reuse another transformation configuration as part of the current transformation.</description>
+
+      <parameters>
+      <parameter name="Triggered By" type="ps:string" optional="false">
+            <description>Define when the transformation configuration runs.</description>
+            <values>
+              <value>First VDM</value>
+              <value default="yes">Each VDM</value>
+              <value>Last VDM</value>
+            </values>
+        </parameter>
+        <parameter name="Transformation" type="ps:transformation" optional="false">
+          <description>The transformation configuration to reuse.</description>
+        </parameter>
+      </parameters>
+      
+    </module>
+
+  </extension>
+
+  <extension 
+    id="com.ps.consul.eclipse.ui.transform.ant" 
+    name="com.ps.consul.eclipse.ui.transform.ant" 
+    point="com.ps.consul.transformer.module">
+      
+    <module 
+      name="Ant Build Module" 
+      version="1.0" 
+      include="/variant"
+      exclude=""
+      type="client"
+      image="ant"
+      update="true"
+      id="com.ps.consul.eclipse.ui.transform.sub.ant">
+      
+      <description>Runs an Ant build file as part of the transformation.</description>
+      
+      <parameters>
+        <parameter name="Build File" type="ps:string" optional="false">
+          <description>The path to the Ant build file.</description>
+          <default>$(PROJECT)/build.xml</default>
+        </parameter>
+        <parameter name="Target" type="ps:string" optional="true">
+          <description>The target for the Ant build. If no
+target is given, the default target
+of the build file is used.</description>
+        </parameter>
+      </parameters>
+      
+    </module>
+    
+  </extension>
+
+  <extension 
+    id="com.ps.consul.eclipse.ui.transform.exec" 
+    name="com.ps.consul.eclipse.ui.transform.exec" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="exec"
+      label="External Program Runner" 
+      version="2.0" 
+      include="/variant"
+      exclude=""
+      image="run_cmd"
+      type="client"
+      id="com.ps.consul.eclipse.ui.transform.exec.module">
+      
+      <description>Run an external program.</description>
+    
+      <parameters>
+        <parameter name="program" type="ps:path">
+          <description>Path to the program to execute. Relative paths are relative 
+to $(OUTPUT).</description>
+          <default>$(PROJECT)/run.bat</default>
+        </parameter>
+        <parameter name="parameters" type="ps:string" optional="true">
+          <description>Program call parameters.</description>
+        </parameter>
+        <parameter name="supply document" type="ps:boolean" optional="true">
+          <description>Supply the transformer document to the program by setting the 
+XMLTS_DOCUMENT_LOCATION environment variable.</description>
+          <values>
+            <value>true</value>
+            <value>false</value>
+          </values>
+          <default>false</default>
+        </parameter>
+        <parameter name="supply location" type="ps:boolean" optional="true">
+          <description>Supply the current location in the transformer document to the 
+program by setting the XMLTS_NODE_LOCATION environment variable.</description>
+          <values>
+            <value>true</value>
+            <value>false</value>
+          </values>
+          <default>false</default>
+        </parameter>
+        <parameter name="ignore return value" type="ps:boolean" optional="true">
+          <description>Ignore the exit status returned by the program.</description>
+          <values>
+            <value>true</value>
+            <value>false</value>
+          </values>
+          <default>false</default>
+        </parameter>
+        <parameter name="no wait" type="ps:boolean" optional="true">
+          <description>Do not wait for the termination of the program.</description>
+          <values>
+            <value>true</value>
+            <value>false</value>
+          </values>
+          <default>false</default>
+        </parameter>
+      </parameters>
+
+    </module>
+
+  </extension>
+
+  <extension 
+    id="com.ps.consul.eclipse.ui.transform.makefile" 
+    name="com.ps.consul.eclipse.ui.transform.makefile" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="makefile" 
+      label="Makefile Generator"
+      update="true"
+      version="2.0"
+      include="/variant"
+      exclude=""
+      type="client"
+      id="com.ps.consul.eclipse.ui.transform.makefile.module">
+      
+      <description>Generate a Makefile compatible to gmake, nmake, or ccmake. 
+According to the source elements of the input models a set 
+of make variables is generated listing the files of the 
+modeled project. If the optional output file is omitted then 
+the resulting Makefile is saved as outcome of the module.
+
+Outcome:
+    key=com.ps.consul.eclipse.ui.transform.makefile.module#Makefile
+    type=string, contains the Makefile content</description>
+      
+      <parameters>
+        <parameter name="out" type="ps:path" optional="true">
+          <description>Target path for the generated Makefile. Relative paths are
+relative to $(OUTPUT).</description>
+        </parameter>
+        <parameter name="makesystem" type="ps:string" optional="true">
+          <description>Optional parameter specifying the make system for which the  
+Makefile is created. Possible values are "gmake" for GNU Make, 
+"nmake" for Microsoft Make, and "ccmake" for ClearCase Make. 
+The default value is "gmake".</description>
+          <values>
+            <value default="yes">gmake</value>
+            <value>nmake</value>
+            <value>ccmake</value>
+          </values>
+        </parameter>
+        <parameter name="prefix" type="ps:string" optional="true">
+          <description>A prefix which is placed in front of all paths in the Makefile.</description>
+        </parameter>
+      </parameters>
+    </module>
+
+  </extension>
+  
+  <extension 
+    id="com.ps.consul.eclipse.ui.transform.actionlist.generator" 
+    name="com.ps.consul.eclipse.ui.transform.actionlist.generator" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="standard transformation" 
+      label="Action List Generator"
+      update="true"
+      version="2.0"
+      include="/variant"
+      exclude=""
+      type="client"
+      id="com.ps.consul.eclipse.ui.transform.actionlist.generator.module">
+      
+      <description>pure::variants standard transformation which generates 
+a transformation action list according to the types of 
+the elements in the family models of the configuration 
+space. The resulting action list is saved as outcome of 
+the module, and optionally as a file (see "output file"
+module parameter).
+        
+Outcome:
+    key=com.ps.consul.eclipse.ui.transform.actionlist.generator.module#ActionList
+    type=string, contains the action list as XML</description>
+      
+      <parameters>
+        <parameter name="output file" type="ps:path" optional="true">
+          <description>Target path for the generated action list. Relative paths are 
+relative to $(OUTPUT).</description>
+        </parameter>
+      </parameters>
+    </module>
+    
+  </extension>
+  
+  <extension 
+    id="com.ps.consul.eclipse.ui.transform.actionlist.runner" 
+    name="com.ps.consul.eclipse.ui.transform.actionlist.runner" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="actionlist" 
+      label="Action List Runner"
+      update="true"
+      version="2.0"
+      include="/variant"
+      exclude=""
+      type="client"
+      id="com.ps.consul.eclipse.ui.transform.actionlist.runner.module">
+      
+      <description>Execute pure::variants standard transformation action
+lists, either provided as file or as outcome of the
+action list generator transformation module run before
+this transformation module.</description>
+      
+      <parameters>
+        <parameter name="in" type="ps:path" optional="true">
+          <description>Path to the transformation action list file. Relative paths 
+are relative to $(MODULEBASE).</description>
+        </parameter>
+        <parameter name="destroy" type="ps:boolean" optional="true">
+          <description>If set to 'true' then the executed action lists are removed 
+from the outcome of the transformation modules ran before.</description>
+          <values>
+            <value>true</value>
+            <value>false</value>
+          </values>
+        </parameter>
+      </parameters>
+    </module>
+    
+  </extension>
+  
+  <extension 
+    id="com.ps.consul.eclipse.ui.transform.xslt" 
+    name="com.ps.consul.eclipse.ui.transform.xslt" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="xslt" 
+      label="XSLT Script Runner"
+      update="true"
+      version="2.0"
+      include="/variant"
+      exclude=""
+      type="client"
+      id="com.ps.consul.eclipse.ui.transform.xslt.module">
+      
+      <description>Run an XSLT script.</description>
+      
+      <parameters>
+        <parameter name="in" type="ps:path" optional="false">
+          <description>Path to the XSLT script file. Relative paths are relative to $(MODULEBASE).</description>
+        </parameter>
+        <parameter name="out" type="ps:path" optional="true">
+          <description>Path to the output file. Relative paths are relative to $(OUTPUT).</description>
+        </parameter>
+        <parameter name="output mode" type="ps:string" optional="true">
+          <description>Set this parameter to 'both' if the script output shall be saved both in the output file and as module outcome.</description>
+          <values>
+            <value>both</value>
+          </values>
+        </parameter>
+        <parameter name="output method" type="ps:string" optional="true">
+          <description>Set this parameter to the desired XSLT output method. Defaults to 'xml'.</description>
+          <values>
+            <value>xml</value>
+            <value>text</value>
+            <value>html</value>
+          </values>
+        </parameter>
+        <parameter name="output encoding" type="ps:string" optional="true">
+          <description>Set the character encoding of the XSLT output. Defaults to 'UTF-8'.</description>
+        </parameter>
+        <parameter name="keep doctype" type="ps:boolean" optional="true">
+          <description>Keep the DOCTYPE of the input document if no DOCTYPE is set in the XSLT script. Defaults to 'true'.</description>
+          <values>
+            <value>true</value>
+            <value>false</value>
+          </values>
+        </parameter>
+        <parameter name="document" type="ps:path" optional="true">
+          <description>Instead of applying the XSLT script to the variant result model apply it to the document at this path.</description>
+        </parameter>
+        <addparameters>
+          <description>Additional XSLT script parameter. Accessible in the script by its name.</description>
+        </addparameters>
+      </parameters>
+    </module>
+    
+  </extension>
+  
+</plugin>
