@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin 
+  id="com.ps.consul.eclipse.ui.pvexport.transform.serverplugin" 
+  name="HTML Transformation Module" 
+  version="1.0.0" 
+  provider-name="pure-systems GmbH">
+  
+  <extension 
+    id="HTML Transformation Module" 
+    name="HTML Transformation Module" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="HTML Transformation Module" 
+      version="1.1" 
+      include="/variant"
+      exclude=""
+      type="client"
+      update="true"
+      image="html_mod"
+      id="com.ps.consul.eclipse.ui.pvexport.transform.module">
+      
+      <description>Creates HTML output of Models. Models can be input or transformed models of a VDM. </description>
+
+<parameters>
+	<parameter name="Output" type="ps:path" optional="true">
+        <description>Define a output path.
+A relative path is resolved to the configspace/module configuration output path.
+An absolute path can contain pure-variants path variables.</description>
+    </parameter>
+    <parameter name="Mode" type="ps:string" optional="false">
+    	<description>Define which transformation mode should be used.
+"Result Models Tailored" mode tailors models according to variant description model.
+"Result Models Annotated" mode annotates models according to variant description model.
+"Input Models Only" mode exports models with no transformation.</description>
+        <values>
+            <value default="yes">Result Models Tailored</value>
+            <value>Result Models Annotated</value>
+            <value>Input Models Only</value>
+          </values>
+	</parameter>
+    <parameter name="Layout" type="ps:string" optional="true">
+        <description>Define a tree layout (name of an existing tree layout).
+A layout allows to hide unnecessary information (e.g. restrictions, constraints, attributes, etc.).</description>
+    </parameter>
+    <parameter name="Filter" type="ps:string" optional="true">
+        <description>Define a filter (name of an existing filter).
+            A filter allows to hide elements by boolean expressions (and there combination with boolean operators) evaluating different information of the model, elements, attributes and much else.</description>
+    </parameter>
+    <parameter name="Stylesheet" type="ps:string" optional="false">
+    	<description>Define if a stylesheet should be used.
+If yes you can decide to link or to inline the stylesheet.</description>
+        <values>
+            <value default="yes">No Stylesheet</value>
+            <value>Link Stylesheet</value>
+            <value>Inline Stylesheet</value>
+          </values>
+    </parameter>
+    <parameter name="Stylesheet Path" type="ps:path" optional="true">
+        <description>Define which stylesheet should be used.
+If not especially defined the pure::variants default Stylesheet is used.</description>
+    </parameter>
+     <parameter name="Model Type Filter" type="ps:string" optional="true">
+        <description>Define which model types will be generated into html output files.</description>
+        <values>
+            <value default="yes">Both</value>
+            <value>Family Models</value>
+            <value>Feature Models</value>
+          </values>
+    </parameter>
+     <parameter name="Model Name Filter" type="ps:string" optional="true">
+        <description>Define which models will be generated into html output files. 
+Models are used, if their names match the given regular expression.</description>
+     </parameter>
+     <parameter name="Merge" type="ps:boolean" optional="true">
+        <description>Set true if models should be generated into one html output file. The file name is set to VDM name.</description>
+    </parameter>
+</parameters>
+</module>
+  </extension>
+</plugin>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin id="com.ps.consul.eclipse.ui.vel.transformation.serverplugin"
+  name="VEL Client Transformation" version="1.0.0" provider-name="pure-systems GmbH">
+
+  <extension id="vel.configuration.export" name="VEL Configuration Export"
+    point="com.ps.consul.transformer.module">
+
+    <module name="VEL Transformation Module" label="VEL Configuration Writer" version="1.0"
+      include="/variant" exclude="" type="client" update="true" image="vel"
+      id="com.ps.consul.eclipse.ui.vel.transformation.module">
+
+      <description>Write a VEL configuration to XML file.</description>
+
+      <parameters>
+        <parameter name="Output file" type="ps:path" optional="false">
+          <description>The Path for the generated VEL configuration document.</description>
+          <default>$(VARIANT).xml</default>
+        </parameter>
+      </parameters>
+
+    </module>
+
+    <!--module name="VEL Base Transformation Module" label="VEL Base Transformation Module"
+      version="1.0" include="/variant" exclude="" type="client" update="true" image="vel"
+      id="com.ps.consul.eclipse.ui.vel.transformation.module.base">
+
+      <description>Base transformation module to be used by external tools.</description>
+
+      <parameters>
+        <parameter name="Modus" type="ps:string" optional="false">
+          <description>Chose between the following transformation modes: "Variant Enumeration" adds
+            the current variant for selected requirements to the enumeration attribute. "Copy with
+            Links" instantiates a new module including all variant specific requirements as links.
+            "Copy with Duplicates" instantiates a new module including all variant specific
+            requirements. "Create Streams" instantiates a new stream including all variant specific
+            artefacts.</description>
+          <values>
+            <value default="yes">Copy with Duplicates</value>
+            <value>Copy with Links</value>
+            <value>Variant Enumeration</value>
+            <value>Create Streams</value>
+          </values>
+        </parameter>
+
+        <parameter name="OutputPath" type="ps:string" optional="false">
+          <description>The path (including the name of the asset to be created).
+            This could be a URL, or filepath.</description>
+        </parameter>
+
+        <parameter name="Username" type="ps:string" optional="true">
+          <description>The user name for authentification in the external tool.</description>
+        </parameter>
+        <parameter name="Password" type="ps:string" optional="true">
+          <description>The password for authentification in the external tool.</description>
+        </parameter>
+      </parameters>
+
+    </module-->
+
+  </extension>
+
+</plugin>

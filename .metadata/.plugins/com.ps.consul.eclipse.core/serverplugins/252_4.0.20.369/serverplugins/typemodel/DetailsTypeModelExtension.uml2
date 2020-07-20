@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xmi:id="_34DwgMFkEdmQm6i_dNKI1w">
+  <ownedMember xsi:type="uml:Package" xmi:id="_ww5P0LyeEdmAeeFy5A9IPA" name="ps">
+    <ownedMember xsi:type="uml:Stereotype" xmi:id="_3mP-ELyeEdmAeeFy5A9IPA" name="namespace"/>
+    <ownedMember xsi:type="uml:Class" xmi:id="_XDObISy8Edmtv9ebugdNAg" name="feature">
+      <generalization xmi:id="_Di3EkbygEdmAeeFy5A9IPA">
+        <general xsi:type="uml:Class" href="TypeModel.uml2#_bKAnsGVOEdmhbc6jvydKJQ"/>
+      </generalization>
+      <ownedAttribute xmi:id="_Q8kQoLygEdmAeeFy5A9IPA" name="ps:State" type="_RTiwwLyhEdmAeeFy5A9IPA">
+        <eAnnotations xmi:id="_g_aCILygEdmAeeFy5A9IPA" source="extended"/>
+        <eAnnotations xmi:id="_zK4_MMMDEdmnE4E_ct2lyw" source="fixed"/>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_Ipvy8LytEdmHE7B-ySsTwg"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_fqRhkLyoEdmAeeFy5A9IPA" name="ps:Version">
+        <eAnnotations xmi:id="_fqRhkbyoEdmAeeFy5A9IPA" source="extended"/>
+        <eAnnotations xmi:id="_0bDmkMMDEdmnE4E_ct2lyw" source="fixed"/>
+        <type xsi:type="uml:Class" href="TypeModel.uml2#_9Gs64CwPEdmdtOzN278pqQ"/>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_st7y4LytEdmXANmfQGfOyw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_DDZyULypEdmAeeFy5A9IPA" name="ps:Priority" type="_GqdDcLynEdmAeeFy5A9IPA">
+        <eAnnotations xmi:id="_DDZyUbypEdmAeeFy5A9IPA" source="extended"/>
+        <eAnnotations xmi:id="_0nk_oMMDEdmnE4E_ct2lyw" source="fixed"/>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_t7H-wLytEdmXANmfQGfOyw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_RDGnYLypEdmAeeFy5A9IPA" name="ps:Release" type="_G4KIQLynEdmAeeFy5A9IPA">
+        <eAnnotations xmi:id="_RDGnYbypEdmAeeFy5A9IPA" source="extended"/>
+        <eAnnotations xmi:id="_00sOkMMDEdmnE4E_ct2lyw" source="fixed"/>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_vRjmMLytEdmXANmfQGfOyw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_pzjCMLypEdmAeeFy5A9IPA" name="ps:Risk" type="_goDDULymEdmAeeFy5A9IPA">
+        <eAnnotations xmi:id="_pzjCMbypEdmAeeFy5A9IPA" source="extended"/>
+        <eAnnotations xmi:id="_1AAtwMMDEdmnE4E_ct2lyw" source="fixed"/>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_wWi4ULytEdmXANmfQGfOyw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_tQ1BYLypEdmAeeFy5A9IPA" name="ps:Stability" type="_goDDULymEdmAeeFy5A9IPA">
+        <eAnnotations xmi:id="_tQ1BYbypEdmAeeFy5A9IPA" source="extended"/>
+        <eAnnotations xmi:id="_1M-ywMMDEdmnE4E_ct2lyw" source="fixed"/>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_xZmQwLytEdmXANmfQGfOyw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_u1QokLypEdmAeeFy5A9IPA" name="ps:Satisfaction" type="_goDDULymEdmAeeFy5A9IPA">
+        <eAnnotations xmi:id="_u1QokbypEdmAeeFy5A9IPA" source="extended"/>
+        <eAnnotations xmi:id="_1YTR8MMDEdmnE4E_ct2lyw" source="fixed"/>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_yv4HMLytEdmXANmfQGfOyw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_vIVVkLypEdmAeeFy5A9IPA" name="ps:Dissatisfaction" type="_goDDULymEdmAeeFy5A9IPA">
+        <eAnnotations xmi:id="_vIVVkbypEdmAeeFy5A9IPA" source="extended"/>
+        <eAnnotations xmi:id="_2BbugMMDEdmnE4E_ct2lyw" source="fixed"/>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_0RoN0LytEdmXANmfQGfOyw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_5K3xgLypEdmAeeFy5A9IPA" name="ps:Rationale">
+        <eAnnotations xmi:id="_5K3xgbypEdmAeeFy5A9IPA" source="extended"/>
+        <eAnnotations xmi:id="_15Pb0MMDEdmnE4E_ct2lyw" source="fixed"/>
+        <type xsi:type="uml:Class" href="TypeModel.uml2#_9Gs64CwPEdmdtOzN278pqQ"/>
+        <lowerValue xsi:type="uml:LiteralInteger" xmi:id="_1Ksj0LytEdmXANmfQGfOyw"/>
+      </ownedAttribute>
+      <nestedClassifier xsi:type="uml:Stereotype" xmi:id="_Di3EkrygEdmAeeFy5A9IPA" name="class"/>
+    </ownedMember>
+    <ownedMember xsi:type="uml:Class" xmi:id="_RTiwwLyhEdmAeeFy5A9IPA" name="State">
+      <generalization xmi:id="_nDUP4LyhEdmAeeFy5A9IPA">
+        <general xsi:type="uml:Class" href="TypeModel.uml2#_9Gs64CwPEdmdtOzN278pqQ"/>
+      </generalization>
+      <nestedClassifier xsi:type="uml:Enumeration" xmi:id="_6uKp4LyhEdmAeeFy5A9IPA" name="values">
+        <ownedLiteral xmi:id="_Gnu2sMF1Edm1KZNPaChAvQ" name="undefined"/>
+        <ownedLiteral xmi:id="_Nmpy0LyiEdmAeeFy5A9IPA" name="proposed"/>
+        <ownedLiteral xmi:id="_nCZtELylEdmAeeFy5A9IPA" name="designed"/>
+        <ownedLiteral xmi:id="_nRJTsLylEdmAeeFy5A9IPA" name="implemented"/>
+        <ownedLiteral xmi:id="_nsH_gLylEdmAeeFy5A9IPA" name="tested"/>
+        <ownedLiteral xmi:id="_n3mPsLylEdmAeeFy5A9IPA" name="released"/>
+        <ownedLiteral xmi:id="_of-eULylEdmAeeFy5A9IPA" name="obsolete"/>
+      </nestedClassifier>
+    </ownedMember>
+    <ownedMember xsi:type="uml:Class" xmi:id="_goDDULymEdmAeeFy5A9IPA" name="Level">
+      <generalization xmi:id="_krImgMMCEdmN1MmUm46YwA">
+        <general xsi:type="uml:Class" href="TypeModel.uml2#_9Gs64CwPEdmdtOzN278pqQ"/>
+      </generalization>
+      <nestedClassifier xsi:type="uml:Enumeration" xmi:id="_goDDUrymEdmAeeFy5A9IPA" name="values">
+        <ownedLiteral xmi:id="_EECx8MF1Edm1KZNPaChAvQ" name="undefined"/>
+        <ownedLiteral xmi:id="_goDDU7ymEdmAeeFy5A9IPA" name="very low"/>
+        <ownedLiteral xmi:id="_goDDVLymEdmAeeFy5A9IPA" name="low"/>
+        <ownedLiteral xmi:id="_goDDVbymEdmAeeFy5A9IPA" name="normal"/>
+        <ownedLiteral xmi:id="_goDDVrymEdmAeeFy5A9IPA" name="high"/>
+        <ownedLiteral xmi:id="_goDDV7ymEdmAeeFy5A9IPA" name="very high"/>
+      </nestedClassifier>
+    </ownedMember>
+    <ownedMember xsi:type="uml:Class" xmi:id="_GqdDcLynEdmAeeFy5A9IPA" name="Priority">
+      <generalization xmi:id="_k2KKwMMCEdmN1MmUm46YwA">
+        <general xsi:type="uml:Class" href="TypeModel.uml2#_9Gs64CwPEdmdtOzN278pqQ"/>
+      </generalization>
+      <nestedClassifier xsi:type="uml:Enumeration" xmi:id="_GqdDcrynEdmAeeFy5A9IPA" name="values">
+        <ownedLiteral xmi:id="_BUL5cMF1Edm1KZNPaChAvQ" name="undefined"/>
+        <ownedLiteral xmi:id="_GqdDc7ynEdmAeeFy5A9IPA" name="uncritical"/>
+        <ownedLiteral xmi:id="_GqdDdLynEdmAeeFy5A9IPA" name="normal"/>
+        <ownedLiteral xmi:id="_GqdDdbynEdmAeeFy5A9IPA" name="high"/>
+        <ownedLiteral xmi:id="_GqdDdrynEdmAeeFy5A9IPA" name="critical"/>
+      </nestedClassifier>
+    </ownedMember>
+    <ownedMember xsi:type="uml:Class" xmi:id="_G4KIQLynEdmAeeFy5A9IPA" name="Release">
+      <generalization xmi:id="_k_shQMMCEdmN1MmUm46YwA">
+        <general xsi:type="uml:Class" href="TypeModel.uml2#_9Gs64CwPEdmdtOzN278pqQ"/>
+      </generalization>
+      <nestedClassifier xsi:type="uml:Enumeration" xmi:id="_G4KIQrynEdmAeeFy5A9IPA" name="values">
+        <ownedLiteral xmi:id="_G4KIQ7ynEdmAeeFy5A9IPA" name="undefined"/>
+        <ownedLiteral xmi:id="_8r7U4MF0Edm1KZNPaChAvQ" name="alpha"/>
+        <ownedLiteral xmi:id="_G4KIRLynEdmAeeFy5A9IPA" name="beta"/>
+        <ownedLiteral xmi:id="_G4KIRbynEdmAeeFy5A9IPA" name="final"/>
+      </nestedClassifier>
+    </ownedMember>
+  </ownedMember>
+</uml:Model>

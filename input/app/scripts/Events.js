@@ -20,6 +20,9 @@ const Events = {
   // PVSCL:IFCOND(Reply, LINE)
   reply: 'reply',
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(PublicPrivate, LINE)
+  grade: 'grade',
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(DeleteAll, LINE)
   deleteAllAnnotations: 'deleteAllAnnotations',
   deletedAllAnnotations: 'deletedAllAnnotations',
@@ -39,6 +42,10 @@ const Events = {
   themeRemoved: 'themeRemoved',
   updateTheme: 'updateTheme',
   themeUpdated: 'themeUpdated',
+  // PVSCL:IFCOND(Marking, LINE)
+  updateGrade: 'updateGrade',
+  updatedGrade: 'updatedGrade',
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(Hierarchy, LINE)
   createCode: 'createCode',
   codeCreated: 'codeCreated',
