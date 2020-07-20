@@ -75,6 +75,7 @@ export class AnnotatedContentManager {
     }
   }
 
+
   updateAnnotationForAssignment (callback) {
     // Retrieve all the annotations for this assignment
     this.retrieveAnnotationsForAssignment((err, assignmentAnnotations) => {
@@ -82,6 +83,8 @@ export class AnnotatedContentManager {
         // TODO Unable to retrieve annotations for this assignment
       } else {
         // Retrieve current annotatedThemes
+        console.log(assignmentAnnotations)
+
         this.addingCodingsFromAnnotations(assignmentAnnotations)
         console.debug('Updated annotations for assignment')
         // Callback
@@ -91,6 +94,9 @@ export class AnnotatedContentManager {
       }
     })
   }
+
+
+
 
   retrieveAnnotationsForAssignment (callback) {
     let promise
@@ -114,9 +120,12 @@ export class AnnotatedContentManager {
       }
     })
     // PVSCL:ELSECOND
+
+
     promise = new Promise((resolve, reject) => {
       resolve(window.abwa.annotationManagement.annotationReader.allAnnotations)
     })
+
     // PVSCL:ENDCOND
     // Return retrieved annotations
     promise.catch((err) => {
@@ -124,6 +133,7 @@ export class AnnotatedContentManager {
     }).then((annotations) => {
       callback(null, annotations)
     })
+
   }
 
   addingCodingsFromAnnotations (annotations) {
@@ -154,7 +164,7 @@ export class AnnotatedContentManager {
   // PVSCL:IFCOND(NOT(Multivalued), LINE)
 
   codeToAll (code, lastAnnotatedCode) {
-    // Update annotatedThemes
+  // Update annotatedThemes
     const annotatedTheme = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.theme.id)
     const annotatedCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(code.id)
     // 'exam:cmid:' + this.cmid
@@ -221,7 +231,7 @@ export class AnnotatedContentManager {
     }
     let resultAnnotations = []
     Promise.all(promises).then((result) => {
-      // All annotations updated
+    // All annotations updated
       resultAnnotations = result
     }).finally((result) => {
       if (_.isFunction(callback)) {
@@ -240,7 +250,7 @@ export class AnnotatedContentManager {
   // PVSCL:ENDCOND
 
   addAnnotationToAnnotatedThemesOrCode (annotation, annotatedThemesObject = this.annotatedThemes) {
-    // Get classification code
+  // Get classification code
     const classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
     if (classifyingBody) {
       const codeId = classifyingBody.value.id
@@ -253,7 +263,7 @@ export class AnnotatedContentManager {
   }
 
   removeAnnotationToAnnotatedThemesOrCode (annotation) {
-    // Get classification code
+  // Get classification code
     const classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
     if (classifyingBody) {
       const codeId = classifyingBody.value.id
@@ -270,10 +280,10 @@ export class AnnotatedContentManager {
    * @returns array of annotations
    */
   getAnnotationsDoneWithThemeOrCodeId (themeOrCodeId) {
-    // Get AnnotatedTheme or AnnotatedCode
+  // Get AnnotatedTheme or AnnotatedCode
     const themeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(themeOrCodeId)
     if (LanguageUtils.isInstanceOf(themeOrCode, AnnotatedTheme)) {
-      // If it is the theme, we need to retrieve all the annotations with corresponding theme and annotations done with its children codes
+    // If it is the theme, we need to retrieve all the annotations with corresponding theme and annotations done with its children codes
       let annotations = _.filter(themeOrCode.annotations, (annotation) => {
         return _.intersection(window.abwa.targetManager.getDocumentLink(), _.values(annotation.target[0].source))
       })
@@ -302,12 +312,12 @@ export class AnnotatedContentManager {
   getAnnotatedThemeOrCodeFromThemeOrCodeId (themeOrCodeId, annotatedThemesObject = this.annotatedThemes) {
     const themeOrCode = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(themeOrCodeId)
     if (LanguageUtils.isInstanceOf(themeOrCode, Theme)) {
-      // Return annotationTheme with the codeId we need
+    // Return annotationTheme with the codeId we need
       return _.find(annotatedThemesObject, (annotatedTheme) => {
         return annotatedTheme.theme.id === themeOrCode.id
       })
     } /* PVSCL:IFCOND(Hierarchy) */else if (LanguageUtils.isInstanceOf(themeOrCode, Code)) {
-      // Return annotationCode with the codeId we need
+    // Return annotationCode with the codeId we need
       const annotatedTheme = _.find(annotatedThemesObject, (annotatedTheme) => {
         return annotatedTheme.theme.id === themeOrCode.theme.id
       })
@@ -318,7 +328,7 @@ export class AnnotatedContentManager {
   }
 
   initEvents () {
-    // Create event listener for updated all annotations
+  // Create event listener for updated all annotations
     this.events.annotationCreated = { element: document, event: Events.annotationCreated, handler: this.createAnnotationCreatedEventHandler() }
     this.events.annotationCreated.element.addEventListener(this.events.annotationCreated.event, this.events.annotationCreated.handler, false)
     // Create event listener for updated all annotations
@@ -339,7 +349,7 @@ export class AnnotatedContentManager {
     // PVSCL:IFCOND(CodebookUpdate, LINE)
     this.events.codebookUpdatedEvent = { element: document, event: Events.codebookUpdated, handler: this.createCodebookUpdatedEventHandler() }
     this.events.codebookUpdatedEvent.element.addEventListener(this.events.codebookUpdatedEvent.event, this.events.codebookUpdatedEvent.handler, false)
-    // PVSCL:ENDCOND
+  // PVSCL:ENDCOND
   }
 
   // PVSCL:IFCOND(CodebookUpdate, LINE)
@@ -357,7 +367,7 @@ export class AnnotatedContentManager {
   // PVSCL:IFCOND(MoodleReport, LINE)
   createAnnotationUpdatedEventHandler () {
     return (event) => {
-      // Retrieve annotation from event
+    // Retrieve annotation from event
       const annotation = event.detail.annotation
       // Get classification code
       const classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
@@ -380,13 +390,13 @@ export class AnnotatedContentManager {
 
   createCodeToAllEventHandler () {
     return (event) => {
-      // Get level for this mark
+    // Get level for this mark
       const code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(event.detail.codeId)
       if (code) {
-        // Retrieve criteria from rubric
+      // Retrieve criteria from rubric
         this.codeToAll(code, event.detail.currentlyAnnotatedCode)
       } else {
-        // Unable to retrieve criteria or level
+      // Unable to retrieve criteria or level
         Alerts.errorAlert({
           title: 'Unable to code',
           text: 'There was an error in coding, please reload the page and try it again.' +
@@ -398,12 +408,13 @@ export class AnnotatedContentManager {
 
   createAnnotationCreatedEventHandler () {
     return (event) => {
-      // Add event to the codings list
+    // Add event to the codings list
       if (event.detail.annotation) {
         const annotation = event.detail.annotation
         this.annotatedThemes = this.addAnnotationToAnnotatedThemesOrCode(annotation)
+
         if (event.detail.codeToAll) {
-          // Get classification code
+        // Get classification code
           const classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
           if (classifyingBody) {
             const codeId = classifyingBody.value.id
@@ -424,6 +435,7 @@ export class AnnotatedContentManager {
       if (event.detail.annotation) {
         const annotation = event.detail.annotation
         this.removeAnnotationToAnnotatedThemesOrCode(annotation)
+
         // Dispatch updated content manager event
         LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, { annotatedThemes: this.annotatedThemes })
       }
@@ -437,6 +449,7 @@ export class AnnotatedContentManager {
         const annotations = event.detail.annotations
         for (let i = 0; i < annotations.length; i++) {
           const annotation = annotations[i]
+
           this.removeAnnotationToAnnotatedThemesOrCode(annotation)
         }
       }
@@ -447,9 +460,9 @@ export class AnnotatedContentManager {
   }
 
   reloadTagsChosen () {
-    // Retrieve annotated themes id
+  // Retrieve annotated themes id
     for (let i = 0; i < this.annotatedThemes.length; i++) {
-      // annotated
+    // annotated
       const annotatedTheme = this.annotatedThemes[i]
       if (annotatedTheme.theme.codes && annotatedTheme.theme.codes.length > 0) {
         const annotatedGroupButton = document.querySelectorAll('.tagGroup[data-code-id="' + annotatedTheme.theme.id + '"]')
@@ -461,7 +474,7 @@ export class AnnotatedContentManager {
           const annotatedCodeButton = document.querySelectorAll('.tagButton[data-code-id="' + annotatedCode.code.id + '"]')
           annotatedCodeButton[0].dataset.numberOfAnnotations = this.getAnnotationsDoneWithThemeOrCodeId(annotatedCode.code.id).length
         }
-        // PVSCL:ENDCOND
+      // PVSCL:ENDCOND
       } else {
         const annotatedThemeButton = document.querySelectorAll('.tagButton[data-code-id="' + annotatedTheme.theme.id + '"]')
         annotatedThemeButton[0].dataset.numberOfAnnotations = this.getAnnotationsDoneWithThemeOrCodeId(annotatedTheme.theme.id).length

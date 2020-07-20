@@ -46,6 +46,7 @@ class UpdateAnnotation {
             const deserializedAnnotation = Annotation.deserialize(annotation)
             // Dispatch annotation created event
             LanguageUtils.dispatchCustomEvent(Events.annotationUpdated, { annotation: deserializedAnnotation })
+
           }
         })
     }

@@ -21,6 +21,9 @@ class Annotation {
     id,
     body = [],
     references = [],
+    // PVSCL:IFCOND(Linking,LINE)
+    annotationlinks = [],
+    // PVSCL:ENDCOND
     group = window.abwa.groupSelector.currentGroup.id,
     permissions = {
       read: ['group:' + window.abwa.groupSelector.currentGroup.id]
@@ -38,6 +41,9 @@ class Annotation {
     this.id = id
     this.body = body
     this.references = references
+    // PVSCL:IFCOND(Linking,LINE)
+    this.annotationlinks = annotationlinks
+    // PVSCL:ENDCOND
     this.permissions = permissions
     this.tags = _.uniq(tags)
     this.creator = creator
@@ -63,6 +69,11 @@ class Annotation {
   }
 
   serialize () {
+    /* PVSCL:IFCOND(Hypothesis) */
+    if (!_.isUndefined(this.documentMetadata)) {
+      this.uriAux = this.documentMetadata[0].source.url || this.documentMetadata[0].source.urn
+    }
+    /* PVSCL:ENDCOND */
     const data = {
       '@context': 'http://www.w3.org/ns/anno.jsonld',
       group: this.group || window.abwa.groupSelector.currentGroup.id,
@@ -73,13 +84,16 @@ class Annotation {
         read: ['group:' + window.abwa.groupSelector.currentGroup.id]
       },
       references: this.references || [],
+      // PVSCL:IFCOND(Linking,LINE)
+      annotationlinks: this.annotationlinks || [],
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(SuggestedLiterature,LINE)
       suggestedLiterature: [],
       // PVSCL:ENDCOND
       tags: this.tags,
       target: this.target,
       text: '',
-      uri: /* PVSCL:IFCOND(DOI) */ this.target[0].source.doi || /* PVSCL:ENDCOND */ this.target[0].source.url || this.target[0].source.urn
+      uri: /* PVSCL:IFCOND(DOI) */ this.target[0].source.doi || /* PVSCL:ENDCOND */ /* PVSCL:IFCOND(Hypothesis) */ this.uriAux || /* PVSCL:ENDCOND */this.target[0].source.url || this.target[0].source.urn
     }
     // PVSCL:IFCOND(Hypothesis, LINE)
     // The following lines are added to maintain compatibility with hypothes.is's data model that doesn't follow the W3C in all their attributes
@@ -93,9 +107,15 @@ class Annotation {
     // Adaptation of target source to hypothes.is's compatible document attribute
     if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
       // Add uri attribute
-      data.uri = window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
+      // data.uri = window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
       // Add document, uris, title, etc.
-      const uris = window.abwa.targetManager.getDocumentURIs()
+      let uris = {}
+      if (this.target) {
+        if (this.target[0].source.url) { uris.url = this.target[0].source.url }
+        if (this.target[0].source.urn) { uris.urn = this.target[0].source.urn }
+      } else {
+        uris = window.abwa.targetManager.getDocumentURIs()
+      }
       data.document = {}
       if (uris.urn) {
         data.document.documentFingerprint = uris.urn
@@ -106,8 +126,10 @@ class Annotation {
         data.document.highwire = { doi: [uris.doi] }
       }
       // If document title is retrieved
-      if (_.isString(window.abwa.targetManager.documentTitle)) {
+      if (_.isString(window.abwa.targetManager.documentTitle) && _.isUndefined(this.target)) {
         data.document.title = window.abwa.targetManager.documentTitle
+      } else {
+        data.document.title = this.target[0].source.title
       }
       // Copy to metadata field because hypothes.is doesn't return from its API all the data that it is placed in document
       data.documentMetadata = this.target
@@ -123,6 +145,9 @@ class Annotation {
       creator: annotationObject.creator,
       permissions: annotationObject.permissions,
       references: annotationObject.references,
+      // PVSCL:IFCOND(Linking,LINE)
+      annotationlinks: annotationObject.annotationlinks,
+      // PVSCL:ENDCOND
       tags: annotationObject.tags,
       target: annotationObject.target,
       created: annotationObject.created,

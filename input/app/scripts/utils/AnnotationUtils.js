@@ -34,6 +34,14 @@ class AnnotationUtils {
     }
   }
 
+  static isLinkOf (annotation, linkingAnnotation) {
+    if (_.has(linkingAnnotation, 'links')) {
+      return !!_.find(linkingAnnotation.links, (link) => { return link === annotation.id })
+    } else {
+      return false
+    }
+  }
+
   static areFromSameDocument (a, b) {
     // Check by target.source
     if (_.has(a, 'target[0].source') && _.has(b, 'target[0].source')) {

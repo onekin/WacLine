@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "description": "This is a product to conduct web annotation",
   "scripts": {
-    "start": "npm run dev:chrome",
+    "start": "npm run dev:chrome ",
     "build": "npm run build:chrome",
     "build:chrome": "gulp pack --production --vendor=chrome",
     "build:firefox": "gulp pack --production --vendor=firefox",
@@ -15,7 +15,7 @@
     "dev:firefox": "gulp --watch --vendor=firefox",
     "dev:opera": "gulp --watch --vendor=opera",
     "dev:edge": "gulp --watch --vendor=edge",
-    "lint": "standard"
+    "lint": "standart"
   },
   "standard": {
     "globals": [
@@ -53,7 +53,10 @@
     "sweetalert2": "^7.33.1",
     "unique-colors": "^1.0.1",
     "wildcard": "^2.0.0",
-    "xpath-range": "^1.1.1"
+    "xpath-range": "^1.1.1",
+    "pizzip": "^3.0.6",
+    "docxtemplater": "^3.17.6",
+    "graceful-fs": "^4.2.4"
   },
   "devDependencies": {
     "@babel/register": "^7.9.0",

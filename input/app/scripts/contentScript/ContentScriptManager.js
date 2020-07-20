@@ -26,6 +26,7 @@ import MoodleReport from '../annotationManagement/read/MoodleReport'
 // PVSCL:IFCOND(MoodleComment, LINE)
 import MoodleComment from '../annotationManagement/read/MoodleComment'
 // PVSCL:ENDCOND
+import SessionManager from '../sessionManagement/SessionManager'
 
 class ContentScriptManager {
   constructor () {
@@ -79,6 +80,11 @@ class ContentScriptManager {
       .then(() => {
         return this.reloadToolset()
       })
+      // PVSCL:IFCOND(Session, LINE)
+      .then(() => {
+        return this.loadSessionManager()
+      })
+      // PVSCL:ENDCOND
       .then(() => {
         return this.reloadAnnotationManagement()
       })
@@ -310,6 +316,9 @@ class ContentScriptManager {
       this.destroyRolesManager()
       this.destroyPreviousAssignments()
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Session, LINE)
+      this.destroySessionManager()
+      // PVSCL:ENDCOND
       // TODO Destroy groupSelector, roleManager,
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
@@ -327,6 +336,21 @@ class ContentScriptManager {
       // PVSCL:ENDCOND
     })
   }
+  // PVSCL:IFCOND(Session, LINE)
+
+  loadSessionManager () {
+    return new Promise((resolve, reject) => {
+      window.abwa.sessionManagement = new SessionManager()
+      window.abwa.sessionManagement.init(() => {
+        resolve()
+      })
+    })
+  }
+
+  destroySessionManager () {
+    if (window.abwa.sessionManagement) { window.abwa.sessionManagement.destroy() }
+  }
+  // PVSCL:ENDCOND
 
   loadTargetManager (callback) {
     window.abwa.targetManager = new TargetManager()

@@ -14,6 +14,21 @@ class FileUtils {
     }
   }
 
+  static readBinaryFile (file, callback) {
+    try {
+      const reader = new window.FileReader()
+      reader.onload = (e) => {
+        if (e && e.target && e.target.result) {
+          callback(null, e.target.result)
+        }
+      }
+      reader.readAsBinaryString(file)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+
   static readJSONFile (file, callback) {
     FileUtils.readTextFile(file, (err, text) => {
       if (err) {

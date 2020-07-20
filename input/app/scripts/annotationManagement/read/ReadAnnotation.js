@@ -2,6 +2,7 @@ import DOMTextUtils from '../../utils/DOMTextUtils'
 // TODO const PDFTextUtils = require('../../utils/PDFTextUtils')
 import LanguageUtils from '../../utils/LanguageUtils'
 import Events from '../../Events'
+import Config from '../../Config'
 import _ from 'lodash'
 // PVSCL:IFCOND(UserFilter, LINE)
 import UserFilter from './UserFilter'
@@ -14,6 +15,9 @@ import $ from 'jquery'
 // PVSCL:IFCOND(Commenting, LINE)
 import CommentingForm from '../purposes/CommentingForm'
 import Alerts from '../../utils/Alerts'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Linking,LINE)
+import LinkingForm from '../purposes/LinkingForm'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Remote, LINE)
 import HypothesisClientManager from '../../annotationServer/hypothesis/HypothesisClientManager'
@@ -38,6 +42,9 @@ class ReadAnnotation {
     this.initAllAnnotationsDeletedEventListener()
     // PVSCL:ENDCOND
     // Event listener updated annotation
+    // PVSCL:IFCOND(Session, LINE)
+    this.initTransferCurrentSessionAnnotationsEventListener()
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Update, LINE)
     this.initAnnotationUpdatedEventListener()
     // PVSCL:ENDCOND
@@ -60,6 +67,7 @@ class ReadAnnotation {
       this.initReloadAnnotationsEvent()
     }
     // PVSCL:ENDCOND
+    this.initReloadAnnotationsEvent()
     // PVSCL:IFCOND(ImportAnnotations, LINE)
     this.initAnnotationsImportedEventListener()
     // PVSCL:ENDCOND
@@ -145,6 +153,8 @@ class ReadAnnotation {
     }
   }
 
+
+
   // PVSCL:IFCOND(Create, LINE)
   initAnnotationCreatedEventListener (callback) {
     this.events.annotationCreatedEvent = { element: document, event: Events.annotationCreated, handler: this.createdAnnotationHandler() }
@@ -159,6 +169,9 @@ class ReadAnnotation {
       const annotation = event.detail.annotation
       // Add to all annotations list
       this.allAnnotations.push(annotation)
+      // PVSCL:IFCOND(Linking,LINE)
+      this.allServerAnnotations.push(annotation)
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(Replying, LINE)
       // If annotation is replying another annotation, add to reply annotation list
       if (annotation.references.length > 0) {
@@ -196,6 +209,11 @@ class ReadAnnotation {
       _.remove(this.allAnnotations, (currentAnnotation) => {
         return currentAnnotation.id === annotation.id
       })
+      // PVSCL:IFCOND(Linking,LINE)
+      _.remove(this.allServerAnnotations, (currentAnnotation) => {
+        return currentAnnotation.id === annotation.id
+      })
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(Replying, LINE)
       // Remove annotations that reply to this one (if user is the same)
       _.remove(this.allAnnotations, (currentAnnotation) => {
@@ -204,8 +222,24 @@ class ReadAnnotation {
         })
       })
       // PVSCL:ENDCOND
+
+
+      // PVSCL:IFCOND(Linking,LINE)
+      this.allServerAnnotations.forEach((a) => {
+        a.annotationlinks = a.annotationlinks.filter((link) => link !== annotation.id)
+        LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, { annotation: a })
+      })
+
+      this.allAnnotations.forEach((a) => _.remove(a.annotationlinks, (link) => { return link === annotation.id }))
+      // PVSCL:ENDCOND
+
       // Dispatch annotations updated event
       LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, { annotations: this.allAnnotations })
+
+
+
+
+
       // PVSCL:IFCOND(UserFilter, LINE)
       // Retrieve current annotations
       this.currentAnnotations = this.retrieveCurrentAnnotations()
@@ -213,6 +247,32 @@ class ReadAnnotation {
       // PVSCL:ENDCOND
       this.unHighlightAnnotation(annotation)
     }
+  }
+  // PVSCL:ENDCOND
+
+  // PVSCL:IFCOND(Session, LINE)
+
+  initTransferCurrentSessionAnnotationsEventListener () {
+    this.events.transferCurrentSessionAnnotationsEvent = { element: document, event: Events.transferCurrentSessionAnnotations, handler: this.transferCurrentSessionAnnotationsHandler() }
+    this.events.transferCurrentSessionAnnotationsEvent.element.addEventListener(this.events.transferCurrentSessionAnnotationsEvent.event, this.events.transferCurrentSessionAnnotationsEvent.handler, false)
+  }
+
+  transferCurrentSessionAnnotationsHandler () {
+    return (event) => {
+      let newSessionTag = event.detail.newTag
+      let fromSession = event.detail.fromSession
+      this.retrieveAllAnnotationsFromSession(fromSession, (err, annotations) => {
+        if (err) {
+          console.log(err)
+        } else {
+          annotations.forEach((ann) => {
+            ann.tags.push(newSessionTag)
+            LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, { annotation: ann })
+          })
+        }
+      })
+    }
+
   }
   // PVSCL:ENDCOND
 
@@ -231,6 +291,11 @@ class ReadAnnotation {
       } else {
         // Deserialize retrieved annotations
         this.allAnnotations = annotationObjects.map(annotationObject => Annotation.deserialize(annotationObject))
+        // PVSCL:IFCOND(Session, LINE)
+        this.allAnnotations = _.filter(this.allAnnotations, (a) => {
+          return a.tags.includes(Config.namespace + ':session:' + window.abwa.sessionManagement.sessionReader.currentSession.id)
+        })
+        // PVSCL:ENDCOND
         // PVSCL:IFCOND(Replying, LINE)
         this.replyAnnotations = _.filter(this.allAnnotations, (annotation) => {
           return annotation.references && annotation.references.length > 0
@@ -238,6 +303,9 @@ class ReadAnnotation {
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(UserFilter, LINE)
         this.currentAnnotations = this.retrieveCurrentAnnotations()
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(Linking,LINE)
+        this.loadAllAnnotations()
         // PVSCL:ENDCOND
         // Redraw all annotations
         this.redrawAnnotations()
@@ -248,6 +316,78 @@ class ReadAnnotation {
       }
     })
   }
+
+  // PVSCL:IFCOND(Session, LINE)
+  retrieveAllAnnotationsFromSession (session, callback) {
+    let promise = new Promise((resolve, reject) => {
+      if (window.abwa.groupSelector.currentGroup.id) {
+        const call = {}
+        call.group = window.abwa.groupSelector.currentGroup.id
+        window.abwa.annotationServerManager.client.searchAnnotations(call, (err, annotations) => {
+          if (err) {
+            reject(err)
+          }
+          annotations = _.filter(annotations, (a) => {
+            return (!_.isUndefined(a.body) &&
+            a.tags.includes(Config.namespace + ':session:' + session.id))
+          })
+          resolve(annotations.map(annotation => Annotation.deserialize(annotation)))
+        })
+      } else {
+        resolve([])
+      }
+    })
+    promise.catch((err) => {
+      callback(err)
+    }).then((annotations) => {
+      callback(null, annotations)
+    })
+  }
+  // PVSCL:ENDCOND
+
+
+
+  // PVSCL:IFCOND(Linking,LINE)
+  retrieveAllAnnotations (callback) {
+    let promise = new Promise((resolve, reject) => {
+      if (window.abwa.groupSelector.currentGroup.id) {
+        const call = {}
+        // Set the annotation group where annotations should be searched from
+        call.group = window.abwa.groupSelector.currentGroup.id
+        window.abwa.annotationServerManager.client.searchAnnotations(call, (err, annotations) => {
+          if (err) {
+            reject(err)
+          }
+          annotations = _.filter(annotations, (a) => {
+            return (!_.isUndefined(a.body) &&
+            a.tags.includes(Config.namespace + ':session:' + window.abwa.sessionManagement.sessionReader.currentSession.id))
+          })
+          resolve(annotations.map(annotation => Annotation.deserialize(annotation)))
+        })
+      } else {
+        resolve([])
+      }
+    })
+    promise.catch((err) => {
+      callback(err)
+    }).then((annotations) => {
+      callback(null, annotations)
+    })
+  }
+
+
+  loadAllAnnotations () {
+    this.retrieveAllAnnotations((err, annotations) => {
+      if (err) {
+        // TODO Unable to retrieve all annotations
+      } else {
+        this.allServerAnnotations = annotations
+      }
+
+    })
+  }
+  // PVSCL:ENDCOND
+
 
   loadAnnotations (callback) {
     this.updateAllAnnotations((err) => {
@@ -288,6 +428,11 @@ class ReadAnnotation {
     }
     // PVSCL:ELSECOND
     currentAnnotations = this.allAnnotations
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Session, LINE)
+    currentAnnotations = _.filter(currentAnnotations, (a) => {
+      return a.tags.includes(Config.namespace + ':session:' + window.abwa.sessionManagement.sessionReader.currentSession.id)
+    })
     // PVSCL:ENDCOND
     return currentAnnotations
   }
@@ -417,9 +562,15 @@ class ReadAnnotation {
           items.comment = { name: 'Comment' }
           // PVSCL:ENDCOND
           items.delete = { name: 'Delete' }
+          // PVSCL:IFCOND(Linking,LINE)
+          items.link = { name: 'Link' }
+          // PVSCL:ENDCOND
         } else {
           // PVSCL:IFCOND(Replying, LINE)
           items.reply = { name: 'Reply' }
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(Linking,LINE)
+          items.link = { name: 'Link' }
           // PVSCL:ENDCOND
         }
         return {
@@ -478,7 +629,26 @@ class ReadAnnotation {
                   })
                 }
               })
-            } /* PVSCL:ENDCOND */
+            // eslint-disable-next-line brace-style
+            }
+            /* PVSCL:ENDCOND */
+            // PVSCL:IFCOND(Linking,LINE)
+            else if (key === 'link') {
+              LinkingForm.showLinkingForm(annotation, (err, aAnnotation, bAnnotation) => {
+                if (err) {
+                  Alerts.errorAlert({ text: 'Unexpected error when linking. Please reload webpage and try again. Error: ' + err.message })
+                } else {
+                  LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+                    annotation: aAnnotation
+                  })
+                  LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+                    annotation: bAnnotation
+                  })
+
+                }
+              })
+            }
+            /* PVSCL:ENDCOND */
           },
           items: items
         }
@@ -513,6 +683,7 @@ class ReadAnnotation {
     }
   }
   // PVSCL:ENDCOND
+
   // PVSCL:IFCOND(UserFilter, LINE)
 
   initUserFilter () {
@@ -547,14 +718,15 @@ class ReadAnnotation {
    * @returns {Array}
    */
   retrieveAnnotationsForUsers (users) {
+    ;
     return _.filter(this.allAnnotations, (annotation) => {
       return _.find(users, (user) => {
         return annotation.creator === user
       })
     })
   }
-
   // PVSCL:ENDCOND
+
   // PVSCL:IFCOND(Update, LINE)
   initAnnotationUpdatedEventListener (callback) {
     this.events.annotationUpdatedEvent = { element: document, event: Events.annotationUpdated, handler: this.updatedAnnotationHandler() }
