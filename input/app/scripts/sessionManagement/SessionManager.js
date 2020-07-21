@@ -28,10 +28,9 @@ class SessionManager {
 
   destroy (callback) {
     // Destroy annotation operators
-    this.annotationReader.destroy()
-    this.annotationCreator.destroy()
-    this.annotationUpdater.destroy()
-    this.annotationDeleter.destroy()
+    this.sessionCreator.destroy()
+    this.sessionReader.destroy()
+    this.sessionUpdater.destroy()
     // Remove event listeners
     const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {

@@ -3,7 +3,7 @@ import _ from 'lodash'
 import LanguageUtils from '../../utils/LanguageUtils'
 import Alerts from '../../utils/Alerts'
 import Session from '../Session.js'
-import DocxExporter from '../../DocxExporter/DocxExporter'
+import DocxExporter from '../../docxExporter/DocxExporter'
 
 
 class CreateSession {

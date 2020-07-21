@@ -1,7 +1,7 @@
 import Alerts from '../../utils/Alerts'
 import axios from 'axios'
 
-import { Review } from '../../exporter/reviewModel'
+import { Review } from '../../txtExporter/reviewModel'
 
 class Canvas {
   static generateCanvas () {

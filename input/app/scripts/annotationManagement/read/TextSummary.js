@@ -1,7 +1,7 @@
 import Alerts from '../../utils/Alerts'
 import PDF from '../../target/formats/PDF'
 import FileSaver from 'file-saver'
-import { Review } from '../../exporter/reviewModel'
+import { Review } from '../../txtExporter/reviewModel'
 
 class TextSummary {
   static generateReview () {

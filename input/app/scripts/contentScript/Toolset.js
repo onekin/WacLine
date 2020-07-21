@@ -31,7 +31,7 @@ import AnnotationImporter from '../importExport/AnnotationImporter'
 import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(DocExporter, LINE)
-import DocxExporter from '../DocxExporter/DocxExporter'
+import DocxExporter from '../docxExporter/DocxExporter'
 // PVSCL:ENDCOND
 import $ from 'jquery'
 

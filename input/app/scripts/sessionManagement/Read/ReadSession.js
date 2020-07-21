@@ -34,7 +34,8 @@ class ReadSession {
   }
 
   destroy () {
-    this.sidebarContainer.remove()
+    // Remove session container
+    $('#sessionContainer').remove()
     // Remove event listeners
     const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
@@ -159,7 +160,6 @@ class ReadSession {
       }
     })
   }
-
 
   createContextMenuForSession () {
     $.contextMenu({

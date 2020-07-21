@@ -42,13 +42,13 @@
           <cm:constant cm:id="i31f3nfwkTi9oIQis" cm:type="ps:datetime">2020-05-28T16:47:04.263Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iSOOZIAb1Q9CrL_w6" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="irPx1IFOWsGqjiC4C" cm:type="ps:string">aitor</cm:constant>
+          <cm:constant cm:id="irPx1IFOWsGqjiC4C" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="i4Ifyl4gmc8dMqSIQ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="isAtYad_wFg9ONJjW" cm:type="ps:datetime">2020-06-04T17:04:34.509Z</cm:constant>
+          <cm:constant cm:id="isAtYad_wFg9ONJjW" cm:type="ps:datetime">2020-07-21T10:06:55.023Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ilPJH82-EOuoLnBWG" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/ikd06TuWH0GM-TRbB">
-          <cm:constant cm:id="i_JJKnUXO59S9eG2J" cm:type="ps:string">lag</cm:constant>
+          <cm:constant cm:id="i_JJKnUXO59S9eG2J" cm:type="ps:string">docal</cm:constant>
         </cm:property>
         <cm:property cm:id="iq_jb__DEqY5rIjKG" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/iYoalgh7V2S1hh0Ba">
           <cm:constant cm:id="iKC481uoDGil38wqc" cm:type="ps:string">Analyze your jurisprudence documents through highlights and go!</cm:constant>
@@ -79,7 +79,7 @@
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="iFLQlK3QiBOAnj_21" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="iFLQlK3QiBOAnj_21" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="iSMBM9hc8Fta60G3F" cm:class="ps:references">
         <cm:relation cm:id="iCNkNve2eSLZIQWD6" cm:type="ps:references">
           <cm:target cm:id="inhNW-mSqqpBBn_W1">iVM-rr85zz2NiNKQB/iLF7PyLyAzcnrpleZ</cm:target>
@@ -96,14 +96,14 @@
           <cm:constant cm:id="iPiLd4COZ2Q7YZiVv" cm:type="ps:datetime">2020-05-28T16:54:18.722Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ieN21UCWfL1ryF0D5" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="isG93O27Qr_wkJwf4" cm:type="ps:string">aitor</cm:constant>
+          <cm:constant cm:id="isG93O27Qr_wkJwf4" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="isEmIYY-j3GJUo2_u" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i_D0os05dIzqKlVbT" cm:type="ps:datetime">2020-05-28T16:54:18.722Z</cm:constant>
+          <cm:constant cm:id="i_D0os05dIzqKlVbT" cm:type="ps:datetime">2020-07-20T15:55:53.270Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="iAMZ2OtVCdbTOf5TP" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="iAMZ2OtVCdbTOf5TP" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="ilgQV0EU8PlWbzOkS" cm:class="ps:references">
         <cm:relation cm:id="ixnler4qVbGOgiRHm" cm:type="ps:references">
           <cm:target cm:id="ir9jhKwvzt6936nhd">iVM-rr85zz2NiNKQB/itBi2jCjmhhH1tW8b</cm:target>
@@ -120,14 +120,14 @@
           <cm:constant cm:id="iGdb6hwaeGL6P2cGT" cm:type="ps:datetime">2020-05-28T16:54:20.330Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iQOK4KIunGXVo3nmi" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iYNa6i6qj559KImER" cm:type="ps:string">aitor</cm:constant>
+          <cm:constant cm:id="iYNa6i6qj559KImER" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="iH5iT--9Aayxw4nYz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="idIR4EnOWwcYDch5O" cm:type="ps:datetime">2020-05-28T16:54:20.330Z</cm:constant>
+          <cm:constant cm:id="idIR4EnOWwcYDch5O" cm:type="ps:datetime">2020-07-20T15:55:50.268Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
-    <cm:element cm:id="ivDSRrn3yZYmlYVZs" cm:type="ps:selected" cm:class="ps:selection">
+    <cm:element cm:id="ivDSRrn3yZYmlYVZs" cm:type="ps:unselected" cm:class="ps:selection">
       <cm:relations cm:id="iSgTsc5OUfSEKC8kI" cm:class="ps:references">
         <cm:relation cm:id="i-nzqI8ZXQpt5qsaN" cm:type="ps:references">
           <cm:target cm:id="izfJGSrRtQXNdP_so">iVM-rr85zz2NiNKQB/iONdO7iXPXWUoPivG</cm:target>
@@ -144,10 +144,10 @@
           <cm:constant cm:id="iXPb0Ihb_PIoX3fju" cm:type="ps:datetime">2020-05-28T16:54:25.276Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iRde9Ydr5a-ArFsof" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="igDydAQN7L8XLWlUl" cm:type="ps:string">aitor</cm:constant>
+          <cm:constant cm:id="igDydAQN7L8XLWlUl" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="i-qQkaUCPFvfdce2Z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iCfwzy74UBmzSG0d5" cm:type="ps:datetime">2020-05-28T16:54:25.276Z</cm:constant>
+          <cm:constant cm:id="iCfwzy74UBmzSG0d5" cm:type="ps:datetime">2020-07-20T15:55:46.260Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>

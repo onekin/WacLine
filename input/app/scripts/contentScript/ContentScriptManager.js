@@ -82,7 +82,7 @@ class ContentScriptManager {
       })
       // PVSCL:IFCOND(Session, LINE)
       .then(() => {
-        return this.loadSessionManager()
+        return this.reloadSessionManager()
       })
       // PVSCL:ENDCOND
       .then(() => {
@@ -338,7 +338,10 @@ class ContentScriptManager {
   }
   // PVSCL:IFCOND(Session, LINE)
 
-  loadSessionManager () {
+  reloadSessionManager () {
+    if (window.abwa.sessionManagement) {
+      window.abwa.sessionManagement.destroy()
+    }
     return new Promise((resolve, reject) => {
       window.abwa.sessionManagement = new SessionManager()
       window.abwa.sessionManagement.init(() => {
@@ -348,7 +351,9 @@ class ContentScriptManager {
   }
 
   destroySessionManager () {
-    if (window.abwa.sessionManagement) { window.abwa.sessionManagement.destroy() }
+    if (window.abwa.sessionManagement) {
+      window.abwa.sessionManagement.destroy()
+    }
   }
   // PVSCL:ENDCOND
 
