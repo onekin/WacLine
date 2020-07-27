@@ -98,7 +98,7 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 
   askUserToLogInHypothesis (callback) {
-    const swal = ('sweetalert2')
+    const swal = require('sweetalert2').default
     // Ask question
     swal({
       title: 'Hypothes.is login required', // TODO i18n
@@ -114,7 +114,7 @@ class HypothesisClientManager extends AnnotationServerManager {
               callback(new Error(result.error))
             }
           } else {
-            this.reloadHypothesisClient(() => {
+            this.reloadClient(() => {
               if (_.isFunction(callback)) {
                 callback(null, this.hypothesisToken)
               }
