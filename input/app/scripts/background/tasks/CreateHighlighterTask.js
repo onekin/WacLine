@@ -13,7 +13,7 @@ import LanguageUtils from '../../utils/LanguageUtils'
 import BrowserStorage from '../../annotationServer/browserStorage/BrowserStorage'
 import BrowserStorageManager from '../../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
+// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1,LINE)
 import ChromeStorage from '../../utils/ChromeStorage'
 // PVSCL:ENDCOND
 
@@ -157,7 +157,7 @@ class CreateHighlighterTask extends Task {
     } else {
       group = newGroup
     }
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
     ChromeStorage.getData('annotationServer.selected', ChromeStorage.sync, (err, annotationServer) => {
       if (err) {
         console.error('ErrorSettingAnnotationServer')
@@ -320,7 +320,7 @@ class CreateHighlighterTask extends Task {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     this.annotationServerClientManager = new HypothesisClientManager()
     // PVSCL:ENDCOND

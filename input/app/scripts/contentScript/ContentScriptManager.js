@@ -348,7 +348,7 @@ class ContentScriptManager {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager').default
     window.abwa.annotationServerManager = new HypothesisClientManager()

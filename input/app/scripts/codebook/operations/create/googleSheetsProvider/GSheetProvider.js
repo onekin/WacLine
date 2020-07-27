@@ -70,7 +70,7 @@ class GoogleSheetContentScriptManager {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     window.googleSheetProvider.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND

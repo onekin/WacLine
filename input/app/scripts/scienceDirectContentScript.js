@@ -30,7 +30,7 @@ class ScienceDirectContentScript {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     window.scienceDirect.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND

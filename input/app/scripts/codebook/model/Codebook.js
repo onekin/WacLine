@@ -193,7 +193,7 @@ class Codebook {
     } else {
       group = newGroup
     }
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1,LINE)
     chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       if (annotationServer === 'hypothesis') {
         // Hypothesis

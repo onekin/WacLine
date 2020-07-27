@@ -150,7 +150,7 @@ class Options {
     })
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
+  // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
 
   setAnnotationServer (annotationServer) {
     chrome.runtime.sendMessage({

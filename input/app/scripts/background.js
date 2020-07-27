@@ -11,7 +11,7 @@ import GoogleSheetsManager from './background/GoogleSheetsManager'
 // PVSCL:IFCOND(DOI or NavigationScript, LINE)
 import TargetManager from './background/TargetManager'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
+// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
 import AnnotationServerManager from './background/AnnotationServerManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleProvider, LINE)
@@ -70,7 +70,7 @@ class Background {
     this.targetManager.init()
 
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
     // Initialize annotation server manager
     this.annotationServerManager = new AnnotationServerManager()
     this.annotationServerManager.init()
