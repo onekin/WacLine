@@ -67,9 +67,9 @@ class MoodleBackgroundManager {
         } else if (request.cmd === 'isApiSimulationActivated') {
           ChromeStorage.getData('moodleApiSimulation', ChromeStorage.sync, (err, isActivated) => {
             if (err) {
-              sendResponse({ activated: false })
+              sendResponse({ activated: true })
             } else {
-              sendResponse(isActivated || { activated: false })
+              sendResponse(isActivated || { activated: true })
             }
           })
         } else if (request.cmd === 'setApiSimulationActivation') {
