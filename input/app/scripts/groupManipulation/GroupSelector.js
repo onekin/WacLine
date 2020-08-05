@@ -7,7 +7,7 @@ import LanguageUtils from '../utils/LanguageUtils'
 import Events from '../Events'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResourceBased,LINE)
-import CryptoUtils from '../utils/CryptoUtils'
+import MoodleUtils from '../moodle/MoodleUtils'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
 import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
@@ -233,8 +233,7 @@ class GroupSelector {
     // Defines the current group of the highlighter with an a Moodle based group
     const fileMetadata = window.abwa.targetManager.fileMetadata
     // Get group name from file metadata
-    const groupName = (new URL(fileMetadata.url)).host + fileMetadata.courseId + fileMetadata.studentId
-    const hashedGroupName = 'MG' + CryptoUtils.hash(groupName).substring(0, 23)
+    const hashedGroupName = MoodleUtils.getHashedGroup({ studentId: fileMetadata.studentId, courseId: fileMetadata.courseId, moodleEndpoint: fileMetadata.url.split('pluginfile.php')[0] })
     // Load all the groups belonged to current user
     this.retrieveGroups((err, groups) => {
       if (err) {

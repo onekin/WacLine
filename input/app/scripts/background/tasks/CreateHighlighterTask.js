@@ -1,6 +1,6 @@
 import Task from './Task'
 import _ from 'lodash'
-import CryptoUtils from '../../utils/CryptoUtils'
+import MoodleUtils from '../../moodle/MoodleUtils'
 import AnnotationUtils from '../../utils/AnnotationUtils'
 import Codebook from '../../codebook/model/Codebook'
 import Config from '../../Config'
@@ -29,11 +29,9 @@ class CreateHighlighterTask extends Task {
     for (let i = 0; i < this.config.activities.length; i++) {
       const rubric = this.config.activities[i].data.rubric
       const student = this.config.activities[i].data.student
-      const siteUrl = new URL(rubric.moodleEndpoint)
       const courseId = this.config.activities[i].data.courseId
-      const groupName = siteUrl.host + courseId + student.id
-      // We create a hash using the course ID and the student ID to anonymize the Hypothes.is group
-      const hashedGroupName = 'MG' + CryptoUtils.hash(groupName).substring(0, 23)
+      const hashedGroupName = MoodleUtils.getHashedGroup({ studentId: student.id, courseId, moodleEndpoint: rubric.moodleEndpoint })
+      console.debug('Creating hashed group: ' + hashedGroupName)
       promisesData.push({ rubric, groupName: hashedGroupName, id: i })
     }
 
@@ -105,8 +103,8 @@ class CreateHighlighterTask extends Task {
                         this.setAnnotationServer(group, (annotationServer) => {
                           if (err) {
                             console.error('ErrorConfiguringHighlighter')
-                            this.currentPromisesStatus[id] = chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')
-                            callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
+                            this.currentPromisesStatus[id] = chrome.i18n.getMessage('ErrorConfiguringHighlighter') + chrome.i18n.getMessage('ErrorContactDeveloper', [err.message, err.stack])
+                            callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + chrome.i18n.getMessage('ErrorContactDeveloper', [err.message, err.stack])))
                           } else {
                             this.currentPromisesStatus[id] = 'Creating rubric highlighter in the annotation server'
                             this.createHighlighterAnnotations({

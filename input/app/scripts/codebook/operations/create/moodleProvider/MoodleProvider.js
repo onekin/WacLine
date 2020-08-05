@@ -112,7 +112,7 @@ class MoodleProvider {
                                   Alerts.updateableAlert({ text: 'The assignment is correctly configured', title: 'Configuration finished' })
                                 } else if (result.status && result.status === 'CreateHighlighterTask pending') {
                                   notFirstTime = true
-                                  swal.getContent().querySelector('span').textContent = result.statusMessage
+                                  swal.getContent().querySelector('span').innerHTML = result.statusMessage
                                 }
                               })
                             },
