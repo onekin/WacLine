@@ -7,6 +7,21 @@ class AnnotationUtils {
     })
   }
 
+  static filterByTag (annotations, tag) {
+    return _.filter(annotations, (annotation) => {
+      let retrievedTag = AnnotationUtils.getTagFromAnnotation(annotation, tag)
+      return _.isString(retrievedTag)
+    })
+  }
+
+  static filterByPurpose (annotations, purpose) {
+    return _.filter(annotations, (annotation) => {
+      if (_.isArray(annotation.body)) {
+        return _.isObject(annotation.body.find(body => body.purpose === purpose))
+      }
+    })
+  }
+
   static getTagSubstringFromAnnotation (annotation, prefix) {
     const tag = AnnotationUtils.getTagFromAnnotation(annotation, prefix)
     if (tag) {

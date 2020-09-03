@@ -1,4 +1,4 @@
-class DateUtils {
+class DateTimeUtils {
   static getYearMonthDay (date) {
     if (!date) {
       date = new Date()
@@ -15,6 +15,11 @@ class DateUtils {
     }
     return dd + '/' + mm + '/' + yyyy
   }
+
+  static getHumanReadableTimeFromUnixTimeInMiliseconds (unixTime) {
+    let date = new Date(unixTime)
+    return Math.floor(unixTime / 1000 / 60 / 24) + 'h' + date.getMinutes() + 'm' + date.getSeconds() + 's'
+  }
 }
 
-export default DateUtils
+export default DateTimeUtils

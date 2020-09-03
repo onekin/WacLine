@@ -73,6 +73,11 @@
       "matches": ["*://*/*course/view.php*"],
       "js": ["scripts/moodleResumption.js"],
       "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(MoodleResource),
+    {
+      "matches": ["*://*/*mod/assign/view.php*"],
+      "js": ["scripts/moodleEstimation.js"],
+      "run_at": "document_end"
     }PVSCL:ENDCOND
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",

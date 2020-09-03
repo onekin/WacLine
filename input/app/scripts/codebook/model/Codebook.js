@@ -99,7 +99,7 @@ class Codebook {
   }
 
   static fromAnnotation (annotation, callback) {
-    this.setAnnotationServer(null, (annotationServer) => {
+    this.setAnnotationServer(annotation.group || null, (annotationServer) => {
       const annotationGuideOpts = { id: annotation.id, name: annotation.name, annotationServer: annotationServer }
       // PVSCL:IFCOND(GoogleSheetProvider or MoodleProvider, LINE)
       // Configuration for gsheet provider or moodle provider is saved in text attribute

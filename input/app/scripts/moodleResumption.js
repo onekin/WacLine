@@ -51,7 +51,8 @@ class MoodleResumptionContentScript {
                           // Create icon
                           let actionsContainer = activityInstance.parentElement.querySelector('.actions')
                           if (actionsContainer) {
-                            actionsContainer.insertAdjacentHTML('afterbegin', '<span class="resumptionFacility"><a target="_blank" href="' + studentGradePageUrl + '"><img class="icon iconsmall" src="' + chrome.extension.getURL('/images/resume.png') + '"/></a></span>')
+                            actionsContainer.insertAdjacentHTML('afterbegin', '<span class="resumptionFacility">' +
+                              '<a target="_blank" href="' + studentGradePageUrl + '"><img title="Resume ' + student.name + '\'s assessment" class="icon iconsmall" style="width:24px;height:24px;" src="' + chrome.extension.getURL('/images/resume.png') + '"/></a></span>')
                           }
                           console.debug('Loading moodle resumption content script')
                         }
