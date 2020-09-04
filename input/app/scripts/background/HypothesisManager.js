@@ -1,5 +1,8 @@
 import DOM from '../utils/DOM'
 import $ from 'jquery'
+import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
+import _ from 'lodash'
+import HypothesisBackgroundManager from '../annotationServer/hypothesis/HypothesisBackgroundManager'
 const checkHypothesisLoggedIntervalInSeconds = 20 // fetch token every X seconds
 const checkHypothesisLoggedInWhenPromptInSeconds = 0.5 // When user is prompted to login, the checking should be with higher period
 const maxTries = 10 // max tries before deleting the token
@@ -17,6 +20,11 @@ class HypothesisManager {
     this.retrieveHypothesisToken((err, token) => {
       this.setToken(err, token)
     })
+
+    // Init hypothesis client manager
+    this.initHypothesisClientManager()
+    // Init hypothesis background manager, who listens to commands from contentScript
+    this.initHypothesisBackgroundManager()
 
     // Create an observer to check if user is logged to hypothesis
     this.createRetryHypothesisTokenRetrieve()
@@ -141,6 +149,18 @@ class HypothesisManager {
         }
       }
     })
+  }
+
+  initHypothesisClientManager () {
+    this.annotationServerManager = new HypothesisClientManager()
+    this.annotationServerManager.init((err) => {
+      console.error('Unable to initialize hypothesis client manager. Error: ' + err.message)
+    })
+  }
+
+  initHypothesisBackgroundManager () {
+    this.hypothesisBackgroundManager = new HypothesisBackgroundManager()
+    this.hypothesisBackgroundManager.init()
   }
 }
 

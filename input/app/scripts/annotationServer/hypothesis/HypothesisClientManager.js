@@ -3,6 +3,7 @@ import _ from 'lodash'
 import HypothesisClient from 'hypothesis-api-client'
 
 import AnnotationServerManager from '../AnnotationServerManager'
+import HypothesisClientInterface from './HypothesisClientInterface'
 
 const reloadIntervalInSeconds = 10 // Reload the hypothesis client every 10 seconds
 
@@ -21,15 +22,28 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 
   init (callback) {
-    this.reloadClient(() => {
-      // Start reloading of client
-      this.reloadInterval = setInterval(() => {
-        this.reloadClient()
-      }, reloadIntervalInSeconds * 1000)
-      if (_.isFunction(callback)) {
-        callback()
-      }
-    })
+    if (window.background) {
+      this.reloadClient(() => {
+        // Start reloading of client
+        this.reloadInterval = setInterval(() => {
+          this.reloadClient()
+        }, reloadIntervalInSeconds * 1000)
+        if (_.isFunction(callback)) {
+          callback()
+        }
+      })
+    } else {
+      // Check if user is logged in hypothesis
+      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, (token) => {
+        if (this.hypothesisToken !== token) {
+          this.hypothesisToken = token
+        }
+        this.client = new HypothesisClientInterface()
+        if (_.isFunction(callback)) {
+          callback()
+        }
+      })
+    }
   }
 
   reloadClient (callback) {
