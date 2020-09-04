@@ -413,6 +413,8 @@ export class AnnotatedContentManager {
             })
           }
         } else {
+          // Dispatch updated content manager event
+          LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, { annotatedThemes: this.annotatedThemes })
           this.reloadTagsChosen()
         }
       }
