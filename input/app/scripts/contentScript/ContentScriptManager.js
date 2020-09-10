@@ -13,6 +13,7 @@ import Events from '../Events'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResource, LINE)
 import RolesManager from './RolesManager'
+import MoodleEstimationManager from '../moodle/MoodleEstimationManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
 import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
@@ -98,8 +99,9 @@ class ContentScriptManager {
       // PVSCL:IFCOND(MoodleResource, LINE)
       .then(() => {
         return this.reloadRolesManager()
-      })
-      .then(() => {
+      }).then(() => {
+        return this.reloadMoodleEstimationManager()
+      }).then(() => {
         return this.reloadPreviousAssignments()
       })
       // PVSCL:ENDCOND
@@ -209,6 +211,22 @@ class ContentScriptManager {
       })
     })
   }
+
+  reloadMoodleEstimationManager () {
+    return new Promise((resolve, reject) => {
+      // Destroy current content annotator
+      this.destroy()
+      // Create a new content annotator for the current group
+      window.abwa.moodleEstimationManager = new MoodleEstimationManager()
+      window.abwa.moodleEstimationManager.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
   // PVSCL:IFCOND(PreviousAssignments, LINE)
 
   reloadPreviousAssignments () {
@@ -283,6 +301,12 @@ class ContentScriptManager {
     }
   }
 
+  destroyMoodleEstimationManager () {
+    if (window.abwa.moodleEstimationManager) {
+      window.abwa.moodleEstimationManager.destroy()
+    }
+  }
+
   destroyPreviousAssignments () {
     // Destroy current augmentation operations
     if (window.abwa.previousAssignments) {
@@ -302,15 +326,13 @@ class ContentScriptManager {
     this.destroyTargetManager(() => {
       this.destroyCodebookManager()
       this.destroyAnnotationManagement()
-      // PVSCL:IFCOND(UserFilter, LINE)
-      this.destroyUserFilter()
-      // PVSCL:ENDCOND
       this.destroyToolset()
       // PVSCL:IFCOND(MoodleResource, LINE)
       this.destroyRolesManager()
       this.destroyPreviousAssignments()
+      this.destroyMoodleEstimationManager()
       // PVSCL:ENDCOND
-      // TODO Destroy groupSelector, roleManager,
+      // TODO Destroy groupSelector, sidebar,
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
           this.destroyAnnotationServer(() => {
