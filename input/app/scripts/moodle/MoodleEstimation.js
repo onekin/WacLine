@@ -97,7 +97,7 @@ class MoodleEstimation {
     })
   }
 
-  static estimateTimeInMilisecondsPendingToAssess ({annotationsPerGroup, assignmentName, cmid, numberOfStudentsAssignmentsSubmitted}, callback) {
+  static estimateTimeInMilisecondsPendingToAssess ({ annotationsPerGroup, assignmentName, cmid, numberOfStudentsAssignmentsSubmitted }, callback) {
     // Find if same group exist
     let allAnnotations = _.flattenDeep(_.values(annotationsPerGroup))
     let definitionAnnotations = allAnnotations.filter(anno => anno.motivation === 'defining')
@@ -133,7 +133,9 @@ class MoodleEstimation {
               numberOfAssessedCriteria += studentAndTime.numberOfCriterionAssessed
             })
             let timeInMilisecondsPendingToAssess = (timeOfAssessedCriteria / numberOfAssessedCriteria) * ((codebook.themes.length * numberOfStudentsAssignmentsSubmitted) - numberOfAssessedCriteria)
-            callback(null, timeInMilisecondsPendingToAssess)
+            callback(null, {
+              timeInMilisecondsPendingToAssess, studentsAndTimes, numberOfAssessedCriteria, timeOfAssessedCriteria
+            })
           }
         })
         // Check if similar assignments are already assessed

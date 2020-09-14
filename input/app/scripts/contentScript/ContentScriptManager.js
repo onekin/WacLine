@@ -215,7 +215,7 @@ class ContentScriptManager {
   reloadMoodleEstimationManager () {
     return new Promise((resolve, reject) => {
       // Destroy current content annotator
-      this.destroy()
+      this.destroyMoodleEstimationManager()
       // Create a new content annotator for the current group
       window.abwa.moodleEstimationManager = new MoodleEstimationManager()
       window.abwa.moodleEstimationManager.init((err) => {

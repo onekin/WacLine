@@ -21,7 +21,7 @@ class MoodleEstimationContentScript {
             let numberOfStudentsAssignmentsSubmitted = Number.parseInt(document.querySelector('#region-main > div:nth-child(3) > div.gradingsummary > div > table > tbody > tr:nth-child(3) > td').innerText)
             MoodleEstimation.estimateTimeInMilisecondsPendingToAssess({
               annotationsPerGroup, assignmentName: this.assignmentName, cmid: this.cmid, numberOfStudentsAssignmentsSubmitted
-            }, (err, timeInMiliseconds) => {
+            }, (err, { timeInMiliseconds }) => {
               if (err) {
                 console.error(err)
               } else {
