@@ -24,7 +24,7 @@ const Events = {
   deleteAllAnnotations: 'deleteAllAnnotations',
   deletedAllAnnotations: 'deletedAllAnnotations',
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(Filter, LINE)
+  // PVSCL:IFCOND(UserFilter, LINE)
   updatedCurrentAnnotations: 'updatedCurrentAnnotations',
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Codebook, LINE)

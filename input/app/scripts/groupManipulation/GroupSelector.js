@@ -6,7 +6,7 @@ import LanguageUtils from '../utils/LanguageUtils'
 // PVSCL:IFCOND(Manual, LINE)
 import Events from '../Events'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleResourceBased,LINE)
+// PVSCL:IFCOND(MoodleResource,LINE)
 import MoodleUtils from '../moodle/MoodleUtils'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
@@ -110,10 +110,10 @@ class GroupSelector {
           if (err) {
             callback(err)
           } else {
-            const group = _.find(groups, (group) => { return group.name === GroupName })
-            if (_.isObject(group)) {
+            const currentGroup = _.find(groups, (group) => { return group.name === GroupName })
+            if (_.isObject(currentGroup)) {
               // Current group will be that group
-              this.currentGroup = group
+              this.currentGroup = currentGroup
               if (_.isFunction(callback)) {
                 callback(null)
               }
@@ -229,7 +229,7 @@ class GroupSelector {
         })
       })
     }
-    // PVSCL:ELSEIFCOND(MoodleResourceBased)
+    // PVSCL:ELSEIFCOND(MoodleResource)
     // Defines the current group of the highlighter with an a Moodle based group
     const fileMetadata = window.abwa.targetManager.fileMetadata
     // Get group name from file metadata
