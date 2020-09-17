@@ -38,7 +38,7 @@ class Classifying extends Body {
     const code = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(this.value.id)
     // PVSCL:IFCOND(Hierarchy, LINE)
     if (LanguageUtils.isInstanceOf(code, Code)) {
-      tooltip += 'Code: ' + code.name + ' for theme: ' + code.theme.name
+      tooltip += 'Code ' + code.name + ' for theme ' + code.theme.name
     } else {
       if (code) {
         tooltip += 'Theme: ' + code.name

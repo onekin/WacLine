@@ -11,15 +11,16 @@ class MoodleEstimation {
         return assessmentAnnotation.group === definitionAnnotationForStudent.group
       })
       if (assessmentAnnotationsForStudent.length > 1) {
+        assessmentAnnotationsForStudent = _.sortBy(assessmentAnnotationsForStudent, 'created')
         // Calculate taking into account that teacher could not evaluate it constantly (e.g.: whole assignment in the same day)
         // Group annotations that have not more than 1 hour of difference between it and the next/previous ones (we supose that if teacher spent more than 1 hour creating an annotation, means that there was a stop during assessment activity)
         let groups = []
         let groupCount = 0
-        let time = new Date(assessmentAnnotationsForStudent[groupCount].created).getTime()
-        groups[groupCount] = [assessmentAnnotationsForStudent[groupCount]]
+        let time = new Date(assessmentAnnotationsForStudent[0].created).getTime()
+        groups[groupCount] = [assessmentAnnotationsForStudent[0]]
         for (let i = 1; i < assessmentAnnotationsForStudent.length; i++) {
           let currentAnnoTime = new Date(assessmentAnnotationsForStudent[i].created).getTime()
-          if (time > currentAnnoTime + 1000 * 60 * 60) {
+          if (time < currentAnnoTime - 1000 * 60 * 15) {
             groupCount += 1
             groups[groupCount] = [assessmentAnnotationsForStudent[i]]
           } else {
@@ -29,13 +30,9 @@ class MoodleEstimation {
         }
         // For each group, get oldest and newest annotation and sum difference
         let times = groups.map(group => {
-          let newestAnnotation = _.first(group)
-          let oldestAnnotation = _.last(group)
-          if (new Date(newestAnnotation.updated).getTime() > new Date(newestAnnotation.created).getTime() + 1000 * 60 * 60) {
-            return new Date(newestAnnotation.created).getTime() - new Date(oldestAnnotation.created).getTime()
-          } else {
-            return new Date(newestAnnotation.updated).getTime() - new Date(oldestAnnotation.created).getTime()
-          }
+          let oldestAnnotation = _.first(group)
+          let newestAnnotation = _.last(group)
+          return Math.abs(new Date(newestAnnotation.created).getTime() - new Date(oldestAnnotation.created).getTime())
         })
         let timeRequired = _.sum(times)
         // Calculate number of criterion assessed
