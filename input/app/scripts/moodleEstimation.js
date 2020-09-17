@@ -11,26 +11,31 @@ class MoodleEstimationContentScript {
     this.moodleEndpoint = this.getMoodleEndpoint()
     this.loadAnnotationServer((err) => {
       if (err) {
-
+        console.error('Unable to load annotation server. Error: ' + err.message)
       } else {
         MoodleEstimation.retrieveAnnotationsForMarkAndGo(this.annotationServerManager, (err, annotationsPerGroup) => {
           if (err) {
-            console.error('Unable to retrieve annotations of previous mark&go groups')
+            console.error('Unable to retrieve annotations of previous mark&go groups. Error: ' + err.message)
           } else {
             // Get number of students assignments submitted
             let numberOfStudentsAssignmentsSubmitted = Number.parseInt(document.querySelector('#region-main > div:nth-child(3) > div.gradingsummary > div > table > tbody > tr:nth-child(3) > td').innerText)
             MoodleEstimation.estimateTimeInMilisecondsPendingToAssess({
               annotationsPerGroup, assignmentName: this.assignmentName, cmid: this.cmid, numberOfStudentsAssignmentsSubmitted
-            }, (err, { timeInMiliseconds }) => {
+            }, (err, { timeInMilisecondsPendingToAssess }) => {
               if (err) {
                 console.error(err)
               } else {
                 // Display extra time required to assess
-                let rowElementInGradingSummary = document.querySelector('#region-main > div:nth-child(3) > div.gradingsummary > div > table > tbody > tr:nth-child(5)')
-                let estimatedTimeNode = rowElementInGradingSummary.cloneNode(true)
-                estimatedTimeNode.querySelector('th').innerText = 'Estimated assessment time'
-                estimatedTimeNode.querySelector('td').innerText = DateTimeUtils.getHumanReadableTimeFromUnixTimeInMiliseconds(timeInMiliseconds)
-                rowElementInGradingSummary.insertAdjacentElement('afterend', estimatedTimeNode)
+                let humanReadablePendingTime = DateTimeUtils.getHumanReadableTimeFromUnixTimeInMiliseconds(timeInMilisecondsPendingToAssess)
+                if (_.isError(humanReadablePendingTime)) {
+                  console.error('Unable to calculate estimated time to assess')
+                } else {
+                  let rowElementInGradingSummary = document.querySelector('#region-main > div:nth-child(3) > div.gradingsummary > div > table > tbody > tr:nth-child(5)')
+                  let estimatedTimeNode = rowElementInGradingSummary.cloneNode(true)
+                  estimatedTimeNode.querySelector('th').innerText = 'Estimated assessment time'
+                  estimatedTimeNode.querySelector('td').innerText = humanReadablePendingTime
+                  rowElementInGradingSummary.insertAdjacentElement('afterend', estimatedTimeNode)
+                }
               }
             })
           }

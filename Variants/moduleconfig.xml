@@ -62,8 +62,8 @@
       <parameter name="partial" type="ps:boolean">false</parameter>
     </module>
     <module exclude="" id="com.ps.consul.eclipse.ui.transform.exec.module" include="/variant" name="External Program Runner" tname="exec">
-      <parameter name="program" type="ps:path">$(PROJECT)/output/$(VARIANT)/dependencies.sh</parameter>
-      <parameter name="parameters" type="ps:string"/>
+      <parameter name="program" type="ps:path">../../runDependenciesInMac.sh</parameter>
+      <parameter name="parameters" type="ps:string">$(VARIANT)</parameter>
       <parameter name="supply document" type="ps:boolean"/>
       <parameter name="supply location" type="ps:boolean"/>
       <parameter name="ignore return value" type="ps:boolean"/>

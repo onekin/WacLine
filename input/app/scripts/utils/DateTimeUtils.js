@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 class DateTimeUtils {
   static getYearMonthDay (date) {
     if (!date) {
@@ -17,8 +19,12 @@ class DateTimeUtils {
   }
 
   static getHumanReadableTimeFromUnixTimeInMiliseconds (unixTime) {
-    let date = new Date(unixTime)
-    return Math.floor(unixTime / 1000 / 60 / 24) + 'h' + date.getMinutes() + 'm' + date.getSeconds() + 's'
+    if (!_.isNumber(unixTime) || _.isNaN(unixTime)) {
+      return new Error('Unable to parse unix time.')
+    } else {
+      let date = new Date(unixTime)
+      return Math.floor(unixTime / 1000 / 60 / 24) + 'h' + date.getMinutes() + 'm' + date.getSeconds() + 's'
+    }
   }
 }
 

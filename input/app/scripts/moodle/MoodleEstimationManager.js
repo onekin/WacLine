@@ -2,6 +2,7 @@ import MoodleEstimation from './MoodleEstimation'
 import DateTimeUtils from '../utils/DateTimeUtils'
 import axios from 'axios'
 import _ from 'lodash'
+import Events from '../Events'
 
 class MoodleEstimationManager {
   constructor () {
@@ -9,7 +10,13 @@ class MoodleEstimationManager {
     this.cmid = window.abwa.codebookManager.codebookReader.codebook.cmid
   }
 
-  init () {
+  init (callback) {
+    this.initEventListeners(() => {
+      this.calculateAndDisplayEstimation(callback)
+    })
+  }
+
+  calculateAndDisplayEstimation (callback) {
     MoodleEstimation.retrieveAnnotationsForMarkAndGo(window.abwa.annotationServerManager, (err, annotationsPerGroup) => {
       if (err) {
         console.error('Unable to retrieve annotations of previous mark&go groups')
@@ -17,7 +24,7 @@ class MoodleEstimationManager {
         // Get number of students assignments submitted
         this.getNumberOfStudentsAssignmentsSubmitted((err, numberOfStudentsAssignmentsSubmitted) => {
           if (err) {
-
+            console.error('Unable to retrieve number of students who submit their assignments.')
           } else {
             MoodleEstimation.estimateTimeInMilisecondsPendingToAssess({
               annotationsPerGroup, assignmentName: this.assignmentName, cmid: this.cmid, numberOfStudentsAssignmentsSubmitted
@@ -36,7 +43,24 @@ class MoodleEstimationManager {
                 let pendingTimeInMiliseconds = timePerCriterion * pendingCriterionNumber
 
                 // Display extra time required to assess
-                document.querySelector('#toolsetHeader').innerHTML += ' - <span id="estimatedTimeCounter">' + DateTimeUtils.getHumanReadableTimeFromUnixTimeInMiliseconds(pendingTimeInMiliseconds) + '</span>'
+                let estimatedTimeCounterElement = document.querySelector('#estimatedTimeCounter')
+                let humanReadablePendingTime = DateTimeUtils.getHumanReadableTimeFromUnixTimeInMiliseconds(pendingTimeInMiliseconds)
+                let result
+                if (humanReadablePendingTime === 0) {
+                  result = '- Assessed'
+                } else if (_.isError(humanReadablePendingTime)) {
+                  result = ''
+                } else {
+                  result = ' - ' + humanReadablePendingTime
+                }
+                if (_.isElement(estimatedTimeCounterElement)) {
+                  estimatedTimeCounterElement.innerText = result
+                } else {
+                  document.querySelector('#toolsetHeader').innerHTML += '<span id="estimatedTimeCounter">' + result + '</span>'
+                }
+                if (_.isFunction(callback)) {
+                  callback()
+                }
               }
             })
           }
@@ -45,16 +69,37 @@ class MoodleEstimationManager {
     })
   }
 
+  initEventListeners (callback) {
+    this.events = {}
+    // Estimation time must be updated if it is detected a new annotation creation, modification or deletion
+    this.events.updatedAllAnnotationsEvent = { element: document, event: Events.updatedAllAnnotations, handler: this.createUpdatedAllAnnotationsEventListener() }
+    this.events.updatedAllAnnotationsEvent.element.addEventListener(this.events.updatedAllAnnotationsEvent.event, this.events.updatedAllAnnotationsEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  createUpdatedAllAnnotationsEventListener () {
+    return () => {
+      this.calculateAndDisplayEstimation()
+    }
+  }
+
   getNumberOfStudentsAssignmentsSubmitted (callback) {
     if (_.isFunction(callback)) {
-      // Get url of asssignment description in moodle
-      let assignmentURL = window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint + 'mod/assign/view.php?id=' + window.abwa.codebookManager.codebookReader.codebook.cmid
-      axios.get(assignmentURL).then((response) => {
-        let container = document.implementation.createHTMLDocument().documentElement
-        container.innerHTML = response.data
-        let result = Number.parseInt(container.querySelector('#region-main > div:nth-child(3) > div.gradingsummary > div > table > tbody > tr:nth-child(3) > td').innerText)
-        callback(null, result)
-      })
+      if (_.isNumber(this.submittedAssignments)) {
+        callback(null, this.submittedAssignments)
+      } else {
+        // Get url of asssignment description in moodle
+        let assignmentURL = window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint + 'mod/assign/view.php?id=' + window.abwa.codebookManager.codebookReader.codebook.cmid
+        axios.get(assignmentURL).then((response) => {
+          let container = document.implementation.createHTMLDocument().documentElement
+          container.innerHTML = response.data
+          let result = Number.parseInt(container.querySelector('#region-main > div:nth-child(3) > div.gradingsummary > div > table > tbody > tr:nth-child(3) > td').innerText)
+          this.submittedAssignments = result
+          callback(null, result)
+        })
+      }
     }
   }
 }
