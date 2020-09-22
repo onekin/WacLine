@@ -77,9 +77,9 @@ class Theme {
     // PVSCL:ENDCOND
     return {
       id: this.id,
-      group: this.annotationGuide.annotationServer.group.id,
+      group: this.annotationGuide.annotationServer.getGroupId(),
       permissions: {
-        read: ['group:' + this.annotationGuide.annotationServer.group.id]
+        read: ['group:' + this.annotationGuide.annotationServer.getGroupId()]
       },
       motivation: 'codebookDevelopment',
       references: [],
@@ -89,7 +89,7 @@ class Theme {
         id: this.id || ''/* PVSCL:IFCOND(BuiltIn) */,
         description: this.description/* PVSCL:ENDCOND */
       }),
-      uri: this.annotationGuide.annotationServer.group.links.html
+      uri: this.annotationGuide.annotationServer.getGroupUrl()
     }
   }
 

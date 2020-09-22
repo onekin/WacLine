@@ -119,7 +119,7 @@ class CreateHighlighterTask extends Task {
                       this.setAnnotationServer(group, (annotationServer) => {
                         // Check if highlighter for assignment is already created
                         this.annotationServerClientManager.client.searchAnnotations({
-                          group: annotationServer.group.id,
+                          group: annotationServer.getGroupId(),
                           any: '"cmid:' + rubric.cmid + '"',
                           wildcard_uri: 'https://hypothes.is/groups/*'
                         }, (err, annotations) => {
@@ -276,7 +276,7 @@ class CreateHighlighterTask extends Task {
   createTeacherAnnotation ({ producerId, annotationServer }, callback) {
     const teacherAnnotation = this.generateTeacherAnnotation(producerId, annotationServer)
     // Check if annotation already exists
-    this.annotationServerClientManager.client.searchAnnotations({ group: annotationServer.group.id, tags: Config.namespace + ':' + Config.tags.producer }, (err, annotations) => {
+    this.annotationServerClientManager.client.searchAnnotations({ group: annotationServer.getGroupId(), tags: Config.namespace + ':' + Config.tags.producer }, (err, annotations) => {
       if (err) {
 
       } else {
@@ -305,9 +305,9 @@ class CreateHighlighterTask extends Task {
 
   generateTeacherAnnotation (producerId, annotationServer) {
     return {
-      group: annotationServer.group.id,
+      group: annotationServer.getGroupId(),
       permissions: {
-        read: ['group:' + annotationServer.group.id]
+        read: ['group:' + annotationServer.getGroupId()]
       },
       references: [],
       tags: [Config.namespace + ':' + Config.tags.producer],

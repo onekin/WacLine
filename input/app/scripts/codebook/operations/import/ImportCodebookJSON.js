@@ -52,7 +52,7 @@ class ImportCodebookJSON {
                           Alerts.errorAlert({ text: 'There was an error when configuring Review&Go highlighter' })
                         } else {
                           Alerts.closeAlert()
-                          LanguageUtils.dispatchCustomEvent(Events.codebookImported, { groupId: guide.annotationServer.group.id })
+                          LanguageUtils.dispatchCustomEvent(Events.codebookImported, { groupId: guide.annotationServer.getGroupId() })
                         }
                       }
                     })
