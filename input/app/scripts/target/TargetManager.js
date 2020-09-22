@@ -16,7 +16,6 @@ import RandomUtils from '../utils/RandomUtils'
 // PVSCL:IFCOND(URN, LINE)
 import CryptoUtils from '../utils/CryptoUtils'
 // PVSCL:ENDCOND
-import axios from 'axios'
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
 
 class TargetManager {
@@ -382,6 +381,7 @@ class TargetManager {
           }
         }
         // Call using axios
+        const axios = require('axios').default
         axios(settings).then((response) => {
           if (response.data && response.data.title) {
             this.documentTitle = response.data.title

@@ -3,29 +3,18 @@ import TargetManager from '../target/TargetManager'
 import Sidebar from './Sidebar'
 import CodebookManager from '../codebook/CodebookManager'
 import Config from '../Config'
-import Toolset from './Toolset'
-import AnnotationManagement from '../annotationManagement/AnnotationManagement'
-import GroupSelector from '../groupManipulation/GroupSelector'
 import AnnotationBasedInitializer from './AnnotationBasedInitializer'
-import { AnnotatedContentManager } from './AnnotatedContentManager'
 // PVSCL:IFCOND(Manual, LINE)
 import Events from '../Events'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResource, LINE)
 import RolesManager from './RolesManager'
-import MoodleEstimationManager from '../moodle/MoodleEstimationManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
 import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(PreviousAssignments, LINE)
 import PreviousAssignments from '../annotationManagement/purposes/PreviousAssignments'
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleReport, LINE)
-import MoodleReport from '../annotationManagement/read/MoodleReport'
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleComment, LINE)
-import MoodleComment from '../annotationManagement/read/MoodleComment'
 // PVSCL:ENDCOND
 
 class ContentScriptManager {
@@ -43,6 +32,7 @@ class ContentScriptManager {
         window.abwa.sidebar.init(() => {
           window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
           window.abwa.annotationBasedInitializer.init(() => {
+            const GroupSelector = require('../groupManipulation/GroupSelector').default
             window.abwa.groupSelector = new GroupSelector()
             window.abwa.groupSelector.init(() => {
               // Reload for first time the content by group
@@ -116,6 +106,7 @@ class ContentScriptManager {
       // Destroy annotated content manager
       this.destroyAnnotatedContentManager()
       // Create a new annotated content manager
+      const { AnnotatedContentManager } = require('./AnnotatedContentManager')
       window.abwa.annotatedContentManager = new AnnotatedContentManager()
       window.abwa.annotatedContentManager.init((err) => {
         if (err) {
@@ -132,6 +123,7 @@ class ContentScriptManager {
       // Destroy current content annotator
       this.destroyAnnotationManagement()
       // Create a new content annotator for the current group
+      const AnnotationManagement = require('../annotationManagement/AnnotationManagement').default
       window.abwa.annotationManagement = new AnnotationManagement()
       window.abwa.annotationManagement.init((err) => {
         if (err) {
@@ -165,6 +157,7 @@ class ContentScriptManager {
       // Destroy current content annotator
       this.destroyMoodleReport()
       // Create a new content annotator for the current group
+      const MoodleReport = require('../annotationManagement/read/MoodleReport').default
       window.abwa.moodleReport = new MoodleReport()
       window.abwa.moodleReport.init((err) => {
         if (err) {
@@ -183,6 +176,7 @@ class ContentScriptManager {
       // Destroy current content annotator
       this.destroyMoodleComment()
       // Create a new content annotator for the current group
+      const MoodleComment = require('../annotationManagement/read/MoodleComment').default
       window.abwa.moodleComment = new MoodleComment()
       window.abwa.moodleComment.init((err) => {
         if (err) {
@@ -217,6 +211,7 @@ class ContentScriptManager {
       // Destroy current content annotator
       this.destroyMoodleEstimationManager()
       // Create a new content annotator for the current group
+      const MoodleEstimationManager = require('../moodle/MoodleEstimationManager').default
       window.abwa.moodleEstimationManager = new MoodleEstimationManager()
       window.abwa.moodleEstimationManager.init((err) => {
         if (err) {
@@ -252,6 +247,7 @@ class ContentScriptManager {
       // Destroy toolset
       this.destroyToolset()
       // Create a new toolset
+      const Toolset = require('./Toolset').default
       window.abwa.toolset = new Toolset()
       window.abwa.toolset.init((err) => {
         if (err) {
