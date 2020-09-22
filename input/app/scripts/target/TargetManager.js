@@ -178,6 +178,8 @@ class TargetManager {
       let url
       if (window.location.pathname === '/content/pdfjs/web/viewer.html') {
         url = URLUtils.retrieveMainUrl(window.PDFViewerApplication.url)
+      } else if (window.location.pathname === '/content/plainTextFileViewer/index.html') {
+        url = URLUtils.retrieveMainUrl((new URL(window.location.href)).searchParams.get('file'))
       } else {
         url = URLUtils.retrieveMainUrl(window.location.href)
       }
