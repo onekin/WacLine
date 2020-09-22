@@ -487,14 +487,16 @@ class ReadAnnotation {
   }
 
   redrawAnnotations (callback) {
-    // Unhighlight all annotations
-    this.unHighlightAllAnnotations()
-    // Highlight all annotations
-    // PVSCL:IFCOND(UserFilter, LINE)
-    this.highlightAnnotations(this.currentAnnotations, callback)
-    // PVSCL:ELSECOND
-    this.highlightAnnotations(this.allAnnotations)
-    // PVSCL:ENDCOND
+    if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
+      // Unhighlight all annotations
+      this.unHighlightAllAnnotations()
+      // Highlight all annotations
+      // PVSCL:IFCOND(UserFilter, LINE)
+      this.highlightAnnotations(this.currentAnnotations, callback)
+      // PVSCL:ELSECOND
+      this.highlightAnnotations(this.allAnnotations)
+      // PVSCL:ENDCOND
+    }
   }
 
   unHighlightAllAnnotations () {
