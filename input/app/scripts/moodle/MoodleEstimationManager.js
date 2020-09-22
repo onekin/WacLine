@@ -71,15 +71,22 @@ class MoodleEstimationManager {
 
   initEventListeners (callback) {
     this.events = {}
-    // Estimation time must be updated if it is detected a new annotation creation, modification or deletion
-    this.events.updatedAllAnnotationsEvent = { element: document, event: Events.updatedAllAnnotations, handler: this.createUpdatedAllAnnotationsEventListener() }
-    this.events.updatedAllAnnotationsEvent.element.addEventListener(this.events.updatedAllAnnotationsEvent.event, this.events.updatedAllAnnotationsEvent.handler, false)
+    // Estimation time must be updated if it is detected a new annotation creation, modification (marked) or deletion
+    // Created
+    this.events.annotationCreatedEvent = { element: document, event: Events.annotationCreated, handler: this.createEstimationEventListener() }
+    this.events.annotationCreatedEvent.element.addEventListener(this.events.annotationCreatedEvent.event, this.events.annotationCreatedEvent.handler, false)
+    // Deleted
+    this.events.annotationDeletedEvent = { element: document, event: Events.annotationDeleted, handler: this.createEstimationEventListener() }
+    this.events.annotationDeletedEvent.element.addEventListener(this.events.annotationDeletedEvent.event, this.events.annotationDeletedEvent.handler, false)
+    // Marked
+    this.events.codeToAllEvent = { element: document, event: Events.codeToAll, handler: this.createEstimationEventListener() }
+    this.events.codeToAllEvent.element.addEventListener(this.events.codeToAllEvent.event, this.events.codeToAllEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
     }
   }
 
-  createUpdatedAllAnnotationsEventListener () {
+  createEstimationEventListener () {
     return () => {
       this.calculateAndDisplayEstimation()
     }
