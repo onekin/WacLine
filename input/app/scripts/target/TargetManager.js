@@ -363,8 +363,24 @@ class TargetManager {
   }
 
   isPlainTextFile () {
-    const extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
-    return 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
+    let result = false
+    if (document.querySelector('body').children.length === 1 && _.isElement(document.querySelector('body > pre'))) { // It is opened with default plain text viewer in chrome
+      result = true
+    } else {
+      if (document.querySelector('#webkit-xml-viewer-source-xml')) { // It is loaded with default xml viewer
+        result = true
+      } else {
+        if (window.location.pathname !== '/content/plainTextFileViewer/index.html') {
+          // PVSCL:IFCOND(NOT (MoodleResource), LINE) // It is plain text file but it is already opened with custom plain text viewer
+          const extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
+          result = 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
+          // PVSCL:ELSECOND // When is downloaded from moodle it must be always be opened with custom viewer to ensure CORS over moodle is not applied
+          result = true
+          // PVSCL:ENDCOND
+        }
+      }
+    }
+    return result
   }
 
   tryToLoadTitle () {

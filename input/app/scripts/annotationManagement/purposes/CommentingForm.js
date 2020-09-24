@@ -118,8 +118,12 @@ class CommentingForm {
 
   // PVSCL:IFCOND(PreviousAssignments,LINE)
   static getPreviousAssignmentsUI () {
-    const previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
-    return window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
+    if (window.abwa.previousAssignments) {
+      const previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
+      return window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
+    } else {
+      return ''
+    }
   }
   // PVSCL:ENDCOND
 

@@ -514,9 +514,9 @@ class ReadAnnotation {
       })
     }
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(UserFilter, LINE)
-
   initUserFilter () {
     // Create augmentation operations for the current group
     this.userFilter = new UserFilter()

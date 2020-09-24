@@ -300,11 +300,14 @@ class ReadCodebook {
       // PVSCL:IFCOND(Hierarchy,LINE)
       let codes = theme.codes
       codes = codes.sort((a, b) => {
+        let result
         // PVSCL:IFCOND(Alphabetical, LINE)
-        return a.name.localeCompare(b.name)
+        result = a.name.localeCompare(b.name)
         // PVSCL:ELSEIFCOND(Number, LINE)
+        result = parseFloat(a.name) > parseFloat(b.name)
         // PVSCL:ELSEIFCOND(Date, LINE)
         // PVSCL:ENDCOND
+        return result
       })
       // PVSCL:IFCOND(Alphabetical, LINE)
       codes = codes.sort((a, b) => a.name.localeCompare(b.name))
