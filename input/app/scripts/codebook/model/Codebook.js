@@ -74,9 +74,9 @@ class Codebook {
     // Return the constructed annotation
     return {
       name: this.name,
-      group: this.annotationServer.group.id,
+      group: this.annotationServer.getGroupId(),
       permissions: {
-        read: ['group:' + this.annotationServer.group.id]
+        read: ['group:' + this.annotationServer.getGroupId()]
       },
       references: [],
       motivation: 'defining',

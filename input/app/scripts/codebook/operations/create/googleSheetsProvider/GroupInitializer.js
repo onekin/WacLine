@@ -70,7 +70,7 @@ class GroupInitializer {
                   ChromeStorage.setData(selectedGroupNamespace, { data: JSON.stringify(this.annotationGuide.annotationServer.group) }, ChromeStorage.local)
                   // Get group url
                   const selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
-                  const groupUrl = selectedAnnotationServerManager.constructSearchUrl({ group: this.annotationGuide.annotationServer.group.id })
+                  const groupUrl = selectedAnnotationServerManager.constructSearchUrl({ group: this.annotationGuide.annotationServer.getGroupId() })
                   Alerts.successAlert({
                     title: 'Correctly configured', // TODO i18n
                     text: chrome.i18n.getMessage('VisitTheCreatedGroup') + ' <a href="' + groupUrl + '" target="_blank">here</a>.'
@@ -135,7 +135,7 @@ class GroupInitializer {
 
   removeGroup (callback) {
     if (this.annotationGuide.annotationServer) {
-      window.googleSheetProvider.annotationServerManager.client.removeAMemberFromAGroup(this.annotationGuide.annotationServer.group.id, 'me', (err) => {
+      window.googleSheetProvider.annotationServerManager.client.removeAMemberFromAGroup(this.annotationGuide.annotationServer.getGroupId(), 'me', (err) => {
         if (_.isFunction(callback)) {
           callback(err)
         } else {
