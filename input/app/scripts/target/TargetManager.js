@@ -16,7 +16,7 @@ import RandomUtils from '../utils/RandomUtils'
 // PVSCL:IFCOND(URN, LINE)
 import CryptoUtils from '../utils/CryptoUtils'
 // PVSCL:ENDCOND
-const URL_CHANGE_INTERVAL_IN_SECONDS = 1
+const URL_CHANGE_INTERVAL_IN_SECONDS = 5
 
 class TargetManager {
   constructor () {
@@ -70,12 +70,6 @@ class TargetManager {
       this.tryToLoadURL()
       this.tryToLoadURN()
       this.tryToLoadTargetId()
-      if (this.url.startsWith('file:///')) {
-        this.localFile = true
-      } else if (this.documentFormat !== PDF) { // If document is not pdf, it can change its URL
-        // Support in ajax websites web url change, web url can change dynamically, but local files never do
-        this.initSupportWebURLChange()
-      }
       let promise
       // PVSCL:IFCOND(MoodleResource, LINE)
       promise = this.retrievePromiseLoadMoodleMetadata()
@@ -83,6 +77,12 @@ class TargetManager {
       promise = Promise.resolve()
       // PVSCL:ENDCOND
       promise.then(() => {
+        if (this.url.startsWith('file:///')) {
+          this.localFile = true
+        } else if (this.documentFormat !== PDF && !this.localFile) { // If document is not pdf, it can change its URL
+          // Support in ajax websites web url change, web url can change dynamically, but local files never do
+          this.initSupportWebURLChange()
+        }
         if (_.isFunction(callback)) {
           callback()
         }
@@ -153,7 +153,7 @@ class TargetManager {
           resolve()
         })
         return true
-      } /* PVSCL:IFCOND(TXT) */else if (document.body && document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') { // TODO Check if document is loaded in content/plainTextFileViewer
+      } /* PVSCL:IFCOND(TXT) */else if ((document.body && document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') || window.location.pathname === '/content/plainTextFileViewer/index.html') { // TODO Check if document is loaded in content/plainTextFileViewer
         // TODO Check if document.body is loaded or not yet
         this.documentFormat = TXT
         resolve()
@@ -183,6 +183,7 @@ class TargetManager {
       } else {
         url = URLUtils.retrieveMainUrl(window.location.href)
       }
+      this.localFile = true
       chrome.runtime.sendMessage({ scope: 'annotationFile', cmd: 'fileMetadata', data: { filepath: url } }, (fileMetadata) => {
         if (_.isEmpty(fileMetadata)) {
           this.url = URLUtils.retrieveMainUrl(window.location.href)
@@ -364,19 +365,21 @@ class TargetManager {
 
   isPlainTextFile () {
     let result = false
-    if (document.querySelector('body').children.length === 1 && _.isElement(document.querySelector('body > pre'))) { // It is opened with default plain text viewer in chrome
-      result = true
-    } else {
-      if (document.querySelector('#webkit-xml-viewer-source-xml')) { // It is loaded with default xml viewer
+    if (window.location.pathname !== '/content/pdfjs/web/viewer.html') {
+      if (document.querySelector('body').children.length === 1 && _.isElement(document.querySelector('body > pre'))) { // It is opened with default plain text viewer in chrome
         result = true
       } else {
-        if (window.location.pathname !== '/content/plainTextFileViewer/index.html') {
-          // PVSCL:IFCOND(NOT (MoodleResource), LINE) // It is plain text file but it is already opened with custom plain text viewer
-          const extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
-          result = 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
-          // PVSCL:ELSECOND // When is downloaded from moodle it must be always be opened with custom viewer to ensure CORS over moodle is not applied
+        if (document.querySelector('#webkit-xml-viewer-source-xml')) { // It is loaded with default xml viewer
           result = true
-          // PVSCL:ENDCOND
+        } else {
+          if (window.location.pathname !== '/content/plainTextFileViewer/index.html') {
+            // PVSCL:IFCOND(NOT (MoodleResource), LINE) // It is plain text file but it is already opened with custom plain text viewer
+            const extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
+            result = 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
+            // PVSCL:ELSECOND // When is downloaded from moodle it must be always be opened with custom viewer to ensure CORS over moodle is not applied
+            result = true
+            // PVSCL:ENDCOND
+          }
         }
       }
     }
