@@ -19,7 +19,7 @@ class CmapCloudClient {
     }, (response) => {
       if (response.info) {
         let parser = new DOMParser()
-        let xmlDoc = parser.parseFromString(response.info,'text/xml')
+        let xmlDoc = parser.parseFromString(response.info, 'text/xml')
         callback(xmlDoc)
         // validated
       } else if (response.err) {

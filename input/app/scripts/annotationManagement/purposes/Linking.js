@@ -18,9 +18,6 @@ class Linking extends Body {
     let from = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(obj.from)
     let to = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(obj.to)
     let linkingWord = obj.linkingWord
-    // PVSCL:IFCOND(EvidenceAnnotations, LINE)
-    let addToCXL = obj.addToCXL
-    // PVSCL:ENDCOND
     return new Linking({from, to, linkingWord})
   }
 

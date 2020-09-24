@@ -194,7 +194,6 @@ class Options {
       console.debug('Annotation server selected ' + annotationServer)
     })
   }
-
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Neo4J, LINE)
 
@@ -236,7 +235,6 @@ class Options {
       selectedAnnotationServerConfigurationCard.setAttribute('aria-hidden', 'false')
     }
   }
-
   // PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
 
   updateApiSimulationCheckbox () {

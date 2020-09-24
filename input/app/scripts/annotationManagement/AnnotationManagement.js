@@ -5,8 +5,10 @@ const DeleteAnnotation = require('./DeleteAnnotation')
 const $ = require('jquery')
 const _ = require('lodash')
 const PDF = require('../target/formats/PDF')
+// PVSCL:IFCOND(SidebarNavigation, LINE)
 const Events = require('../Events')
 const Classifying = require('./purposes/Classifying')
+// PVSCL:ENDCOND(SidebarNavigation, LINE)
 const Annotation = require('./Annotation')
 
 class AnnotationManagement {

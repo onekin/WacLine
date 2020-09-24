@@ -16,7 +16,6 @@ class LinkingForm {
   static showLinkingForm (annotation, formCallback, addingHtml) {
     return new Promise((resolve, reject) => {
       // Close sidebar if opened
-      let sidebarOpen = window.abwa.sidebar.isOpened()
       window.abwa.sidebar.closeSidebar()
       let title = 'Creating new relation'
       // Get body for classifying
@@ -84,7 +83,6 @@ class LinkingForm {
       document.querySelector('#linkingWord').value = retrievedLW
       onBeforeOpen.target = window.abwa.annotationManagement.annotationCreator.obtainTargetToCreateAnnotation({})
     }
-    // Preconfirm
     // Preconfirm
     let preConfirmData = {}
     let preConfirm = () => {

@@ -1,4 +1,3 @@
-const Config = require('../../../Config')
 const CmapCloudClient = require('./CmapCloudClient')
 const _ = require('lodash')
 const Alerts = require('../../../utils/Alerts')
@@ -12,12 +11,9 @@ class ExportCmapCloud {
     let uid = userData.uid
     let cmapCloudClient = new CmapCloudClient(user, pass, uid)
     cmapCloudClient.getRootFolderInfor((data) => {
-      console.log(data)
       let folderName = this.getFolderName(data)
-      console.log(folderName)
       cmapCloudClient.createFolder(folderName, (newFolderData) => {
         let folderID = this.getFolderID(newFolderData)
-        console.log(folderID)
         let beginPromises = []
         for (let i = 0; i < urlFiles.length; i++) {
           let urlFile = urlFiles[i]
@@ -30,17 +26,14 @@ class ExportCmapCloud {
         }
         Promise.all(beginPromises).then(createdResources => {
           // Results
-          console.log(createdResources)
           let createdResourcesID = _.map(createdResources, (res) => {
             let retrieve = res.all[3].innerHTML.match(/id=[\s\S]*.url/)[0]
             let resourceIDName = retrieve.replace('.url', '').replace('id=', '')
             return resourceIDName
           })
-          console.log(createdResourcesID)
           for (let j = 0; j < createdResourcesID.length; j++) {
             let id = createdResourcesID[j].split('/')[0]
             let name = createdResourcesID[j].split('/')[1]
-            console.log(id + ' ' + name)
             let urlFile = _.find(urlFiles, (file) => {
               return file.name === name
             })
@@ -49,8 +42,6 @@ class ExportCmapCloud {
             }
           }
           // Add resource-group-list
-          console.log(urlFiles)
-          let map = this.referenceURLIntoMap(xmlDoc, urlFiles, folderID)
           // cmapCloudClient.uploadMap(folderID, map, (data) => {
           let mapString = new XMLSerializer().serializeToString(xmlDoc)
           let blob = new window.Blob([mapString], {
@@ -60,7 +51,6 @@ class ExportCmapCloud {
           Alerts.infoAlert({text: 'You have available your resource in CmapCloud in ' + folderName + ' folder.\n Please move the downloaded map to the corresponding CmapCloud folder.', title: 'Completed'})
           // })
         }, reason => {
-          console.log(reason)
         })
       })
     })
@@ -70,7 +60,6 @@ class ExportCmapCloud {
     let folderName
     let elements = data.getElementsByTagName('res-meta')
     if (elements.length > 0) {
-      console.log(elements)
       let folderElements = _.map(_.filter(elements, (element) => {
         if (element.attributes.format) {
           return element.attributes.format.nodeValue === 'x-nlk-project/x-binary'
@@ -106,7 +95,6 @@ class ExportCmapCloud {
 
   static referenceURLIntoMap (xmlDoc, urlFiles, folderID) {
     let resourceGroupListElement = xmlDoc.getElementsByTagName('resource-group-list')[0]
-    console.log(resourceGroupListElement)
     let resourcesMap = _.chain(urlFiles)
       .groupBy('parentId')
       .toPairs()
