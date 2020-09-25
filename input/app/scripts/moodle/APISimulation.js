@@ -1,31 +1,31 @@
-const axios = require('axios')
-const _ = require('lodash')
-const jsonFormData = require('json-form-data')
+import axios from 'axios'
+import _ from 'lodash'
+import jsonFormData from 'json-form-data'
 
 class APISimulation {
   static getRubric (cmids, callback) {
     // TODO Verify that cmids is not an array
     // TODO Go to task main page
-    let taskMainPageUrl = window.mag.moodleContentScript.moodleEndpoint + 'mod/assign/view.php?id=' + cmids
+    const taskMainPageUrl = window.mag.moodleContentScript.moodleEndpoint + 'mod/assign/view.php?id=' + cmids
     axios.get(taskMainPageUrl)
       .then((response) => {
-        let parser = new window.DOMParser()
-        let docPreferences = parser.parseFromString(response.data, 'text/html')
-        let rubricURLElement = docPreferences.querySelector('a[href*="grade/grading/manage.php?"]')
+        const parser = new window.DOMParser()
+        const docPreferences = parser.parseFromString(response.data, 'text/html')
+        const rubricURLElement = docPreferences.querySelector('a[href*="grade/grading/manage.php?"]')
         if (rubricURLElement) {
           // TODO Go to rubric page
-          let rubricURL = rubricURLElement.href
+          const rubricURL = rubricURLElement.href
           axios.get(rubricURL)
             .then((response) => {
-              let parser = new window.DOMParser()
-              let docPreferences = parser.parseFromString(response.data, 'text/html')
-              let rubricTable = docPreferences.querySelector('#rubric-criteria')
+              const parser = new window.DOMParser()
+              const docPreferences = parser.parseFromString(response.data, 'text/html')
+              const rubricTable = docPreferences.querySelector('#rubric-criteria')
               // TODO Get each criterion
-              let rubricCriteria = APISimulation.getRubricCriteriaFromRubricTable(rubricTable)
-              let assignmentId = APISimulation.getAssignmentId(docPreferences)
-              let assignmentName = APISimulation.getAssignmentName(docPreferences)
+              const rubricCriteria = APISimulation.getRubricCriteriaFromRubricTable(rubricTable)
+              const assignmentId = APISimulation.getAssignmentId(docPreferences)
+              const assignmentName = APISimulation.getAssignmentName(docPreferences)
               // For each criterion
-              let formattedRubric = APISimulation.constructGetRubricResponse({rubricCriteria, cmid: cmids, assignmentId, assignmentName})
+              const formattedRubric = APISimulation.constructGetRubricResponse({ rubricCriteria, cmid: cmids, assignmentId, assignmentName })
               callback(null, formattedRubric)
             })
         } else {
@@ -41,21 +41,21 @@ class APISimulation {
   }
 
   static getRubricCriteriaFromRubricTable (rubricTable) {
-    let criterionElements = rubricTable.querySelectorAll('.criterion')
-    let criterias = []
+    const criterionElements = rubricTable.querySelectorAll('.criterion')
+    const criterias = []
     for (let i = 0; i < criterionElements.length; i++) {
-      let criterionElement = criterionElements[i]
-      let criteria = {}
+      const criterionElement = criterionElements[i]
+      const criteria = {}
       // Get id
       criteria.id = parseInt(_.last(criterionElement.id.split('-')))
       criteria.sortorder = i + 1
       criteria.description = criterionElement.querySelector('.description').innerText
       criteria.descriptionformat = 1 // The one by default is 1
-      let levelElements = criterionElement.querySelectorAll('.level')
-      let levels = []
+      const levelElements = criterionElement.querySelectorAll('.level')
+      const levels = []
       for (let j = 0; j < levelElements.length; j++) {
-        let levelElement = levelElements[j]
-        let level = {}
+        const levelElement = levelElements[j]
+        const level = {}
         // Get level id
         level.id = parseInt(_.last(levelElement.id.split('-')))
         // Get score
@@ -74,9 +74,9 @@ class APISimulation {
   }
 
   static getAssignmentId (document) {
-    let deleteformElement = document.querySelector('a[href*="deleteform"]')
+    const deleteformElement = document.querySelector('a[href*="deleteform"]')
     if (deleteformElement) {
-      let url = new URL(deleteformElement.href)
+      const url = new URL(deleteformElement.href)
       return url.searchParams.get('deleteform')
     } else {
       return null
@@ -95,31 +95,31 @@ class APISimulation {
         }, (err, clientId) => {
 
         }) */
-        let settings = {
-          'async': true,
-          'crossDomain': true,
-          'url': moodleEndpoint + '/comment/comment_ajax.php',
-          'method': 'POST',
-          'headers': {
+        const settings = {
+          async: true,
+          crossDomain: true,
+          url: moodleEndpoint + '/comment/comment_ajax.php',
+          method: 'POST',
+          headers: {
             'Cache-Control': 'no-cache',
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
           },
-          'params': {
-            'wsfunction': 'mod_assign_save_grade',
-            'moodlewsrestformat': 'json'
+          params: {
+            wsfunction: 'mod_assign_save_grade',
+            moodlewsrestformat: 'json'
           },
-          'data': {
-            'sesskey': sessionKey,
-            'action': 'add',
-            'client_id': '5c124b5dd5125', // TODO Check if it works in all moodle versions: It is a random client ID
-            'itemid': data.itemId,
-            'area': 'submission_comments',
-            'courseid': data.courseId,
-            'contextid': data.contextId,
-            'component': 'assignsubmission_comments',
-            'content': data.text
+          data: {
+            sesskey: sessionKey,
+            action: 'add',
+            client_id: '5c124b5dd5125', // TODO Check if it works in all moodle versions: It is a random client ID
+            itemid: data.itemId,
+            area: 'submission_comments',
+            courseid: data.courseId,
+            contextid: data.contextId,
+            component: 'assignsubmission_comments',
+            content: data.text
           },
-          'transformRequest': [(data) => {
+          transformRequest: [(data) => {
             return jsonFormData(data)
           }]
         }
@@ -131,20 +131,20 @@ class APISimulation {
   }
 
   static getCurrentSessionKey (moodleEndpoint, callback) {
-    let settings = {
-      'async': true,
-      'crossDomain': true,
-      'url': moodleEndpoint + '/my/',
-      'method': 'GET',
-      'headers': {
+    const settings = {
+      async: true,
+      crossDomain: true,
+      url: moodleEndpoint + '/my/',
+      method: 'GET',
+      headers: {
         'Cache-Control': 'no-cache'
       }
     }
 
     axios(settings).then((response) => {
-      let parser = new window.DOMParser()
-      let docPreferences = parser.parseFromString(response.data, 'text/html')
-      let sessionKeyInput = docPreferences.querySelector('input[name="sesskey"]')
+      const parser = new window.DOMParser()
+      const docPreferences = parser.parseFromString(response.data, 'text/html')
+      const sessionKeyInput = docPreferences.querySelector('input[name="sesskey"]')
       if (_.isElement(sessionKeyInput)) {
         callback(null, sessionKeyInput.value)
       } else {
@@ -153,12 +153,12 @@ class APISimulation {
     })
   }
 
-  static getClientIdForComment ({moodleEndpoint, isTeacher, cmid, studentId}, callback) {
-    let settings = {
-      'async': true,
-      'crossDomain': true,
-      'method': 'GET',
-      'headers': {
+  static getClientIdForComment ({ moodleEndpoint, isTeacher, cmid, studentId }, callback) {
+    const settings = {
+      async: true,
+      crossDomain: true,
+      method: 'GET',
+      headers: {
         'Cache-Control': 'no-cache'
       }
     }
@@ -168,12 +168,12 @@ class APISimulation {
       settings.url = moodleEndpoint + '/mod/assign/view.php?id=' + cmid
     }
     axios(settings).then((response) => {
-      let parser = new window.DOMParser()
-      let docPreferences = parser.parseFromString(response.data, 'text/html')
-      let clientIdContainer = docPreferences.evaluate("//script[contains(., 'client_id')]", document, null, window.XPathResult.ANY_TYPE, null).iterateNext()
+      const parser = new window.DOMParser()
+      const docPreferences = parser.parseFromString(response.data, 'text/html')
+      const clientIdContainer = docPreferences.evaluate("//script[contains(., 'client_id')]", document, null, window.XPathResult.ANY_TYPE, null).iterateNext()
       if (clientIdContainer) {
         try {
-          let clientId = clientIdContainer.innerText.split('client_id":"')[1].split('","commentarea')[0]
+          const clientId = clientIdContainer.innerText.split('client_id":"')[1].split('","commentarea')[0]
           callback(null, clientId)
         } catch (err) {
           callback(err)
@@ -190,27 +190,27 @@ class APISimulation {
 
   }
 
-  static constructGetRubricResponse ({cmid, rubricCriteria, assignmentId, assignmentName = ''}) {
+  static constructGetRubricResponse ({ cmid, rubricCriteria, assignmentId, assignmentName = '' }) {
     return {
-      'areas': [
+      areas: [
         {
-          'cmid': cmid,
-          'activemethod': 'rubric',
-          'definitions': [
+          cmid: cmid,
+          activemethod: 'rubric',
+          definitions: [
             {
-              'id': assignmentId,
-              'method': 'rubric',
-              'name': assignmentName,
-              'rubric': {
-                'rubric_criteria': rubricCriteria
+              id: assignmentId,
+              method: 'rubric',
+              name: assignmentName,
+              rubric: {
+                rubric_criteria: rubricCriteria
               }
             }
           ]
         }
       ],
-      'warnings': []
+      warnings: []
     }
   }
 }
 
-module.exports = APISimulation
+export default APISimulation

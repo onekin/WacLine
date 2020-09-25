@@ -1,22 +1,22 @@
-const _ = require('lodash')
-const LanguageUtils = require('../utils/LanguageUtils')
+import _ from 'lodash'
+import LanguageUtils from '../utils/LanguageUtils'
 // PVSCL:IFCOND(Classifying, LINE)
-const Classifying = require('./purposes/Classifying')
+import Classifying from './purposes/Classifying'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Commenting, LINE)
-const Commenting = require('./purposes/Commenting')
+import Commenting from './purposes/Commenting'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(SuggestedLiterature, LINE)
-const SuggestingLiterature = require('./purposes/SuggestingLiterature')
+import SuggestingLiterature from './purposes/SuggestingLiterature'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Assessing, LINE)
-const Assessing = require('./purposes/Assessing')
+import Assessing from './purposes/Assessing'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Linking, LINE)
-const Linking = require('./purposes/Linking')
+import Linking from './purposes/Linking'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
 
 class Annotation {
@@ -34,11 +34,9 @@ class Annotation {
     created,
     modified
   }) {
-    // PVSCL:IFCOND(NOT(CXLImport), LINE)
     if (!_.isArray(target) || _.isEmpty(target[0])) {
       throw new Error('Annotation must have a non-empty target')
     }
-    // PVSCL:ENDCOND
     this.target = target
     this.id = id
     this.body = body
@@ -47,11 +45,11 @@ class Annotation {
     this.tags = _.uniq(tags)
     this.creator = creator
     this.group = group
-    let createdDate = Date.parse(created)
+    const createdDate = Date.parse(created)
     if (_.isNumber(createdDate)) {
       this.created = new Date(created)
     }
-    let modifiedDate = Date.parse(modified)
+    const modifiedDate = Date.parse(modified)
     if (_.isNumber(modifiedDate)) {
       this.modified = new Date(modified)
     }
@@ -68,7 +66,7 @@ class Annotation {
   }
 
   serialize () {
-    let data = {
+    const data = {
       '@context': 'http://www.w3.org/ns/anno.jsonld',
       group: this.group || window.abwa.groupSelector.currentGroup.id,
       creator: this.creator || window.abwa.groupSelector.getCreatorData() || window.abwa.groupSelector.user.userid,
@@ -87,17 +85,25 @@ class Annotation {
       uri: /* PVSCL:IFCOND(DOI) */ this.target[0].source.doi || /* PVSCL:ENDCOND */ this.target[0].source.url || this.target[0].source.urn
     }
     // PVSCL:IFCOND(Hypothesis, LINE)
-    // As hypothes.is don't follow some attributes of W3C, we must adapt created annotation with its own attributes to set the target source
+    // The following lines are added to maintain compatibility with hypothes.is's data model that doesn't follow the W3C in all their attributes
+    // PVSCL:IFCOND(Commenting, LINE)
+    // Hypothes.is supports comments, but they are not stored in body, they use text
+    const commentingBody = this.getBodyForPurpose(Commenting.purpose)
+    if (commentingBody) {
+      data.text = commentingBody.value
+    }
+    // PVSCL:ENDCOND
+    // Adaptation of target source to hypothes.is's compatible document attribute
     if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
       // Add uri attribute
       data.uri = window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
       // Add document, uris, title, etc.
-      let uris = window.abwa.targetManager.getDocumentURIs()
+      const uris = window.abwa.targetManager.getDocumentURIs()
       data.document = {}
       if (uris.urn) {
         data.document.documentFingerprint = uris.urn
       }
-      data.document.link = Object.values(uris).map(uri => { return {href: uri} })
+      data.document.link = Object.values(uris).map(uri => { return { href: uri } })
       if (uris.doi) {
         data.document.dc = { identifier: [uris.doi] }
         data.document.highwire = { doi: [uris.doi] }
@@ -114,7 +120,7 @@ class Annotation {
   }
 
   static deserialize (annotationObject) {
-    let annotation = new Annotation({
+    const annotation = new Annotation({
       id: annotationObject.id,
       group: annotationObject.group,
       creator: annotationObject.creator,
@@ -126,30 +132,30 @@ class Annotation {
       modified: annotationObject.updated,
       evidence: annotationObject.links
     })
-    if (_.isArray(annotation.body) && annotationObject.body) {
+    if (_.isArray(annotation.body)) {
       annotation.body = annotationObject.body.map((body) => {
         // PVSCL:IFCOND(Classifying, LINE)
         if (body.purpose === Classifying.purpose) {
           // To remove the purpose from the annotation body
-          let tempBody = JSON.parse(JSON.stringify(body))
+          const tempBody = JSON.parse(JSON.stringify(body))
           delete tempBody.purpose
           // Create new element of type Classifying
-          return new Classifying({value: tempBody.value})
+          return new Classifying({ code: tempBody.value })
         }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(Commenting, LINE)
         if (body.purpose === Commenting.purpose) {
-          return new Commenting({value: body.value})
+          return new Commenting({ value: body.value })
         }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(SuggestedLiterature, LINE)
         if (body.purpose === SuggestingLiterature.purpose) {
-          return new SuggestingLiterature({value: body.value})
+          return new SuggestingLiterature({ value: body.value })
         }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(Assessing, LINE)
         if (body.purpose === Assessing.purpose) {
-          return new Assessing({value: body.value})
+          return new Assessing({ value: body.value })
         }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(Linking, LINE)
@@ -158,7 +164,7 @@ class Annotation {
           let tempBody = JSON.parse(JSON.stringify(body))
           delete tempBody.purpose
           // Create new element of type Linking
-          return new Linking({value: tempBody.value})
+          return new Linking({ value: tempBody.value })
         }
         // PVSCL:ENDCOND
       })
@@ -172,4 +178,4 @@ class Annotation {
   }
 }
 
-module.exports = Annotation
+export default Annotation

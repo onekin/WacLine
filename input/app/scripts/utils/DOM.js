@@ -1,15 +1,15 @@
-const $ = require('jquery')
+import $ from 'jquery'
 
 class DOM {
   static searchElementByTarget (target) {
     // Check if current page corresponds to target source
-    let currentLocation = location.href.replace(location.hash, '')
+    const currentLocation = location.href.replace(location.hash, '')
     if (target.source.includes(currentLocation)) {
-      let selectors = target.selector
+      const selectors = target.selector
       // Use the best selector
       let element = null
       for (let i = 0; i < selectors.length && element === null; i++) {
-        let selector = selectors[i]
+        const selector = selectors[i]
         if (selector.type === 'FragmentSelector') {
           element = document.querySelector('#' + selector.value)
         }
@@ -32,7 +32,7 @@ class DOM {
    */
   static scrapElement (callSettings, querySelector, callback) {
     $.ajax(callSettings).done((resultString) => {
-      let tempWrapper = document.createElement('div')
+      const tempWrapper = document.createElement('div')
       tempWrapper.innerHTML = resultString
       callback(null, tempWrapper.querySelectorAll(querySelector))
     }).fail((error) => {
@@ -56,12 +56,12 @@ class DOM {
 
   static getLeafNodesInRange (range) {
     let startNode = range.startContainer.childNodes[range.startOffset] || range.startContainer // it's a text node
-    let endNode = range.endContainer.childNodes[range.endOffset] || range.endContainer
+    const endNode = range.endContainer.childNodes[range.endOffset] || range.endContainer
 
     if (startNode === endNode && startNode.childNodes.length === 0) {
       return [startNode]
     }
-    let leafNodes = []
+    const leafNodes = []
     do {
       // If it is a leaf node, push it
       if (startNode.childNodes.length === 0) {
@@ -74,7 +74,7 @@ class DOM {
 
   static getNextSiblings (currentNode) {
     let iterator = currentNode
-    let siblings = []
+    const siblings = []
     while (iterator.nextSibling !== null) {
       siblings.push(iterator.nextSibling)
       iterator = iterator.nextSibling
@@ -84,7 +84,7 @@ class DOM {
 
   static getPreviousSiblings (currentNode) {
     let iterator = currentNode
-    let siblings = []
+    const siblings = []
     while (iterator.previousSibling !== null) {
       siblings.push(iterator.previousSibling)
       iterator = iterator.previousSibling
@@ -101,4 +101,4 @@ class DOM {
   }
 }
 
-module.exports = DOM
+export default DOM

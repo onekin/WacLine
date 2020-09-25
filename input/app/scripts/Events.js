@@ -29,7 +29,7 @@ const Events = {
   deleteAllAnnotations: 'deleteAllAnnotations',
   deletedAllAnnotations: 'deletedAllAnnotations',
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(Filter, LINE)
+  // PVSCL:IFCOND(UserFilter, LINE)
   updatedCurrentAnnotations: 'updatedCurrentAnnotations',
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Linking, LINE)
@@ -98,4 +98,4 @@ const Events = {
   codebookRead: 'codebookRead' // Not in codebook variation point because absense of Codebook/Classifying also requires this event currently
 }
 
-module.exports = Events
+export default Events

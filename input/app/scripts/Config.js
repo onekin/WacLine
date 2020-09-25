@@ -8,27 +8,27 @@ defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:
 // PVSCL:ENDCOND
 
 // Tags configuration
-let grouped = {
-// PVSCL:IFCOND(CodebookTypology->pv:Attribute('name')->pv:ToLowerCase()->pv:Size()>1, LINE)		
+const grouped = {
+// PVSCL:IFCOND(CodebookTypology->pv:Attribute('name')->pv:ToLowerCase()->pv:Size()>1, LINE)
   group: 'PVSCL:EVAL(CodebookTypology->pv:Attribute('name')->pv:ToLowerCase())'
 // PVSCL:ELSECOND
   group: 'theme'
 // PVSCL:ENDCOND
 }
 // PVSCL:IFCOND(Hierarchy,LINE)
-grouped['subgroup'] = 'code'
-grouped['relation'] = 'isCodeOf'
+grouped.subgroup = 'code'
+grouped.relation = 'isCodeOf'
 // PVSCL:ENDCOND
-let tags = {
+const tags = {
   grouped: grouped,
   motivation: 'motivation'
 }
 // PVSCL:IFCOND(MoodleResource, LINE)
-tags['producer'] = 'teacher'
-tags['consumer'] = 'student'
+tags.producer = 'teacher'
+tags.consumer = 'student'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetProvider, LINE)
-tags['statics'] = {
+tags.statics = {
   multivalued: 'multivalued',
   inductive: 'inductive',
   validated: 'validated',
@@ -67,4 +67,4 @@ const Config = {
   }]
 }
 
-module.exports = Config
+export default Config

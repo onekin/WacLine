@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 class AnnotationServerManager {
   constructor () {
@@ -40,4 +40,4 @@ class AnnotationServerManager {
   }
 }
 
-module.exports = AnnotationServerManager
+export default AnnotationServerManager

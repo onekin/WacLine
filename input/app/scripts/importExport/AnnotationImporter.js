@@ -1,7 +1,7 @@
-const Alerts = require('../utils/Alerts')
-const FileUtils = require('../utils/FileUtils')
-const Codebook = require('../codebook/model/Codebook')
-const _ = require('lodash')
+import Alerts from '../utils/Alerts'
+import FileUtils from '../utils/FileUtils'
+import Codebook from '../codebook/model/Codebook'
+import _ from 'lodash'
 
 class AnnotationImporter {
   static askUserToImportDocumentAnnotations (callback) {
@@ -30,7 +30,7 @@ class AnnotationImporter {
   static importReviewAnnotations () {
     AnnotationImporter.askUserToImportDocumentAnnotations((err, jsonObject) => {
       if (err) {
-        Alerts.errorAlert({text: 'Unable to parse json file. Error:<br/>' + err.message})
+        Alerts.errorAlert({ text: 'Unable to parse json file. Error:<br/>' + err.message })
       } else {
         Alerts.inputTextAlert({
           alertType: Alerts.alertType.warning,
@@ -55,36 +55,36 @@ class AnnotationImporter {
             if (err) {
               window.alert('Unable to load alert. Unexpected error, please contact developer.')
             } else {
-              window.abwa.annotationServerManager.client.createNewGroup({name: reviewName}, (err, newGroup) => {
+              window.abwa.annotationServerManager.client.createNewGroup({ name: reviewName }, (err, newGroup) => {
                 if (err) {
-                  Alerts.errorAlert({text: 'Unable to create a new annotation group. Error: ' + err.message})
+                  Alerts.errorAlert({ text: 'Unable to create a new annotation group. Error: ' + err.message })
                 } else {
                   // Create codebook
-                  let tempCodebook = Codebook.fromObjects(jsonObject.codebook)
+                  const tempCodebook = Codebook.fromObjects(jsonObject.codebook)
                   Codebook.setAnnotationServer(newGroup, (annotationServer) => {
                     tempCodebook.annotationServer = annotationServer
-                    let annotations = tempCodebook.toAnnotations()
+                    const annotations = tempCodebook.toAnnotations()
                     // Send create highlighter
                     window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, codebookAnnotations) => {
                       if (err) {
-                        Alerts.errorAlert({text: 'Unable to create new group.'})
+                        Alerts.errorAlert({ text: 'Unable to create new group.' })
                       } else {
                         // Parse annotations and dispatch created codebook
                         Codebook.fromAnnotations(codebookAnnotations, (err, codebook) => {
                           if (err) {
-                            Alerts.errorAlert({text: 'Unable to create a codebook. Error: ' + err.message})
+                            Alerts.errorAlert({ text: 'Unable to create a codebook. Error: ' + err.message })
                           } else {
                             // Parse annotations codes to new code ids
                             jsonObject.documentAnnotations.forEach((annotation) => {
-                              let classifyingBody = annotation.body.find(body => body.purpose === 'classifying')
+                              const classifyingBody = annotation.body.find(body => body.purpose === 'classifying')
                               if (classifyingBody) {
-                                let code = classifyingBody.value.code
-                                let codeName = code.name
+                                const code = classifyingBody.value
+                                const codeName = code.name
                                 let theme
                                 // Get the theme which is annotation classified
                                 // PVSCL:IFCOND(Hierarchy, LINE)
                                 if (code.theme) {
-                                  let themeName = code.theme.name
+                                  const themeName = code.theme.name
                                   theme = codebook.getThemeByName(themeName)
                                 } else {
                                   theme = codebook.getThemeByName(codeName)
@@ -104,18 +104,18 @@ class AnnotationImporter {
                                 // PVSCL:ENDCOND
                                 // Update annotation value
                                 if (codeOrTheme) {
-                                  annotation.body[annotation.body.findIndex(body => body.purpose === 'classifying')].value.code = codeOrTheme.toObject()
+                                  annotation.body[annotation.body.findIndex(body => body.purpose === 'classifying')].value = codeOrTheme.toObject()
                                 }
                               }
                               // Set group to annotations
                               annotation.group = newGroup.id
                               // Set permissions to annotations
-                              annotation.permissions = {read: ['group:' + newGroup.id]}
+                              annotation.permissions = { read: ['group:' + newGroup.id] }
                             })
                             // Create annotations for each element
                             window.abwa.annotationServerManager.client.createNewAnnotations(jsonObject.documentAnnotations, (err, annotations) => {
                               if (err) {
-                                Alerts.errorAlert({text: 'Unable to import annotations. Error: ' + err.message})
+                                Alerts.errorAlert({ text: 'Unable to import annotations. Error: ' + err.message })
                               } else {
                                 window.abwa.groupSelector.retrieveGroups(() => {
                                   window.abwa.groupSelector.setCurrentGroup(newGroup.id, () => {
@@ -141,4 +141,4 @@ class AnnotationImporter {
   }
 }
 
-module.exports = AnnotationImporter
+export default AnnotationImporter

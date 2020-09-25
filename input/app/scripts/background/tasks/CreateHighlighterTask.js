@@ -1,20 +1,20 @@
-const Task = require('./Task')
-const _ = require('lodash')
-const CryptoUtils = require('../../utils/CryptoUtils')
-const AnnotationUtils = require('../../utils/AnnotationUtils')
-const Codebook = require('../../codebook/model/Codebook')
-const Config = require('../../Config')
+import Task from './Task'
+import _ from 'lodash'
+import MoodleUtils from '../../moodle/MoodleUtils'
+import AnnotationUtils from '../../utils/AnnotationUtils'
+import Codebook from '../../codebook/model/Codebook'
+import Config from '../../Config'
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
-const Hypothesis = require('../../annotationServer/hypothesis/Hypothesis')
-const LanguageUtils = require('../../utils/LanguageUtils')
+import HypothesisClientManager from '../../annotationServer/hypothesis/HypothesisClientManager'
+import Hypothesis from '../../annotationServer/hypothesis/Hypothesis'
+import LanguageUtils from '../../utils/LanguageUtils'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorage = require('../../annotationServer/browserStorage/BrowserStorage')
-const BrowserStorageManager = require('../../annotationServer/browserStorage/BrowserStorageManager')
+import BrowserStorage from '../../annotationServer/browserStorage/BrowserStorage'
+import BrowserStorageManager from '../../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
-const ChromeStorage = require('../../utils/ChromeStorage')
+// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1,LINE)
+import ChromeStorage from '../../utils/ChromeStorage'
 // PVSCL:ENDCOND
 
 class CreateHighlighterTask extends Task {
@@ -25,21 +25,19 @@ class CreateHighlighterTask extends Task {
   }
 
   init (callback) {
-    let promisesData = []
+    const promisesData = []
     for (let i = 0; i < this.config.activities.length; i++) {
-      let rubric = this.config.activities[i].data.rubric
-      let student = this.config.activities[i].data.student
-      let siteUrl = new URL(rubric.moodleEndpoint)
-      let courseId = this.config.activities[i].data.courseId
-      let groupName = siteUrl.host + courseId + student.id
-      // We create a hash using the course ID and the student ID to anonymize the Hypothes.is group
-      let hashedGroupName = 'MG' + CryptoUtils.hash(groupName).substring(0, 23)
-      promisesData.push({rubric, groupName: hashedGroupName, id: i})
+      const rubric = this.config.activities[i].data.rubric
+      const student = this.config.activities[i].data.student
+      const courseId = this.config.activities[i].data.courseId
+      const hashedGroupName = MoodleUtils.getHashedGroup({ studentId: student.id, courseId, moodleEndpoint: rubric.moodleEndpoint })
+      console.debug('Creating hashed group: ' + hashedGroupName)
+      promisesData.push({ rubric, groupName: hashedGroupName, id: i })
     }
 
     this.currentPromisesStatus = []
 
-    let runPromiseToGenerateGroup = (d) => {
+    const runPromiseToGenerateGroup = (d) => {
       return new Promise((resolve, reject) => {
         this.generateGroup({
           rubric: d.rubric,
@@ -56,11 +54,12 @@ class CreateHighlighterTask extends Task {
                 setTimeout(resolve, 5000)
               }
             }
-          }})
+          }
+        })
       })
     }
 
-    let promiseChain = promisesData.reduce(
+    const promiseChain = promisesData.reduce(
       (chain, d) =>
         chain.then(() => {
           return runPromiseToGenerateGroup(d)
@@ -74,7 +73,7 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  generateGroup ({rubric, groupName, id, callback}) {
+  generateGroup ({ rubric, groupName, id, callback }) {
     this.currentPromisesStatus[id] = 'Checking if the group already exists'
     if (_.isFunction(callback)) {
       this.loadAnnotationServer(() => {
@@ -95,17 +94,17 @@ class CreateHighlighterTask extends Task {
                     }
                   } else {
                     this.groups = groups
-                    let group = _.find(groups, (group) => {
+                    const group = _.find(groups, (group) => {
                       return group.name === groupName
                     })
                     if (_.isEmpty(group)) {
                       this.currentPromisesStatus[id] = 'Creating new group to store annotations'
-                      this.createGroup({name: groupName}, (err, group) => {
+                      this.createGroup({ name: groupName }, (err, group) => {
                         this.setAnnotationServer(group, (annotationServer) => {
                           if (err) {
                             console.error('ErrorConfiguringHighlighter')
-                            this.currentPromisesStatus[id] = chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator')
-                            callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
+                            this.currentPromisesStatus[id] = chrome.i18n.getMessage('ErrorConfiguringHighlighter') + chrome.i18n.getMessage('ErrorContactDeveloper', [err.message, err.stack])
+                            callback(new Error(chrome.i18n.getMessage('ErrorConfiguringHighlighter') + chrome.i18n.getMessage('ErrorContactDeveloper', [err.message, err.stack])))
                           } else {
                             this.currentPromisesStatus[id] = 'Creating rubric highlighter in the annotation server'
                             this.createHighlighterAnnotations({
@@ -120,7 +119,7 @@ class CreateHighlighterTask extends Task {
                       this.setAnnotationServer(group, (annotationServer) => {
                         // Check if highlighter for assignment is already created
                         this.annotationServerClientManager.client.searchAnnotations({
-                          group: annotationServer.group.id,
+                          group: annotationServer.getGroupId(),
                           any: '"cmid:' + rubric.cmid + '"',
                           wildcard_uri: 'https://hypothes.is/groups/*'
                         }, (err, annotations) => {
@@ -156,7 +155,7 @@ class CreateHighlighterTask extends Task {
     } else {
       group = newGroup
     }
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
     ChromeStorage.getData('annotationServer.selected', ChromeStorage.sync, (err, annotationServer) => {
       if (err) {
         console.error('ErrorSettingAnnotationServer')
@@ -169,10 +168,10 @@ class CreateHighlighterTask extends Task {
         }
         if (actualAnnotationServer === 'hypothesis') {
           // Hypothesis
-          annotationAnnotationServer = new Hypothesis({group: group})
+          annotationAnnotationServer = new Hypothesis({ group: group })
         } else {
           // Browser storage
-          annotationAnnotationServer = new BrowserStorage({group: group})
+          annotationAnnotationServer = new BrowserStorage({ group: group })
         }
         if (_.isFunction(callback)) {
           callback(annotationAnnotationServer)
@@ -181,10 +180,10 @@ class CreateHighlighterTask extends Task {
     })
     // PVSCL:ELSECOND
     // PVSCL:IFCOND(Hypothesis,LINE)
-    annotationAnnotationServer = new Hypothesis({group: group})
+    annotationAnnotationServer = new Hypothesis({ group: group })
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage,LINE)
-    annotationAnnotationServer = new BrowserStorage({group: group})
+    annotationAnnotationServer = new BrowserStorage({ group: group })
     // PVSCL:ENDCOND
     if (_.isFunction(callback)) {
       callback(annotationAnnotationServer)
@@ -192,14 +191,14 @@ class CreateHighlighterTask extends Task {
     // PVSCL:ENDCOND
   }
 
-  updateHighlighterAnnotations ({rubric, annotations, annotationServer, userProfile}, callback) {
+  updateHighlighterAnnotations ({ rubric, annotations, annotationServer, userProfile }, callback) {
     // PVSCL:IFCOND(Hypothesis,LINE)
     if (LanguageUtils.isInstanceOf(this.annotationServerClientManager, HypothesisClientManager)) {
       annotationServer.group.links.html = annotationServer.group.links.html.substr(0, annotationServer.group.links.html.lastIndexOf('/'))
     }
     // PVSCL:ENDCOND
     // Create teacher annotation if not exists
-    this.createTeacherAnnotation({producerId: userProfile.userid, annotationServer: annotationServer}, (err) => {
+    this.createTeacherAnnotation({ producerId: userProfile.userid, annotationServer: annotationServer }, (err) => {
       if (err) {
         callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
       } else {
@@ -207,12 +206,12 @@ class CreateHighlighterTask extends Task {
         rubric.annotationServer = annotationServer
         rubric = Codebook.createCodebookFromObject(rubric)
         // Check annotations pending
-        let annotationsPending = _.differenceWith(rubric.toAnnotations(), annotations, AnnotationUtils.areEqual)
+        const annotationsPending = _.differenceWith(rubric.toAnnotations(), annotations, AnnotationUtils.areEqual)
         // Check annotations to remove
-        let annotationsToRemove = _.differenceWith(annotations, rubric.toAnnotations(), AnnotationUtils.areEqual)
+        const annotationsToRemove = _.differenceWith(annotations, rubric.toAnnotations(), AnnotationUtils.areEqual)
         if (annotationsPending.length === 0 && annotationsToRemove.length === 0) {
           console.debug('Highlighter is already updated, skipping to the next group')
-          callback(null, {nothingDone: true})
+          callback(null, { nothingDone: true })
         } else {
           this.annotationServerClientManager.client.deleteAnnotations(annotationsToRemove, (err) => {
             if (err) {
@@ -233,7 +232,7 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  createHighlighterAnnotations ({rubric, annotationServer, userProfile}, callback) {
+  createHighlighterAnnotations ({ rubric, annotationServer, userProfile }, callback) {
     // Generate group annotations
     rubric.annotationServer = annotationServer
     // PVSCL:IFCOND(Hypothesis,LINE)
@@ -242,8 +241,8 @@ class CreateHighlighterTask extends Task {
     }
     // PVSCL:ENDCOND
     rubric = Codebook.createCodebookFromObject(rubric) // convert to rubric to be able to run toAnnotations() function
-    let annotations = rubric.toAnnotations()
-    this.createTeacherAnnotation({producerId: userProfile.userid, annotationServer: annotationServer}, (err) => {
+    const annotations = rubric.toAnnotations()
+    this.createTeacherAnnotation({ producerId: userProfile.userid, annotationServer: annotationServer }, (err) => {
       if (err) {
         callback(new Error(chrome.i18n.getMessage('ErrorRelatingMoodleAndTool') + '<br/>' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack])))
       } else {
@@ -260,9 +259,8 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  createGroup ({name, assignmentName = '', student = ''}, callback) {
-    this.annotationServerClientManager.client.createNewGroup({
-      name: name, description: 'An resource based generated group to mark the assignment in moodle called ' + assignmentName}, (err, group) => {
+  createGroup ({ name, assignmentName = '', student = '' }, callback) {
+    this.annotationServerClientManager.client.createNewGroup({ name: name, description: 'An resource based generated group to mark the assignment in moodle called ' + assignmentName }, (err, group) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -275,10 +273,10 @@ class CreateHighlighterTask extends Task {
     })
   }
 
-  createTeacherAnnotation ({producerId, annotationServer}, callback) {
-    let teacherAnnotation = this.generateTeacherAnnotation(producerId, annotationServer)
+  createTeacherAnnotation ({ producerId, annotationServer }, callback) {
+    const teacherAnnotation = this.generateTeacherAnnotation(producerId, annotationServer)
     // Check if annotation already exists
-    this.annotationServerClientManager.client.searchAnnotations({group: annotationServer.group.id, tags: Config.namespace + ':' + Config.tags.producer}, (err, annotations) => {
+    this.annotationServerClientManager.client.searchAnnotations({ group: annotationServer.getGroupId(), tags: Config.namespace + ':' + Config.tags.producer }, (err, annotations) => {
       if (err) {
 
       } else {
@@ -307,9 +305,9 @@ class CreateHighlighterTask extends Task {
 
   generateTeacherAnnotation (producerId, annotationServer) {
     return {
-      group: annotationServer.group.id,
+      group: annotationServer.getGroupId(),
       permissions: {
-        read: ['group:' + annotationServer.group.id]
+        read: ['group:' + annotationServer.getGroupId()]
       },
       references: [],
       tags: [Config.namespace + ':' + Config.tags.producer],
@@ -320,7 +318,7 @@ class CreateHighlighterTask extends Task {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     this.annotationServerClientManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
@@ -337,7 +335,7 @@ class CreateHighlighterTask extends Task {
       }
     })
     // PVSCL:ELSECOND
-    let defaultAnnotationServer = Config.defaultAnnotationServer
+    const defaultAnnotationServer = Config.defaultAnnotationServer
     ChromeStorage.getData('annotationServer.selected', ChromeStorage.sync, (err, annotationServer) => {
       if (err) {
         callback(err)
@@ -380,12 +378,12 @@ class CreateHighlighterTask extends Task {
   }
 
   getStatus () {
-    let numberTotal = this.config.activities.length
-    let finished = _.countBy(this.currentPromisesStatus, (promiseList) => {
+    const numberTotal = this.config.activities.length
+    const finished = _.countBy(this.currentPromisesStatus, (promiseList) => {
       return promiseList === true
     }).true || '0'
     if (finished < numberTotal) {
-      let currentTaskName = _.last(this.currentPromisesStatus)
+      const currentTaskName = _.last(this.currentPromisesStatus)
       if (currentTaskName !== true) {
         return currentTaskName + ' (' + finished + '/' + numberTotal + ')'
       } else {
@@ -397,4 +395,4 @@ class CreateHighlighterTask extends Task {
   }
 }
 
-module.exports = CreateHighlighterTask
+export default CreateHighlighterTask

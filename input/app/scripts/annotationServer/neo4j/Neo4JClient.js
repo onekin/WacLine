@@ -1,6 +1,6 @@
 /* eslint-disable */
-const _ = require('lodash')
-const axios = require('axios')
+import _ from 'lodash'
+import axios from 'axios'
 // const jsonld = require('jsonld')
 
 // Configuration constants
@@ -19,7 +19,7 @@ function sleep (miliseconds) {
 function getObjectId (data, id) {
   for (let i = 0; i < data.length; i++) {
     let item = data [i]
-    if (item.id == id){
+    if (item.id === id){
       return item
     }
   }
@@ -913,4 +913,4 @@ debuggingg ('result:: ' + JSON.stringify(data) )
     callback(new Error('Neo4J does not manage groups'))
   }
 }
-module.exports = Neo4JClient
+export default Neo4JClient

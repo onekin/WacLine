@@ -50,7 +50,7 @@
       "matches": ["*://link.springer.com/*"],
       "js": ["scripts/springerContentScript.js"],
       "run_at": "document_end"
-    }PVSCL:ENDCONDPVSCL:IFCOND(Manual and Hypothesis and AnnotationServer->pv:SelectedChildren()->pv:Size()=1),
+    }PVSCL:ENDCONDPVSCL:IFCOND(Manual and Hypothesis and AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1),
     {
       "matches": [
         "https://hypothes.is/groups/*/*"
@@ -67,6 +67,16 @@
     }, {
       "matches": ["*://*/*course/modedit.php?add=assign*"],
       "js": ["scripts/moodleAssignmentAddContentScript.js"],
+      "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(MoodleResource),
+    {
+      "matches": ["*://*/*course/view.php*"],
+      "js": ["scripts/moodleResumption.js"],
+      "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(MoodleResource),
+    {
+      "matches": ["*://*/*mod/assign/view.php*"],
+      "js": ["scripts/moodleEstimation.js"],
       "run_at": "document_end"
     }PVSCL:ENDCOND
   ],

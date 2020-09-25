@@ -1,4 +1,4 @@
-const sha256 = require('js-sha256')
+import sha256 from 'js-sha256'
 
 class CryptoUtils {
   static hash (string = '') {
@@ -6,4 +6,4 @@ class CryptoUtils {
   }
 }
 
-module.exports = CryptoUtils
+export default CryptoUtils

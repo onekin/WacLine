@@ -1,10 +1,10 @@
-const MoodleClientManager = require('../../moodle/MoodleClientManager')
-const MoodleUtils = require('../../moodle/MoodleUtils')
-const Alerts = require('../../utils/Alerts')
-const _ = require('lodash')
-const Config = require('../../Config')
-const Events = require('../../Events')
-const Commenting = require('../purposes/Commenting')
+import MoodleClientManager from '../../moodle/MoodleClientManager'
+import MoodleUtils from '../../moodle/MoodleUtils'
+import Alerts from '../../utils/Alerts'
+import _ from 'lodash'
+import Config from '../../Config'
+import Events from '../../Events'
+import Commenting from '../purposes/Commenting'
 // const linkifyUrls = require('linkify-urls')
 
 class MoodleReport {
@@ -27,7 +27,7 @@ class MoodleReport {
   }
 
   initEventListeners (callback) {
-    this.events.annotatedContentManagerUpdatedEvent = {element: document, event: Events.annotatedContentManagerUpdated, handler: this.createUpdateMoodleFromMarksEventListener()}
+    this.events.annotatedContentManagerUpdatedEvent = { element: document, event: Events.annotatedContentManagerUpdated, handler: this.createUpdateMoodleFromMarksEventListener() }
     this.events.annotatedContentManagerUpdatedEvent.element.addEventListener(this.events.annotatedContentManagerUpdatedEvent.event, this.events.annotatedContentManagerUpdatedEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -36,7 +36,7 @@ class MoodleReport {
 
   createUpdateMoodleFromMarksEventListener () {
     return () => {
-      let annotatedThemes = window.abwa.annotatedContentManager.annotatedThemes
+      const annotatedThemes = window.abwa.annotatedContentManager.annotatedThemes
       window.abwa.moodleReport.updateMoodleFromMarks(annotatedThemes, (err) => {
         if (err) {
           Alerts.errorAlert({
@@ -59,27 +59,27 @@ class MoodleReport {
     // Get all code annotations
     let annotations = []
     for (let i = 0; i < annotatedThemes.length; i++) {
-      let themeId = annotatedThemes[i].theme.id
-      let currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(themeId)
+      const themeId = annotatedThemes[i].theme.id
+      const currentlyAnnotatedCode = window.abwa.annotatedContentManager.searchAnnotatedCodeForGivenThemeId(themeId)
       if (currentlyAnnotatedCode) {
-        let codeAnnotaions = currentlyAnnotatedCode.annotations
+        const codeAnnotaions = currentlyAnnotatedCode.annotations
         annotations.push(codeAnnotaions)
       }
     }
     annotations = _.flatten(annotations)
     // let annotations = _.flatten(_.map(annotatedThemes, annotatedTheme => annotatedTheme.annotations))
     // Get student id
-    let studentId = window.abwa.targetManager.fileMetadata.studentId
+    const studentId = window.abwa.targetManager.fileMetadata.studentId
     // Filter from search only the annotations which are used to classify and are from this cmid
-    let cmid = window.abwa.codebookManager.codebookReader.codebook.cmid
+    const cmid = window.abwa.codebookManager.codebookReader.codebook.cmid
     annotations = _.filter(annotations, (anno) => {
       return anno.uri !== window.abwa.groupSelector.currentGroup.links.html &&
         _.find(anno.tags, (tag) => {
           return tag === 'cmid:' + cmid
         })
     })
-    let marks = _.map(annotations, (annotation) => {
-      let criteriaName = _.find(annotation.tags, (tag) => {
+    const marks = _.map(annotations, (annotation) => {
+      const criteriaName = _.find(annotation.tags, (tag) => {
         return tag.includes(Config.namespace + ':' + Config.tags.grouped.relation + ':')
       }).replace(Config.namespace + ':' + Config.tags.grouped.relation + ':', '')
       let levelName = _.find(annotation.tags, (tag) => {
@@ -90,10 +90,10 @@ class MoodleReport {
       } else {
         levelName = null
       }
-      let url = MoodleUtils.createURLForAnnotation({annotation, studentId, courseId: window.abwa.codebookManager.codebookReader.codebook.courseId, cmid: cmid})
+      const url = MoodleUtils.createURLForAnnotation({ annotation, studentId, courseId: window.abwa.codebookManager.codebookReader.codebook.courseId, cmid: cmid })
       // Construct feedback
-      let comment = annotation.getBodyForPurpose(Commenting.purpose)
-      let text = comment ? comment.value : ''
+      const comment = annotation.getBodyForPurpose(Commenting.purpose)
+      const text = comment ? comment.value : ''
       let feedbackCommentElement = ''
       if (text) {
         /* let urlizedText = linkifyUrls(text, {
@@ -101,28 +101,28 @@ class MoodleReport {
             target: '_blank'
           }
         }) */
-        let urlizedText = text
-        let quoteSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
+        const urlizedText = text
+        const quoteSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
         if (quoteSelector) {
           feedbackCommentElement = '<b>' + urlizedText + '</b><br/><a href="' + url + '">See in context</a>'
         }
       } else {
         feedbackCommentElement = '<b>-</b><br/><a href="' + url + '">See in context</a>'
       }
-      return {criteriaName, levelName, text, url, feedbackCommentElement}
+      return { criteriaName, levelName, text, url, feedbackCommentElement }
     })
     console.log(marks)
     // Reorder criterias as same as are presented in rubric
-    let sortingArr = _.map(window.abwa.codebookManager.codebookReader.codebook.themes, 'name')
+    const sortingArr = _.map(window.abwa.codebookManager.codebookReader.codebook.themes, 'name')
     marks.slice().sort((a, b) => {
       return sortingArr.indexOf(a.criteriaName) - sortingArr.indexOf(b.criteriaName)
     })
     console.log(marks)
     // Get for each criteria name and mark its corresponding criterionId and level from window.abwa.rubric
-    let criterionAndLevels = this.getCriterionAndLevel(marks)
-    let feedbackComment = this.getFeedbackComment(marks)
+    const criterionAndLevels = this.getCriterionAndLevel(marks)
+    const feedbackComment = this.getFeedbackComment(marks)
     // Compose moodle data
-    let moodleGradingData = this.composeMoodleGradingData({
+    const moodleGradingData = this.composeMoodleGradingData({
       criterionAndLevels,
       userId: studentId,
       assignmentId: window.abwa.codebookManager.codebookReader.codebook.assignmentId,
@@ -143,33 +143,33 @@ class MoodleReport {
   }
 
   getCriterionAndLevel (marks) {
-    let annotationGuide = window.abwa.codebookManager.codebookReader.codebook
-    let criterionAndLevel = []
+    const annotationGuide = window.abwa.codebookManager.codebookReader.codebook
+    const criterionAndLevel = []
     for (let i = 0; i < marks.length; i++) {
-      let mark = marks[i]
-      let criteria = _.find(annotationGuide.themes, (theme) => {
+      const mark = marks[i]
+      const criteria = _.find(annotationGuide.themes, (theme) => {
         return theme.name === mark.criteriaName
       })
       let level = _.find(criteria.codes, (code) => {
         return code.name === mark.levelName
       })
       if (_.isUndefined(level)) {
-        level = {levelId: -1}
+        level = { levelId: -1 }
       }
-      let remark = mark.text
-      criterionAndLevel.push({criterionId: criteria.moodleCriteriaId, levelid: level.moodleLevelId, remark})
+      const remark = mark.text
+      criterionAndLevel.push({ criterionId: criteria.moodleCriteriaId, levelid: level.moodleLevelId, remark })
     }
     console.log(criterionAndLevel)
-    let resultingMarks = {}
+    const resultingMarks = {}
     // TODO Append links if shared
     // Merge remarks with same criterionId and append remark
     _.forEach(criterionAndLevel, (crit) => {
-      let remark = _.has(resultingMarks[crit.criterionId], 'remark') ? resultingMarks[crit.criterionId]['remark'] + '\n\n' + crit.remark : crit.remark
-      let levelid = crit.levelid
-      resultingMarks[crit.criterionId] = {remark: remark, levelid: levelid}
+      const remark = _.has(resultingMarks[crit.criterionId], 'remark') ? resultingMarks[crit.criterionId].remark + '\n\n' + crit.remark : crit.remark
+      const levelid = crit.levelid
+      resultingMarks[crit.criterionId] = { remark: remark, levelid: levelid }
     })
     // Convert merge object to an array
-    return _.map(resultingMarks, (mark, key) => { return {criterionId: key, levelid: mark.levelid, remark: mark.remark} })
+    return _.map(resultingMarks, (mark, key) => { return { criterionId: key, levelid: mark.levelid, remark: mark.remark } })
   }
 
   getFeedbackComment (marks) {
@@ -177,11 +177,11 @@ class MoodleReport {
       '<li><a target="_blank" href="https://chrome.google.com/webstore/detail/markgo/kjedcndgienemldgjpjjnhjdhfoaocfa">Install Mark&Go</a></li>' +
       '<li><a target="_blank" href="' + window.abwa.groupSelector.currentGroup.links.html + '">Join feedback group</a></li>' +
       '</ul><hr/>' // TODO i18n
-    let groupedMarksArray = _.values(_.groupBy(marks, 'criteriaName'))
+    const groupedMarksArray = _.values(_.groupBy(marks, 'criteriaName'))
     _.forEach(groupedMarksArray, (markGroup) => {
       // Criteria + level
-      let criteria = markGroup[0].criteriaName
-      let levelId = markGroup[0].levelName
+      const criteria = markGroup[0].criteriaName
+      const levelId = markGroup[0].levelName
       feedbackComment += '<h3>Criteria: ' + criteria + ' - Mark: ' + levelId + '</h3><br/>'
       // Comments
       _.forEach(markGroup, (mark) => {
@@ -193,37 +193,37 @@ class MoodleReport {
     return feedbackComment
   }
 
-  composeMoodleGradingData ({criterionAndLevels, userId, assignmentId, feedbackComment}) {
-    let rubric = {criteria: []}
+  composeMoodleGradingData ({ criterionAndLevels, userId, assignmentId, feedbackComment }) {
+    const rubric = { criteria: [] }
     for (let i = 0; i < criterionAndLevels.length; i++) {
-      let criterionAndLevel = criterionAndLevels[i]
+      const criterionAndLevel = criterionAndLevels[i]
       if (criterionAndLevel.levelid > -1) { // If it is -1, the student is not grade for this criteria
         rubric.criteria.push({
-          'criterionid': criterionAndLevel.criterionId,
-          'fillings': [
+          criterionid: criterionAndLevel.criterionId,
+          fillings: [
             {
-              'criterionid': '0',
-              'levelid': criterionAndLevel.levelid,
-              'remark': criterionAndLevel.remark,
-              'remarkformat': 1
+              criterionid: '0',
+              levelid: criterionAndLevel.levelid,
+              remark: criterionAndLevel.remark,
+              remarkformat: 1
             }
           ]
         })
       }
     }
     return {
-      'userid': userId + '',
-      'assignmentid': assignmentId,
-      'attemptnumber': '-1',
-      'addattempt': 1,
-      'workflowstate': '',
-      'applytoall': 1,
-      'grade': '0',
-      'advancedgradingdata': { rubric: rubric },
-      'plugindata': {
-        'assignfeedbackcomments_editor': {
-          'format': '1', // HTML
-          'text': feedbackComment
+      userid: userId + '',
+      assignmentid: assignmentId,
+      attemptnumber: '-1',
+      addattempt: 1,
+      workflowstate: '',
+      applytoall: 1,
+      grade: '0',
+      advancedgradingdata: { rubric: rubric },
+      plugindata: {
+        assignfeedbackcomments_editor: {
+          format: '1', // HTML
+          text: feedbackComment
         }
       }
     }
@@ -231,7 +231,7 @@ class MoodleReport {
 
   destroy (callback) {
     // Remove the event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
@@ -241,4 +241,4 @@ class MoodleReport {
   }
 }
 
-module.exports = MoodleReport
+export default MoodleReport

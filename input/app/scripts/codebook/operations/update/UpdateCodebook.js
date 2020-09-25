@@ -1,15 +1,15 @@
-const Events = require('../../../Events')
-const Alerts = require('../../../utils/Alerts')
-const _ = require('lodash')
-const $ = require('jquery')
-const Config = require('../../../Config')
-const Theme = require('../../model/Theme')
-const Classifying = require('../../../annotationManagement/purposes/Classifying')
-const Annotation = require('../../../annotationManagement/Annotation')
+import Events from '../../../Events'
+import Alerts from '../../../utils/Alerts'
+import _ from 'lodash'
+import _ from 'jquery'
+import Config from '../../../Config'
+import Theme from '../../model/Theme'
+import Classifying from '../../../annotationManagement/purposes/Classifying'
+import Annotation from '../../../annotationManagement/Annotation'
 // PVSCL:IFCOND(Hierarchy,LINE)
-const Code = require('../../model/Code')
+import Code from '../../model/Code'
 // PVSCL:ENDCOND
-const LanguageUtils = require('../../../utils/LanguageUtils')
+import LanguageUtils from '../../../utils/LanguageUtils'
 
 class UpdateCodebook {
   constructor () {
@@ -30,24 +30,24 @@ class UpdateCodebook {
 
   destroy () {
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
   }
 
   initCreateThemeEvent () {
-    this.events.createThemeEvent = {element: document, event: Events.createTheme, handler: this.createNewThemeEventHandler()}
+    this.events.createThemeEvent = { element: document, event: Events.createTheme, handler: this.createNewThemeEventHandler() }
     this.events.createThemeEvent.element.addEventListener(this.events.createThemeEvent.event, this.events.createThemeEvent.handler, false)
   }
 
   initUpdateThemeEvent () {
-    this.events.updateThemeEvent = {element: document, event: Events.updateTheme, handler: this.createUpdateThemeEventHandler()}
+    this.events.updateThemeEvent = { element: document, event: Events.updateTheme, handler: this.createUpdateThemeEventHandler() }
     this.events.updateThemeEvent.element.addEventListener(this.events.updateThemeEvent.event, this.events.updateThemeEvent.handler, false)
   }
 
   initRemoveThemeEvent (callback) {
-    this.events.removeThemeEvent = {element: document, event: Events.removeTheme, handler: this.removeThemeEventHandler()}
+    this.events.removeThemeEvent = { element: document, event: Events.removeTheme, handler: this.removeThemeEventHandler() }
     this.events.removeThemeEvent.element.addEventListener(this.events.removeThemeEvent.event, this.events.removeThemeEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -56,7 +56,7 @@ class UpdateCodebook {
   // PVSCL:IFCOND(Hierarchy,LINE)
 
   initCreateCodeEvent (callback) {
-    this.events.createCodeEvent = {element: document, event: Events.createCode, handler: this.createCodeEventHandler()}
+    this.events.createCodeEvent = { element: document, event: Events.createCode, handler: this.createCodeEventHandler() }
     this.events.createCodeEvent.element.addEventListener(this.events.createCodeEvent.event, this.events.createCodeEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -64,12 +64,12 @@ class UpdateCodebook {
   }
 
   initUpdateCodeEvent () {
-    this.events.updateCodeEvent = {element: document, event: Events.updateCode, handler: this.createUpdateCodeEventHandler()}
+    this.events.updateCodeEvent = { element: document, event: Events.updateCode, handler: this.createUpdateCodeEventHandler() }
     this.events.updateCodeEvent.element.addEventListener(this.events.updateCodeEvent.event, this.events.updateCodeEvent.handler, false)
   }
 
   initRemoveCodeEvent (callback) {
-    this.events.removeCodeEvent = {element: document, event: Events.removeCode, handler: this.removeCodeEventHandler()}
+    this.events.removeCodeEvent = { element: document, event: Events.removeCode, handler: this.removeCodeEventHandler() }
     this.events.removeCodeEvent.element.addEventListener(this.events.removeCodeEvent.event, this.events.removeCodeEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -81,6 +81,8 @@ class UpdateCodebook {
    * This function adds a button in the sidebar that allows to create new themes.
    */
   static createNewThemeButton () {
+    const newThemeButton = document.createElement('button')
+    newThemeButton.innerText = 'Create new theme'
     let newThemeButton = document.createElement('button')
     newThemeButton.innerText = 'New ' + Config.tags.grouped.group
     newThemeButton.id = 'newThemeButton'
@@ -102,14 +104,14 @@ class UpdateCodebook {
         html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New ' + Config.tags.grouped.group + ' name" value="' + retrievedThemeName + '"/>' +
           '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="themeDescription" placeholder="Please type a description that describes this ' + Config.tags.grouped.group + '..."></textarea>',
         preConfirm: () => {
-          let themeNameElement = document.querySelector('#themeName')
+          const themeNameElement = document.querySelector('#themeName')
           let themeName
           if (_.isElement(themeNameElement)) {
             themeName = themeNameElement.value
           }
           if (themeName.length > 0) {
             if (!this.themeNameExist(themeName)) {
-              let themeDescriptionElement = document.querySelector('#themeDescription')
+              const themeDescriptionElement = document.querySelector('#themeDescription')
               let themeDescription
               if (_.isElement(themeDescriptionElement)) {
                 themeDescription = themeDescriptionElement.value
@@ -156,10 +158,10 @@ class UpdateCodebook {
    */
   createNewThemeEventHandler () {
     return (event) => {
-      let newThemeAnnotation = event.detail.theme.toAnnotation()
+      const newThemeAnnotation = event.detail.theme.toAnnotation()
       window.abwa.annotationServerManager.client.createNewAnnotation(newThemeAnnotation, (err, annotation) => {
         if (err) {
-          Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
+          Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })
         } else {
           LanguageUtils.dispatchCustomEvent(Events.themeCreated, {newThemeAnnotation: annotation, target: event.detail.target})
         }
@@ -173,7 +175,7 @@ class UpdateCodebook {
    */
   createUpdateThemeEventHandler () {
     return (event) => {
-      let theme = event.detail.theme
+      const theme = event.detail.theme
       let themeToUpdate
       // Show form to update theme
       Alerts.multipleInputAlert({
@@ -181,12 +183,12 @@ class UpdateCodebook {
         html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" type="text" placeholder="New theme name" value="' + theme.name + '"/>' +
           '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6"  id="themeDescription" placeholder="Please type a description that describes this theme...">' + theme.description + '</textarea>',
         preConfirm: () => {
-          let themeNameElement = document.querySelector('#themeName')
+          const themeNameElement = document.querySelector('#themeName')
           let themeName
           if (_.isElement(themeNameElement)) {
             themeName = themeNameElement.value
           }
-          let themeDescriptionElement = document.querySelector('#themeDescription')
+          const themeDescriptionElement = document.querySelector('#themeDescription')
           let themeDescription
           if (_.isElement(themeDescriptionElement)) {
             themeDescription = themeDescriptionElement.value
@@ -225,7 +227,7 @@ class UpdateCodebook {
    */
   removeThemeEventHandler () {
     return (event) => {
-      let theme = event.detail.theme
+      const theme = event.detail.theme
       // Ask user is sure to remove
       Alerts.confirmAlert({
         title: 'Removing ' + Config.tags.grouped.group + theme.name,
@@ -234,7 +236,7 @@ class UpdateCodebook {
         callback: () => {
           let annotationsToDelete = [theme.id]
           // Get theme codes id to be removed too
-          let codesId = _.map(theme.codes, (code) => { return code.id })
+          const codesId = _.map(theme.codes, (code) => { return code.id })
           if (_.every(codesId, _.isString)) {
             annotationsToDelete = annotationsToDelete.concat(codesId)
           }
@@ -253,9 +255,9 @@ class UpdateCodebook {
           // PVSCL:ENDCOND
           window.abwa.annotationServerManager.client.deleteAnnotations(annotationsToDelete, (err, result) => {
             if (err) {
-              Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
+              Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
             } else {
-              LanguageUtils.dispatchCustomEvent(Events.themeRemoved, {theme: theme})
+              LanguageUtils.dispatchCustomEvent(Events.themeRemoved, { theme: theme })
             }
           })
         }
@@ -270,9 +272,9 @@ class UpdateCodebook {
    */
   createCodeEventHandler () {
     return (event) => {
-      let theme = event.detail.theme
+      const theme = event.detail.theme
       if (!LanguageUtils.isInstanceOf(theme, Theme)) {
-        Alerts.errorAlert({text: 'Unable to create new code, theme is not defined.'})
+        Alerts.errorAlert({ text: 'Unable to create new code, theme is not defined.' })
       } else {
         let newCode // The code that the user is creating
         // Ask user for name and description
@@ -281,25 +283,25 @@ class UpdateCodebook {
           html: '<input autofocus class="formCodeName swal2-input" type="text" id="codeName" type="text" placeholder="Code name" value=""/>' +
             '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="codeDescription" placeholder="Please type a description that describes this code..."></textarea>',
           preConfirm: () => {
-            let codeNameElement = document.querySelector('#codeName')
+            const codeNameElement = document.querySelector('#codeName')
             let codeName
             if (_.isElement(codeNameElement)) {
               codeName = codeNameElement.value
             }
-            let codeDescriptionElement = document.querySelector('#codeDescription')
+            const codeDescriptionElement = document.querySelector('#codeDescription')
             let codeDescription
             if (_.isElement(codeDescriptionElement)) {
               codeDescription = codeDescriptionElement.value
             }
-            newCode = new Code({name: codeName, description: codeDescription, theme: theme})
+            newCode = new Code({ name: codeName, description: codeDescription, theme: theme })
           },
           callback: () => {
-            let newCodeAnnotation = newCode.toAnnotation()
+            const newCodeAnnotation = newCode.toAnnotation()
             window.abwa.annotationServerManager.client.createNewAnnotation(newCodeAnnotation, (err, annotation) => {
               if (err) {
-                Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
+                Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })
               } else {
-                LanguageUtils.dispatchCustomEvent(Events.codeCreated, {newCodeAnnotation: annotation, theme: theme})
+                LanguageUtils.dispatchCustomEvent(Events.codeCreated, { newCodeAnnotation: annotation, theme: theme })
               }
             })
           }
@@ -310,7 +312,7 @@ class UpdateCodebook {
 
   createUpdateCodeEventHandler () {
     return (event) => {
-      let code = event.detail.code
+      const code = event.detail.code
       let codeToUpdate
       // Show form to update theme
       Alerts.multipleInputAlert({
@@ -318,17 +320,17 @@ class UpdateCodebook {
         html: '<input autofocus class="formCodeName swal2-input" type="text" id="codeName" type="text" placeholder="Code name" value="' + code.name + '"/>' +
           '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="codeDescription" placeholder="Please type a description that describes this code...">' + code.description + '</textarea>',
         preConfirm: () => {
-          let codeNameElement = document.querySelector('#codeName')
+          const codeNameElement = document.querySelector('#codeName')
           let codeName
           if (_.isElement(codeNameElement)) {
             codeName = codeNameElement.value
           }
-          let codeDescriptionElement = document.querySelector('#codeDescription')
+          const codeDescriptionElement = document.querySelector('#codeDescription')
           let codeDescription
           if (_.isElement(codeDescriptionElement)) {
             codeDescription = codeDescriptionElement.value
           }
-          codeToUpdate = new Code({name: codeName, description: codeDescription, theme: code.theme})
+          codeToUpdate = new Code({ name: codeName, description: codeDescription, theme: code.theme })
           codeToUpdate.id = code.id
         },
         callback: () => {
@@ -342,18 +344,18 @@ class UpdateCodebook {
   }
 
   updateCodebookCode (codeToUpdate, callback) {
-    let annotationsToUpdate = codeToUpdate.toAnnotation()
+    const annotationsToUpdate = codeToUpdate.toAnnotation()
     window.abwa.annotationServerManager.client.updateAnnotation(annotationsToUpdate.id, annotationsToUpdate, (err, annotation) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
         }
-        Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + err.toString()})
+        Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })
       } else {
         if (_.isFunction(callback)) {
           callback()
         }
-        LanguageUtils.dispatchCustomEvent(Events.codeUpdated, {updatedCode: codeToUpdate})
+        LanguageUtils.dispatchCustomEvent(Events.codeUpdated, { updatedCode: codeToUpdate })
       }
     })
   }
@@ -368,7 +370,7 @@ class UpdateCodebook {
    */
   removeCodeEventHandler () {
     return (event) => {
-      let code = event.detail.code
+      const code = event.detail.code
       // Ask user is sure to remove
       Alerts.confirmAlert({
         title: 'Removing code ' + code.name,
@@ -377,9 +379,9 @@ class UpdateCodebook {
         callback: () => {
           window.abwa.annotationServerManager.client.deleteAnnotation(code.id, (err, result) => {
             if (err) {
-              Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
+              Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
             } else {
-              LanguageUtils.dispatchCustomEvent(Events.codeRemoved, {code: code})
+              LanguageUtils.dispatchCustomEvent(Events.codeRemoved, { code: code })
             }
           })
         }
@@ -387,9 +389,10 @@ class UpdateCodebook {
     }
   }
   // PVSCL:ENDCOND
+
   updateCodebookTheme (themeToUpdate, callback) {
-    let annotationsToUpdate = themeToUpdate.toAnnotations()
-    let updatePromises = annotationsToUpdate.map((annotation) => {
+    const annotationsToUpdate = themeToUpdate.toAnnotations()
+    const updatePromises = annotationsToUpdate.map((annotation) => {
       return new Promise((resolve, reject) => {
         window.abwa.annotationServerManager.client.updateAnnotation(annotation.id, annotation, (err, annotation) => {
           if (err) {
@@ -403,18 +406,18 @@ class UpdateCodebook {
     Promise
       .all(updatePromises)
       .catch((rejects) => {
-        Alerts.errorAlert({text: 'Unable to create the new code. Error: ' + rejects[0].toString()})
+        Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + rejects[0].toString() })
       }).then(() => {
         if (_.isFunction(callback)) {
           callback()
         }
-        LanguageUtils.dispatchCustomEvent(Events.themeUpdated, {updatedTheme: themeToUpdate})
+        LanguageUtils.dispatchCustomEvent(Events.themeUpdated, { updatedTheme: themeToUpdate })
       })
   }
 
   updateAnnotationsWithTheme (theme) {
     // Get all the annotations done in the group with this theme
-    let searchByTagPromise = (tag) => {
+    const searchByTagPromise = (tag) => {
       return new Promise((resolve, reject) => {
         window.abwa.annotationServerManager.client.searchAnnotations({
           group: window.abwa.groupSelector.currentGroup.id,
@@ -428,14 +431,14 @@ class UpdateCodebook {
         })
       })
     }
-    let promises = [
+    const promises = [
       searchByTagPromise(Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name)
     ]
     // PVSCL:IFCOND(Hierarchy, LINE)
     promises.push(searchByTagPromise(Config.namespace + ':' + Config.tags.grouped.relation + ':' + theme.id))
     // PVSCL:ENDCOND
     Promise.all(promises).then((resolves) => {
-      let annotationObjects = resolves[0] // Get annotations done
+      const annotationObjects = resolves[0] // Get annotations done
       let annotations = annotationObjects.map((annotation) => {
         try {
           return Annotation.deserialize(annotation)
@@ -446,17 +449,17 @@ class UpdateCodebook {
       annotations = _.compact(annotations)
       // Update all the codes with the new name of the theme
       annotations = annotations.map(annotation => {
-        let classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
+        const classifyingBody = annotation.getBodyForPurpose(Classifying.purpose)
         if (classifyingBody) {
-          if (classifyingBody.value.code.id === theme.id) {
-            classifyingBody.value.code = theme.toObject()
+          if (classifyingBody.value.id === theme.id) {
+            classifyingBody.value = theme.toObject()
             return annotation
           } else {
             /* PVSCL:IFCOND(Hierarchy, LINE) */
-            if (classifyingBody.value.code.theme && classifyingBody.value.code.theme.id === theme.id) {
-              let code = theme.codes.find(code => code.id === classifyingBody.value.code.id)
+            if (classifyingBody.value.theme && classifyingBody.value.theme.id === theme.id) {
+              const code = theme.codes.find(code => code.id === classifyingBody.value.id)
               if (code) {
-                classifyingBody.value.code = code.toObject()
+                classifyingBody.value = code.toObject()
                 return annotation
               }
             }
@@ -466,7 +469,7 @@ class UpdateCodebook {
           }
         }
       })
-      let promises = annotations.forEach((annotation) => {
+      const promises = annotations.forEach((annotation) => {
         return new Promise((resolve, reject) => {
           window.abwa.annotationServerManager.client.updateAnnotation(annotation.id, annotation, (err, annotation) => {
             if (err) {
@@ -482,4 +485,4 @@ class UpdateCodebook {
   }
 }
 
-module.exports = UpdateCodebook
+export default UpdateCodebook

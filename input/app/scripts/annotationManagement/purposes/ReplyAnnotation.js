@@ -1,7 +1,7 @@
-const AnnotationUtils = require('../../utils/AnnotationUtils')
-const Config = require('../../Config')
-const moment = require('moment')
-const _ = require('lodash')
+import AnnotationUtils from '../../utils/AnnotationUtils'
+import Config from '../../Config'
+import moment from 'moment'
+import _ from 'lodash'
 
 class ReplyAnnotation {
   /**
@@ -37,23 +37,23 @@ class ReplyAnnotation {
     htmlText += ReplyAnnotation.createReplyLog(annotation)
     htmlText += '<hr/>'
     // Get replies for this annotation
-    let replies = ReplyAnnotation.getReplies(annotation, replyAnnotations)
+    const replies = ReplyAnnotation.getReplies(annotation, replyAnnotations)
     // What and who
     for (let i = 0; i < replies.length; i++) {
-      let reply = replies[i]
+      const reply = replies[i]
       htmlText += this.createReplyLog(reply)
       if (replies.length - 1 > i) {
         htmlText += '<hr/>'
       }
     }
-    return {htmlText: htmlText, replies: replies}
+    return { htmlText: htmlText, replies: replies }
   }
 
   static createReplyLog (reply) {
     let htmlText = ''
     let userSpanClassName = 'reply_user'
     let textSpanClassName = 'reply_text'
-    let dateSpanClassName = 'reply_date'
+    const dateSpanClassName = 'reply_date'
     // PVSCL:IFCOND( Validate, LINE )
     // TODO Refactor with the new mechanism to detect validations
     if (reply.motivation === Config.namespace + ':assessing') {
@@ -65,11 +65,11 @@ class ReplyAnnotation {
     if (reply.creator === window.abwa.groupSelector.getCreatorData()) {
       htmlText += '<span class="' + userSpanClassName + '">You: </span>'
     } else {
-      let username = reply.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
+      const username = reply.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
       htmlText += '<span class="' + userSpanClassName + '">' + username + ': </span>'
     }
     // PVSCL:IFCOND(Commenting, LINE)
-    let replyCommentBody = reply.body.find(body => body.purpose === 'commenting')
+    const replyCommentBody = reply.body.find(body => body.purpose === 'commenting')
     let textComment = 'No comment'
     if (replyCommentBody) {
       textComment = replyCommentBody.value
@@ -84,4 +84,4 @@ class ReplyAnnotation {
   }
 }
 
-module.exports = ReplyAnnotation
+export default ReplyAnnotation

@@ -1,33 +1,23 @@
-const _ = require('lodash')
-const TargetManager = require('../target/TargetManager')
-const Sidebar = require('./Sidebar')
-const CodebookManager = require('../codebook/CodebookManager')
-const Config = require('../Config')
-const Toolset = require('./Toolset')
-const AnnotationManagement = require('../annotationManagement/AnnotationManagement')
-const GroupSelector = require('../groupManipulation/GroupSelector')
-const AnnotationBasedInitializer = require('./AnnotationBasedInitializer')
-const {AnnotatedContentManager} = require('./AnnotatedContentManager')
+import _ from 'lodash'
+import TargetManager from '../target/TargetManager'
+import Sidebar from './Sidebar'
+import CodebookManager from '../codebook/CodebookManager'
+import Config from '../Config'
+import AnnotationBasedInitializer from './AnnotationBasedInitializer'
 // PVSCL:IFCOND(CXLExport, LINE)
-const {MapContentManager} = require('./MapContentManager')
+import {MapContentManager} from './MapContentManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Manual, LINE)
-const Events = require('../Events')
+import Events from '../Events'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResource, LINE)
-const RolesManager = require('./RolesManager')
+import RolesManager from './RolesManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
+import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(PreviousAssignments, LINE)
-const PreviousAssignments = require('../annotationManagement/purposes/PreviousAssignments')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleReport, LINE)
-const MoodleReport = require('../annotationManagement/read/MoodleReport')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleComment, LINE)
-const MoodleComment = require('../annotationManagement/read/MoodleComment')
+import PreviousAssignments from '../annotationManagement/purposes/PreviousAssignments'
 // PVSCL:ENDCOND
 
 class ContentScriptManager {
@@ -45,6 +35,7 @@ class ContentScriptManager {
         window.abwa.sidebar.init(() => {
           window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
           window.abwa.annotationBasedInitializer.init(() => {
+            const GroupSelector = require('../groupManipulation/GroupSelector').default
             window.abwa.groupSelector = new GroupSelector()
             window.abwa.groupSelector.init(() => {
               // Reload for first time the content by group
@@ -62,7 +53,7 @@ class ContentScriptManager {
   // PVSCL:IFCOND(Manual, LINE)
 
   initListenerForGroupChange () {
-    this.events.groupChangedEvent = {element: document, event: Events.groupChanged, handler: this.groupChangedEventHandlerCreator()}
+    this.events.groupChangedEvent = { element: document, event: Events.groupChanged, handler: this.groupChangedEventHandlerCreator() }
     this.events.groupChangedEvent.element.addEventListener(this.events.groupChangedEvent.event, this.events.groupChangedEvent.handler, false)
   }
 
@@ -106,8 +97,9 @@ class ContentScriptManager {
       // PVSCL:IFCOND(MoodleResource, LINE)
       .then(() => {
         return this.reloadRolesManager()
-      })
-      .then(() => {
+      }).then(() => {
+        return this.reloadMoodleEstimationManager()
+      }).then(() => {
         return this.reloadPreviousAssignments()
       })
       // PVSCL:ENDCOND
@@ -122,6 +114,7 @@ class ContentScriptManager {
       // Destroy annotated content manager
       this.destroyAnnotatedContentManager()
       // Create a new annotated content manager
+      const { AnnotatedContentManager } = require('./AnnotatedContentManager')
       window.abwa.annotatedContentManager = new AnnotatedContentManager()
       window.abwa.annotatedContentManager.init((err) => {
         if (err) {
@@ -138,6 +131,7 @@ class ContentScriptManager {
       // Destroy current content annotator
       this.destroyAnnotationManagement()
       // Create a new content annotator for the current group
+      const AnnotationManagement = require('../annotationManagement/AnnotationManagement').default
       window.abwa.annotationManagement = new AnnotationManagement()
       window.abwa.annotationManagement.init((err) => {
         if (err) {
@@ -189,6 +183,7 @@ class ContentScriptManager {
       // Destroy current content annotator
       this.destroyMoodleReport()
       // Create a new content annotator for the current group
+      const MoodleReport = require('../annotationManagement/read/MoodleReport').default
       window.abwa.moodleReport = new MoodleReport()
       window.abwa.moodleReport.init((err) => {
         if (err) {
@@ -207,6 +202,7 @@ class ContentScriptManager {
       // Destroy current content annotator
       this.destroyMoodleComment()
       // Create a new content annotator for the current group
+      const MoodleComment = require('../annotationManagement/read/MoodleComment').default
       window.abwa.moodleComment = new MoodleComment()
       window.abwa.moodleComment.init((err) => {
         if (err) {
@@ -227,6 +223,23 @@ class ContentScriptManager {
       // Create a new content annotator for the current group
       window.abwa.rolesManager = new RolesManager()
       window.abwa.rolesManager.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+
+  reloadMoodleEstimationManager () {
+    return new Promise((resolve, reject) => {
+      // Destroy current content annotator
+      this.destroyMoodleEstimationManager()
+      // Create a new content annotator for the current group
+      const MoodleEstimationManager = require('../moodle/MoodleEstimationManager').default
+      window.abwa.moodleEstimationManager = new MoodleEstimationManager()
+      window.abwa.moodleEstimationManager.init((err) => {
         if (err) {
           reject(err)
         } else {
@@ -260,6 +273,7 @@ class ContentScriptManager {
       // Destroy toolset
       this.destroyToolset()
       // Create a new toolset
+      const Toolset = require('./Toolset').default
       window.abwa.toolset = new Toolset()
       window.abwa.toolset.init((err) => {
         if (err) {
@@ -318,6 +332,12 @@ class ContentScriptManager {
     }
   }
 
+  destroyMoodleEstimationManager () {
+    if (window.abwa.moodleEstimationManager) {
+      window.abwa.moodleEstimationManager.destroy()
+    }
+  }
+
   destroyPreviousAssignments () {
     // Destroy current augmentation operations
     if (window.abwa.previousAssignments) {
@@ -337,15 +357,13 @@ class ContentScriptManager {
     this.destroyTargetManager(() => {
       this.destroyCodebookManager()
       this.destroyAnnotationManagement()
-      // PVSCL:IFCOND(UserFilter, LINE)
-      this.destroyUserFilter()
-      // PVSCL:ENDCOND
       this.destroyToolset()
       // PVSCL:IFCOND(MoodleResource, LINE)
       this.destroyRolesManager()
       this.destroyPreviousAssignments()
+      this.destroyMoodleEstimationManager()
       // PVSCL:ENDCOND
-      // TODO Destroy groupSelector, roleManager,
+      // TODO Destroy groupSelector, sidebar,
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
           this.destroyAnnotationServer(() => {
@@ -383,9 +401,9 @@ class ContentScriptManager {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+    const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager').default
     window.abwa.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage, LINE)
@@ -402,11 +420,11 @@ class ContentScriptManager {
     })
     // PVSCL:ELSECOND
     // More than one annotation servers are selected, retrieve the current selected one
-    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+    chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       // PVSCL:IFCOND(Hypothesis, LINE)
       if (annotationServer === 'hypothesis') {
         // Hypothesis
-        const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+        const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager').default
         window.abwa.annotationServerManager = new HypothesisClientManager()
       }
       // PVSCL:ENDCOND
@@ -419,7 +437,7 @@ class ContentScriptManager {
       // PVSCL:IFCOND(Neo4J, LINE)
       if (annotationServer === 'neo4j') {
         // Browser storage
-        const Neo4JClientManager = require('../annotationServer/neo4j/Neo4JClientManager')
+        const Neo4JClientManager = require('../annotationServer/neo4j/Neo4JClientManager').default
         window.abwa.annotationServerManager = new Neo4JClientManager()
       }
       // PVSCL:ENDCOND
@@ -434,8 +452,8 @@ class ContentScriptManager {
           }
         })
       } else {
-        const Alerts = require('../utils/Alerts')
-        Alerts.errorAlert({text: 'Unable to load selected server. Please configure in options page.'})
+        const Alerts = require('../utils/Alerts').default
+        Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in options page.' })
       }
     })
     // PVSCL:ENDCOND
@@ -460,4 +478,4 @@ ContentScriptManager.status = {
   notInitialized: 'notInitialized'
 }
 
-module.exports = ContentScriptManager
+export default ContentScriptManager

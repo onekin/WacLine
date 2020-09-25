@@ -1,10 +1,7 @@
-const _ = require('lodash')
-
-const AnnotationServerManager = require('../AnnotationServerManager')
-const Alerts = require('../../utils/Alerts')
-
-const Neo4JClient = require('./Neo4JClient') // TODO Substitute by the real neo4j client
-
+import _ from 'lodash'
+import AnnotationServerManager from '../AnnotationServerManager'
+import Alerts from '../../utils/Alerts'
+import Neo4JClient from './Neo4JClient' // TODO Substitute by the real neo4j client
 const userLoginCheckIntervalPeriodInSeconds = 5
 
 class Neo4JClientManager extends AnnotationServerManager {
@@ -41,7 +38,7 @@ class Neo4JClientManager extends AnnotationServerManager {
   }
 
   getCredentials (callback) {
-    chrome.runtime.sendMessage({scope: 'neo4j', cmd: 'getCredentials'}, ({err, credentials}) => {
+    chrome.runtime.sendMessage({ scope: 'neo4j', cmd: 'getCredentials' }, ({ err, credentials }) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(new Error(err))
@@ -73,9 +70,9 @@ class Neo4JClientManager extends AnnotationServerManager {
       title: 'Neo4J login is required.',
       text: 'Please provide the required login configuration for neo4j.',
       callback: () => {
-        Alerts.loadingAlert({text: 'Waiting for neo4j credentials in the login tab.'})
+        Alerts.loadingAlert({ text: 'Waiting for neo4j credentials in the login tab.' })
         // Open new tab with configuration
-        let neo4jConfigurationWindow = window.open(chrome.extension.getURL('pages/options.html#neo4jConfiguration'))
+        const neo4jConfigurationWindow = window.open(chrome.extension.getURL('pages/options.html#neo4jConfiguration'))
         // Interval until correctly logged in
         this.isLoggedInInterval = setInterval(() => {
           if (neo4jConfigurationWindow.closed) {
@@ -149,4 +146,4 @@ class Neo4JClientManager extends AnnotationServerManager {
   }
 }
 
-module.exports = Neo4JClientManager
+export default Neo4JClientManager

@@ -1,7 +1,15 @@
 class AnnotationServer {
-  constructor ({group}) {
+  constructor ({ group }) {
     this.group = group
+  }
+
+  getGroupUrl () {
+    return 'https://localannotationsdatabase.org/group/' + this.group
+  }
+
+  getGroupId () {
+    return ''
   }
 }
 
-module.exports = AnnotationServer
+export default AnnotationServer

@@ -1,17 +1,17 @@
-const Events = require('../../Events')
-const _ = require('lodash')
-const LanguageUtils = require('../../utils/LanguageUtils')
-const Alerts = require('../../utils/Alerts')
-const Annotation = require('../Annotation')
-const DOMTextUtils = require('../../utils/DOMTextUtils')
-const PDFTextUtils = require('../../utils/PDFTextUtils')
-const PDF = require('../../target/formats/PDF')
-const $ = require('jquery')
+import Events from '../../Events'
+import _ from 'lodash'
+import LanguageUtils from '../../utils/LanguageUtils'
+import Alerts from '../../utils/Alerts'
+import Annotation from '../Annotation'
+import DOMTextUtils from '../../utils/DOMTextUtils'
+import PDFTextUtils from '../../utils/PDFTextUtils'
+import PDF from '../../target/formats/PDF'
+import $ from 'jquery'
 // PVSCL:IFCOND(Classifying, LINE)
-const Classifying = require('../purposes/Classifying')
+import Classifying from '../purposes/Classifying'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Linking, LINE)
-const Linking = require('../purposes/Linking')
+import Linking = from '../purposes/Linking'
 // PVSCL:ENDCOND
 
 class CreateAnnotation {
@@ -25,7 +25,7 @@ class CreateAnnotation {
   }
 
   initCreateAnnotationEvent (callback) {
-    this.events.createAnnotationEvent = {element: document, event: Events.createAnnotation, handler: this.createAnnotationEventHandler()}
+    this.events.createAnnotationEvent = { element: document, event: Events.createAnnotation, handler: this.createAnnotationEventHandler() }
     this.events.createAnnotationEvent.element.addEventListener(this.events.createAnnotationEvent.event, this.events.createAnnotationEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -42,15 +42,15 @@ class CreateAnnotation {
         let target
         // If selection is child of sidebar, return null
         if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
-          Alerts.infoAlert({text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')})
+          Alerts.infoAlert({ text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable') })
           return
         }
         // Create target
         target = this.obtainTargetToCreateAnnotation(event.detail)
         // Create body
-        let body = this.obtainBodyToCreateAnnotation(event.detail)
+        const body = this.obtainBodyToCreateAnnotation(event.detail)
         // Create tags
-        let tags = this.obtainTagsToCreateAnnotation(event.detail)
+        const tags = this.obtainTagsToCreateAnnotation(event.detail)
         // Construct the annotation to send to hypothesis
         annotationToCreate = new Annotation({
           target: target,
@@ -61,11 +61,11 @@ class CreateAnnotation {
       if (annotationToCreate) {
         window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
           if (err) {
-            Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
+            Alerts.errorAlert({ text: 'Unexpected error, unable to create annotation' })
           } else {
             window.getSelection().removeAllRanges()
             // Deserialize retrieved annotation from the server
-            let deserializedAnnotation = Annotation.deserialize(annotation)
+            const deserializedAnnotation = Annotation.deserialize(annotation)
             // Dispatch annotation created event
             LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: deserializedAnnotation})
             // PVSCL:IFCOND(Linking, LINE)
@@ -84,11 +84,12 @@ class CreateAnnotation {
               }
             }
             // PVSCL:ENDCOND
+            LanguageUtils.dispatchCustomEvent(Events.annotationCreated, { annotation: deserializedAnnotation })
           }
         })
       } else {
         // Show error
-        Alerts.errorAlert({text: 'Unexpected error creating annotation.' + chrome.i18n.getMessage('ErrorContactDeveloper', ['createAnnotation', encodeURIComponent(new Error().stack)])})
+        Alerts.errorAlert({ text: 'Unexpected error creating annotation.' + chrome.i18n.getMessage('ErrorContactDeveloper', ['createAnnotation', encodeURIComponent(new Error().stack)]) })
       }
     }
   }
@@ -104,7 +105,7 @@ class CreateAnnotation {
     }
     // PVSCL:IFCOND(Classifying, LINE)
     if (codeId) {
-      let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codeId)
+      const codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codeId)
       tags = tags.concat(codeOrTheme.getTags())
     }
     // PVSCL:ENDCOND
@@ -116,20 +117,13 @@ class CreateAnnotation {
 
   obtainBodyToCreateAnnotation (detail) {
     // Get bodies and tags for the annotation to be created
-    let body = []
+    const body = []
     // PVSCL:IFCOND(Classifying, LINE)
     // Get body for classifying
     if (detail.purpose === 'classifying') {
-      if (detail.codeId) {
-        let codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(detail.codeId)
-        let value = {}
-        value.code = codeOrTheme
-        // PVSCL:IFCOND(EvidenceAnnotations, LINE)
-        if (detail.addToCXL != null) {
-          value.addToCXL = detail.addToCXL
-        }
-        // PVSCL:ENDCOND
-        let classifyingBody = new Classifying({value})
+      if (codeId) {
+        const codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codeId)
+        const classifyingBody = new Classifying({code: codeOrTheme})
         body.push(classifyingBody.serialize())
       }
     }
@@ -158,15 +152,15 @@ class CreateAnnotation {
   obtainTargetToCreateAnnotation ({repliedAnnotation, target}) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
-      return [{source: repliedAnnotation.target[0].source}]
+      return [{ source: repliedAnnotation.target[0].source }]
     } else {
       if (!target) {
-        target = [{}]
-        let source = window.abwa.targetManager.getDocumentURIs()
+        const target = [{}]
+        const source = window.abwa.targetManager.getDocumentURIs()
         // Get document title
-        source['title'] = window.abwa.targetManager.documentTitle || ''
+        source.title = window.abwa.targetManager.documentTitle || ''
         // Get UUID for current target
-        source['id'] = window.abwa.targetManager.getDocumentId()
+        source.id = window.abwa.targetManager.getDocumentId()
         target[0].source = source // Add source to the target
         // PVSCL:IFCOND(Selector, LINE)
         if (document.getSelection().toString().length > 0) {
@@ -179,8 +173,8 @@ class CreateAnnotation {
   }
 
   static getSelectorsOfSelectedTextContent () {
-    let range = document.getSelection().getRangeAt(0)
-    let selectors = []
+    const range = document.getSelection().getRangeAt(0)
+    const selectors = []
     // Create FragmentSelector
     if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'FragmentSelector' }) !== -1) {
       let fragmentSelector = null
@@ -195,22 +189,22 @@ class CreateAnnotation {
     }
     // Create RangeSelector
     if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'RangeSelector' }) !== -1) {
-      let rangeSelector = DOMTextUtils.getRangeSelector(range)
+      const rangeSelector = DOMTextUtils.getRangeSelector(range)
       if (rangeSelector) {
         selectors.push(rangeSelector)
       }
     }
     // Create TextPositionSelector
     if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'TextPositionSelector' }) !== -1) {
-      let rootElement = window.abwa.targetManager.getDocumentRootElement()
-      let textPositionSelector = DOMTextUtils.getTextPositionSelector(range, rootElement)
+      const rootElement = window.abwa.targetManager.getDocumentRootElement()
+      const textPositionSelector = DOMTextUtils.getTextPositionSelector(range, rootElement)
       if (textPositionSelector) {
         selectors.push(textPositionSelector)
       }
     }
     // Create TextQuoteSelector
     if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'TextQuoteSelector' }) !== -1) {
-      let textQuoteSelector = DOMTextUtils.getTextQuoteSelector(range)
+      const textQuoteSelector = DOMTextUtils.getTextQuoteSelector(range)
       if (textQuoteSelector) {
         selectors.push(textQuoteSelector)
       }
@@ -220,11 +214,11 @@ class CreateAnnotation {
 
   destroy () {
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
   }
 }
 
-module.exports = CreateAnnotation
+export default CreateAnnotation

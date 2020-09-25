@@ -1,3 +1,30 @@
+import Popup from './popup/Popup'
+// PVSCL:IFCOND(Hypothesis, LINE)
+import HypothesisManager from './background/HypothesisManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(Neo4J, LINE)
+import Neo4JManager from './background/Neo4JManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
+import GoogleSheetsManager from './background/GoogleSheetsManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(DOI or NavigationScript, LINE)
+import TargetManager from './background/TargetManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
+import AnnotationServerManager from './background/AnnotationServerManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(MoodleProvider, LINE)
+import MoodleDownloadManager from './background/MoodleDownloadManager'
+import MoodleBackgroundManager from './background/MoodleBackgroundManager'
+import TaskManager from './background/TaskManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+import CmapCloudBackgroundManager from './background/CmapCloudBackgroundManager'
+// PVSCL:ENDCOND
+
+import _ from 'lodash'
+
 // Enable chromereload by uncommenting this line:
 // import 'chromereload/devonly'
 
@@ -12,33 +39,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 chrome.tabs.onCreated.addListener((tab) => {
 
 })
-
-const Popup = require('./popup/Popup')
-// PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisManager = require('./background/HypothesisManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(Neo4J, LINE)
-const Neo4JManager = require('./background/Neo4JManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
-const GoogleSheetsManager = require('./background/GoogleSheetsManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(DOI or NavigationScript, LINE)
-const TargetManager = require('./background/TargetManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
-const AnnotationServerManager = require('./background/AnnotationServerManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleProvider, LINE)
-const MoodleDownloadManager = require('./background/MoodleDownloadManager')
-const MoodleBackgroundManager = require('./background/MoodleBackgroundManager')
-const TaskManager = require('./background/TaskManager')
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(CXLExportCmapCloud, LINE)
-const CmapCloudBackgroundManager = require('./background/CmapCloudBackgroundManager')
-// PVSCL:ENDCOND
-
-const _ = require('lodash')
 
 class Background {
   constructor () {
@@ -79,7 +79,7 @@ class Background {
     this.cmapCloudManager.init()
 
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
     // Initialize annotation server manager
     this.annotationServerManager = new AnnotationServerManager()
     this.annotationServerManager.init()
@@ -107,7 +107,7 @@ class Background {
         // Check if permission to access file URL is enabled
         chrome.extension.isAllowedFileSchemeAccess((isAllowedAccess) => {
           if (isAllowedAccess === false) {
-            chrome.tabs.create({url: chrome.runtime.getURL('pages/filePermission.html')})
+            chrome.tabs.create({ url: chrome.runtime.getURL('pages/filePermission.html') })
           } else {
             if (this.tabs[tab.id]) {
               if (this.tabs[tab.id].activated) {
@@ -175,9 +175,9 @@ class Background {
           sendResponse(true)
         } else if (request.cmd === 'amIActivated') {
           if (this.tabs[sender.tab.id].activated) {
-            sendResponse({activated: true})
+            sendResponse({ activated: true })
           } else {
-            sendResponse({activated: false})
+            sendResponse({ activated: false })
           }
         }
       }

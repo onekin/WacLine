@@ -1,18 +1,18 @@
-const Events = require('../../../Events')
-const _ = require('lodash')
+import Events from '../../../Events'
+import _ from 'lodash'
 // PVSCL:IFCOND(BuiltIn, LINE)
-const BuiltIn = require('./builtIn/BuiltIn')
-const EmptyCodebook = require('./emptyCodebook/EmptyCodebook')
+import BuiltIn from './builtIn/BuiltIn'
+import EmptyCodebook from './emptyCodebook/EmptyCodebook'
 // PVSCL:IFCOND(TopicBased, LINE)
-const TopicBased = require('./topicBased/TopicBased')
+import TopicBased from './topicBased/TopicBased'
 // PVSCL:ENDCOND
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(NOT(Classifying), LINE)
-const NoCodebook = require('./noCodebook/NoCodebook')
+import NoCodebook from './noCodebook/NoCodebook'
 // PVSCL:ENDCOND
-const Codebook = require('../../model/Codebook')
-const LanguageUtils = require('../../../utils/LanguageUtils')
-const Alerts = require('../../../utils/Alerts')
+import Codebook from '../../model/Codebook'
+import LanguageUtils from '../../../utils/LanguageUtils'
+import Alerts from '../../../utils/Alerts'
 
 class CreateCodebook {
   constructor () {
@@ -29,7 +29,7 @@ class CreateCodebook {
 
   destroy () {
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
@@ -39,15 +39,15 @@ class CreateCodebook {
    * Initializes codebook create event listener
    */
   initCreateCodebookEvent () {
-    this.events.createCodebook = {element: document, event: Events.createCodebook, handler: this.createCodebookEventHandler()}
+    this.events.createCodebook = { element: document, event: Events.createCodebook, handler: this.createCodebookEventHandler() }
     this.events.createCodebook.element.addEventListener(this.events.createCodebook.event, this.events.createCodebook.handler, false)
   }
 
   createCodebookEventHandler () {
     return (event) => {
-      let promise = new Promise((resolve, reject) => {
+      const promise = new Promise((resolve, reject) => {
+        const howCreate = event.detail.howCreate
         // PVSCL:IFCOND(BuiltIn, LINE)
-        let howCreate = event.detail.howCreate
         if (howCreate === 'builtIn') {
           BuiltIn.createDefaultAnnotations((err, annotations) => {
             if (err) {
@@ -79,23 +79,25 @@ class CreateCodebook {
         }
         // PVSCL:ENDCOND
         // PVSCL:ELSEIFCOND(NOT(Codebook), LINE)
-        NoCodebook.createDefaultAnnotations((err, annotations) => {
-          if (err) {
-            reject(err)
-          } else {
-            resolve(annotations)
-          }
-        })
+        if (howCreate === 'noCodebook') {
+          NoCodebook.createDefaultAnnotations((err, annotations) => {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(annotations)
+            }
+          })
+        }
         // PVSCL:ENDCOND
       })
       promise.catch((err) => {
-        Alerts.errorAlert({text: err})
+        Alerts.errorAlert({ text: err })
       }).then((annotations) => {
         Codebook.fromAnnotations(annotations, (err, codebook) => {
           if (err) {
-            Alerts.errorAlert({text: 'Unable to create a codebook. Error: ' + err.message})
+            Alerts.errorAlert({ text: 'Unable to create a codebook. Error: ' + err.message })
           } else {
-            LanguageUtils.dispatchCustomEvent(Events.codebookCreated, {codebook: codebook})
+            LanguageUtils.dispatchCustomEvent(Events.codebookCreated, { codebook: codebook })
           }
         })
       })
@@ -103,4 +105,4 @@ class CreateCodebook {
   }
 }
 
-module.exports = CreateCodebook
+export default CreateCodebook

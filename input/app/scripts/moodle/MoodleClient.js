@@ -1,6 +1,6 @@
-const _ = require('lodash')
-const axios = require('axios')
-const jsonFormData = require('json-form-data')
+import _ from 'lodash'
+import axios from 'axios'
+import jsonFormData from 'json-form-data'
 
 class MoodleClient {
   constructor (endpoint, token) {
@@ -21,20 +21,20 @@ class MoodleClient {
   }
 
   getRubric (cmids, callback) {
-    let settings = {
-      'async': true,
-      'crossDomain': true,
-      'url': this.endpoint + '/webservice/rest/server.php?',
-      'params': {
-        'wstoken': this.token,
-        'wsfunction': 'core_grading_get_definitions',
-        'areaname': 'submissions',
+    const settings = {
+      async: true,
+      crossDomain: true,
+      url: this.endpoint + '/webservice/rest/server.php?',
+      params: {
+        wstoken: this.token,
+        wsfunction: 'core_grading_get_definitions',
+        areaname: 'submissions',
         'cmids[0]': cmids,
-        'moodlewsrestformat': 'json',
-        'activeonly': 0
+        moodlewsrestformat: 'json',
+        activeonly: 0
       },
-      'method': 'GET',
-      'headers': {
+      method: 'GET',
+      headers: {
         'Cache-Control': 'no-cache'
       }
     }
@@ -46,26 +46,26 @@ class MoodleClient {
   }
 
   getCmidInfo (cmid, callback) {
-    let data = {cmid: cmid}
-    let settings = {
-      'async': true,
-      'crossDomain': true,
-      'url': this.endpoint + 'webservice/rest/server.php?',
-      'method': 'POST',
-      'params': {
-        'wstoken': this.token,
-        'wsfunction': 'core_course_get_course_module',
-        'moodlewsrestformat': 'json'
+    const data = { cmid: cmid }
+    const settings = {
+      async: true,
+      crossDomain: true,
+      url: this.endpoint + 'webservice/rest/server.php?',
+      method: 'POST',
+      params: {
+        wstoken: this.token,
+        wsfunction: 'core_course_get_course_module',
+        moodlewsrestformat: 'json'
       },
-      'headers': {
+      headers: {
         'cache-control': 'no-cache',
         'Content-Type': 'multipart/form-data'
       },
-      'processData': false,
-      'contentType': false,
-      'mimeType': 'multipart/form-data',
-      'data': data,
-      'transformRequest': [(data) => {
+      processData: false,
+      contentType: false,
+      mimeType: 'multipart/form-data',
+      data: data,
+      transformRequest: [(data) => {
         return jsonFormData(data)
       }]
     }
@@ -77,22 +77,22 @@ class MoodleClient {
   }
 
   updateStudentGradeWithRubric (data, callback) {
-    let settings = {
-      'async': true,
-      'crossDomain': true,
-      'url': this.endpoint + '/webservice/rest/server.php?',
-      'method': 'POST',
-      'headers': {
+    const settings = {
+      async: true,
+      crossDomain: true,
+      url: this.endpoint + '/webservice/rest/server.php?',
+      method: 'POST',
+      headers: {
         'Cache-Control': 'no-cache',
         'Content-Type': 'multipart/form-data'
       },
-      'params': {
-        'wstoken': this.token,
-        'wsfunction': 'mod_assign_save_grade',
-        'moodlewsrestformat': 'json'
+      params: {
+        wstoken: this.token,
+        wsfunction: 'mod_assign_save_grade',
+        moodlewsrestformat: 'json'
       },
-      'data': data,
-      'transformRequest': [(data) => {
+      data: data,
+      transformRequest: [(data) => {
         return jsonFormData(data)
       }]
     }
@@ -104,18 +104,18 @@ class MoodleClient {
   }
 
   getStudents (courseId, callback) {
-    let settings = {
-      'async': true,
-      'crossDomain': true,
-      'url': this.endpoint + '/webservice/rest/server.php?',
-      'params': {
-        'wstoken': this.token,
-        'wsfunction': 'core_enrol_get_enrolled_users',
-        'courseid': courseId,
-        'moodlewsrestformat': 'json'
+    const settings = {
+      async: true,
+      crossDomain: true,
+      url: this.endpoint + '/webservice/rest/server.php?',
+      params: {
+        wstoken: this.token,
+        wsfunction: 'core_enrol_get_enrolled_users',
+        courseid: courseId,
+        moodlewsrestformat: 'json'
       },
-      'method': 'GET',
-      'headers': {
+      method: 'GET',
+      headers: {
         'Cache-Control': 'no-cache'
       }
     }
@@ -127,4 +127,4 @@ class MoodleClient {
   }
 }
 
-module.exports = MoodleClient
+export default MoodleClient

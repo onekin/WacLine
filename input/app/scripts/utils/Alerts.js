@@ -1,12 +1,12 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 let swal = null
 if (document && document.head) {
-  swal = require('sweetalert2')
+  swal = require('sweetalert2').default
 }
 
 class Alerts {
-  static confirmAlert ({alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', reverseButtons, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback}) {
+  static confirmAlert ({ alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', reverseButtons, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -37,7 +37,7 @@ class Alerts {
     }
   }
 
-  static infoAlert ({text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), title = 'Info', callback}) {
+  static infoAlert ({ text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), title = 'Info', callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -52,14 +52,14 @@ class Alerts {
     }
   }
 
-  static updateableAlert ({text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), type = Alerts.alertType.info, title = 'Info', timerIntervalHandler = null, timerIntervalPeriodInSeconds = 0.1, allowOutsideClick = true, allowEscapeKey = true, callback}) {
+  static updateableAlert ({ text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), type = Alerts.alertType.info, title = 'Info', timerIntervalHandler = null, timerIntervalPeriodInSeconds = 0.1, allowOutsideClick = true, allowEscapeKey = true, callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      let fire = () => {
+      const fire = () => {
         let timerInterval
         swal.fire({
           type: Alerts.alertType.info,
@@ -89,7 +89,7 @@ class Alerts {
     }
   }
 
-  static errorAlert ({text = chrome.i18n.getMessage('unexpectedError'), title = 'Oops...', callback, onClose}) {
+  static errorAlert ({ text = chrome.i18n.getMessage('unexpectedError'), title = 'Oops...', callback, onClose }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -108,7 +108,7 @@ class Alerts {
     }
   }
 
-  static successAlert ({text = 'Your process is correctly done', title = 'Great!', callback}) {
+  static successAlert ({ text = 'Your process is correctly done', title = 'Great!', callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -123,7 +123,7 @@ class Alerts {
     }
   }
 
-  static temporalAlert ({text = 'It is done', title = 'Finished', type = Alerts.alertType.info, timer = 1500, position = 'top-end', callback}) {
+  static temporalAlert ({ text = 'It is done', title = 'Finished', type = Alerts.alertType.info, timer = 1500, position = 'top-end', callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -141,7 +141,7 @@ class Alerts {
     }
   }
 
-  static loadingAlert ({text = 'If it takes too much time, please reload the page and try again.', position = 'top-end', title = 'Working on something, please be patient', confirmButton = false, timerIntervalHandler, callback}) {
+  static loadingAlert ({ text = 'If it takes too much time, please reload the page and try again.', position = 'top-end', title = 'Working on something, please be patient', confirmButton = false, timerIntervalHandler, callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -173,7 +173,7 @@ class Alerts {
     }
   }
 
-  static inputTextAlert ({title, input = 'text', type, inputPlaceholder = '', inputValue = '', preConfirm, cancelCallback, showCancelButton = true, html = '', allowOutsideClick = true, allowEscapeKey = true, callback}) {
+  static inputTextAlert ({ title, input = 'text', type, inputPlaceholder = '', inputValue = '', preConfirm, cancelCallback, showCancelButton = true, html = '', allowOutsideClick = true, allowEscapeKey = true, callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -247,7 +247,7 @@ class Alerts {
     }
   }
 
-  static warningAlert ({text = 'Something that you need to worry about happened. ' + chrome.i18n.getMessage('ContactAdministrator'), title = 'Warning', callback}) {
+  static warningAlert ({ text = 'Something that you need to worry about happened. ' + chrome.i18n.getMessage('ContactAdministrator'), title = 'Warning', callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -291,4 +291,4 @@ Alerts.position = {
   bottomEnd: 'bottom-end'
 }
 
-module.exports = Alerts
+export default Alerts

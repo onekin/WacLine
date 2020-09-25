@@ -1,5 +1,5 @@
-const $ = require('jquery')
-const _ = require('lodash')
+import $ from 'jquery'
+import _ from 'lodash'
 
 class Sidebar {
   init (callback) {
@@ -11,7 +11,7 @@ class Sidebar {
   }
 
   initSidebarStructure (callback) {
-    let sidebarURL = chrome.extension.getURL('pages/sidebar/sidebar.html')
+    const sidebarURL = chrome.extension.getURL('pages/sidebar/sidebar.html')
     $.get(sidebarURL, (html) => {
       this.waitUntilBodyLoads(() => {
         // Append sidebar to content
@@ -29,7 +29,7 @@ class Sidebar {
 
   waitUntilBodyLoads (callback) {
     let counter = 0
-    let checkBodyLoads = () => {
+    const checkBodyLoads = () => {
       if (_.isElement(document.body)) {
         callback()
       } else {
@@ -47,35 +47,35 @@ class Sidebar {
   initSidebarLabels () {}
 
   initSidebarButton () {
-    let sidebarButton = document.querySelector('#abwaSidebarButton')
+    const sidebarButton = document.querySelector('#abwaSidebarButton')
     sidebarButton.addEventListener('click', () => {
       this.toggleSidebar()
     })
   }
 
   toggleSidebar () {
-    let sidebarButton = document.querySelector('#abwaSidebarButton')
+    const sidebarButton = document.querySelector('#abwaSidebarButton')
     sidebarButton.dataset.toggled = sidebarButton.dataset.toggled !== 'true'
     document.documentElement.dataset.sidebarShown = sidebarButton.dataset.toggled
     document.querySelector('#abwaSidebarContainer').dataset.shown = sidebarButton.dataset.toggled
   }
 
   openSidebar () {
-    let sidebarButton = document.querySelector('#abwaSidebarButton')
+    const sidebarButton = document.querySelector('#abwaSidebarButton')
     sidebarButton.dataset.toggled = 'true'
     document.documentElement.dataset.sidebarShown = sidebarButton.dataset.toggled
     document.querySelector('#abwaSidebarContainer').dataset.shown = sidebarButton.dataset.toggled
   }
 
   closeSidebar () {
-    let sidebarButton = document.querySelector('#abwaSidebarButton')
+    const sidebarButton = document.querySelector('#abwaSidebarButton')
     sidebarButton.dataset.toggled = 'false'
     document.documentElement.dataset.sidebarShown = sidebarButton.dataset.toggled
     document.querySelector('#abwaSidebarContainer').dataset.shown = sidebarButton.dataset.toggled
   }
 
   isOpened () {
-    let sidebarButton = document.querySelector('#abwaSidebarButton')
+    const sidebarButton = document.querySelector('#abwaSidebarButton')
     return sidebarButton.dataset.toggled
   }
 
@@ -87,4 +87,4 @@ class Sidebar {
   }
 }
 
-module.exports = Sidebar
+export default Sidebar

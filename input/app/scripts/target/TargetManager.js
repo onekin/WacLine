@@ -1,23 +1,22 @@
-const _ = require('lodash')
-const Events = require('../Events')
+import _ from 'lodash'
+import Events from '../Events'
 // PVSCL:IFCOND(PDF, LINE)
-const PDF = require('./formats/PDF')
+import PDF from './formats/PDF'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(TXT, LINE)
-const TXT = require('./formats/TXT')
+import TXT from './formats/TXT'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(HTML, LINE)
-const HTML = require('./formats/HTML')
+import HTML from './formats/HTML'
 // PVSCL:ENDCOND
-const URLUtils = require('../utils/URLUtils')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Alerts = require('../utils/Alerts')
+import URLUtils from '../utils/URLUtils'
+import LanguageUtils from '../utils/LanguageUtils'
+import Alerts from '../utils/Alerts'
+import RandomUtils from '../utils/RandomUtils'
 // PVSCL:IFCOND(URN, LINE)
-const CryptoUtils = require('../utils/CryptoUtils')
-const RandomUtils = require('../utils/RandomUtils')
+import CryptoUtils from '../utils/CryptoUtils'
 // PVSCL:ENDCOND
 const URL_CHANGE_INTERVAL_IN_SECONDS = 1
-const axios = require('axios')
 
 class TargetManager {
   constructor () {
@@ -64,7 +63,9 @@ class TargetManager {
     // PVSCL:IFCOND(Dropbox, LINE)
     this.tryToLoadURLParam()
     // PVSCL:ENDCOND
-    this.loadDocumentFormat().then(() => {
+    this.loadDocumentFormat().catch((err) => {
+      Alerts.errorAlert({ title: 'Not supported document format', text: err.message })
+    }).then(() => {
       this.tryToLoadTitle()
       this.tryToLoadURL()
       this.tryToLoadURN()
@@ -93,7 +94,7 @@ class TargetManager {
           title: 'This file is not downloaded from moodle'
         })
         // PVSCL:ELSECOND
-        Alerts.errorAlert({text: 'Unexpected error: ' + err.message})
+        Alerts.errorAlert({ text: 'Unexpected error: ' + err.message })
         // PVSCL:ENDCOND
       })
     })
@@ -145,24 +146,28 @@ class TargetManager {
    * @returns {Promise<unknown>}
    */
   loadDocumentFormat () {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       if (window.location.pathname === '/content/pdfjs/web/viewer.html') {
         this.documentFormat = PDF
         this.waitUntilPDFViewerLoad(() => {
           resolve()
         })
         return true
-      } else if (document.body && document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') { // TODO Check if document is loaded in content/plainTextFileViewer
+      } /* PVSCL:IFCOND(TXT) */else if (document.body && document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') { // TODO Check if document is loaded in content/plainTextFileViewer
         // TODO Check if document.body is loaded or not yet
         this.documentFormat = TXT
         resolve()
-      } else {
+      } /* PVSCL:ENDCOND */else {
         // PVSCL:IFCOND(HTML, LINE)
         this.documentFormat = HTML
         // PVSCL:ELSEIFCOND(TXT, LINE)
         this.documentFormat = TXT
         // PVSCL:ENDCOND
-        resolve()
+        if (_.isEmpty(this.documentFormat)) {
+          reject(new Error('Unable to identify document format. Probably, this document format is not supported by the tool.'))
+        } else {
+          resolve()
+        }
       }
     })
   }
@@ -173,10 +178,12 @@ class TargetManager {
       let url
       if (window.location.pathname === '/content/pdfjs/web/viewer.html') {
         url = URLUtils.retrieveMainUrl(window.PDFViewerApplication.url)
+      } else if (window.location.pathname === '/content/plainTextFileViewer/index.html') {
+        url = URLUtils.retrieveMainUrl((new URL(window.location.href)).searchParams.get('file'))
       } else {
         url = URLUtils.retrieveMainUrl(window.location.href)
       }
-      chrome.runtime.sendMessage({scope: 'annotationFile', cmd: 'fileMetadata', data: {filepath: url}}, (fileMetadata) => {
+      chrome.runtime.sendMessage({ scope: 'annotationFile', cmd: 'fileMetadata', data: { filepath: url } }, (fileMetadata) => {
         if (_.isEmpty(fileMetadata)) {
           this.url = URLUtils.retrieveMainUrl(window.location.href)
           // Metadata is not loaded
@@ -198,23 +205,20 @@ class TargetManager {
   // PVSCL:ENDCOND
 
   destroy (callback) {
+    // PVSCL:IFCOND(PDF, LINE)
     if (this.documentFormat === PDF) {
       // Reload to original pdf website
-      if (_.isUndefined(this.url) || _.isNull(this.url)) {
-        window.location.href = window.PDFViewerApplication.baseUrl
-      } else {
-        // Nothing to do, because you are already in the target source url
-      }
-    } else {
-      if (_.isFunction(callback)) {
-        callback()
-      }
+      window.location.href = window.PDFViewerApplication.baseUrl
+    }
+    // PVSCL:ENDCOND
+    if (_.isFunction(callback)) {
+      callback()
     }
     clearInterval(this.urlChangeInterval)
   }
 
   waitUntilPDFViewerLoad (callback) {
-    let interval = setInterval(() => {
+    const interval = setInterval(() => {
       if (_.isObject(window.PDFViewerApplication.pdfDocument)) {
         clearInterval(interval)
         if (_.isFunction(callback)) {
@@ -227,8 +231,8 @@ class TargetManager {
 
   tryToLoadDoi () {
     // Try to load doi from hash param
-    let decodedUri = decodeURIComponent(window.location.href)
-    let params = URLUtils.extractHashParamsFromUrl(decodedUri)
+    const decodedUri = decodeURIComponent(window.location.href)
+    const params = URLUtils.extractHashParamsFromUrl(decodedUri)
     if (!_.isEmpty(params) && !_.isEmpty(params.doi)) {
       this.doi = decodeURIComponent(params.doi)
     }
@@ -248,9 +252,9 @@ class TargetManager {
   // PVSCL:ENDCOND
 
   tryToLoadURLParam () {
-    let decodedUri = decodeURIComponent(window.location.href)
+    const decodedUri = decodeURIComponent(window.location.href)
     console.log(decodedUri)
-    let params = URLUtils.extractHashParamsFromUrl(decodedUri, '::')
+    const params = URLUtils.extractHashParamsFromUrl(decodedUri, '::')
     console.log(params)
     if (!_.isEmpty(params) && !_.isEmpty(params.url)) {
       console.debug(params.url)
@@ -274,7 +278,7 @@ class TargetManager {
     } /* PVSCL:ELSEIFCOND(TXT) */ else if (this.documentFormat === TXT) {
       return document.body
     } /* PVSCL:ELSECOND */ else {
-      Alerts.errorAlert({text: 'The format of the document to be annotated is not supported by the tool yet.'})
+      Alerts.errorAlert({ text: 'The format of the document to be annotated is not supported by the tool yet.' })
     } /* PVSCL:ENDCOND */
   }
 
@@ -304,14 +308,14 @@ class TargetManager {
   initSupportWebURLChange () {
     if (_.isEmpty(this.urlChangeInterval)) {
       this.urlChangeInterval = setInterval(() => {
-        let newUrl = this.getDocumentURL()
+        const newUrl = this.getDocumentURL()
         if (newUrl !== this.url) {
           console.debug('Document URL updated from %s to %s', this.url, newUrl)
           this.url = newUrl
           // Reload target information
           this.reloadTargetInformation(() => {
             // Dispatch event
-            LanguageUtils.dispatchCustomEvent(Events.updatedDocumentURL, {url: this.url})
+            LanguageUtils.dispatchCustomEvent(Events.updatedDocumentURL, { url: this.url })
           })
         }
       }, URL_CHANGE_INTERVAL_IN_SECONDS * 1000)
@@ -320,35 +324,35 @@ class TargetManager {
   // PVSCL:IFCOND(URN, LINE)
 
   tryToLoadPlainTextFingerprint () {
-    let fileTextContentElement = document.querySelector('body > pre')
+    const fileTextContentElement = document.querySelector('body > pre')
     if (fileTextContentElement) {
-      let fileTextContent = fileTextContentElement.innerText
+      const fileTextContent = fileTextContentElement.innerText
       return CryptoUtils.hash(fileTextContent.innerText)
     }
   }
   // PVSCL:ENDCOND
 
   getDocumentURIs () {
-    let uris = {}
+    const uris = {}
     if (this.doi) {
-      uris['doi'] = 'https://doi.org/' + this.doi
+      uris.doi = 'https://doi.org/' + this.doi
     }
     if (this.url) {
-      uris['url'] = this.url
+      uris.url = this.url
     }
     if (this.urn) {
-      uris['urn'] = this.urn
+      uris.urn = this.urn
     }
     if (this.citationPdf) {
-      uris['citationPdf'] = this.citationPdf
+      uris.citationPdf = this.citationPdf
     }
     return uris
   }
 
   getDocumentLink () {
-    let uris = this.getDocumentURIs()
+    const uris = this.getDocumentURIs()
     return _.values(uris, (uri) => {
-      return {href: uri}
+      return { href: uri }
     })
   }
 
@@ -359,26 +363,43 @@ class TargetManager {
   }
 
   isPlainTextFile () {
-    let extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
-    return 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
+    let result = false
+    if (document.querySelector('body').children.length === 1 && _.isElement(document.querySelector('body > pre'))) { // It is opened with default plain text viewer in chrome
+      result = true
+    } else {
+      if (document.querySelector('#webkit-xml-viewer-source-xml')) { // It is loaded with default xml viewer
+        result = true
+      } else {
+        if (window.location.pathname !== '/content/plainTextFileViewer/index.html') {
+          // PVSCL:IFCOND(NOT (MoodleResource), LINE) // It is plain text file but it is already opened with custom plain text viewer
+          const extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
+          result = 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
+          // PVSCL:ELSECOND // When is downloaded from moodle it must be always be opened with custom viewer to ensure CORS over moodle is not applied
+          result = true
+          // PVSCL:ENDCOND
+        }
+      }
+    }
+    return result
   }
 
   tryToLoadTitle () {
     // Try to load by doi
-    let promise = new Promise((resolve, reject) => {
+    const promise = new Promise((resolve, reject) => {
       if (this.doi) {
-        let settings = {
-          'async': true,
-          'crossDomain': true,
-          'url': 'https://doi.org/' + this.doi,
-          'method': 'GET',
-          'headers': {
-            'Accept': 'application/json',
+        const settings = {
+          async: true,
+          crossDomain: true,
+          url: 'https://doi.org/' + this.doi,
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
             'Content-Type': 'application/json',
             'Cache-Control': 'no-cache'
           }
         }
         // Call using axios
+        const axios = require('axios').default
         axios(settings).then((response) => {
           if (response.data && response.data.title) {
             this.documentTitle = response.data.title
@@ -393,17 +414,17 @@ class TargetManager {
       // Try to load title from page metadata
       if (_.isEmpty(this.documentTitle)) {
         try {
-          let documentTitleElement = document.querySelector('meta[name="citation_title"]')
+          const documentTitleElement = document.querySelector('meta[name="citation_title"]')
           if (!_.isNull(documentTitleElement)) {
             this.documentTitle = documentTitleElement.content
           }
           if (!this.documentTitle) {
-            let documentTitleElement = document.querySelector('meta[property="og:title"]')
+            const documentTitleElement = document.querySelector('meta[property="og:title"]')
             if (!_.isNull(documentTitleElement)) {
               this.documentTitle = documentTitleElement.content
             }
             if (!this.documentTitle) {
-              let promise = new Promise((resolve, reject) => {
+              const promise = new Promise((resolve, reject) => {
                 // Try to load title from pdf metadata
                 if (this.documentFormat === PDF) {
                   this.waitUntilPDFViewerLoad(() => {
@@ -440,4 +461,4 @@ class TargetManager {
   }
 }
 
-module.exports = TargetManager
+export default TargetManager

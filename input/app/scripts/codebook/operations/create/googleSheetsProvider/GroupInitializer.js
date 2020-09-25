@@ -1,12 +1,12 @@
-const _ = require('lodash')
-const swal = require('sweetalert2')
-const Alerts = require('../../../../utils/Alerts')
-const ChromeStorage = require('../../../../utils/ChromeStorage')
-const Codebook = require('../../../model/Codebook')
-const selectedGroupNamespace = 'hypothesis.currentGroup'
+import _ from 'lodash'
+import swal from 'sweetalert2'
+import Alerts from '../../../../utils/Alerts'
+import ChromeStorage from '../../../../utils/ChromeStorage'
+import Codebook from '../../../model/Codebook'
 // PVSCL:IFCOND(ApplicationBased, LINE)
-const Config = require('../../../../Config')
+import Config from '../../../../Config'
 // PVSCL:ENDCOND
+const selectedGroupNamespace = 'hypothesis.currentGroup'
 
 class GroupInitializer {
   init (annotationGuide, callback) {
@@ -32,7 +32,7 @@ class GroupInitializer {
           callback(err)
         }
       } else {
-        let group = _.find(groups, (group) => {
+        const group = _.find(groups, (group) => {
           let isGroupNameEqual
           // PVSCL:IFCOND(ApplicationBased, LINE)
           isGroupNameEqual = group.name === Config.groupName
@@ -67,10 +67,10 @@ class GroupInitializer {
                   }
                 } else {
                   // Save as current group the generated one
-                  ChromeStorage.setData(selectedGroupNamespace, {data: JSON.stringify(this.annotationGuide.annotationServer.group)}, ChromeStorage.local)
+                  ChromeStorage.setData(selectedGroupNamespace, { data: JSON.stringify(this.annotationGuide.annotationServer.group) }, ChromeStorage.local)
                   // Get group url
-                  let selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
-                  let groupUrl = selectedAnnotationServerManager.constructSearchUrl({group: this.annotationGuide.annotationServer.group.id})
+                  const selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
+                  const groupUrl = selectedAnnotationServerManager.constructSearchUrl({ group: this.annotationGuide.annotationServer.getGroupId() })
                   Alerts.successAlert({
                     title: 'Correctly configured', // TODO i18n
                     text: chrome.i18n.getMessage('VisitTheCreatedGroup') + ' <a href="' + groupUrl + '" target="_blank">here</a>.'
@@ -83,8 +83,8 @@ class GroupInitializer {
             }
           })
         } else {
-          let selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
-          let groupUrl = selectedAnnotationServerManager.constructSearchUrl({group: group.id})
+          const selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
+          const groupUrl = selectedAnnotationServerManager.constructSearchUrl({ group: group.id })
           swal('The group ' + group.name + ' already exists', // TODO i18n
             chrome.i18n.getMessage('VisitTheCreatedGroup') + ' <a href="' + groupUrl + '" target="_blank">here</a>.',
             'info')
@@ -98,7 +98,7 @@ class GroupInitializer {
   }
 
   createGroup (callback) {
-    window.googleSheetProvider.annotationServerManager.client.createNewGroup({name: this.annotationGuide.name}, (err, group) => {
+    window.googleSheetProvider.annotationServerManager.client.createNewGroup({ name: this.annotationGuide.name }, (err, group) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -117,7 +117,7 @@ class GroupInitializer {
   }
 
   createFacetsAndCodes (callback) {
-    let annotations = this.annotationGuide.toAnnotations()
+    const annotations = this.annotationGuide.toAnnotations()
     console.debug('Generated dimensions and categories annotations: ')
     console.debug(annotations)
     window.googleSheetProvider.annotationServerManager.client.createNewAnnotations(annotations, (err) => {
@@ -135,7 +135,7 @@ class GroupInitializer {
 
   removeGroup (callback) {
     if (this.annotationGuide.annotationServer) {
-      window.googleSheetProvider.annotationServerManager.client.removeAMemberFromAGroup(this.annotationGuide.annotationServer.group.id, 'me', (err) => {
+      window.googleSheetProvider.annotationServerManager.client.removeAMemberFromAGroup(this.annotationGuide.annotationServer.getGroupId(), 'me', (err) => {
         if (_.isFunction(callback)) {
           callback(err)
         } else {
@@ -146,4 +146,4 @@ class GroupInitializer {
   }
 }
 
-module.exports = GroupInitializer
+export default GroupInitializer

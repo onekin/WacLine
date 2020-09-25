@@ -1,7 +1,7 @@
-const _ = require('lodash')
-const Events = require('../../../Events')
-const Alerts = require('../../../utils/Alerts')
-const LanguageUtils = require('../../../utils/LanguageUtils')
+import _ from 'lodash'
+import Events from '../../../Events'
+import Alerts from '../../../utils/Alerts'
+import LanguageUtils from '../../../utils/LanguageUtils'
 
 class RenameCodebook {
   constructor () {
@@ -15,7 +15,7 @@ class RenameCodebook {
 
   destroy () {
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
@@ -23,7 +23,7 @@ class RenameCodebook {
 
   // EVENTS
   initRenameCodebookEvent () {
-    this.events.renameCodebookEvent = {element: document, event: Events.renameCodebook, handler: this.renameCodebookEventHandler()}
+    this.events.renameCodebookEvent = { element: document, event: Events.renameCodebook, handler: this.renameCodebookEventHandler() }
     this.events.renameCodebookEvent.element.addEventListener(this.events.renameCodebookEvent.event, this.events.renameCodebookEvent.handler, false)
   }
 
@@ -32,7 +32,7 @@ class RenameCodebook {
    */
   renameCodebookEventHandler () {
     return (event) => {
-      let codebook = event.detail.codebook
+      const codebook = event.detail.codebook
       Alerts.inputTextAlert({
         title: 'Rename review model ' + codebook.name,
         inputPlaceholder: 'Type here the name of your new review model...',
@@ -53,7 +53,7 @@ class RenameCodebook {
         callback: (err, codebookName) => {
           if (err) {
             window.alert('Unable to load swal. Please contact developer.')
-            LanguageUtils.dispatchCustomEvent(Events.codebookRenamed, {err: err})
+            LanguageUtils.dispatchCustomEvent(Events.codebookRenamed, { err: err })
           } else {
             codebookName = LanguageUtils.normalizeString(codebookName)
             window.abwa.annotationServerManager.client.updateGroup(codebook.id, {
@@ -61,9 +61,9 @@ class RenameCodebook {
               description: codebook.description || 'A Review&Go group to conduct a review'
             }, (err, codebook) => {
               if (err) {
-                LanguageUtils.dispatchCustomEvent(Events.codebookRenamed, {err: err})
+                LanguageUtils.dispatchCustomEvent(Events.codebookRenamed, { err: err })
               } else {
-                LanguageUtils.dispatchCustomEvent(Events.codebookRenamed, {group: codebook})
+                LanguageUtils.dispatchCustomEvent(Events.codebookRenamed, { group: codebook })
               }
             })
           }
@@ -73,4 +73,4 @@ class RenameCodebook {
   }
 }
 
-module.exports = RenameCodebook
+export default RenameCodebook

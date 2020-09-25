@@ -1,8 +1,8 @@
-const CircularJSON = require('circular-json-es6')
-const ChromeStorage = require('../utils/ChromeStorage')
-const CreateHighlighterTask = require('./tasks/CreateHighlighterTask')
-const _ = require('lodash')
-const Config = require('../Config')
+import CircularJSON from 'circular-json-es6'
+import ChromeStorage from '../utils/ChromeStorage'
+import CreateHighlighterTask from './tasks/CreateHighlighterTask'
+import _ from 'lodash'
+import Config from '../Config'
 
 class TaskManager {
   constructor () {
@@ -17,20 +17,20 @@ class TaskManager {
       if (request.scope === 'task') {
         if (request.cmd === 'createHighlighters') {
           if (request.data) {
-            let rubric = CircularJSON.parse(request.data.rubric)
-            let students = request.data.students
-            let courseId = request.data.courseId
-            let task = this.prepareCreateHighlightersTask(rubric, students, courseId)
-            let numberOfAnnotationsToCreate = task.activities.length * (_.reduce(_.map(rubric.themes, (theme) => { return theme.codes.length }), (sum, n) => { return sum + n }) + 2)
-            let minutesPending = Math.round(numberOfAnnotationsToCreate / 60)
+            const rubric = CircularJSON.parse(request.data.rubric)
+            const students = request.data.students
+            const courseId = request.data.courseId
+            const task = this.prepareCreateHighlightersTask(rubric, students, courseId)
+            const numberOfAnnotationsToCreate = task.activities.length * (_.reduce(_.map(rubric.themes, (theme) => { return theme.codes.length }), (sum, n) => { return sum + n }) + 2)
+            const minutesPending = Math.round(numberOfAnnotationsToCreate / 60)
             this.addTasks(task)
-            sendResponse({minutes: minutesPending})
+            sendResponse({ minutes: minutesPending })
           }
         } else if (request.cmd === 'getCurrentTaskStatus') {
           if (_.isObject(this.currentTaskInstance)) {
-            sendResponse({status: 'CreateHighlighterTask pending', statusMessage: this.currentTaskInstance.getStatus()})
+            sendResponse({ status: 'CreateHighlighterTask pending', statusMessage: this.currentTaskInstance.getStatus() })
           } else {
-            sendResponse({status: 'Nothing pending'})
+            sendResponse({ status: 'Nothing pending' })
           }
         }
       }
@@ -84,9 +84,9 @@ class TaskManager {
   doTask (todoTask) {
     this.currentTask = todoTask
     if (this.currentTask.task === 'createHighlighters') {
-      let currentTask = this.currentTask
+      const currentTask = this.currentTask
       // Create notification handler for task
-      let buttonClickListener = (notificationId, buttonIndex) => {
+      const buttonClickListener = (notificationId, buttonIndex) => {
         // TODO If notification id is the current one for this task
         if (buttonIndex === 0) {
           if (_.isFunction(currentTask.notificationHandler)) {
@@ -98,7 +98,7 @@ class TaskManager {
       }
       chrome.notifications.onButtonClicked.addListener(buttonClickListener)
       // Create task
-      let task = new CreateHighlighterTask(this.currentTask)
+      const task = new CreateHighlighterTask(this.currentTask)
       task.init(() => {
         // Task is finished
         this.notifyTask(this.currentTask.notification)
@@ -113,7 +113,7 @@ class TaskManager {
     this.taskTimeout = setTimeout(() => {
       if (this.currentTasks.length > 0) {
         if (_.isEmpty(this.currentTask)) {
-          let todoTask = this.currentTasks[0]
+          const todoTask = this.currentTasks[0]
           this.doTask(todoTask)
           this.checkTask()
         } else {
@@ -131,20 +131,20 @@ class TaskManager {
       type: 'basic',
       title: 'Configuration done',
       message: notification,
-      iconUrl: chrome.extension.getURL('images/' + Config.urlParamName + 'icon-512.png'),
+      iconUrl: chrome.extension.getURL('images/' + Config.urlParamName + '/icon-512.png'),
       buttons: [
-        {title: 'Yes'}]
+        { title: 'Yes' }]
     }, () => {
       console.debug('Notification send to user, task is finished')
     })
   }
 
   prepareCreateHighlightersTask (rubric, students, courseId) {
-    let activities = []
+    const activities = []
     for (let i = 0; i < students.length; i++) {
       activities.push({
-        'type': 'createHighlighter',
-        'data': {student: students[i], rubric, courseId}
+        type: 'createHighlighter',
+        data: { student: students[i], rubric, courseId }
       })
     }
     return {
@@ -153,16 +153,16 @@ class TaskManager {
       activities: activities,
       notification: 'The tool is prepared to mark ' + rubric.name + ' assignment. Would you like to mark them now?',
       notificationHandler: () => {
-        chrome.tabs.create({url: rubric.moodleEndpoint + 'mod/assign/view.php?id=' + rubric.cmid})
+        chrome.tabs.create({ url: rubric.moodleEndpoint + 'mod/assign/view.php?id=' + rubric.cmid })
       }
     }
   }
 }
 
 TaskManager.tasks = {
-  'createHighlighters': (data, callback) => {
+  createHighlighters: (data, callback) => {
 
   }
 }
 
-module.exports = TaskManager
+export default TaskManager

@@ -1,8 +1,8 @@
-const MoodleClient = require('./MoodleClient')
-const _ = require('lodash')
-const MoodleFunctions = require('./MoodleFunctions')
-const APISimulation = require('./APISimulation')
-const Config = require('../Config')
+import MoodleClient from './MoodleClient'
+import _ from 'lodash'
+import MoodleFunctions from './MoodleFunctions'
+import APISimulation from './APISimulation'
+import Config from '../Config'
 // const RolesManager = require('../contentScript/RolesManager')
 
 class MoodleClientManager {
@@ -16,7 +16,7 @@ class MoodleClientManager {
 
   init (callback) {
     // Retrieve token from moodle
-    chrome.runtime.sendMessage({scope: 'moodle', cmd: 'getTokenForEndpoint', data: {endpoint: this.moodleEndpoint}}, (result) => {
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'getTokenForEndpoint', data: { endpoint: this.moodleEndpoint } }, (result) => {
       if (result.err) {
         callback(new Error('Unable to retrieve valid token'))
       } else {
@@ -32,11 +32,11 @@ class MoodleClientManager {
   getRubric (cmids, callback) {
     if (_.isFunction(callback)) {
       // Check if API simulation is enabled
-      chrome.runtime.sendMessage({scope: 'moodle', cmd: 'isApiSimulationActivated'}, (isActivated) => {
+      chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isApiSimulationActivated' }, (isActivated) => {
         if (isActivated.activated) {
           APISimulation.getRubric(cmids, callback)
         } else {
-          let token = this.getTokenFor(MoodleFunctions.getRubric.wsFunc)
+          const token = this.getTokenFor(MoodleFunctions.getRubric.wsFunc)
           if (_.isString(token)) {
             this.moodleClient.updateToken(token)
             this.moodleClient.getRubric(cmids, callback)
@@ -50,7 +50,7 @@ class MoodleClientManager {
 
   getCmidInfo (cmid, callback) {
     if (_.isFunction(callback)) {
-      let token = this.getTokenFor(MoodleFunctions.getCourseModuleInfo.wsFunc)
+      const token = this.getTokenFor(MoodleFunctions.getCourseModuleInfo.wsFunc)
       if (_.isString(token)) {
         this.moodleClient.updateToken(token)
         this.moodleClient.getCmidInfo(cmid, callback)
@@ -62,7 +62,7 @@ class MoodleClientManager {
 
   updateStudentGradeWithRubric (data, callback) {
     if (_.isFunction(callback)) {
-      let token = this.getTokenFor(MoodleFunctions.updateStudentsGradeWithRubric.wsFunc)
+      const token = this.getTokenFor(MoodleFunctions.updateStudentsGradeWithRubric.wsFunc)
       if (_.isString(token)) {
         this.moodleClient.updateToken(token)
         this.moodleClient.updateStudentGradeWithRubric(data, (err, data) => {
@@ -84,7 +84,7 @@ class MoodleClientManager {
 
   getStudents (courseId, callback) {
     if (_.isFunction(callback)) {
-      let token = this.getTokenFor(MoodleFunctions.getStudents.wsFunc)
+      const token = this.getTokenFor(MoodleFunctions.getStudents.wsFunc)
       if (_.isString(token)) {
         this.moodleClient.updateToken(token)
         this.moodleClient.getStudents(courseId, callback)
@@ -95,7 +95,7 @@ class MoodleClientManager {
   }
 
   getTokenFor (wsFunction) {
-    let tokenWrapper = _.find(this.tokens, (token) => {
+    const tokenWrapper = _.find(this.tokens, (token) => {
       return _.find(token.tests, (test) => {
         return test.service === wsFunction && test.enabled
       })
@@ -107,7 +107,7 @@ class MoodleClientManager {
     }
   }
 
-  addSubmissionComment ({courseId, studentId, text, callback}) {
+  addSubmissionComment ({ courseId, studentId, text, callback }) {
     APISimulation.addSubmissionComment(this.moodleEndpoint, {
       courseId,
       studentId,
@@ -119,7 +119,7 @@ class MoodleClientManager {
     }, callback)
   }
 
-  removeSubmissionComment ({commentId, annotationId, callback}) {
+  removeSubmissionComment ({ commentId, annotationId, callback }) {
     if (commentId) {
 
     }
@@ -129,9 +129,9 @@ class MoodleClientManager {
 
   }
 
-  getStudentPreviousSubmissions ({studentId, course = null}) {
+  getStudentPreviousSubmissions ({ studentId, course = null }) {
 
   }
 }
 
-module.exports = MoodleClientManager
+export default MoodleClientManager

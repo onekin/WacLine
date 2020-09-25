@@ -1,14 +1,14 @@
-const Alerts = require('../../utils/Alerts')
-const PDF = require('../../target/formats/PDF')
-const FileSaver = require('file-saver')
-const {Review} = require('../../exporter/reviewModel')
+import Alerts from '../../utils/Alerts'
+import PDF from '../../target/formats/PDF'
+import FileSaver from 'file-saver'
+import { Review } from '../../exporter/reviewModel'
 
 class TextSummary {
   static generateReview () {
-    Alerts.loadingAlert({text: chrome.i18n.getMessage('GeneratingReviewReport')})
-    let review = Review.parseAnnotations(window.abwa.annotationManagement.annotationReader.allAnnotations)
-    let report = review.toString()
-    let blob = new window.Blob([report], {type: 'text/plain;charset=utf-8'})
+    Alerts.loadingAlert({ text: chrome.i18n.getMessage('GeneratingReviewReport') })
+    const review = Review.parseAnnotations(window.abwa.annotationManagement.annotationReader.allAnnotations)
+    const report = review.toString()
+    const blob = new window.Blob([report], { type: 'text/plain;charset=utf-8' })
     // If document is a PDF, get the title
     let title
     if (window.abwa.targetManager.documentFormat.pdf === PDF) {
@@ -23,4 +23,4 @@ class TextSummary {
   }
 }
 
-module.exports = TextSummary
+export default TextSummary

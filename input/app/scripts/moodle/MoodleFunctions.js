@@ -1,6 +1,6 @@
-const MoodleClient = require('./MoodleClient')
+import MoodleClient from './MoodleClient'
 
-let moodleClient = new MoodleClient('', '')
+const moodleClient = new MoodleClient('', '')
 
 const MoodleFunctions = {
   updateStudentsGradeWithRubric: {
@@ -25,4 +25,4 @@ const MoodleFunctions = {
   }
 }
 
-module.exports = MoodleFunctions
+export default MoodleFunctions

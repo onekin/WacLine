@@ -1,6 +1,6 @@
-const Alerts = require('../../../utils/Alerts')
-const LanguageUtils = require('../../../utils/LanguageUtils')
-const Events = require('../../../Events')
+import Alerts from '../../../utils/Alerts'
+import LanguageUtils from '../../../utils/LanguageUtils'
+import Events from '../../../Events'
 
 class DeleteGroup {
   static deleteAnnotations () {
@@ -24,4 +24,4 @@ class DeleteGroup {
   }
 }
 
-module.exports = DeleteGroup
+export default DeleteGroup

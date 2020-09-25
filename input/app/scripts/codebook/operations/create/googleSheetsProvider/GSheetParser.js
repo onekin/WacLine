@@ -1,13 +1,13 @@
-const _ = require('lodash')
-const Codebook = require('../../../model/Codebook')
-const Alerts = require('../../../../utils/Alerts')
-const URLUtils = require('../../../../utils/URLUtils')
-const Config = require('../../../../Config')
+import _ from 'lodash'
+import Codebook from '../../../model/Codebook'
+import Alerts from '../../../../utils/Alerts'
+import URLUtils from '../../../../utils/URLUtils'
+import Config from '../../../../Config'
 
 class GSheetParser {
   static parseCurrentSheet (callback) {
-    let spreadsheetId = GSheetParser.retrieveSpreadsheetId()
-    let sheetId = GSheetParser.retrieveSheetId()
+    const spreadsheetId = GSheetParser.retrieveSpreadsheetId()
+    const sheetId = GSheetParser.retrieveSheetId()
     GSheetParser.retrieveCurrentToken((err, token) => {
       if (err) {
         callback(err)
@@ -24,7 +24,7 @@ class GSheetParser {
             // PVSCL:IFCOND(ApplicationBased,LINE)
             sheetName = Config.groupName
             // PVSCL:ENDCOND
-            let codebook = Codebook.fromGoogleSheet({spreadsheetId, sheetId, spreadsheet, sheetName})
+            const codebook = Codebook.fromGoogleSheet({ spreadsheetId, sheetId, spreadsheet, sheetName })
             if (_.isError(codebook)) {
               callback(err)
             } else {
@@ -39,7 +39,7 @@ class GSheetParser {
   }
 
   static retrieveCurrentToken (callback) {
-    chrome.runtime.sendMessage({scope: 'googleSheets', cmd: 'getToken'}, (result) => {
+    chrome.runtime.sendMessage({ scope: 'googleSheets', cmd: 'getToken' }, (result) => {
       if (_.isFunction(callback)) {
         if (result.token) {
           callback(null, result.token)
@@ -65,7 +65,7 @@ class GSheetParser {
         callback(new Error('Unable to retrieve spreadsheet data. Permission denied.'))
       } else {
         try {
-          let spreadsheet = JSON.parse(response.spreadsheet)
+          const spreadsheet = JSON.parse(response.spreadsheet)
           callback(null, spreadsheet)
         } catch (e) {
           callback(e)
@@ -81,9 +81,9 @@ class GSheetParser {
   }
 
   static retrieveSheetId () {
-    let hashParams = URLUtils.extractHashParamsFromUrl(window.location.href, '=')
+    const hashParams = URLUtils.extractHashParamsFromUrl(window.location.href, '=')
     return parseInt(hashParams.gid)
   }
 }
 
-module.exports = GSheetParser
+export default GSheetParser

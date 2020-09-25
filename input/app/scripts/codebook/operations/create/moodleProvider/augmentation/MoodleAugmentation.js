@@ -1,7 +1,7 @@
-const _ = require('lodash')
-const MoodleGradingAugmentation = require('./MoodleGradingAugmentation')
-const MoodleGraderAugmentation = require('./MoodleGraderAugmentation')
-const MoodleViewPluginAssignSubmissionAugmentation = require('./MoodleViewPluginAssignSubmissionAugmentation')
+import _ from 'lodash'
+import MoodleGradingAugmentation from './MoodleGradingAugmentation'
+import MoodleGraderAugmentation from './MoodleGraderAugmentation'
+import MoodleViewPluginAssignSubmissionAugmentation from './MoodleViewPluginAssignSubmissionAugmentation'
 
 class MoodleAugmentation {
   init () {
@@ -20,4 +20,4 @@ class MoodleAugmentation {
   }
 }
 
-module.exports = MoodleAugmentation
+export default MoodleAugmentation

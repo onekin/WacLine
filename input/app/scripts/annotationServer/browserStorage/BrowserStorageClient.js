@@ -1,6 +1,6 @@
-const _ = require('lodash')
-const RandomUtils = require('../../utils/RandomUtils')
-const wildcard = require('wildcard')
+import _ from 'lodash'
+import RandomUtils from '../../utils/RandomUtils'
+import wildcard from 'wildcard'
 
 class BrowserStorageClient {
   constructor (database, manager) {
@@ -10,7 +10,7 @@ class BrowserStorageClient {
 
   createNewAnnotation (annotation, callback) {
     try {
-      let annotationToStore = BrowserStorageClient.constructAnnotation({
+      const annotationToStore = BrowserStorageClient.constructAnnotation({
         annotation,
         user: this.database.user,
         annotations: this.database.annotations
@@ -30,10 +30,10 @@ class BrowserStorageClient {
 
   createNewAnnotations (annotations = [], callback) {
     try {
-      let toStoreAnnotations = []
+      const toStoreAnnotations = []
       for (let i = 0; i < annotations.length; i++) {
-        let annotation = annotations[i]
-        let toStoreAnnotation = BrowserStorageClient.constructAnnotation({
+        const annotation = annotations[i]
+        const toStoreAnnotation = BrowserStorageClient.constructAnnotation({
           annotation,
           user: this.database.user,
           annotations: this.database.annotations
@@ -50,7 +50,7 @@ class BrowserStorageClient {
     }
   }
 
-  static constructAnnotation ({annotation, user, annotations}) {
+  static constructAnnotation ({ annotation, user, annotations }) {
     // Check if the required parameter group exists
     if (annotation.group) {
       // TODO Check if annotation follows the standard schema
@@ -60,14 +60,14 @@ class BrowserStorageClient {
 
       // UserInfo
       if (_.isEmpty(annotationToCreate.user_info)) {
-        annotationToCreate.user_info = {display_name: user.display_name}
+        annotationToCreate.user_info = { display_name: user.display_name }
       }
       // User
       if (_.isEmpty(annotationToCreate.user)) {
         annotationToCreate.user = user.userid
       }
       // Id
-      let arrayOfIds = _.map(annotations, 'id')
+      const arrayOfIds = _.map(annotations, 'id')
       annotationToCreate.id = RandomUtils.randomUnique(arrayOfIds, 22)
 
       // Permissions
@@ -86,39 +86,39 @@ class BrowserStorageClient {
 
   static constructEmptyAnnotation () {
     // Get current time
-    let now = new Date()
+    const now = new Date()
     return {
-      'updated': now.toISOString(),
-      'group': '',
-      'target': [
+      updated: now.toISOString(),
+      group: '',
+      target: [
         {
-          'source': '',
-          'selector': []
+          source: '',
+          selector: []
         }
       ],
-      'links': {
-        'json': '',
-        'html': '',
-        'incontext': ''
+      links: {
+        json: '',
+        html: '',
+        incontext: ''
       },
-      'tags': [],
-      'text': '',
-      'created': now.toISOString(),
-      'flagged': false,
-      'user_info': {},
-      'moderation': {
-        'flagCount': 0
+      tags: [],
+      text: '',
+      created: now.toISOString(),
+      flagged: false,
+      user_info: {},
+      moderation: {
+        flagCount: 0
       },
-      'references': [],
-      'user': '',
-      'hidden': false,
-      'id': '',
-      'permissions': {}
+      references: [],
+      user: '',
+      hidden: false,
+      id: '',
+      permissions: {}
     }
   }
 
   searchAnnotations (data = {}, callback) {
-    let annotations = this.database.annotations
+    const annotations = this.database.annotations
     let filteredAnnotations = _.filter(annotations, (annotation) => {
       let result = true
       // URL
@@ -161,7 +161,7 @@ class BrowserStorageClient {
       }
       // Uri.parts
       if (result && (data['uri.parts'])) {
-        let splittedUri = annotation.uri.split(/[#+/:=?.-]/) // Chars used to split URIs for uri.parts in Hypothes.is https://hyp.is/ajJkEI3pEemPn2ukkpZWjQ/h.readthedocs.io/en/latest/api-reference/v1/
+        const splittedUri = annotation.uri.split(/[#+/:=?.-]/) // Chars used to split URIs for uri.parts in Hypothes.is https://hyp.is/ajJkEI3pEemPn2ukkpZWjQ/h.readthedocs.io/en/latest/api-reference/v1/
         result = _.some(splittedUri, (str) => { return str === data['uri.parts'] })
       }
       // Wildcard_uri
@@ -183,15 +183,15 @@ class BrowserStorageClient {
       }
       // Any, this is the last one as it is the algorithm with higher computational cost
       if (result && (data.any)) {
-        let anyUrl = annotation.uri.includes(data.any) // Any checks in uri
-        let anyTag = annotation.tags.includes(data.any) // Any checks in tags
-        let anyText = annotation.text.includes(data.text)
+        const anyUrl = annotation.uri.includes(data.any) // Any checks in uri
+        const anyTag = annotation.tags.includes(data.any) // Any checks in tags
+        const anyText = annotation.text.includes(data.text)
         result = anyUrl || anyTag || anyText // TODO Quote
       }
       return result
     })
     if (data.order) {
-      let sort = data.sort || 'updated'
+      const sort = data.sort || 'updated'
       filteredAnnotations = _.orderBy(filteredAnnotations, sort, data.order)
     }
     if (data.limit) {
@@ -200,19 +200,19 @@ class BrowserStorageClient {
     callback(null, filteredAnnotations)
   }
 
-  static updateAnnotationFromList ({id, annotation, annotations, currentUser}) {
-    let annotationToUpdateIndex = _.findIndex(annotations, (annotationInDatabase) => {
+  static updateAnnotationFromList ({ id, annotation, annotations, currentUser }) {
+    const annotationToUpdateIndex = _.findIndex(annotations, (annotationInDatabase) => {
       return annotationInDatabase.id === id
     })
     if (annotationToUpdateIndex > -1) {
-      let annotationToUpdate = annotations[annotationToUpdateIndex]
+      const annotationToUpdate = annotations[annotationToUpdateIndex]
       // Check permissions to delete
       if (_.isArray(annotationToUpdate.permissions.update)) {
-        let owner = _.find(annotationToUpdate.permissions.update, (userid) => {
+        const owner = _.find(annotationToUpdate.permissions.update, (userid) => {
           return userid === currentUser.userid
         })
         if (_.isString(owner)) {
-          let annotationUpdated = Object.assign(annotationToUpdate, annotation)
+          const annotationUpdated = Object.assign(annotationToUpdate, annotation)
           // Update updated time
           annotationUpdated.updated = (new Date()).toISOString()
           // Update url in target if changed
@@ -242,7 +242,7 @@ class BrowserStorageClient {
   updateAnnotation (id, annotation, callback) {
     if (_.isString(id) && _.isObject(annotation)) {
       try {
-        let updatedAnnotation = BrowserStorageClient.updateAnnotationFromList({
+        const updatedAnnotation = BrowserStorageClient.updateAnnotationFromList({
           id: id,
           annotation: annotation,
           annotations: this.database.annotations,
@@ -257,15 +257,15 @@ class BrowserStorageClient {
     }
   }
 
-  static deleteAnnotationFromList ({id, annotations, currentUser}) {
-    let annotationToDeleteIndex = _.findIndex(annotations, (annotation) => {
+  static deleteAnnotationFromList ({ id, annotations, currentUser }) {
+    const annotationToDeleteIndex = _.findIndex(annotations, (annotation) => {
       return annotation.id === id
     })
     if (annotationToDeleteIndex > -1) {
-      let annotation = annotations[annotationToDeleteIndex]
+      const annotation = annotations[annotationToDeleteIndex]
       // Check permissions to delete
       if (_.isArray(annotation.permissions.delete)) {
-        let owner = _.find(annotation.permissions.delete, (userid) => {
+        const owner = _.find(annotation.permissions.delete, (userid) => {
           return userid === currentUser.userid
         })
         if (_.isString(owner)) {
@@ -294,7 +294,7 @@ class BrowserStorageClient {
       return
     }
     try {
-      let deletedAnnotation = BrowserStorageClient.deleteAnnotationFromList({
+      const deletedAnnotation = BrowserStorageClient.deleteAnnotationFromList({
         id: annotationId,
         annotations: this.database.annotations,
         currentUser: this.database.user
@@ -302,7 +302,7 @@ class BrowserStorageClient {
       // TODO Update storage
       this.manager.saveDatabase(this.database)
       // Callback
-      callback(null, {deleted: true, id: deletedAnnotation.id})
+      callback(null, { deleted: true, id: deletedAnnotation.id })
     } catch (e) {
       callback(e)
     }
@@ -319,10 +319,10 @@ class BrowserStorageClient {
       return
     }
     try {
-      let deletedAnnotations = []
+      const deletedAnnotations = []
       for (let i = 0; i < toDeleteAnnotationIds.length; i++) {
-        let toDeleteAnnotationId = toDeleteAnnotationIds[i]
-        let deletedAnnotation = BrowserStorageClient.deleteAnnotationFromList({
+        const toDeleteAnnotationId = toDeleteAnnotationIds[i]
+        const deletedAnnotation = BrowserStorageClient.deleteAnnotationFromList({
           id: toDeleteAnnotationId,
           annotations: this.database.annotations,
           currentUser: this.database.user
@@ -332,7 +332,7 @@ class BrowserStorageClient {
       // TODO Update Storage
       this.manager.saveDatabase(this.database)
       // Callback
-      callback(null, {deleted: true, annotations: deletedAnnotations})
+      callback(null, { deleted: true, annotations: deletedAnnotations })
     } catch (e) {
       callback(e)
     }
@@ -340,7 +340,7 @@ class BrowserStorageClient {
 
   fetchAnnotation (id, callback) {
     if (_.isString(id)) {
-      let foundAnnotation = _.find(this.database.annotations, (annotation) => {
+      const foundAnnotation = _.find(this.database.annotations, (annotation) => {
         return annotation.id === id
       })
       if (_.isObject(foundAnnotation)) {
@@ -356,7 +356,7 @@ class BrowserStorageClient {
   }
 
   getListOfGroups (data, callback) {
-    let groups = _.map(this.database.groups, (group) => {
+    const groups = _.map(this.database.groups, (group) => {
       return {
         id: group.id,
         name: group.name,
@@ -367,7 +367,7 @@ class BrowserStorageClient {
   }
 
   getUserProfile (callback) {
-    let profile = this.database.user
+    const profile = this.database.user
     // Retrieve groups and parse
     profile.groups = _.map(this.database.groups, (group) => {
       return {
@@ -382,14 +382,14 @@ class BrowserStorageClient {
 
   updateGroup (id, data, callback) {
     if (_.isString(id)) {
-      let groupToUpdateIndex = _.findIndex(this.database.groups, (group) => {
+      const groupToUpdateIndex = _.findIndex(this.database.groups, (group) => {
         return group.id === id
       })
       if (groupToUpdateIndex > -1) {
         // Retrieve group data
-        let groupToUpdate = this.database.groups[groupToUpdateIndex]
+        const groupToUpdate = this.database.groups[groupToUpdateIndex]
         // Update group data
-        let updatedGroup = Object.assign(groupToUpdate, data)
+        const updatedGroup = Object.assign(groupToUpdate, data)
         // Update in-memory database
         this.database.groups[groupToUpdateIndex] = updatedGroup
         // TODO Update Storage
@@ -406,7 +406,7 @@ class BrowserStorageClient {
 
   createNewGroup (data, callback) {
     if (_.has(data, 'name')) {
-      let createdGroup = BrowserStorageClient.constructGroup({
+      const createdGroup = BrowserStorageClient.constructGroup({
         name: data.name,
         description: data.description,
         annotationServerUrl: this.manager.annotationServerUrl,
@@ -422,14 +422,14 @@ class BrowserStorageClient {
     }
   }
 
-  static constructGroup ({name, description = '', groups, annotationServerUrl}) {
+  static constructGroup ({ name, description = '', groups, annotationServerUrl }) {
     // Get a random id
-    let arrayOfIds = _.map(groups, 'id')
-    let groupId = RandomUtils.randomUnique(arrayOfIds, 8)
+    const arrayOfIds = _.map(groups, 'id')
+    const groupId = RandomUtils.randomUnique(arrayOfIds, 8)
     return {
       name: name,
       description: description || '',
-      links: {html: annotationServerUrl + '/groups/' + groupId},
+      links: { html: annotationServerUrl + '/groups/' + groupId },
       id: groupId
     }
   }
@@ -450,10 +450,10 @@ class BrowserStorageClient {
     }
   }
 
-  removeAMemberFromAGroup ({id, user = null}, callback) {
+  removeAMemberFromAGroup ({ id, user = null }, callback) {
     if (_.isString(id)) {
       // Remove group from group list
-      let removedGroup = _.remove(this.database.groups, (group) => {
+      const removedGroup = _.remove(this.database.groups, (group) => {
         return group.id === id
       })
       // Remove annotations that pertain to the group
@@ -470,4 +470,4 @@ class BrowserStorageClient {
   }
 }
 
-module.exports = BrowserStorageClient
+export default BrowserStorageClient

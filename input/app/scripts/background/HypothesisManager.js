@@ -1,5 +1,8 @@
-const DOM = require('../utils/DOM')
-const $ = require('jquery')
+import DOM from '../utils/DOM'
+import $ from 'jquery'
+import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
+import _ from 'lodash'
+import HypothesisBackgroundManager from '../annotationServer/hypothesis/HypothesisBackgroundManager'
 const checkHypothesisLoggedIntervalInSeconds = 20 // fetch token every X seconds
 const checkHypothesisLoggedInWhenPromptInSeconds = 0.5 // When user is prompted to login, the checking should be with higher period
 const maxTries = 10 // max tries before deleting the token
@@ -18,6 +21,11 @@ class HypothesisManager {
       this.setToken(err, token)
     })
 
+    // Init hypothesis client manager
+    this.initHypothesisClientManager()
+    // Init hypothesis background manager, who listens to commands from contentScript
+    this.initHypothesisBackgroundManager()
+
     // Create an observer to check if user is logged to hypothesis
     this.createRetryHypothesisTokenRetrieve()
 
@@ -29,7 +37,7 @@ class HypothesisManager {
   }
 
   createRetryHypothesisTokenRetrieve (intervalSeconds = checkHypothesisLoggedIntervalInSeconds) {
-    let intervalHandler = () => {
+    const intervalHandler = () => {
       this.retrieveHypothesisToken((err, token) => {
         this.setToken(err, token)
       })
@@ -43,11 +51,11 @@ class HypothesisManager {
   }
 
   retrieveHypothesisToken (callback) {
-    let callSettings = {
-      'async': true,
-      'crossDomain': true,
-      'url': 'https://hypothes.is/account/developer',
-      'method': 'GET'
+    const callSettings = {
+      async: true,
+      crossDomain: true,
+      url: 'https://hypothes.is/account/developer',
+      method: 'GET'
     }
 
     DOM.scrapElement(callSettings, '#token', (error, resultNodes) => {
@@ -60,13 +68,13 @@ class HypothesisManager {
               if (error) {
                 callback(error)
               } else {
-                let hypothesisToken = resultNodes[0].value
+                const hypothesisToken = resultNodes[0].value
                 callback(null, hypothesisToken)
               }
             })
           })
         } else {
-          let hypothesisToken = resultNodes[0].value
+          const hypothesisToken = resultNodes[0].value
           callback(null, hypothesisToken)
         }
       }
@@ -95,9 +103,9 @@ class HypothesisManager {
       if (request.scope === 'hypothesis') {
         if (request.cmd === 'userLoginForm') {
           // Create new tab on google chrome
-          chrome.tabs.create({url: 'https://hypothes.is/login'}, (tab) => {
+          chrome.tabs.create({ url: 'https://hypothes.is/login' }, (tab) => {
             // Retrieve hypothesis token periodically
-            let interval = setInterval(() => {
+            const interval = setInterval(() => {
               this.retrieveHypothesisToken((err, token) => {
                 if (err) {
                   console.log('Checking again in %s seconds', checkHypothesisLoggedInWhenPromptInSeconds)
@@ -106,18 +114,18 @@ class HypothesisManager {
                   this.token = token
                   chrome.tabs.remove(tab.id, () => {
                     clearInterval(interval)
-                    sendResponse({token: this.token})
+                    sendResponse({ token: this.token })
                   })
                 }
               })
             }, checkHypothesisLoggedInWhenPromptInSeconds * 1000)
             // Set event for when user close the tab
-            let closeTabListener = (closedTabId) => {
+            const closeTabListener = (closedTabId) => {
               if (closedTabId === tab.id && !this.token) {
                 // Remove listener for hypothesis token
                 clearInterval(interval)
                 // Hypothes.is login tab is closed
-                sendResponse({error: 'Hypothesis tab closed intentionally'})
+                sendResponse({ error: 'Hypothesis tab closed intentionally' })
               }
               chrome.tabs.onRemoved.removeListener(closeTabListener)
             }
@@ -142,6 +150,18 @@ class HypothesisManager {
       }
     })
   }
+
+  initHypothesisClientManager () {
+    this.annotationServerManager = new HypothesisClientManager()
+    this.annotationServerManager.init((err) => {
+      console.error('Unable to initialize hypothesis client manager. Error: ' + err.message)
+    })
+  }
+
+  initHypothesisBackgroundManager () {
+    this.hypothesisBackgroundManager = new HypothesisBackgroundManager()
+    this.hypothesisBackgroundManager.init()
+  }
 }
 
-module.exports = HypothesisManager
+export default HypothesisManager

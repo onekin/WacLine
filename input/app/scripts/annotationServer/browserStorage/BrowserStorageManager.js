@@ -1,10 +1,10 @@
-const ChromeStorage = require('../../utils/ChromeStorage')
-const URLUtils = require('../../utils/URLUtils')
-const BrowserStorageClient = require('./BrowserStorageClient')
-const AnnotationServerManager = require('../AnnotationServerManager')
+import ChromeStorage from '../../utils/ChromeStorage'
+import URLUtils from '../../utils/URLUtils'
+import BrowserStorageClient from './BrowserStorageClient'
+import AnnotationServerManager from '../AnnotationServerManager'
 // const mockDatabase = require('./mockDatabase')
-const EmptyDatabase = require('./EmptyDatabase')
-const _ = require('lodash')
+import EmptyDatabase from './EmptyDatabase'
+import _ from 'lodash'
 
 class BrowserStorageManager extends AnnotationServerManager {
   constructor () {
@@ -40,7 +40,7 @@ class BrowserStorageManager extends AnnotationServerManager {
   }
 
   saveDatabase (database, callback) {
-    let stringifiedDatabase = JSON.stringify(database)
+    const stringifiedDatabase = JSON.stringify(database)
     ChromeStorage.setData('db.annotations', stringifiedDatabase, ChromeStorage.local, (err) => {
       if (err) {
         if (_.isFunction(callback)) {
@@ -55,7 +55,7 @@ class BrowserStorageManager extends AnnotationServerManager {
   }
 
   constructSearchUrl (obj) {
-    let hashParam = URLUtils.objectToParams(obj)
+    const hashParam = URLUtils.objectToParams(obj)
     return chrome.extension.getURL('content/browserStorage/browserStorageSearch.html') + '#' + hashParam
   }
 
@@ -72,4 +72,4 @@ class BrowserStorageManager extends AnnotationServerManager {
   }
 }
 
-module.exports = BrowserStorageManager
+export default BrowserStorageManager

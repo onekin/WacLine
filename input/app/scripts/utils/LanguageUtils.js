@@ -1,7 +1,7 @@
 'use strict'
 
-const jQuery = require('jquery')
-const _ = require('lodash')
+import jQuery from 'jquery'
+import _ from 'lodash'
 
 class LanguageUtils {
   /**
@@ -81,7 +81,7 @@ class LanguageUtils {
    * @param metadata
    */
   static dispatchCustomEvent (eventName, metadata) {
-    let event = new window.CustomEvent(
+    const event = new window.CustomEvent(
       eventName, {
         detail: metadata,
         bubbles: true,
@@ -101,7 +101,7 @@ class LanguageUtils {
     promises.reduce((promiseChain, currentTask) => {
       return promiseChain.then(chainResults =>
         currentTask.then(currentResult => {
-          return [ ...chainResults, currentResult ]
+          return [...chainResults, currentResult]
         })
       )
     }, Promise.resolve([])).then(arrayOfResults => {
@@ -130,9 +130,9 @@ class LanguageUtils {
   }
 
   static getStringBetween (string, previous, after) {
-    let firstSplit = string.split(previous)
+    const firstSplit = string.split(previous)
     if (firstSplit.length > 1) {
-      let secondSplit = firstSplit.pop().split(after)
+      const secondSplit = firstSplit.pop().split(after)
       if (secondSplit.length > 1) {
         return secondSplit[0]
       } else {
@@ -150,4 +150,4 @@ class LanguageUtils {
   }
 }
 
-module.exports = LanguageUtils
+export default LanguageUtils

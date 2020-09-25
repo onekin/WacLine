@@ -1,15 +1,15 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 class PDFTextUtils {
   static getFragmentSelector (range) {
-    let pageContainer = range.startContainer.parentElement.closest('.page')
+    const pageContainer = range.startContainer.parentElement.closest('.page')
     if (_.isElement(pageContainer)) {
       try {
-        let pageNumber = parseInt(pageContainer.dataset.pageNumber)
+        const pageNumber = parseInt(pageContainer.dataset.pageNumber)
         return {
-          'conformsTo': 'http://tools.ietf.org/rfc/rfc3778',
-          'type': 'FragmentSelector',
-          'page': pageNumber
+          conformsTo: 'http://tools.ietf.org/rfc/rfc3778',
+          type: 'FragmentSelector',
+          page: pageNumber
         }
       } catch (e) {
         return null
@@ -20,4 +20,4 @@ class PDFTextUtils {
   }
 }
 
-module.exports = PDFTextUtils
+export default PDFTextUtils

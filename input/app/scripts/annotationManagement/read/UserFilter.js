@@ -1,7 +1,7 @@
-const $ = require('jquery')
-const _ = require('lodash')
-const Events = require('../../Events')
-const LanguageUtils = require('../../utils/LanguageUtils')
+import $ from 'jquery'
+import _ from 'lodash'
+import Events from '../../Events'
+import LanguageUtils from '../../utils/LanguageUtils'
 
 class UserFilter {
   constructor () {
@@ -50,7 +50,7 @@ class UserFilter {
   }
 
   initUserFilterStructure (callback) {
-    let tagWrapperUrl = chrome.extension.getURL('pages/sidebar/userFilterWrapper.html')
+    const tagWrapperUrl = chrome.extension.getURL('pages/sidebar/userFilterWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
       // Insert user filter after toolset
@@ -72,7 +72,7 @@ class UserFilter {
   }
 
   initAllFilter () {
-    let allFilter = document.querySelector('#userFilter_all')
+    const allFilter = document.querySelector('#userFilter_all')
     allFilter.checked = true
     // Init event handler on change all filter
     allFilter.addEventListener('change', (event) => {
@@ -87,7 +87,7 @@ class UserFilter {
   }
 
   activateAll () {
-    let checkboxes = this.usersContainer.querySelectorAll('input')
+    const checkboxes = this.usersContainer.querySelectorAll('input')
     this.filteredUsers = _.clone(this.allUsers)
     // Activate all the checkboxes
     checkboxes.forEach((checkbox) => {
@@ -97,7 +97,7 @@ class UserFilter {
   }
 
   deactivateAll () {
-    let checkboxes = this.usersContainer.querySelectorAll('input')
+    const checkboxes = this.usersContainer.querySelectorAll('input')
     this.filteredUsers = []
     // Deactivate all the checkboxes
     checkboxes.forEach((checkbox) => {
@@ -107,7 +107,7 @@ class UserFilter {
   }
 
   initAnnotationsUpdatedEventHandler (callback) {
-    this.events.updatedAllAnnotations = {element: document, event: Events.updatedAllAnnotations, handler: this.createUpdatedAllAnnotationsEventHandler()}
+    this.events.updatedAllAnnotations = { element: document, event: Events.updatedAllAnnotations, handler: this.createUpdatedAllAnnotationsEventHandler() }
     this.events.updatedAllAnnotations.element.addEventListener(this.events.updatedAllAnnotations.event, this.events.updatedAllAnnotations.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -128,7 +128,7 @@ class UserFilter {
   }
 
   initUsersPanel () {
-    let annotations = window.abwa.annotationManagement.annotationReader.allAnnotations
+    const annotations = window.abwa.annotationManagement.annotationReader.allAnnotations
     if (_.isArray(annotations)) {
       // Retrieve users who had annotated the document
       this.allUsers = _.uniq(_.map(annotations, (annotation) => {
@@ -141,9 +141,9 @@ class UserFilter {
         $(this.usersContainer).append(this.createUserFilterElement(this.allUsers[i]))
       }
       // Activate all users
-      let checkboxes = this.usersContainer.querySelectorAll('input')
+      const checkboxes = this.usersContainer.querySelectorAll('input')
       for (let i = 0; i < checkboxes.length; i++) {
-        let currentCheckbox = checkboxes[i]
+        const currentCheckbox = checkboxes[i]
         currentCheckbox.checked = true
       }
       // If all old filtered users are current all users, just activate all of them
@@ -163,9 +163,9 @@ class UserFilter {
         $(this.usersContainer).append(this.createUserFilterElement(this.allUsers[i]))
       }
       // Activate users which where previously activated (and remove if no user is found from this.allUsers and this.filteredUsers)
-      let checkboxes = this.usersContainer.querySelectorAll('input')
+      const checkboxes = this.usersContainer.querySelectorAll('input')
       for (let i = 0; i < checkboxes.length; i++) {
-        let currentCheckbox = checkboxes[i]
+        const currentCheckbox = checkboxes[i]
         if (_.isString(_.find(this.filteredUsers, (oldUser) => {
           return LanguageUtils.normalizeStringToValidID(oldUser) === currentCheckbox.id.replace('userFilter_', '')
         }))) {
@@ -178,12 +178,12 @@ class UserFilter {
   }
 
   createUserFilterElement (name) {
-    let userFilterTemplate = document.querySelector('#userFilterTemplate')
-    let userFilterElement = $(userFilterTemplate.content.firstElementChild).clone().get(0)
+    const userFilterTemplate = document.querySelector('#userFilterTemplate')
+    const userFilterElement = $(userFilterTemplate.content.firstElementChild).clone().get(0)
     // Set text and properties for label and input
-    let input = userFilterElement.querySelector('input')
+    const input = userFilterElement.querySelector('input')
     input.id = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
-    let label = userFilterElement.querySelector('label')
+    const label = userFilterElement.querySelector('label')
     label.innerText = name.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
     label.htmlFor = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
     // Set event handler for input check status
@@ -212,22 +212,22 @@ class UserFilter {
    * Activate "All" checkbox if all the users' checkboxes are activated
    */
   checkAllActivated () {
-    let allCheckboxes = this.usersContainer.querySelectorAll('input')
-    let deactivatedCheckboxes = _.find(allCheckboxes, (checkbox) => { return checkbox.checked === false })
+    const allCheckboxes = this.usersContainer.querySelectorAll('input')
+    const deactivatedCheckboxes = _.find(allCheckboxes, (checkbox) => { return checkbox.checked === false })
     if (_.isUndefined(deactivatedCheckboxes)) { // There are not found any deactivated checkboxes
       document.querySelector('#userFilter_all').checked = true
     }
   }
 
   dispatchFilterChanged () {
-    LanguageUtils.dispatchCustomEvent(Events.userFilterChange, {filteredUsers: this.filteredUsers})
+    LanguageUtils.dispatchCustomEvent(Events.userFilterChange, { filteredUsers: this.filteredUsers })
   }
 
   destroy () {
     // Remove observer
     // clearInterval(this.observerInterval)
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
@@ -238,4 +238,4 @@ class UserFilter {
   }
 }
 
-module.exports = UserFilter
+export default UserFilter

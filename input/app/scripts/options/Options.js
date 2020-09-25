@@ -1,14 +1,14 @@
+import Alerts from '../utils/Alerts'
+import _ from 'lodash'
 // PVSCL:IFCOND(BrowserStorage,LINE)
-const Alerts = require('../utils/Alerts')
-const FileUtils = require('../utils/FileUtils')
-const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
-const FileSaver = require('file-saver')
+import FileUtils from '../utils/FileUtils'
+import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
+import FileSaver from 'file-saver'
 // PVSCL:ENDCOND
-const _ = require('lodash')
 // PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
-const URLUtils = require('../utils/URLUtils')
+import URLUtils from '../utils/URLUtils'
 // PVSCL:ENDCOND
-const $ = require('jquery')
+import $ from 'jquery'
 
 class Options {
   init () {
@@ -22,10 +22,7 @@ class Options {
         this.showSelectedAnnotationServerConfiguration(event.target.selectedOptions[0].value)
       }
     })
-    chrome.runtime.sendMessage({
-      scope: 'annotationServer',
-      cmd: 'getSelectedAnnotationServer'
-    }, ({annotationServer}) => {
+    chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       document.querySelector('#annotationServerDropdown').value = annotationServer
       this.showSelectedAnnotationServerConfiguration(annotationServer)
     })
@@ -49,13 +46,13 @@ class Options {
             // Read json file
             FileUtils.readJSONFile(file, (err, jsonObject) => {
               if (err) {
-                Alerts.errorAlert({text: 'Unable to read json file: ' + err.message})
+                Alerts.errorAlert({ text: 'Unable to read json file: ' + err.message })
               } else {
                 this.restoreDatabase(jsonObject, (err) => {
                   if (err) {
-                    Alerts.errorAlert({text: 'Something went wrong when trying to restore the database'})
+                    Alerts.errorAlert({ text: 'Something went wrong when trying to restore the database' })
                   } else {
-                    Alerts.successAlert({text: 'Database restored.'})
+                    Alerts.successAlert({ text: 'Database restored.' })
                   }
                 })
               }
@@ -77,9 +74,9 @@ class Options {
         callback: () => {
           this.deleteDatabase((err) => {
             if (err) {
-              Alerts.errorAlert({text: 'Error deleting the database, please try it again or contact developer.'})
+              Alerts.errorAlert({ text: 'Error deleting the database, please try it again or contact developer.' })
             } else {
-              Alerts.successAlert({text: 'Browser storage successfully deleted'})
+              Alerts.successAlert({ text: 'Browser storage successfully deleted' })
             }
           })
         }
@@ -124,18 +121,18 @@ class Options {
     this.neo4JTokenElement.addEventListener('keyup', this.createNeo4JConfigurationSaveEventHandler())
     this.neo4JUserElement.addEventListener('keyup', this.createNeo4JConfigurationSaveEventHandler())
     // Restore form from credentials saved in storage
-    chrome.runtime.sendMessage({scope: 'neo4j', cmd: 'getCredentials'}, ({credentials}) => {
+    chrome.runtime.sendMessage({ scope: 'neo4j', cmd: 'getCredentials' }, ({ credentials }) => {
       this.neo4JEndpointElement.value = credentials.endpoint || ''
       this.neo4JTokenElement.value = credentials.token || ''
       this.neo4JUserElement.value = credentials.user || ''
     })
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleConsumer or MoodleProvider, LINE)
-    chrome.runtime.sendMessage({scope: 'moodle', cmd: 'getMoodleCustomEndpoint'}, (endpoint) => {
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'getMoodleCustomEndpoint' }, (endpoint) => {
       document.querySelector('#moodleEndpoint').value = endpoint.endpoint
     })
 
-    chrome.runtime.sendMessage({scope: 'moodle', cmd: 'isApiSimulationActivated'}, (isActivated) => {
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isApiSimulationActivated' }, (isActivated) => {
       document.querySelector('#apiSimulationCheckbox').checked = isActivated.activated
     })
     document.querySelector('#apiSimulationCheckbox').addEventListener('change', () => {
@@ -146,7 +143,7 @@ class Options {
     })
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleResource, LINE)
-    chrome.runtime.sendMessage({scope: 'moodle', cmd: 'isAutoOpenFilesActivated'}, (isActivated) => {
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isAutoOpenFilesActivated' }, (isActivated) => {
       document.querySelector('#autoOpenCheckbox').checked = isActivated.activated
     })
     document.querySelector('#autoOpenCheckbox').addEventListener('change', () => {
@@ -166,12 +163,12 @@ class Options {
   backupDatabase () {
     window.options.browserStorage = new BrowserStorageManager()
     window.options.browserStorage.init(() => {
-      let stringifyObject = JSON.stringify(window.options.browserStorage.annotationsDatabase, null, 2)
+      const stringifyObject = JSON.stringify(window.options.browserStorage.annotationsDatabase, null, 2)
       // Download the file
-      let blob = new window.Blob([stringifyObject], {
+      const blob = new window.Blob([stringifyObject], {
         type: 'text/plain;charset=utf-8'
       })
-      let dateString = (new Date()).toISOString()
+      const dateString = (new Date()).toISOString()
       FileSaver.saveAs(blob, 'Local-databaseBackup' + dateString + '.json')
     })
   }
@@ -182,15 +179,15 @@ class Options {
       window.options.browserStorage.cleanDatabase(callback)
     })
   }
-
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()>1, LINE)
+  // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
 
   setAnnotationServer (annotationServer) {
     chrome.runtime.sendMessage({
-      scope: 'cmapCloud',
-      cmd: 'getUserData'
-    }, ({data}) => {
+      scope: 'annotationServer',
+      cmd: 'setSelectedAnnotationServer',
+      data: { annotationServer: annotationServer }
+    }, ({ annotationServer }) => {
       console.debug('Annotation server selected ' + annotationServer)
     })
   }
@@ -206,7 +203,7 @@ class Options {
   saveNeo4JConfiguration () {
     // Check validity
     if (this.neo4JEndpointElement.checkValidity() && this.neo4JTokenElement.checkValidity() && this.neo4JUserElement.checkValidity()) {
-      let credentials = {
+      const credentials = {
         endpoint: this.neo4JEndpointElement.value,
         token: this.neo4JTokenElement.value,
         user: this.neo4JUserElement.value
@@ -214,23 +211,22 @@ class Options {
       chrome.runtime.sendMessage({
         scope: 'neo4j',
         cmd: 'setCredentials',
-        data: {credentials: credentials}
-      }, ({credentials}) => {
+        data: { credentials: credentials }
+      }, ({ credentials }) => {
         console.debug('Saved credentials ' + JSON.stringify(credentials))
       })
     }
   }
-
   // PVSCL:ENDCOND
 
   showSelectedAnnotationServerConfiguration (selectedAnnotationServer) {
     // Hide all annotation server configurations
-    let annotationServerConfigurationCards = document.querySelectorAll('.annotationServerConfiguration')
+    const annotationServerConfigurationCards = document.querySelectorAll('.annotationServerConfiguration')
     annotationServerConfigurationCards.forEach((annotationServerConfigurationCard) => {
       annotationServerConfigurationCard.setAttribute('aria-hidden', 'true')
     })
     // Show corresponding selected annotationServer configuration card
-    let selectedAnnotationServerConfigurationCard = document.querySelector('#' + selectedAnnotationServer + 'ConfigurationCard')
+    const selectedAnnotationServerConfigurationCard = document.querySelector('#' + selectedAnnotationServer + 'ConfigurationCard')
     if (_.isElement(selectedAnnotationServerConfigurationCard)) {
       selectedAnnotationServerConfigurationCard.setAttribute('aria-hidden', 'false')
     }
@@ -238,18 +234,18 @@ class Options {
   // PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
 
   updateApiSimulationCheckbox () {
-    let isChecked = document.querySelector('#apiSimulationCheckbox').checked
+    const isChecked = document.querySelector('#apiSimulationCheckbox').checked
     chrome.runtime.sendMessage({
       scope: 'moodle',
       cmd: 'setApiSimulationActivation',
-      data: {isActivated: isChecked}
+      data: { isActivated: isChecked }
     }, (response) => {
       console.debug('Api simulation is updated to: ' + response.activated)
     })
   }
 
   updateMoodleEndpoint () {
-    let value = document.querySelector('#moodleEndpoint').value
+    const value = document.querySelector('#moodleEndpoint').value
     let isValidUrl = URLUtils.isUrl(value)
     if (!isValidUrl) {
       isValidUrl = URLUtils.isUrl(value + '/')
@@ -261,24 +257,24 @@ class Options {
       chrome.runtime.sendMessage({
         scope: 'moodle',
         cmd: 'setMoodleCustomEndpoint',
-        data: {endpoint: value}
-      }, ({endpoint}) => {
+        data: { endpoint: value }
+      }, ({ endpoint }) => {
         console.debug('Endpoint updated to ' + endpoint.endpoint)
       })
     } else {
-      Alerts.errorAlert({error: 'URL is malformed'}) // TODO i18n
+      Alerts.errorAlert({ error: 'URL is malformed' }) // TODO i18n
     }
   }
-
   // PVSCL:ENDCOND
+
   // PVSCL:IFCOND(MoodleResource, LINE)
 
   updateAutoOpenCheckbox () {
-    let isChecked = document.querySelector('#autoOpenCheckbox').checked
+    const isChecked = document.querySelector('#autoOpenCheckbox').checked
     chrome.runtime.sendMessage({
       scope: 'moodle',
       cmd: 'setAutoOpenFiles',
-      data: {isActivated: isChecked}
+      data: { isActivated: isChecked }
     }, (response) => {
       console.debug('Api simulation is updated to: ' + response.activated)
     })
@@ -312,4 +308,4 @@ class Options {
   // PVSCL:ENDCOND
 }
 
-module.exports = Options
+export default Options

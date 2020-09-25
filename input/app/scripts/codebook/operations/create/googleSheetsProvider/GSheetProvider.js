@@ -1,14 +1,14 @@
-const _ = require('lodash')
-const GoogleSheetsClientManager = require('../../../../googleSheets/GoogleSheetsClientManager')
-const GSheetParser = require('./GSheetParser')
-const GroupInitializer = require('./GroupInitializer')
-const Alerts = require('../../../../utils/Alerts')
-const swal = require('sweetalert2')
+import _ from 'lodash'
+import GoogleSheetsClientManager from '../../../../googleSheets/GoogleSheetsClientManager'
+import GSheetParser from './GSheetParser'
+import GroupInitializer from './GroupInitializer'
+import Alerts from '../../../../utils/Alerts'
+import swal from 'sweetalert2'
 // PVSCL:IFCOND(Hypothesis, LINE)
-const HypothesisClientManager = require('../../../../annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from '../../../../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage, LINE)
-const BrowserStorageManager = require('../../../../annotationServer/browserStorage/BrowserStorageManager')
+import BrowserStorageManager from '../../../../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
 
 class GoogleSheetContentScriptManager {
@@ -70,7 +70,7 @@ class GoogleSheetContentScriptManager {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     window.googleSheetProvider.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
@@ -87,7 +87,7 @@ class GoogleSheetContentScriptManager {
       }
     })
     // PVSCL:ELSECOND
-    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+    chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       if (annotationServer === 'hypothesis') {
         // Hypothesis
         window.googleSheetProvider.annotationServerManager = new HypothesisClientManager()
@@ -112,7 +112,7 @@ class GoogleSheetContentScriptManager {
     GSheetParser.parseCurrentSheet((err, codebook) => {
       if (err) {
         console.error(err)
-        Alerts.errorAlert({text: err.message})
+        Alerts.errorAlert({ text: err.message })
       } else {
         window.googleSheetProvider.GroupInitializer = new GroupInitializer()
         window.googleSheetProvider.GroupInitializer.init(codebook, (err) => {
@@ -131,4 +131,4 @@ class GoogleSheetContentScriptManager {
   }
 }
 
-module.exports = GoogleSheetContentScriptManager
+export default GoogleSheetContentScriptManager

@@ -1,6 +1,6 @@
-const ContentScriptManager = require('./contentScript/ContentScriptManager')
-const AnnotationBasedInitializer = require('./contentScript/AnnotationBasedInitializer')
-const _ = require('lodash')
+import AnnotationBasedInitializer from './contentScript/AnnotationBasedInitializer'
+import ContentScriptManager from './contentScript/ContentScriptManager'
+import _ from 'lodash'
 
 console.debug('Loaded abwa content script')
 if (_.isEmpty(window.abwa)) {
@@ -23,13 +23,13 @@ if (_.isEmpty(window.abwa)) {
     }
   })
   // Check if uri contains annotation to initialize
-  let promise = new Promise((resolve) => {
+  const promise = new Promise((resolve) => {
     // PVSCL:IFCOND(Dropbox, LINE)
     if (window.location.href.includes('dl.dropboxusercontent.com') && !window.location.href.includes('chrome-extension')) {
       chrome.runtime.onMessage.addListener((request, sender, sendresponse) => {
         let location = window.location.href + 'url::' + request.url
         if (request.annotationId) {
-          const Config = require('./Config')
+          const Config = require('./Config').default
           location += '&' + Config.urlParamName + ':' + request.annotationId
         }
         window.location.href = location
@@ -44,21 +44,21 @@ if (_.isEmpty(window.abwa)) {
   })
   promise.then(() => {
     // Check if uri contains annotation to initialize
-    let annotation = AnnotationBasedInitializer.getAnnotationHashParam()
-    let autoOpen = AnnotationBasedInitializer.isAutoOpenHashParam()
+    const annotation = AnnotationBasedInitializer.getAnnotationHashParam()
+    const autoOpen = AnnotationBasedInitializer.isAutoOpenHashParam()
     if (annotation) {
       // If extension is not activated, activate
-      chrome.runtime.sendMessage({scope: 'extension', cmd: 'activatePopup'}, () => {
+      chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, () => {
         console.debug('Activated popup by annotation')
       })
     } else if (autoOpen) {
       // If extension is not activated, activate
-      chrome.runtime.sendMessage({scope: 'extension', cmd: 'activatePopup'}, () => {
+      chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, () => {
         console.debug('Activated popup by auto open')
       })
     } else {
       // Check if button is activated for this tab
-      chrome.runtime.sendMessage({scope: 'extension', cmd: 'amIActivated'}, (response) => {
+      chrome.runtime.sendMessage({ scope: 'extension', cmd: 'amIActivated' }, (response) => {
         if (response.activated) {
           if (_.isEmpty(window.abwa.contentScriptManager)) {
             window.abwa.contentScriptManager = new ContentScriptManager()

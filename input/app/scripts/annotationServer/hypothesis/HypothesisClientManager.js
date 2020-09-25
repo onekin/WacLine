@@ -1,8 +1,9 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
-const HypothesisClient = require('hypothesis-api-client')
+import HypothesisClient from 'hypothesis-api-client'
 
-const AnnotationServerManager = require('../AnnotationServerManager')
+import AnnotationServerManager from '../AnnotationServerManager'
+import HypothesisClientInterface from './HypothesisClientInterface'
 
 const reloadIntervalInSeconds = 10 // Reload the hypothesis client every 10 seconds
 
@@ -21,15 +22,28 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 
   init (callback) {
-    this.reloadClient(() => {
-      // Start reloading of client
-      this.reloadInterval = setInterval(() => {
-        this.reloadClient()
-      }, reloadIntervalInSeconds * 1000)
-      if (_.isFunction(callback)) {
-        callback()
-      }
-    })
+    if (window.background) {
+      this.reloadClient(() => {
+        // Start reloading of client
+        this.reloadInterval = setInterval(() => {
+          this.reloadClient()
+        }, reloadIntervalInSeconds * 1000)
+        if (_.isFunction(callback)) {
+          callback()
+        }
+      })
+    } else {
+      // Check if user is logged in hypothesis
+      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, (token) => {
+        if (this.hypothesisToken !== token) {
+          this.hypothesisToken = token
+        }
+        this.client = new HypothesisClientInterface()
+        if (_.isFunction(callback)) {
+          callback()
+        }
+      })
+    }
   }
 
   reloadClient (callback) {
@@ -58,7 +72,7 @@ class HypothesisClientManager extends AnnotationServerManager {
         })
       }
     } else {
-      chrome.runtime.sendMessage({scope: 'hypothesis', cmd: 'getToken'}, (token) => {
+      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, (token) => {
         if (this.hypothesisToken !== token) {
           this.hypothesisToken = token
           if (this.hypothesisToken) {
@@ -78,7 +92,7 @@ class HypothesisClientManager extends AnnotationServerManager {
     return !_.isEmpty(this.hypothesisToken)
   }
 
-  constructSearchUrl ({groupId}) {
+  constructSearchUrl ({ groupId }) {
     return this.annotationServerMetadata.groupUrl + groupId
   }
 
@@ -98,7 +112,7 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 
   askUserToLogInHypothesis (callback) {
-    let swal = require('sweetalert2')
+    const swal = require('sweetalert2').default
     // Ask question
     swal({
       title: 'Hypothes.is login required', // TODO i18n
@@ -108,13 +122,13 @@ class HypothesisClientManager extends AnnotationServerManager {
     }).then((result) => {
       if (result.value) {
         // Prompt hypothesis login form
-        chrome.runtime.sendMessage({scope: 'hypothesis', cmd: 'userLoginForm'}, (result) => {
+        chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'userLoginForm' }, (result) => {
           if (result.error) {
             if (_.isFunction(callback)) {
               callback(new Error(result.error))
             }
           } else {
-            this.reloadHypothesisClient(() => {
+            this.reloadClient(() => {
               if (_.isFunction(callback)) {
                 callback(null, this.hypothesisToken)
               }
@@ -137,4 +151,4 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 }
 
-module.exports = HypothesisClientManager
+export default HypothesisClientManager

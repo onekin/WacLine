@@ -1,8 +1,8 @@
-const Events = require('../Events')
-const _ = require('lodash')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Alerts = require('../utils/Alerts')
-const Annotation = require('./Annotation')
+import Events from '../Events'
+import _ from 'lodash'
+import LanguageUtils from '../utils/LanguageUtils'
+import Alerts from '../utils/Alerts'
+import Annotation from './Annotation'
 
 class UpdateAnnotation {
   constructor () {
@@ -16,7 +16,7 @@ class UpdateAnnotation {
 
   destroy () {
     // Remove event listeners
-    let events = _.values(this.events)
+    const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
       events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
@@ -33,23 +33,23 @@ class UpdateAnnotation {
   updateAnnotationEventHandler () {
     return (event) => {
       // Get annotation to update
-      let annotation = event.detail.annotation
+      const annotation = event.detail.annotation
       // Send updated annotation to the server
       window.abwa.annotationServerManager.client.updateAnnotation(
         annotation.id,
         annotation.serialize(),
         (err, annotation) => {
           if (err) {
-            Alerts.errorAlert({text: 'Unexpected error, unable to create annotation'})
+            Alerts.errorAlert({ text: 'Unexpected error, unable to create annotation' })
           } else {
             // Deserialize retrieved annotation from the server
-            let deserializedAnnotation = Annotation.deserialize(annotation)
+            const deserializedAnnotation = Annotation.deserialize(annotation)
             // Dispatch annotation created event
-            LanguageUtils.dispatchCustomEvent(Events.annotationUpdated, {annotation: deserializedAnnotation})
+            LanguageUtils.dispatchCustomEvent(Events.annotationUpdated, { annotation: deserializedAnnotation })
           }
         })
     }
   }
 }
 
-module.exports = UpdateAnnotation
+export default UpdateAnnotation

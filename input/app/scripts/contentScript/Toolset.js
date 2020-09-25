@@ -1,42 +1,42 @@
-const axios = require('axios')
-const _ = require('lodash')
+import axios from 'axios'
+import _ from 'lodash'
 // PVSCL:IFCOND(Canvas, LINE)
-const Canvas = require('../annotationManagement/read/Canvas')
+import Canvas from '../annotationManagement/read/Canvas'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(AnnotatedPDF, LINE)
-const Screenshots = require('../annotationManagement/read/Screenshots')
+import Screenshots from '../annotationManagement/read/Screenshots'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetConsumer, LINE)
-const GoogleSheetGenerator = require('../annotationManagement/read/GoogleSheetGenerator')
+import GoogleSheetGenerator from '../annotationManagement/read/GoogleSheetGenerator'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(LastAnnotation, LINE)
-const Resume = require('../annotationManagement/read/Resume')
+import Resume from '../annotationManagement/read/Resume'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(TextSummary, LINE)
-const TextSummary = require('../annotationManagement/read/TextSummary')
+import TextSummary from '../annotationManagement/read/TextSummary'
 // PVSCL:ENDCOND
-const Events = require('../Events')
-const LanguageUtils = require('../utils/LanguageUtils')
-const Alerts = require('../utils/Alerts')
+import Events from '../Events'
+import LanguageUtils from '../utils/LanguageUtils'
+import Alerts from '../utils/Alerts'
 // PVSCL:IFCOND(MoodleReport, LINE)
-const BackToWorkspace = require('../moodle/BackToWorkspace')
+import BackToWorkspace from '../moodle/BackToWorkspace'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(AnnotationList, LINE)
-const AnnotationList = require('../annotationManagement/read/AnnotationList')
+import AnnotationList from '../annotationManagement/read/AnnotationList'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(ImportAnnotations, LINE)
-const AnnotationImporter = require('../importExport/AnnotationImporter')
+import AnnotationImporter from '../importExport/AnnotationImporter'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Export, LINE)
-const AnnotationExporter = require('../importExport/AnnotationExporter')
+import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(CXLExport, LINE)
-const CXLExporter = require('../importExport/cmap/CXLExporter')
+import CXLExporter from '../importExport/cmap/CXLExporter'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(CXLImport, LINE)
-const CXLImporter = require('../importExport/cmap/CXLImporter')
+import CXLImporter from '../importExport/cmap/CXLImporter'
 // PVSCL:ENDCOND
-const $ = require('jquery')
+import $ from 'jquery'
 
 class Toolset {
   constructor () {
@@ -50,7 +50,7 @@ class Toolset {
       this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
       // Insert toolset container
       // PVSCL:IFCOND(Manual, LINE)
-      let groupSelectorContainer = this.sidebarContainer.querySelector('#groupSelectorContainer')
+      const groupSelectorContainer = this.sidebarContainer.querySelector('#groupSelectorContainer')
       groupSelectorContainer.insertAdjacentHTML('beforebegin', response.data)
       // PVSCL:ELSECOND
       this.sidebarContainer.insertAdjacentHTML('afterbegin', response.data)
@@ -58,10 +58,10 @@ class Toolset {
       this.toolsetContainer = this.sidebarContainer.querySelector('#toolset')
       this.toolsetHeader = this.toolsetContainer.querySelector('#toolsetHeader')
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
-      let toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
+      const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
       // PVSCL:IFCOND(AnnotatedPDF, LINE)
       // Set screenshot image
-      let screenshotImageUrl = chrome.extension.getURL('/images/screenshot.png')
+      const screenshotImageUrl = chrome.extension.getURL('/images/screenshot.png')
       this.screenshotImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.screenshotImage.src = screenshotImageUrl
       this.screenshotImage.title = 'Take a screenshot of the current document' // TODO i18n
@@ -72,7 +72,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Canvas, LINE)
       // Set Canvas image
-      let canvasImageUrl = chrome.extension.getURL('/images/overview.png')
+      const canvasImageUrl = chrome.extension.getURL('/images/overview.png')
       this.canvasImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.canvasImage.src = canvasImageUrl
       this.canvasImage.title = 'Generate canvas' // TODO i18n
@@ -83,7 +83,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(TextSummary, LINE)
       // Set TextSummary image
-      let textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
+      const textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.textSummaryImage.src = textSummaryImageUrl
       this.textSummaryImage.title = 'Generate review report' // TODO i18n
@@ -94,7 +94,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(DeleteAll, LINE)
       // Set DeleteAll image
-      let deleteGroupImageUrl = chrome.extension.getURL('/images/deleteAnnotations.png')
+      const deleteGroupImageUrl = chrome.extension.getURL('/images/deleteAnnotations.png')
       this.deleteGroupImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.deleteGroupImage.src = deleteGroupImageUrl
       this.deleteGroupImage.title = 'Delete all annotations in document' // TODO i18n
@@ -105,7 +105,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(LastAnnotation, LINE)
       // Set GoToLast image
-      let goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
+      const goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
       this.goToLastImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.goToLastImage.src = goToLastImageUrl
       this.goToLastImage.title = 'Go to last annotation' // TODO i18n
@@ -116,7 +116,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(GoogleSheetConsumer, LINE)
       // Set Spreadsheet generation image
-      let googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
+      const googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
       this.googleSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.googleSheetImage.src = googleSheetImageUrl
       this.googleSheetImage.title = 'Generate a spreadsheet with classified content' // TODO i18n
@@ -127,7 +127,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleReport, LINE)
       // Set back to moodle icon
-      let moodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
+      const moodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
       this.moodleImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.moodleImage.src = moodleImageUrl
       this.moodleImage.title = 'Back to moodle' // TODO i18n
@@ -139,7 +139,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(AnnotationList, LINE)
       // Set annotation list image
-      let annotationListImageUrl = chrome.extension.getURL('/images/annotationList.png')
+      const annotationListImageUrl = chrome.extension.getURL('/images/annotationList.png')
       this.annotationListImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.annotationListImage.src = annotationListImageUrl
       this.annotationListImage.title = 'Go to annotation list' // TODO i18n
@@ -149,7 +149,7 @@ class Toolset {
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(JSON OR ImportAnnotations, LINE)
-      let exportImportImageUrl = chrome.extension.getURL('/images/importExport.png')
+      const exportImportImageUrl = chrome.extension.getURL('/images/importExport.png')
       this.exportImportImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.exportImportImage.src = exportImportImageUrl
       this.exportImportImage.id = 'importExportButton'
@@ -159,7 +159,7 @@ class Toolset {
       this.importExportButtonHandler()
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(CXLExportArchiveFile OR CXLImport, LINE)
-      let cxlArchiveFileImageUrl = chrome.extension.getURL('/images/cxl.png')
+      const cxlArchiveFileImageUrl = chrome.extension.getURL('/images/cxl.png')
       this.cxlArchiveFileImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.cxlArchiveFileImage.src = cxlArchiveFileImageUrl
       this.cxlArchiveFileImage.id = 'cxlArchiveFileButton'
@@ -169,7 +169,7 @@ class Toolset {
       this.CXLArchiveFileButtonHandler()
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
-      let cxlCloudImageUrl = chrome.extension.getURL('/images/cmapCloud.png')
+      const cxlCloudImageUrl = chrome.extension.getURL('/images/cmapCloud.png')
       this.cxlCloudImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.cxlCloudImage.src = cxlCloudImageUrl
       this.cxlCloudImage.id = 'cxlCloudButton'
@@ -188,20 +188,24 @@ class Toolset {
       }
     })
   }
+
   // PVSCL:IFCOND(AnnotatedPDF, LINE)
   screenshotButtonHandler () {
     Screenshots.takeScreenshot()
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Canvas, LINE)
   canvasButtonHandler () {
     Canvas.generateCanvas()
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(TextSummary, LINE)
   textSummaryButtonHandler () {
     TextSummary.generateReview()
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(DeleteAll, LINE)
   deleteAllButtonHandler () {
@@ -222,6 +226,7 @@ class Toolset {
       }
     })
   }
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(LastAnnotation, LINE)
   goToLastButtonHandler () {
@@ -259,12 +264,12 @@ class Toolset {
       trigger: 'left',
       build: () => {
         // Create items for context menu
-        let items = {}
+        const items = {}
         // PVSCL:IFCOND(ImportAnnotations, LINE)
-        items['import'] = {name: 'Import annotations'}
+        items.import = { name: 'Import annotations' }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(JSON, LINE)
-        items['export'] = {name: 'Export annotations in JSON'}
+        items.export = { name: 'Export annotations in JSON' }
         // PVSCL:ENDCOND
         return {
           callback: (key, opt) => {
@@ -410,4 +415,4 @@ class Toolset {
   // PVSCL:ENDCOND
 }
 
-module.exports = Toolset
+export default Toolset

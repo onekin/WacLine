@@ -21,6 +21,7 @@
     <module exclude="" include="/variant" name="Generate Selection Report" tname="Java Script Transformation Module">
       <parameter name="javascriptfile" type="ps:path">$(PROJECT)/script/elementIsInVariant.js</parameter>
       <parameter name="outputfile" type="ps:path"/>
+      <parameter name="partial" type="ps:boolean">false</parameter>
     </module>
   </moduleconfig>
   <moduleconfig ignoreerrors="false" name="All">
@@ -39,6 +40,61 @@
     <module exclude="" include="/variant" name="Generate Selection Report" tname="Java Script Transformation Module">
       <parameter name="javascriptfile" type="ps:path">$(PROJECT)/script/elementIsInVariant.js</parameter>
       <parameter name="outputfile" type="ps:path"/>
+      <parameter name="partial" type="ps:boolean">false</parameter>
+    </module>
+  </moduleconfig>
+  <moduleconfig ignoreerrors="false" name="MacOSX">
+    <input use="false"/>
+    <output clear="false" create="false" recover="false" use="false"/>
+    <mode type="overwrite"/>
+    <module exclude="" include="/variant" name="Convert to transformer action list" tname="standard transformation">
+      <parameter name="output file" type="ps:path"/>
+      <parameter name="execution time" type="ps:string">before</parameter>
+    </module>
+    <module exclude="" include="/variant" name="Execute transformer action list" tname="actionlist">
+      <parameter name="in" type="ps:path"/>
+      <parameter name="destroy" type="ps:boolean"/>
+      <parameter name="execution time" type="ps:string">after</parameter>
+    </module>
+    <module exclude="" include="/variant" name="Generate Selection Report" tname="Java Script Transformation Module">
+      <parameter name="javascriptfile" type="ps:path">$(PROJECT)/script/elementIsInVariant.js</parameter>
+      <parameter name="outputfile" type="ps:path"/>
+      <parameter name="partial" type="ps:boolean">false</parameter>
+    </module>
+    <module exclude="" id="com.ps.consul.eclipse.ui.transform.exec.module" include="/variant" name="External Program Runner" tname="exec">
+      <parameter name="program" type="ps:path">../../runDependenciesInMac.sh</parameter>
+      <parameter name="parameters" type="ps:string">$(VARIANT)</parameter>
+      <parameter name="supply document" type="ps:boolean"/>
+      <parameter name="supply location" type="ps:boolean"/>
+      <parameter name="ignore return value" type="ps:boolean"/>
+      <parameter name="no wait" type="ps:boolean"/>
+    </module>
+  </moduleconfig>
+  <moduleconfig ignoreerrors="false" name="Windows">
+    <input use="false"/>
+    <output clear="false" create="false" recover="false" use="false"/>
+    <mode type="overwrite"/>
+    <module exclude="" include="/variant" name="Convert to transformer action list" tname="standard transformation">
+      <parameter name="output file" type="ps:path"/>
+      <parameter name="execution time" type="ps:string">before</parameter>
+    </module>
+    <module exclude="" include="/variant" name="Execute transformer action list" tname="actionlist">
+      <parameter name="in" type="ps:path"/>
+      <parameter name="destroy" type="ps:boolean"/>
+      <parameter name="execution time" type="ps:string">after</parameter>
+    </module>
+    <module exclude="" include="/variant" name="Generate Selection Report" tname="Java Script Transformation Module">
+      <parameter name="javascriptfile" type="ps:path">$(PROJECT)/script/elementIsInVariant.js</parameter>
+      <parameter name="outputfile" type="ps:path"/>
+      <parameter name="partial" type="ps:boolean">false</parameter>
+    </module>
+    <module exclude="" id="com.ps.consul.eclipse.ui.transform.exec.module" include="/variant" name="External Program Runner" tname="exec">
+      <parameter name="program" type="ps:path">C:\Windows\System32\WindowsPowershell\v1.0\powershell.exe</parameter>
+      <parameter name="parameters" type="ps:string"> -file $(PROJECT)/output/$(VARIANT)/dependencies.ps1</parameter>
+      <parameter name="supply document" type="ps:boolean"/>
+      <parameter name="supply location" type="ps:boolean"/>
+      <parameter name="ignore return value" type="ps:boolean"/>
+      <parameter name="no wait" type="ps:boolean"/>
     </module>
   </moduleconfig>
 </moduleconfigs>

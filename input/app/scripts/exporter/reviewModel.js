@@ -1,10 +1,10 @@
 /* eslint-disable */
-const Config = require('../Config')
+import Config from '../Config'
 // PVSCL:IFCOND(Assessing, LINE)
-const Assessing = require('../annotationManagement/purposes/Assessing')
+import Assessing from '../annotationManagement/purposes/Assessing'
 // PVSCL:ENDCOND
 
-class Review {
+export class Review {
   constructor(){
     this._annotations = []
   }
@@ -215,7 +215,7 @@ class Review {
   }
 }
 
-class Annotation {
+export class Annotation {
   constructor({id,criterion,level,highlightText,page,comment,suggestedLiterature}){
     this._criterion = criterion
     this._level = level
@@ -248,7 +248,7 @@ class Annotation {
   }
 }
 
-class AnnotationGroup {
+export class AnnotationGroup {
   constructor(annotations,review){
     this._annotations = annotations
     this._review = review
@@ -478,6 +478,4 @@ class AnnotationGroup {
     return t
   }
 }
-
-module.exports = {Review,Annotation,AnnotationGroup}
 

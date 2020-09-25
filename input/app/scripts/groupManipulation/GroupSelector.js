@@ -1,20 +1,20 @@
-const _ = require('lodash')
-const $ = require('jquery')
-const Alerts = require('../utils/Alerts')
-const ChromeStorage = require('../utils/ChromeStorage')
-const LanguageUtils = require('../utils/LanguageUtils')
-// PVSCL:IFCOND(BuiltIn or ApplicationBased or NOT(Codebook), LINE)
-const Config = require('../Config')
-const GroupName = Config.groupName
-// PVSCL:ENDCOND
+import _ from 'lodash'
+import $ from 'jquery'
+import Alerts from '../utils/Alerts'
+import ChromeStorage from '../utils/ChromeStorage'
+import LanguageUtils from '../utils/LanguageUtils'
 // PVSCL:IFCOND(Manual, LINE)
-const Events = require('../Events')
+import Events from '../Events'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(MoodleResourceBased,LINE)
-const CryptoUtils = require('../utils/CryptoUtils')
+// PVSCL:IFCOND(MoodleResource,LINE)
+import MoodleUtils from '../moodle/MoodleUtils'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(BuiltIn or ApplicationBased or NOT(Codebook), LINE)
+import Config from '../Config'
+const GroupName = Config.groupName
 // PVSCL:ENDCOND
 
 class GroupSelector {
@@ -68,28 +68,28 @@ class GroupSelector {
   // PVSCL:IFCOND(CodebookDelete, LINE)
 
   initCodebookDeletedEvent () {
-    this.events.codebookDeletedEvent = {element: document, event: Events.codebookDeleted, handler: this.codebookDeletedEventHandler()}
+    this.events.codebookDeletedEvent = { element: document, event: Events.codebookDeleted, handler: this.codebookDeletedEventHandler() }
     this.events.codebookDeletedEvent.element.addEventListener(this.events.codebookDeletedEvent.event, this.events.codebookDeletedEvent.handler, false)
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(RenameCodebook, LINE)
 
   initCodebookRenamedEvent () {
-    this.events.codebookRenamedEvent = {element: document, event: Events.codebookRenamed, handler: this.codebookRenamedEventHandler()}
+    this.events.codebookRenamedEvent = { element: document, event: Events.codebookRenamed, handler: this.codebookRenamedEventHandler() }
     this.events.codebookRenamedEvent.element.addEventListener(this.events.codebookRenamedEvent.event, this.events.codebookRenamedEvent.handler, false)
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(ImportCodebook, LINE)
 
   initCodebookImportedEvent () {
-    this.events.codebookImportedEvent = {element: document, event: Events.codebookImported, handler: this.codebookImportedEventHandler()}
+    this.events.codebookImportedEvent = { element: document, event: Events.codebookImported, handler: this.codebookImportedEventHandler() }
     this.events.codebookImportedEvent.element.addEventListener(this.events.codebookImportedEvent.event, this.events.codebookImportedEvent.handler, false)
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(ExportCodebook, LINE)
 
   initCodebookExportedEvent () {
-    this.events.codebookExportedEvent = {element: document, event: Events.codebookExported, handler: this.codebookExportedEventHandler()}
+    this.events.codebookExportedEvent = { element: document, event: Events.codebookExported, handler: this.codebookExportedEventHandler() }
     this.events.codebookExportedEvent.element.addEventListener(this.events.codebookExportedEvent.event, this.events.codebookExportedEvent.handler, false)
   }
   // PVSCL:ENDCOND
@@ -110,21 +110,21 @@ class GroupSelector {
           if (err) {
             callback(err)
           } else {
-            let group = _.find(groups, (group) => { return group.name === GroupName })
-            if (_.isObject(group)) {
+            const currentGroup = _.find(groups, (group) => { return group.name === GroupName })
+            if (_.isObject(currentGroup)) {
               // Current group will be that group
-              this.currentGroup = group
+              this.currentGroup = currentGroup
               if (_.isFunction(callback)) {
                 callback(null)
               }
             } else {
               // PVSCL:IFCOND(BuiltIn, LINE)
               // TODO i18n
-              Alerts.loadingAlert({title: 'First time annotating?', text: 'It seems that it is your first time using the extension. We are configuring everything to start your annotation activity.', position: Alerts.position.center})
+              Alerts.loadingAlert({ title: 'First time annotating?', text: 'It seems that it is your first time using the extension. We are configuring everything to start your annotation activity.', position: Alerts.position.center })
               // TODO Create default group
               this.createApplicationBasedGroupForUser((err, group) => {
                 if (err) {
-                  Alerts.errorAlert({text: 'We are unable to create annotation group. Please check if you are logged in your annotation server.'})
+                  Alerts.errorAlert({ text: 'We are unable to create annotation group. Please check if you are logged in your annotation server.' })
                 } else {
                   // PVSCL:IFCOND(Hypothesis,LINE)
                   // Modify group URL in Hypothes.is as it adds the name at the end of the URL
@@ -137,7 +137,7 @@ class GroupSelector {
                 }
               })
               // PVSCL:ELSECOND
-              Alerts.errorAlert({text: 'The group ' + GroupName + ' does not exist. Please configure the tool in the third-party provider.'})
+              Alerts.errorAlert({ text: 'The group ' + GroupName + ' does not exist. Please configure the tool in the third-party provider.' })
               // PVSCL:ENDCOND
             }
           }
@@ -159,8 +159,8 @@ class GroupSelector {
               if (!err && !_.isEmpty(savedCurrentGroup) && _.has(savedCurrentGroup, 'data')) {
                 // Parse saved current group
                 try {
-                  let savedCurrentGroupData = JSON.parse(savedCurrentGroup.data)
-                  let currentGroup = _.find(this.groups, (group) => {
+                  const savedCurrentGroupData = JSON.parse(savedCurrentGroup.data)
+                  const currentGroup = _.find(this.groups, (group) => {
                     return group.id === savedCurrentGroupData.id
                   })
                   // Check if group exists in current user
@@ -246,7 +246,7 @@ class GroupSelector {
               }
               // PVSCL:ELSECOND
               // PVSCL:IFCOND(BrowserStorage, LINE)
-              const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager')
+              const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager').default
               if (_.isEmpty(this.currentGroup) && !_.isEmpty(window.abwa.groupSelector.groups) && LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, BrowserStorageManager)) {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
               }
@@ -256,7 +256,7 @@ class GroupSelector {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
               }
               if (_.isEmpty(window.abwa.groupSelector.groups)) {
-                Alerts.errorAlert({text: 'No groups found. Please configure the tool in the third-party provider.'})
+                Alerts.errorAlert({ text: 'No groups found. Please configure the tool in the third-party provider.' })
               }
               if (_.isFunction(callback)) {
                 callback()
@@ -267,28 +267,27 @@ class GroupSelector {
         })
       })
     }
-    // PVSCL:ELSEIFCOND(MoodleResourceBased)
+    // PVSCL:ELSEIFCOND(MoodleResource)
     // Defines the current group of the highlighter with an a Moodle based group
-    let fileMetadata = window.abwa.targetManager.fileMetadata
+    const fileMetadata = window.abwa.targetManager.fileMetadata
     // Get group name from file metadata
-    let groupName = (new URL(fileMetadata.url)).host + fileMetadata.courseId + fileMetadata.studentId
-    let hashedGroupName = 'MG' + CryptoUtils.hash(groupName).substring(0, 23)
+    const hashedGroupName = MoodleUtils.getHashedGroup({ studentId: fileMetadata.studentId, courseId: fileMetadata.courseId, moodleEndpoint: fileMetadata.url.split('pluginfile.php')[0] })
     // Load all the groups belonged to current user
     this.retrieveGroups((err, groups) => {
       if (err) {
         callback(err)
       } else {
-        let group = _.find(groups, (group) => { return group.name === hashedGroupName })
+        const group = _.find(groups, (group) => { return group.name === hashedGroupName })
         if (_.isObject(group)) {
           // Current group will be that group
           this.currentGroup = group
-          ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
+          ChromeStorage.setData(this.selectedGroupNamespace, { data: JSON.stringify(this.currentGroup) }, ChromeStorage.local)
           if (_.isFunction(callback)) {
             callback(null)
           }
         } else {
           // Warn user not group is defined, configure tool first
-          Alerts.errorAlert({text: 'If you are a teacher you need to configure Mark&Go first.<br/>If you are a student, you need to join feedback group first.', title: 'Unable to start Mark&Go'}) // TODO i18n
+          Alerts.errorAlert({ text: 'If you are a teacher you need to configure Mark&Go first.<br/>If you are a student, you need to join feedback group first.', title: 'Unable to start Mark&Go' }) // TODO i18n
         }
       }
     })
@@ -296,7 +295,7 @@ class GroupSelector {
   }
 
   defineGroupBasedOnInitAnnotation (callback) {
-    let annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
+    const annotationGroupId = window.abwa.annotationBasedInitializer.initAnnotation.group
     // Load group of annotation
     this.retrieveUserProfile(() => {
       this.retrieveGroups((err, groups) => {
@@ -308,7 +307,7 @@ class GroupSelector {
           // Set current group
           this.currentGroup = _.find(groups, (group) => { return group.id === annotationGroupId })
           // Save to chrome annotation server current group
-          ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local)
+          ChromeStorage.setData(this.selectedGroupNamespace, { data: JSON.stringify(this.currentGroup) }, ChromeStorage.local)
           if (_.isFunction(callback)) {
             callback()
           }
@@ -318,7 +317,7 @@ class GroupSelector {
   }
 
   checkIsLoggedIn (callback) {
-    let sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
+    const sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
     $.get(sidebarURL, (html) => {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))
@@ -331,7 +330,7 @@ class GroupSelector {
         // Hide purposes wrapper
         $('#purposesWrapper').attr('aria-hidden', 'true')
         // Start listening to when is logged in continuously
-        chrome.runtime.sendMessage({scope: 'hypothesis', cmd: 'startListeningLogin'})
+        chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'startListeningLogin' })
         // Open the sidebar to notify user that needs to log in
         window.abwa.sidebar.openSidebar()
         // PVSCL:ENDCOND
@@ -348,7 +347,7 @@ class GroupSelector {
   // PVSCL:IFCOND(BuiltIn OR NOT(Codebook),LINE)
 
   createApplicationBasedGroupForUser (callback) {
-    window.abwa.annotationServerManager.client.createNewGroup({name: Config.groupName}, callback)
+    window.abwa.annotationServerManager.client.createNewGroup({ name: Config.groupName }, callback)
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Manual, LINE)
@@ -366,13 +365,13 @@ class GroupSelector {
 
   renderGroupsContainer () {
     // Current group element rendering
-    let currentGroupNameElement = document.querySelector('#groupSelectorName')
+    const currentGroupNameElement = document.querySelector('#groupSelectorName')
     if (this.currentGroup) {
       currentGroupNameElement.innerText = this.currentGroup.name
       currentGroupNameElement.title = this.currentGroup.name
     }
     // Toggle functionality
-    let toggleElement = document.querySelector('#groupSelectorToggle')
+    const toggleElement = document.querySelector('#groupSelectorToggle')
     if (this.groupSelectorToggleClickEvent) {
       currentGroupNameElement.removeEventListener('click', this.groupSelectorToggleClickEvent)
       toggleElement.removeEventListener('click', this.groupSelectorToggleClickEvent)
@@ -381,18 +380,18 @@ class GroupSelector {
     currentGroupNameElement.addEventListener('click', this.groupSelectorToggleClickEvent)
     toggleElement.addEventListener('click', this.groupSelectorToggleClickEvent)
     // Groups container
-    let groupsContainer = document.querySelector('#groupSelectorContainerSelector')
+    const groupsContainer = document.querySelector('#groupSelectorContainerSelector')
     groupsContainer.innerText = ''
     // For each group
-    let groupSelectorItemTemplate = document.querySelector('#groupSelectorItem')
+    const groupSelectorItemTemplate = document.querySelector('#groupSelectorItem')
     for (let i = 0; i < this.groups.length; i++) {
-      let group = this.groups[i]
-      let groupSelectorItem = $(groupSelectorItemTemplate.content.firstElementChild).clone().get(0)
+      const group = this.groups[i]
+      const groupSelectorItem = $(groupSelectorItemTemplate.content.firstElementChild).clone().get(0)
       // Container
       groupsContainer.appendChild(groupSelectorItem)
       groupSelectorItem.id = 'groupSelectorItemContainer_' + group.id
       // Name
-      let nameElement = groupSelectorItem.querySelector('.groupSelectorItemName')
+      const nameElement = groupSelectorItem.querySelector('.groupSelectorItemName')
       nameElement.innerText = group.name
       nameElement.title = 'Move to annotation group ' + group.name
       nameElement.addEventListener('click', this.createGroupChangeEventHandler(group.id))
@@ -413,7 +412,7 @@ class GroupSelector {
     }
     // PVSCL:IFCOND(BuiltIn,LINE)
     // New group button
-    let newGroupButton = document.createElement('div')
+    const newGroupButton = document.createElement('div')
     newGroupButton.innerText = 'Create ' + Config.codebook
     newGroupButton.id = 'createNewModelButton'
     newGroupButton.className = 'groupSelectorButton'
@@ -423,7 +422,7 @@ class GroupSelector {
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(ImportCodebook,LINE)
     // Import button
-    let importGroupButton = document.createElement('div')
+    const importGroupButton = document.createElement('div')
     importGroupButton.className = 'groupSelectorButton'
     importGroupButton.innerText = 'Import codebook'
     importGroupButton.id = 'importReviewModelButton'
@@ -439,7 +438,7 @@ class GroupSelector {
   }
 
   toggleGroupSelectorContainer () {
-    let groupSelector = document.querySelector('#groupSelector')
+    const groupSelector = document.querySelector('#groupSelector')
     if (groupSelector.getAttribute('aria-expanded') === 'true') {
       groupSelector.setAttribute('aria-expanded', 'false')
     } else {
@@ -455,7 +454,7 @@ class GroupSelector {
 
   updateCurrentGroupHandler (groupId) {
     this.currentGroup = _.find(this.groups, (group) => { return groupId === group.id })
-    ChromeStorage.setData(this.selectedGroupNamespace, {data: JSON.stringify(this.currentGroup)}, ChromeStorage.local, () => {
+    ChromeStorage.setData(this.selectedGroupNamespace, { data: JSON.stringify(this.currentGroup) }, ChromeStorage.local, () => {
       console.debug('Group updated. Name: %s id: %s', this.currentGroup.name, this.currentGroup.id)
       // Dispatch event
       LanguageUtils.dispatchCustomEvent(Events.groupChanged, {
@@ -467,7 +466,7 @@ class GroupSelector {
 
   setCurrentGroup (groupId, callback) {
     // Set current group
-    let newCurrentGroup = _.find(this.groups, (group) => { return group.id === groupId })
+    const newCurrentGroup = _.find(this.groups, (group) => { return group.id === groupId })
     if (newCurrentGroup) {
       this.currentGroup = newCurrentGroup
     }
@@ -492,7 +491,7 @@ class GroupSelector {
 
   createGroupSelectorItemToggleEventHandler (groupId) {
     return (e) => {
-      let groupSelectorItemContainer = document.querySelector('#groupSelectorContainerSelector').querySelector('#groupSelectorItemContainer_' + groupId)
+      const groupSelectorItemContainer = document.querySelector('#groupSelectorContainerSelector').querySelector('#groupSelectorItemContainer_' + groupId)
       if (groupSelectorItemContainer.getAttribute('aria-expanded') === 'true') {
         groupSelectorItemContainer.setAttribute('aria-expanded', 'false')
       } else {
@@ -507,7 +506,7 @@ class GroupSelector {
     return () => {
       this.createNewGroup((err, result) => {
         if (err) {
-          Alerts.errorAlert({text: 'Unable to create a new group. Please try again or contact developers if the error continues happening.'})
+          Alerts.errorAlert({ text: 'Unable to create a new group. Please try again or contact developers if the error continues happening.' })
         } else {
           // Update list of groups from annotation Server
           this.retrieveGroups(() => {
@@ -540,10 +539,10 @@ class GroupSelector {
       preConfirm: (groupName) => {
         if (_.isString(groupName)) {
           if (groupName.length <= 0) {
-            const swal = require('sweetalert2')
+            const swal = require('sweetalert2').default
             swal.showValidationMessage('Name cannot be empty.')
           } else if (groupName.length > 25) {
-            const swal = require('sweetalert2')
+            const swal = require('sweetalert2').default
             swal.showValidationMessage('The codebook name cannot be higher than 25 characters.')
           } else {
             return groupName
@@ -568,14 +567,14 @@ class GroupSelector {
 
   createGroupSelectorDeleteOptionEventHandler (group) {
     return (event) => {
-      LanguageUtils.dispatchCustomEvent(Events.deleteCodebook, {codebook: group, user: this.user})
+      LanguageUtils.dispatchCustomEvent(Events.deleteCodebook, { codebook: group, user: this.user })
     }
   }
 
   codebookDeletedEventHandler () {
     return (event) => {
       if (event.detail.err) {
-        Alerts.errorAlert({text: 'Error when deleting the group: ' + event.detail.err.message})
+        Alerts.errorAlert({ text: 'Error when deleting the group: ' + event.detail.err.message })
       } else {
         // If removed group is the current group, current group must defined again
         if (event.detail.group.id === this.currentGroup.id) {
@@ -600,14 +599,14 @@ class GroupSelector {
 
   createGroupSelectorRenameOptionEventHandler (group) {
     return () => {
-      LanguageUtils.dispatchCustomEvent(Events.renameCodebook, {codebook: group})
+      LanguageUtils.dispatchCustomEvent(Events.renameCodebook, { codebook: group })
     }
   }
 
   codebookRenamedEventHandler () {
     return (event) => {
       if (event.detail.err) {
-        Alerts.errorAlert({text: 'Error when renaming the group: ' + event.detail.err.message})
+        Alerts.errorAlert({ text: 'Error when renaming the group: ' + event.detail.err.message })
       } else {
         this.currentGroup = event.detail.group
         this.retrieveGroups(() => {
@@ -624,14 +623,14 @@ class GroupSelector {
 
   createImportGroupButtonEventHandler () {
     return () => {
-      LanguageUtils.dispatchCustomEvent(Events.importCodebook, {importTo: 'JSON'})
+      LanguageUtils.dispatchCustomEvent(Events.importCodebook, { importTo: 'JSON' })
     }
   }
 
   codebookImportedEventHandler () {
     return (event) => {
       if (event.detail.err) {
-        Alerts.errorAlert({text: 'Error when deleting the group: ' + event.detail.err.message})
+        Alerts.errorAlert({ text: 'Error when deleting the group: ' + event.detail.err.message })
       } else {
         // Update groups from annotation server
         this.retrieveGroups(() => {
@@ -648,10 +647,10 @@ class GroupSelector {
     return () => {
       window.abwa.codebookManager.codebookReader.getCodebookDefinition(group, (err, groupAnnotations) => {
         if (err) {
-          Alerts.errorAlert({text: 'Unable to export group.'})
+          Alerts.errorAlert({ text: 'Unable to export group.' })
         } else {
           // Export codebook
-          LanguageUtils.dispatchCustomEvent(Events.exportCodebook, {exportTo: 'JSON', codebookAnnotations: groupAnnotations, codebook: group})
+          LanguageUtils.dispatchCustomEvent(Events.exportCodebook, { exportTo: 'JSON', codebookAnnotations: groupAnnotations, codebook: group })
         }
       })
     }
@@ -660,7 +659,7 @@ class GroupSelector {
   codebookExportedEventHandler () {
     return (event) => {
       if (event.detail.err) {
-        Alerts.errorAlert({text: 'Error when trying to export codebook. Error: ' + event.detail.err})
+        Alerts.errorAlert({ text: 'Error when trying to export codebook. Error: ' + event.detail.err })
       }
     }
   }
@@ -731,4 +730,4 @@ class GroupSelector {
   }
 }
 
-module.exports = GroupSelector
+export default GroupSelector

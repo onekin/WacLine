@@ -1,7 +1,7 @@
-const Body = require('./Body')
+import Body from './Body'
 
 class SuggestingLiterature extends Body {
-  constructor ({purpose = SuggestingLiterature.purpose, value = []}) {
+  constructor ({ purpose = SuggestingLiterature.purpose, value = [] }) {
     super(purpose)
     this.value = value
   }
@@ -21,4 +21,4 @@ class SuggestingLiterature extends Body {
 
 SuggestingLiterature.purpose = 'suggestingLiterature'
 
-module.exports = SuggestingLiterature
+export default SuggestingLiterature

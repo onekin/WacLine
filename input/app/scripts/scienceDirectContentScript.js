@@ -1,20 +1,20 @@
-const TextUtils = require('./utils/URLUtils')
-const Config = require('./Config')
+import TextUtils from './utils/URLUtils'
+import Config from './Config'
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('./annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from './annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BrowserStorage,LINE)
-const BrowserStorageManager = require('./annotationServer/browserStorage/BrowserStorageManager')
+import BrowserStorageManager from './annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
-const _ = require('lodash')
+import _ from 'lodash'
 
 class ScienceDirectContentScript {
   init () {
     // Get if this tab has an annotation to open and a doi
-    let params = TextUtils.extractHashParamsFromUrl(window.location.href)
+    const params = TextUtils.extractHashParamsFromUrl(window.location.href)
     if (!_.isEmpty(params) && !_.isEmpty(params[Config.namespace])) {
       // Activate the extension
-      chrome.runtime.sendMessage({scope: 'extension', cmd: 'activatePopup'}, (result) => {
+      chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, (result) => {
         // Retrieve if annotation is done in current url or in pdf version
         this.loadAnnotationServer(() => {
           window.scienceDirect.annotationServerManager.client.fetchAnnotation(params[Config.namespace], (err, annotation) => {
@@ -30,7 +30,7 @@ class ScienceDirectContentScript {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren()->pv:Size()=1, LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
     window.scienceDirect.annotationServerManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
@@ -47,7 +47,7 @@ class ScienceDirectContentScript {
       }
     })
     // PVSCL:ELSECOND
-    chrome.runtime.sendMessage({scope: 'annotationServer', cmd: 'getSelectedAnnotationServer'}, ({annotationServer}) => {
+    chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       if (annotationServer === 'hypothesis') {
         // Hypothesis
         window.scienceDirect.annotationServerManager = new HypothesisClientManager()

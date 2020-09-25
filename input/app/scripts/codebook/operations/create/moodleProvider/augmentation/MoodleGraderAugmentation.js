@@ -1,5 +1,5 @@
-const _ = require('lodash')
-const MoodleScraping = require('../MoodleScraping')
+import _ from 'lodash'
+import MoodleScraping from '../MoodleScraping'
 
 class MoodleGraderAugmentation {
   constructor () {
@@ -34,7 +34,7 @@ class MoodleGraderAugmentation {
         if (err) {
 
         } else {
-          let submittedFilesElements = submissionFilesContainer.querySelectorAll('a')
+          const submittedFilesElements = submissionFilesContainer.querySelectorAll('a')
           // Change URLs of files elements
           _.forEach(submittedFilesElements, (submittedFileElement) => {
             submittedFileElement.href = submittedFileElement.href + '#studentId:' +
@@ -47,8 +47,8 @@ class MoodleGraderAugmentation {
   }
 
   waitUntilUserInfoIsLoaded (callback) {
-    let interval = setInterval(() => {
-      let currentUserInfoElement = document.querySelector('[data-region="user-info"]')
+    const interval = setInterval(() => {
+      const currentUserInfoElement = document.querySelector('[data-region="user-info"]')
       if (_.isElement(currentUserInfoElement)) {
         clearInterval(interval)
         if (_.isFunction(callback)) {
@@ -59,8 +59,8 @@ class MoodleGraderAugmentation {
   }
 
   waitUntilFilesAreLoaded (callback) {
-    let interval = setInterval(() => {
-      let submissionFilesContainer = document.querySelector('.assignsubmission_file')
+    const interval = setInterval(() => {
+      const submissionFilesContainer = document.querySelector('.assignsubmission_file')
       if (_.isElement(submissionFilesContainer)) {
         clearInterval(interval)
         if (_.isFunction(callback)) {
@@ -73,7 +73,7 @@ class MoodleGraderAugmentation {
   getStudentId (callback) {
     // Get student ID
     this.waitUntilUserInfoIsLoaded((currentUserInfoElement) => {
-      let studentId = (new URL(currentUserInfoElement.querySelector('a').href)).searchParams.get('id')
+      const studentId = (new URL(currentUserInfoElement.querySelector('a').href)).searchParams.get('id')
       if (_.isFunction(callback)) {
         callback(null, studentId)
       }
@@ -103,4 +103,4 @@ class MoodleGraderAugmentation {
   }
 }
 
-module.exports = MoodleGraderAugmentation
+export default MoodleGraderAugmentation

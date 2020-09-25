@@ -1,5 +1,5 @@
-const _ = require('lodash')
-const MoodleScraping = require('../MoodleScraping')
+import _ from 'lodash'
+import MoodleScraping from '../MoodleScraping'
 
 class MoodleViewPluginAssignSubmissionAugmentation {
   init () {
@@ -10,8 +10,8 @@ class MoodleViewPluginAssignSubmissionAugmentation {
       } else {
         console.log(assignmentData)
         // Get current student id
-        let studentId = (new URL(window.location)).searchParams.get('studentId')
-        let submittedFilesElements = document.querySelectorAll('a[href*="assignsubmission_file/submission_files"')
+        const studentId = (new URL(window.location)).searchParams.get('studentId')
+        const submittedFilesElements = document.querySelectorAll('a[href*="assignsubmission_file/submission_files"')
         // Change URLs of files elements
         _.forEach(submittedFilesElements, (submittedFileElement) => {
           submittedFileElement.href = submittedFileElement.href + '#studentId:' +
@@ -26,4 +26,4 @@ class MoodleViewPluginAssignSubmissionAugmentation {
   }
 }
 
-module.exports = MoodleViewPluginAssignSubmissionAugmentation
+export default MoodleViewPluginAssignSubmissionAugmentation
