@@ -1,9 +1,8 @@
 // const _ = require('lodash')
-const $ = require('jquery')
-const Alerts = require('../../utils/Alerts')
-const LanguageUtils = require('../../utils/LanguageUtils')
-const Events = require('../../Events')
-// const $ = require('jquery')
+import $ from 'jquery'
+import Alerts from '../../../utils/Alerts'
+import LanguageUtils from '../../../utils/LanguageUtils'
+import Events from '../../../Events'
 
 class LinkingForm {
   /**
@@ -28,6 +27,7 @@ class LinkingForm {
           onBeforeOpen: form.onBeforeOpen,
           // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
           callback: form.callback,
+          customClass: 'large-swal',
           preConfirm: form.preConfirm
         })
       }
@@ -48,26 +48,41 @@ class LinkingForm {
    */
   static generateLinkingFormHTML () {
     let html = ''
+    // Create FROM dropdownlist
     let selectFrom = document.createElement('select')
     selectFrom.id = 'categorizeDropdownFrom'
+    selectFrom.className = 'linkingConceptInput'
     window.abwa.codebookManager.codebookReader.codebook.themes.forEach(theme => {
       let option = document.createElement('option')
       option.text = theme.name
       option.value = theme.id
       selectFrom.add(option)
     })
-    html += 'From:' + selectFrom.outerHTML + '<br>'
-    html += '<br>Linking word: <input type="text" id="linkingWord"/><br>'
+
+    // Create TO dropdownlist
     let selectTo = document.createElement('select')
     selectTo.id = 'categorizeDropdownTo'
+    selectFrom.className = 'linkingConceptInput'
     window.abwa.codebookManager.codebookReader.codebook.themes.forEach(theme => {
-      let option = document.createElement('option')
-      option.text = theme.name
-      option.value = theme.id
-      selectTo.add(option)
+      if (!theme.isTopic) {
+        let option = document.createElement('option')
+        option.text = theme.name
+        option.value = theme.id
+        selectTo.add(option)
+      }
     })
+    // First row
+    html += 'From:' + selectFrom.outerHTML + '<br>'
+    // Second row
+    html += '<br>Linking word: <input type="text" id="linkingWord"/>'
+    const goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
+    let lastLinking = document.createElement('img')
+    lastLinking.id = 'lastRelationshinpButton'
+    lastLinking.src = goToLastImageUrl
+    lastLinking.title = 'Get last relationship' // TODO i18n
+    html += lastLinking.outerHTML + '<br>'
+    // Third row
     html += '<br>To:' + selectTo.outerHTML + '<br>'
-
     // On before open
     let onBeforeOpen
     onBeforeOpen = () => {
@@ -113,15 +128,14 @@ class LinkingForm {
         from: preConfirmData.fromTheme.id,
         to: preConfirmData.toTheme.id,
         linkingWord: preConfirmData.linkingWord,
-        target: onBeforeOpen.target/* PVSCL:IFCOND(EvidenceAnnotations) */,
-        addToCXL: true /* PVSCL:ENDCOND */
+        target: onBeforeOpen.target
       })
     }
     let cancelCallback = () => {
       console.log('new link canceled')
     }
-    return {html: html, onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback, cancelCallback: cancelCallback}
+    return { html: html, onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback, cancelCallback: cancelCallback }
   }
 }
 
-module.exports = LinkingForm
+export default LinkingForm

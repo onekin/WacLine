@@ -301,18 +301,18 @@ class Toolset {
         // Create items for context menu
         let items = {}
         // PVSCL:IFCOND(CXLImport, LINE)
-        items['import'] = {name: 'Import CXL'}
+        items.import = { name: 'Import CXL' }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(CXLExport, LINE)
         // PVSCL:IFCOND(EvidenceAnnotations, LINE)
         // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
-        items['exportWithToolURL'] = {name: 'Export CXL with tool URLs'}
+        items.exportWithToolURL = { name: 'Export CXL with tool URLs' }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
-        items['exportWithHypothesisURL'] = {name: 'Export CXL with Hypothes.is URLs'}
+        items.exportWithHypothesisURL = { name: 'Export CXL with Hypothes.is URLs' }
         // PVSCL:ENDCOND
         // PVSCL:ELSECOND
-        items['export'] = {name: 'Export CXL'}
+        items.export = { name: 'Export CXL' }
         // PVSCL:ENDCOND
         // PVSCL:ENDCOND
         return {
@@ -360,13 +360,13 @@ class Toolset {
         // PVSCL:IFCOND(CXLExport, LINE)
         // PVSCL:IFCOND(EvidenceAnnotations, LINE)
         // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
-        items['exportWithToolURL'] = {name: 'Export CXL with tool URLs'}
+        items.exportWithToolURL = { name: 'Export CXL with tool URLs' }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
-        items['exportWithHypothesisURL'] = {name: 'Export CXL with Hypothes.is URLs'}
+        items.exportWithHypothesisURL = { name: 'Export CXL with Hypothes.is URLs' }
         // PVSCL:ENDCOND
         // PVSCL:ELSECOND
-        items['export'] = {name: 'Export CXL'}
+        items.export = { name: 'Export CXL' }
         // PVSCL:ENDCOND
         // PVSCL:ENDCOND
         return {
@@ -377,7 +377,7 @@ class Toolset {
             }
             // PVSCL:ENDCOND
             // PVSCL:IFCOND(CXLExport, LINE)
-            chrome.runtime.sendMessage({scope: 'cmapCloud', cmd: 'getUserData'}, (response) => {
+            chrome.runtime.sendMessage({ scope: 'cmapCloud', cmd: 'getUserData' }, (response) => {
               if (response.data) {
                 let data = response.data
                 if (data.userData.user && data.userData.password && data.userData.uid) {
@@ -403,7 +403,7 @@ class Toolset {
                 let callback = () => {
                   window.open(chrome.extension.getURL('pages/options.html#cmapCloudConfiguration'))
                 }
-                Alerts.infoAlert({text: 'Please, provide us your Cmap Cloud login credentials in the configuration page of the Web extension.', title: 'We need your Cmap Cloud credentials', callback: callback()})
+                Alerts.infoAlert({ text: 'Please, provide us your Cmap Cloud login credentials in the configuration page of the Web extension.', title: 'We need your Cmap Cloud credentials', callback: callback() })
               }
             })
           },

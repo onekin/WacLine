@@ -12,7 +12,7 @@ import _ from 'lodash'
 import Classifying from '../annotationManagement/purposes/Classifying'
 import Annotation from '../annotationManagement/Annotation'
 // PVSCL:IFCOND(Linking, LINE)
-import Linking = from '../annotationManagement/purposes/Linking'
+import Linking from '../annotationManagement/purposes/linking/Linking'
 // PVSCL:ENDCOND
 
 export class AnnotatedTheme {

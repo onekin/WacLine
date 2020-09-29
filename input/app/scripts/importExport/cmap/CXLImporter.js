@@ -1,12 +1,12 @@
-const Alerts = require('../../utils/Alerts')
-const FileUtils = require('../../utils/FileUtils')
-const LanguageUtils = require('../../utils/LanguageUtils')
-const Linking = require('../../annotationManagement/purposes/Linking')
-const Annotation = require('../../annotationManagement/Annotation')
-const Codebook = require('../../codebook/model/Codebook')
-const _ = require('lodash')
+import Alerts from '../../utils/Alerts'
+import FileUtils from '../../utils/FileUtils'
+import LanguageUtils from '../../utils/LanguageUtils'
+import Linking from '../../annotationManagement/purposes/linking/Linking'
+import Annotation from '../../annotationManagement/Annotation'
+import Codebook from '../../codebook/model/Codebook'
+import _ from 'lodash'
 // PVSCL:IFCOND(Hypothesis,LINE)
-const HypothesisClientManager = require('../../annotationServer/hypothesis/HypothesisClientManager')
+import HypothesisClientManager from '../../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
 
 class CXLImporter {
@@ -70,7 +70,7 @@ class CXLImporter {
   static importCXLfile () {
     CXLImporter.askUserToImportDocumentAnnotations((err, cxlObject) => {
       if (err) {
-        Alerts.errorAlert({text: 'Unable to parse cxl file. Error:<br/>' + err.message})
+        Alerts.errorAlert({ text: 'Unable to parse cxl file. Error:<br/>' + err.message })
       } else {
         console.log(cxlObject)
         let title
@@ -103,9 +103,9 @@ class CXLImporter {
             if (err) {
               window.alert('Unable to load alert. Unexpected error, please contact developer.')
             } else {
-              window.abwa.annotationServerManager.client.createNewGroup({name: groupName}, (err, newGroup) => {
+              window.abwa.annotationServerManager.client.createNewGroup({ name: groupName }, (err, newGroup) => {
                 if (err) {
-                  Alerts.errorAlert({text: 'Unable to create a new annotation group. Error: ' + err.message})
+                  Alerts.errorAlert({ text: 'Unable to create a new annotation group. Error: ' + err.message })
                 } else {
                   // PVSCL:IFCOND(Hypothesis,LINE)
                   // Remove public group in hypothes.is and modify group URL
@@ -120,7 +120,7 @@ class CXLImporter {
                   let tempCodebook = Codebook.fromCXLFile(conceptList, groupName)
                   Codebook.setAnnotationServer(newGroup, (annotationServer) => {
                     tempCodebook.annotationServer = annotationServer
-                    CXLImporter.askUserRootTheme(tempCodebook.themes, (err, topicConceptName) => {
+                    CXLImporter.askUserRootTheme(tempCodebook.themes, (topicConceptName) => {
                       let topicThemeObject = _.filter(tempCodebook.themes, (theme) => {
                         return theme.name === topicConceptName
                       })
@@ -129,12 +129,12 @@ class CXLImporter {
                       // Send create highlighter
                       window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, codebookAnnotations) => {
                         if (err) {
-                          Alerts.errorAlert({text: 'Unable to create new group.'})
+                          Alerts.errorAlert({ text: 'Unable to create new group.' })
                         } else {
                           // Parse annotations and dispatch created codebook
                           Codebook.fromAnnotations(codebookAnnotations, (err, codebook) => {
                             if (err) {
-                              Alerts.errorAlert({text: 'Unable to create a codebook. Error: ' + err.message})
+                              Alerts.errorAlert({ text: 'Unable to create a codebook. Error: ' + err.message })
                             } else {
                               let linkingAnnotations = []
                               // PVSCL:IFCOND(Linking, LINE)
@@ -171,17 +171,14 @@ class CXLImporter {
                                         value.from = fromId
                                         value.to = toId
                                         value.linkingWord = linkingPhraseName
-                                        // PVSCL:IFCOND(EvidenceAnnotations, LINE)
-                                        value.addToCXL = false
-                                        // PVSCL:ENDCOND
-                                        let linkingBody = new Linking({value})
+                                        let linkingBody = new Linking({ value })
                                         body.push(linkingBody.serialize())
                                         let annotationToCreate = new Annotation({
                                           tags: tags,
                                           body: body,
                                           target: target,
                                           group: newGroup.id,
-                                          permissions: {read: ['group:' + newGroup.id]}
+                                          permissions: { read: ['group:' + newGroup.id] }
                                         })
                                         linkingAnnotations.push(annotationToCreate.serialize())
                                       }
@@ -192,7 +189,7 @@ class CXLImporter {
                               // PVSCL:ENDCOND
                               window.abwa.annotationServerManager.client.createNewAnnotations(linkingAnnotations, (err, annotations) => {
                                 if (err) {
-                                  Alerts.errorAlert({text: 'Unable to import annotations. Error: ' + err.message})
+                                  Alerts.errorAlert({ text: 'Unable to import annotations. Error: ' + err.message })
                                 } else {
                                   window.abwa.groupSelector.retrieveGroups(() => {
                                     window.abwa.groupSelector.setCurrentGroup(newGroup.id, () => {
@@ -226,4 +223,4 @@ class CXLImporter {
   }
 }
 
-module.exports = CXLImporter
+export default CXLImporter

@@ -6,11 +6,11 @@ import $ from 'jquery'
 import _ from 'lodash'
 import Codebook from '../../model/Codebook'
 import Theme from '../../model/Theme'
-// PVSCL:IFCOND(Hierarchy, LINE)
+// PVSCL:IFCOND(Hierarchy,LINE)
 import Code from '../../model/Code'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Linking,LINE)
-import LinkingButton from '../../../annotationManagement/purposes/LinkingButton'
+import LinkingButton from '../../../annotationManagement/purposes/linking/LinkingButton'
 // PVSCL:ENDCOND
 import ColorUtils from '../../../utils/ColorUtils'
 import LanguageUtils from '../../../utils/LanguageUtils'
@@ -63,22 +63,22 @@ class ReadCodebook {
   // PVSCL:IFCOND(Linking AND NOT(Hierarchy), LINE)
 
   initRelationshipsLoadedEvent () {
-    this.events.relationshipsLoadedEvent = {element: document, event: Events.relationshipsLoaded, handler: this.relationshipsLoadedEventHandler()}
+    this.events.relationshipsLoadedEvent = { element: document, event: Events.relationshipsLoaded, handler: this.relationshipsLoadedEventHandler() }
     this.events.relationshipsLoadedEvent.element.addEventListener(this.events.relationshipsLoadedEvent.event, this.events.relationshipsLoadedEvent.handler, false)
   }
 
   initRelationshipAddedEvent () {
-    this.events.relationshipAddedEvent = {element: document, event: Events.relationshipAdded, handler: this.relationshipAddedEventHandler()}
+    this.events.relationshipAddedEvent = { element: document, event: Events.relationshipAdded, handler: this.relationshipAddedEventHandler() }
     this.events.relationshipAddedEvent.element.addEventListener(this.events.relationshipAddedEvent.event, this.events.relationshipAddedEvent.handler, false)
   }
 
   initRelationshipUpdatedEvent () {
-    this.events.relationshipUpdatedEvent = {element: document, event: Events.relationshipUpdated, handler: this.relationshipUpdatedEventHandler()}
+    this.events.relationshipUpdatedEvent = { element: document, event: Events.relationshipUpdated, handler: this.relationshipUpdatedEventHandler() }
     this.events.relationshipUpdatedEvent.element.addEventListener(this.events.relationshipUpdatedEvent.event, this.events.relationshipUpdatedEvent.handler, false)
   }
 
   initRelationshipDeletedEvent () {
-    this.events.relationshipDeletedEvent = {element: document, event: Events.relationshipDeleted, handler: this.relationshipDeletedEventHandler()}
+    this.events.relationshipDeletedEvent = { element: document, event: Events.relationshipDeleted, handler: this.relationshipDeletedEventHandler() }
     this.events.relationshipDeletedEvent.element.addEventListener(this.events.relationshipDeletedEvent.event, this.events.relationshipDeletedEvent.handler, false)
   }
   // PVSCL:ENDCOND
@@ -188,9 +188,14 @@ class ReadCodebook {
         const initCodebookPromise = new Promise((resolve, reject) => {
           if (codebookDefinitionAnnotations.length === 0) {
             // PVSCL:IFCOND(BuiltIn AND NOT(ApplicationBased), LINE)
-            const currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
             // PVSCL:IFCOND(TopicBased, LINE)
-            LanguageUtils.dispatchCustomEvent(Events.createCodebook, {howCreate: 'topicBased', topic: currentGroupName})
+            const currentGroupFullName = window.abwa.groupSelector.groupFullName || ''
+            // PVSCL:ELSECOND
+            const currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(TopicBased, LINE)
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'topicBased', topic: currentGroupFullName })
+            resolve()
             // PVSCL:ELSECOND
             // PVSCL:IFCOND(CodebookUpdate, LINE)
             // As codebook can be updated, the user can create an empty one and update it later
@@ -325,10 +330,12 @@ class ReadCodebook {
     // PVSCL:ENDCOND
     // Create new relation button
     // Create current buttons
-    const themes = this.codebook.themes
+    let themes
     // PVSCL:IFCOND(TopicBased, LINE)
-    const rootTheme = _.find(themes, (theme) => { return theme.isTopic === true })
-    themes = themes.filter((theme) => { return theme.isTopic === false })
+    const rootTheme = this.getTopicTheme()
+    themes = this.filterTopicTheme()
+    // PVSCL:ELSECOND
+    themes = this.codebook.themes
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Alphabetical, LINE)
     themes.sort((a, b) => a.name.localeCompare(b.name))
@@ -452,7 +459,7 @@ class ReadCodebook {
         const codeId = event.target.dataset.codeId
         if (codeId) {
           const code = this.codebook.getCodeOrThemeFromId(codeId)
-          if (LanguageUtils.isInstanceOf(code, Code)) {
+          if (!LanguageUtils.isInstanceOf(code, Theme)) {
             // PVSCL:IFCOND(NOT(Multivalued),LINE)
             // The rest of the annotations must be classified with this code too
             // Get the annotatedTheme object of the code selected
@@ -640,22 +647,22 @@ class ReadCodebook {
       // PVSCL:IFCOND(TopicBased, LINE)
       let theme = this.codebook.getCodeOrThemeFromId(themeId)
       if (!theme.isTopic) {
-        items.updateTheme = {name: 'Modify topic'}
-        items.removeTheme = {name: 'Remove ' + Config.tags.grouped.group}
+        items.updateTheme = { name: 'Modify ' + Config.tags.grouped.group }
+        items.removeTheme = { name: 'Remove ' + Config.tags.grouped.group }
         // PVSCL:IFCOND(Linking,LINE)
-        items.manageRelationships = {name: 'Manage links'}
+        items.manageRelationships = { name: 'Manage links' }
         // PVSCL:ENDCOND
       } else {
-        items.updateTheme = {name: 'Modify ' + Config.tags.grouped.group}
+        items.updateTheme = { name: 'Modify topic' }
         // PVSCL:IFCOND(Linking,LINE)
-        items.manageRelationships = {name: 'Manage links'}
+        items.manageRelationships = { name: 'Manage links' }
         // PVSCL:ENDCOND
       }
       // PVSCL:ELSECOND
-      items.updateTheme = {name: 'Modify ' + Config.tags.grouped.group}
-      items.removeTheme = {name: 'Remove ' + Config.tags.grouped.group}
+      items.updateTheme = { name: 'Modify ' + Config.tags.grouped.group }
+      items.removeTheme = { name: 'Remove ' + Config.tags.grouped.group }
       // PVSCL:IFCOND(Linking,LINE)
-      items.manageRelationships = {name: 'Manage links'}
+      items.manageRelationships = { name: 'Manage links' }
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
@@ -904,7 +911,7 @@ class ReadCodebook {
 
   relationshipUpdatedEventHandler () {
     return (event) => {
-      let relation = event.detail.relation
+      /* let relation = event.detail.relation
       for (let i = 0; i < relations.length; i++) {
         let relation = relations[i]
         // Get button
@@ -915,7 +922,7 @@ class ReadCodebook {
         } else {
           themeButton[0].title = '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
         }
-      }
+      } */
     }
   }
 
@@ -930,6 +937,18 @@ class ReadCodebook {
         themeButton[0].title += '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
       }
     }
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(TopicBased, LINE)
+
+  getTopicTheme () {
+    let themes = this.codebook.themes
+    return _.find(themes, (theme) => { return theme.isTopic === true })
+  }
+
+  filterTopicTheme () {
+    let themes = this.codebook.themes
+    return themes.filter((theme) => { return theme.isTopic === false })
   }
   // PVSCL:ENDCOND
 }

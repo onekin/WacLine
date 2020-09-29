@@ -1,4 +1,4 @@
-const LinkingForm = require('./LinkingForm')
+import LinkingForm from './LinkingForm'
 
 class LinkingButton {
   static createNewLinkButton () {
@@ -22,4 +22,4 @@ class LinkingButton {
   }
 }
 
-module.exports = LinkingButton
+export default LinkingButton

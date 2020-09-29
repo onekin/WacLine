@@ -11,7 +11,7 @@ import $ from 'jquery'
 import Classifying from '../purposes/Classifying'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Linking, LINE)
-import Linking = from '../purposes/Linking'
+import Linking from '../purposes/linking/Linking'
 // PVSCL:ENDCOND
 
 class CreateAnnotation {
@@ -67,12 +67,12 @@ class CreateAnnotation {
             // Deserialize retrieved annotation from the server
             const deserializedAnnotation = Annotation.deserialize(annotation)
             // Dispatch annotation created event
-            LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {annotation: deserializedAnnotation})
+            LanguageUtils.dispatchCustomEvent(Events.annotationCreated, { annotation: deserializedAnnotation })
             // PVSCL:IFCOND(Linking, LINE)
             if (deserializedAnnotation.body) {
               let bodyWithLinkingPurpose = deserializedAnnotation.getBodyForPurpose('linking')
               if (bodyWithLinkingPurpose) {
-                LanguageUtils.dispatchCustomEvent(Events.linkAnnotationCreated, {annotation: deserializedAnnotation})
+                LanguageUtils.dispatchCustomEvent(Events.linkAnnotationCreated, { annotation: deserializedAnnotation })
               }
             }
             // PVSCL:ENDCOND
@@ -80,11 +80,10 @@ class CreateAnnotation {
             if (deserializedAnnotation.body) {
               let bodyWithClassifyingPurpose = deserializedAnnotation.getBodyForPurpose('classifying')
               if (bodyWithClassifyingPurpose) {
-                LanguageUtils.dispatchCustomEvent(Events.evidenceAnnotationAdded, {annotation: deserializedAnnotation})
+                LanguageUtils.dispatchCustomEvent(Events.evidenceAnnotationAdded, { annotation: deserializedAnnotation })
               }
             }
             // PVSCL:ENDCOND
-            LanguageUtils.dispatchCustomEvent(Events.annotationCreated, { annotation: deserializedAnnotation })
           }
         })
       } else {
@@ -121,9 +120,9 @@ class CreateAnnotation {
     // PVSCL:IFCOND(Classifying, LINE)
     // Get body for classifying
     if (detail.purpose === 'classifying') {
-      if (codeId) {
-        const codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codeId)
-        const classifyingBody = new Classifying({code: codeOrTheme})
+      if (detail.codeId) {
+        const codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(detail.codeId)
+        const classifyingBody = new Classifying({ code: codeOrTheme })
         body.push(classifyingBody.serialize())
       }
     }
@@ -141,7 +140,7 @@ class CreateAnnotation {
           value.addToCXL = detail.addToCXL
         }
         // PVSCL:ENDCOND
-        let linkingBody = new Linking({value})
+        let linkingBody = new Linking({ value })
         body.push(linkingBody.serialize())
       }
     }
@@ -149,14 +148,14 @@ class CreateAnnotation {
     return body
   }
 
-  obtainTargetToCreateAnnotation ({repliedAnnotation, target}) {
+  obtainTargetToCreateAnnotation ({ repliedAnnotation, target }) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
       return [{ source: repliedAnnotation.target[0].source }]
     } else {
       if (!target) {
-        const target = [{}]
-        const source = window.abwa.targetManager.getDocumentURIs()
+        target = [{}]
+        let source = window.abwa.targetManager.getDocumentURIs()
         // Get document title
         source.title = window.abwa.targetManager.documentTitle || ''
         // Get UUID for current target

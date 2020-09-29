@@ -69,7 +69,7 @@ class CreateCodebook {
         // PVSCL:IFCOND(TopicBased, LINE)
         let topic = event.detail.topic
         if (howCreate === 'topicBased') {
-          TopicBased.createDefaultAnnotations(topic,(err, annotations) => {
+          TopicBased.createDefaultAnnotations(topic, (err, annotations) => {
             if (err) {
               reject(err)
             } else {

@@ -1,8 +1,7 @@
-const _ = require('lodash')
-const Alerts = require('../../utils/Alerts')
-const LanguageUtils = require('../../utils/LanguageUtils')
-const Events = require('../../Events')
-const $ = require('jquery')
+import _ from 'lodash'
+import Alerts from '../../../utils/Alerts'
+import LanguageUtils from '../../../utils/LanguageUtils'
+import Events from '../../../Events'
 
 class LinkingManagementForm {
   static showLinkingManagementForm (concept, conceptRelations, formCallback) {
@@ -126,10 +125,10 @@ class LinkingManagementForm {
               })
               window.abwa.annotationServerManager.client.deleteAnnotations(linksId, (err, result) => {
                 if (err) {
-                  Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
+                  Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
                 } else {
-                  LanguageUtils.dispatchCustomEvent(Events.annotationsDeleted, {annotations: relation.evidenceAnnotations})
-                  LanguageUtils.dispatchCustomEvent(Events.linkAnnotationDeleted, {relation: relation})
+                  LanguageUtils.dispatchCustomEvent(Events.annotationsDeleted, { annotations: relation.evidenceAnnotations })
+                  LanguageUtils.dispatchCustomEvent(Events.linkAnnotationDeleted, { relation: relation })
                 }
               })
             }
@@ -150,7 +149,7 @@ class LinkingManagementForm {
         })
         document.querySelector(swapRelation).addEventListener('click', (e) => {
           let button = e.target
-          Alerts.infoAlert({title: 'Swap ' + button.id})
+          Alerts.infoAlert({ title: 'Swap ' + button.id })
         })
       }
     }
@@ -161,7 +160,7 @@ class LinkingManagementForm {
     let cancelCallback = () => {
       console.log('new link canceled')
     }
-    return {html: html, onBeforeOpen: onBeforeOpen, callback: callback, cancelCallback: cancelCallback}
+    return { html: html, onBeforeOpen: onBeforeOpen, callback: callback, cancelCallback: cancelCallback }
   }
 
   static showUpdateLinkForm (relationId, formCallback) {
@@ -252,8 +251,8 @@ class LinkingManagementForm {
     let cancelCallback = () => {
       console.log('new link canceled')
     }
-    return {html: html, onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback, cancelCallback: cancelCallback}
+    return { html: html, onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback, cancelCallback: cancelCallback }
   }
 }
 
-module.exports = LinkingManagementForm
+export default LinkingManagementForm

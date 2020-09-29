@@ -6,7 +6,7 @@ class Hypothesis extends AnnotationServer {
   }
 
   getGroupUrl () {
-    return 'https://hypothes.is/groups/' + this.group
+    return 'https://hypothes.is/groups/' + this.group.id
   }
 
   getGroupId () {

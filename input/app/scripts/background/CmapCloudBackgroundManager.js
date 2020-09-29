@@ -1,7 +1,7 @@
-const axios = require('axios')
-const _ = require('lodash')
-const ChromeStorage = require('../utils/ChromeStorage')
-const $ = require('jquery')
+import axios from 'axios'
+import _ from 'lodash'
+import ChromeStorage from '../utils/ChromeStorage'
+import $ from 'jquery'
 
 class CmapCloudBackgroundManager {
   init () {
@@ -13,17 +13,17 @@ class CmapCloudBackgroundManager {
             let password = request.data.password
             this.getUid(user, password, (err, uid) => {
               if (err) {
-                sendResponse({err: err})
+                sendResponse({ err: err })
               } else {
                 let userData = {}
                 userData.user = user
                 userData.password = password
                 userData.uid = uid
-                ChromeStorage.setData('cmapCloudUserData', {userData: userData}, ChromeStorage.sync, (err) => {
+                ChromeStorage.setData('cmapCloudUserData', { userData: userData }, ChromeStorage.sync, (err) => {
                   if (err) {
-                    sendResponse({err: err})
+                    sendResponse({ err: err })
                   } else {
-                    sendResponse({userData: userData})
+                    sendResponse({ userData: userData })
                   }
                 })
               }
@@ -32,9 +32,9 @@ class CmapCloudBackgroundManager {
         } else if (request.cmd === 'getUserData') {
           ChromeStorage.getData('cmapCloudUserData', ChromeStorage.sync, (err, userData) => {
             if (err) {
-              sendResponse({err: err})
+              sendResponse({ err: err })
             } else {
-              sendResponse({data: userData})
+              sendResponse({ data: userData })
             }
           })
         } else if (request.cmd === 'getRootFolderInfo') {
@@ -42,10 +42,10 @@ class CmapCloudBackgroundManager {
             let uid = request.data.uid
             this.getRootFolderInfo(uid, (err, folderInfo) => {
               if (err) {
-                sendResponse({err: err})
+                sendResponse({ err: err })
               } else {
                 let folderInfoXML = new XMLSerializer().serializeToString(folderInfo)
-                sendResponse({info: folderInfoXML})
+                sendResponse({ info: folderInfoXML })
               }
             })
           }
@@ -57,28 +57,28 @@ class CmapCloudBackgroundManager {
   getUid (user, password, callback) {
     // Open preferences page
     let settings = {
-      'url': 'https://cmapcloud.ihmc.us/j_spring_security_check',
-      'method': 'POST',
-      'timeout': 0,
-      'headers': {
-        'Connection': 'keep-aliv',
+      url: 'https://cmapcloud.ihmc.us/j_spring_security_check',
+      method: 'POST',
+      timeout: 0,
+      headers: {
+        Connection: 'keep-aliv',
         'Cache-Control': 'max-age=0',
         'Upgrade-Insecure-Requests': '1',
-        'Origin': 'https://cmapcloud.ihmc.us',
+        Origin: 'https://cmapcloud.ihmc.us',
         'Content-Type': 'application/x-www-form-urlencoded',
         'User-Agent': 'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
         'Sec-Fetch-Site': 'same-origin',
         'Sec-Fetch-Mode': 'navigate',
         'Sec-Fetch-User': '?1',
         'Sec-Fetch-Dest': 'document',
-        'Referer': 'https://cmapcloud.ihmc.us/login.html',
+        Referer: 'https://cmapcloud.ihmc.us/login.html',
         'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8'
       },
-      'data': {
-        'j_username': user,
-        'j_password': password,
-        'Submit': ''
+      data: {
+        j_username: user,
+        j_password: password,
+        Submit: ''
       }
     }
 
@@ -122,4 +122,4 @@ class CmapCloudBackgroundManager {
   }
 }
 
-module.exports = CmapCloudBackgroundManager
+export default CmapCloudBackgroundManager

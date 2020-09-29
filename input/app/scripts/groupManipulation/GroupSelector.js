@@ -14,6 +14,7 @@ import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisCl
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BuiltIn or ApplicationBased or NOT(Codebook), LINE)
 import Config from '../Config'
+import swal from 'sweetalert2'
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
 
@@ -24,6 +25,9 @@ class GroupSelector {
     this.currentGroup = null
     this.user = {}
     this.events = {}
+    // PVSCL:IFCOND(TopicBased,LINE)
+    this.groupFullName = null
+    // PVSCL:ENDCOND
   }
 
   init (callback) {
@@ -181,13 +185,13 @@ class GroupSelector {
                 } else {
                   // TODO i18n
                   let title
-                  // PVSCL:IFCOND(TopicBased)
+                  // PVSCL:IFCOND(TopicBased, LINE)
                   title = 'What is the topic or the focus question of the concept map?'
                   // PVSCL:ELSECOND
                   title = 'You do not have a group to start annotating, please provide a group name to get started.'
                   // PVSCL:ENDCOND
                   let inputPlaceholder
-                  // PVSCL:IFCOND(TopicBased)
+                  // PVSCL:IFCOND(TopicBased, LINE)
                   inputPlaceholder = 'Type here the topic of the map...'
                   // PVSCL:ELSECOND
                   inputPlaceholder = 'Type here the name of the group...'
@@ -204,8 +208,16 @@ class GroupSelector {
                           const swal = require('sweetalert2')
                           swal.showValidationMessage('Name cannot be empty.')
                         } else if (groupName.length > 25) {
+                          // PVSCL:IFCOND(TopicBased, LINE)
+                          this.groupFullName = groupName
+                          console.log(groupName)
+                          groupName = groupName.substring(0, 24)
+                          console.log(groupName)
+                          return groupName
+                          // PVSCL:ELSECOND
                           const swal = require('sweetalert2')
                           swal.showValidationMessage('The name cannot be higher than 25 characters.')
+                          // PVSCL:ENDCOND
                         } else {
                           return groupName
                         }
@@ -221,7 +233,7 @@ class GroupSelector {
                           description: 'A group created using annotation tool ' + chrome.runtime.getManifest().name
                         }, (err, group) => {
                           if (err) {
-                            Alerts.errorAlert({text: 'We are unable to create the group. Please check if you are logged in the annotation server.'})
+                            Alerts.errorAlert({ text: 'We are unable to create the group. Please check if you are logged in the annotation server.' })
                           } else {
                             // PVSCL:IFCOND(Hypothesis, LINE)
                             // Modify group URL in hypothesis
@@ -539,11 +551,19 @@ class GroupSelector {
       preConfirm: (groupName) => {
         if (_.isString(groupName)) {
           if (groupName.length <= 0) {
-            const swal = require('sweetalert2').default
+            // import swal from 'sweetalert2'
             swal.showValidationMessage('Name cannot be empty.')
           } else if (groupName.length > 25) {
-            const swal = require('sweetalert2').default
+            // PVSCL:IFCOND(TopicBased, LINE)
+            console.log(groupName)
+            this.groupFullName = groupName
+            groupName = groupName.substring(0, 24)
+            console.log(groupName)
+            return groupName
+            // PVSCL:ELSECOND
+            // const swal = require('sweetalert2').default
             swal.showValidationMessage('The codebook name cannot be higher than 25 characters.')
+            // PVSCL:ENDCOND
           } else {
             return groupName
           }

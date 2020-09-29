@@ -1,9 +1,9 @@
-const Body = require('./Body')
+import Body from '../Body'
 
 class Linking extends Body {
-  constructor ({purpose = Linking.purpose, value}) {
+  constructor ({ purpose = Linking.purpose, value }) {
     super(purpose)
-    this.value = {from: value.from, to: value.to, linkingWord: value.linkingWord/* PVSCL:IFCOND(EvidenceAnnotations) */, addToCXL: value.addToCXL /* PVSCL:ENDCOND */}
+    this.value = { from: value.from, to: value.to, linkingWord: value.linkingWord/* PVSCL:IFCOND(EvidenceAnnotations) */, addToCXL: value.addToCXL /* PVSCL:ENDCOND */ }
   }
 
   populate (value) {
@@ -18,7 +18,7 @@ class Linking extends Body {
     let from = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(obj.from)
     let to = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(obj.to)
     let linkingWord = obj.linkingWord
-    return new Linking({from, to, linkingWord})
+    return new Linking({ from, to, linkingWord })
   }
 
   tooltip () {
@@ -32,4 +32,4 @@ class Linking extends Body {
 
 Linking.purpose = 'linking'
 
-module.exports = Linking
+export default Linking

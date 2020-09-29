@@ -1,6 +1,6 @@
-const FileSaver = require('file-saver')
-const JSZip = require('jszip')
-const LanguageUtils = require('../../utils/LanguageUtils')
+import FileSaver from 'file-saver'
+import JSZip from 'jszip'
+import LanguageUtils from '../../utils/LanguageUtils'
 
 class ExportCXLArchiveFile {
   static export (xmlDoc, urlFiles) {
@@ -17,7 +17,7 @@ class ExportCXLArchiveFile {
       zip.file(urlFile.name + '.url', urlFile.content)
     }
     // zip.file('Hello.txt', 'Hello World\n')
-    zip.generateAsync({type: 'blob'}).then(function (zipFile) {
+    zip.generateAsync({ type: 'blob' }).then(function (zipFile) {
       // see FileSaver.js
       FileSaver.saveAs(zipFile, LanguageUtils.camelize(window.abwa.groupSelector.currentGroup.name) + '.zip')
     })
@@ -27,4 +27,4 @@ class ExportCXLArchiveFile {
   }
 }
 
-module.exports = ExportCXLArchiveFile
+export default ExportCXLArchiveFile

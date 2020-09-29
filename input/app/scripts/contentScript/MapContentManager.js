@@ -1,15 +1,15 @@
 // PVSCL:IFCOND(CodebookUpdate, LINE)
-const Theme = require('../codebook/model/Theme')
+import Theme from '../codebook/model/Theme'
 // PVSCL:ENDCOND
-const LanguageUtils = require('../utils/LanguageUtils')
-const _ = require('lodash')
-const Events = require('../Events')
+import LanguageUtils from '../utils/LanguageUtils'
+import _ from 'lodash'
+import Events from '../Events'
 // PVSCL:IFCOND(Linking, LINE)
-const LinkingManagementForm = require('../annotationManagement/purposes/LinkingManagementForm')
-const Alerts = require('../utils/Alerts')
+import LinkingManagementForm from '../annotationManagement/purposes/linking/LinkingManagementForm'
+import Alerts from '../utils/Alerts'
 // PVSCL:ENDCOND
 
-class Concept {
+export class Concept {
   constructor (theme = null, evidenceAnnotations = []) {
     // code
     this.theme = theme
@@ -18,7 +18,7 @@ class Concept {
 }
 // PVSCL:IFCOND(Linking, LINE)
 
-class Relationship {
+export class Relationship {
   constructor (id = null, fromConcept = null, toConcept = null, linkingWord = '', annotations = []) {
     this.id = id
     this.fromConcept = fromConcept
@@ -29,7 +29,7 @@ class Relationship {
 }
 // PVSCL:ENDCOND
 
-class MapContentManager {
+export class MapContentManager {
   constructor () {
     this.concepts = {}
     // PVSCL:IFCOND(Linking, LINE)
@@ -67,46 +67,46 @@ class MapContentManager {
   // EVENTS
   // PVSCL:IFCOND(CodebookUpdate,LINE)
   initThemeCreatedEvent () {
-    this.events.themeCreatedEvent = {element: document, event: Events.themeCreated, handler: this.themeCreatedEventHandler()}
+    this.events.themeCreatedEvent = { element: document, event: Events.themeCreated, handler: this.themeCreatedEventHandler() }
     this.events.themeCreatedEvent.element.addEventListener(this.events.themeCreatedEvent.event, this.events.themeCreatedEvent.handler, false)
   }
 
   initThemeUpdatedEvent () {
-    this.events.themeUpdatedEvent = {element: document, event: Events.themeUpdated, handler: this.themeUpdatedEventHandler()}
+    this.events.themeUpdatedEvent = { element: document, event: Events.themeUpdated, handler: this.themeUpdatedEventHandler() }
     this.events.themeUpdatedEvent.element.addEventListener(this.events.themeUpdatedEvent.event, this.events.themeUpdatedEvent.handler, false)
   }
 
   initThemeRemovedEvent () {
-    this.events.themeRemovedEvent = {element: document, event: Events.themeRemoved, handler: this.themeRemovedEventHandler()}
+    this.events.themeRemovedEvent = { element: document, event: Events.themeRemoved, handler: this.themeRemovedEventHandler() }
     this.events.themeRemovedEvent.element.addEventListener(this.events.themeRemovedEvent.event, this.events.themeRemovedEvent.handler, false)
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Linking,LINE)
 
   initLinkAnnotationCreatedEvent () {
-    this.events.linkAnnotationCreatedEvent = {element: document, event: Events.linkAnnotationCreated, handler: this.linkAnnotationCreatedEventHandler()}
+    this.events.linkAnnotationCreatedEvent = { element: document, event: Events.linkAnnotationCreated, handler: this.linkAnnotationCreatedEventHandler() }
     this.events.linkAnnotationCreatedEvent.element.addEventListener(this.events.linkAnnotationCreatedEvent.event, this.events.linkAnnotationCreatedEvent.handler, false)
   }
 
   initLinkAnnotationDeletedEvent () {
-    this.events.linkAnnotationDeletedEvent = {element: document, event: Events.linkAnnotationDeleted, handler: this.linkAnnotationDeletedEventHandler()}
+    this.events.linkAnnotationDeletedEvent = { element: document, event: Events.linkAnnotationDeleted, handler: this.linkAnnotationDeletedEventHandler() }
     this.events.linkAnnotationDeletedEvent.element.addEventListener(this.events.linkAnnotationDeletedEvent.event, this.events.linkAnnotationDeletedEvent.handler, false)
   }
 
   initLinkAnnotationUpdatedEvent () {
-    this.events.linkAnnotationUpdatedEvent = {element: document, event: Events.linkAnnotationUpdated, handler: this.linkAnnotationUpdatedEventHandler()}
+    this.events.linkAnnotationUpdatedEvent = { element: document, event: Events.linkAnnotationUpdated, handler: this.linkAnnotationUpdatedEventHandler() }
     this.events.linkAnnotationUpdatedEvent.element.addEventListener(this.events.linkAnnotationUpdatedEvent.event, this.events.linkAnnotationUpdatedEvent.handler, false)
   }
   // PVSCL:ENDCOND
 
   // PVSCL:IFCOND(EvidenceAnnotations,LINE)
   initEvidenceAnnotationRemovedEvent () {
-    this.events.evidenceAnnotationRemovedEvent = {element: document, event: Events.evidenceAnnotationRemoved, handler: this.evidenceAnnotationRemovedEventHandler()}
+    this.events.evidenceAnnotationRemovedEvent = { element: document, event: Events.evidenceAnnotationRemoved, handler: this.evidenceAnnotationRemovedEventHandler() }
     this.events.evidenceAnnotationRemovedEvent.element.addEventListener(this.events.evidenceAnnotationRemovedEvent.event, this.events.evidenceAnnotationRemovedEvent.handler, false)
   }
 
   initEvidenceAnnotationAddedEvent () {
-    this.events.evidenceAnnotationAddedEvent = {element: document, event: Events.evidenceAnnotationAdded, handler: this.evidenceAnnotationAddedEventHandler()}
+    this.events.evidenceAnnotationAddedEvent = { element: document, event: Events.evidenceAnnotationAdded, handler: this.evidenceAnnotationAddedEventHandler() }
     this.events.evidenceAnnotationAddedEvent.element.addEventListener(this.events.evidenceAnnotationAddedEvent.event, this.events.evidenceAnnotationAddedEvent.handler, false)
   }
   // PVSCL:ENDCOND
@@ -128,7 +128,7 @@ class MapContentManager {
         console.debug('Updated annotations for assignment')
         // PVSCL:IFCOND(Linking, LINE)
         // Retrieve current annotatedThemes
-        this.createRelationships((err) => {
+        this.createRelationships(() => {
           LanguageUtils.dispatchCustomEvent(Events.relationshipsLoaded, {})
           console.debug('Updated annotations for assignment')
           // Callback
@@ -151,7 +151,7 @@ class MapContentManager {
       // retrieve theme object
       let theme = Theme.fromAnnotation(event.detail.newThemeAnnotation, window.abwa.codebookManager.codebookReader.codebook)
       let conceptEvidenceAnnotation = _.filter(window.abwa.annotationManagement.annotationReader.groupClassifiyingAnnotations, (annotation) => {
-        return annotation.body[0].value.code.id === theme.id && annotation.body[0].value.addToCXL === true
+        return annotation.body[0].value.id === theme.id
       })
       let concept = new Concept(theme, conceptEvidenceAnnotation)
       this.concepts.push(concept)
@@ -185,7 +185,7 @@ class MapContentManager {
           console.debug('Updated annotations for assignment')
           // PVSCL:IFCOND(Linking, LINE)
           // Retrieve current annotatedThemes
-          this.createRelationships((err) => {
+          this.createRelationships(() => {
             LanguageUtils.dispatchCustomEvent(Events.relationshipsLoaded, {})
             console.debug('Updated annotations for assignment')
           })
@@ -199,13 +199,15 @@ class MapContentManager {
   createConcepts (callback) {
     let conceptsList = []
     let themes = window.abwa.codebookManager.codebookReader.codebook.themes
-    for (let i = 0; i < themes.length; i++) {
-      let theme = themes[i]
-      let conceptEvidenceAnnotation = _.filter(window.abwa.annotationManagement.annotationReader.groupClassifiyingAnnotations, (annotation) => {
-        return annotation.body[0].value.code.id === theme.id && annotation.body[0].value.addToCXL === true
-      })
-      let concept = new Concept(theme, conceptEvidenceAnnotation)
-      conceptsList.push(concept)
+    if (themes) {
+      for (let i = 0; i < themes.length; i++) {
+        let theme = themes[i]
+        let conceptEvidenceAnnotation = _.filter(window.abwa.annotationManagement.annotationReader.groupClassifiyingAnnotations, (annotation) => {
+          return annotation.body[0].value.id === theme.id
+        })
+        let concept = new Concept(theme, conceptEvidenceAnnotation)
+        conceptsList.push(concept)
+      }
     }
     this.concepts = conceptsList
     if (_.isFunction(callback)) {
@@ -255,7 +257,7 @@ class MapContentManager {
     this.getConceptRelationships(concept.id, (conceptRelationships) => {
       console.log(conceptRelationships)
       if (conceptRelationships.length === 0) {
-        Alerts.errorAlert({text: 'You do not have links from the ' + concept.name + ' concept.'})
+        Alerts.errorAlert({ text: 'You do not have links from the ' + concept.name + ' concept.' })
       } else {
         LinkingManagementForm.showLinkingManagementForm(concept, conceptRelationships, () => {
           //
@@ -287,7 +289,7 @@ class MapContentManager {
         let newRelation = new Relationship(linkAnnotation.id, from, to, linkingWord, [])
         newRelation.evidenceAnnotations.push(linkAnnotation)
         this.relationships.push(newRelation)
-        LanguageUtils.dispatchCustomEvent(Events.relationshipAdded, {relation: newRelation})
+        LanguageUtils.dispatchCustomEvent(Events.relationshipAdded, { relation: newRelation })
       }
     }
   }
@@ -298,7 +300,7 @@ class MapContentManager {
       _.remove(this.relationships, (relation) => {
         return relation === removeRelation
       })
-      LanguageUtils.dispatchCustomEvent(Events.relationshipDeleted, {relation: removeRelation})
+      LanguageUtils.dispatchCustomEvent(Events.relationshipDeleted, { relation: removeRelation })
     }
   }
 
@@ -313,7 +315,7 @@ class MapContentManager {
       if (relation) {
         relation.evidenceAnnotations = []
         relation.evidenceAnnotations.push(linkAnnotation)
-        LanguageUtils.dispatchCustomEvent(Events.relationshipUpdated, {relation: relation})
+        LanguageUtils.dispatchCustomEvent(Events.relationshipUpdated, { relation: relation })
       } else {
         // No updated
       }
@@ -321,11 +323,12 @@ class MapContentManager {
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(EvidenceAnnotations,LINE)
+
   evidenceAnnotationAddedEventHandler () {
     return (event) => {
       let annotation = event.detail.annotation
       let foundConcept = _.filter(this.concepts, (concept) => {
-        return concept.theme.id === annotation.body[0].value.code.id
+        return concept.theme.id === annotation.body[0].value.id
       })
       foundConcept[0].evidenceAnnotations.push(annotation)
     }
@@ -335,7 +338,7 @@ class MapContentManager {
     return (event) => {
       let annotation = event.detail.annotation
       let foundConcept = _.filter(this.concepts, (concept) => {
-        return concept.theme.id === annotation.body[0].value.code.id
+        return concept.theme.id === annotation.body[0].value.id
       })
       foundConcept[0].evidenceAnnotations = _.filter(foundConcept.evidenceAnnotations, (evidenceAnnotation) => {
         return evidenceAnnotation.id !== annotation.id
@@ -345,7 +348,4 @@ class MapContentManager {
   // PVSCL:ENDCOND
 }
 
-module.exports = {
-  MapContentManager,
-  Concept/* PVSCL:IFCOND(Linking) */,
-  Relationship/* PVSCL:ENDCOND */}
+

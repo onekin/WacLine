@@ -1,7 +1,7 @@
 import Events from '../../../Events'
 import Alerts from '../../../utils/Alerts'
 import _ from 'lodash'
-import _ from 'jquery'
+import $ from 'jquery'
 import Config from '../../../Config'
 import Theme from '../../model/Theme'
 import Classifying from '../../../annotationManagement/purposes/Classifying'
@@ -82,8 +82,6 @@ class UpdateCodebook {
    */
   static createNewThemeButton () {
     const newThemeButton = document.createElement('button')
-    newThemeButton.innerText = 'Create new theme'
-    let newThemeButton = document.createElement('button')
     newThemeButton.innerText = 'New ' + Config.tags.grouped.group
     newThemeButton.id = 'newThemeButton'
     newThemeButton.className = 'tagButton codingElement'
@@ -131,7 +129,7 @@ class UpdateCodebook {
           }
         },
         callback: () => {
-          LanguageUtils.dispatchCustomEvent(Events.createTheme, {theme: newTheme, target: target})
+          LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme, target: target })
         },
         cancelCallback: () => {
           console.log('new theme canceled')
@@ -152,6 +150,7 @@ class UpdateCodebook {
       return false
     }
   }
+
   /**
    * This function creates a handler to create a new theme when it receives the createTheme event.
    * @return Event
@@ -163,7 +162,7 @@ class UpdateCodebook {
         if (err) {
           Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })
         } else {
-          LanguageUtils.dispatchCustomEvent(Events.themeCreated, {newThemeAnnotation: annotation, target: event.detail.target})
+          LanguageUtils.dispatchCustomEvent(Events.themeCreated, { newThemeAnnotation: annotation, target: event.detail.target })
         }
       })
     }
@@ -195,12 +194,12 @@ class UpdateCodebook {
           }
           // PVSCL:IFCOND(TopicBased, LINE)
           if (theme.isTopic) {
-            themeToUpdate = new Theme({name: themeName, description: themeDescription, isTopic: true, annotationGuide: window.abwa.codebookManager.codebookReader.codebook})
+            themeToUpdate = new Theme({ name: themeName, description: themeDescription, isTopic: true, annotationGuide: window.abwa.codebookManager.codebookReader.codebook })
           } else {
-            themeToUpdate = new Theme({name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook})
+            themeToUpdate = new Theme({ name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook })
           }
           // PVSCL:ELSECOND
-          themeToUpdate = new Theme({name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook})
+          themeToUpdate = new Theme({ name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook })
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(Hierarchy, LINE)
           theme.codes.forEach(code => { code.theme = themeToUpdate })

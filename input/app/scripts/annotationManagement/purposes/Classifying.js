@@ -51,7 +51,7 @@ class Classifying extends Body {
     if (code) {
       tooltip += Config.tags.grouped.group.toString().trim().replace(/^\w/, c => c.toUpperCase()) + ': ' + code.name
     } else {
-      tooltip += 'Deleted ' + Config.tags.grouped.group + ': ' + this.value.code.name
+      tooltip += 'Deleted ' + Config.tags.grouped.group + ': ' + this.value.name
     }
     // PVSCL:ENDCOND
     return tooltip

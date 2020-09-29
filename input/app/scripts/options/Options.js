@@ -86,7 +86,7 @@ class Options {
     // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
     // TODO Restore form from credentials saved in storage
     let cmapCloudButton = document.querySelector('#checkCmapValues')
-    chrome.runtime.sendMessage({scope: 'cmapCloud', cmd: 'getUserData'}, (response) => {
+    chrome.runtime.sendMessage({ scope: 'cmapCloud', cmd: 'getUserData' }, (response) => {
       if (response.data) {
         let data = response.data
         if (data.userData.user && data.userData.password && data.userData.uid) {
@@ -288,7 +288,7 @@ class Options {
     chrome.runtime.sendMessage({
       scope: 'cmapCloud',
       cmd: 'getUserUid',
-      data: {user: user, password: password}
+      data: { user: user, password: password }
     }, (response) => {
       if (response.userData) {
         if (response.userData.uid) {

@@ -81,7 +81,7 @@ class Theme {
     // PVSCL:ENDCOND
     return {
       id: this.id,
-      group: this.annotationGuide.annotationServer.getGroupId(),
+      group: this.annotationGuide.annotationServer.group.id,
       permissions: {
         read: ['group:' + this.annotationGuide.annotationServer.getGroupId()]
       },

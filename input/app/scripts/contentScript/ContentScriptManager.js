@@ -5,7 +5,7 @@ import CodebookManager from '../codebook/CodebookManager'
 import Config from '../Config'
 import AnnotationBasedInitializer from './AnnotationBasedInitializer'
 // PVSCL:IFCOND(CXLExport, LINE)
-import {MapContentManager} from './MapContentManager'
+import { MapContentManager } from './MapContentManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Manual, LINE)
 import Events from '../Events'

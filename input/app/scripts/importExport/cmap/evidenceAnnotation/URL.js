@@ -1,5 +1,5 @@
 class URL {
-  constructor ({elementID, name, annotation}) {
+  constructor ({ elementID, name, annotation }) {
     this.id = ''
     this.parentId = elementID
     this.name = name

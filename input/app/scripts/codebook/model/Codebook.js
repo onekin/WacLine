@@ -83,7 +83,7 @@ class Codebook {
       tags: tags,
       target: [],
       text: jsYaml.dump(textObject),
-      uri: this.annotationServer.group.links.html
+      uri: this.annotationServer.getGroupUrl()
     }
   }
 
@@ -99,7 +99,7 @@ class Codebook {
   }
 
   static fromAnnotation (annotation, callback) {
-    this.setAnnotationServer(annotation.group || null, (annotationServer) => {
+    this.setAnnotationServer(null, (annotationServer) => {
       const annotationGuideOpts = { id: annotation.id, name: annotation.name, annotationServer: annotationServer }
       // PVSCL:IFCOND(GoogleSheetProvider or MoodleProvider, LINE)
       // Configuration for gsheet provider or moodle provider is saved in text attribute
@@ -243,8 +243,8 @@ class Codebook {
   // PVSCL:IFCOND(TopicBased, LINE)
 
   static fromTopic (topicName) {
-    let annotationGuide = new Codebook({name: topicName + 'concept map'})
-    let theme = new Theme({name: topicName, description: 'Topic of the concept map', isTopic: true, annotationGuide})
+    let annotationGuide = new Codebook({ name: topicName + 'concept map' })
+    let theme = new Theme({ name: topicName, description: 'Topic of the concept map', isTopic: true, annotationGuide })
     annotationGuide.themes.push(theme)
     return annotationGuide
   }
@@ -324,16 +324,17 @@ class Codebook {
   // PVSCL:IFCOND(CXLImport, LINE)
 
   static fromCXLFile (conceptList, name) {
-    let annotationGuide = new Codebook({name: name})
+    let annotationGuide = new Codebook({ name: name })
     for (let i = 0; i < conceptList.childNodes.length; i++) {
       let concept = conceptList.childNodes[i]
       let conceptName = concept.getAttribute('label')
-      let theme = new Theme({name: conceptName, annotationGuide})
+      let theme = new Theme({ name: conceptName, annotationGuide })
       annotationGuide.themes.push(theme)
     }
     return annotationGuide
   }
   // PVSCL:ENDCOND
+
   getCodeOrThemeFromId (id) {
     let themeOrCodeToReturn = null
     const theme = _.find(this.themes, (theme) => {

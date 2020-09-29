@@ -1,8 +1,8 @@
-const ExportCXLArchiveFile = require('./ExportCXLArchiveFile')
-const ExportCmapCloud = require('./cmapCloud/ExportCmapCloud')
-const HypothesisURL = require('./evidenceAnnotation/HypothesisURL')
-const ToolURL = require('./evidenceAnnotation/ToolURL')
-const LanguageUtils = require('../../utils/LanguageUtils')
+import ExportCXLArchiveFile from './ExportCXLArchiveFile'
+import ExportCmapCloud from './cmapCloud/ExportCmapCloud'
+import HypothesisURL from './evidenceAnnotation/HypothesisURL'
+import ToolURL from './evidenceAnnotation/ToolURL'
+import LanguageUtils from '../../utils/LanguageUtils'
 
 class CXLExporter {
   static exportCXLFile (exportType/* PVSCL:IFCOND(EvidenceAnnotations) */, evidenceAnnotations/* PVSCL:ENDCOND *//* PVSCL:IFCOND(EvidenceAnnotations) */, userData/* PVSCL:ENDCOND */) {
@@ -11,7 +11,7 @@ class CXLExporter {
     // PVSCL:IFCOND(Linking, LINE)
     let relationships = window.abwa.mapContentManager.relationships
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(EvidenceAnnotations)
+    // PVSCL:IFCOND(EvidenceAnnotations, LINE)
     let urlFiles = []
     // PVSCL:ENDCOND
     let xmlDoc = document.implementation.createDocument(null, 'cmap', null)
@@ -139,9 +139,9 @@ class CXLExporter {
           }
           let url
           if (evidenceAnnotations === 'hypothesis') {
-            url = new HypothesisURL({elementID, name, annotation})
+            url = new HypothesisURL({ elementID, name, annotation })
           } else if (evidenceAnnotations === 'tool') {
-            url = new ToolURL({elementID, name, annotation})
+            url = new ToolURL({ elementID, name, annotation })
           }
           urlFiles.push(url)
         }
@@ -180,9 +180,9 @@ class CXLExporter {
             }
             let url
             if (evidenceAnnotations === 'hypothesis') {
-              url = new HypothesisURL({elementID, name, annotation})
+              url = new HypothesisURL({ elementID, name, annotation })
             } else if (evidenceAnnotations === 'tool') {
-              url = new ToolURL({elementID, name, annotation})
+              url = new ToolURL({ elementID, name, annotation })
             }
             urlFiles.push(url)
           }
@@ -270,4 +270,4 @@ class CXLExporter {
   }
 }
 
-module.exports = CXLExporter
+export default CXLExporter

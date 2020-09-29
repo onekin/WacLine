@@ -3,7 +3,7 @@ import _ from 'lodash'
 import LanguageUtils from '../utils/LanguageUtils'
 import Alerts from '../utils/Alerts'
 // PVSCL:IFCOND(Linking, LINE)
-import Linking from './purposes/Linking'
+import Linking from './purposes/linking/Linking'
 // PVSCL:ENDCOND
 
 class DeleteAnnotation {
@@ -90,10 +90,10 @@ class DeleteAnnotation {
                   let linkingsId = _.map(relation.evidenceAnnotations, (annotation) => { return annotation.id })
                   window.abwa.annotationServerManager.client.deleteAnnotations(linkingsId, (err, result) => {
                     if (err) {
-                      Alerts.errorAlert({text: 'Unexpected error when deleting the code.'})
+                      Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
                     } else {
-                      LanguageUtils.dispatchCustomEvent(Events.annotationsDeleted, {annotations: relation.evidenceAnnotations})
-                      LanguageUtils.dispatchCustomEvent(Events.linkAnnotationDeleted, {relation: relation})
+                      LanguageUtils.dispatchCustomEvent(Events.annotationsDeleted, { annotations: relation.evidenceAnnotations })
+                      LanguageUtils.dispatchCustomEvent(Events.linkAnnotationDeleted, { relation: relation })
                     }
                   })
                 },
@@ -107,11 +107,11 @@ class DeleteAnnotation {
                       } else {
                         if (!result.deleted) {
                           // Alert user error happened
-                          Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
+                          Alerts.errorAlert({ text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation') })
                         } else {
                           // Send annotation deleted event
-                          LanguageUtils.dispatchCustomEvent(Events.annotationDeleted, {annotation: annotation})
-                          LanguageUtils.dispatchCustomEvent(Events.linkAnnotationDeleted, {relation: relation})
+                          LanguageUtils.dispatchCustomEvent(Events.annotationDeleted, { annotation: annotation })
+                          LanguageUtils.dispatchCustomEvent(Events.linkAnnotationDeleted, { relation: relation })
                         }
                       }
                     })
@@ -119,8 +119,8 @@ class DeleteAnnotation {
                     // If there is only one annotation, save the relationship in another one without target
                     let target = window.abwa.annotationManagement.annotationCreator.obtainTargetToCreateAnnotation({})
                     annotation.target = target
-                    LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {annotation: annotation})
-                    LanguageUtils.dispatchCustomEvent(Events.linkAnnotationUpdated, {annotation: annotation})
+                    LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, { annotation: annotation })
+                    LanguageUtils.dispatchCustomEvent(Events.linkAnnotationUpdated, { annotation: annotation })
                   }
                 }
               })
@@ -134,10 +134,10 @@ class DeleteAnnotation {
                 } else {
                   if (!result.deleted) {
                     // Alert user error happened
-                    Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
+                    Alerts.errorAlert({ text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation') })
                   } else {
                     // Send annotation deleted event
-                    LanguageUtils.dispatchCustomEvent(Events.annotationDeleted, {annotation: annotation})
+                    LanguageUtils.dispatchCustomEvent(Events.annotationDeleted, { annotation: annotation })
                   }
                 }
               })
@@ -152,10 +152,10 @@ class DeleteAnnotation {
             } else {
               if (!result.deleted) {
                 // Alert user error happened
-                Alerts.errorAlert({text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation')})
+                Alerts.errorAlert({ text: chrome.i18n.getMessage('errorDeletingHypothesisAnnotation') })
               } else {
                 // Send annotation deleted event
-                LanguageUtils.dispatchCustomEvent(Events.annotationDeleted, {annotation: annotation})
+                LanguageUtils.dispatchCustomEvent(Events.annotationDeleted, { annotation: annotation })
               }
             }
           })

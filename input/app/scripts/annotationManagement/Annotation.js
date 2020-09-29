@@ -13,7 +13,7 @@ import SuggestingLiterature from './purposes/SuggestingLiterature'
 import Assessing from './purposes/Assessing'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Linking, LINE)
-import Linking from './purposes/Linking'
+import Linking from './purposes/linking/Linking'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis,LINE)
 import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
@@ -132,7 +132,7 @@ class Annotation {
       modified: annotationObject.updated,
       evidence: annotationObject.links
     })
-    if (_.isArray(annotation.body)) {
+    if (_.isArray(annotation.body) && annotationObject.body) {
       annotation.body = annotationObject.body.map((body) => {
         // PVSCL:IFCOND(Classifying, LINE)
         if (body.purpose === Classifying.purpose) {

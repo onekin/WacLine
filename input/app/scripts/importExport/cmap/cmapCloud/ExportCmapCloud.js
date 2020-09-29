@@ -1,8 +1,8 @@
-const CmapCloudClient = require('./CmapCloudClient')
-const _ = require('lodash')
-const Alerts = require('../../../utils/Alerts')
-const LanguageUtils = require('../../../utils/LanguageUtils')
-const FileSaver = require('file-saver')
+import CmapCloudClient from './CmapCloudClient'
+import _ from 'lodash'
+import Alerts from '../../../utils/Alerts'
+import LanguageUtils from '../../../utils/LanguageUtils'
+import FileSaver from 'file-saver'
 
 class ExportCmapCloud {
   static export (xmlDoc, urlFiles, userData) {
@@ -48,7 +48,7 @@ class ExportCmapCloud {
             type: 'text/plain;charset=utf-8'
           })
           FileSaver.saveAs(blob, LanguageUtils.camelize(folderName) + '.cxl')
-          Alerts.infoAlert({text: 'You have available your resource in CmapCloud in ' + folderName + ' folder.\n Please move the downloaded map to the corresponding CmapCloud folder.', title: 'Completed'})
+          Alerts.infoAlert({ text: 'You have available your resource in CmapCloud in ' + folderName + ' folder.\n Please move the downloaded map to the corresponding CmapCloud folder.', title: 'Completed' })
           // })
         }, reason => {
         })
@@ -142,4 +142,4 @@ class ExportCmapCloud {
   }
 }
 
-module.exports = ExportCmapCloud
+export default ExportCmapCloud

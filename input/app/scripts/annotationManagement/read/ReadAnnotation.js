@@ -3,6 +3,7 @@ import DOMTextUtils from '../../utils/DOMTextUtils'
 import LanguageUtils from '../../utils/LanguageUtils'
 import Events from '../../Events'
 import _ from 'lodash'
+// import ColorUtils from '../../utils/ColorUtils'
 // PVSCL:IFCOND(UserFilter, LINE)
 import UserFilter from './UserFilter'
 // PVSCL:ENDCOND
@@ -18,11 +19,11 @@ import Alerts from '../../utils/Alerts'
 // PVSCL:IFCOND(Remote, LINE)
 import HypothesisClientManager from '../../annotationServer/hypothesis/HypothesisClientManager'
 import Neo4JClientManager from '../../annotationServer/neo4j/Neo4JClientManager'
-const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 5
-// PVSCL:ENDCOND
 // PVSCL:IFCOND(CXLExport, LINE)
-import Linking from '../../annotationManagement/purposes/Linking'
+import Linking from '../purposes/linking/Linking'
 import Classifying from '../../annotationManagement/purposes/Classifying'
+// PVSCL:ENDCOND
+const ANNOTATIONS_UPDATE_INTERVAL_IN_SECONDS = 5
 // PVSCL:ENDCOND
 const ANNOTATION_OBSERVER_INTERVAL_IN_SECONDS = 3
 require('jquery-contextmenu/dist/jquery.contextMenu')
@@ -202,7 +203,7 @@ class ReadAnnotation {
   }
 
   initAnnotationsDeletedEventListener (callback) {
-    this.events.annotationsDeletedEvent = {element: document, event: Events.annotationsDeleted, handler: this.deletedAnnotationsHandler()}
+    this.events.annotationsDeletedEvent = { element: document, event: Events.annotationsDeleted, handler: this.deletedAnnotationsHandler() }
     this.events.annotationsDeletedEvent.element.addEventListener(this.events.annotationsDeletedEvent.event, this.events.annotationsDeletedEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -260,11 +261,11 @@ class ReadAnnotation {
         this.unHighlightAnnotation(annotation)
       }
       // Dispatch annotations updated event
-      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, {annotations: this.allAnnotations})
+      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, { annotations: this.allAnnotations })
       // PVSCL:IFCOND(UserFilter, LINE)
       // Retrieve current annotations
       this.currentAnnotations = this.retrieveCurrentAnnotations()
-      LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, {currentAnnotations: this.currentAnnotations})
+      LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, { currentAnnotations: this.currentAnnotations })
       // PVSCL:ENDCOND
     }
   }
@@ -403,16 +404,16 @@ class ReadAnnotation {
         if (codeOrTheme) {
           color = codeOrTheme.color
         } else {
-          const ColorUtils = require('../../utils/ColorUtils')
+          const ColorUtils = require('../../utils/ColorUtils').default
           color = ColorUtils.getDefaultColor()
         }
       } else {
-        const ColorUtils = require('../../utils/ColorUtils')
+        const ColorUtils = require('../../utils/ColorUtils').default
         color = ColorUtils.getDefaultColor()
       }
       // PVSCL:ELSECOND
       // Annotation color used is default in grey
-      const ColorUtils = require('../../utils/ColorUtils')
+      const ColorUtils = require('../../utils/ColorUtils').default
       color = ColorUtils.getDefaultColor()
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Linking, LINE)
@@ -420,7 +421,7 @@ class ReadAnnotation {
       // Get annotated code id
       let bodyWithLinkingPurpose = annotation.getBodyForPurpose('linking')
       if (bodyWithLinkingPurpose) {
-        const ColorUtils = require('../../utils/ColorUtils')
+        const ColorUtils = require('../../utils/ColorUtils').default
         color = ColorUtils.getDefaultColor()
       }
       // PVSCL:ENDCOND

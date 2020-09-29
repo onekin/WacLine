@@ -1,6 +1,6 @@
-const Codebook = require('../../../model/Codebook')
-const Alerts = require('../../../../utils/Alerts')
-const _ = require('lodash')
+import _ from 'lodash'
+import Alerts from '../../../../utils/Alerts'
+import Codebook from '../../../model/Codebook'
 
 class TopicBased {
   static createDefaultAnnotations (topic, callback) {
@@ -11,7 +11,7 @@ class TopicBased {
       let annotations = annotationGuide.toAnnotations()
       window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, newAnnotations) => {
         if (err) {
-          Alerts.errorAlert({text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.'}) // TODO i18n
+          Alerts.errorAlert({ text: 'Unable to create required configuration for Dynamic highlighter. Please, try it again.' }) // TODO i18n
         } else {
           // Open the sidebar, to notify user that the annotator is correctly created
           window.abwa.sidebar.openSidebar()
@@ -24,4 +24,4 @@ class TopicBased {
   }
 }
 
-module.exports = TopicBased
+export default TopicBased
