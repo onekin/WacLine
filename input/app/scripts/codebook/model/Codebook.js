@@ -83,7 +83,7 @@ class Codebook {
       tags: tags,
       target: [],
       text: jsYaml.dump(textObject),
-      uri: this.annotationServer.group.links.html
+      uri: this.annotationServer.getGroupUrl()
     }
   }
 
