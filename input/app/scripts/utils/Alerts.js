@@ -123,6 +123,21 @@ class Alerts {
     }
   }
 
+  static simpleSuccessAlert ({ text = 'Saved!', callback }) {
+    Alerts.tryToLoadSwal()
+    if (_.isNull(swal)) {
+      if (_.isFunction(callback)) {
+        callback(new Error('Unable to load swal'))
+      }
+    } else {
+      swal.fire(text, '', 'success').then(() => {
+        if (_.isFunction(callback)) {
+          callback()
+        }
+      })
+    }
+  }
+
   static temporalAlert ({ text = 'It is done', title = 'Finished', type = Alerts.alertType.info, timer = 1500, position = 'top-end', callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
@@ -227,6 +242,50 @@ class Alerts {
         if (result.value) {
           if (_.isFunction(callback)) {
             callback(null, result.value)
+          }
+        } else {
+          if (_.isFunction(cancelCallback)) {
+            cancelCallback(null)
+          }
+        }
+      })
+    }
+  }
+
+  static threeOptionsAlert ({ title = 'Input', html = '', preConfirm, position = Alerts.position.center, onBeforeOpen, showDenyButton = true, showCancelButton = true, confirmButtonText = 'Confirm', confirmButtonColor = '#4BB543', denyButtonText = 'Deny', denyButtonColor = '#3085D6', cancelButtonText = 'Cancel', allowOutsideClick = true, allowEscapeKey = true, callback, denyCallback, cancelCallback, customClass }) {
+    Alerts.tryToLoadSwal()
+    if (_.isNull(swal)) {
+      if (_.isFunction(callback)) {
+        callback(new Error('Unable to load swal'))
+      }
+    } else {
+      swal.fire({
+        title: title,
+        html: html,
+        focusConfirm: false,
+        preConfirm: preConfirm,
+        position: position,
+        onBeforeOpen: onBeforeOpen,
+        allowOutsideClick,
+        allowEscapeKey,
+        customClass: customClass,
+        showDenyButton: showDenyButton,
+        showCancelButton: showCancelButton,
+        confirmButtonText: confirmButtonText,
+        confirmButtonColor: confirmButtonColor,
+        denyButtonText: denyButtonText,
+        denyButtonColor: denyButtonColor,
+        cancelButtonText: cancelButtonText
+
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          if (_.isFunction(callback)) {
+            callback(null, result.value)
+          }
+        } else if (result.isDenied) {
+          if (_.isFunction(callback)) {
+            denyCallback(null, result.value)
           }
         } else {
           if (_.isFunction(cancelCallback)) {

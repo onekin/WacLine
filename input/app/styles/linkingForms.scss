@@ -32,7 +32,7 @@
 }
 
 .large-swal {
-  width:800px !important;
+  width:850px !important;
 }
 
 .dltRelationBtn {
@@ -47,14 +47,14 @@
   float: right;
 }
 
-#lastRelationshinpButton {
-  width: 29px;
-  cursor: pointer;
-  border: none;
-  -webkit-appearance: none !important;
+.divRow {
+  text-align:center;
 }
 
-#lastRelationshinpButton:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
+.rowElement {
+  display:inline;
+}
+
+.linkingConceptInput {
+  width: 200px;
 }

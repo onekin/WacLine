@@ -1,6 +1,5 @@
 #!/bin/bash
-cd ./output/$1
+cd ./output/ConceptAndGo
 pwd
 chmod +x dependencies.sh
 ./dependencies.sh
-
