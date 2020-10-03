@@ -1,25 +1,10 @@
 @import "./variables";
 
-.editRelation3Btn {
-  background-image: url($chromeExtensionMainURL + '/images/editBtn.png'); /* 16px x 16px chrome.extension.getURL('/images/generator.png')*/
+.large-swal {
+  width:875px !important;
 }
 
-.linkFormSpan {
-  width: 160px;
-  display: inline-block;
-}
-
-.linkWordSpan {
-  width: 110px;
-  display: inline-block;
-}
-
-.relationDiv {
-  text-align: left;
-  font-size: 14px;
-  border-style: solid;
-  border-color: black;
-}
+/* Linking management form header */
 
 .relationDivHeader {
   text-align: left;
@@ -31,21 +16,41 @@
   text-decoration: underline;
 }
 
-.large-swal {
-  width:850px !important;
+/* Linking management form rows css */
+
+.relationDiv {
+  text-align: left;
+  font-size: 14px;
+  /* border-style: solid;
+  border-color: black; */
 }
 
-.dltRelationBtn {
-  float: right;
+.relationFromPartSpan {
+  width: 200px;
+  display: inline-block;
 }
 
-.editRelationBtn {
-  float: right;
+.relationLinkingWordSpan {
+  width: 110px;
+  display: inline-block;
+  margin-left: 10px;
 }
 
-.swapRelationBtn {
-  float: right;
+.relationToSpan {
+  width: 200px;
+  display: inline-block;
 }
+
+/* Form buttons css */
+
+.relationFormBtn {
+  float: right;
+  margin-right: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+/* Relationship creation form css */
 
 .divRow {
   text-align:center;

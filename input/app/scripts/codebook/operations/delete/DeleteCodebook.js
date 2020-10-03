@@ -1,3 +1,4 @@
+import Config from '../../../Config'
 import Events from '../../../Events'
 import Alerts from '../../../utils/Alerts'
 import LanguageUtils from '../../../utils/LanguageUtils'
@@ -33,7 +34,7 @@ class DeleteCodebook {
       const user = event.detail.user
       Alerts.confirmAlert({
         title: 'Deleting annotation group ' + codebook.name,
-        text: 'Are you sure that you want to delete this group? Codebook and all the annotations done in all the documents will be erased.',
+        text: 'Are you sure that you want to delete this group? ' + Config.codebook + ' and all the annotations done in all the documents will be erased.',
         alertType: Alerts.alertType.warning,
         callback: () => {
           window.abwa.annotationServerManager.client.removeAMemberFromAGroup({ id: codebook.id, user: user }, (err) => {

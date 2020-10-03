@@ -230,7 +230,7 @@ class UpdateCodebook {
       // Ask user is sure to remove
       Alerts.confirmAlert({
         title: 'Removing ' + Config.tags.grouped.group + theme.name,
-        text: 'Are you sure that you want to remove the ' + Config.tags.grouped.group + theme.name + '. All dependant codes will be deleted too. You cannot undo this operation.',
+        text: 'Are you sure that you want to remove the ' + Config.tags.grouped.group + ' ' + theme.name + '. All dependant codes will be deleted too. You cannot undo this operation.',
         alertType: Alerts.alertType.warning,
         callback: () => {
           let annotationsToDelete = [theme.id]

@@ -3,7 +3,7 @@ import Body from '../Body'
 class Linking extends Body {
   constructor ({ purpose = Linking.purpose, value }) {
     super(purpose)
-    this.value = { from: value.from, to: value.to, linkingWord: value.linkingWord/* PVSCL:IFCOND(EvidenceAnnotations) */, addToCXL: value.addToCXL /* PVSCL:ENDCOND */ }
+    this.value = value
   }
 
   populate (value) {

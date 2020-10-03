@@ -41,6 +41,7 @@ class ReadCodebook {
     // PVSCL:IFCOND(Linking AND NOT(Hierarchy) ,LINE)
     this.initRelationshipsLoadedEvent()
     this.initRelationshipAddedEvent()
+    this.initRelationshipDeletedEvent()
     // PVSCL:ENDCOND
     this.loadCodebook(() => {
       // Add event listener for codebook read event
@@ -880,7 +881,7 @@ class ReadCodebook {
   // PVSCL:IFCOND(Linking AND NOT(Hierarchy), LINE)
 
   relationshipsLoadedEventHandler () {
-    return (event) => {
+    return () => {
       let relations = window.abwa.mapContentManager.relationships
       for (let i = 0; i < relations.length; i++) {
         let relation = relations[i]
@@ -890,7 +891,7 @@ class ReadCodebook {
         if (themeButton[0].title.includes('Relationships:')) {
           themeButton[0].title += '\n' + relation.linkingWord + ' ' + relation.toConcept.name
         } else {
-          themeButton[0].title = '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
+          themeButton[0].title += '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
         }
       }
     }
@@ -932,9 +933,10 @@ class ReadCodebook {
       let themeButton = document.querySelectorAll('.tagButton[data-code-id="' + relation.fromConcept.id + '"]')
       // Add relation to tooltip
       if (themeButton[0].title.includes('Relationships:')) {
-        themeButton[0].title += '\n' + relation.linkingWord + ' ' + relation.toConcept.name
-      } else {
-        themeButton[0].title += '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
+        themeButton[0].title = themeButton[0].title.replace('\n' + relation.linkingWord + ' ' + relation.toConcept.name, '')
+      }
+      if (((themeButton[0].title.match(/\n/g)) || []).length === 1) {
+        themeButton[0].title = themeButton[0].title.replace('\nRelationships:', '')
       }
     }
   }

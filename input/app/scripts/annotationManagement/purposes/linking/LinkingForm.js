@@ -13,12 +13,12 @@ class LinkingForm {
    * @returns {Promise<unknown>}
    */
   static showLinkingForm (previousRelationshipData) {
-    return new Promise((resolve, reject) => {
+    return new Promise(() => {
       // Close sidebar if opened
       window.abwa.sidebar.closeSidebar()
       let title = 'Creating new relation'
       // Get body for classifying
-      let showForm = (preConfirmData) => {
+      let showForm = () => {
         // Create form
         let html = LinkingForm.generateLinkingFormHTML()
         let form = LinkingForm.generateLinkingForm(previousRelationshipData)
@@ -75,11 +75,6 @@ class LinkingForm {
       if (from === to) {
         const swal = require('sweetalert2')
         swal.showValidationMessage('You have to make the relation between two different concepts.')
-      } /* PVSCL:IFCOND(TopicBased) */ else if (preConfirmData.toTheme.isTopic) {
-        const swal = require('sweetalert2')
-        swal.showValidationMessage('You cannot select the topic concept as to part of the relation.')
-      } /* PVSCL:ENDCOND */ else {
-        // callback(fromTheme, toTheme, preConfirmData.linkingWord)
       }
     }
     // Callback
@@ -231,6 +226,7 @@ class LinkingForm {
 
     return html
   }
+
 }
 
 export default LinkingForm

@@ -296,11 +296,11 @@ export class MapContentManager {
 
   linkAnnotationDeletedEventHandler () {
     return (event) => {
-      let removeRelation = event.detail.relation
+      let removedRelation = event.detail.relation
       _.remove(this.relationships, (relation) => {
-        return relation === removeRelation
+        return relation === removedRelation
       })
-      LanguageUtils.dispatchCustomEvent(Events.relationshipDeleted, { relation: removeRelation })
+      LanguageUtils.dispatchCustomEvent(Events.relationshipDeleted, { relation: removedRelation })
     }
   }
 

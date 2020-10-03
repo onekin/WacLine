@@ -135,11 +135,6 @@ class CreateAnnotation {
         value.from = detail.from
         value.to = detail.to
         value.linkingWord = detail.linkingWord
-        // PVSCL:IFCOND(EvidenceAnnotations, LINE)
-        if (detail.addToCXL != null) {
-          value.addToCXL = detail.addToCXL
-        }
-        // PVSCL:ENDCOND
         let linkingBody = new Linking({ value })
         body.push(linkingBody.serialize())
       }
