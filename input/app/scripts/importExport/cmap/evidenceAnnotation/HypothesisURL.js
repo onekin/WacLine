@@ -1,4 +1,4 @@
-const URL = require('./URL')
+import URL from './URL'
 
 class HypothesisURL extends URL {
   constructor ({ elementID, name, annotation }) {
@@ -9,4 +9,4 @@ class HypothesisURL extends URL {
   }
 }
 
-module.exports = HypothesisURL
+export default HypothesisURL

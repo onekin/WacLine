@@ -1,5 +1,5 @@
-const URL = require('./URL')
-const Config = require('../../../Config')
+import URL from './URL'
+import Config from '../../../Config'
 
 class ToolURL extends URL {
   constructor ({ elementID, name, annotation }) {
@@ -10,4 +10,4 @@ class ToolURL extends URL {
   }
 }
 
-module.exports = ToolURL
+export default ToolURL

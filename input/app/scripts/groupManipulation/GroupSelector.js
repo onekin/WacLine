@@ -219,6 +219,9 @@ class GroupSelector {
                           swal.showValidationMessage('The name cannot be higher than 25 characters.')
                           // PVSCL:ENDCOND
                         } else {
+                          // PVSCL:IFCOND(TopicBased, LINE)
+                          this.groupFullName = groupName
+                          // PVSCL:ENDCOND
                           return groupName
                         }
                       }
@@ -565,6 +568,9 @@ class GroupSelector {
             swal.showValidationMessage('The codebook name cannot be higher than 25 characters.')
             // PVSCL:ENDCOND
           } else {
+            // PVSCL:IFCOND(TopicBased, LINE)
+            this.groupFullName = groupName
+            // PVSCL:ENDCOND
             return groupName
           }
         }

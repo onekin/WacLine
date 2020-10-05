@@ -42,7 +42,7 @@ class ExportCmapCloud {
             }
           }
           // Add resource-group-list
-          // cmapCloudClient.uploadMap(folderID, map, (data) => {
+          this.referenceURLIntoMap(xmlDoc, urlFiles, folderID)
           let mapString = new XMLSerializer().serializeToString(xmlDoc)
           let blob = new window.Blob([mapString], {
             type: 'text/plain;charset=utf-8'

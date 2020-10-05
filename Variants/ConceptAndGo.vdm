@@ -65,7 +65,7 @@
         <cm:property cm:id="iYJ5jd9UFDPfbLEw8" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
           <cm:constant cm:id="iaDVSD6tSTJfJALfa" cm:type="ps:string">ps:auto</cm:constant>
         </cm:property>
-        <cm:property cm:id="ikeiHS1BoBRAojtNc" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/ipaIptNGXwqXJsHyV">
+        <cm:property cm:id="ikeiHS1BoBRAojtNc" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/ipaIptNGXwqXJsHyV">
           <cm:constant cm:id="i9-EzzPigRMnh1zMI" cm:type="ps:string">Concept&amp;Go</cm:constant>
         </cm:property>
         <cm:property cm:id="isuamMGqWL8x_2Qyb" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
@@ -75,10 +75,10 @@
           <cm:constant cm:id="irRhZv6z79J6e-cc4" cm:type="ps:datetime">2020-02-26T16:56:22.228Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iTyhnHaWtT_OvwEbP" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i0nOl3e7KP1TTb9rK" cm:type="ps:string">Xabi</cm:constant>
+          <cm:constant cm:id="i0nOl3e7KP1TTb9rK" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iAs39e5sQ_NxhlFQv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iN1wnmEQ6UOvnDBYC" cm:type="ps:datetime">2020-05-12T09:25:09.903Z</cm:constant>
+          <cm:constant cm:id="iN1wnmEQ6UOvnDBYC" cm:type="ps:datetime">2020-10-05T10:09:14.754Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iWJuxDiwLkyeNzFxk" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/ikd06TuWH0GM-TRbB">
           <cm:constant cm:id="ioGS5hLGB_iFK8d0Y" cm:type="ps:string">oa</cm:constant>

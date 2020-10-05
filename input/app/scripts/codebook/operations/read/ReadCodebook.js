@@ -73,11 +73,6 @@ class ReadCodebook {
     this.events.relationshipAddedEvent.element.addEventListener(this.events.relationshipAddedEvent.event, this.events.relationshipAddedEvent.handler, false)
   }
 
-  initRelationshipUpdatedEvent () {
-    this.events.relationshipUpdatedEvent = { element: document, event: Events.relationshipUpdated, handler: this.relationshipUpdatedEventHandler() }
-    this.events.relationshipUpdatedEvent.element.addEventListener(this.events.relationshipUpdatedEvent.event, this.events.relationshipUpdatedEvent.handler, false)
-  }
-
   initRelationshipDeletedEvent () {
     this.events.relationshipDeletedEvent = { element: document, event: Events.relationshipDeleted, handler: this.relationshipDeletedEventHandler() }
     this.events.relationshipDeletedEvent.element.addEventListener(this.events.relationshipDeletedEvent.event, this.events.relationshipDeletedEvent.handler, false)
@@ -140,25 +135,6 @@ class ReadCodebook {
     this.initCodebookStructure(() => {
       this.initCodebookContent(callback)
     })
-  }
-
-  initFirstCodebookReadEventHandler (callback, callbackToExecuteAfterRead) {
-    /* this.events.firstCodebookReadEvent = {element: document, event: Events.codebookRead, handler: this.codebookReadEventListener(callbackToExecuteAfterRead)}
-    this.events.firstCodebookReadEvent.element.addEventListener(this.events.firstCodebookReadEvent.event, this.events.firstCodebookReadEvent.handler, false)
-    */ if (_.isFunction(callback)) {
-      callback()
-    }
-  }
-
-  codebookReadEventListener (callback) {
-    return (event) => {
-      // Remove codebook read event listener after first read
-      const eventHandlerToDisable = this.events.firstCodebookReadEvent
-      eventHandlerToDisable.element.removeEventListener(eventHandlerToDisable.event, eventHandlerToDisable.handler)
-      if (_.isFunction(callback)) {
-        callback()
-      }
-    }
   }
 
   /**
@@ -875,6 +851,7 @@ class ReadCodebook {
    */
   codebookCreatedEventHandler () {
     return () => {
+      this.buttonContainer.innerHTML = ''
       this.initCodebookContent()
     }
   }
@@ -907,23 +884,6 @@ class ReadCodebook {
       } else {
         themeButton[0].title += '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
       }
-    }
-  }
-
-  relationshipUpdatedEventHandler () {
-    return (event) => {
-      /* let relation = event.detail.relation
-      for (let i = 0; i < relations.length; i++) {
-        let relation = relations[i]
-        // Get button
-        let themeButton = document.querySelectorAll('.tagButton[data-code-id="' + relation.fromConcept.id + '"]')
-        // Add relation to tooltip
-        if (themeButton[0].title.includes('Relationships:')) {
-          themeButton[0].title += '\n' + relation.linkingWord + ' ' + relation.toConcept.name
-        } else {
-          themeButton[0].title = '\nRelationships:\n' + relation.linkingWord + ' ' + relation.toConcept.name
-        }
-      } */
     }
   }
 
