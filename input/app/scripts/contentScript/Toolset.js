@@ -31,7 +31,7 @@ import AnnotationImporter from '../importExport/AnnotationImporter'
 import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(CXLExport, LINE)
-import CXLExporter from '../importExport/cmap/CXLExporter'
+import { CXLExporter } from '../importExport/cmap/CXLExporter'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(CXLImport, LINE)
 import CXLImporter from '../importExport/cmap/CXLImporter'

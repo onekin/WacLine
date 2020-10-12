@@ -3,13 +3,48 @@ import ExportCmapCloud from './cmapCloud/ExportCmapCloud'
 import HypothesisURL from './evidenceAnnotation/HypothesisURL'
 import ToolURL from './evidenceAnnotation/ToolURL'
 import LanguageUtils from '../../utils/LanguageUtils'
+import _ from 'lodash'
 
-class CXLExporter {
+export class LinkingPhrase {
+  constructor (linkingWord, id) {
+    // code
+    this.linkingWord = linkingWord
+    this.id = id
+    this.fromConcepts = []
+    this.toConcepts = []
+    this.evidenceAnnotations = []
+  }
+}
+
+export class CXLExporter {
+
   static exportCXLFile (exportType/* PVSCL:IFCOND(EvidenceAnnotations) */, evidenceAnnotations/* PVSCL:ENDCOND *//* PVSCL:IFCOND(EvidenceAnnotations) */, userData/* PVSCL:ENDCOND */) {
     // Get annotations from tag manager and content annotator
     let concepts = window.abwa.mapContentManager.concepts
     // PVSCL:IFCOND(Linking, LINE)
     let relationships = window.abwa.mapContentManager.relationships
+    // Prepare linking phrases for doing conections
+    let linkingPhrases = []
+    for (let i = 0; i < relationships.length; i++) {
+      let relation = relationships[i]
+      let linkingPhrase = this.findLinkingPhrase(linkingPhrases, relation)
+      if (linkingPhrase) {
+        if (!linkingPhrase.fromConcepts.includes(relation.fromConcept.id)) {
+          linkingPhrase.fromConcepts.push(relation.fromConcept.id)
+        }
+        if (!linkingPhrase.toConcepts.includes(relation.toConcept.id)) {
+          linkingPhrase.toConcepts.push(relation.toConcept.id)
+        }
+        linkingPhrase.evidenceAnnotations.push(relation.evidenceAnnotations)
+      } else {
+        let linkingPhraseToAdd = new LinkingPhrase(relation.linkingWord, relation.id)
+        linkingPhraseToAdd.fromConcepts.push(relation.fromConcept.id)
+        linkingPhraseToAdd.toConcepts.push(relation.toConcept.id)
+        linkingPhraseToAdd.evidenceAnnotations.push(relation.evidenceAnnotations)
+        linkingPhrases.push(linkingPhraseToAdd)
+      }
+    }
+    console.log(linkingPhrases)
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(EvidenceAnnotations, LINE)
     let urlFiles = []
@@ -151,32 +186,32 @@ class CXLExporter {
 
     // Add linking phrase
     let connectionID = 1
-    for (let i = 0; i < relationships.length; i++) {
+    for (let i = 0; i < linkingPhrases.length; i++) {
       // Linking phrase
-      let relation = relationships[i]
+      let linkingPhrase = linkingPhrases[i]
       let linkingElement = xmlDoc.createElement('linking-phrase')
       let id = document.createAttribute('id')
-      let elementID = relation.id
+      let elementID = linkingPhrase.id
       id.value = elementID
       linkingElement.setAttributeNode(id)
       let label = document.createAttribute('label')
-      label.value = relation.linkingWord
+      label.value = linkingPhrase.linkingWord
       linkingElement.setAttributeNode(label)
       linkingPhraseList.appendChild(linkingElement)
       let linkingAppearance = xmlDoc.createElement('linking-phrase-appearance')
       id = document.createAttribute('id')
-      id.value = relation.id
+      id.value = linkingPhrase.id
       linkingAppearance.setAttributeNode(id)
       linkingAppearanceList.appendChild(linkingAppearance)
-      if (relation.evidenceAnnotations.length > 0) {
-        for (let i = 0; i < relation.evidenceAnnotations.length; i++) {
-          let annotation = relation.evidenceAnnotations[i]
+      if (linkingPhrase.evidenceAnnotations.length > 0) {
+        for (let i = 0; i < linkingPhrase.evidenceAnnotations.length; i++) {
+          let annotation = linkingPhrase.evidenceAnnotations[i]
           if (annotation.target.length > 0) {
             let name
             if (i === 0) {
-              name = LanguageUtils.camelize(relation.fromConcept.name) + '_To_' + LanguageUtils.camelize(relation.toConcept.name)
+              name = LanguageUtils.camelize(linkingPhrase.fromConcept.name) + '_To_' + LanguageUtils.camelize(linkingPhrase.toConcept.name)
             } else {
-              name = LanguageUtils.camelize(relation.fromConcept.name) + '_To_' + LanguageUtils.camelize(relation.toConcept.name + i)
+              name = LanguageUtils.camelize(linkingPhrase.fromConcept.name) + '_To_' + LanguageUtils.camelize(linkingPhrase.toConcept.name + i)
             }
             let url
             if (evidenceAnnotations === 'hypothesis') {
@@ -188,7 +223,9 @@ class CXLExporter {
           }
         }
       }
+      for (let i = 0; i < linkingPhrases.fromConcepts.length; i++) {
 
+      }
       // Connection
       // From
       let connectionElement = xmlDoc.createElement('connection')
@@ -268,6 +305,11 @@ class CXLExporter {
       ExportCmapCloud.export(xmlDoc, urlFiles, userData)
     }
   }
-}
 
-export default CXLExporter
+  static findLinkingPhrase (linkingPhrases, relation) {
+    let foundLinkingPhrase = _.find(linkingPhrases, (linkingPhrase) => {
+      return (linkingPhrase.linkingWord === relation.linkingWord) && (linkingPhrase.fromThemes.includes(relation.fromConcept.id) || linkingPhrase.toThemes.includes(relation.toConcept.id))
+    })
+    return foundLinkingPhrase
+  }
+}
