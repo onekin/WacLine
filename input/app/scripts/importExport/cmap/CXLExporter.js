@@ -35,16 +35,16 @@ export class CXLExporter {
         if (!linkingPhrase.toConcepts.includes(relation.toConcept.id)) {
           linkingPhrase.toConcepts.push(relation.toConcept.id)
         }
-        linkingPhrase.evidenceAnnotations.push(relation.evidenceAnnotations)
+        linkingPhrase.evidenceAnnotations = linkingPhrase.evidenceAnnotations.concat(relation.evidenceAnnotations)
       } else {
         let linkingPhraseToAdd = new LinkingPhrase(relation.linkingWord, relation.id)
         linkingPhraseToAdd.fromConcepts.push(relation.fromConcept.id)
         linkingPhraseToAdd.toConcepts.push(relation.toConcept.id)
-        linkingPhraseToAdd.evidenceAnnotations.push(relation.evidenceAnnotations)
+        linkingPhraseToAdd.evidenceAnnotations = linkingPhraseToAdd.evidenceAnnotations.concat(relation.evidenceAnnotations)
         linkingPhrases.push(linkingPhraseToAdd)
       }
     }
-    console.log(linkingPhrases)
+
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(EvidenceAnnotations, LINE)
     let urlFiles = []
@@ -204,84 +204,90 @@ export class CXLExporter {
       linkingAppearance.setAttributeNode(id)
       linkingAppearanceList.appendChild(linkingAppearance)
       if (linkingPhrase.evidenceAnnotations.length > 0) {
-        for (let i = 0; i < linkingPhrase.evidenceAnnotations.length; i++) {
-          let annotation = linkingPhrase.evidenceAnnotations[i]
-          if (annotation.target.length > 0) {
-            let name
-            if (i === 0) {
-              name = LanguageUtils.camelize(linkingPhrase.fromConcept.name) + '_To_' + LanguageUtils.camelize(linkingPhrase.toConcept.name)
-            } else {
-              name = LanguageUtils.camelize(linkingPhrase.fromConcept.name) + '_To_' + LanguageUtils.camelize(linkingPhrase.toConcept.name + i)
+        for (let j = 0; j < linkingPhrase.evidenceAnnotations.length; j++) {
+          let annotation = linkingPhrase.evidenceAnnotations[j]
+          if (annotation.target) {
+            if (annotation.target.length > 0) {
+              let name
+              let fromName = annotation.tags[0].replace('from:', '')
+              let toName = annotation.tags[2].replace('to:', '')
+              if (i === 0) {
+                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName)
+              } else {
+                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName + i)
+              }
+              let url
+              if (evidenceAnnotations === 'hypothesis') {
+                url = new HypothesisURL({ elementID, name, annotation })
+              } else if (evidenceAnnotations === 'tool') {
+                url = new ToolURL({ elementID, name, annotation })
+              }
+              urlFiles.push(url)
             }
-            let url
-            if (evidenceAnnotations === 'hypothesis') {
-              url = new HypothesisURL({ elementID, name, annotation })
-            } else if (evidenceAnnotations === 'tool') {
-              url = new ToolURL({ elementID, name, annotation })
-            }
-            urlFiles.push(url)
           }
         }
       }
-      for (let i = 0; i < linkingPhrases.fromConcepts.length; i++) {
-
-      }
       // Connection
       // From
-      let connectionElement = xmlDoc.createElement('connection')
-      id = document.createAttribute('id')
-      id.value = connectionID.toString()
-      connectionElement.setAttributeNode(id)
-      let fromID = document.createAttribute('from-id')
-      fromID.value = relation.fromConcept.id
-      connectionElement.setAttributeNode(fromID)
-      let toID = document.createAttribute('to-id')
-      toID.value = relation.id
-      connectionElement.setAttributeNode(toID)
-      connectionList.appendChild(connectionElement)
-      let connectionAppearanceElement = xmlDoc.createElement('connection-appearance')
-      id = document.createAttribute('id')
-      id.value = connectionID.toString()
-      connectionAppearanceElement.setAttributeNode(id)
-      let fromPos = document.createAttribute('from-pos')
-      fromPos.value = 'center'
-      connectionAppearanceElement.setAttributeNode(fromPos)
-      let toPos = document.createAttribute('to-pos')
-      toPos.value = 'center'
-      connectionAppearanceElement.setAttributeNode(toPos)
-      let arrow = document.createAttribute('arrowhead')
-      arrow.value = 'yes'
-      connectionAppearanceElement.setAttributeNode(arrow)
-      connectionAppearanceList.appendChild(connectionAppearanceElement)
-      connectionID++
+      for (let i = 0; i < linkingPhrase.fromConcepts.length; i++) {
+        let fromConceptID = linkingPhrase.fromConcepts[i]
+        let connectionElement = xmlDoc.createElement('connection')
+        id = document.createAttribute('id')
+        id.value = connectionID.toString()
+        connectionElement.setAttributeNode(id)
+        let fromID = document.createAttribute('from-id')
+        fromID.value = fromConceptID
+        connectionElement.setAttributeNode(fromID)
+        let toID = document.createAttribute('to-id')
+        toID.value = linkingPhrase.id
+        connectionElement.setAttributeNode(toID)
+        connectionList.appendChild(connectionElement)
+        let connectionAppearanceElement = xmlDoc.createElement('connection-appearance')
+        id = document.createAttribute('id')
+        id.value = connectionID.toString()
+        connectionAppearanceElement.setAttributeNode(id)
+        let fromPos = document.createAttribute('from-pos')
+        fromPos.value = 'center'
+        connectionAppearanceElement.setAttributeNode(fromPos)
+        let toPos = document.createAttribute('to-pos')
+        toPos.value = 'center'
+        connectionAppearanceElement.setAttributeNode(toPos)
+        let arrow = document.createAttribute('arrowhead')
+        arrow.value = 'yes'
+        connectionAppearanceElement.setAttributeNode(arrow)
+        connectionAppearanceList.appendChild(connectionAppearanceElement)
+        connectionID++
+      }
 
-      // To
-      connectionElement = xmlDoc.createElement('connection')
-      id = document.createAttribute('id')
-      id.value = connectionID.toString()
-      connectionElement.setAttributeNode(id)
-      fromID = document.createAttribute('from-id')
-      fromID.value = relation.id
-      connectionElement.setAttributeNode(fromID)
-      toID = document.createAttribute('to-id')
-      toID.value = relation.toConcept.id
-      connectionElement.setAttributeNode(toID)
-      connectionList.appendChild(connectionElement)
-      connectionAppearanceElement = xmlDoc.createElement('connection-appearance')
-      id = document.createAttribute('id')
-      id.value = connectionID.toString()
-      connectionAppearanceElement.setAttributeNode(id)
-      fromPos = document.createAttribute('from-pos')
-      fromPos.value = 'center'
-      connectionAppearanceElement.setAttributeNode(fromPos)
-      toPos = document.createAttribute('to-pos')
-      toPos.value = 'center'
-      connectionAppearanceElement.setAttributeNode(toPos)
-      arrow = document.createAttribute('arrowhead')
-      arrow.value = 'yes'
-      connectionAppearanceElement.setAttributeNode(arrow)
-      connectionAppearanceList.appendChild(connectionAppearanceElement)
-      connectionID++
+      for (let i = 0; i < linkingPhrase.toConcepts.length; i++) {
+        let toConceptID = linkingPhrase.toConcepts[i]
+        let connectionElement = xmlDoc.createElement('connection')
+        id = document.createAttribute('id')
+        id.value = connectionID.toString()
+        connectionElement.setAttributeNode(id)
+        let fromID = document.createAttribute('from-id')
+        fromID.value = linkingPhrase.id
+        connectionElement.setAttributeNode(fromID)
+        let toID = document.createAttribute('to-id')
+        toID.value = toConceptID
+        connectionElement.setAttributeNode(toID)
+        connectionList.appendChild(connectionElement)
+        let connectionAppearanceElement = xmlDoc.createElement('connection-appearance')
+        id = document.createAttribute('id')
+        id.value = connectionID.toString()
+        connectionAppearanceElement.setAttributeNode(id)
+        let fromPos = document.createAttribute('from-pos')
+        fromPos.value = 'center'
+        connectionAppearanceElement.setAttributeNode(fromPos)
+        let toPos = document.createAttribute('to-pos')
+        toPos.value = 'center'
+        connectionAppearanceElement.setAttributeNode(toPos)
+        let arrow = document.createAttribute('arrowhead')
+        arrow.value = 'yes'
+        connectionAppearanceElement.setAttributeNode(arrow)
+        connectionAppearanceList.appendChild(connectionAppearanceElement)
+        connectionID++
+      }
     }
     // PVSCL:ENDCOND
 
@@ -308,7 +314,7 @@ export class CXLExporter {
 
   static findLinkingPhrase (linkingPhrases, relation) {
     let foundLinkingPhrase = _.find(linkingPhrases, (linkingPhrase) => {
-      return (linkingPhrase.linkingWord === relation.linkingWord) && (linkingPhrase.fromThemes.includes(relation.fromConcept.id) || linkingPhrase.toThemes.includes(relation.toConcept.id))
+      return (linkingPhrase.linkingWord === relation.linkingWord) && (linkingPhrase.fromConcepts.includes(relation.fromConcept.id) || linkingPhrase.toConcepts.includes(relation.toConcept.id))
     })
     return foundLinkingPhrase
   }
