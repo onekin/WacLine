@@ -70,6 +70,11 @@ class ContentScriptManager {
       .then(() => {
         return this.reloadToolset()
       })
+      // PVSCL:IFCOND(MoodleResource, LINE)
+      .then(() => {
+        return this.reloadRolesManager()
+      })
+      // PVSCL:ENDCOND
       .then(() => {
         return this.reloadAnnotationManagement()
       })
@@ -88,10 +93,9 @@ class ContentScriptManager {
       })
       // PVSCL:IFCOND(MoodleResource, LINE)
       .then(() => {
-        return this.reloadRolesManager()
-      }).then(() => {
         return this.reloadMoodleEstimationManager()
-      }).then(() => {
+      })
+      .then(() => {
         return this.reloadPreviousAssignments()
       })
       // PVSCL:ENDCOND
