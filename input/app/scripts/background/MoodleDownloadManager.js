@@ -92,7 +92,7 @@ class MoodleDownloadManager {
             if (err) {
               // Nothing to do
             } else {
-              const autoOpen = result.activated || true // By default it is activated
+              const autoOpen = result ? result.activated : true // By default it is activated
               if (autoOpen) {
                 const localUrl = this.files[downloadItem.id].localPath + '#autoOpen:true'
                 // Check if permission to access files is enabled, otherwise open a new tab with the message.
