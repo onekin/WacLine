@@ -1,7 +1,7 @@
 {
   "name": "web-annotator",
   "private": true,
-  "version": "0.0.1",
+  "version": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appVersion'))",
   "description": "This is a product to conduct web annotation",
   "scripts": {
     "start": "npm run dev:chrome",

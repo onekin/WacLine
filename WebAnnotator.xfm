@@ -65,10 +65,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="icv3bKA3BND-DPoJI" cm:type="ps:datetime">2019-11-07T11:39:58.469Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iv210VYiJEpozoArk" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="izamyJvttk5t9t1_z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-02-25T16:09:58.520Z</cm:constant>
+          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-10-16T12:48:27.075Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipaIptNGXwqXJsHyV" cm:type="ps:string" cm:name="appName">
           <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">Web annotation client</cm:constant>
@@ -99,6 +99,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
 &lt;p&gt;* Chrome identity: &lt;a href=&quot;https://developer.chrome.com/apps/identity&quot;&gt;https://developer.chrome.com/apps/identity&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;* Chrome key in manifest: &lt;a href=&quot;https://developer.chrome.com/extensions/manifest/key&quot;&gt;https://developer.chrome.com/extensions/manifest/key&lt;/a&gt;&lt;/p&gt;</cm:mimedesc>
           </cm:desc>
+        </cm:property>
+        <cm:property cm:id="iLzroTwOrb9YFVy8z" cm:type="ps:string" cm:name="appVersion">
+          <cm:constant cm:id="iM-Qp-9oCEW2c6t6k" cm:type="ps:string">0.0.1</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:desc>
