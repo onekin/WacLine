@@ -23,13 +23,7 @@ class AnnotationManagement {
   }
 
   init (callback) {
-    // PVSCL:IFCOND(MoodleResource, LINE)
-    if (window.abwa.rolesManager.role === RolesManager.roles.producer) {
-      this.annotationCreator.init()
-    }
-    // PVSCL:ELSECOND
     this.annotationCreator.init()
-    // PVSCL:ENDCOND
     this.annotationReader.init((err) => {
       // Navigate to the annotation if initial annotation exist
       if (window.abwa.annotationBasedInitializer.initAnnotation) {
