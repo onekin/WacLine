@@ -1,5 +1,5 @@
 {
-  "name": "web-annotator",
+  "name": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appName'))",
   "private": true,
   "version": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appVersion'))",
   "description": "This is a product to conduct web annotation",

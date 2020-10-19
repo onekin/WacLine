@@ -1,3 +1,7 @@
+param(
+  [switch]$pack = $false
+)
+
 if (Test-Path ./node_modules) {
 	echo "Nothing to do"
 } else {
@@ -10,9 +14,19 @@ if (Test-Path ./node_modules) {
 	}
 }
 if (Get-Command gulp -errorAction SilentlyContinue) {
-	gulp default
+	if ($pack) {
+	    echo "Gulp pack"
+      gulp pack
+    } else {
+      gulp default
+    }
 } else {
 	echo "Install gulp globally"
 	npm install gulp -g
-	gulp default
+	if ($pack) {
+	    echo "Gulp pack"
+      gulp pack
+    } else {
+      gulp default
+    }
 }

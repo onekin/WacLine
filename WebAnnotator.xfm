@@ -68,7 +68,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="izamyJvttk5t9t1_z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-10-16T12:48:27.075Z</cm:constant>
+          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-10-19T10:57:17.001Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipaIptNGXwqXJsHyV" cm:type="ps:string" cm:name="appName">
           <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">Web annotation client</cm:constant>
@@ -102,6 +102,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:property>
         <cm:property cm:id="iLzroTwOrb9YFVy8z" cm:type="ps:string" cm:name="appVersion">
           <cm:constant cm:id="iM-Qp-9oCEW2c6t6k" cm:type="ps:string">0.0.1</cm:constant>
+          <cm:desc>
+            <cm:mimedesc cm:id="iFqYZpq3zOXOZFsyc" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;The version of the product instance that is created. Should follow semantic versioning&amp;nbsp;structure (&lt;a href=&quot;https://semver.org/&quot;&gt;https://semver.org/&lt;/a&gt;):&amp;nbsp;X.Y.Z (x = mayor, Y = minor, Z = patch)&lt;/p&gt;
+&lt;p&gt;For example: 1.1.12&lt;/p&gt;
+&lt;p&gt;&amp;nbsp;&lt;/p&gt;</cm:mimedesc>
+          </cm:desc>
         </cm:property>
       </cm:properties>
       <cm:desc>
