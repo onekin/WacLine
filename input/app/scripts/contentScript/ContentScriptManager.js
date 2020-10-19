@@ -64,17 +64,14 @@ class ContentScriptManager {
   reloadContentByGroup (callback) {
     // TODO Use async await or promises
     this.reloadCodebookManager()
-      /* .then(() => {
-        return this.reloadContentAnnotator()
-      }) */
-      .then(() => {
-        return this.reloadToolset()
-      })
       // PVSCL:IFCOND(MoodleResource, LINE)
       .then(() => {
         return this.reloadRolesManager()
       })
       // PVSCL:ENDCOND
+      .then(() => {
+        return this.reloadToolset()
+      })
       .then(() => {
         return this.reloadAnnotationManagement()
       })
