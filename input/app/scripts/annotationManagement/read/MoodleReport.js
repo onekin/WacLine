@@ -48,8 +48,8 @@ class MoodleReport {
         } else {
           if (this.moodleUpdateNotificationEnabled) {
             Alerts.temporalAlert({
-              text: 'The mark is updated in moodle',
-              title: 'Correctly marked',
+              text: 'Every change is updated in Moodle',
+              title: 'Correctly updated in Moodle',
               type: Alerts.alertType.success,
               toast: true
             })

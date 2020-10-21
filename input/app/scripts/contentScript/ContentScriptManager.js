@@ -64,9 +64,11 @@ class ContentScriptManager {
   reloadContentByGroup (callback) {
     // TODO Use async await or promises
     this.reloadCodebookManager()
-      /* .then(() => {
-        return this.reloadContentAnnotator()
-      }) */
+      // PVSCL:IFCOND(MoodleResource, LINE)
+      .then(() => {
+        return this.reloadRolesManager()
+      })
+      // PVSCL:ENDCOND
       .then(() => {
         return this.reloadToolset()
       })
@@ -88,10 +90,9 @@ class ContentScriptManager {
       })
       // PVSCL:IFCOND(MoodleResource, LINE)
       .then(() => {
-        return this.reloadRolesManager()
-      }).then(() => {
         return this.reloadMoodleEstimationManager()
-      }).then(() => {
+      })
+      .then(() => {
         return this.reloadPreviousAssignments()
       })
       // PVSCL:ENDCOND

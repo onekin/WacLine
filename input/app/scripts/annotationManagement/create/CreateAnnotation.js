@@ -9,6 +9,7 @@ import PDF from '../../target/formats/PDF'
 import $ from 'jquery'
 // PVSCL:IFCOND(Classifying, LINE)
 import Classifying from '../purposes/Classifying'
+import RolesManager from '../../contentScript/RolesManager'
 // PVSCL:ENDCOND
 
 class CreateAnnotation {
@@ -36,6 +37,11 @@ class CreateAnnotation {
         // Annotation is already prepared to send to the server
         annotationToCreate = event.detail.replyingAnnotation
       } else if (event.detail.purpose === 'classifying') {
+        // PVSCL:IFCOND(MoodleResource, LINE)
+        if (window.abwa.rolesManager.role === RolesManager.roles.consumer) {
+          return
+        }
+        // PVSCL:ENDCOND
         let target
         // If selection is child of sidebar, return null
         if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
