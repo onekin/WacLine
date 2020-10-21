@@ -101,7 +101,7 @@ class MoodleBackgroundManager {
             if (err) {
               sendResponse({ activated: false })
             } else {
-              sendResponse(isActivated || { activated: false })
+              sendResponse(isActivated || { activated: true })
             }
           })
         } else if (request.cmd === 'setMoodleUpdateNotification') {

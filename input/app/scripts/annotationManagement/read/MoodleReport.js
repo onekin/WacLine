@@ -247,7 +247,7 @@ class MoodleReport {
   getPreferencesForMoodleReport () {
     // Get preferences for moodle update notification
     chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isMoodleUpdateNotificationActivated' }, (isActivated) => {
-      this.moodleUpdateNotificationEnabled = isActivated.activated || true
+      this.moodleUpdateNotificationEnabled = _.isBoolean(isActivated.activated) ? isActivated.activated : true
     })
   }
 }
