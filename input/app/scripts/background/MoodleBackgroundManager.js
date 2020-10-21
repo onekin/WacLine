@@ -96,6 +96,22 @@ class MoodleBackgroundManager {
               sendResponse({ saved: true })
             }
           })
+        } else if (request.cmd === 'isMoodleUpdateNotificationActivated') {
+          ChromeStorage.getData('moodleUpdatedNotification', ChromeStorage.sync, (err, isActivated) => {
+            if (err) {
+              sendResponse({ activated: false })
+            } else {
+              sendResponse(isActivated || { activated: false })
+            }
+          })
+        } else if (request.cmd === 'setMoodleUpdateNotification') {
+          ChromeStorage.setData('moodleUpdatedNotification', { activated: request.data.isActivated }, ChromeStorage.sync, (err, response) => {
+            if (err) {
+              sendResponse({ err: err, saved: false })
+            } else {
+              sendResponse({ saved: true })
+            }
+          })
         }
       }
     })

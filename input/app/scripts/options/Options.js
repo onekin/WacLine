@@ -111,6 +111,14 @@ class Options {
     document.querySelector('#moodleEndpoint').addEventListener('change', () => {
       this.updateMoodleEndpoint()
     })
+    // PVSCL:IFCOND(MoodleProvider, LINE)
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isMoodleUpdateNotificationActivated' }, (isActivated) => {
+      document.querySelector('#moodleUpdateNotificationCheckbox').checked = isActivated.activated
+    })
+    document.querySelector('#moodleUpdateNotificationCheckbox').addEventListener('change', () => {
+      this.updateMoodleUpdateNotificationCheckbox()
+    })
+    // PVSCL:ENDCOND
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleResource, LINE)
     chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isAutoOpenFilesActivated' }, (isActivated) => {
@@ -202,6 +210,17 @@ class Options {
     }
   }
   // PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
+
+  updateMoodleUpdateNotificationCheckbox () {
+    const isChecked = document.querySelector('#moodleUpdateNotificationCheckbox').checked
+    chrome.runtime.sendMessage({
+      scope: 'moodle',
+      cmd: 'setMoodleUpdateNotification',
+      data: { isActivated: isChecked }
+    }, (response) => {
+      console.debug('Moodle update notification is updated to: ' + response.activated)
+    })
+  }
 
   updateApiSimulationCheckbox () {
     const isChecked = document.querySelector('#apiSimulationCheckbox').checked

@@ -22,8 +22,10 @@ class MoodleReport {
         callback()
       }
     })
-    // TODO Listens when annotation is created, updated, deleted or codeToAll
+    // Listens when annotation is created, updated, deleted or codeToAll
     this.initEventListeners()
+    // Get preferences for moodle report behaviour
+    this.getPreferencesForMoodleReport()
   }
 
   initEventListeners (callback) {
@@ -44,12 +46,14 @@ class MoodleReport {
             title: 'Unable to update marks in moodle'
           })
         } else {
-          Alerts.temporalAlert({
-            text: 'The mark is updated in moodle',
-            title: 'Correctly marked',
-            type: Alerts.alertType.success,
-            toast: true
-          })
+          if (this.moodleUpdateNotificationEnabled) {
+            Alerts.temporalAlert({
+              text: 'The mark is updated in moodle',
+              title: 'Correctly marked',
+              type: Alerts.alertType.success,
+              toast: true
+            })
+          }
         }
       })
     }
@@ -238,6 +242,13 @@ class MoodleReport {
     if (_.isFunction(callback)) {
       callback()
     }
+  }
+
+  getPreferencesForMoodleReport () {
+    // Get preferences for moodle update notification
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isMoodleUpdateNotificationActivated' }, (isActivated) => {
+      this.moodleUpdateNotificationEnabled = isActivated.activated || true
+    })
   }
 }
 
