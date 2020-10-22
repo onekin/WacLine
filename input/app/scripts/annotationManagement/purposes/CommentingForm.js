@@ -64,7 +64,7 @@ class CommentingForm {
         title: title || '',
         html: html,
         onBeforeOpen: onBeforeOpen,
-        // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
+        position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
         callback: swalCallback,
         preConfirm: preConfirm
       })
