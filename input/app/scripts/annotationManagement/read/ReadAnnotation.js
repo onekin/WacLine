@@ -363,6 +363,10 @@ class ReadAnnotation {
         // PVSCL:IFCOND(Update OR Delete, LINE)
         // Create context menu event for highlighted elements
         this.createContextMenuForAnnotation(annotation)
+        // PVSCL:IFCOND(Commenting, LINE)
+        // Create double click event handler to comment
+        this.createDoubleClickEventHandler(annotation)
+        // PVSCL:ENDCOND
         // PVSCL:ENDCOND
       } catch (e) {
         // Handle error
@@ -469,15 +473,7 @@ class ReadAnnotation {
               }
             }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
               // Open commenting form
-              CommentingForm.showCommentingForm(annotation, (err, annotation) => {
-                if (err) {
-                  Alerts.errorAlert({ text: 'Unexpected error when commenting. Please reload webpage and try again. Error: ' + err.message })
-                } else {
-                  LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-                    annotation: annotation
-                  })
-                }
-              })
+              this.openCommentingForm(annotation)
             } /* PVSCL:ENDCOND */
           },
           items: items
@@ -485,6 +481,21 @@ class ReadAnnotation {
       }
     })
   }
+
+  // PVSCL:IFCOND(Commenting, LINE)
+  openCommentingForm (annotation) {
+    CommentingForm.showCommentingForm(annotation, (err, annotation) => {
+      if (err) {
+        Alerts.errorAlert({ text: 'Unexpected error when commenting. Please reload webpage and try again. Error: ' + err.message })
+      } else {
+        LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+          annotation: annotation
+        })
+      }
+    })
+  }
+
+  // PVSCL:ENDCOND
 
   redrawAnnotations (callback) {
     if (document.querySelector('.swal2-container') === null) { // TODO Look for a better solution...
@@ -510,7 +521,7 @@ class ReadAnnotation {
     for (let i = 0; i < highlights.length; i++) {
       const highlight = highlights[i]
       highlight.addEventListener('dblclick', () => {
-        this.commentAnnotationHandler(annotation)
+        this.openCommentingForm(annotation)
       })
     }
   }
