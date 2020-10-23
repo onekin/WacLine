@@ -93,7 +93,7 @@
   },
   "permissions": [
     "https://hypothes.is/",
-    "tabs",
+    "activeTab",
     "storage"PVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer),
     "identity"PVSCL:ENDCONDPVSCL:IFCOND(URN),
     "downloads",

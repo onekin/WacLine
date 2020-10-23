@@ -328,16 +328,16 @@ class ReadAnnotation {
         if (codeOrTheme) {
           color = codeOrTheme.color
         } else {
-          const ColorUtils = require('../../utils/ColorUtils')
+          const ColorUtils = require('../../utils/ColorUtils').default
           color = ColorUtils.getDefaultColor()
         }
       } else {
-        const ColorUtils = require('../../utils/ColorUtils')
+        const ColorUtils = require('../../utils/ColorUtils').default
         color = ColorUtils.getDefaultColor()
       }
       // PVSCL:ELSECOND
       // Annotation color used is default in grey
-      const ColorUtils = require('../../utils/ColorUtils')
+      const ColorUtils = require('../../utils/ColorUtils').default
       color = ColorUtils.getDefaultColor()
       // PVSCL:ENDCOND
       // Get the tooltip text for the annotation

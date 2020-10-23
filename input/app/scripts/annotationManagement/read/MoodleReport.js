@@ -186,7 +186,7 @@ class MoodleReport {
       // Criteria + level
       const criteria = markGroup[0].criteriaName
       const levelId = markGroup[0].levelName
-      feedbackComment += '<h3>Criteria: ' + criteria + ' - Mark: ' + levelId + '</h3><br/>'
+      feedbackComment += '<h3>Criterion: ' + criteria + ' - Mark: ' + levelId + '</h3><br/>'
       // Comments
       _.forEach(markGroup, (mark) => {
         feedbackComment += mark.feedbackCommentElement + '<br/>'

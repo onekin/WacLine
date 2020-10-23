@@ -40,10 +40,10 @@ class RenameCodebook {
         preConfirm: (codebookName) => {
           if (_.isString(codebookName)) {
             if (codebookName.length <= 0) {
-              const swal = require('sweetalert2')
+              const swal = require('sweetalert2').default
               swal.showValidationMessage('Name cannot be empty.')
             } else if (codebookName.length > 25) {
-              const swal = require('sweetalert2')
+              const swal = require('sweetalert2').default
               swal.showValidationMessage('The review model name cannot be higher than 25 characters.')
             } else {
               return codebookName
