@@ -43,7 +43,11 @@ class Classifying extends Body {
       if (code) {
         tooltip += 'Theme: ' + code.name
       } else {
-        tooltip += 'Deleted theme or code: ' + this.value.name
+        if (_.has(this.value, 'theme')) {
+          tooltip += 'Deleted or modified code ' + this.value.name + ' for theme ' + this.value.theme.name
+        } else {
+          tooltip += 'Deleted theme ' + this.value.name
+        }
       }
     }
     // PVSCL:ELSECOND

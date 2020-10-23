@@ -418,6 +418,14 @@ class Codebook {
       return null
     }
   }
+
+  static codebookAnnotationsAreEqual (anno1, anno2) {
+    return anno1.group === anno2.group &&
+      anno1.motivation === anno2.motivation &&
+      _.isEmpty(_.difference(anno1.tags, anno2.tags)) &&
+      anno1.text === anno2.text &&
+      anno1.uri === anno2.uri
+  }
 }
 
 export default Codebook

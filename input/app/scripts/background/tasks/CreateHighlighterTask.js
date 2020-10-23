@@ -206,9 +206,9 @@ class CreateHighlighterTask extends Task {
         rubric.annotationServer = annotationServer
         rubric = Codebook.createCodebookFromObject(rubric)
         // Check annotations pending
-        const annotationsPending = _.differenceWith(rubric.toAnnotations(), annotations, AnnotationUtils.areEqual)
+        const annotationsPending = _.differenceWith(rubric.toAnnotations(), annotations, Codebook.codebookAnnotationsAreEqual)
         // Check annotations to remove
-        const annotationsToRemove = _.differenceWith(annotations, rubric.toAnnotations(), AnnotationUtils.areEqual)
+        const annotationsToRemove = _.differenceWith(annotations, rubric.toAnnotations(), Codebook.codebookAnnotationsAreEqual)
         if (annotationsPending.length === 0 && annotationsToRemove.length === 0) {
           console.debug('Highlighter is already updated, skipping to the next group')
           callback(null, { nothingDone: true })
