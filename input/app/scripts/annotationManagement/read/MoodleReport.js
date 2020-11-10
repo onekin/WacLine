@@ -94,26 +94,38 @@ class MoodleReport {
       } else {
         levelName = null
       }
+      // Get max level
+      let maxLevelName
+      try {
+        const theme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(annotation.body.find(body => body.purpose === 'classifying').value.theme.id)
+        maxLevelName = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(theme.id).maxCode().name
+      } catch (e) {
+        maxLevelName = null
+      }
       const url = MoodleUtils.createURLForAnnotation({ annotation, studentId, courseId: window.abwa.codebookManager.codebookReader.codebook.courseId, cmid: cmid })
       // Construct feedback
+      // Add the comment
       const comment = annotation.getBodyForPurpose(Commenting.purpose)
       const text = comment ? comment.value : ''
       let feedbackCommentElement = ''
       if (text) {
-        /* let urlizedText = linkifyUrls(text, {
-          attributes: {
-            target: '_blank'
-          }
-        }) */
-        const urlizedText = text
-        const quoteSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
-        if (quoteSelector) {
-          feedbackCommentElement = '<b>' + urlizedText + '</b><br/><a href="' + url + '">See in context</a>'
-        }
+        feedbackCommentElement += '<b>' + text + '</b><br/>'
       } else {
-        feedbackCommentElement = '<b>-</b><br/><a href="' + url + '">See in context</a>'
+        feedbackCommentElement = '<b>-</b><br/>'
       }
-      return { criteriaName, levelName, text, url, feedbackCommentElement }
+      // Add the quote of annotated fragment
+      const quoteSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
+      if (quoteSelector) {
+        feedbackCommentElement += '<i><a href="' + url + '">' + quoteSelector.exact + '</a></i>'
+      } else {
+        feedbackCommentElement += '<a href="' + url + '">See in context</a>'
+      }
+      // Add page where annotation is
+      let fragmentSelector = annotation.target[0].selector.find(selector => selector.type === 'FragmentSelector')
+      if (fragmentSelector && _.has(fragmentSelector, 'page')) {
+        feedbackCommentElement += '[Page: ' + fragmentSelector.page + ']'
+      }
+      return { criteriaName, levelName, maxLevelName, text, url, feedbackCommentElement }
     })
     console.log(marks)
     // Reorder criterias as same as are presented in rubric
@@ -177,23 +189,25 @@ class MoodleReport {
   }
 
   getFeedbackComment (marks) {
-    let feedbackComment = '<h2>How to see feedback in your assignment?</h2><ul>' +
-      '<li><a target="_blank" href="https://chrome.google.com/webstore/detail/markgo/kjedcndgienemldgjpjjnhjdhfoaocfa">Install Mark&Go</a></li>' +
-      '<li><a target="_blank" href="' + window.abwa.groupSelector.currentGroup.links.html + '">Join feedback group</a></li>' +
-      '</ul><hr/>' // TODO i18n
+    let feedbackComment = ''
     const groupedMarksArray = _.values(_.groupBy(marks, 'criteriaName'))
     _.forEach(groupedMarksArray, (markGroup) => {
       // Criteria + level
       const criteria = markGroup[0].criteriaName
       const levelId = markGroup[0].levelName
-      feedbackComment += '<h3>Criterion: ' + criteria + ' - Mark: ' + levelId + '</h3><br/>'
+      const maxLevelName = markGroup[0].maxLevelName
+      feedbackComment += '<h3>Criterion: ' + criteria + ' - Mark: ' + levelId + '/' + maxLevelName + '</h3><br/>'
       // Comments
       _.forEach(markGroup, (mark) => {
-        feedbackComment += mark.feedbackCommentElement + '<br/>'
+        feedbackComment += mark.feedbackCommentElement + '<br/><br/>'
       })
       // hr
       feedbackComment += '<hr/>'
     })
+    feedbackComment += '<hr/><h3>How to see feedback in your assignment?</h3><ul>' +
+      '<li><a target="_blank" href="' + window.abwa.groupSelector.currentGroup.links.html + '">Join feedback group</a></li>' +
+      '<li><a target="_blank" href="https://chrome.google.com/webstore/detail/markgo/kjedcndgienemldgjpjjnhjdhfoaocfa">Install Mark&Go</a></li>' +
+      '</ul>' // TODO i18n
     return feedbackComment
   }
 
