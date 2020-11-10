@@ -1,15 +1,27 @@
 <div id="groupSelectorContainer">
-  // PVSCL:IFCOND(Hypothesis, LINE)
   <div id="notLoggedInGroupContainer" class="sidebarContainer" aria-hidden="true">
-    <div id="hypothesisLogin" class="containerHeader">
-      Please log in your chosen annotation server
+    // PVSCL:IFCOND(Hypothesis, LINE)
+    <div id="hypothesisLoginContainer" class="loginContainer" aria-hidden="true">
+      <div id="hypothesisLogin" class="containerHeader">
+        Please log in Hypothes.is
+      </div>
+      <div>
+        Please login or create your account and reload the page if it is not reloaded automatically.
+        <button id="hypothesisLoginButton">Log in</button> / <button id="hypothesisRegisterButton">Sign up</button>
+      </div>
     </div>
-    <div>
-      <h4>Hypothes.is</h4>
-      <a href="https://hypothes.is/login" target="_blank">Log in</a> / <a href="https://hypothes.is/signup" target="_blank">Sign up</a>
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Neo4J, LINE)
+    <div id="neo4jLoginContainer" class="loginContainer" aria-hidden="true">
+      <div id="neo4jLogin" class="containerHeader">
+        Please set login credentials for neo4j
+      </div>
+      <div>
+        <a id="configurationPageUrlForNeo4jLogin" href="" target="_blank">Set credentials in configuration page</a>
+      </div>
     </div>
+    // PVSCL:ENDCOND
   </div>
-  // PVSCL:ENDCOND
   // PVSCL:IFCOND(Manual, LINE)
   <div id="loggedInGroupContainer" class="sidebarContainer">
     <div id="groupSelectorContainerHeader" class="containerHeader">

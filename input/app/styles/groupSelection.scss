@@ -2,6 +2,10 @@
 
 $elementHoverBackgroundColor: rgba(100,100,100,0.8);
 
+.loginContainer[aria-hidden="true"] {
+  display:none;
+}
+
 #groupSelector {
   margin-left: auto;
   margin-right: auto;

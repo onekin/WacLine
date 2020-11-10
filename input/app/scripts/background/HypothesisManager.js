@@ -94,6 +94,8 @@ class HypothesisManager {
     } else {
       console.debug('User is logged in Hypothesis. His token is %s', token)
       this.token = token
+      this.annotationServerManager = new HypothesisClientManager(token)
+      this.annotationServerManager.init()
       this.tries = 0
     }
   }
