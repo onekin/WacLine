@@ -82,15 +82,27 @@ class Screenshots {
         }
       })
     } else {
-      /*
-      let blob = new Blob([document.body.outerHTML.toString()], { type: 'text/plain;charset=utf-8' })
-      FileSaver.saveAs(blob, 'activity.html')
-      */
-      promise = new Promise((resolve) => {
-        html2canvas(document.body).then((canvas) => {
-          resolve(canvas)
+      let htmlToGenerate = ''
+      let cssUrl = chrome.runtime.getURL('styles/contentScript.css')
+      fetch(cssUrl)
+        .then(result => result.text())
+        .then(css => {
+          htmlToGenerate += '<html><head><style>' + css + '</style></head>' + document.body.outerHTML
+          htmlToGenerate += '<script>\n' +
+            'document.querySelector(\'#abwaSidebarButton\').addEventListener(\'click\', () => {\n' +
+            '    let sidebarButton = document.querySelector(\'#abwaSidebarButton\')\n' +
+            '    sidebarButton.dataset.toggled = sidebarButton.dataset.toggled !== \'true\'\n' +
+            '    document.documentElement.dataset.sidebarShown = sidebarButton.dataset.toggled\n' +
+            '    document.querySelector(\'#abwaSidebarContainer\').dataset.shown = sidebarButton.dataset.toggled\n' +
+            '})\n' +
+            '</script>'
+          htmlToGenerate += '</html>'
+          let a = document.createElement('a')
+          a.href = 'data:text/plain;base64,' + btoa(htmlToGenerate)
+          a.textContent = 'download'
+          a.download = 'activity.html'
+          a.click()
         })
-      })
     }
   }
 }
