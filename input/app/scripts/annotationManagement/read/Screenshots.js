@@ -72,7 +72,8 @@ class Screenshots {
                 title: 'PDF is created',
                 text: 'You should be prompted to download  the annotated PDF.'
               })
-              pdf.save('activity.pdf')
+              let filename = window.abwa.targetManager.fileName + '_annotated.pdf' || 'activity_annotated.pdf'
+              pdf.save(filename)
               // Callback
               if (_.isFunction(callback)) {
                 callback()
@@ -100,7 +101,7 @@ class Screenshots {
           let a = document.createElement('a')
           a.href = 'data:text/plain;base64,' + btoa(htmlToGenerate)
           a.textContent = 'download'
-          a.download = 'activity.html'
+          a.download = window.abwa.targetManager.fileName + '_annotated.html' || 'activity_annotated.html'
           a.click()
         })
     }

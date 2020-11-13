@@ -25,6 +25,7 @@ class TargetManager {
     this.urlParam = null
     this.documentId = null
     this.documentTitle = ''
+    this.fileName = ''
     // PVSCL:IFCOND(HTML, LINE)
     this.documentFormat = HTML // By default document type is html
     // PVSCL:ELSEIFCOND(PDF, LINE)
@@ -77,6 +78,7 @@ class TargetManager {
       promise = Promise.resolve()
       // PVSCL:ENDCOND
       promise.then(() => {
+        this.tryToLoadFileName()
         if (this.url.startsWith('file:///')) {
           this.localFile = true
         } else if (this.documentFormat !== PDF && !this.localFile) { // If document is not pdf, it can change its URL
@@ -461,6 +463,27 @@ class TargetManager {
    */
   getDocumentId () {
     return this.documentId || RandomUtils.randomString()
+  }
+
+  tryToLoadFileName () {
+    // PVSCL:IFCOND(MoodleResource, LINE)
+    // Get filename from moodle URL
+    try {
+      let filename = (/submission_files\/(.*)\/(.*)\?forcedownload=1/gm).exec(this.url)[2]
+      if (!_.isEmpty(filename)) {
+        this.fileName = filename
+      }
+    } catch (e) {
+      console.error('Unable to retrieve name from file downloaded from moodle')
+    }
+    // PVSCL:ENDCOND
+    // Get name from URL
+    if (_.isEmpty(this.fileName) && this.url) {
+      let filename = _.last(_.split((new URL(this.url)).pathname, '/'))
+      if (!_.isEmpty(filename)) {
+        this.fileName = filename
+      }
+    }
   }
 }
 
