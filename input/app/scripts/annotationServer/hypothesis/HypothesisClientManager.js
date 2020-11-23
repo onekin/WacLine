@@ -5,7 +5,7 @@ import HypothesisClient from 'hypothesis-api-client'
 import AnnotationServerManager from '../AnnotationServerManager'
 import HypothesisClientInterface from './HypothesisClientInterface'
 
-const reloadIntervalInSeconds = 10 // Reload the hypothesis client every 10 seconds
+const reloadIntervalInSeconds = 1 // Reload the hypothesis client every 10 seconds
 
 class HypothesisClientManager extends AnnotationServerManager {
   constructor () {
@@ -48,35 +48,24 @@ class HypothesisClientManager extends AnnotationServerManager {
 
   reloadClient (callback) {
     if (_.has(window.background, 'hypothesisManager')) {
-      if (_.isString(window.background.hypothesisManager.token)) {
-        if (this.hypothesisToken !== window.background.hypothesisManager.token) {
-          this.hypothesisToken = window.background.hypothesisManager.token
-          if (this.hypothesisToken) {
-            this.client = new HypothesisClient(window.background.hypothesisManager.token)
-          } else {
-            this.client = new HypothesisClient()
-          }
+      window.background.hypothesisManager.retrieveHypothesisToken((err, token) => {
+        if (err) {
+          this.client = new HypothesisClient()
+          this.hypothesisToken = null
+        } else {
+          this.client = new HypothesisClient(token)
+          this.hypothesisToken = token
         }
         if (_.isFunction(callback)) {
           callback()
         }
-      } else {
-        window.background.hypothesisManager.retrieveHypothesisToken((err, token) => {
-          if (err) {
-            this.client = new HypothesisClient()
-            this.hypothesisToken = null
-          } else {
-            this.client = new HypothesisClient(token)
-            this.hypothesisToken = token
-          }
-        })
-      }
+      })
     } else {
-      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, (token) => {
-        if (this.hypothesisToken !== token) {
-          this.hypothesisToken = token
+      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, (tokens) => {
+        if (this.hypothesisToken !== tokens.token) {
+          this.hypothesisToken = tokens.token
           if (this.hypothesisToken) {
-            this.client = new HypothesisClient(token)
+            this.client = new HypothesisClient(tokens.token)
           } else {
             this.client = new HypothesisClient()
           }
@@ -88,8 +77,10 @@ class HypothesisClientManager extends AnnotationServerManager {
     }
   }
 
-  isLoggedIn () {
-    return !_.isEmpty(this.hypothesisToken)
+  isLoggedIn (callback) {
+    if (_.isFunction(callback)) {
+      callback(null, !_.isEmpty(this.hypothesisToken))
+    }
   }
 
   constructSearchUrl ({ groupId }) {
@@ -98,17 +89,23 @@ class HypothesisClientManager extends AnnotationServerManager {
 
   logIn (callback) {
     // TODO Check if user grant permission to access hypothesis account
-    if (!this.isLoggedIn()) {
-      this.askUserToLogInHypothesis((err, token) => {
-        if (err) {
-          callback(err)
+    this.isLoggedIn((err, isLogged) => {
+      if (err) {
+        console.error(err)
+      } else {
+        if (!isLogged) {
+          this.askUserToLogInHypothesis((err, token) => {
+            if (err) {
+              callback(err)
+            } else {
+              callback(null, token)
+            }
+          })
         } else {
-          callback(null, token)
+          callback(null, this.hypothesisToken)
         }
-      })
-    } else {
-      callback(null, this.hypothesisToken)
-    }
+      }
+    })
   }
 
   askUserToLogInHypothesis (callback) {
