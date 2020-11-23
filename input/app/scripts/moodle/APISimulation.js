@@ -83,6 +83,153 @@ class APISimulation {
     }
   }
 
+  static addFeedbackSubmissionFile (moodleEndpoint, data, callback) {
+    // Retrieve session key
+    APISimulation.getCurrentSessionKey(moodleEndpoint, (err, sessionKey) => {
+      if (err) {
+        callback(err)
+      } else {
+        let formdata = new FormData()
+        formdata.append('repo_upload_file', data.file)
+        formdata.append('sesskey', sessionKey)
+        formdata.append('action', 'upload')
+        formdata.append('client_id', '5c124b5dd5125')
+        formdata.append('itemid', data.itemId)
+        formdata.append('repo_id', 5)
+        formdata.append('p', '')
+        formdata.append('page', '')
+        formdata.append('env', 'filemanager')
+        formdata.append('maxbytes', 2097152)
+        formdata.append('areamaxbytes', -1)
+        formdata.append('ctx_id', data.contextId)
+        formdata.append('save_path', '/')
+        formdata.append('license', data.license)
+        formdata.append('author', data.author)
+        formdata.append('title', '')
+
+        let urlencodeFormData = (fd) => {
+          let s = ''
+
+          function encode (s) { return encodeURIComponent(s).replace(/%20/g, '+'); }
+
+          for (let pair of fd.entries()) {
+            if (typeof pair[1] === 'string') {
+              s += (s ? '&' : '') + encode(pair[0]) + '=' + encode(pair[1])
+            }
+          }
+          return s
+        }
+
+        let data = "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"repo_upload_file\"; filename=\"aaa.txt\"\n" +
+          "Content-Type: text/plain\n" +
+          "\n" +
+          "aaa\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"title\"\n" +
+          "\n" +
+          "\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"author\"\n" +
+          "\n" +
+          "Teacher Teacher\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"license\"\n" +
+          "\n" +
+          "unknown\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"itemid\"\n" +
+          "\n" +
+          "47539863\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"repo_id\"\n" +
+          "\n" +
+          "5\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"p\"\n" +
+          "\n" +
+          "\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"page\"\n" +
+          "\n" +
+          "\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"env\"\n" +
+          "\n" +
+          "filemanager\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"sesskey\"\n" +
+          "\n" +
+          "lPMnreHTPw\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"client_id\"\n" +
+          "\n" +
+          "5fb654e6bd5ad\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"itemid\"\n" +
+          "\n" +
+          "47539863\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"maxbytes\"\n" +
+          "\n" +
+          "2097152\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"areamaxbytes\"\n" +
+          "\n" +
+          "-1\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"ctx_id\"\n" +
+          "\n" +
+          "40\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx\n" +
+          "Content-Disposition: form-data; name=\"savepath\"\n" +
+          "\n" +
+          "/\n" +
+          "------WebKitFormBoundary0XEZCHtnAA7tVzOx--\n"
+
+        const settings = {
+          async: true,
+          crossDomain: true,
+          url: moodleEndpoint + '/repository/repository_ajax.php',
+          method: 'POST',
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+          },
+          params: {
+            wsfunction: 'mod_assign_save_grade',
+            moodlewsrestformat: 'json'
+          },
+          /* data: {
+            sesskey: sessionKey,
+            action: 'upload',
+            client_id: '5c124b5dd5125', // TODO Check if it works in all moodle versions: It is a random client ID
+            itemid: data.itemId,
+            repo_id: 5,
+            p: '',
+            page: '',
+            env: 'filemanager',
+            maxbytes: 2097152,
+            areamaxbytes: -1,
+            ctx_id: data.contextId,
+            save_path: '/',
+            license: data.license,
+            author: data.author,
+            title: '',
+            repo_upload_file: data.file
+          },
+          transformRequest: [(data) => {
+            return jsonFormData(data)
+          }] */
+          data: urlencodeFormData(formdata)
+        }
+        axios(settings).then((response) => {
+          callback(null, response.data)
+        })
+      }
+    })
+  }
+
   static addSubmissionComment (moodleEndpoint, data, callback) {
     // Retrieve session key
     APISimulation.getCurrentSessionKey(moodleEndpoint, (err, sessionKey) => {

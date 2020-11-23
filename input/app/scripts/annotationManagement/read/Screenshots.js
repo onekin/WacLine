@@ -4,6 +4,7 @@ import JsPDF from 'jspdf'
 import Alerts from '../../utils/Alerts'
 import _ from 'lodash'
 import PDF from '../../target/formats/PDF'
+import MoodleClientManager from '../../moodle/MoodleClientManager'
 
 window.html2canvas = html2canvas
 
@@ -103,6 +104,15 @@ class Screenshots {
           a.textContent = 'download'
           a.download = window.abwa.targetManager.fileName + '_annotated.html' || 'activity_annotated.html'
           a.click()
+          this.moodleClientManager = new MoodleClientManager(window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint)
+          this.moodleClientManager.init(() => {
+            let file = new File(['aaa'], 'aaa.txt', { type: 'text/plain' })
+            this.moodleClientManager.addFeedbackSubmissionFile({
+              itemId: '',
+              contextId: '',
+              file: file
+            })
+          })
         })
     }
   }

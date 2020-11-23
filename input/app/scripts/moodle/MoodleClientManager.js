@@ -119,6 +119,16 @@ class MoodleClientManager {
     }, callback)
   }
 
+  addFeedbackSubmissionFile ({ file, callback }) {
+    APISimulation.addFeedbackSubmissionFile(this.moodleEndpoint, {
+      contextId: window.abwa.targetManager.fileMetadata.contextId,
+      itemId: window.abwa.targetManager.fileMetadata.itemId,
+      file,
+      author: 'Teacher Teacher',
+      license: 'unknown'
+    }, callback)
+  }
+
   removeSubmissionComment ({ commentId, annotationId, callback }) {
     if (commentId) {
 
