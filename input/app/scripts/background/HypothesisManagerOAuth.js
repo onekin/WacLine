@@ -136,6 +136,19 @@ class HypothesisManagerOAuth {
           } else {
             sendResponse({ token: this.tokens.accessToken })
           }
+        } else if (request.cmd === 'getTokens') {
+          if (this.checkTokenIsExpired()) {
+            this.refreshHypothesisToken((err) => {
+              if (err) {
+                sendResponse({ error: 'Unable to retrieve token' })
+              } else {
+                sendResponse({ tokens: this.tokens })
+              }
+            })
+            return true // Async response
+          } else {
+            sendResponse({ tokens: this.tokens })
+          }
         } else if (request.cmd === 'userLoginForm') {
           this.authorize((err, tokens) => {
             if (err) {

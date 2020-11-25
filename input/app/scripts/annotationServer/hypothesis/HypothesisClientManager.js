@@ -34,7 +34,7 @@ class HypothesisClientManager extends AnnotationServerManager {
       })
     } else {
       // Check if user is logged in hypothesis
-      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, (token) => {
+      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
         if (this.hypothesisToken !== token) {
           this.hypothesisToken = token
         }
@@ -61,11 +61,11 @@ class HypothesisClientManager extends AnnotationServerManager {
         }
       })
     } else {
-      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, (tokens) => {
-        if (this.hypothesisToken !== tokens.token) {
-          this.hypothesisToken = tokens.token
+      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
+        if (this.hypothesisToken !== token) {
+          this.hypothesisToken = token
           if (this.hypothesisToken) {
-            this.client = new HypothesisClient(tokens.token)
+            this.client = new HypothesisClient(token)
           } else {
             this.client = new HypothesisClient()
           }
@@ -79,7 +79,9 @@ class HypothesisClientManager extends AnnotationServerManager {
 
   isLoggedIn (callback) {
     if (_.isFunction(callback)) {
-      callback(null, !_.isEmpty(this.hypothesisToken))
+      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
+        callback(null, !_.isEmpty(token))
+      })
     }
   }
 
