@@ -12,7 +12,7 @@ const hypothesisSettings = {
   tokenEndpoint: 'https://hypothes.is/api/token'
 }
 
-const minutesBeforeToTreatTokenAsExpired = 59 // When the token has less than 20 minutes to refresh
+const minutesBeforeToTreatTokenAsExpired = 10 // When the token has less than 10 minutes to refresh
 
 /**
  * HypothesisManager handles hypothes.is-client-related operations in the background, login, logout, token management (autorize, refresh, revoke, store), and user metadata
@@ -210,7 +210,9 @@ class HypothesisManagerOAuth {
   checkTokenIsExpired (callback) {
     if (this.tokens) {
       // Before X minutes to expire the token it is treated as expired to refresh again
-      if (this.tokens.expiresAt <= Date.now() - 1000 * 60 * minutesBeforeToTreatTokenAsExpired) {
+      if (this.tokens.expiresAt - 1000 * 60 * minutesBeforeToTreatTokenAsExpired >= Date.now()) {
+        return false
+      } else {
         return true
       }
     } else {
