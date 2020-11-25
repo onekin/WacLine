@@ -210,11 +210,7 @@ class HypothesisManagerOAuth {
   checkTokenIsExpired (callback) {
     if (this.tokens) {
       // Before X minutes to expire the token it is treated as expired to refresh again
-      if (this.tokens.expiresAt - 1000 * 60 * minutesBeforeToTreatTokenAsExpired >= Date.now()) {
-        return false
-      } else {
-        return true
-      }
+      return this.tokens.expiresAt - 1000 * 60 * minutesBeforeToTreatTokenAsExpired < Date.now()
     } else {
       return true
     }
