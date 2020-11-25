@@ -5,6 +5,7 @@ import ChromeStorage from '../utils/ChromeStorage'
 import OAuthClient from '../utils/oauth-client'
 
 const hypothesisSettings = {
+  // eslint-disable-next-line
   clientId: "PVSCL:EVAL(Hypothesis->pv:Attribute('clientId'))",
   authorizationEndpoint: 'https://hypothes.is/oauth/authorize',
   revokeEndpoint: 'https://hypothes.is/oauth/revoke',
@@ -50,6 +51,7 @@ class HypothesisManagerOAuth {
       this.client.refreshToken(this.tokens.refreshToken).then((tokens) => {
         // Save refresh token in chrome storage
         this.saveTokensInStorage(tokens)
+        this.tokens = tokens
       })
     } else {
       this.authorize((err) => {
@@ -75,7 +77,7 @@ class HypothesisManagerOAuth {
 
     let promise = this.client.authorize(window, authWindow)
 
-    promise.catch((reject) => {
+    promise.catch(() => {
       // Return user has closed login window
       if (_.isFunction(callback)) {
         callback(new Error('Unable to autorize Hypothes.is.'))
@@ -123,7 +125,7 @@ class HypothesisManagerOAuth {
       if (request.scope === 'hypothesis') {
         if (request.cmd === 'getToken') {
           if (this.checkTokenIsExpired()) {
-            this.refreshHypothesisToken((err, tokens) => {
+            this.refreshHypothesisToken((err) => {
               if (err) {
                 sendResponse({ error: 'Unable to retrieve token' })
               } else {

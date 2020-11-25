@@ -92,8 +92,8 @@ class Options {
     chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
       if (_.isString(token)) {
         this.hypothesisToken = token
-        chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getUserProfileMetadata' }, (profile) => {
-          this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLoggedInUsername').innerText = profile.metadata.displayName
+        chrome.runtime.sendMessage({ scope: 'hypothesisClient', cmd: 'getUserProfile' }, (profile) => {
+          document.querySelector('#hypothesisLoggedInUsername').innerText = profile.userid
         })
         this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'true')
       } else {
@@ -296,11 +296,13 @@ class Options {
         cmd: 'userLoginForm'
       }, ({ token }) => {
         this.hypothesisToken = token
-        chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getUserProfileMetadata' }, (profile) => {
-          document.querySelector('#hypothesisLoggedInUsername').innerText = profile.metadata.displayName
-          document.querySelector('#hypothesisLoggedInContainer').setAttribute('aria-hidden', 'false')
-        })
-        document.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'true')
+        setTimeout(() => {
+          chrome.runtime.sendMessage({ scope: 'hypothesisClient', cmd: 'getUserProfile' }, (profile) => {
+            document.querySelector('#hypothesisLoggedInUsername').innerText = profile.userid
+            document.querySelector('#hypothesisLoggedInContainer').setAttribute('aria-hidden', 'false')
+          })
+          document.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'true')
+        }, 1000) // Time before sending request, as background hypothes.is client refresh every second
       })
     }
   }
@@ -310,7 +312,7 @@ class Options {
       chrome.runtime.sendMessage({
         scope: 'hypothesis',
         cmd: 'userLogout'
-      }, ({ token }) => {
+      }, () => {
         document.querySelector('#hypothesisLoggedInContainer').setAttribute('aria-hidden', 'true')
         document.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'false')
         this.hypothesisToken = 'Unknown'

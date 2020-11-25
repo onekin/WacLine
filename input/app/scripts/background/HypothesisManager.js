@@ -6,8 +6,6 @@ class HypothesisManager {
   constructor () {
     // Define token
     this.token = null
-    // Define tries before logout
-    this.tries = 0
     // Hypothesis oauth manager
     this.hypothesisManagerOAuth = null
   }
@@ -25,7 +23,7 @@ class HypothesisManager {
 
   retrieveHypothesisToken (callback) {
     if (this.hypothesisManagerOAuth.checkTokenIsExpired()) {
-      this.hypothesisManagerOAuth.refreshHypothesisToken((err, tokens) => {
+      this.hypothesisManagerOAuth.refreshHypothesisToken((err) => {
         if (err) {
           callback(new Error('Unable to retrieve token'))
         } else {
