@@ -286,7 +286,12 @@ class TargetManager {
   }
 
   getDocumentURIToSearchInAnnotationServer () {
+    // Searches are done using uri and url parameters that hypothes.is (and other annotation systems) supports.
+    // This includes options in the search query this function and getDocumentURIToSaveInAnnotationServer.
+    // As the second one prioritize resilient URLs, this function gives priority to URN
     if (this.documentFormat === PDF) {
+      return this.urn
+    } else if (this.documentFormat === TXT) {
       return this.urn
     } else {
       return this.url
@@ -330,7 +335,7 @@ class TargetManager {
     const fileTextContentElement = document.querySelector('body > pre')
     if (fileTextContentElement) {
       const fileTextContent = fileTextContentElement.innerText
-      return CryptoUtils.hash(fileTextContent.innerText)
+      return CryptoUtils.hash(fileTextContent)
     }
   }
   // PVSCL:ENDCOND
