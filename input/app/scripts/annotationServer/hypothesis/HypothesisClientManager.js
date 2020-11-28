@@ -79,9 +79,13 @@ class HypothesisClientManager extends AnnotationServerManager {
 
   isLoggedIn (callback) {
     if (_.isFunction(callback)) {
-      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
-        callback(null, !_.isEmpty(token))
-      })
+      if (_.has(window.background, 'hypothesisManager.hypothesisManagerOAuth.tokens')) {
+        callback(null, _.isString(window.background.hypothesisManager.hypothesisManagerOAuth.tokens.accessToken))
+      } else {
+        chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
+          callback(null, !_.isEmpty(token))
+        })
+      }
     }
   }
 
