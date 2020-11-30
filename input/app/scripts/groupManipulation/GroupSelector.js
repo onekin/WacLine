@@ -25,7 +25,7 @@ class GroupSelector {
     this.currentGroup = null
     this.user = {}
     this.events = {}
-    this.loginWindow = null
+    this.loggedInInterval = null
   }
 
   init (callback) {
@@ -285,56 +285,63 @@ class GroupSelector {
     $.get(sidebarURL, (html) => {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))
-      if (!window.abwa.annotationServerManager.isLoggedIn()) {
-        // Display login/sign up form
-        $('#notLoggedInGroupContainer').attr('aria-hidden', 'false')
-        // Hide group container
-        $('#loggedInGroupContainer').attr('aria-hidden', 'true')
-        // Hide purposes wrapper
-        $('#purposesWrapper').attr('aria-hidden', 'true')
-        // Open the sidebar to notify user that needs to log in
-        window.abwa.sidebar.openSidebar()
-        // PVSCL:IFCOND(Hypothesis,LINE)
-        document.getElementById('hypothesisLoginButton').addEventListener('click', () => {
-          this.loginWindow = window.open('https://hypothes.is/login')
-        })
-        document.getElementById('hypothesisRegisterButton').addEventListener('click', () => {
-          this.loginWindow = window.open('https://hypothes.is/signup')
-        })
-        if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
-          // Show login form for Hypothes.is in sidebar
-          $('#hypothesisLoginContainer').attr('aria-hidden', 'false')
-          // Start listening to when is logged in continuously
-          chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'startListeningLogin' })
-          setInterval(() => {
-            window.abwa.annotationServerManager.reloadClient(() => {
-              if (window.abwa.annotationServerManager.isLoggedIn()) {
-                chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'stopListeningLogin' })
-                console.debug('Logged in. Reloading...')
-                this.loginWindow.close()
-                window.location.reload()
+      window.abwa.annotationServerManager.isLoggedIn((err, result) => {
+        if (err || !result) {
+          // Display login/sign up form
+          $('#notLoggedInGroupContainer').attr('aria-hidden', 'false')
+          // Hide group container
+          $('#loggedInGroupContainer').attr('aria-hidden', 'true')
+          // Hide purposes wrapper
+          $('#purposesWrapper').attr('aria-hidden', 'true')
+          // Open the sidebar to notify user that needs to log in
+          window.abwa.sidebar.openSidebar()
+          // PVSCL:IFCOND(Hypothesis,LINE)
+          document.getElementById('hypothesisLoginButton').addEventListener('click', () => {
+            chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'userLoginForm' }, () => {
+              if (result.error) {
+                if (_.isFunction(callback)) {
+                  callback(new Error(result.error))
+                }
               } else {
-                console.debug('Still not logged in.')
+                console.debug('Logged in. Reloading...')
+                window.location.reload()
               }
             })
-          }, 2000)
+          })
+          if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
+            // Show login form for Hypothes.is in sidebar
+            $('#hypothesisLoginContainer').attr('aria-hidden', 'false')
+            // Start listening to when is logged in continuously
+            /* this.loggedInInterval = setInterval(() => {
+              window.abwa.annotationServerManager.reloadClient(() => {
+                window.abwa.annotationServerManager.isLoggedIn((err, result) => {
+                  if (_.isEmpty(err) || result) {
+                    console.debug('Logged in. Reloading...')
+                    window.location.reload()
+                  } else {
+                    console.debug('Still not logged in.')
+                  }
+                })
+              })
+            }, 2000) */
+          }
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(Neo4J, LINE)
+          if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, Neo4JClientManager)) {
+            $('#neo4jLoginContainer').attr('aria-hidden', 'false')
+          }
+          // Add to configuration link the URL to options page that is dynamic depending on the extension ID
+          document.getElementById('configurationPageUrlForNeo4jLogin').href = chrome.extension.getURL('pages/options.html')
+          // PVSCL:ENDCOND
+          if (_.isFunction(callback)) {
+            callback(new Error('Is not logged in'))
+          }
+        } else {
+          if (_.isFunction(callback)) {
+            callback()
+          }
         }
-        // PVSCL:ENDCOND
-        // PVSCL:IFCOND(Neo4J, LINE)
-        if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, Neo4JClientManager)) {
-          $('#neo4jLoginContainer').attr('aria-hidden', 'false')
-        }
-        // Add to configuration link the URL to options page that is dynamic depending on the extension ID
-        document.getElementById('configurationPageUrlForNeo4jLogin').href = chrome.extension.getURL('pages/options.html')
-        // PVSCL:ENDCOND
-        if (_.isFunction(callback)) {
-          callback(new Error('Is not logged in'))
-        }
-      } else {
-        if (_.isFunction(callback)) {
-          callback()
-        }
-      }
+      })
     })
   }
   // PVSCL:IFCOND(BuiltIn OR NOT(Codebook),LINE)

@@ -68,7 +68,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="izamyJvttk5t9t1_z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-10-19T10:57:17.001Z</cm:constant>
+          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-11-23T12:27:33.374Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipaIptNGXwqXJsHyV" cm:type="ps:string" cm:name="appName">
           <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">Web annotation client</cm:constant>
@@ -107,6 +107,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
 &lt;p&gt;For example: 1.1.12&lt;/p&gt;
 &lt;p&gt;&amp;nbsp;&lt;/p&gt;</cm:mimedesc>
           </cm:desc>
+        </cm:property>
+        <cm:property cm:id="iapoKiaR3oz2jfE3-" cm:type="ps:string" cm:inheritable="true" cm:name="userManualUrl">
+          <cm:constant cm:id="iebXLD8K5j3nKc1g6" cm:type="ps:string">https://github.com/onekin/WacLine/wiki/User-manuals</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:desc>
@@ -189,10 +192,13 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iBIvUb7jSVpQEtEul" cm:type="ps:datetime">2019-11-07T11:51:34.619Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i2j6SamNoGy0nW2O0" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i0fARwRG0val5OT2-" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="i0fARwRG0val5OT2-" cm:type="ps:string">pirqu</cm:constant>
         </cm:property>
         <cm:property cm:id="i8TELEMIqeqzRzCBV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iINUVTffUJCbQkyxc" cm:type="ps:datetime">2020-02-24T16:11:05.482Z</cm:constant>
+          <cm:constant cm:id="iINUVTffUJCbQkyxc" cm:type="ps:datetime">2020-11-23T10:25:56.657Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ij0fHjWN8cAII0Eau" cm:type="ps:string" cm:inheritable="true" cm:name="clientId">
+          <cm:constant cm:id="i-Syo51nb9SeBH8nS" cm:type="ps:string"></cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

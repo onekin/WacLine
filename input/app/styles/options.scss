@@ -1,9 +1,5 @@
 @import '../../node_modules/bootstrap/scss/bootstrap';
 
-.annotationServerConfiguration[aria-hidden="true"] {
-  display: none;
-}
-
 .requiredFormInput:after {
   color: red;
   content: " *";
@@ -12,4 +8,13 @@
 input:invalid {
   border-color: red;
   border-width: 2px;
+}
+
+.clickableInfoSpan {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+div[aria-hidden="true"] {
+  display: none;
 }

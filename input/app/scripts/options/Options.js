@@ -82,6 +82,25 @@ class Options {
       })
     })
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Hypothesis, LINE)
+    // Hypothesis login
+    this.hypothesisConfigurationContainerElement = document.querySelector('#hypothesisConfigurationCard')
+    this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLogin').addEventListener('click', this.createHypothesisLoginEventHandler())
+    this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLogout').addEventListener('click', this.createHypothesisLogoutEventHandler())
+    this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLoggedInUsername').addEventListener('click', this.createDisplayHypothesisLoginInfoEventHandler())
+    // Get token and username if logged in
+    chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
+      if (_.isString(token)) {
+        this.hypothesisToken = token
+        chrome.runtime.sendMessage({ scope: 'hypothesisClient', cmd: 'getUserProfile' }, (profile) => {
+          document.querySelector('#hypothesisLoggedInUsername').innerText = profile.userid
+        })
+        this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'true')
+      } else {
+        this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLoggedInContainer').setAttribute('aria-hidden', 'true')
+      }
+    })
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Neo4J, LINE)
     // Neo4J Configuration
     this.neo4JEndpointElement = document.querySelector('#neo4jEndpoint')
@@ -255,8 +274,8 @@ class Options {
     }
   }
   // PVSCL:ENDCOND
-
   // PVSCL:IFCOND(MoodleResource, LINE)
+
   updateAutoOpenCheckbox () {
     const isChecked = document.querySelector('#autoOpenCheckbox').checked
     chrome.runtime.sendMessage({
@@ -266,6 +285,49 @@ class Options {
     }, (response) => {
       console.debug('Api simulation is updated to: ' + response.activated)
     })
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Hypothesis, LINE)
+
+  createHypothesisLoginEventHandler () {
+    return () => {
+      chrome.runtime.sendMessage({
+        scope: 'hypothesis',
+        cmd: 'userLoginForm'
+      }, ({ token }) => {
+        this.hypothesisToken = token
+        setTimeout(() => {
+          chrome.runtime.sendMessage({ scope: 'hypothesisClient', cmd: 'getUserProfile' }, (profile) => {
+            document.querySelector('#hypothesisLoggedInUsername').innerText = profile.userid
+            document.querySelector('#hypothesisLoggedInContainer').setAttribute('aria-hidden', 'false')
+          })
+          document.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'true')
+        }, 1000) // Time before sending request, as background hypothes.is client refresh every second
+      })
+    }
+  }
+
+  createHypothesisLogoutEventHandler () {
+    return () => {
+      chrome.runtime.sendMessage({
+        scope: 'hypothesis',
+        cmd: 'userLogout'
+      }, () => {
+        document.querySelector('#hypothesisLoggedInContainer').setAttribute('aria-hidden', 'true')
+        document.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'false')
+        this.hypothesisToken = 'Unknown'
+        document.querySelector('#hypothesisLoggedInUsername').innerText = 'Unknown user'
+      })
+    }
+  }
+
+  createDisplayHypothesisLoginInfoEventHandler () {
+    return () => {
+      Alerts.infoAlert({
+        title: 'You are logged in Hypothes.is',
+        text: 'Token: ' + window.options.hypothesisToken
+      })
+    }
   }
   // PVSCL:ENDCOND
 }

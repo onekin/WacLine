@@ -25,7 +25,7 @@
         <div class="card-header bg-dark text-white">User manual</div>
         <div class="card-body">
           <div class="form-group">
-            Visit whenever you want the <a href="https://github.com/haritzmedina" target="_blank">user manual</a> for further information.
+            Visit whenever you want the <a href="PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('userManualUrl'))" target="_blank">user manual</a> for further information.
           </div>
         </div>
       </div>
@@ -61,7 +61,6 @@
             <label for="moodleUpdateNotificationCheckbox" class="form-check-label">Display "moodle is updated notification" while grading students assignments</label>
           </div>
         </div>
-        </div>
       </div>
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1,LINE)
@@ -86,6 +85,21 @@
             <button id="restoreDatabaseButton">Restore database</button>
             <button id="backupDatabaseButton">Backup database</button>
             <button id="deleteDatabaseButton">Delete database</button>
+          </div>
+        </div>
+      </div>
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(Hypothesis, LINE)
+      <!-- Hypothesis login -->
+      <div id="hypothesisConfigurationCard" class="card annotationServerConfiguration">
+        <div class="card-header bg-dark text-white">Hypothesis</div>
+        <div class="card-body">
+          <div id="hypothesisLoginContainer" class="configurationSectionContainer">
+            <button class="btn btn-secondary" id="hypothesisLogin">Log in</button>
+          </div>
+          <div id="hypothesisLoggedInContainer" class="configurationSectionContainer">
+            Logged in as <span id="hypothesisLoggedInUsername" class="clickableInfoSpan">Unknown user</span>
+            <button class="btn btn-secondary" id="hypothesisLogout">Log out</button>
           </div>
         </div>
       </div>

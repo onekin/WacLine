@@ -114,6 +114,7 @@ class MoodleBackgroundManager {
           })
         }
       }
+      return true
     })
   }
 
