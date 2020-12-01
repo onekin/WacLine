@@ -110,7 +110,8 @@ class Screenshots {
             this.moodleClientManager.addFeedbackSubmissionFile({
               itemId: '',
               contextId: '',
-              file: file
+              file: file,
+              callback: () => {}
             })
           })
         })
