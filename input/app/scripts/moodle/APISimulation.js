@@ -89,158 +89,41 @@ class APISimulation {
       if (err) {
         callback(err)
       } else {
-        let formdata = new FormData()
-        formdata.append('repo_upload_file', 'aaa')
-        formdata.append('sesskey', sessionKey)
-        formdata.append('action', 'upload')
-        formdata.append('client_id', '5c124b5dd5125')
-        formdata.append('itemid', data.itemId)
-        formdata.append('repo_id', 5)
-        formdata.append('p', '')
-        formdata.append('page', '')
-        formdata.append('env', 'filemanager')
-        formdata.append('maxbytes', 2097152)
-        formdata.append('areamaxbytes', -1)
-        formdata.append('ctx_id', data.contextId)
-        formdata.append('save_path', '/')
-        formdata.append('license', data.license)
-        formdata.append('author', data.author)
-        formdata.append('title', '')
+        let formDataJson = new FormData()
+        formDataJson.append('repo_upload_file', new Blob(['bbb'], { type: 'text/plain' }), 'bbb.txt')
+        formDataJson.append('sesskey', sessionKey)
+        formDataJson.append('action', 'upload')
+        formDataJson.append('client_id', '5c124b5dd5125')
+        formDataJson.append('itemid', '676805699')
+        formDataJson.append('repo_id', '5')
+        formDataJson.append('p', '')
+        formDataJson.append('page', '')
+        formDataJson.append('env', 'filemanager')
+        formDataJson.append('maxbytes', '2097152')
+        formDataJson.append('areamaxbytes', '-1')
+        formDataJson.append('ctx_id', '40')
+        formDataJson.append('save_path', '/')
+        formDataJson.append('license', data.license)
+        formDataJson.append('author', data.author)
+        formDataJson.append('title', '')
 
-        let urlencodeFormData = (fd) => {
-          let s = ''
-
-          function encode (s) { return encodeURIComponent(s).replace(/%20/g, '+') }
-
-          for (let pair of fd.entries()) {
-            if (typeof pair[1] === 'string') {
-              s += (s ? '&' : '') + encode(pair[0]) + '=' + encode(pair[1])
-            }
-          }
-          return s
-        }
-
-        let sendData = '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="repo_upload_file"; filename="aaa.txt"\r\n' +
-          'Content-Type: text/plain\r\n' +
-          '\r\n' +
-          'aaa\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="title"\r\n' +
-          '\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="author"\r\n' +
-          '\r\n' +
-          'Teacher Teacher\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="license"\r\n' +
-          '\r\n' +
-          'unknown\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="itemid"\r\n' +
-          '\r\n' +
-          '47539863\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="repo_id"\r\n' +
-          '\r\n' +
-          '5\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="p"\r\n' +
-          '\r\n' +
-          '\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="page"\r\n' +
-          '\r\n' +
-          '\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="env"\r\n' +
-          '\r\n' +
-          'filemanager\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="sesskey"\r\n' +
-          '\r\n' +
-          'lPMnreHTPw\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="client_id"\r\n' +
-          '\r\n' +
-          '5fb654e6bd5ad\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="itemid"\r\n' +
-          '\r\n' +
-          '47539863\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="maxbytes"\r\n' +
-          '\r\n' +
-          '2097152\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="areamaxbytes"\r\n' +
-          '\r\n' +
-          '-1\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="ctx_id"\r\n' +
-          '\r\n' +
-          '40\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1\r\n' +
-          'Content-Disposition: form-data; name="savepath"\r\n' +
-          '\r\n' +
-          '/\r\n' +
-          '------WebKitFormBoundaryifktYJ01c0PAhkb1--'
-
-        const xhr = new XMLHttpRequest()
-
-        xhr.addEventListener('load', (e) => {
-          console.log('sent')
-        })
-
-        xhr.addEventListener('error', (e) => {
-          console.log('error')
-        })
-
-        xhr.open('POST', moodleEndpoint + '/repository/repository_ajax.php?action=upload')
-
-        xhr.setRequestHeader('Content-Type', 'multipart/form-data; boundary=ifktYJ01c0PAhkb1')
-
-        xhr.send(sendData)
-
-        /* const settings = {
+        const settings = {
           async: true,
           crossDomain: true,
           url: moodleEndpoint + '/repository/repository_ajax.php',
           method: 'POST',
           headers: {
             'Cache-Control': 'no-cache',
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            'Content-Type': 'multipart/form-data;'
           },
           params: {
-            wsfunction: 'mod_assign_save_grade',
-            moodlewsrestformat: 'json'
+            action: 'upload'
           },
-          data: {
-            sesskey: sessionKey,
-            action: 'upload',
-            client_id: '5c124b5dd5125', // TODO Check if it works in all moodle versions: It is a random client ID
-            itemid: data.itemId,
-            repo_id: 5,
-            p: '',
-            page: '',
-            env: 'filemanager',
-            maxbytes: 2097152,
-            areamaxbytes: -1,
-            ctx_id: data.contextId,
-            save_path: '/',
-            license: data.license,
-            author: data.author,
-            title: '',
-            repo_upload_file: data.file
-          },
-          transformRequest: [(data) => {
-            return jsonFormData(data)
-          }]
-          data: urlencodeFormData(formdata)
+          data: formDataJson
         }
         axios(settings).then((response) => {
           callback(null, response.data)
-        }) */
+        })
       }
     })
   }

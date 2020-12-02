@@ -242,7 +242,8 @@ class MoodleReport {
         assignfeedbackcomments_editor: {
           format: '1', // HTML
           text: feedbackComment
-        }
+        },
+        files_filemanager: 2
       }
     }
   }
