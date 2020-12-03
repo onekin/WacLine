@@ -120,7 +120,7 @@ class MoodleClientManager {
   }
 
   addFeedbackSubmissionFile ({ file, callback }) {
-    APISimulation.addFeedbackSubmissionFile(this.moodleEndpoint, {
+    APISimulation.updateFeedbackSubmissionFile(this.moodleEndpoint, {
       contextId: window.abwa.targetManager.fileMetadata.contextId,
       itemId: window.abwa.targetManager.fileMetadata.itemId,
       file,

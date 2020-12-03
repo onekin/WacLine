@@ -5,6 +5,11 @@ import _ from 'lodash'
 import Config from '../../Config'
 import Events from '../../Events'
 import Commenting from '../purposes/Commenting'
+import APISimulation from '../../moodle/APISimulation'
+// PVSCL:IFCOND(TXT, LINE)
+import TXT from '../../target/formats/TXT'
+import AnnotatedFileGeneration from './AnnotatedFileGeneration'
+// PVSCL:ENDCOND
 // const linkifyUrls = require('linkify-urls')
 
 class MoodleReport {
@@ -29,37 +34,94 @@ class MoodleReport {
   }
 
   initEventListeners (callback) {
-    this.events.annotatedContentManagerUpdatedEvent = { element: document, event: Events.annotatedContentManagerUpdated, handler: this.createUpdateMoodleFromMarksEventListener() }
+    this.events.annotatedContentManagerUpdatedEvent = { element: document, event: Events.annotatedContentManagerUpdated, handler: this.createUpdateMoodleReportEventListener() }
     this.events.annotatedContentManagerUpdatedEvent.element.addEventListener(this.events.annotatedContentManagerUpdatedEvent.event, this.events.annotatedContentManagerUpdatedEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
     }
   }
 
-  createUpdateMoodleFromMarksEventListener () {
+  /**
+   * This function creates an event listener which will handle moodle report functionality. This includes: marks and feedback report comment generation and optionally file upload for plain-text-like files
+   * @returns {function(): void}
+   */
+  createUpdateMoodleReportEventListener () {
     return () => {
-      const annotatedThemes = window.abwa.annotatedContentManager.annotatedThemes
-      window.abwa.moodleReport.updateMoodleFromMarks(annotatedThemes, (err) => {
-        if (err) {
-          Alerts.errorAlert({
-            text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
-            title: 'Unable to update marks in moodle'
-          })
-        } else {
-          if (this.moodleUpdateNotificationEnabled) {
-            Alerts.temporalAlert({
-              text: 'Every change is updated in Moodle',
-              title: 'Correctly updated in Moodle',
-              type: Alerts.alertType.success,
-              toast: true
-            })
-          }
-        }
+      // TODO Check if user has marked automatic file upload functionality
+      // Generate and upload annotated file in moodle
+      let promise = window.abwa.moodleReport.uploadAnnotatedFileToMoodle()
+      // Update moodle marks from annotations
+      promise.then(({ fileItemId }) => {
+        window.abwa.moodleReport.updateMoodleRubricAndReport({ fileItemId })
       })
     }
   }
 
-  updateMoodleFromMarks (annotatedThemes, callback) {
+  uploadAnnotatedFileToMoodle () {
+    return new Promise((resolve, reject) => {
+      (async () => {
+        // TODO Retrieve teacher's preference for uploaded feedback files' license
+        let license = 'unknown'
+        // TODO Retrieve file submission file's author (teacher name in Moodle)
+        let author = 'Teacher Teacher'
+        // TODO Retrieve fileItemId (the file container for current student-assignment pair)
+        let fileItemId = window.abwa.targetManager.fileMetadata.feedbackFileItemId
+        // Generate submission file
+        let feedbackFile = await window.abwa.moodleReport.generateFileFromCurrentDocument()
+        // Upload file to the corresponding file area
+        APISimulation.updateFeedbackSubmissionFile(window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint, {
+          contextId: window.abwa.targetManager.fileMetadata.contextId,
+          itemId: fileItemId,
+          file: feedbackFile,
+          author: author,
+          license: license
+        }, () => {
+          resolve({ fileItemId: fileItemId })
+        })
+      })().catch(e => {
+        reject(e)
+      })
+    })
+  }
+
+  generateFileFromCurrentDocument (callback) {
+    return new Promise((resolve, reject) => {
+      if (window.abwa.targetManager.documentFormat === TXT) {
+        AnnotatedFileGeneration.generateAnnotatedFileForPlainTextFile((err, fileInStringFormat) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(new File([fileInStringFormat], window.abwa.targetManager.fileName + '_annotated.html' || 'activity_annotated.html', { type: 'text/html' }))
+          }
+        })
+      } else { // TODO Look if worth to implement the same functionality for PDF documents
+        reject(new Error('Current file type is not compatible'))
+      }
+    })
+  }
+
+  updateMoodleRubricAndReport ({ fileItemId }) {
+    const annotatedThemes = window.abwa.annotatedContentManager.annotatedThemes
+    window.abwa.moodleReport.updateMoodleFromMarks({ annotatedThemes, fileItemId }, (err) => {
+      if (err) {
+        Alerts.errorAlert({
+          text: 'Unable to push marks to moodle, please make sure that you are logged in Moodle and try it again.' + chrome.i18n.getMessage('ContactAdministrator', [err.message, err.stack]),
+          title: 'Unable to update marks in moodle'
+        })
+      } else {
+        if (this.moodleUpdateNotificationEnabled) {
+          Alerts.temporalAlert({
+            text: 'Every change is updated in Moodle',
+            title: 'Correctly updated in Moodle',
+            type: Alerts.alertType.success,
+            toast: true
+          })
+        }
+      }
+    })
+  }
+
+  updateMoodleFromMarks ({ annotatedThemes, fileItemId }, callback) {
     // Get all code annotations
     let annotations = []
     for (let i = 0; i < annotatedThemes.length; i++) {
@@ -127,13 +189,13 @@ class MoodleReport {
       }
       return { criteriaName, levelName, maxLevelName, text, url, feedbackCommentElement }
     })
-    console.log(marks)
+    console.debug(marks)
     // Reorder criterias as same as are presented in rubric
     const sortingArr = _.map(window.abwa.codebookManager.codebookReader.codebook.themes, 'name')
     marks.slice().sort((a, b) => {
       return sortingArr.indexOf(a.criteriaName) - sortingArr.indexOf(b.criteriaName)
     })
-    console.log(marks)
+    console.debug(marks)
     // Get for each criteria name and mark its corresponding criterionId and level from window.abwa.rubric
     const criterionAndLevels = this.getCriterionAndLevel(marks)
     const feedbackComment = this.getFeedbackComment(marks)
@@ -142,7 +204,8 @@ class MoodleReport {
       criterionAndLevels,
       userId: studentId,
       assignmentId: window.abwa.codebookManager.codebookReader.codebook.assignmentId,
-      feedbackComment: feedbackComment
+      feedbackComment: feedbackComment,
+      fileItemId
     })
     // Update student grading in moodle
     this.moodleClientManager.updateStudentGradeWithRubric(moodleGradingData, (err) => {
@@ -175,7 +238,7 @@ class MoodleReport {
       const remark = mark.text
       criterionAndLevel.push({ criterionId: criteria.moodleCriteriaId, levelid: level.moodleLevelId, remark })
     }
-    console.log(criterionAndLevel)
+    console.debug(criterionAndLevel)
     const resultingMarks = {}
     // TODO Append links if shared
     // Merge remarks with same criterionId and append remark
@@ -211,7 +274,7 @@ class MoodleReport {
     return feedbackComment
   }
 
-  composeMoodleGradingData ({ criterionAndLevels, userId, assignmentId, feedbackComment }) {
+  composeMoodleGradingData ({ criterionAndLevels, userId, assignmentId, feedbackComment, fileItemId }) {
     const rubric = { criteria: [] }
     for (let i = 0; i < criterionAndLevels.length; i++) {
       const criterionAndLevel = criterionAndLevels[i]
@@ -243,7 +306,7 @@ class MoodleReport {
           format: '1', // HTML
           text: feedbackComment
         },
-        files_filemanager: 2
+        files_filemanager: fileItemId
       }
     }
   }

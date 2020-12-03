@@ -83,47 +83,122 @@ class APISimulation {
     }
   }
 
-  static addFeedbackSubmissionFile (moodleEndpoint, data, callback) {
+  static async retrieveFeedbackFileItemId () {
+    if (window.abwa.targetManager.fileMetadata.feedbackFileItemId) {
+      return window.abwa.targetManager.fileMetadata.feedbackFileItemId
+    } else {
+
+    }
+  }
+
+  static updateFeedbackSubmissionFile (
+    moodleEndpoint,
+    { file, itemId, contextId, license, author },
+    callback
+  ) {
     // Retrieve session key
     APISimulation.getCurrentSessionKey(moodleEndpoint, (err, sessionKey) => {
       if (err) {
         callback(err)
       } else {
-        let formDataJson = new FormData()
-        formDataJson.append('repo_upload_file', new Blob(['bbb'], { type: 'text/plain' }), 'bbb.txt')
-        formDataJson.append('sesskey', sessionKey)
-        formDataJson.append('action', 'upload')
-        formDataJson.append('client_id', '5c124b5dd5125')
-        formDataJson.append('itemid', '676805699')
-        formDataJson.append('repo_id', '5')
-        formDataJson.append('p', '')
-        formDataJson.append('page', '')
-        formDataJson.append('env', 'filemanager')
-        formDataJson.append('maxbytes', '2097152')
-        formDataJson.append('areamaxbytes', '-1')
-        formDataJson.append('ctx_id', '40')
-        formDataJson.append('save_path', '/')
-        formDataJson.append('license', data.license)
-        formDataJson.append('author', data.author)
-        formDataJson.append('title', '')
-
-        const settings = {
-          async: true,
-          crossDomain: true,
-          url: moodleEndpoint + '/repository/repository_ajax.php',
-          method: 'POST',
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Content-Type': 'multipart/form-data;'
-          },
-          params: {
-            action: 'upload'
-          },
-          data: formDataJson
-        }
-        axios(settings).then((response) => {
-          callback(null, response.data)
+        // Delete previous file
+        APISimulation.deleteSubmissionFeedbackFile({
+          moodleEndpoint: moodleEndpoint,
+          itemId: itemId,
+          filename: file.name,
+          sessionKey: sessionKey
+        }, () => {
+          if (err) {
+            callback(err) // TODO Check if there is other way to treat this call result
+          } else {
+            APISimulation.addSubmissionFeedbackFile({
+              moodleEndpoint: moodleEndpoint,
+              file: file,
+              sessionKey: sessionKey,
+              itemId: itemId,
+              contextId: contextId,
+              license: license,
+              author: author
+            }, (err, result) => {
+              if (err) {
+                callback(err)
+              } else {
+                callback(null, result)
+              }
+            })
+          }
         })
+      }
+    })
+  }
+
+  static addSubmissionFeedbackFile ({ moodleEndpoint, file, sessionKey, itemId, contextId, license, author }, callback) {
+    let formDataJson = new FormData()
+    formDataJson.append('repo_upload_file', file)
+    formDataJson.append('sesskey', sessionKey)
+    formDataJson.append('action', 'upload')
+    formDataJson.append('client_id', '5c124b5dd5125')
+    formDataJson.append('itemid', itemId)
+    formDataJson.append('repo_id', '5') // TODO Check if this one work in all cases (check if necessary)
+    formDataJson.append('p', '')
+    formDataJson.append('page', '')
+    formDataJson.append('env', 'filemanager')
+    formDataJson.append('maxbytes', '2097152') // TODO This must be changed according to moodle installation config (check if necessary)
+    formDataJson.append('areamaxbytes', '-1')
+    formDataJson.append('ctx_id', contextId)
+    formDataJson.append('save_path', '/')
+    formDataJson.append('license', license)
+    formDataJson.append('author', author)
+    formDataJson.append('title', '')
+
+    const settings = {
+      async: true,
+      crossDomain: true,
+      url: moodleEndpoint + '/repository/repository_ajax.php',
+      method: 'POST',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'multipart/form-data;'
+      },
+      params: {
+        action: 'upload'
+      },
+      data: formDataJson
+    }
+    axios(settings).then((response) => {
+      // TODO If already uploaded, overwrite the file (delete and create again ¿?)
+      callback(null, response.data)
+    })
+  }
+
+  static deleteSubmissionFeedbackFile ({ moodleEndpoint, itemId, filename, sessionKey }, callback) {
+    let formData = new FormData()
+
+    formData.append('sesskey', sessionKey)
+    formData.append('client_id', '5c124b5dd5125')
+    formData.append('filepath', '/')
+    formData.append('itemid', itemId)
+    formData.append('filename', filename)
+
+    let settings = {
+      async: true,
+      crossDomain: true,
+      url: moodleEndpoint + '/repository/repository_ajax.php',
+      method: 'POST',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/x-www-form-urlencoded;'
+      },
+      params: {
+        action: 'delete'
+      },
+      data: formData
+    }
+    axios(settings).then((response) => {
+      if (response.filepath) {
+        callback(null, true)
+      } else {
+        callback(new Error('Unable to remove file from moodle'))
       }
     })
   }
@@ -135,11 +210,6 @@ class APISimulation {
         callback(err)
       } else {
         // Retrieve client_id for comment
-        /* APISimulation.getClientIdForComment({
-          moodleEndpoint, cmid: data.cmid, studentId: data.studentId, isTeacher: data.isTeacher
-        }, (err, clientId) => {
-
-        }) */
         const settings = {
           async: true,
           crossDomain: true,

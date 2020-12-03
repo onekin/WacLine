@@ -34,16 +34,22 @@ class MoodleGraderAugmentation {
         if (err) {
 
         } else {
+          let fileItemId = this.getFileItemId()
           const submittedFilesElements = submissionFilesContainer.querySelectorAll('a')
           // Change URLs of files elements
           _.forEach(submittedFilesElements, (submittedFileElement) => {
             submittedFileElement.href = submittedFileElement.href + '#studentId:' +
-              studentId + '&courseId:' + assignmentData.courseId + '&cmid:' + assignmentData.cmid
+              studentId + '&courseId:' + assignmentData.courseId + '&cmid:' + assignmentData.cmid +
+              '&fileItemId:' + fileItemId
           })
           console.debug('Modified submission files for current student ' + studentId)
         }
       })
     })
+  }
+
+  getFileItemId () {
+    return document.querySelector("input[id*='id_files_']").value
   }
 
   waitUntilUserInfoIsLoaded (callback) {

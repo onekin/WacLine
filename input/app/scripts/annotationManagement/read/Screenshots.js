@@ -5,6 +5,7 @@ import Alerts from '../../utils/Alerts'
 import _ from 'lodash'
 import PDF from '../../target/formats/PDF'
 import MoodleClientManager from '../../moodle/MoodleClientManager'
+import AnnotatedFileGeneration from './AnnotatedFileGeneration'
 
 window.html2canvas = html2canvas
 
@@ -84,37 +85,20 @@ class Screenshots {
         }
       })
     } else {
-      let htmlToGenerate = ''
-      let cssUrl = chrome.runtime.getURL('styles/contentScript.css')
-      fetch(cssUrl)
-        .then(result => result.text())
-        .then(css => {
-          htmlToGenerate += '<html><head><style>' + css + '</style></head>' + document.body.outerHTML
-          htmlToGenerate += '<script>\n' +
-            'document.querySelector(\'#abwaSidebarButton\').addEventListener(\'click\', () => {\n' +
-            '    let sidebarButton = document.querySelector(\'#abwaSidebarButton\')\n' +
-            '    sidebarButton.dataset.toggled = sidebarButton.dataset.toggled !== \'true\'\n' +
-            '    document.documentElement.dataset.sidebarShown = sidebarButton.dataset.toggled\n' +
-            '    document.querySelector(\'#abwaSidebarContainer\').dataset.shown = sidebarButton.dataset.toggled\n' +
-            '})\n' +
-            '</script>'
-          htmlToGenerate += '</html>'
+      AnnotatedFileGeneration.generateAnnotatedFileForPlainTextFile((err, fileInStringFormat) => {
+        if (err) {
+          Alerts.errorAlert({
+            title: 'Unexpected error while creating screenshot',
+            text: 'An error happend while generating the annotated file out from current document. Error: ' + err.message
+          })
+        } else {
           let a = document.createElement('a')
-          a.href = 'data:text/plain;base64,' + btoa(htmlToGenerate)
+          a.href = 'data:text/plain;base64,' + btoa(fileInStringFormat)
           a.textContent = 'download'
           a.download = window.abwa.targetManager.fileName + '_annotated.html' || 'activity_annotated.html'
           a.click()
-          this.moodleClientManager = new MoodleClientManager(window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint)
-          this.moodleClientManager.init(() => {
-            let file = new File(['aaa'], 'aaa.txt', { type: 'text/plain' })
-            this.moodleClientManager.addFeedbackSubmissionFile({
-              itemId: '',
-              contextId: '',
-              file: file,
-              callback: () => {}
-            })
-          })
-        })
+        }
+      })
     }
   }
 }
