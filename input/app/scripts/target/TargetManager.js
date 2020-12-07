@@ -198,6 +198,8 @@ class TargetManager {
           this.tryToLoadPlainTextFingerprint()
           this.fileMetadata.contextId = LanguageUtils.getStringBetween(this.fileMetadata.url, 'pluginfile.php/', '/assignsubmission_file')
           this.fileMetadata.itemId = LanguageUtils.getStringBetween(this.fileMetadata.url, 'submission_files/', '/')
+          // If document is loaded from moodle action=grading page (where list of all submissions appear) there is no way to load fileitemid, so need to retrieve it from grader page
+          this.retrieveMoodleFileItemId()
           // Metadata is loaded
           resolve()
         }
@@ -490,6 +492,25 @@ class TargetManager {
       }
     }
   }
+
+  // PVSCL:IFCOND(MoodleResource, LINE)
+  retrieveMoodleFileItemId () {
+    if (_.isEmpty(this.fileMetadata) || _.isEmpty(this.fileMetadata.feedbackFileItemId)) {
+      const APISimulation = require('../moodle/APISimulation').default
+      APISimulation.scrapFileItemId({
+        contextId: this.fileMetadata.contextId,
+        studentId: this.fileMetadata.studentId,
+        moodleEndpoint: this.url.split('pluginfile.php')[0]
+      }, (err, fileItemId) => {
+        if (err) {
+          // Nothing to do, silent error management
+        } else {
+          this.fileMetadata.fileItemId = fileItemId
+        }
+      })
+    }
+  }
+  // PVSCL:ENDCOND
 }
 
 export default TargetManager

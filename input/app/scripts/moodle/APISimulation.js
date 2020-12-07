@@ -1,6 +1,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 import jsonFormData from 'json-form-data'
+import DOM from '../utils/DOM'
 
 class APISimulation {
   static getRubric (cmids, callback) {
@@ -33,6 +34,63 @@ class APISimulation {
         }
       })
     // TODO Get table of rubrics
+  }
+
+  /**
+   * Given a moodle endpoint, context id and student id it tries to scrap from student's assignment file item id of feedback files submission
+   * @param moodleEndpoint
+   * @param contextId
+   * @param studentId
+   * @param callback
+   */
+  static scrapFileItemId ({ moodleEndpoint, contextId, studentId }, callback) {
+    APISimulation.getCurrentSessionKey(moodleEndpoint, (err, sessionKey) => {
+      if (err) {
+        callback(err)
+      } else {
+        try {
+          // Retrieve feedbackfileitem from moodle using the same call as the webpage use to this end
+          let body = [{
+            index: 0,
+            methodname: 'core_get_fragment',
+            args: {
+              component: 'mod_assign',
+              callback: 'gradingpanel',
+              contextid: contextId,
+              args: [{
+                name: 'userid', value: studentId
+              }, {
+                name: 'attemptnumber', value: -1
+              }, {
+                name: 'jsonformdata',
+                value: '""'
+              }]
+            }
+          }]
+          fetch('https://moodle.haritzmedina.com/lib/ajax/service.php?sesskey=' + sessionKey + '&info=core_get_fragment', {
+            headers: {
+              accept: 'application/json, text/javascript, */*; q=0.01',
+              'cache-control': 'no-cache',
+              'content-type': 'application/json',
+              pragma: 'no-cache'
+            },
+            body: JSON.stringify(body),
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'include'
+          }).then(result => result.json()).then(res => {
+            let elems = DOM.getNodeFromHTMLStringDOM(res[0].data.html, "input[id*='id_files_']")
+            if (NodeList.prototype.isPrototypeOf(elems) && _.isElement(elems[0])) {
+              callback(null, elems[0].value)
+            } else {
+              callback(new Error('Unable to retrieve file item id. Request is correctly done, but element was not found.'))
+            }
+          })
+        } catch (e) {
+          callback(e)
+        }
+      }
+    })
   }
 
   static getAssignmentName () {
@@ -166,7 +224,6 @@ class APISimulation {
       data: formDataJson
     }
     axios(settings).then((response) => {
-      // TODO If already uploaded, overwrite the file (delete and create again ¿?)
       callback(null, response.data)
     })
   }
@@ -183,7 +240,7 @@ class APISimulation {
     let settings = {
       async: true,
       crossDomain: true,
-      url: moodleEndpoint + '/repository/repository_ajax.php',
+      url: moodleEndpoint + '/repository/draftfiles_ajax.php',
       method: 'POST',
       headers: {
         'Cache-Control': 'no-cache',
@@ -267,6 +324,8 @@ class APISimulation {
       }
     })
   }
+
+
 
   static getClientIdForComment ({ moodleEndpoint, isTeacher, cmid, studentId }, callback) {
     const settings = {

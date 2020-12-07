@@ -32,12 +32,22 @@ class DOM {
    */
   static scrapElement (callSettings, querySelector, callback) {
     $.ajax(callSettings).done((resultString) => {
-      const tempWrapper = document.createElement('div')
-      tempWrapper.innerHTML = resultString
-      callback(null, tempWrapper.querySelectorAll(querySelector))
+      callback(null, DOM.getNodeFromHTMLStringDOM(resultString, querySelector))
     }).fail((error) => {
       callback(error)
     })
+  }
+
+  /**
+   * Given a html fragment in string format and query selector, parses it and retrieves the elements that accomplish with querySelector
+   * @param htmlString
+   * @param querySelector
+   * @returns {NodeListOf<*>}
+   */
+  static getNodeFromHTMLStringDOM (htmlString, querySelector) {
+    const tempWrapper = document.createElement('div')
+    tempWrapper.innerHTML = htmlString
+    return tempWrapper.querySelectorAll(querySelector)
   }
 
   static getNextNode (node, skipChildren, endNode) {
