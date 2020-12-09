@@ -47,12 +47,19 @@ class MoodleReport {
    */
   createUpdateMoodleReportEventListener () {
     return () => {
-      // TODO Check if user has marked automatic file upload functionality
-      // Generate and upload annotated file in moodle
-      let promise = window.abwa.moodleReport.uploadAnnotatedFileToMoodle()
-      // Update moodle marks from annotations
-      promise.then(({ fileItemId }) => {
-        window.abwa.moodleReport.updateMoodleRubricAndReport({ fileItemId })
+      // Check if user has marked automatic file upload functionality
+      chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isMoodleUploadAnnotatedFilesActivated' }, (isActivated) => {
+        let feedbackFileSubmissionPromise
+        if (isActivated.activated) {
+          // Generate and upload annotated file in moodle
+          feedbackFileSubmissionPromise = window.abwa.moodleReport.uploadAnnotatedFileToMoodle()
+        } else {
+          feedbackFileSubmissionPromise = Promise.resolve({ fileItemId: null })
+        }
+        // Update moodle marks from annotations
+        feedbackFileSubmissionPromise.then(({ fileItemId }) => {
+          window.abwa.moodleReport.updateMoodleRubricAndReport({ fileItemId })
+        })
       })
     }
   }
@@ -84,7 +91,7 @@ class MoodleReport {
     })
   }
 
-  generateFileFromCurrentDocument (callback) {
+  generateFileFromCurrentDocument () {
     return new Promise((resolve, reject) => {
       if (window.abwa.targetManager.documentFormat === TXT) {
         AnnotatedFileGeneration.generateAnnotatedFileForPlainTextFile((err, fileInStringFormat) => {
@@ -292,6 +299,15 @@ class MoodleReport {
         })
       }
     }
+    let plugindata = {
+      assignfeedbackcomments_editor: {
+        format: '1', // HTML
+        text: feedbackComment
+      }
+    }
+    if (fileItemId) {
+      plugindata.files_filemanager = fileItemId
+    }
     return {
       userid: userId + '',
       assignmentid: assignmentId,
@@ -301,13 +317,7 @@ class MoodleReport {
       applytoall: 1,
       grade: '0',
       advancedgradingdata: { rubric: rubric },
-      plugindata: {
-        assignfeedbackcomments_editor: {
-          format: '1', // HTML
-          text: feedbackComment
-        },
-        files_filemanager: fileItemId
-      }
+      plugindata: plugindata
     }
   }
 

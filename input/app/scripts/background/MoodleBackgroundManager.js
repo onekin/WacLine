@@ -112,6 +112,22 @@ class MoodleBackgroundManager {
               sendResponse({ saved: true })
             }
           })
+        } else if (request.cmd === 'isMoodleUploadAnnotatedFilesActivated') {
+          ChromeStorage.getData('moodleUploadAnnotatedFiles', ChromeStorage.sync, (err, isActivated) => {
+            if (err) {
+              sendResponse({ activated: false })
+            } else {
+              sendResponse(isActivated || { activated: true })
+            }
+          })
+        } else if (request.cmd === 'setMoodleUploadAnnotatedFilesNotification') {
+          ChromeStorage.setData('moodleUploadAnnotatedFiles', { activated: request.data.isActivated }, ChromeStorage.sync, (err, response) => {
+            if (err) {
+              sendResponse({ err: err, saved: false })
+            } else {
+              sendResponse({ saved: true })
+            }
+          })
         }
       }
       return true

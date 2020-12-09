@@ -130,6 +130,12 @@ class Options {
     document.querySelector('#moodleEndpoint').addEventListener('change', () => {
       this.updateMoodleEndpoint()
     })
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isMoodleUploadAnnotatedFilesActivated' }, (isActivated) => {
+      document.querySelector('#moodleUploadAnnotatedFilesCheckbox').checked = isActivated.activated
+    })
+    document.querySelector('#moodleUploadAnnotatedFilesCheckbox').addEventListener('change', () => {
+      this.updateMoodleUploadAnnotatedFilesCheckbox()
+    })
     // PVSCL:IFCOND(MoodleProvider, LINE)
     chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isMoodleUpdateNotificationActivated' }, (isActivated) => {
       document.querySelector('#moodleUpdateNotificationCheckbox').checked = isActivated.activated
@@ -272,6 +278,17 @@ class Options {
     } else {
       Alerts.errorAlert({ error: 'URL is malformed' }) // TODO i18n
     }
+  }
+
+  updateMoodleUploadAnnotatedFilesCheckbox () {
+    const isChecked = document.querySelector('#moodleUploadAnnotatedFilesCheckbox').checked
+    chrome.runtime.sendMessage({
+      scope: 'moodle',
+      cmd: 'setMoodleUploadAnnotatedFilesNotification',
+      data: { isActivated: isChecked }
+    }, (response) => {
+      console.debug('Moodle annotated file upload is updated to: ' + response.activated)
+    })
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleResource, LINE)
