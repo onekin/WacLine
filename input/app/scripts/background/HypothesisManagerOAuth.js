@@ -48,7 +48,9 @@ class HypothesisManagerOAuth {
   refreshHypothesisToken (callback) {
     // If refresh token exist refresh and return
     if (_.isObject(this.tokens)) {
-      this.client.refreshToken(this.tokens.refreshToken).then((tokens) => {
+      this.client.refreshToken(this.tokens.refreshToken).catch((err) => {
+        callback(err)
+      }).then((tokens) => {
         // Save refresh token in chrome storage
         this.saveTokensInStorage(tokens)
         this.tokens = tokens
