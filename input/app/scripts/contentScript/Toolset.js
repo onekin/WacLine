@@ -158,6 +158,8 @@ class Toolset {
       // Add menu when clicking on the button
       this.importExportButtonHandler()
       // PVSCL:ENDCOND
+      // Add link to configuration page of the tool
+      this.toolsetHeader.querySelector('#appNameBadge').href = chrome.extension.getURL('/pages/options.html')
       // PVSCL:IFCOND(CXLExportArchiveFile OR CXLImport, LINE)
       const cxlArchiveFileImageUrl = chrome.extension.getURL('/images/cxl.png')
       this.cxlArchiveFileImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)

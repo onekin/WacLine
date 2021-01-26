@@ -2,7 +2,7 @@
   "name": "__MSG_appName__",
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
-  "version": "0.0.1",
+  "version": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appVersion'))",
   "manifest_version": 2,
   "default_locale": "en",
   "icons": {
@@ -93,15 +93,15 @@
   },
   "permissions": [
     "https://hypothes.is/",
-    "storage",PVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer)
-    "identity",PVSCL:ENDCOND
-    "tabs"PVSCL:IFCOND(URN),
+    "activeTab",
+    "storage"PVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer),
+    "identity"PVSCL:ENDCONDPVSCL:IFCOND(URN),
     "downloads",
     "notifications",
     "file://*/*"PVSCL:ENDCONDPVSCL:IFCOND(URL),
-    "contextMenus",
+    "contextMenus"PVSCL:IFCOND(Dropbox or ScienceDirect or ACM or IEEE or Springer),
     "webRequest",
-    "webRequestBlocking"PVSCL:ENDCONDPVSCL:IFCOND(DOI),
+    "webRequestBlocking"PVSCL:ENDCONDPVSCL:ENDCONDPVSCL:IFCOND(DOI),
     "*://doi.org/*",
     "*://dx.doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),
     "*://www.sciencedirect.com/science/article/pii/*"PVSCL:ENDCONDPVSCL:IFCOND(Dropbox),

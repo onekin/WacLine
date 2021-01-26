@@ -17,16 +17,16 @@ class MoodleGradingAugmentation {
         })
         _.forEach(rows, (row) => {
           // Get student id
-          const studentId = (new URL(row.querySelector('a[href*="/user/view.php"').href)).searchParams.get('id')
+          const studentId = (new URL(row.querySelector('a[href*="/user/view.php"]').href)).searchParams.get('id')
           // Get student files
-          const submittedFilesElements = row.querySelectorAll('a[href*="assignsubmission_file/submission_files"')
+          const submittedFilesElements = row.querySelectorAll('a[href*="assignsubmission_file/submission_files"]')
           // Change URLs of files elements
           _.forEach(submittedFilesElements, (submittedFileElement) => {
             submittedFileElement.href = submittedFileElement.href + '#studentId:' +
               studentId + '&courseId:' + assignmentData.courseId + '&cmid:' + assignmentData.cmid
           })
           // When sent files are more than 5, files are not directly shown, you need to click and another website is opened with submitted files. See https://github.com/haritzmedina/MarkAndGo/issues/13
-          const assignmentSubmissionElement = row.querySelector('a[href*="action=viewpluginassignsubmission"')
+          const assignmentSubmissionElement = row.querySelector('a[href*="action=viewpluginassignsubmission"]')
           if (_.isElement(assignmentSubmissionElement)) {
             assignmentSubmissionElement.href = assignmentSubmissionElement.href + '&studentId=' + studentId
           }

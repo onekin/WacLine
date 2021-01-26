@@ -299,7 +299,7 @@ class Alerts {
   static tryToLoadSwal () {
     if (_.isNull(swal)) {
       try {
-        swal = require('sweetalert2')
+        swal = require('sweetalert2').default
       } catch (e) {
         swal = null
       }

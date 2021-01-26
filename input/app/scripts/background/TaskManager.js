@@ -151,7 +151,7 @@ class TaskManager {
       id: Math.random(),
       task: 'createHighlighters',
       activities: activities,
-      notification: 'The tool is prepared to mark ' + rubric.name + ' assignment. Would you like to mark them now?',
+      notification: 'The tool is prepared to mark ' + rubric.assignmentName + ' assignment. Would you like to mark them now?',
       notificationHandler: () => {
         chrome.tabs.create({ url: rubric.moodleEndpoint + 'mod/assign/view.php?id=' + rubric.cmid })
       }

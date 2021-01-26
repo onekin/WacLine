@@ -118,5 +118,8 @@
         "content": "$2"
       }
     }
+  },
+  "annotationServerLoginRequired": {
+    "message": "You need to login in the corresponding annotation server to start annotating. Check instructions to login in the sidebar and reload the page if it is not done automatically."
   }
 }

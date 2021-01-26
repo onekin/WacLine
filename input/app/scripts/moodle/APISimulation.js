@@ -1,6 +1,7 @@
 import axios from 'axios'
 import _ from 'lodash'
 import jsonFormData from 'json-form-data'
+import DOM from '../utils/DOM'
 
 class APISimulation {
   static getRubric (cmids, callback) {
@@ -33,6 +34,63 @@ class APISimulation {
         }
       })
     // TODO Get table of rubrics
+  }
+
+  /**
+   * Given a moodle endpoint, context id and student id it tries to scrap from student's assignment file item id of feedback files submission
+   * @param moodleEndpoint
+   * @param contextId
+   * @param studentId
+   * @param callback
+   */
+  static scrapFileItemId ({ moodleEndpoint, contextId, studentId }, callback) {
+    APISimulation.getCurrentSessionKey(moodleEndpoint, (err, sessionKey) => {
+      if (err) {
+        callback(err)
+      } else {
+        try {
+          // Retrieve feedbackfileitem from moodle using the same call as the webpage use to this end
+          let body = [{
+            index: 0,
+            methodname: 'core_get_fragment',
+            args: {
+              component: 'mod_assign',
+              callback: 'gradingpanel',
+              contextid: contextId,
+              args: [{
+                name: 'userid', value: studentId
+              }, {
+                name: 'attemptnumber', value: -1
+              }, {
+                name: 'jsonformdata',
+                value: '""'
+              }]
+            }
+          }]
+          fetch('https://moodle.haritzmedina.com/lib/ajax/service.php?sesskey=' + sessionKey + '&info=core_get_fragment', {
+            headers: {
+              accept: 'application/json, text/javascript, */*; q=0.01',
+              'cache-control': 'no-cache',
+              'content-type': 'application/json',
+              pragma: 'no-cache'
+            },
+            body: JSON.stringify(body),
+            method: 'POST',
+            mode: 'cors',
+            credentials: 'include'
+          }).then(result => result.json()).then(res => {
+            let elems = DOM.getNodeFromHTMLStringDOM(res[0].data.html, "input[id*='id_files_']")
+            if (NodeList.prototype.isPrototypeOf(elems) && _.isElement(elems[0])) {
+              callback(null, elems[0].value)
+            } else {
+              callback(new Error('Unable to retrieve file item id. Request is correctly done, but element was not found.'))
+            }
+          })
+        } catch (e) {
+          callback(e)
+        }
+      }
+    })
   }
 
   static getAssignmentName () {
@@ -83,6 +141,125 @@ class APISimulation {
     }
   }
 
+  static async retrieveFeedbackFileItemId () {
+    if (window.abwa.targetManager.fileMetadata.feedbackFileItemId) {
+      return window.abwa.targetManager.fileMetadata.feedbackFileItemId
+    } else {
+
+    }
+  }
+
+  static updateFeedbackSubmissionFile (
+    moodleEndpoint,
+    { file, itemId, contextId, license, author },
+    callback
+  ) {
+    // Retrieve session key
+    APISimulation.getCurrentSessionKey(moodleEndpoint, (err, sessionKey) => {
+      if (err) {
+        callback(err)
+      } else {
+        // Delete previous file
+        APISimulation.deleteSubmissionFeedbackFile({
+          moodleEndpoint: moodleEndpoint,
+          itemId: itemId,
+          filename: file.name,
+          sessionKey: sessionKey
+        }, () => {
+          if (err) {
+            callback(err) // TODO Check if there is other way to treat this call result
+          } else {
+            APISimulation.addSubmissionFeedbackFile({
+              moodleEndpoint: moodleEndpoint,
+              file: file,
+              sessionKey: sessionKey,
+              itemId: itemId,
+              contextId: contextId,
+              license: license,
+              author: author
+            }, (err, result) => {
+              if (err) {
+                callback(err)
+              } else {
+                callback(null, result)
+              }
+            })
+          }
+        })
+      }
+    })
+  }
+
+  static addSubmissionFeedbackFile ({ moodleEndpoint, file, sessionKey, itemId, contextId, license, author }, callback) {
+    let formDataJson = new FormData()
+    formDataJson.append('repo_upload_file', file)
+    formDataJson.append('sesskey', sessionKey)
+    formDataJson.append('action', 'upload')
+    formDataJson.append('client_id', '5c124b5dd5125')
+    formDataJson.append('itemid', itemId)
+    formDataJson.append('repo_id', '5') // TODO Check if this one work in all cases (check if necessary)
+    formDataJson.append('p', '')
+    formDataJson.append('page', '')
+    formDataJson.append('env', 'filemanager')
+    formDataJson.append('maxbytes', '2097152') // TODO This must be changed according to moodle installation config (check if necessary)
+    formDataJson.append('areamaxbytes', '-1')
+    formDataJson.append('ctx_id', contextId)
+    formDataJson.append('save_path', '/')
+    formDataJson.append('license', license)
+    formDataJson.append('author', author)
+    formDataJson.append('title', '')
+
+    const settings = {
+      async: true,
+      crossDomain: true,
+      url: moodleEndpoint + '/repository/repository_ajax.php',
+      method: 'POST',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'multipart/form-data;'
+      },
+      params: {
+        action: 'upload'
+      },
+      data: formDataJson
+    }
+    axios(settings).then((response) => {
+      callback(null, response.data)
+    })
+  }
+
+  static deleteSubmissionFeedbackFile ({ moodleEndpoint, itemId, filename, sessionKey }, callback) {
+    let formData = new FormData()
+
+    formData.append('sesskey', sessionKey)
+    formData.append('client_id', '5c124b5dd5125')
+    formData.append('filepath', '/')
+    formData.append('itemid', itemId)
+    formData.append('filename', filename)
+
+    let settings = {
+      async: true,
+      crossDomain: true,
+      url: moodleEndpoint + '/repository/draftfiles_ajax.php',
+      method: 'POST',
+      headers: {
+        'Cache-Control': 'no-cache',
+        'Content-Type': 'application/x-www-form-urlencoded;'
+      },
+      params: {
+        action: 'delete'
+      },
+      data: formData
+    }
+    axios(settings).then((response) => {
+      if (response.filepath) {
+        callback(null, true)
+      } else {
+        callback(new Error('Unable to remove file from moodle'))
+      }
+    })
+  }
+
   static addSubmissionComment (moodleEndpoint, data, callback) {
     // Retrieve session key
     APISimulation.getCurrentSessionKey(moodleEndpoint, (err, sessionKey) => {
@@ -90,11 +267,6 @@ class APISimulation {
         callback(err)
       } else {
         // Retrieve client_id for comment
-        /* APISimulation.getClientIdForComment({
-          moodleEndpoint, cmid: data.cmid, studentId: data.studentId, isTeacher: data.isTeacher
-        }, (err, clientId) => {
-
-        }) */
         const settings = {
           async: true,
           crossDomain: true,
@@ -152,6 +324,8 @@ class APISimulation {
       }
     })
   }
+
+
 
   static getClientIdForComment ({ moodleEndpoint, isTeacher, cmid, studentId }, callback) {
     const settings = {

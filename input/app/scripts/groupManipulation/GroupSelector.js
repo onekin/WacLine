@@ -14,7 +14,6 @@ import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisCl
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BuiltIn or ApplicationBased or NOT(Codebook), LINE)
 import Config from '../Config'
-import swal from 'sweetalert2'
 // PVSCL:IFCOND(Neo4J, LINE)
 import Neo4JClientManager from '../annotationServer/neo4j/Neo4JClientManager'
 // PVSCL:ENDCOND
@@ -32,6 +31,7 @@ class GroupSelector {
     this.groupFullName = null
     // PVSCL:ENDCOND
     this.loginWindow = null
+    this.loggedInInterval = null
   }
 
   init (callback) {
@@ -182,6 +182,7 @@ class GroupSelector {
               // If group cannot be retrieved from saved in extension annotationServer
               // PVSCL:IFCOND(BuiltIn or NOT(Codebook), LINE)
               // Try to load a group with defaultName
+              // TODO Refactoring required
               if (_.isEmpty(this.currentGroup)) {
                 if (!_.isEmpty(window.abwa.groupSelector.groups)) {
                   this.currentGroup = _.first(window.abwa.groupSelector.groups)
@@ -340,56 +341,50 @@ class GroupSelector {
     $.get(sidebarURL, (html) => {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))
-      if (!window.abwa.annotationServerManager.isLoggedIn()) {
-        // Display login/sign up form
-        $('#notLoggedInGroupContainer').attr('aria-hidden', 'false')
-        // Hide group container
-        $('#loggedInGroupContainer').attr('aria-hidden', 'true')
-        // Hide purposes wrapper
-        $('#purposesWrapper').attr('aria-hidden', 'true')
-        // Open the sidebar to notify user that needs to log in
-        window.abwa.sidebar.openSidebar()
-        // PVSCL:IFCOND(Hypothesis,LINE)
-        document.getElementById('hypothesisLoginButton').addEventListener('click', () => {
-          this.loginWindow = window.open('https://hypothes.is/login')
-        })
-        document.getElementById('hypothesisRegisterButton').addEventListener('click', () => {
-          this.loginWindow = window.open('https://hypothes.is/signup')
-        })
-        if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
-          // Show login form for Hypothes.is in sidebar
-          $('#hypothesisLoginContainer').attr('aria-hidden', 'false')
-          // Start listening to when is logged in continuously
-          chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'startListeningLogin' })
-          setInterval(() => {
-            window.abwa.annotationServerManager.reloadClient(() => {
-              if (window.abwa.annotationServerManager.isLoggedIn()) {
-                chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'stopListeningLogin' })
-                console.debug('Logged in. Reloading...')
-                this.loginWindow.close()
-                window.location.reload()
+      window.abwa.annotationServerManager.isLoggedIn((err, result) => {
+        if (err || !result) {
+          // Display login/sign up form
+          $('#notLoggedInGroupContainer').attr('aria-hidden', 'false')
+          // Hide group container
+          $('#loggedInGroupContainer').attr('aria-hidden', 'true')
+          // Hide purposes wrapper
+          $('#purposesWrapper').attr('aria-hidden', 'true')
+          // Open the sidebar to notify user that needs to log in
+          window.abwa.sidebar.openSidebar()
+          // PVSCL:IFCOND(Hypothesis,LINE)
+          document.getElementById('hypothesisLoginButton').addEventListener('click', () => {
+            chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'userLoginForm' }, () => {
+              if (result.error) {
+                if (_.isFunction(callback)) {
+                  callback(new Error(result.error))
+                }
               } else {
-                console.debug('Still not logged in.')
+                console.debug('Logged in. Reloading...')
+                window.location.reload()
               }
             })
-          }, 2000)
+          })
+          if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
+            // Show login form for Hypothes.is in sidebar
+            $('#hypothesisLoginContainer').attr('aria-hidden', 'false')
+          }
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(Neo4J, LINE)
+          if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, Neo4JClientManager)) {
+            $('#neo4jLoginContainer').attr('aria-hidden', 'false')
+          }
+          // Add to configuration link the URL to options page that is dynamic depending on the extension ID
+          document.getElementById('configurationPageUrlForNeo4jLogin').href = chrome.extension.getURL('pages/options.html')
+          // PVSCL:ENDCOND
+          if (_.isFunction(callback)) {
+            callback(new Error('Is not logged in'))
+          }
+        } else {
+          if (_.isFunction(callback)) {
+            callback()
+          }
         }
-        // PVSCL:ENDCOND
-        // PVSCL:IFCOND(Neo4J, LINE)
-        if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, Neo4JClientManager)) {
-          $('#neo4jLoginContainer').attr('aria-hidden', 'false')
-        }
-        // Add to configuration link the URL to options page that is dynamic depending on the extension ID
-        document.getElementById('configurationPageUrlForNeo4jLogin').href = chrome.extension.getURL('pages/options.html')
-        // PVSCL:ENDCOND
-        if (_.isFunction(callback)) {
-          callback(new Error('Is not logged in'))
-        }
-      } else {
-        if (_.isFunction(callback)) {
-          callback()
-        }
-      }
+      })
     })
   }
   // PVSCL:IFCOND(BuiltIn OR NOT(Codebook),LINE)
@@ -587,7 +582,7 @@ class GroupSelector {
       preConfirm: (groupName) => {
         if (_.isString(groupName)) {
           if (groupName.length <= 0) {
-            // import swal from 'sweetalert2'
+            const swal = require('sweetalert2').default
             swal.showValidationMessage('Name cannot be empty.')
           } else if (groupName.length > 25) {
             // PVSCL:IFCOND(TopicBased, LINE)
@@ -597,7 +592,7 @@ class GroupSelector {
             console.log(groupName)
             return groupName
             // PVSCL:ELSECOND
-            // const swal = require('sweetalert2').default
+            const swal = require('sweetalert2').default
             swal.showValidationMessage('The codebook name cannot be higher than 25 characters.')
             // PVSCL:ENDCOND
           } else {

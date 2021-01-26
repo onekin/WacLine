@@ -20,5 +20,9 @@
 @import 'toolset';
 @import 'userFilter';
 @import './textAnnotator';
+/* PVSCL:IFCOND(SuggestedLiterature, LINE) */
 @import './reviewAssistant';
+/* PVSCL:ENDCOND */
+/* PVSCL:IFCOND(Canvas, LINE) */
 @import './reviewCanvas';
+/* PVSCL:ENDCOND */

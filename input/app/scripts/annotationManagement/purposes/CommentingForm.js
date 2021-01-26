@@ -64,7 +64,7 @@ class CommentingForm {
         title: title || '',
         html: html,
         onBeforeOpen: onBeforeOpen,
-        // position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
+        position: Alerts.position.bottom, // TODO Must be check if it is better to show in bottom or not
         callback: swalCallback,
         preConfirm: preConfirm
       })
@@ -122,7 +122,7 @@ class CommentingForm {
       const previousAssignments = window.abwa.previousAssignments.retrievePreviousAssignments()
       return window.abwa.previousAssignments.createPreviousAssignmentsUI(previousAssignments)
     } else {
-      return ''
+      return document.createElement('div') // Return an empty div
     }
   }
   // PVSCL:ENDCOND
@@ -185,7 +185,7 @@ class CommentingForm {
   static generateCommentFormHTML ({ annotation, addingHtml }) {
     let html = addingHtml || ''
     // PVSCL:IFCOND(PreviousAssignments,LINE)
-    html += CommentingForm.getPreviousAssignmentsUI().outerHTML
+    html += CommentingForm.getPreviousAssignmentsUI().outerHTML || ''
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(Categorize, LINE)
     const select = document.createElement('select')

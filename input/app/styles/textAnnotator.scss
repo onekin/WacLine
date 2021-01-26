@@ -59,3 +59,9 @@ body > pre {
   width: 100%;
 }
 /* PVSCL:ENDCOND */
+
+/* PVSCL:IFCOND(Commenting, LINE) */
+.swal2-bottom > div {
+  margin-bottom: 75px;
+}
+/* PVSCL:ENDCOND */

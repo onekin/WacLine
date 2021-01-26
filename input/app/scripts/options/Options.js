@@ -112,6 +112,25 @@ class Options {
       }
     })
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Hypothesis, LINE)
+    // Hypothesis login
+    this.hypothesisConfigurationContainerElement = document.querySelector('#hypothesisConfigurationCard')
+    this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLogin').addEventListener('click', this.createHypothesisLoginEventHandler())
+    this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLogout').addEventListener('click', this.createHypothesisLogoutEventHandler())
+    this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLoggedInUsername').addEventListener('click', this.createDisplayHypothesisLoginInfoEventHandler())
+    // Get token and username if logged in
+    chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
+      if (_.isString(token)) {
+        this.hypothesisToken = token
+        chrome.runtime.sendMessage({ scope: 'hypothesisClient', cmd: 'getUserProfile' }, (profile) => {
+          document.querySelector('#hypothesisLoggedInUsername').innerText = profile.userid
+        })
+        this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'true')
+      } else {
+        this.hypothesisConfigurationContainerElement.querySelector('#hypothesisLoggedInContainer').setAttribute('aria-hidden', 'true')
+      }
+    })
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Neo4J, LINE)
     // Neo4J Configuration
     this.neo4JEndpointElement = document.querySelector('#neo4jEndpoint')
@@ -141,6 +160,20 @@ class Options {
     document.querySelector('#moodleEndpoint').addEventListener('change', () => {
       this.updateMoodleEndpoint()
     })
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isMoodleUploadAnnotatedFilesActivated' }, (isActivated) => {
+      document.querySelector('#moodleUploadAnnotatedFilesCheckbox').checked = isActivated.activated
+    })
+    document.querySelector('#moodleUploadAnnotatedFilesCheckbox').addEventListener('change', () => {
+      this.updateMoodleUploadAnnotatedFilesCheckbox()
+    })
+    // PVSCL:IFCOND(MoodleProvider, LINE)
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isMoodleUpdateNotificationActivated' }, (isActivated) => {
+      document.querySelector('#moodleUpdateNotificationCheckbox').checked = isActivated.activated
+    })
+    document.querySelector('#moodleUpdateNotificationCheckbox').addEventListener('change', () => {
+      this.updateMoodleUpdateNotificationCheckbox()
+    })
+    // PVSCL:ENDCOND
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleResource, LINE)
     chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isAutoOpenFilesActivated' }, (isActivated) => {
@@ -233,6 +266,17 @@ class Options {
   }
   // PVSCL:IFCOND(MoodleProvider or MoodleConsumer, LINE)
 
+  updateMoodleUpdateNotificationCheckbox () {
+    const isChecked = document.querySelector('#moodleUpdateNotificationCheckbox').checked
+    chrome.runtime.sendMessage({
+      scope: 'moodle',
+      cmd: 'setMoodleUpdateNotification',
+      data: { isActivated: isChecked }
+    }, (response) => {
+      console.debug('Moodle update notification is updated to: ' + response.activated)
+    })
+  }
+
   updateApiSimulationCheckbox () {
     const isChecked = document.querySelector('#apiSimulationCheckbox').checked
     chrome.runtime.sendMessage({
@@ -265,8 +309,18 @@ class Options {
       Alerts.errorAlert({ error: 'URL is malformed' }) // TODO i18n
     }
   }
-  // PVSCL:ENDCOND
 
+  updateMoodleUploadAnnotatedFilesCheckbox () {
+    const isChecked = document.querySelector('#moodleUploadAnnotatedFilesCheckbox').checked
+    chrome.runtime.sendMessage({
+      scope: 'moodle',
+      cmd: 'setMoodleUploadAnnotatedFilesNotification',
+      data: { isActivated: isChecked }
+    }, (response) => {
+      console.debug('Moodle annotated file upload is updated to: ' + response.activated)
+    })
+  }
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleResource, LINE)
 
   updateAutoOpenCheckbox () {
@@ -279,9 +333,9 @@ class Options {
       console.debug('Api simulation is updated to: ' + response.activated)
     })
   }
-
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+
   checkCmapCloudValues (user, password) {
     document.querySelector('#uidValue').className = 'textMessage'
     document.querySelector('#uidValue').innerHTML = 'Validating given credentials ... wait a moment please.'
@@ -304,6 +358,49 @@ class Options {
         document.querySelector('#uidValue').innerHTML = 'Unable to retrieve the user id for the given credentials.'
       }
     })
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Hypothesis, LINE)
+
+  createHypothesisLoginEventHandler () {
+    return () => {
+      chrome.runtime.sendMessage({
+        scope: 'hypothesis',
+        cmd: 'userLoginForm'
+      }, ({ token }) => {
+        this.hypothesisToken = token
+        setTimeout(() => {
+          chrome.runtime.sendMessage({ scope: 'hypothesisClient', cmd: 'getUserProfile' }, (profile) => {
+            document.querySelector('#hypothesisLoggedInUsername').innerText = profile.userid
+            document.querySelector('#hypothesisLoggedInContainer').setAttribute('aria-hidden', 'false')
+          })
+          document.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'true')
+        }, 1000) // Time before sending request, as background hypothes.is client refresh every second
+      })
+    }
+  }
+
+  createHypothesisLogoutEventHandler () {
+    return () => {
+      chrome.runtime.sendMessage({
+        scope: 'hypothesis',
+        cmd: 'userLogout'
+      }, () => {
+        document.querySelector('#hypothesisLoggedInContainer').setAttribute('aria-hidden', 'true')
+        document.querySelector('#hypothesisLoginContainer').setAttribute('aria-hidden', 'false')
+        this.hypothesisToken = 'Unknown'
+        document.querySelector('#hypothesisLoggedInUsername').innerText = 'Unknown user'
+      })
+    }
+  }
+
+  createDisplayHypothesisLoginInfoEventHandler () {
+    return () => {
+      Alerts.infoAlert({
+        title: 'You are logged in Hypothes.is',
+        text: 'Token: ' + window.options.hypothesisToken
+      })
+    }
   }
   // PVSCL:ENDCOND
 }

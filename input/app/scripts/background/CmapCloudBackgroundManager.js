@@ -37,6 +37,7 @@ class CmapCloudBackgroundManager {
               sendResponse({ data: userData })
             }
           })
+          return true // Async response
         } else if (request.cmd === 'getRootFolderInfo') {
           if (_.isString(request.data.uid)) {
             let uid = request.data.uid
@@ -50,6 +51,7 @@ class CmapCloudBackgroundManager {
             })
           }
         }
+        return true // Async response
       }
     })
   }

@@ -16,7 +16,7 @@ import RandomUtils from '../utils/RandomUtils'
 // PVSCL:IFCOND(URN, LINE)
 import CryptoUtils from '../utils/CryptoUtils'
 // PVSCL:ENDCOND
-const URL_CHANGE_INTERVAL_IN_SECONDS = 1
+const URL_CHANGE_INTERVAL_IN_SECONDS = 5
 
 class TargetManager {
   constructor () {
@@ -25,6 +25,7 @@ class TargetManager {
     this.urlParam = null
     this.documentId = null
     this.documentTitle = ''
+    this.fileName = ''
     // PVSCL:IFCOND(HTML, LINE)
     this.documentFormat = HTML // By default document type is html
     // PVSCL:ELSEIFCOND(PDF, LINE)
@@ -70,12 +71,6 @@ class TargetManager {
       this.tryToLoadURL()
       this.tryToLoadURN()
       this.tryToLoadTargetId()
-      if (this.url.startsWith('file:///')) {
-        this.localFile = true
-      } else if (this.documentFormat !== PDF) { // If document is not pdf, it can change its URL
-        // Support in ajax websites web url change, web url can change dynamically, but local files never do
-        this.initSupportWebURLChange()
-      }
       let promise
       // PVSCL:IFCOND(MoodleResource, LINE)
       promise = this.retrievePromiseLoadMoodleMetadata()
@@ -83,6 +78,13 @@ class TargetManager {
       promise = Promise.resolve()
       // PVSCL:ENDCOND
       promise.then(() => {
+        this.tryToLoadFileName()
+        if (this.url.startsWith('file:///')) {
+          this.localFile = true
+        } else if (this.documentFormat !== PDF && !this.localFile) { // If document is not pdf, it can change its URL
+          // Support in ajax websites web url change, web url can change dynamically, but local files never do
+          this.initSupportWebURLChange()
+        }
         if (_.isFunction(callback)) {
           callback()
         }
@@ -153,7 +155,7 @@ class TargetManager {
           resolve()
         })
         return true
-      } /* PVSCL:IFCOND(TXT) */else if (document.body && document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') { // TODO Check if document is loaded in content/plainTextFileViewer
+      } /* PVSCL:IFCOND(TXT) */else if ((document.body && document.body.children.length === 1 && document.body.children[0].nodeName === 'PRE') || window.location.pathname === '/content/plainTextFileViewer/index.html') { // TODO Check if document is loaded in content/plainTextFileViewer
         // TODO Check if document.body is loaded or not yet
         this.documentFormat = TXT
         resolve()
@@ -183,6 +185,7 @@ class TargetManager {
       } else {
         url = URLUtils.retrieveMainUrl(window.location.href)
       }
+      this.localFile = true
       chrome.runtime.sendMessage({ scope: 'annotationFile', cmd: 'fileMetadata', data: { filepath: url } }, (fileMetadata) => {
         if (_.isEmpty(fileMetadata)) {
           this.url = URLUtils.retrieveMainUrl(window.location.href)
@@ -195,6 +198,8 @@ class TargetManager {
           this.tryToLoadPlainTextFingerprint()
           this.fileMetadata.contextId = LanguageUtils.getStringBetween(this.fileMetadata.url, 'pluginfile.php/', '/assignsubmission_file')
           this.fileMetadata.itemId = LanguageUtils.getStringBetween(this.fileMetadata.url, 'submission_files/', '/')
+          // If document is loaded from moodle action=grading page (where list of all submissions appear) there is no way to load fileitemid, so need to retrieve it from grader page
+          this.retrieveMoodleFileItemId()
           // Metadata is loaded
           resolve()
         }
@@ -283,7 +288,12 @@ class TargetManager {
   }
 
   getDocumentURIToSearchInAnnotationServer () {
+    // Searches are done using uri and url parameters that hypothes.is (and other annotation systems) supports.
+    // This includes options in the search query this function and getDocumentURIToSaveInAnnotationServer.
+    // As the second one prioritize resilient URLs, this function gives priority to URN
     if (this.documentFormat === PDF) {
+      return this.urn
+    } else if (this.documentFormat === TXT) {
       return this.urn
     } else {
       return this.url
@@ -327,7 +337,7 @@ class TargetManager {
     const fileTextContentElement = document.querySelector('body > pre')
     if (fileTextContentElement) {
       const fileTextContent = fileTextContentElement.innerText
-      return CryptoUtils.hash(fileTextContent.innerText)
+      return CryptoUtils.hash(fileTextContent)
     }
   }
   // PVSCL:ENDCOND
@@ -364,19 +374,21 @@ class TargetManager {
 
   isPlainTextFile () {
     let result = false
-    if (document.querySelector('body').children.length === 1 && _.isElement(document.querySelector('body > pre'))) { // It is opened with default plain text viewer in chrome
-      result = true
-    } else {
-      if (document.querySelector('#webkit-xml-viewer-source-xml')) { // It is loaded with default xml viewer
+    if (window.location.pathname !== '/content/pdfjs/web/viewer.html') {
+      if (document.querySelector('body').children.length === 1 && _.isElement(document.querySelector('body > pre'))) { // It is opened with default plain text viewer in chrome
         result = true
       } else {
-        if (window.location.pathname !== '/content/plainTextFileViewer/index.html') {
-          // PVSCL:IFCOND(NOT (MoodleResource), LINE) // It is plain text file but it is already opened with custom plain text viewer
-          const extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
-          result = 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
-          // PVSCL:ELSECOND // When is downloaded from moodle it must be always be opened with custom viewer to ensure CORS over moodle is not applied
+        if (document.querySelector('#webkit-xml-viewer-source-xml')) { // It is loaded with default xml viewer
           result = true
-          // PVSCL:ENDCOND
+        } else {
+          if (window.location.pathname !== '/content/plainTextFileViewer/index.html') {
+            // PVSCL:IFCOND(NOT (MoodleResource), LINE) // It is plain text file but it is already opened with custom plain text viewer
+            const extension = window.location.href.split('.').pop().split(/#|\?/g)[0]
+            result = 'xml,xsl,xslt,xquery,xsql,'.split(',').includes(extension)
+            // PVSCL:ELSECOND // When is downloaded from moodle it must be always be opened with custom viewer to ensure CORS over moodle is not applied
+            result = true
+            // PVSCL:ENDCOND
+          }
         }
       }
     }
@@ -459,6 +471,46 @@ class TargetManager {
   getDocumentId () {
     return this.documentId || RandomUtils.randomString()
   }
+
+  tryToLoadFileName () {
+    // PVSCL:IFCOND(MoodleResource, LINE)
+    // Get filename from moodle URL
+    try {
+      let filename = (/submission_files\/(.*)\/(.*)\?forcedownload=1/gm).exec(this.url)[2]
+      if (!_.isEmpty(filename)) {
+        this.fileName = filename
+      }
+    } catch (e) {
+      console.error('Unable to retrieve name from file downloaded from moodle')
+    }
+    // PVSCL:ENDCOND
+    // Get name from URL
+    if (_.isEmpty(this.fileName) && this.url) {
+      let filename = _.last(_.split((new URL(this.url)).pathname, '/'))
+      if (!_.isEmpty(filename)) {
+        this.fileName = filename
+      }
+    }
+  }
+
+  // PVSCL:IFCOND(MoodleResource, LINE)
+  retrieveMoodleFileItemId () {
+    if (_.isEmpty(this.fileMetadata) || _.isEmpty(this.fileMetadata.feedbackFileItemId)) {
+      const APISimulation = require('../moodle/APISimulation').default
+      APISimulation.scrapFileItemId({
+        contextId: this.fileMetadata.contextId,
+        studentId: this.fileMetadata.studentId,
+        moodleEndpoint: this.url.split('pluginfile.php')[0]
+      }, (err, fileItemId) => {
+        if (err) {
+          // Nothing to do, silent error management
+        } else {
+          this.fileMetadata.fileItemId = fileItemId
+        }
+      })
+    }
+  }
+  // PVSCL:ENDCOND
 }
 
 export default TargetManager

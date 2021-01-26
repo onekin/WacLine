@@ -60,15 +60,15 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="icv3bKA3BND-DPoJI" cm:type="ps:datetime">2019-11-07T11:39:58.469Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iv210VYiJEpozoArk" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="izamyJvttk5t9t1_z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-02-06T10:06:12.006Z</cm:constant>
+          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2021-01-26T13:46:57.916Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipaIptNGXwqXJsHyV" cm:type="ps:string" cm:name="appName">
-          <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">WebAnnotator</cm:constant>
+          <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">Web annotation client</cm:constant>
         </cm:property>
-        <cm:property cm:id="ikd06TuWH0GM-TRbB" cm:type="ps:string" cm:name="appShortName">
+        <cm:property cm:id="ikd06TuWH0GM-TRbB" cm:type="ps:string" cm:fixed="true" cm:name="appShortName">
           <cm:constant cm:id="i0KxubGKI8HcRImfH" cm:type="ps:string">oa</cm:constant>
         </cm:property>
         <cm:property cm:id="iYoalgh7V2S1hh0Ba" cm:type="ps:string" cm:name="appDescription">
@@ -76,6 +76,12 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:property>
         <cm:property cm:id="iPbotzrtzWXGUgGrQ" cm:type="ps:string" cm:name="key">
           <cm:constant cm:id="iXFgjBJ-zzXtaLPyv" cm:type="ps:string"></cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYuM7N7dRcMGZxNk-" cm:type="ps:string" cm:name="appVersion">
+          <cm:constant cm:id="i6Q94V84AklLusF5P" cm:type="ps:string">0.0.1</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJML-QuP9BZDq9JNf" cm:type="ps:string" cm:name="userManualUrl">
+          <cm:constant cm:id="i3k5UraUW0uOLlG6H" cm:type="ps:string">https://github.com/onekin/WacLine/wiki/User-manuals</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -149,7 +155,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="i0fARwRG0val5OT2-" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="i8TELEMIqeqzRzCBV" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iINUVTffUJCbQkyxc" cm:type="ps:datetime">2020-01-15T15:29:08.935Z</cm:constant>
+          <cm:constant cm:id="iINUVTffUJCbQkyxc" cm:type="ps:datetime">2021-01-26T13:48:18.828Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijwwJ-zvP_JB34XlB" cm:type="ps:string" cm:name="clientId">
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -1490,6 +1498,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="ixLh6QBazolvVwM0p">./itA1S9T7cBw2iXff8</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:relations cm:id="itKgvkkSLLl3iz86E" cm:class="ps:dependencies">
+        <cm:relation cm:id="itFNzgZAsHnjybbMs" cm:type="ps:requires">
+          <cm:target cm:id="iE8dKhpecCdnybU28">iivhJRwmojkiJvYc5/ieFZrnU5hSRcf0lcM</cm:target>
+        </cm:relation>
+      </cm:relations>
       <cm:properties>
         <cm:property cm:id="iDaZbdlMN1BkRHA1k" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="iHfHv-g-fxHDbEwPe" cm:type="ps:string">haritz</cm:constant>
@@ -1498,10 +1511,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="izOYCnR0iafKw4Dt6" cm:type="ps:datetime">2019-11-07T11:57:45.594Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iu4y-VRWuyH26-DvL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iyoZcdE6N0v1kCJUO" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iyoZcdE6N0v1kCJUO" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iH_O8ySA4PxNGN-59" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="imSNSRsDjKE7_Cmd1" cm:type="ps:datetime">2020-01-27T17:14:04.428Z</cm:constant>
+          <cm:constant cm:id="imSNSRsDjKE7_Cmd1" cm:type="ps:datetime">2021-01-26T13:52:02.330Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ivoGkUam8WoLPHvEr" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="iYopaaPrxFqW84R6a" cm:type="ps:string"></cm:constant>

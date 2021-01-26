@@ -243,6 +243,18 @@ class Theme {
     }
   }
   // PVSCL:ENDCOND
+
+  maxCode () {
+    try {
+      if (_.every(this.codes.map(code => _.isNumber(parseFloat(code.name))))) { // All elements are numbers
+        return _.maxBy(this.codes, (code) => { return parseFloat(code.name) })
+      } else {
+        return null
+      }
+    } catch (e) {
+      return null
+    }
+  }
 }
 
 export default Theme

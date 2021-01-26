@@ -41,10 +41,10 @@ class AnnotationImporter {
           preConfirm: (groupName) => {
             if (_.isString(groupName)) {
               if (groupName.length <= 0) {
-                const swal = require('sweetalert2')
+                const swal = require('sweetalert2').default
                 swal.showValidationMessage('Name cannot be empty.')
               } else if (groupName.length > 25) {
-                const swal = require('sweetalert2')
+                const swal = require('sweetalert2').default
                 swal.showValidationMessage('The review model name cannot be higher than 25 characters.')
               } else {
                 return groupName

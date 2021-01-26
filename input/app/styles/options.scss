@@ -21,3 +21,12 @@ input:invalid {
 .textMessage {
   color: black;
 }
+
+.clickableInfoSpan {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+div[aria-hidden="true"] {
+  display: none;
+}

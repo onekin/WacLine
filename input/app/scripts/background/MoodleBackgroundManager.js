@@ -83,9 +83,9 @@ class MoodleBackgroundManager {
         } else if (request.cmd === 'isAutoOpenFilesActivated') {
           ChromeStorage.getData('autoOpenFiles', ChromeStorage.sync, (err, isActivated) => {
             if (err) {
-              sendResponse({ activated: false })
+              sendResponse({ activated: true })
             } else {
-              sendResponse(isActivated || { activated: false })
+              sendResponse(isActivated || { activated: true })
             }
           })
         } else if (request.cmd === 'setAutoOpenFiles') {
@@ -96,8 +96,41 @@ class MoodleBackgroundManager {
               sendResponse({ saved: true })
             }
           })
+        } else if (request.cmd === 'isMoodleUpdateNotificationActivated') {
+          ChromeStorage.getData('moodleUpdatedNotification', ChromeStorage.sync, (err, isActivated) => {
+            if (err) {
+              sendResponse({ activated: false })
+            } else {
+              sendResponse(isActivated || { activated: true })
+            }
+          })
+        } else if (request.cmd === 'setMoodleUpdateNotification') {
+          ChromeStorage.setData('moodleUpdatedNotification', { activated: request.data.isActivated }, ChromeStorage.sync, (err, response) => {
+            if (err) {
+              sendResponse({ err: err, saved: false })
+            } else {
+              sendResponse({ saved: true })
+            }
+          })
+        } else if (request.cmd === 'isMoodleUploadAnnotatedFilesActivated') {
+          ChromeStorage.getData('moodleUploadAnnotatedFiles', ChromeStorage.sync, (err, isActivated) => {
+            if (err) {
+              sendResponse({ activated: false })
+            } else {
+              sendResponse(isActivated || { activated: true })
+            }
+          })
+        } else if (request.cmd === 'setMoodleUploadAnnotatedFilesNotification') {
+          ChromeStorage.setData('moodleUploadAnnotatedFiles', { activated: request.data.isActivated }, ChromeStorage.sync, (err, response) => {
+            if (err) {
+              sendResponse({ err: err, saved: false })
+            } else {
+              sendResponse({ saved: true })
+            }
+          })
         }
       }
+      return true
     })
   }
 

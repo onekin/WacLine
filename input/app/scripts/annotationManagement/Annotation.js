@@ -96,7 +96,7 @@ class Annotation {
     // Adaptation of target source to hypothes.is's compatible document attribute
     if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
       // Add uri attribute
-      data.uri = window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
+      data.uri = data.uri || window.abwa.targetManager.getDocumentURIToSaveInAnnotationServer()
       // Add document, uris, title, etc.
       const uris = window.abwa.targetManager.getDocumentURIs()
       data.document = {}

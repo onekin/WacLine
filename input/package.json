@@ -1,7 +1,7 @@
 {
-  "name": "web-annotator",
+  "name": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))",
   "private": true,
-  "version": "0.0.1",
+  "version": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appVersion'))",
   "description": "This is a product to conduct web annotation",
   "scripts": {
     "start": "npm run dev:chrome",
@@ -52,6 +52,7 @@
     "lodash": "^4.17.15",
     "qs": "^6.9.2",
     "qtip2": "^3.0.3",
+    "query-string": "^6.13.7",
     "showdown": "^1.9.1",
     "sweetalert2": "^10.3.5",
     "unique-colors": "^1.0.1",

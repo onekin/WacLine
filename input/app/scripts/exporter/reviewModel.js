@@ -189,7 +189,7 @@ export class Review {
         let commentBody = annotations[a].getBodyForPurpose('commenting')
         let comment = commentBody? commentBody.value : ''
         // PVSCL:IFCOND(SuggestedLiterature, LINE)
-        const SuggestingLiterature = require('../annotationManagement/purposes/SuggestingLiterature')
+        const SuggestingLiterature = require('../annotationManagement/purposes/SuggestingLiterature').default
         let suggestedLiteratureBody = annotations[a].getBodyForPurpose(SuggestingLiterature.purpose)
         let suggestedLiterature = suggestedLiteratureBody ? suggestedLiteratureBody.value : []
         // PVSCL:ENDCOND

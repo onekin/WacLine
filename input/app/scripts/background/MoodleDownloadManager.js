@@ -14,6 +14,7 @@ class MoodleDownloadManager {
       const studentId = hashParams.studentId
       const courseId = hashParams.courseId
       const cmid = hashParams.cmid
+      const fileItemId = hashParams.fileItemId
       if (_.isString(studentId)) { // File is downloaded from moodle
         // Save file metadata and data to mark on moodle
         this.files[downloadItem.id] = {
@@ -21,6 +22,7 @@ class MoodleDownloadManager {
           studentId: studentId,
           courseId: courseId,
           cmid: cmid,
+          feedbackFileItemId: fileItemId,
           mag: hashParams.mag || null
         }
       }
@@ -92,7 +94,7 @@ class MoodleDownloadManager {
             if (err) {
               // Nothing to do
             } else {
-              const autoOpen = result.activated // TODO Change
+              const autoOpen = result ? result.activated : true // By default it is activated
               if (autoOpen) {
                 const localUrl = this.files[downloadItem.id].localPath + '#autoOpen:true'
                 // Check if permission to access files is enabled, otherwise open a new tab with the message.
