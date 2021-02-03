@@ -67,7 +67,7 @@ class APISimulation {
               }]
             }
           }]
-          fetch('https://moodle.haritzmedina.com/lib/ajax/service.php?sesskey=' + sessionKey + '&info=core_get_fragment', {
+          fetch(moodleEndpoint + 'lib/ajax/service.php?sesskey=' + sessionKey + '&info=core_get_fragment', {
             headers: {
               accept: 'application/json, text/javascript, */*; q=0.01',
               'cache-control': 'no-cache',
@@ -79,9 +79,13 @@ class APISimulation {
             mode: 'cors',
             credentials: 'include'
           }).then(result => result.json()).then(res => {
-            let elems = DOM.getNodeFromHTMLStringDOM(res[0].data.html, "input[id*='id_files_']")
-            if (NodeList.prototype.isPrototypeOf(elems) && _.isElement(elems[0])) {
-              callback(null, elems[0].value)
+            if (res[0] && res[0].data && res[0].data.html) {
+              let elems = DOM.getNodeFromHTMLStringDOM(res[0].data.html, "input[id*='id_files_']")
+              if (NodeList.prototype.isPrototypeOf(elems) && _.isElement(elems[0])) {
+                callback(null, elems[0].value)
+              } else {
+                callback(new Error('Unable to retrieve file item id. Request is correctly done, but element was not found.'))
+              }
             } else {
               callback(new Error('Unable to retrieve file item id. Request is correctly done, but element was not found.'))
             }
