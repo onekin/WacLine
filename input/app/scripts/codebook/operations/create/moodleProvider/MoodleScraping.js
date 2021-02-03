@@ -70,4 +70,4 @@ class MoodleScraping {
   }
 }
 
-export default MoodleScrºang
+export default MoodleScraping
