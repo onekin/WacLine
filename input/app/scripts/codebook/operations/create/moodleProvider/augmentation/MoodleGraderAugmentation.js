@@ -39,8 +39,10 @@ class MoodleGraderAugmentation {
           // Change URLs of files elements
           _.forEach(submittedFilesElements, (submittedFileElement) => {
             submittedFileElement.href = submittedFileElement.href + '#studentId:' +
-              studentId + '&courseId:' + assignmentData.courseId + '&cmid:' + assignmentData.cmid +
-              '&fileItemId:' + fileItemId
+              studentId + '&courseId:' + assignmentData.courseId + '&cmid:' + assignmentData.cmid
+            if (fileItemId) {
+              submittedFileElement.href += '&fileItemId:' + fileItemId
+            }
           })
           console.debug('Modified submission files for current student ' + studentId)
         }
@@ -49,7 +51,12 @@ class MoodleGraderAugmentation {
   }
 
   getFileItemId () {
-    return document.querySelector("input[id*='id_files_']").value
+    let fileItemElement = document.querySelector("input[id*='id_files_']")
+    if (_.isElement(fileItemElement)) {
+      return fileItemElement.value
+    } else {
+      return null
+    }
   }
 
   waitUntilUserInfoIsLoaded (callback) {
