@@ -294,6 +294,11 @@
         <cm:script cm:id="iVOJhVZgluBxGJzlp" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.SuggestedLiterature</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="iIf6fb-up9Kjafhrj">
+      <cm:restriction cm:id="iDlWwrHLdl7Qki9mi">
+        <cm:script cm:id="is1l8QbcEna6ELWDy" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.MoodleProvider</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -29518,7 +29523,7 @@
         <cm:mimedesc cm:id="iSY_xrtElu7b3hOl_" cm:mimetype="text/plain" cm:encoding="utf-8">moodleResumption.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="ilyB2Vqb_7Vwkp_WGPEZUkKwTQ-b" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="ilyB2Vqb_7Vwkp_WGPEZUkKwTQ-b" cm:restriction="iIf6fb-up9Kjafhrj" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="ilyB2Vqb_7Vwkp_WGPEZUkKwTQ-bdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iZSG4SRxLiceX3nAwXC6EiYaq7ovLNPuvWCic6-wf" cm:class="ps:parents">
@@ -29539,10 +29544,10 @@
           <cm:constant cm:id="iUTHgIC1QvI97-g3A" cm:type="ps:datetime">2020-08-06T10:18:39.808Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ixsI3WnZS_82K-3KH" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iTw36HHG1XSEoWnuJ" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="iTw36HHG1XSEoWnuJ" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iYL3mENK3KHoRT9z5" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iVM96IqM5PyiW89-k" cm:type="ps:datetime">2020-08-06T10:18:39.808Z</cm:constant>
+          <cm:constant cm:id="iVM96IqM5PyiW89-k" cm:type="ps:datetime">2021-02-19T07:23:02.295Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
