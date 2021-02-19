@@ -10,6 +10,13 @@ class BrowserStorageManager extends AnnotationServerManager {
   constructor () {
     super()
     this.browserStorageClient = this.client
+    this.annotationServerUrl = 'https://localannotationsdatabase.org'
+    this.annotationServerMetadata = {
+      annotationUrl: 'https://localannotationsdatabase.org/api/annotations/',
+      annotationServerUrl: 'https://localannotationsdatabase.org/api',
+      groupUrl: 'https://localannotationsdatabase.org/group/',
+      userUrl: 'https://localannotationsdatabase.org/users/'
+    }
     this.annotationsDatabase = {}
   }
 

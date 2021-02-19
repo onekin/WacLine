@@ -6,7 +6,11 @@ class BrowserStorage extends AnnotationServer {
   }
 
   getGroupId () {
-    return this.group
+    return this.group.id
+  }
+
+  getGroupUrl () {
+    return 'https://localannotationsdatabase.org/group/' + this.group.id
   }
 }
 
