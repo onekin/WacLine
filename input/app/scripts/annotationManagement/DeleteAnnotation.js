@@ -11,8 +11,10 @@ class DeleteAnnotation {
   init () {
     // Add event listener for createAnnotation event
     this.initDeleteAnnotationEvent()
+    // PVSCL:IFCOND(DeleteAll, LINE)
     // Add event listener for deleteAllAnnotations event
-    this.deleteAllAnnotationsEvent()
+    this.initDeleteAllAnnotationsEvent()
+    // PVSCL:ENDCOND
   }
 
   destroy () {
@@ -30,8 +32,9 @@ class DeleteAnnotation {
       callback()
     }
   }
+  // PVSCL:IFCOND(DeleteAll, LINE)
 
-  deleteAllAnnotationsEvent (callback) {
+  initDeleteAllAnnotationsEvent (callback) {
     this.events.deleteAllAnnotationEvent = { element: document, event: Events.deleteAllAnnotations, handler: this.deleteAllAnnotationsEventHandler() }
     this.events.deleteAllAnnotationEvent.element.addEventListener(this.events.deleteAllAnnotationEvent.event, this.events.deleteAllAnnotationEvent.handler, false)
     if (_.isFunction(callback)) {
@@ -56,6 +59,7 @@ class DeleteAnnotation {
       })
     }
   }
+  // PVSCL:ENDCOND
 
   deleteAnnotationEventHandler () {
     return (event) => {

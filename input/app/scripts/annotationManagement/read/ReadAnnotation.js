@@ -622,8 +622,11 @@ class ReadAnnotation {
       this.currentAnnotations = this.retrieveCurrentAnnotations()
       LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, { currentAnnotations: this.currentAnnotations })
       // PVSCL:ENDCOND
-      // Unhighlight deleted annotations
-      this.redrawAnnotations()
+      // Wait til swal gets hidden and delete all annotations from DOM
+      setTimeout(() => {
+        // Unhighlight deleted annotations
+        this.redrawAnnotations()
+      }, 1000)
     }
   }
   // PVSCL:ENDCOND
