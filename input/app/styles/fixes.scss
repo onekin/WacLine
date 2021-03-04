@@ -1,0 +1,16 @@
+@import "./variables";
+
+/* Fix small size sweetalert2 */
+.swal2-container {
+  zoom: 1.5 !important;
+  z-index: $sidebarZIndex - 1 !important;
+}
+
+/* Fix a problem with z-index in jquery context menu layer */
+#context-menu-layer {
+  z-index: $sidebarZIndex + 1 !important;
+}
+
+.context-menu-list {
+  z-index: $sidebarZIndex + 2 !important;
+}
