@@ -191,7 +191,9 @@ class Codebook {
     if (newGroup === null) {
       group = window.abwa.groupSelector.currentGroup
     } else {
-      group = newGroup
+      group = window.abwa.groupSelector.groups.find(function (element) {
+        return element.id === newGroup
+      })
     }
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1,LINE)
     chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
