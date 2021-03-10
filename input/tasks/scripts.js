@@ -38,13 +38,21 @@ gulp.task('scripts', () => {
       module: {
         rules: [{
           test: /\.js$/,
-          loader: 'eslint-loader',
+          use: [{
+            loader: 'eslint-loader'
+          }],
           exclude: /node_modules/,
           enforce: 'pre'
         }, {
           test: /\.js$/,
-          loader: 'babel-loader',
-          query: { compact: false }
+          exclude: /node_modules/,
+          use: [{
+            loader: 'babel-loader',
+            options: {
+              cacheCompression: false
+            }
+          }]/*,
+          query: { compact: false } */
         }]
       },
       optimization: {
