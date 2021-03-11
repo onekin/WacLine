@@ -185,14 +185,14 @@ class Codebook {
     }
   }
 
-  static setAnnotationServer (newGroup, callback) {
+  static setAnnotationServer (newGroupId, callback) {
     let annotationAnnotationServer
     let group
-    if (newGroup === null) {
+    if (newGroupId === null) {
       group = window.abwa.groupSelector.currentGroup
     } else {
-      group = window.abwa.groupSelector.groups.find(function (element) {
-        return element.id === newGroup
+      group = window.abwa.groupSelector.groups.find((element) => {
+        return element.id === newGroupId
       })
     }
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1,LINE)
