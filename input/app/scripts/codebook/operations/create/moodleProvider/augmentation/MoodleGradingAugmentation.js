@@ -6,7 +6,7 @@ class MoodleGradingAugmentation {
     // Get course id
     MoodleScraping.scrapAssignmentData((err, assignmentData) => {
       if (err) {
-
+        console.error(err.message)
       } else {
         const gradingTable = document.querySelector('.gradingtable')
         const tableBody = gradingTable.querySelector('tbody')

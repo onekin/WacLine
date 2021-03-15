@@ -32,7 +32,7 @@ class MoodleGraderAugmentation {
     this.waitUntilFilesAreLoaded((submissionFilesContainer) => {
       MoodleScraping.scrapAssignmentData((err, assignmentData) => {
         if (err) {
-
+          console.error(err.message)
         } else {
           let fileItemId = this.getFileItemId()
           const submittedFilesElements = submissionFilesContainer.querySelectorAll('a')
@@ -98,7 +98,7 @@ class MoodleGraderAugmentation {
     this.studentChangeCheckerInterval = setInterval(() => {
       this.getStudentId((err, studentId) => {
         if (err) {
-
+          console.error(err.message)
         } else {
           if (studentId !== savedStudentId) { // Student has changed
             savedStudentId = studentId // Save the new student id

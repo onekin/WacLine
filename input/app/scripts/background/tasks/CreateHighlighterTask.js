@@ -278,7 +278,7 @@ class CreateHighlighterTask extends Task {
     // Check if annotation already exists
     this.annotationServerClientManager.client.searchAnnotations({ group: annotationServer.getGroupId(), tags: Config.namespace + ':' + Config.tags.producer }, (err, annotations) => {
       if (err) {
-
+        callback(err)
       } else {
         // If annotation exist and teacher is the same, nothing to do
         if (annotations.length > 0 && annotations[0].text === teacherAnnotation.text) {

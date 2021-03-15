@@ -424,6 +424,8 @@ class ReadAnnotation {
         } else {
           // PVSCL:IFCOND(Replying, LINE)
           items.reply = { name: 'Reply' }
+          // PVSCL:ELSECOND
+          // Currently there is nothing to do
           // PVSCL:ENDCOND
         }
         return {

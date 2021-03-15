@@ -91,6 +91,8 @@ class MoodleResumptionContentScript {
         let studentsIds = _.compact(students.map((student) => {
           if (student.roles.find(role => role.shortname === 'student')) {
             return { id: student.id, name: student.fullname }
+          } else {
+            return null
           }
         }))
         callback(null, studentsIds)
@@ -169,6 +171,8 @@ class MoodleResumptionContentScript {
       const hashedGroupName = MoodleUtils.getHashedGroup({ studentId: student.id, courseId: this.courseId, moodleEndpoint: this.moodleEndpoint })
       if (hashedGroupName === groupName) {
         return student
+      } else {
+        return null
       }
     })
   }

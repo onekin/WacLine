@@ -161,14 +161,17 @@ class AnnotationManagement {
           return annotation.body.find(body => {
             if (body.purpose === Classifying.purpose) {
               // PVSCL:IFCOND(Hierarchy, LINE)
-              if (body.value.id === codeId || (body.value.theme && body.value.theme.id === codeId)) {
+              if (body.value.theme && body.value.theme.id === codeId) {
                 return true
               }
-              // PVSCL:ELSECOND
-              return body.value.id === codeId
               // PVSCL:ENDCOND
+              return body.value.id === codeId
+            } else {
+              return null
             }
           })
+        } else {
+          return null
         }
       })
       if (annotations.length) {

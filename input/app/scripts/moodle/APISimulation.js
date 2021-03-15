@@ -81,7 +81,7 @@ class APISimulation {
           }).then(result => result.json()).then(res => {
             if (res[0] && res[0].data && res[0].data.html) {
               let elems = DOM.getNodeFromHTMLStringDOM(res[0].data.html, "input[id*='id_files_']")
-              if (NodeList.prototype.isPrototypeOf(elems) && _.isElement(elems[0])) {
+              if (elems instanceof NodeList && _.isElement(elems[0])) { // Check if is type of NodeList https://stackoverflow.com/a/39965818
                 callback(null, elems[0].value)
               } else {
                 callback(new Error('Unable to retrieve file item id. Request is correctly done, but element was not found.'))
@@ -149,7 +149,7 @@ class APISimulation {
     if (window.abwa.targetManager.fileMetadata.feedbackFileItemId) {
       return window.abwa.targetManager.fileMetadata.feedbackFileItemId
     } else {
-
+      // TODO Try to get from Moodle file manager, somehow
     }
   }
 

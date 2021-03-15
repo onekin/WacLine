@@ -6,7 +6,7 @@ class MoodleViewPluginAssignSubmissionAugmentation {
     // Get course id
     MoodleScraping.scrapAssignmentData((err, assignmentData) => {
       if (err) {
-
+        console.error(err.message)
       } else {
         console.log(assignmentData)
         // Get current student id

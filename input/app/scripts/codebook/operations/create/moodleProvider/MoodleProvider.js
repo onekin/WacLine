@@ -39,7 +39,10 @@ class MoodleProvider {
         this.loadAnnotationServer(() => {
           MoodleScraping.scrapAssignmentData((err, assignmentData) => {
             if (err) {
-
+              Alerts.errorAlert({
+                title: 'Error configuring assignment from this Moodle page',
+                text: 'Unable to get required information from this Moodle to start configuration of the assignment. Error:' + err.message
+              })
             } else {
               this.cmid = assignmentData.cmid
               this.moodleEndpoint = assignmentData.moodleEndpoint
