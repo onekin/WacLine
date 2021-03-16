@@ -4,7 +4,7 @@ class AnnotationServer {
   }
 
   getGroupUrl () {
-    return 'https://localannotationsdatabase.org/group/' + this.group
+    return 'https://localannotationsdatabase.org/group/' + this.group.id
   }
 
   getGroupId () {
