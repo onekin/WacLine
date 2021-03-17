@@ -73,18 +73,28 @@ class MoodleReport {
         let author = 'Teacher Teacher'
         // TODO Retrieve fileItemId (the file container for current student-assignment pair)
         let fileItemId = window.abwa.targetManager.fileMetadata.feedbackFileItemId
-        // Generate submission file
-        let feedbackFile = await window.abwa.moodleReport.generateFileFromCurrentDocument()
-        // Upload file to the corresponding file area
-        APISimulation.updateFeedbackSubmissionFile(window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint, {
-          contextId: window.abwa.targetManager.fileMetadata.contextId,
-          itemId: fileItemId,
-          file: feedbackFile,
-          author: author,
-          license: license
-        }, () => {
-          resolve({ fileItemId: fileItemId })
-        })
+        if (fileItemId) { // The teacher has enabled feedback file submission in moodle assigment
+          // Generate submission file
+          let feedbackFile
+          try {
+            feedbackFile = await window.abwa.moodleReport.generateFileFromCurrentDocument()
+          } catch (e) {
+            resolve({ fileItemId: null })
+          }
+          // Upload file to the corresponding file area
+          APISimulation.updateFeedbackSubmissionFile(window.abwa.codebookManager.codebookReader.codebook.moodleEndpoint, {
+            contextId: window.abwa.targetManager.fileMetadata.contextId,
+            itemId: fileItemId,
+            file: feedbackFile,
+            author: author,
+            license: license
+          }, () => {
+            resolve({ fileItemId: fileItemId })
+          })
+        } else {
+          // Teacher has enabled in annotation tool the option to automatically upload, but has not enabled in moodle feedback file submission
+          resolve({ fileItemId: null })
+        }
       })().catch(e => {
         reject(e)
       })

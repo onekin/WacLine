@@ -131,7 +131,7 @@ class MoodleClientManager {
 
   removeSubmissionComment ({ commentId, annotationId, callback }) {
     if (commentId) {
-
+      // TODO Must be implemented in case of reply deletion is implemented, currently is not
     }
   }
 

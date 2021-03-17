@@ -13,7 +13,7 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      swal({
+      swal.fire({
         title: title,
         html: text,
         type: alertType,
@@ -44,7 +44,7 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      swal({
+      swal.fire({
         type: Alerts.alertType.info,
         title: title,
         html: text
@@ -96,7 +96,7 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      swal({
+      swal.fire({
         type: Alerts.alertType.error,
         title: title,
         html: text
@@ -115,7 +115,7 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      swal({
+      swal.fire({
         type: Alerts.alertType.success,
         title: title,
         html: text
@@ -130,7 +130,7 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      swal({
+      swal.fire({
         position: position,
         type: type,
         title: title, // TODO i18n
@@ -149,7 +149,7 @@ class Alerts {
       }
     } else {
       let timerInterval
-      swal({
+      swal.fire({
         position: position,
         title: title,
         html: text,
@@ -180,7 +180,7 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      swal({
+      swal.fire({
         title: title,
         input: input,
         inputPlaceholder: inputPlaceholder,
@@ -205,14 +205,14 @@ class Alerts {
     }
   }
 
-  static multipleInputAlert ({ title = 'Input', html = '', preConfirm, position = Alerts.position.center, onBeforeOpen, showCancelButton = true, allowOutsideClick = true, allowEscapeKey = true, callback }) {
+  static multipleInputAlert ({ title = 'Input', html = '', preConfirm, position = Alerts.position.center, onBeforeOpen, showCancelButton = true, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback, customClass }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      swal({
+      swal.fire({
         title: title,
         html: html,
         focusConfirm: false,
@@ -221,10 +221,17 @@ class Alerts {
         onBeforeOpen: onBeforeOpen,
         allowOutsideClick,
         allowEscapeKey,
+        customClass: customClass,
         showCancelButton: showCancelButton
-      }).then(() => {
-        if (_.isFunction(callback)) {
-          callback(null)
+      }).then((result) => {
+        if (result.value) {
+          if (_.isFunction(callback)) {
+            callback(null, result.value)
+          }
+        } else {
+          if (_.isFunction(cancelCallback)) {
+            cancelCallback(null)
+          }
         }
       })
     }
@@ -247,7 +254,7 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      swal({
+      swal.fire({
         type: Alerts.alertType.warning,
         title: title,
         html: text

@@ -22,6 +22,9 @@ gulp.task('scripts', () => {
     .pipe(gulpWebpack({
       devtool: args.sourcemaps ? 'inline-source-map' : false,
       watch: args.watch,
+      output: {
+        publicPath: ''
+      },
       mode: ENV, // TODO Set to ENV. Currently uglify is not encoding contentScript.js in UTF-8
       plugins: [
         new webpack.ProvidePlugin({
@@ -38,13 +41,21 @@ gulp.task('scripts', () => {
       module: {
         rules: [{
           test: /\.js$/,
-          loader: 'eslint-loader',
+          use: [{
+            loader: 'eslint-loader'
+          }],
           exclude: /node_modules/,
           enforce: 'pre'
         }, {
           test: /\.js$/,
-          loader: 'babel-loader',
-          query: { compact: false }
+          exclude: /node_modules/,
+          use: [{
+            loader: 'babel-loader',
+            options: {
+              cacheCompression: false
+            }
+          }]/*,
+          query: { compact: false } */
         }]
       },
       optimization: {
