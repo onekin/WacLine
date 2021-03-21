@@ -71,6 +71,7 @@ class TargetManager {
       this.tryToLoadURL()
       this.tryToLoadURN()
       this.tryToLoadTargetId()
+      this.loadPDFPlainText()
       let promise
       // PVSCL:IFCOND(MoodleResource, LINE)
       promise = this.retrievePromiseLoadMoodleMetadata()
@@ -511,6 +512,41 @@ class TargetManager {
     }
   }
   // PVSCL:ENDCOND
+  getPageText (pageNum, pdfDocumentInstance) {
+    return new Promise(function (resolve, reject) {
+      pdfDocumentInstance.getPage(pageNum).then(pdfPage => {
+        pdfPage.getTextContent().then(textContent => {
+          var textItems = textContent.items
+          var finalText = ''
+          // Problema con los espacios al quitar tildes (¿y si una palabra empieza con tilde?)
+          for (var i = 0; i < textItems.length; i++) {
+            var item = textItems[i]
+            if (item.str !== ' ') {
+              finalText += item.str.normalize('NFD').replace(/[\u0300-\u036f]/g, '') + ' '
+            }
+          }
+          resolve(finalText)
+        })
+      })
+    })
+  }
+
+  loadPDFPlainText () {
+    window.PDFJS.getDocument(this.url).then(pdfDocumentInstance => {
+      var promises = []
+      var page = 1
+      for (var i = 1; i <= pdfDocumentInstance.numPages; i++) {
+        promises.push(this.getPageText(i, pdfDocumentInstance))
+      }
+      // PagesText is the array that contains the text of each page
+      Promise.all(promises).then(pagesText => {
+        console.log(pagesText)
+      })
+    }, function (reason) {
+      console.error(reason)
+    })
+  }
+
 }
 
 export default TargetManager
