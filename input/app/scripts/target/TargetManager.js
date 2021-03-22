@@ -71,7 +71,9 @@ class TargetManager {
       this.tryToLoadURL()
       this.tryToLoadURN()
       this.tryToLoadTargetId()
+      // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
       this.loadPDFPlainText()
+      // PVSCL:ENDCOND
       let promise
       // PVSCL:IFCOND(MoodleResource, LINE)
       promise = this.retrievePromiseLoadMoodleMetadata()
@@ -512,9 +514,35 @@ class TargetManager {
     }
   }
   // PVSCL:ENDCOND
-  getPageText (pageNum, pdfDocumentInstance) {
-    return new Promise(function (resolve, reject) {
-      pdfDocumentInstance.getPage(pageNum).then(pdfPage => {
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+  loadPDFPlainText () {
+    var keyword = 'Desarrollo'
+    var pdfDoc = window.PDFViewerApplication.pdfDocument
+    var promises = []
+    for (var i = 1; i <= pdfDoc.numPages; i++) {
+      promises.push(this.getPageText(i, pdfDoc))
+    }
+    Promise.all(promises).then(pagesText => {
+      console.log(pagesText)
+      var selectors = this.getSelectorsOfKeywords(pagesText, keyword)
+
+      // Obtener codebook ¿actual?
+      var codebookId = window.abwa.codebookManager.codebookReader.codebook.id
+      console.log(selectors)
+      console.log(codebookId)
+      /*
+      LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+        purpose: 'classifying',
+        codeId: 'MRnLsIpAMdceN5WNdEZDeP',
+        foundSelectors: selectors[0]
+      })
+      */
+    })
+  }
+
+  getPageText (pageNum, pdfDoc) {
+    return new Promise(function (resolve) {
+      pdfDoc.getPage(pageNum).then(pdfPage => {
         pdfPage.getTextContent().then(textContent => {
           var textItems = textContent.items
           var finalText = ''
@@ -531,21 +559,43 @@ class TargetManager {
     })
   }
 
-  loadPDFPlainText () {
-    window.PDFJS.getDocument(this.url).then(pdfDocumentInstance => {
-      var promises = []
-      var page = 1
-      for (var i = 1; i <= pdfDocumentInstance.numPages; i++) {
-        promises.push(this.getPageText(i, pdfDocumentInstance))
+  getSelectorsOfKeywords (pagesText, keyword) {
+    var targets = []
+    pagesText.forEach((pageText, pageNum) => {
+      var indexes = this.getIndexesOfKeyWords(pageText, keyword)
+      var fragmentSelector = {
+        type: 'FragmentSelector',
+        conformsTo: 'http://tools.ietf.org/rfc/rfc3778',
+        page: pageNum + 1
       }
-      // PagesText is the array that contains the text of each page
-      Promise.all(promises).then(pagesText => {
-        console.log(pagesText)
+      var target
+      indexes.forEach(index => {
+        var textQuoteSelector = {
+          type: 'TextQuoteSelector',
+          exact: keyword
+        }
+        textQuoteSelector.prefix = pageText.substring(index - 32, index)
+        textQuoteSelector.suffix = pageText.substring(index, index + 32)
+        target = []
+        target.push(fragmentSelector)
+        target.push(textQuoteSelector)
+        targets.push(target)
       })
-    }, function (reason) {
-      console.error(reason)
     })
+    return targets
   }
+
+  getIndexesOfKeyWords (textFragment, keyword) {
+    var indexes = []
+    var startIndex = 0
+    var index
+    while ((index = textFragment.indexOf(keyword, startIndex)) > -1) {
+      indexes.push(index)
+      startIndex = index + keyword.length
+    }
+    return indexes
+  }
+  // PVSCL:ENDCOND
 
 }
 

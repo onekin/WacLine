@@ -117,7 +117,7 @@ class CreateAnnotation {
     return body
   }
 
-  obtainTargetToCreateAnnotation ({ repliedAnnotation }) {
+  obtainTargetToCreateAnnotation ({ repliedAnnotation, foundSelectors }) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
       return [{ source: repliedAnnotation.target[0].source }]
@@ -133,6 +133,11 @@ class CreateAnnotation {
       if (document.getSelection().toString().length > 0) {
         target[0].selector = CreateAnnotation.getSelectorsOfSelectedTextContent()
       }
+      // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+      if (foundSelectors) {
+        target[0].selector = foundSelectors
+      }
+      // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       return target
     }

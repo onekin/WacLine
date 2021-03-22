@@ -954,6 +954,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="iTgWV3UUY9_ehpfzU">./i8_myHFxfoMjDRua9</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:relations cm:id="iKe4CztnnCRjvKEU_" cm:class="ps:children">
+        <cm:relation cm:id="iwt_eR-tMUramMDd2" cm:type="ps:optional">
+          <cm:target cm:id="iMGDh0MsoGMz_Q1JH">./i7MA78QWk6sqFA7kF</cm:target>
+        </cm:relation>
+      </cm:relations>
       <cm:properties>
         <cm:property cm:id="iIY6BuEGqsqU23lni" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="iRPO03T3KdXyAPqeB" cm:type="ps:string">haritz</cm:constant>
@@ -962,10 +967,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iSCCgufFfeq8AKA8L" cm:type="ps:datetime">2019-11-07T11:53:29.998Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i3A8J7aE0MTfGwqyx" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i3D2akAWBhzDZJDWZ" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="i3D2akAWBhzDZJDWZ" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="izZj8YRI90OMwfmFw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="irQe9oAAiojebuKaf" cm:type="ps:datetime">2020-02-25T09:56:12.484Z</cm:constant>
+          <cm:constant cm:id="irQe9oAAiojebuKaf" cm:type="ps:datetime">2021-03-22T21:27:26.668Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2869,6 +2874,35 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
 &lt;p&gt;&lt;img title=&quot;Annotation list browser storage&quot; src=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationListLocal.png&quot; alt=&quot;https://raw.githubusercontent.com/wiki/onekin/WebAnnotatorSPL/images/AnnotationListLocal.png&quot; width=&quot;1309&quot; height=&quot;589&quot;&gt;
 &lt;/p&gt;</cm:mimedesc>
       </cm:desc>
+    </cm:element>
+    <cm:element cm:id="i7MA78QWk6sqFA7kF" cm:name="KeywordBasedAnnotation" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iOdD1IoEJ4P18R6GL" cm:class="ps:parents">
+        <cm:relation cm:id="i7P4h2bTNbEQTVGOc" cm:type="ps:parent">
+          <cm:target cm:id="iXbGRXn1Thlu9vype">./iGhbUDem1xU6z--QH</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i5IxceiUUIQJUAdyY" cm:class="ps:dependencies">
+        <cm:relation cm:id="i-ilg67zco67bw-uQ" cm:type="ps:requires">
+          <cm:target cm:id="ifciEdvVN4zDbbPE7">iivhJRwmojkiJvYc5/i2u-xSARpUSgjdOP9</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ii2KKVhkLwh1ffFsx" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iCPCuQOyBGp9ZcTQ-" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJ_ekWXbPH_-1EHmo" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iGR_xc9i4jDkNxpZh" cm:type="ps:datetime">2021-03-22T21:27:26.668Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ikBDHhOxAXszoGb7e" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iqCgGYnGHBTj0HdfJ" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i2XigJVIdCryCf9eI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iVpBFwyEPhkGM6L5f" cm:type="ps:datetime">2021-03-22T21:27:26.668Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iivhP9caKjqQpbRgq" cm:mimetype="text/plain" cm:encoding="utf-8">KeywordBasedAnnotation</cm:mimedesc>
+      </cm:vname>
     </cm:element>
   </cm:elements>
 </cm:consulmodel>
