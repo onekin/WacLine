@@ -321,6 +321,12 @@ export class AnnotatedContentManager {
     // Create event listener for updated all annotations
     this.events.annotationCreated = { element: document, event: Events.annotationCreated, handler: this.createAnnotationCreatedEventHandler() }
     this.events.annotationCreated.element.addEventListener(this.events.annotationCreated.event, this.events.annotationCreated.handler, false)
+
+    // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)    
+    this.events.keywordAnnotationsCreated = { element: document, event: Events.keywordAnnotationsCreated, handler: this.createKeywordAnnotationsCreatedEventHandler() }
+    this.events.keywordAnnotationsCreated.element.addEventListener(this.events.keywordAnnotationsCreated.event, this.events.keywordAnnotationsCreated.handler, false)
+    // PVSCL:ENDCOND
+
     // Create event listener for updated all annotations
     this.events.annotationDeleted = { element: document, event: Events.annotationDeleted, handler: this.createDeletedAnnotationEventHandler() }
     this.events.annotationDeleted.element.addEventListener(this.events.annotationDeleted.event, this.events.annotationDeleted.handler, false)
@@ -339,7 +345,7 @@ export class AnnotatedContentManager {
     // PVSCL:IFCOND(CodebookUpdate, LINE)
     this.events.codebookUpdatedEvent = { element: document, event: Events.codebookUpdated, handler: this.createCodebookUpdatedEventHandler() }
     this.events.codebookUpdatedEvent.element.addEventListener(this.events.codebookUpdatedEvent.event, this.events.codebookUpdatedEvent.handler, false)
-    // PVSCL:ENDCOND
+    // PVSCL:ENDCOND    
   }
 
   // PVSCL:IFCOND(CodebookUpdate, LINE)
@@ -470,4 +476,21 @@ export class AnnotatedContentManager {
       }
     }
   }
+
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+  createKeywordAnnotationsCreatedEventHandler () {
+    return (event) => {
+      // Add event to the codings list
+      if (event.detail.annotations) {
+        const annotations = event.detail.annotations
+        annotations.forEach((annotation) => {
+          this.annotatedThemes = this.addAnnotationToAnnotatedThemesOrCode(annotation)
+        })
+        // Dispatch updated content manager event
+        LanguageUtils.dispatchCustomEvent(Events.annotatedContentManagerUpdated, { annotatedThemes: this.annotatedThemes })
+        this.reloadTagsChosen()
+      }
+    }
+  }
+  // PVSCL:ENDCOND
 }

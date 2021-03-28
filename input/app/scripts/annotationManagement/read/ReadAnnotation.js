@@ -31,6 +31,9 @@ class ReadAnnotation {
   init (callback) {
     // Event listener created annotation
     this.initAnnotationCreatedEventListener()
+    // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+    this.initcreatedKeywordAnnotationsEventListener()
+    // PVSCL:ENDCOND
     // Event listener deleted annotation
     this.initAnnotationDeletedEventListener()
     // PVSCL:IFCOND(DeleteAll, LINE)
@@ -179,7 +182,31 @@ class ReadAnnotation {
     }
   }
 
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+  initcreatedKeywordAnnotationsEventListener (callback) {
+    this.events.keywordAnnotationsCreatedEvent = { element: document, event: Events.keywordAnnotationsCreated, handler: this.createdKeywordAnnotationsHandler() }
+    this.events.keywordAnnotationsCreatedEvent.element.addEventListener(this.events.keywordAnnotationsCreatedEvent.event, this.events.keywordAnnotationsCreatedEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  createdKeywordAnnotationsHandler () {
+    return (event) => {
+      const annotations = event.detail.annotations
+      // Add to all annotations list
+      this.allAnnotations = this.allAnnotations.concat(annotations)
+      // Dispatch annotations updated event
+      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, { annotations: this.allAnnotations })
+      // Highlight annotation
+      annotations.forEach((annotation) => {
+        this.highlightAnnotation(annotation)
+      })
+    }
+  }
   // PVSCL:ENDCOND
+  // PVSCL:ENDCOND
+
   // PVSCL:IFCOND(Delete, LINE)
   initAnnotationDeletedEventListener (callback) {
     this.events.annotationDeletedEvent = { element: document, event: Events.annotationDeleted, handler: this.deletedAnnotationHandler() }

@@ -36,6 +36,9 @@ class ReadCodebook {
       // Add event listener for codebook read event
       this.initCodebookCreatedEvent()
       this.initCodebookReadEvent(callback)
+      // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+      ReadCodebook.addKeywordsTheme()
+      // PVSCL:ENDCOND
     })
   }
 
@@ -211,6 +214,9 @@ class ReadCodebook {
           if (_.isFunction(callback)) {
             callback()
           }
+          // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+          ReadCodebook.addKeywordsTheme()
+          // PVSCL:ENDCOND
         })
       }
     })
@@ -783,6 +789,24 @@ class ReadCodebook {
       this.initCodebookContent()
     }
   }
+
+  /**
+   * This function creates (in case that it doesn't exist) 
+   * the theme to store the keywords
+   */
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+  static addKeywordsTheme () {
+    var codebook = window.abwa.codebookManager.codebookReader.codebook
+    var keywordThemeName = 'Keywords'
+    if (!_.isEmpty(codebook)) {
+      if (!codebook.getThemeByName(keywordThemeName)) {
+        var themeDescription = 'Theme which includes the keywords found in the text'
+        var newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
+        LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+      }
+    }
+  }
+  // PVSCL:ENDCOND
 }
 
 export default ReadCodebook

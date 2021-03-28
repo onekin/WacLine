@@ -2897,12 +2897,16 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iqCgGYnGHBTj0HdfJ" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="i2XigJVIdCryCf9eI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iVpBFwyEPhkGM6L5f" cm:type="ps:datetime">2021-03-22T21:27:26.668Z</cm:constant>
+          <cm:constant cm:id="iVpBFwyEPhkGM6L5f" cm:type="ps:datetime">2021-03-28T15:17:05.938Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iivhP9caKjqQpbRgq" cm:mimetype="text/plain" cm:encoding="utf-8">KeywordBasedAnnotation</cm:mimedesc>
       </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iE1Djy9giDaeEoi6q" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p class=&quot;itemize_item&quot;&gt;This feature creates automatic annotations based on keywords and adds them to a theme of the current codebook called Keywords.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
     </cm:element>
   </cm:elements>
 </cm:consulmodel>

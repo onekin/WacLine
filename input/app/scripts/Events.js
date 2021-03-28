@@ -7,6 +7,11 @@ const Events = {
   annotationValidated: 'annotationValidated',
   // PVSCL:ENDCOND
   createAnnotation: 'createAnnotation',
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+  createKeywordAnnotations: 'createKeywordAnnotations',
+  keywordAnnotationsCreated: 'keywordAnnotationsCreated',
+  // PVSCL:ENDCOND
+
   updateAnnotation: 'updateAnnotation',
   deleteAnnotation: 'deleteAnnotation',
   updatedAllAnnotations: 'updatedAllAnnotations',

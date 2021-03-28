@@ -20,6 +20,7 @@ class CreateAnnotation {
   init () {
     // Add event listener for createAnnotation event
     this.initCreateAnnotationEvent()
+    this.initCreateKeywordAnnotationsEvent()
   }
 
   initCreateAnnotationEvent (callback) {
@@ -117,7 +118,8 @@ class CreateAnnotation {
     return body
   }
 
-  obtainTargetToCreateAnnotation ({ repliedAnnotation, foundSelectors }) {
+  // Add parameter annotation (pvscl)
+  obtainTargetToCreateAnnotation ({ repliedAnnotation}) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
       return [{ source: repliedAnnotation.target[0].source }]
@@ -133,11 +135,6 @@ class CreateAnnotation {
       if (document.getSelection().toString().length > 0) {
         target[0].selector = CreateAnnotation.getSelectorsOfSelectedTextContent()
       }
-      // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-      if (foundSelectors) {
-        target[0].selector = foundSelectors
-      }
-      // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       return target
     }
@@ -181,6 +178,53 @@ class CreateAnnotation {
       }
     }
     return selectors
+  }
+
+  initCreateKeywordAnnotationsEvent (callback) {
+    this.events.createKeywordAnnotationsEvent = { element: document, event: Events.createKeywordAnnotations, handler: this.createKeywordAnnotationsEventHandler() }
+    this.events.createKeywordAnnotationsEvent.element.addEventListener(this.events.createKeywordAnnotationsEvent.event, this.events.createKeywordAnnotationsEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  createKeywordAnnotationsEventHandler () {
+    return (event) => {
+      let newAnnotations = []
+      let annotationToCreate
+      // Create body
+      const body = this.obtainBodyToCreateAnnotation(event.detail)
+      // Create tags
+      const tags = this.obtainTagsToCreateAnnotation(event.detail)
+
+      const source = window.abwa.targetManager.getDocumentURIs()
+      // Get document title
+      source.title = window.abwa.targetManager.documentTitle || ''
+      // Get UUID for current target
+      source.id = window.abwa.targetManager.getDocumentId()
+
+      event.detail.foundSelectors.forEach((newSelectors) => {
+        let target = [{}]
+        target[0].source = source // Add source to the target
+        target[0].selector = newSelectors
+        annotationToCreate = new Annotation({
+          target: target,
+          tags: tags,
+          body: body
+        })
+        window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
+          if (err) {
+            Alerts.errorAlert({ text: 'Unexpected error, unable to create annotation' })
+          } else {
+            // Deserialize retrieved annotation from the server
+            const deserializedAnnotation = Annotation.deserialize(annotation)
+            newAnnotations.push(deserializedAnnotation)
+          }
+        })
+      })
+      // Call to event annotations created
+      LanguageUtils.dispatchCustomEvent(Events.keywordAnnotationsCreated, { annotations: newAnnotations })
+    }
   }
 
   destroy () {
