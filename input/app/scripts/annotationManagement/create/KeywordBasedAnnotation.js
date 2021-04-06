@@ -4,7 +4,7 @@ import LanguageUtils from '../../utils/LanguageUtils'
 class KeywordBasedAnnotation {
 
   static loadKeywords () {
-    let keyword = 'e'
+    let keyword = 'impedancia'
     let pdfDoc = window.PDFViewerApplication.pdfDocument
     let promises = []
     for (let i = 1; i <= pdfDoc.numPages; i++) {
@@ -37,7 +37,10 @@ class KeywordBasedAnnotation {
           for (let i = 0; i < textItems.length; i++) {
             let item = textItems[i]
             if (item.str.trim().length !== 0) {
-              finalText += item.str.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '') + ' '
+              finalText += item.str.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+              if (textItems[i + 1] && item.transform[5] === textItems[i + 1].transform[5]) {
+                finalText += ' '
+              }
             }
           }
           resolve(finalText)
@@ -56,7 +59,7 @@ class KeywordBasedAnnotation {
   static getSelectorsOfKeywords (pagesText, keyword) {
     let selectors = []
     pagesText.forEach((pageText, pageNum) => {
-      let indexes = this.getIndexesOfKeyWords(pageText, keyword)
+      let indexes = this.getIndexesOfKeywords(pageText, keyword)
       let fragmentSelector = {
         type: 'FragmentSelector',
         conformsTo: 'http://tools.ietf.org/rfc/rfc3778',
@@ -65,14 +68,17 @@ class KeywordBasedAnnotation {
       let selector
       indexes.forEach(index => {
         let textQuoteSelector = {
-          type: 'TextQuoteSelector',
-          exact: keyword
+          type: 'TextQuoteSelector'
         }
+        let textPositionSelector = {
+          start: index,
+          end: index + keyword.length,
+          type: 'TextPositionSelector'
+        }
+        textQuoteSelector.exact = pageText.substring(index, index + keyword.length)
         textQuoteSelector.prefix = pageText.substring(index - 32, index)
         textQuoteSelector.suffix = pageText.substring(index + keyword.length, index + keyword.length + 32)
-        selector = {}
-        selector.fragmentSelector = fragmentSelector
-        selector.textQuoteSelector = textQuoteSelector
+        selector = [fragmentSelector, textPositionSelector, textQuoteSelector]
         selectors.push(selector)
       })
     })
@@ -85,11 +91,11 @@ class KeywordBasedAnnotation {
    * @param {string} keyword
    * @return {number[]}
    */
-  static getIndexesOfKeyWords (textFragment, keyword) {
+  static getIndexesOfKeywords (textFragment, keyword) {
     let indexes = []
     let startIndex = 0
     let index
-    while ((index = textFragment.indexOf(keyword, startIndex)) > -1) {
+    while ((index = textFragment.toLowerCase().indexOf(keyword.toLowerCase(), startIndex)) > -1) {
       indexes.push(index)
       startIndex = index + keyword.length
     }

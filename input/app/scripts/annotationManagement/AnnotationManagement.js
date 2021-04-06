@@ -50,7 +50,7 @@ class AnnotationManagement {
   }
 
   /**
-   * This function waits until the codebook is set 
+   * This function waits until the codebook is set
    * and inits the process to search for keywords
    */
   // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)

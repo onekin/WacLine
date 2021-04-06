@@ -791,7 +791,7 @@ class ReadCodebook {
   }
 
   /**
-   * This function creates (in case that it doesn't exist) 
+   * This function creates (in case that it doesn't exist)
    * the theme to store the keywords
    */
   // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)

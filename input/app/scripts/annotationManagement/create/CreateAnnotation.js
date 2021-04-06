@@ -119,7 +119,7 @@ class CreateAnnotation {
   }
 
   // Add parameter annotation (pvscl)
-  obtainTargetToCreateAnnotation ({ repliedAnnotation}) {
+  obtainTargetToCreateAnnotation ({ repliedAnnotation }) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
       return [{ source: repliedAnnotation.target[0].source }]

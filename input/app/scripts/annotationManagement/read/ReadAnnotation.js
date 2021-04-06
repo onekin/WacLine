@@ -192,16 +192,8 @@ class ReadAnnotation {
   }
 
   createdKeywordAnnotationsHandler () {
-    return (event) => {
-      const annotations = event.detail.annotations
-      // Add to all annotations list
-      this.allAnnotations = this.allAnnotations.concat(annotations)
-      // Dispatch annotations updated event
-      LanguageUtils.dispatchCustomEvent(Events.updatedAllAnnotations, { annotations: this.allAnnotations })
-      // Highlight annotation
-      annotations.forEach((annotation) => {
-        this.highlightAnnotation(annotation)
-      })
+    return () => {
+      this.updateAllAnnotations()
     }
   }
   // PVSCL:ENDCOND
