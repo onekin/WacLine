@@ -33,7 +33,7 @@ class KeywordBasedAnnotation {
         pdfPage.getTextContent().then(textContent => {
           let textItems = textContent.items
           let finalText = ''
-          // Problema con los espacios al quitar tildes (¿y si una palabra empieza con tilde?)
+          // Problem with spaces when removing accents
           for (let i = 0; i < textItems.length; i++) {
             let item = textItems[i]
             if (item.str.trim().length !== 0) {

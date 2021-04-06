@@ -188,6 +188,9 @@ class CreateAnnotation {
     }
   }
 
+  /**
+   * Creates an annotation for each of the keywords found in the text.
+   */
   createKeywordAnnotationsEventHandler () {
     return (event) => {
       let newAnnotations = []

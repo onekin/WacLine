@@ -478,6 +478,9 @@ export class AnnotatedContentManager {
   }
 
   // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+  /**
+   * Adds the new annotations to the theme
+   */
   createKeywordAnnotationsCreatedEventHandler () {
     return (event) => {
       // Add event to the codings list
