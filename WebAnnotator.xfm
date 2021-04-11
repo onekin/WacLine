@@ -625,6 +625,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:relations>
       <cm:relations cm:id="iD7yYBJGHM0H-kZZz" cm:class="ps:dependencies">
       </cm:relations>
+      <cm:relations cm:id="iRSMZt6HZy4waAoN3" cm:class="ps:children">
+        <cm:relation cm:id="inkrojPmICmsh2QnK" cm:type="ps:optional">
+          <cm:target cm:id="iJi5Af9b7NFhMerYm">./izD4D4WmgR_9lzhA2</cm:target>
+        </cm:relation>
+      </cm:relations>
       <cm:properties>
         <cm:property cm:id="ixATi3V-wCeemQ-AU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="izOca0jw_9Z8LDppD" cm:type="ps:string">haritz</cm:constant>
@@ -633,10 +638,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iJob74T-CpfCi0ezM" cm:type="ps:datetime">2019-11-07T11:52:27.892Z</cm:constant>
         </cm:property>
         <cm:property cm:id="irjMESSZaGtTXIdOm" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="io-RwyCNGNBHhtUcJ" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="io-RwyCNGNBHhtUcJ" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="i-6vPOib7cmutOjlL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMG3qrus29IdyPyae" cm:type="ps:datetime">2020-02-25T09:27:43.983Z</cm:constant>
+          <cm:constant cm:id="iMG3qrus29IdyPyae" cm:type="ps:datetime">2021-04-07T11:33:30.974Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -644,6 +649,8 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iq4-DxNAOvI2OiJEe" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;Selecting this feature allow users to create annotations with the purpose of classifying. This feature is related with the codebook.&lt;/p&gt;</cm:mimedesc>
+        <cm:mimedesc cm:id="ix-YdV8UxT2cHrCuc" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;Selecting this feature allow users to create annotations with the purpose of classifying. This feature is related with the codebook.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
     <cm:element cm:id="imDiekbsxQOEG5Hat" cm:name="SentimentAnalysis" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
@@ -2906,6 +2913,34 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iE1Djy9giDaeEoi6q" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
 &lt;p class=&quot;itemize_item&quot;&gt;This feature creates automatic annotations based on keywords and adds them to a theme of the current codebook called Keywords.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="izD4D4WmgR_9lzhA2" cm:name="AuthorsSearch" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="i5mVJ4eNDIml0M00l" cm:class="ps:parents">
+        <cm:relation cm:id="iP83dhHvujQx_n6Fd" cm:type="ps:parent">
+          <cm:target cm:id="i46kTnjFtCA3sUxis">./ih2dyCeLQVCl7YW4M</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iAjLt4o5L28bOCN25" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iqcWlUjGXNOZ28elc" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i7D3FDb9zDg5e4olf" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iHdlnYIWKIYzOm0nX" cm:type="ps:datetime">2021-04-07T11:33:11.060Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="itWXJJENOq7N4x_iX" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iU33ors9eS_ocdr0w" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i7X8ZYwRgiLKJhDv4" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iPEuKdAMX0tW6rnsG" cm:type="ps:datetime">2021-04-07T11:37:38.257Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iTIRRrp05FktzQAt9" cm:mimetype="text/plain" cm:encoding="utf-8">AuthorsSearch</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iwDJhfVk37cKAxGCg" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;Selecting this feature users will be able to choose a Congress or workshop from the DBLP and by&amp;nbsp;selecting&amp;nbsp;the authors names in the document, get information about their publications in that Congress or workshop.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
   </cm:elements>

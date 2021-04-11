@@ -35,6 +35,9 @@ import $ from 'jquery'
 class Toolset {
   constructor () {
     this.page = chrome.extension.getURL('pages/sidebar/toolset.html')
+    // PVSCL:IFCOND(AuthorsSearch, LINE)
+    this.events = {}
+    // PVSCL:ENDCOND
   }
 
   init (callback) {
@@ -53,6 +56,9 @@ class Toolset {
       this.toolsetHeader = this.toolsetContainer.querySelector('#toolsetHeader')
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
       const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
+      // PVSCL:IFCOND(AuthorsSearch, LINE)
+      this.initCongressLoadedEvent()
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(AnnotatedPDF, LINE)
       // Set screenshot image
       const screenshotImageUrl = chrome.extension.getURL('/images/screenshot.png')
@@ -264,6 +270,31 @@ class Toolset {
         }
       }
     })
+  }
+  // PVSCL:ENDCOND
+
+  // PVSCL:IFCOND(AuthorsSearch, LINE)
+  initCongressLoadedEvent () {
+    this.events.congressLoadedEvent = { element: document, event: Events.congressLoaded, handler: this.congressLoadedEventHandler() }
+    this.events.congressLoadedEvent.element.addEventListener(this.events.congressLoadedEvent.event, this.events.congressLoadedEvent.handler, false)
+  }
+
+  /**
+   * This function adds the button to see the authors information
+   * when a congress is loaded for the document
+   */
+  congressLoadedEventHandler () {
+    return () => {
+      const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
+      const authorsInfoImageUrl = chrome.extension.getURL('/images/annotationList.png')
+      this.authorsInfoImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.authorsInfoImage.src = authorsInfoImageUrl
+      this.authorsInfoImage.title = 'Go to annotation list' // TODO i18n
+      this.toolsetBody.appendChild(this.authorsInfoImage)
+      this.authorsInfoImage.addEventListener('click', () => {
+        console.log('Ibi')
+      })
+    }
   }
   // PVSCL:ENDCOND
 }

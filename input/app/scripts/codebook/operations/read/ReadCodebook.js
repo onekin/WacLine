@@ -39,6 +39,10 @@ class ReadCodebook {
       // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
       ReadCodebook.addKeywordsTheme()
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(AuthorsSearch, LINE)
+      this.initCongressLoadedEvent()
+      // PVSCL:ENDCOND
+
     })
   }
 
@@ -99,6 +103,13 @@ class ReadCodebook {
     this.events.codebookCreatedEvent = { element: document, event: Events.codebookCreated, handler: this.codebookCreatedEventHandler() }
     this.events.codebookCreatedEvent.element.addEventListener(this.events.codebookCreatedEvent.event, this.events.codebookCreatedEvent.handler, false)
   }
+
+  // PVSCL:IFCOND(AuthorsSearch, LINE)
+  initCongressLoadedEvent () {
+    this.events.congressLoadedEvent = { element: document, event: Events.congressLoaded, handler: this.congressLoadedEventHandler() }
+    this.events.congressLoadedEvent.element.addEventListener(this.events.congressLoadedEvent.event, this.events.congressLoadedEvent.handler, false)
+  }
+  // PVSCL:ENDCOND
 
   /**
    * Loads the codebook inside the sidebar
@@ -803,6 +814,29 @@ class ReadCodebook {
         var themeDescription = 'Theme which includes the keywords found in the text'
         var newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
         LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+      }
+    }
+  }
+  // PVSCL:ENDCOND
+
+  // PVSCL:IFCOND(AuthorsSearch, LINE)
+  /**
+   * This function creates (in case that it doesn't exist)
+   * the theme to store the authors
+   */
+  congressLoadedEventHandler () {
+    return (event) => {
+      var congress = event.detail.congress
+      var codebook = window.abwa.codebookManager.codebookReader.codebook
+      var keywordThemeName = 'Authors'
+      if (!_.isEmpty(codebook)) {
+        if (congress) {
+          if (!codebook.getThemeByName(keywordThemeName)) {
+            var themeDescription = 'Theme which includes the authors of the document'
+            var newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
+            LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+          }
+        }
       }
     }
   }

@@ -12,12 +12,18 @@ import Annotation from './Annotation'
 // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
 import KeywordBasedAnnotation from './create/KeywordBasedAnnotation'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(AuthorsSearch, LINE)
+import AuthorsSearch from './purposes/AuthorsSearch'
+// PVSCL:ENDCOND
 class AnnotationManagement {
   constructor () {
     this.annotationCreator = new CreateAnnotation()
     this.annotationReader = new ReadAnnotation()
     this.annotationUpdater = new UpdateAnnotation()
     this.annotationDeleter = new DeleteAnnotation()
+    // PVSCL:IFCOND(AuthorsSearch, LINE)
+    this.authorsSearch = new AuthorsSearch()
+    // PVSCL:ENDCOND
     this.events = {}
     // PVSCL:IFCOND(SidebarNavigation, LINE)
     this.lastVisitedAnnotation = null
@@ -46,6 +52,9 @@ class AnnotationManagement {
     if (window.abwa.annotationManagement.annotationReader.allAnnotations.length === 0) {
       this.activateLoadKeywords()
     }
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(AuthorsSearch, LINE)
+    this.authorsSearch.init()
     // PVSCL:ENDCOND
   }
 

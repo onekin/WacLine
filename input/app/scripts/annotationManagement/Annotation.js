@@ -15,6 +15,9 @@ import Assessing from './purposes/Assessing'
 // PVSCL:IFCOND(Hypothesis,LINE)
 import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(AuthorsSearch, LINE)
+import Describing from './purposes/Describing'
+// PVSCL:ENDCOND
 
 class Annotation {
   constructor ({
@@ -154,6 +157,11 @@ class Annotation {
         // PVSCL:IFCOND(Assessing, LINE)
         if (body.purpose === Assessing.purpose) {
           return new Assessing({ value: body.value })
+        }
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(AuthorsSearch, LINE)
+        if (body.purpose === Describing.purpose) {
+          return new Describing({ value: body.value })
         }
         // PVSCL:ENDCOND
         return null

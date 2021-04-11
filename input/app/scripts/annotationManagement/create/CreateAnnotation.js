@@ -11,7 +11,9 @@ import $ from 'jquery'
 import Classifying from '../purposes/Classifying'
 import RolesManager from '../../contentScript/RolesManager'
 // PVSCL:ENDCOND
-
+// PVSCL:IFCOND(AuthorsSearch, LINE)
+import Describing from '../purposes/Describing'
+// PVSCL:ENDCOND
 class CreateAnnotation {
   constructor () {
     this.events = {}
@@ -61,6 +63,21 @@ class CreateAnnotation {
           tags: tags,
           body: body
         })
+        // PVSCL:IFCOND(AuthorsSearch, LINE)
+      } else if (event.detail.purpose === 'describing') {
+        // Create target
+        const target = this.obtainTargetToCreateAnnotation(event.detail)
+        // Create body
+        const describingBody = this.obtainBodyToCreateAnnotation(event.detail)
+        // Create tags
+        const describingTags = this.obtainTagsToCreateAnnotation(event.detail)
+        // Construct the annotation to send to hypothesis
+        annotationToCreate = new Annotation({
+          target: target,
+          tags: describingTags,
+          body: describingBody
+        })
+        // PVSCL:ENDCOND
       }
       if (annotationToCreate) {
         window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
@@ -103,6 +120,7 @@ class CreateAnnotation {
   }
 
   obtainBodyToCreateAnnotation ({
+    /* PVSCL:IFCOND(AuthorsSearch) */congress, /* PVSCL:ENDCOND */
     /* PVSCL:IFCOND(Classifying) */codeId /* PVSCL:ENDCOND */
   }) {
     // Get bodies and tags for the annotation to be created
@@ -113,6 +131,12 @@ class CreateAnnotation {
       const codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codeId)
       const classifyingBody = new Classifying({ code: codeOrTheme })
       body.push(classifyingBody.serialize())
+    }
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(AuthorsSearch, LINE)
+    if (congress) {
+      const describingBody = new Describing({ value: congress })
+      body.push(describingBody.serialize())
     }
     // PVSCL:ENDCOND
     return body
