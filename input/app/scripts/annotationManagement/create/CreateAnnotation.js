@@ -142,8 +142,8 @@ class CreateAnnotation {
     const range = document.getSelection().getRangeAt(0)
     const selectors = []
     // Create FragmentSelector
+    let fragmentSelector = null
     if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'FragmentSelector' }) !== -1) {
-      let fragmentSelector = null
       if (window.abwa.targetManager.documentFormat === PDF) {
         fragmentSelector = PDFTextUtils.getFragmentSelector(range)
       } else {
@@ -162,7 +162,12 @@ class CreateAnnotation {
     }
     // Create TextPositionSelector
     if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'TextPositionSelector' }) !== -1) {
-      const rootElement = window.abwa.targetManager.getDocumentRootElement()
+      let rootElement = window.abwa.targetManager.getDocumentRootElement()
+      // PVSCL:IFCOND(PDF, LINE)
+      if (fragmentSelector && fragmentSelector.page) {
+        rootElement = document.querySelector('#viewer > div[data-page-number="' + fragmentSelector.page + '"][data-loaded="true"] > div.textLayer')
+      }
+      // PVSCL:ENDCOND
       const textPositionSelector = DOMTextUtils.getTextPositionSelector(range, rootElement)
       if (textPositionSelector) {
         selectors.push(textPositionSelector)
@@ -170,7 +175,13 @@ class CreateAnnotation {
     }
     // Create TextQuoteSelector
     if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'TextQuoteSelector' }) !== -1) {
-      const textQuoteSelector = DOMTextUtils.getTextQuoteSelector(range)
+      let rootElement = window.abwa.targetManager.getDocumentRootElement()
+      // PVSCL:IFCOND(PDF, LINE)
+      if (fragmentSelector && fragmentSelector.page) {
+        rootElement = document.querySelector('#viewer > div[data-page-number="' + fragmentSelector.page + '"][data-loaded="true"] > div.textLayer')
+      }
+      // PVSCL:ENDCOND
+      const textQuoteSelector = DOMTextUtils.getTextQuoteSelector(range, rootElement)
       if (textQuoteSelector) {
         selectors.push(textQuoteSelector)
       }
