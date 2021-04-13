@@ -23,3 +23,6 @@
 /* PVSCL:IFCOND(Canvas, LINE) */
 @import './reviewCanvas';
 /* PVSCL:ENDCOND */
+/* PVSCL:IFCOND(AuthorsSearch, LINE) */
+@import './authorsCanvas.scss';
+/* PVSCL:ENDCOND */

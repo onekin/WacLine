@@ -13,10 +13,14 @@ class AuthorsSearch {
     this.events = {}
   }
 
-  init (callback) {
+  init () {
     this.loadCongress()
   }
 
+  /**
+   * This function finds the congress set to analize
+   * the document in case it has been set
+   */
   loadCongress () {
     const allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
     const congressAnnotations = _.filter(allAnnotations, (annotation) => {
@@ -36,7 +40,10 @@ class AuthorsSearch {
     }
   }
 
-  initCongress (callback) {
+  /**
+   * This function shows a form to ask the user for the congress
+   */
+  initCongress () {
     let html = '<p>Enter the name of the congress you want to get authors information from</p>'
     html += '<input placeholder="Choose congress" id="swal-input1" class="swal2-input">'
     const onBeforeOpen = this.generateOnBeforeOpenForm()
@@ -52,6 +59,9 @@ class AuthorsSearch {
     })
   }
 
+  /**
+   * This function adds the autocomplete to the input field of the congress
+   */
   generateOnBeforeOpenForm () {
     let onBeforeOpen = () => {
       $('#swal-input1').autocomplete({
@@ -85,6 +95,10 @@ class AuthorsSearch {
     return onBeforeOpen
   }
 
+  /**
+   * This function splits the parts of the congress name set in the input
+   * @returns {}
+   */
   generateCongressFormPreConfirm () {
     const preConfirm = () => {
       let congressText = document.querySelector('#swal-input1').value
@@ -95,6 +109,9 @@ class AuthorsSearch {
     return preConfirm
   }
 
+  /**
+   * This function warns that an annotation is going to be created and that the congress has been loaded
+   */
   generateCongressFormCallback () {
     const congressCallback = () => {
       const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'describing'

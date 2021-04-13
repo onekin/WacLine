@@ -31,6 +31,7 @@ import AnnotationImporter from '../importExport/AnnotationImporter'
 import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
 import $ from 'jquery'
+import AuthorsInfo from '../annotationManagement/read/AuthorsInfo'
 
 class Toolset {
   constructor () {
@@ -292,9 +293,13 @@ class Toolset {
       this.authorsInfoImage.title = 'Go to annotation list' // TODO i18n
       this.toolsetBody.appendChild(this.authorsInfoImage)
       this.authorsInfoImage.addEventListener('click', () => {
-        console.log('Ibi')
+        this.authorsInfoButtonHandler()
       })
     }
+  }
+
+  authorsInfoButtonHandler () {
+    AuthorsInfo.generateReview()
   }
   // PVSCL:ENDCOND
 }

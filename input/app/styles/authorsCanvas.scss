@@ -1,0 +1,50 @@
+@import "./variables";
+
+
+#authorsCanvasContainer{
+  font-family: Calibri;
+  width:70%;
+  height:90%;
+  position:fixed;
+  top:15%;
+  left:20%;
+  z-index:1000;  
+  border-top:solid 1px #79a9f7;
+  box-sizing: border-box;
+}
+
+#authorsCanvasTitle{
+  background-color:white;
+  text-align:center;
+}
+
+.authorRow{
+  border-right:solid 1px #79a9f7;  
+  background-color:white;
+  padding: 7px;
+  overflow-y:hidden;
+  font-size:1.1em;
+  box-sizing: border-box;  
+  height:15%;
+  overflow-x:hidden;
+  word-break: break-all;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+}
+.authorRow p{
+  margin: 5%;
+}
+
+.authorsName{
+  width:40%;
+}
+
+.authorsPublications{
+  text-align:right
+}
+
+.authorsLink{
+  text-align:right;
+  margin-left:5%;
+}
