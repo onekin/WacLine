@@ -1,0 +1,64 @@
+{
+  "groups":[
+    {
+      "name": "Empirical Standart",
+      "methods": [
+        {
+          "name": "General Standart",
+          "definition": [
+            {
+              "name": "Essential",
+              "description": "",
+              "codes": [
+                {"name": "Research purpose", "description": "states a purpose, problem, objective, or research question"},
+                {"name": "Motivation", "description": "explains why the problem, objective, or research question is important (motivation"},
+                {"name": "Definitions", "description": "defines jargon, acronyms and key concepts"},
+                {"name": "Methodology", "description": "methodology is appropriate (not necessarily optimal) for stated purpose or questions"},
+                {"name": "Data collection", "description": "describes in detail what, where, when and how data were collected (see the Sampling Supplement)"},
+                {"name": "Data analysis description", "description": "describes in detail how the data were analyzed"},
+                {"name": "Statistical assumptions", "description": "discusses and validates assumptions of any statistical tests used"},
+                {"name": "Result presentation", "description": "present results"},
+                {"name": "Result addressing research", "description": "results directly address research questions"},
+                {"name": "Supported claims", "description": "supports main claims or conclusions with explicit evidence (data/observations) or arguments"},
+                {"name": "Results implications", "description": "discusses implications of the results"},
+                {"name": "Study limitations", "description": "discusses the study's limitations and threats to validity"},
+                {"name": "Contribution to BoK", "description": "contributes in some way to the collective body of knowledge"},
+                {"name": "Language misleading", "description": "language is not misleading; any grammatical problems do not substantially hinder understanding"},
+                {"name": "Benefit risk balance", "description": "balances the study's anticipated benefits with its potential risks or harms, minimizing risk or harm wherever possible (see the ethics supplements for studies with Human Participants or Secondary Data)"},
+                {"name": "Visualizations", "description": "visualizations/graphs are not misleading (see the Information Visualization Supplement)"}
+              ]
+            },
+            {
+              "name" : "Desirable",
+              "description": "",
+              "codes" : [
+                {"name": "Related work synthesis" , "description": "summarizes and synthesizes a reasonable selection of related work" },                
+                {"name": "Relation with related work" , "description": "clearly describes relationship between contribution(s) and related work" },
+                {"name": "Epistemological stance" , "description": "states epistemological stance (e.g. post-positivism, interpretivism, critical realism)" },
+                {"name": "Statistical power/saturation" , "description": "appropriate statistical power (for quantitative work) or saturation (for qualitative work" },
+                {"name": "Limitations mitigation" , "description": "reasonable attempts to investigate or mitigate limitations" },
+                {"name": "Study realism" , "description": "discusses study’s realism, assumptions and sensitivity of the results to its realism/assumptions" },
+                {"name": "Recommendation providing" , "description": "provides plausibly useful interpretations or recommendations for practice, education or research" },
+                {"name": "Open sharing" , "description": "openly shares data and materials to the extent possible within practical and ethical limits (see the Open Science Supplement)" },
+                {"name": "Presentation" , "description": "concise, precise, well-organized and easy-to-read presentation" },
+                {"name": "Visualizations for argumentation" , "description": "visualizations (e.g. graphs, diagrams, tables) advance the paper’s arguments or contribution" },
+                {"name":"Researchers roles","description": "clarifies the roles and responsibilities of the researchers (i.e. who did what?)"},
+                {"name": "Auto-reflection", "description": "provides an auto-reflection or assessment of the authors’ own work (e.g. lessons learned)"},
+                {"name": "Multiple raters use", "description": "uses multiple raters for any subjective judgments (see the IRR/IRA Supplement)"} 
+              ]
+            },
+            {
+              "name" : "Extraordinary",
+              "description": "",
+              "codes" : [
+                {"name": "Multiple data collection", "description": " applies two or more data collection or analysis strategies to the same research question (see the Multimethodology Standard)"},
+                {"name": "Multiple epistemological perspectives", "description": "approaches the same research question(s) from multiple epistemological perspectives"},
+                {"name": "Research methodology innovation", "description": "innovates on research methodology while completing an empirical study"} 
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

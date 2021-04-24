@@ -30,8 +30,13 @@ import AnnotationImporter from '../importExport/AnnotationImporter'
 // PVSCL:IFCOND(Export, LINE)
 import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
+
+// PVSCL:IFCOND(AuthorsSearch, LINE)
 import $ from 'jquery'
 import AuthorsInfo from '../annotationManagement/read/AuthorsInfo'
+// PVSCL:ENDCOND
+
+import ImportChecklist from '../codebook/operations/import/ImportChecklist'
 
 class Toolset {
   constructor () {
@@ -159,6 +164,21 @@ class Toolset {
       // Add menu when clicking on the button
       this.importExportButtonHandler()
       // PVSCL:ENDCOND
+
+      const checklistImageUrl = chrome.extension.getURL('/images/checklist.png')
+      this.checklistImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.checklistImage.src = checklistImageUrl
+      this.checklistImage.id = 'checklistButton'
+      this.checklistImage.title = 'Choose checklist' // TODO i18n
+      this.checklistImage.addEventListener('click', () => {
+        ImportChecklist.openChecklistMenu()
+      })
+      this.toolsetBody.appendChild(this.checklistImage)
+
+
+
+
+
       // Add link to configuration page of the tool
       this.toolsetHeader.querySelector('#appNameBadge').href = chrome.extension.getURL('/pages/options.html')
       // Check if exist any element in the tools and show it
@@ -287,20 +307,16 @@ class Toolset {
   congressLoadedEventHandler () {
     return () => {
       const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
-      const authorsInfoImageUrl = chrome.extension.getURL('/images/annotationList.png')
+      const authorsInfoImageUrl = chrome.extension.getURL('/images/signature.png')
       this.authorsInfoImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.authorsInfoImage.src = authorsInfoImageUrl
-      this.authorsInfoImage.title = 'Go to annotation list' // TODO i18n
+      this.authorsInfoImage.title = 'Get authors information' // TODO i18n
       this.toolsetBody.appendChild(this.authorsInfoImage)
       this.authorsInfoImage.addEventListener('click', () => {
-        this.authorsInfoButtonHandler()
+        AuthorsInfo.generateReview()
       })
     }
-  }
-
-  authorsInfoButtonHandler () {
-    AuthorsInfo.generateReview()
-  }
+  } 
   // PVSCL:ENDCOND
 }
 

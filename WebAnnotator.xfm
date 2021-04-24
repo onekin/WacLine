@@ -2794,6 +2794,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:relation cm:id="i9iIw89YGTlzVN-6V" cm:type="ps:optional" cm:range="[0,n]">
           <cm:target cm:id="idwnhLvgXUjbwSHK4">./iqfzoFbwkQ3zf6BoO</cm:target>
           <cm:target cm:id="iMAgSgX4y-kGCZ7Wm">./ib3-dlwNr_ia0jptU</cm:target>
+          <cm:target cm:id="iba7c5TU7UhS6gDrT">./imXhn9HgUTCBbTEkg</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -2804,10 +2805,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="icmQjgUC4eXNDsyiV" cm:type="ps:datetime">2019-11-07T12:10:47.027Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipAGdMsXR7rqele09" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iRC8SGXe9K0A1_thn" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iRC8SGXe9K0A1_thn" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="iMIbBdgjDgpsPo6Qk" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iMoKYagR1Ij1YeThl" cm:type="ps:datetime">2020-02-25T15:11:27.685Z</cm:constant>
+          <cm:constant cm:id="iMoKYagR1Ij1YeThl" cm:type="ps:datetime">2021-04-23T23:07:26.347Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2941,6 +2942,34 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iwDJhfVk37cKAxGCg" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
 &lt;p&gt;Selecting this feature users will be able to choose a Congress or workshop from the DBLP and by&amp;nbsp;selecting&amp;nbsp;the authors names in the document, get information about their publications in that Congress or workshop.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="imXhn9HgUTCBbTEkg" cm:name="ImportChecklist" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iBO05OISFufWZ5xps" cm:class="ps:parents">
+        <cm:relation cm:id="ibcRVTK4NB0CPgaXG" cm:type="ps:parent">
+          <cm:target cm:id="iCjfehgKkM19k858M">./iL9f02WrlfXgKAbG0</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iecDQIKCKIowXuufe" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iD48gzjNtyYbMlsmD" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i7YAhU9TCV1CQeld8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="icxZLXxzf3EaphuCg" cm:type="ps:datetime">2021-04-23T23:07:26.347Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iHFv51E4sBN1vudIb" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iTIUiLqRKJAjRIuN3" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ixmAzld61zIJD0f4t" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iXysIcbK7MJ2wk8IJ" cm:type="ps:datetime">2021-04-23T23:08:32.409Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ilFQk0fGEZvpaOwH5" cm:mimetype="text/plain" cm:encoding="utf-8">ImportChecklist</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i61f8x4s_fm5LSvDF" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;This feature allows importing of codebooks from templates for evaluation purposes&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
   </cm:elements>

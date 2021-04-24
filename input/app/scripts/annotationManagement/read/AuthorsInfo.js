@@ -74,8 +74,8 @@ class AuthorsInfo {
   /**
    * This function takes authors from the annotations and finds the name and
    * url to the DBLP by an API call
-   * @param {string} authorsAnnotations 
-   * @param {string} congress 
+   * @param {string} authorsAnnotations
+   * @param {string} congress
    * @returns {[]}
    */
   static getAuthorsInfo (authorsAnnotations, congress) {
