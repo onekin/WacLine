@@ -17,6 +17,7 @@ import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisCl
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(AuthorsSearch, LINE)
 import Describing from './purposes/Describing'
+import Checklist from './purposes/Checklist'
 // PVSCL:ENDCOND
 
 class Annotation {
@@ -162,6 +163,11 @@ class Annotation {
         // PVSCL:IFCOND(AuthorsSearch, LINE)
         if (body.purpose === Describing.purpose) {
           return new Describing({ value: body.value })
+        }
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(ImportChecklist, LINE)
+        if (body.purpose === Checklist.purpose) {
+          return new Checklist({ value: body.value })
         }
         // PVSCL:ENDCOND
         return null

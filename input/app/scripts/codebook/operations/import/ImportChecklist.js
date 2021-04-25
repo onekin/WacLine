@@ -8,6 +8,7 @@ import Config from '../../../Config'
 import LanguageUtils from '../../../utils/LanguageUtils'
 import Codebook from '../../model/Codebook'
 import Checklist from '../../../annotationManagement/purposes/Checklist'
+import ChecklistReview from '../../../annotationManagement/read/ChecklistReview'
 
 class ImportChecklist {
 
@@ -58,7 +59,8 @@ class ImportChecklist {
             // 6- Add special annotation to track checklist (checked/not checked)
             let newBody = {
               name: chosenMethod.name,
-              definition: []
+              definition: [],
+              totalCodes: 0
             }
             chosenMethod.definition.forEach((category) => {
               let newDefinition = {
@@ -74,6 +76,7 @@ class ImportChecklist {
                 }
               })
               newBody.definition.push(newDefinition)
+              newBody.totalCodes += newDefinition.codes.length
             })
             const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'checklist'
             const tags = [motivationTag]
@@ -95,15 +98,22 @@ class ImportChecklist {
   }
 
   static openChecklistMenu () {
-    let checklist = ImportChecklist.getChecklists()[0]
+    let checklist = ImportChecklist.getChecklistsAnnotations()[0]
     if (_.isEmpty(checklist)) {
       ImportChecklist.import()
     } else {
-      console.log(checklist)
+      ChecklistReview.generateReview()
     }
   }
-  
+
   static getChecklists () {
+    let checklistsAnnotations = ImportChecklist.getChecklistsAnnotations()
+    return checklistsAnnotations.map((checklist) => {
+      return checklist.body[0].value
+    })
+  }
+
+  static getChecklistsAnnotations () {
     const allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
     const checklistAnnotations = _.filter(allAnnotations, (annotation) => {
       return _.some(annotation.tags, (tag) => {
@@ -112,8 +122,6 @@ class ImportChecklist {
     })
     return checklistAnnotations
   }
-
-
 
 }
 export default ImportChecklist

@@ -1,0 +1,145 @@
+import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
+import _ from 'lodash'
+import axios from 'axios'
+import Commenting from '../purposes/Commenting'
+import $ from 'jquery'
+import Events from '../../Events'
+import LanguageUtils from '../../utils/LanguageUtils'
+import Alerts from '../../utils/Alerts'
+
+class ChecklistReview {
+
+  static generateReview () {
+    window.abwa.sidebar.closeSidebar()
+    const checklist = ImportChecklist.getChecklists()[0]
+    const canvasPageURL = chrome.extension.getURL('pages/specific/checklistCanvas.html')
+
+    axios.get(canvasPageURL).then((response) => {
+      document.body.insertAdjacentHTML('beforeend', response.data)
+      document.querySelector('#abwaSidebarButton').style.display = 'none'
+      document.querySelector('#checklistCanvasContainer').addEventListener('click', function (e) {
+        e.stopPropagation()
+      })
+
+      document.addEventListener('keydown', function (e) {
+        if (e.code === 'Escape' && document.querySelector('#checklistCanvas') != null) document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
+      document.querySelector('#canvasCloseButton').addEventListener('click', function () {
+        document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
+      document.querySelector('#checklistCanvasTitle').textContent = checklist.name
+
+      const canvasContainer = document.querySelector('#checklistCanvasContainer')
+      const clusterTemplate = document.querySelector('#propertyClusterTemplate')
+      const itemTemplate = document.querySelector('#codeTemplate')
+      checklist.definition.forEach((type) => {
+        const cluster = clusterTemplate.content.cloneNode(true)
+        cluster.querySelector('.checklistClusterLabel span').innerText = type.name
+        const height = type.codes.length / checklist.totalCodes * 70 + 10
+        cluster.querySelector('.checklistPropertyCluster').style.height = height + '%'
+        type.codes.forEach((code) => {
+          const item = itemTemplate.content.cloneNode(true)
+          item.querySelector('.item span').innerText = code.name
+          item.querySelector('.item span').addEventListener('click', function () {
+            document.querySelector('#checklistCanvas').style.display = 'none'
+            ChecklistReview.generateItemReview(type, code)
+          })
+          cluster.querySelector('.checklistClusterContainer').appendChild(item)
+        })
+        canvasContainer.appendChild(cluster)
+      })
+      Alerts.closeAlert()
+    })
+  }
+
+  static generateItemReview (type, chosenCode) {
+    const itemPageURL = chrome.extension.getURL('pages/specific/checklistItem.html')
+    var newStatus = chosenCode.status
+    axios.get(itemPageURL).then((response) => {
+      document.body.insertAdjacentHTML('beforeend', response.data)
+      document.querySelector('#abwaSidebarButton').style.display = 'none'
+      document.querySelector('#checklistItemContainer').addEventListener('click', function (e) {
+        e.stopPropagation()
+      })
+
+      document.addEventListener('keydown', function (e) {
+        if (e.code === 'Escape' && document.querySelector('#checklistItem') != null) document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
+      })
+      document.querySelector('#backArrow').addEventListener('click', function () {
+        console.log(newStatus)
+        if (chosenCode.status !== newStatus) {
+          if (chosenCode.status !== newStatus) {
+            // ChecklistReview.changeItemBackground(type, chosenCode, newStatus)
+          }
+        }
+
+        document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
+        document.querySelector('#checklistCanvas').style.display = 'block'
+      })
+      document.querySelector('#checklistItemTitle').textContent = chosenCode.name + ':'
+      document.querySelector('#checklistItemDescription').textContent = chosenCode.description
+
+      if (chosenCode.status === 'passed') {
+        $('.like').addClass('active')
+      } else if (chosenCode.status === 'failed') {
+        $('.dislike').addClass('active')
+      }
+
+      $('.like, .dislike').on('click', function () {
+        if (this.classList.contains('active')) {
+          $('.active').removeClass('active')
+          newStatus = 'undefined'
+        } else {
+          $('.active').removeClass('active')
+          $(this).addClass('active')
+          if (this.classList.contains('like')) {
+            newStatus = 'passed'
+          } else {
+            newStatus = 'failed'
+          }
+        }
+        const checklistAnnotation = ImportChecklist.getChecklistsAnnotations()[0]
+        ChecklistReview.changeItemStatus(checklistAnnotation, type, chosenCode, newStatus)
+      })
+
+      const itemAnnotationsContainer = document.querySelector('#itemAnnotationsContainer')
+      const annotationCardTemplate = document.querySelector('#annotationCardTemplate')
+      var codebook = window.abwa.codebookManager.codebookReader.codebook
+      if (!_.isEmpty(codebook)) {
+        let theme = codebook.getThemeByName(type.name)
+        if (theme) {
+          let code = theme.getCodeByName(chosenCode.name)
+          let annotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(code.id)
+          annotations.forEach((annotation) => {
+            const annotationCard = annotationCardTemplate.content.cloneNode(true)
+            annotationCard.querySelector('.annotationCardContent span').innerText = '"' + annotation.target[0].selector[2].exact + '"'
+            let commentBody = annotation.getBodyForPurpose(Commenting.purpose)
+            if (commentBody) {
+              annotationCard.querySelector('.annotationCardContent ul li').innerText = commentBody.value
+            }
+            itemAnnotationsContainer.appendChild(annotationCard)
+          })
+        }
+      }
+    })
+  }
+
+  static changeItemStatus (checklistAnnotation, type, chosenCode, newStatus) {
+    checklistAnnotation.body[0].value.definition.forEach((definition) => {
+      if (definition.name === type.name) {
+        definition.codes.forEach((code) => {
+          if (code.name === chosenCode.name) {
+            code.status = newStatus
+          }
+        })
+      }
+    })
+    LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+      annotation: checklistAnnotation
+    })
+  }
+
+}
+export default ChecklistReview

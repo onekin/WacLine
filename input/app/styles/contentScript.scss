@@ -26,3 +26,7 @@
 /* PVSCL:IFCOND(AuthorsSearch, LINE) */
 @import './authorsCanvas.scss';
 /* PVSCL:ENDCOND */
+/* PVSCL:IFCOND(ImportChecklist, LINE) */
+@import './checklistCanvas.scss';
+@import './checklistItem.scss';
+/* PVSCL:ENDCOND */

@@ -1,0 +1,46 @@
+
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<div id="checklistItem">
+  <div id="checklistItemOverlay"></div>
+  <div id="checklistItemContainer">
+    <div id="header">
+      <i id="backArrow"></i>
+      <div class="itemTitles">
+        <h2 id="checklistItemTitle"></h2>
+        <h4 id="checklistItemDescription"></h4>
+      </div>
+      <div class="rating">
+        <!-- Thumbs up -->
+        <div class="grow">
+          <i class="fa fa-thumbs-up fa-3x like" aria-hidden="true"></i>
+        </div>
+        <!-- Thumbs down -->
+        <div class="grow">
+          <i class="fa fa-thumbs-down fa-3x dislike" aria-hidden="true"></i>
+        </div>
+      </div>
+
+    </div>
+    <div id="itemAnnotationsContainer">
+    </div>
+    <div id="canvasCloseButton">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+
+  <template id="annotationCardTemplate">
+    <div class="annotationCard">
+      <div class="annotationCardContent">
+        <span></span>
+        <ul>
+          <li></li>
+        </ul>
+      </div>
+    </div>
+  </template>
