@@ -295,7 +295,7 @@ class ReadCodebook {
   /**
    * This function adds the buttons that must appear in the sidebar to be able to annotate
    */
-  createButtons () {
+  async createButtons () {
     // PVSCL:IFCOND(CodebookUpdate, LINE)
     // Create new theme button
     UpdateCodebook.createNewThemeButton()
@@ -311,6 +311,16 @@ class ReadCodebook {
     // PVSCL:IFCOND(Date, LINE)
     themes.sort((a, b) => a.createdDate - b.createdDate)
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(NumAnnotations, LINE)
+    const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
+    while (!window.abwa.annotatedContentManager) {
+      await sleep(500)
+    }
+    themes.sort((a, b) => {
+      return (window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(a.id).length - window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(b.id).length) > 0 ? 1 : 0
+    })
+    // PVSCL:ENDCOND
+
     for (let i = 0; i < themes.length; i++) {
       const theme = themes[i]
       let themeButtonContainer
@@ -322,8 +332,11 @@ class ReadCodebook {
         result = a.name.localeCompare(b.name)
         // PVSCL:ELSEIFCOND(Number, LINE)
         result = parseFloat(a.name) > parseFloat(b.name)
+        // PVSCL:ELSEIFCOND(NumAnnotations, LINE)
+        result = (window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(a.id).length - window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(b.id).length) > 0 ? 1 : 0
         // PVSCL:ELSEIFCOND(Date, LINE)
-        // PVSCL:ENDCOND
+
+        // PVSCL:ENDCOND        
         return result
       })
       // PVSCL:IFCOND(Alphabetical, LINE)
@@ -335,6 +348,13 @@ class ReadCodebook {
       // PVSCL:IFCOND(Date, LINE)
       codes = codes.sort((a, b) => a.createdDate - b.createdDate)
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(NumAnnotations, LINE)
+      codes = codes.sort((a, b) => {
+        return (window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(a.id).length - window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(b.id).length) > 0 ? 1 : 0
+      })
+      // PVSCL:ENDCOND
+
+
       if (theme.codes.length > 0) {
         themeButtonContainer = this.createGroupedThemeButtonContainer(theme, codes)
       } else {

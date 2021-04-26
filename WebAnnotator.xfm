@@ -2514,6 +2514,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="i9S6Uf2axLbg_CYGK">./iv59_Ug0UN-UPdFmv</cm:target>
           <cm:target cm:id="ilk479bkHjOpKP766">./idi9dgho2A67zm07I</cm:target>
           <cm:target cm:id="i31wPYO1r1fRGJepg">./iulsA5J7emnGLZy5d</cm:target>
+          <cm:target cm:id="iOyAickT4LZIU_i0z">./iGm9G6Pg-4tnwbzLW</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -2524,10 +2525,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="isEZhO6zdDG9daIxX" cm:type="ps:datetime">2019-11-07T11:59:22.677Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i9CSc729nYGGA4ynT" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iHNhLD-hqFJ389Y52" cm:type="ps:string">haritz</cm:constant>
+          <cm:constant cm:id="iHNhLD-hqFJ389Y52" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="i-ihcRew3T_PDJM-p" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iLKuAf1UzgIDYQ79m" cm:type="ps:datetime">2020-02-25T14:22:13.160Z</cm:constant>
+          <cm:constant cm:id="iLKuAf1UzgIDYQ79m" cm:type="ps:datetime">2021-04-26T15:19:49.798Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2970,6 +2971,31 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="i61f8x4s_fm5LSvDF" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
 &lt;p&gt;This feature allows importing of codebooks from templates for evaluation purposes&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iGm9G6Pg-4tnwbzLW" cm:name="NumAnnotations" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iKZF3z0yQuzzKxaTU" cm:class="ps:parents">
+        <cm:relation cm:id="iXEwIXGdi07qKJawS" cm:type="ps:parent">
+          <cm:target cm:id="iYc7yytskgiL1X43Y">./i_fDWVAwf7hTsunWS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ijaQJecR5XQ2I8j4m" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iiGVP6Uf2GJ3gW_nn" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iMT4hYmGXRJUb3iuK" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iLqwynalovOFLd-_l" cm:type="ps:datetime">2021-04-26T13:46:19.908Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijk4dwS2hmsjDr-M_" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iK-5otJV4EUODPbFv" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iYUPB23cu-M7_LoMB" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i6DnwT0o71MLhyvv7" cm:type="ps:datetime">2021-04-26T15:19:49.799Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:desc>
+        <cm:mimedesc cm:id="iI5KeT67ixtjUD5DX" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;Orders themes and its codes by the amount of annotations (from lower to higher), facilitating the remaining codes to evaluate in a checklist.&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
   </cm:elements>

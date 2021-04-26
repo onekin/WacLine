@@ -1,0 +1,151 @@
+@import "./variables";
+
+#reviewEditorOverlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+#reviewEditorContainer {
+  font-family: Calibri;
+  width: 90%;
+  height: 90%;
+  position: fixed;
+  top: 5%;
+  left: 5%;
+  z-index: 1000;
+  background-color: white;
+}
+
+#reviewEditorContainer h1 {
+  text-align: center;
+  font-size: 2.3;
+}
+
+#reviewEditorContainer h3 {
+  margin-left: 10%;
+  font-size: 1.5em;
+}
+
+
+#reviewEditorCloseButton {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  background: #f5f5f5;
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  z-index: calc(#{$sidebarZIndex} + 1);
+  top: 1em;
+  right: 1em;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+
+#reviewEditorCloseButton span {
+  margin: 0 auto;
+  width: 80%;
+  height: 2px;
+  margin: 0 auto;
+  display: block;
+  background: #555;
+  transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
+}
+
+#reviewEditorCloseButton span:first-of-type {
+  transform: rotate(45deg) translate(14px, 14px);
+}
+
+#reviewEditorCloseButton span:nth-of-type(2) {
+  opacity: 0;
+}
+
+#reviewEditorCloseButton span:last-of-type {
+  transform: rotate(-45deg) translate(-11px, 11px);
+}
+
+#reportEditorContainer {
+  display: flex;
+  height: 82%;
+}
+
+
+.reportColumn {
+  flex: 65%;
+  height: 100%;
+  text-align: center;
+}
+
+.invalidCriticismsColumn {
+  flex: 35%;
+  height: 100%;
+}
+
+
+#invalidCriticismsContainer {
+  height: 90%;
+  border: solid 1px;
+  margin-left: 3%;
+  margin-top: 20px;
+  margin-right: 5%;
+  overflow: auto;
+  background-color: #f7eac6;
+}
+
+#invalidCriticismsList {
+  height: 90%;
+  margin-left: 8%;
+  margin-right: 2%;
+  margin-top: 3%;
+  padding: 0;
+  word-wrap: break-word;
+  font-size: 1.2em;
+}
+
+#invalidCriticismsContainer::-webkit-scrollbar,
+#reportText::-webkit-scrollbar {
+  width: 10px;
+}
+
+#invalidCriticismsContainer::-webkit-scrollbar-track,
+#reportText::-webkit-scrollbar-track {
+  background: white;
+}
+
+#invalidCriticismsContainer::-webkit-scrollbar-thumb,
+#reportText::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background: #2c62ba
+}
+
+.reportColumnContent {
+  margin-left: 10%;
+  margin-top: 20px;
+  text-align: center;
+  height: 100%;
+  width: 80%;
+}
+
+#reportText {
+  height: 90%;
+  width: 80%;
+  border: solid 1px;
+  overflow: auto;
+  background-color: #f7eac6;
+}
+
+#downloadReport {
+  background-color: #3085d6;
+  border: 0;
+  border-radius: .25em;
+  font: size 1.0625em;
+  color: #fff;
+  width: 25%;
+  height: 45px;
+  cursor: pointer;
+}

@@ -206,7 +206,7 @@ class Toolset {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(TextSummary, LINE)
   textSummaryButtonHandler () {
-    TextSummary.generateReview()
+    TextSummary.generateReviewEditor()
   }
 
   // PVSCL:ENDCOND
