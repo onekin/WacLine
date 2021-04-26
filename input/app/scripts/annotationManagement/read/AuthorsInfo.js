@@ -2,6 +2,7 @@ import _ from 'lodash'
 import Config from '../../Config'
 import axios from 'axios'
 import $ from 'jquery'
+import Alerts from '../../utils/Alerts'
 
 class AuthorsInfo {
 
@@ -54,6 +55,7 @@ class AuthorsInfo {
           }
         }
       })
+      Alerts.closeAlert()
     })
   }
 
@@ -82,7 +84,9 @@ class AuthorsInfo {
     return new Promise((resolve) => {
       let promises = []
       const authorsNames = authorsAnnotations.map((authorAnnotation) => {
-        return authorAnnotation.target[0].selector[2].exact
+        return authorAnnotation.target[0].selector.filter((sel) => {
+          return sel.exact !== undefined
+        })[0].exact
       })
       let authors = []
       for (const author of authorsNames) {

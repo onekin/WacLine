@@ -32,7 +32,7 @@ class ChecklistReview {
       document.querySelector('#checklistCanvasTitle').textContent = checklist.name
 
       const canvasContainer = document.querySelector('#checklistCanvasContainer')
-      const clusterTemplate = document.querySelector('#propertyClusterTemplate')
+      const clusterTemplate = document.querySelector('#checklistClusterTemplate')
       const itemTemplate = document.querySelector('#codeTemplate')
       checklist.definition.forEach((type) => {
         const cluster = clusterTemplate.content.cloneNode(true)
@@ -41,8 +41,10 @@ class ChecklistReview {
         cluster.querySelector('.checklistPropertyCluster').style.height = height + '%'
         type.codes.forEach((code) => {
           const item = itemTemplate.content.cloneNode(true)
+          item.querySelector('.item').classList.add(code.status)
+          item.querySelector('.item').setAttribute('id', code.name)
           item.querySelector('.item span').innerText = code.name
-          item.querySelector('.item span').addEventListener('click', function () {
+          item.querySelector('.item').addEventListener('click', function () {
             document.querySelector('#checklistCanvas').style.display = 'none'
             ChecklistReview.generateItemReview(type, code)
           })
@@ -68,12 +70,7 @@ class ChecklistReview {
         if (e.code === 'Escape' && document.querySelector('#checklistItem') != null) document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
       })
       document.querySelector('#backArrow').addEventListener('click', function () {
-        console.log(newStatus)
-        if (chosenCode.status !== newStatus) {
-          if (chosenCode.status !== newStatus) {
-            // ChecklistReview.changeItemBackground(type, chosenCode, newStatus)
-          }
-        }
+        ChecklistReview.changeItemBackground(chosenCode)
 
         document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
         document.querySelector('#checklistCanvas').style.display = 'block'
@@ -141,5 +138,11 @@ class ChecklistReview {
     })
   }
 
+  static changeItemBackground (chosenCode) {
+    let element = $('#' + chosenCode.name)
+    document.getElementById(chosenCode.name).classList.remove('passed', 'failed', 'undefined')
+    document.getElementById(chosenCode.name).classList.add(chosenCode.status)
+    console.log($('#' + chosenCode.name))
+  }
 }
 export default ChecklistReview
