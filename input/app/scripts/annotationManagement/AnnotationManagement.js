@@ -9,9 +9,6 @@ import PDF from '../target/formats/PDF'
 import Events from '../Events'
 import Classifying from './purposes/Classifying'
 import Annotation from './Annotation'
-// PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-import KeywordBasedAnnotation from './create/KeywordBasedAnnotation'
-// PVSCL:ENDCOND
 // PVSCL:IFCOND(AuthorsSearch, LINE)
 import AuthorsSearch from './purposes/AuthorsSearch'
 // PVSCL:ENDCOND
@@ -48,31 +45,8 @@ class AnnotationManagement {
     // PVSCL:IFCOND(SidebarNavigation, LINE)
     this.initNavigationToAnnotationByCodeEventListener()
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-    if (window.abwa.annotationManagement.annotationReader.allAnnotations.length === 0) {
-      this.activateLoadKeywords()
-    }
-    // PVSCL:ENDCOND
-    // PVSCL:IFCOND(AuthorsSearch, LINE)
-    this.authorsSearch.init()
-    // PVSCL:ENDCOND
   }
 
-  /**
-   * This function waits until the codebook is set
-   * and inits the process to search for keywords
-   */
-  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-  activateLoadKeywords () {
-    if (_.isEmpty(window.abwa.codebookManager.codebookReader.codebook)) {
-      setTimeout(() => {
-        this.activateLoadKeywords()
-      }, 500)
-    } else {
-      KeywordBasedAnnotation.loadKeywords()
-    }
-  }
-  // PVSCL:ENDCOND
 
   activateSelectionEvent (callback) {
     this.events.mouseUpOnDocumentHandler = { element: document, event: 'mouseup', handler: this.mouseUpOnDocumentHandlerConstructor() }

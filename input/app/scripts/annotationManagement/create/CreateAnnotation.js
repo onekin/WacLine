@@ -16,6 +16,7 @@ import Describing from '../purposes/Describing'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(ImportChecklist, LINE)
 import Checklist from '../purposes/Checklist'
+import Report from '../purposes/Report'
 // PVSCL:ENDCOND
 
 class CreateAnnotation {
@@ -68,7 +69,7 @@ class CreateAnnotation {
           body: body
         })
         // PVSCL:IFCOND(AuthorsSearch OR ImportChecklist, LINE)
-      } else if (event.detail.purpose === 'describing' || event.detail.purpose === 'checklist') {
+      } else if (event.detail.purpose === 'describing' || event.detail.purpose === 'checklist' || event.detail.purpose === 'report') {
         // Create target
         const target = this.obtainTargetToCreateAnnotation(event.detail)
         // Create body
@@ -125,7 +126,7 @@ class CreateAnnotation {
 
   obtainBodyToCreateAnnotation ({
     /* PVSCL:IFCOND(AuthorsSearch) */congress, /* PVSCL:ENDCOND */
-    /* PVSCL:IFCOND(ImportChecklist) */checklist, /* PVSCL:ENDCOND */
+    /* PVSCL:IFCOND(ImportChecklist) */checklist, report, /* PVSCL:ENDCOND */
     /* PVSCL:IFCOND(Classifying) */codeId /* PVSCL:ENDCOND */
   }) {
     // Get bodies and tags for the annotation to be created
@@ -148,6 +149,10 @@ class CreateAnnotation {
     if (checklist) {
       const checklistBody = new Checklist({ value: checklist })
       body.push(checklistBody.serialize())
+    }
+    if (report) {
+      const reportBody = new Report({ value: report })
+      body.push(reportBody.serialize())
     }
     // PVSCL:ENDCOND
     return body

@@ -12,7 +12,7 @@ import GoogleSheetGenerator from '../annotationManagement/read/GoogleSheetGenera
 // PVSCL:IFCOND(LastAnnotation, LINE)
 import Resume from '../annotationManagement/read/Resume'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(TextSummary, LINE)
+// PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
 import TextSummary from '../annotationManagement/read/TextSummary'
 // PVSCL:ENDCOND
 import Events from '../Events'
@@ -87,7 +87,7 @@ class Toolset {
         this.canvasButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(TextSummary, LINE)
+      // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
       // Set TextSummary image
       const textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -204,11 +204,11 @@ class Toolset {
   }
 
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(TextSummary, LINE)
+  // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
   textSummaryButtonHandler () {
-    TextSummary.generateReviewEditor()
+    TextSummary.proccessReview()    
   }
-
+  
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(DeleteAll, LINE)
   deleteAllButtonHandler () {

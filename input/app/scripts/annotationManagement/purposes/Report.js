@@ -1,8 +1,8 @@
 import Body from './Body'
 
-class Checklist extends Body {
+class Report extends Body {
   constructor ({
-    purpose = Checklist.purpose,
+    purpose = Report.purpose,
     value
   }) {
     super(purpose)
@@ -18,15 +18,14 @@ class Checklist extends Body {
   }
 
   static deserialize (obj) {
-    let check = new Checklist({ value: obj.value })
-    return check
+    return new Report({ value: obj.value })
   }
 
   tooltip () {
-    return 'Checklist: ' + this.value.name
+    return 'Report:'
   }
 }
 
-Checklist.purpose = 'checklist'
+Report.purpose = 'report'
 
-export default Checklist
+export default Report

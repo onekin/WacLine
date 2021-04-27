@@ -36,9 +36,6 @@ class ReadCodebook {
       // Add event listener for codebook read event
       this.initCodebookCreatedEvent()
       this.initCodebookReadEvent(callback)
-      // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-      ReadCodebook.addKeywordsTheme()
-      // PVSCL:ENDCOND
       // PVSCL:IFCOND(AuthorsSearch, LINE)
       this.initCongressLoadedEvent()
       // PVSCL:ENDCOND
@@ -225,9 +222,6 @@ class ReadCodebook {
           if (_.isFunction(callback)) {
             callback()
           }
-          // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-          ReadCodebook.addKeywordsTheme()
-          // PVSCL:ENDCOND
         })
       }
     })
@@ -848,12 +842,12 @@ class ReadCodebook {
     return (event) => {
       var congress = event.detail.congress
       var codebook = window.abwa.codebookManager.codebookReader.codebook
-      var keywordThemeName = 'Authors'
+      var authorsThemeName = 'Authors'
       if (!_.isEmpty(codebook)) {
         if (congress) {
-          if (!codebook.getThemeByName(keywordThemeName)) {
+          if (!codebook.getThemeByName(authorsThemeName)) {
             var themeDescription = 'Theme which includes the authors of the document'
-            var newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
+            var newTheme = new Theme({ name: authorsThemeName, description: themeDescription, annotationGuide: codebook })
             LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
           }
         }

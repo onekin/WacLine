@@ -9,6 +9,9 @@ import Alerts from '../../utils/Alerts'
 
 class ChecklistReview {
 
+  /**
+   * This function shows an overview of the current document's checklist.
+   */
   static generateReview () {
     window.abwa.sidebar.closeSidebar()
     const checklist = ImportChecklist.getChecklists()[0]
@@ -56,6 +59,10 @@ class ChecklistReview {
     })
   }
 
+  /**
+   * This function shows an overview of an item of the checklist with the annotations 
+   * and the posibility to 'pass', 'fail' or 'undefine' the item.
+   */
   static generateItemReview (type, chosenCode) {
     const itemPageURL = chrome.extension.getURL('pages/specific/checklistItem.html')
     var newStatus = chosenCode.status
@@ -123,6 +130,14 @@ class ChecklistReview {
     })
   }
 
+  /**
+   * This function takes the type/category of the item/chosenCode and 
+   * updates it to the new status on the checklist 
+   * @param {Object} checklistAnnotation 
+   * @param {*} type 
+   * @param {*} chosenCode 
+   * @param {*} newStatus 
+   */
   static changeItemStatus (checklistAnnotation, type, chosenCode, newStatus) {
     checklistAnnotation.body[0].value.definition.forEach((definition) => {
       if (definition.name === type.name) {
@@ -138,11 +153,14 @@ class ChecklistReview {
     })
   }
 
+  /**
+   * This function updates the background-color of the chosen 
+   * code to it's state by changing it's class
+   * @param {Object} chosenCode 
+   */
   static changeItemBackground (chosenCode) {
-    let element = $('#' + chosenCode.name)
     document.getElementById(chosenCode.name).classList.remove('passed', 'failed', 'undefined')
     document.getElementById(chosenCode.name).classList.add(chosenCode.status)
-    console.log($('#' + chosenCode.name))
   }
 }
 export default ChecklistReview
