@@ -52,7 +52,7 @@ class TextSummary {
 
   // PVSCL:IFCOND(ImportChecklist,LINE)
   /**
-   * This function generates the dialog to edit, download 
+   * This function generates the dialog to edit, download
    * and store the review report
    */
   static generateReviewEditor () {
@@ -122,8 +122,8 @@ class TextSummary {
   }
 
   /**
-   * This function returns the text of the report with 
-   * the most updated comments (Uses the updated 
+   * This function returns the text of the report with
+   * the most updated comments (Uses the updated
    * annotation comments or ones from the draft)
    * @returns {String}
    */
@@ -175,7 +175,7 @@ class TextSummary {
 
   /**
    * This function saves the text for the report draft
-   * @param {String} report 
+   * @param {String} report
    */
   static saveReport (report) {
     let reportAnnotation = TextSummary.getReportAnnotation()

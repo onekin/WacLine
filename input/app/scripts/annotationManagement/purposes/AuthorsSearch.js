@@ -52,7 +52,7 @@ class AuthorsSearch {
     Alerts.multipleInputAlert({
       title: 'Do you want to get authors information?',
       html: html,
-      position: Alerts.position.bottom,
+      position: Alerts.position.center,
       onBeforeOpen: onBeforeOpen,
       preConfirm: preConfirm,
       callback: swalCallback

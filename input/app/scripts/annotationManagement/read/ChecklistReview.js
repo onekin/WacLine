@@ -24,11 +24,16 @@ class ChecklistReview {
         e.stopPropagation()
       })
 
+      document.querySelector('#canvasOverlay').addEventListener('click', function (e) {
+        document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
+
       document.addEventListener('keydown', function (e) {
         if (e.code === 'Escape' && document.querySelector('#checklistCanvas') != null) document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
-      document.querySelector('#canvasCloseButton').addEventListener('click', function () {
+      document.querySelector('#checklistCanvasCloseButton').addEventListener('click', function () {
         document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
@@ -44,10 +49,10 @@ class ChecklistReview {
         cluster.querySelector('.checklistPropertyCluster').style.height = height + '%'
         type.codes.forEach((code) => {
           const item = itemTemplate.content.cloneNode(true)
-          item.querySelector('.item').classList.add(code.status)
-          item.querySelector('.item').setAttribute('id', code.name)
-          item.querySelector('.item span').innerText = code.name
-          item.querySelector('.item').addEventListener('click', function () {
+          item.querySelector('.checkLiItem').classList.add(code.status)
+          item.querySelector('.checkLiItem').setAttribute('id', code.name)
+          item.querySelector('.checkLiItem span').innerText = code.name
+          item.querySelector('.checkLiItem').addEventListener('click', function () {
             document.querySelector('#checklistCanvas').style.display = 'none'
             ChecklistReview.generateItemReview(type, code)
           })
@@ -60,7 +65,7 @@ class ChecklistReview {
   }
 
   /**
-   * This function shows an overview of an item of the checklist with the annotations 
+   * This function shows an overview of an item of the checklist with the annotations
    * and the posibility to 'pass', 'fail' or 'undefine' the item.
    */
   static generateItemReview (type, chosenCode) {
@@ -76,6 +81,13 @@ class ChecklistReview {
       document.addEventListener('keydown', function (e) {
         if (e.code === 'Escape' && document.querySelector('#checklistItem') != null) document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
       })
+
+      document.querySelector('#checklistItemOverlay').addEventListener('click', function () {
+        document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
+        document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
+
       document.querySelector('#backArrow').addEventListener('click', function () {
         ChecklistReview.changeItemBackground(chosenCode)
 
@@ -131,12 +143,12 @@ class ChecklistReview {
   }
 
   /**
-   * This function takes the type/category of the item/chosenCode and 
-   * updates it to the new status on the checklist 
-   * @param {Object} checklistAnnotation 
-   * @param {*} type 
-   * @param {*} chosenCode 
-   * @param {*} newStatus 
+   * This function takes the type/category of the item/chosenCode and
+   * updates it to the new status on the checklist
+   * @param {Object} checklistAnnotation
+   * @param {*} type
+   * @param {*} chosenCode
+   * @param {*} newStatus
    */
   static changeItemStatus (checklistAnnotation, type, chosenCode, newStatus) {
     checklistAnnotation.body[0].value.definition.forEach((definition) => {
@@ -154,9 +166,8 @@ class ChecklistReview {
   }
 
   /**
-   * This function updates the background-color of the chosen 
-   * code to it's state by changing it's class
-   * @param {Object} chosenCode 
+   * This function updates the background-color of the chosen code to it's state by changing it's class
+   * @param {Object} chosenCode
    */
   static changeItemBackground (chosenCode) {
     document.getElementById(chosenCode.name).classList.remove('passed', 'failed', 'undefined')
