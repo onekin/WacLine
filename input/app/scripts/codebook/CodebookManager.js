@@ -16,6 +16,9 @@ import ExportCodebook from './operations/export/ExportCodebook'
 // PVSCL:IFCOND(ImportCodebook, LINE)
 import ImportCodebook from './operations/import/ImportCodebook'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(ImportChecklist, LINE)
+import ImportChecklist from './operations/import/ImportChecklist'
+// PVSCL:ENDCOND
 
 class CodebookManager {
   constructor () {
@@ -35,6 +38,9 @@ class CodebookManager {
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(ImportCodebook, LINE)
     this.codebookImporter = new ImportCodebook()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(ImportChecklist, LINE)
+    this.checklistImporter = new ImportChecklist()
     // PVSCL:ENDCOND
   }
 

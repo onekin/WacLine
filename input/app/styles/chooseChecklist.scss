@@ -1,0 +1,69 @@
+@import "./variables";
+
+
+#chooseChecklistOverlay {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+
+#chooseChecklistContainer {
+  font-family: Calibri;
+  width: 40%;
+  height: 45%;
+  position: fixed;
+  top: 20%;
+  left: 30%;
+  z-index: 1000;
+  text-align: center;
+  background-color: white;
+  border: 1px solid;
+  padding: 2%;
+}
+
+#chooseChecklistContainer h1{
+    font: size 1.875em;
+    font-weight: 600;
+    word-wrap: break-word;
+    margin: 0 0 .4em;
+    color: #595959;
+
+}
+
+#chooseChecklistContainer p{
+    font-size: 1.4em;
+    font-weight: 400;
+    word-wrap: break-word;
+    margin: 0 0 .4em;
+}
+
+#checklistSelect{
+  width: 80%;
+  height: 10%;
+  font-size: 1.4em;
+  margin-top: 3%;
+}
+
+
+#acceptChecklistButton,
+#cancelChecklistButton{
+  border: 0;
+  border-radius: .25em;
+  color: #fff;
+  width: 25%;
+  height: 45px;
+  cursor: pointer;
+  margin-top: 2%;
+}
+
+#acceptChecklistButton{
+  background-color: #3085d6;
+}
+
+#cancelChecklistButton{
+  background-color: #aaa;
+}
+

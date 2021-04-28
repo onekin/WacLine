@@ -21,6 +21,7 @@ import Describing from './purposes/Describing'
 // PVSCL:IFCOND(ImportChecklist, LINE)
 import Checklist from './purposes/Checklist'
 import Report from './purposes/Report'
+import MethodsKeywords from './purposes/MethodsKeywords'
 // PVSCL:ENDCOND
 class Annotation {
   constructor ({
@@ -173,6 +174,9 @@ class Annotation {
         }
         if (body.purpose === Report.purpose) {
           return new Report({ value: body.value })
+        }
+        if (body.purpose === MethodsKeywords.purpose) {
+          return new MethodsKeywords({ value: body.value })
         }
         // PVSCL:ENDCOND
         return null

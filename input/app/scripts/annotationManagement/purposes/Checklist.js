@@ -25,6 +25,24 @@ class Checklist extends Body {
   tooltip () {
     return 'Checklist: ' + this.value.name
   }
+
+  toString () {
+    let str = '\t--' + this.value.name + '--\n'
+    this.value.definition.forEach((group) => {
+      str += '\n\t' + group.name + ':\n'
+      group.codes.sort((a, b) => {
+        if (a.status === 'passed') return -1
+        if (b.status === 'passed') return 1
+        if (a.status === 'failed') return -1
+        if (b.status === 'failed') return 1
+        return 0
+      })
+      group.codes.forEach((code) => {
+        str += '\t-' + code.name + ' -> ' + code.status + '\n'
+      })
+    })
+    return str
+  }
 }
 
 Checklist.purpose = 'checklist'

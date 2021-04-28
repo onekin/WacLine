@@ -3,21 +3,27 @@ import LanguageUtils from '../../utils/LanguageUtils'
 
 class KeywordBasedAnnotation {
 
-  static loadKeywords () {
-    let keyword = 'impedancia'
+  /**
+   * Starts the annotating process for the keywords and
+   * returns the number of matches for the keywords
+   * @param {string} keyword
+   * @returns {number}
+   */
+  static loadKeywords (keywords, callback) {
     let pdfDoc = window.PDFViewerApplication.pdfDocument
     let promises = []
     for (let i = 1; i <= pdfDoc.numPages; i++) {
       promises.push(this.getPageText(i, pdfDoc))
     }
     Promise.all(promises).then(pagesText => {
-      let selectors = this.getSelectorsOfKeywords(pagesText, keyword)
+      let selectors = this.getSelectorsOfKeywords(pagesText, keywords)
       let theme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Keywords')
       LanguageUtils.dispatchCustomEvent(Events.createKeywordAnnotations, {
         purpose: 'classifying',
         codeId: theme.id,
         foundSelectors: selectors
       })
+      callback(selectors.length)
     })
   }
 
@@ -56,30 +62,32 @@ class KeywordBasedAnnotation {
    * @param {string} keyword
    * @returns {[[]]}
    */
-  static getSelectorsOfKeywords (pagesText, keyword) {
+  static getSelectorsOfKeywords (pagesText, keywords) {
     let selectors = []
     pagesText.forEach((pageText, pageNum) => {
-      let indexes = this.getIndexesOfKeywords(pageText, keyword)
-      let fragmentSelector = {
-        type: 'FragmentSelector',
-        conformsTo: 'http://tools.ietf.org/rfc/rfc3778',
-        page: pageNum + 1
-      }
-      let selector
-      indexes.forEach(index => {
-        let textQuoteSelector = {
-          type: 'TextQuoteSelector'
+      keywords.forEach((keyword) => {
+        let indexes = this.getIndexesOfKeyword(pageText, keyword)
+        let fragmentSelector = {
+          type: 'FragmentSelector',
+          conformsTo: 'http://tools.ietf.org/rfc/rfc3778',
+          page: pageNum + 1
         }
-        let textPositionSelector = {
-          start: index,
-          end: index + keyword.length,
-          type: 'TextPositionSelector'
-        }
-        textQuoteSelector.exact = pageText.substring(index, index + keyword.length)
-        textQuoteSelector.prefix = pageText.substring(index - 32, index)
-        textQuoteSelector.suffix = pageText.substring(index + keyword.length, index + keyword.length + 32)
-        selector = [fragmentSelector, textPositionSelector, textQuoteSelector]
-        selectors.push(selector)
+        let selector
+        indexes.forEach(index => {
+          let textQuoteSelector = {
+            type: 'TextQuoteSelector'
+          }
+          let textPositionSelector = {
+            start: index,
+            end: index + keyword.length,
+            type: 'TextPositionSelector'
+          }
+          textQuoteSelector.exact = pageText.substring(index, index + keyword.length)
+          textQuoteSelector.prefix = pageText.substring(index - 32, index)
+          textQuoteSelector.suffix = pageText.substring(index + keyword.length, index + keyword.length + 32)
+          selector = [fragmentSelector, textPositionSelector, textQuoteSelector]
+          selectors.push(selector)
+        })
       })
     })
     return selectors
@@ -91,7 +99,7 @@ class KeywordBasedAnnotation {
    * @param {string} keyword
    * @return {number[]}
    */
-  static getIndexesOfKeywords (textFragment, keyword) {
+  static getIndexesOfKeyword (textFragment, keyword) {
     let indexes = []
     let startIndex = 0
     let index

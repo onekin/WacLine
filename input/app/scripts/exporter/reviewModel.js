@@ -24,6 +24,12 @@ export class Review {
     }
     return groups;
   }
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  get checklist(){
+    return this.groupByCriterionInsideLevel("Checklist")
+  }
+  // PVSCL:ENDCOND
+
   get strengths(){
     return this.groupByCriterionInsideLevel("Strength")
   }
@@ -47,6 +53,13 @@ export class Review {
   toString(){
     // Summary of the work
     let t = "<Summarize the work>\n\n";
+
+    // PVSCL:IFCOND(ImportChecklist, LINE)
+    if(this.checklist[0]) {
+      t += 'CHECKLIST:\n\n'
+      t +=this.checklist[0]._annotations[0]._comment + '\n\n'
+    }
+    // PVSCL:ENDCOND
 
     // Strengths
     if(this.strengths.length>0) t+= "STRENGTHS:\n\n";
@@ -119,6 +132,9 @@ export class Review {
       t += "COMMENTS:\n\n"
       let reviewReferences = this.references
       for(let i=0;i<this.unsortedAnnotations.length;i++){
+        // PVSCL:IFCOND(ImportChecklist, LINE)
+        if (this.unsortedAnnotations[i].criterion === 'Checklist') continue
+        // PVSCL:ENDCOND
         t += "\t- "
         if(this.unsortedAnnotations[i].page!=null) t+= '(Page '+this.unsortedAnnotations[i].page+') - '
         if (this.unsortedAnnotations[i].criterion !== null) {
@@ -188,6 +204,8 @@ export class Review {
         }
         let commentBody = annotations[a].getBodyForPurpose('commenting')
         let comment = commentBody? commentBody.value : ''
+        
+
         // PVSCL:IFCOND(SuggestedLiterature, LINE)
         const SuggestingLiterature = require('../annotationManagement/purposes/SuggestingLiterature').default
         let suggestedLiteratureBody = annotations[a].getBodyForPurpose(SuggestingLiterature.purpose)
@@ -198,6 +216,15 @@ export class Review {
         let level
         if (assessingBody) {
           level = assessingBody.value
+        }
+        // PVSCL:ENDCOND
+
+        // PVSCL:IFCOND(ImportChecklist, LINE)
+        let checklistBody = annotations[a].getBodyForPurpose('checklist')
+        if (checklistBody) {
+          comment = checklistBody.toString()
+          criterion = 'Checklist'
+          level = 'Checklist'
         }
         // PVSCL:ENDCOND
         r.insertAnnotation(new Annotation({

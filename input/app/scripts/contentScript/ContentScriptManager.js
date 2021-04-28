@@ -69,9 +69,11 @@ class ContentScriptManager {
         this.activateLoadKeywords()
       }, 500)
     } else {
+      window.abwa.codebookManager.checklistImporter.init()
       if (window.abwa.annotationManagement.annotationReader.allAnnotations.length === 0) {
         ReadCodebook.addKeywordsTheme()
-        KeywordBasedAnnotation.loadKeywords()
+        window.abwa.codebookManager.checklistImporter.saveChecklistsMethodsKeywords()
+
       }
     }
   }

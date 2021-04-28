@@ -171,7 +171,7 @@ class Toolset {
       this.checklistImage.id = 'checklistButton'
       this.checklistImage.title = 'Choose checklist' // TODO i18n
       this.checklistImage.addEventListener('click', () => {
-        ImportChecklist.openChecklistMenu()
+        window.abwa.codebookManager.checklistImporter.openChecklistMenu()
       })
       this.toolsetBody.appendChild(this.checklistImage)
 
@@ -206,9 +206,9 @@ class Toolset {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
   textSummaryButtonHandler () {
-    TextSummary.proccessReview()    
+    TextSummary.proccessReview()
   }
-  
+
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(DeleteAll, LINE)
   deleteAllButtonHandler () {

@@ -17,6 +17,7 @@ import Describing from '../purposes/Describing'
 // PVSCL:IFCOND(ImportChecklist, LINE)
 import Checklist from '../purposes/Checklist'
 import Report from '../purposes/Report'
+import MethodsKeywords from '../purposes/MethodsKeywords'
 // PVSCL:ENDCOND
 
 class CreateAnnotation {
@@ -69,7 +70,7 @@ class CreateAnnotation {
           body: body
         })
         // PVSCL:IFCOND(AuthorsSearch OR ImportChecklist, LINE)
-      } else if (event.detail.purpose === 'describing' || event.detail.purpose === 'checklist' || event.detail.purpose === 'report') {
+      } else if (event.detail.purpose === 'describing' || event.detail.purpose === 'checklist' || event.detail.purpose === 'report' || event.detail.purpose === 'methodsKeywords') {
         // Create target
         const target = this.obtainTargetToCreateAnnotation(event.detail)
         // Create body
@@ -126,7 +127,7 @@ class CreateAnnotation {
 
   obtainBodyToCreateAnnotation ({
     /* PVSCL:IFCOND(AuthorsSearch) */congress, /* PVSCL:ENDCOND */
-    /* PVSCL:IFCOND(ImportChecklist) */checklist, report, /* PVSCL:ENDCOND */
+    /* PVSCL:IFCOND(ImportChecklist) */checklist, report, methodsKeywords, /* PVSCL:ENDCOND */
     /* PVSCL:IFCOND(Classifying) */codeId /* PVSCL:ENDCOND */
   }) {
     // Get bodies and tags for the annotation to be created
@@ -153,6 +154,10 @@ class CreateAnnotation {
     if (report) {
       const reportBody = new Report({ value: report })
       body.push(reportBody.serialize())
+    }
+    if (methodsKeywords) {
+      const methodsKeywordsBody = new MethodsKeywords({ value: methodsKeywords })
+      body.push(methodsKeywordsBody.serialize())
     }
     // PVSCL:ENDCOND
     return body
