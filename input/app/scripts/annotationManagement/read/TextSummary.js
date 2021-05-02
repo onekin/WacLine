@@ -11,6 +11,7 @@ import Events from '../../Events'
 import Config from '../../Config'
 import { _ } from 'core-js'
 import Classifying from '../purposes/Classifying'
+import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
 // PVSCL:ENDCOND
 
 class TextSummary {
@@ -57,13 +58,13 @@ class TextSummary {
    */
   static generateReviewEditor () {
     let report = TextSummary.generateMergedReport()
-
-    let invalidCriticisms = ['I ate dinner.',
-      'We had a three-course meal.',
-      'Brad came to dinner with us.',
-      'He loves fish tacos.',
-      'In the end, we all felt like we ate too much.'
-    ]
+    const checklist = ImportChecklist.getChecklists()[0]
+    let invalidCriticisms = []
+    if (checklist) {
+      if (checklist.invalidCriticisms) {
+        invalidCriticisms = checklist.invalidCriticisms
+      }
+    }
 
     window.abwa.sidebar.closeSidebar()
     const reviewPageURL = chrome.extension.getURL('pages/specific/reviewEditor.html')

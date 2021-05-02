@@ -4,155 +4,165 @@
         "name":"Empirical Standart",
         "methods":[
            {
-              "name":"General Standart",
-              "definition":[
-                 {
-                    "name":"Essential",
-                    "description":"",
-                    "codes":[
-                       {
-                          "name":"Research purpose",
-                          "description":"states a purpose, problem, objective, or research question"
-                       },
-                       {
-                          "name":"Motivation",
-                          "description":"explains why the problem, objective, or research question is important (motivation)"
-                       },
-                       {
-                          "name":"Definitions",
-                          "description":"defines jargon, acronyms and key concepts"
-                       },
-                       {
-                          "name":"Methodology",
-                          "description":"methodology is appropriate (not necessarily optimal) for stated purpose or questions"
-                       },
-                       {
-                          "name":"Data collection",
-                          "description":"describes in detail what, where, when and how data were collected (see the Sampling Supplement)"
-                       },
-                       {
-                          "name":"Data analysis description",
-                          "description":"describes in detail how the data were analyzed"
-                       },
-                       {
-                          "name":"Statistical assumptions",
-                          "description":"discusses and validates assumptions of any statistical tests used"
-                       },
-                       {
-                          "name":"Result presentation",
-                          "description":"present results"
-                       },
-                       {
-                          "name":"Result addressing research",
-                          "description":"results directly address research questions"
-                       },
-                       {
-                          "name":"Supported claims",
-                          "description":"supports main claims or conclusions with explicit evidence (data/observations) or arguments"
-                       },
-                       {
-                          "name":"Results implications",
-                          "description":"discusses implications of the results"
-                       },
-                       {
-                          "name":"Study limitations",
-                          "description":"discusses the study's limitations and threats to validity"
-                       },
-                       {
-                          "name":"Contribution to BoK",
-                          "description":"contributes in some way to the collective body of knowledge"
-                       },
-                       {
-                          "name":"Language misleading",
-                          "description":"language is not misleading; any grammatical problems do not substantially hinder understanding"
-                       },
-                       {
-                          "name":"Benefit risk balance",
-                          "description":"balances the study's anticipated benefits with its potential risks or harms, minimizing risk or harm wherever possible (see the ethics supplements for studies with Human Participants or Secondary Data)"
-                       },
-                       {
-                          "name":"Visualizations",
-                          "description":"visualizations/graphs are not misleading (see the Information Visualization Supplement)"
-                       }
-                    ]
-                 },
-                 {
-                    "name":"Desirable",
-                    "description":"",
-                    "codes":[
-                       {
-                          "name":"Related work synthesis",
-                          "description":"summarizes and synthesizes a reasonable selection of related work"
-                       },
-                       {
-                          "name":"Relation with related work",
-                          "description":"clearly describes relationship between contribution(s) and related work"
-                       },
-                       {
-                          "name":"Epistemological stance",
-                          "description":"states epistemological stance (e.g. post-positivism, interpretivism, critical realism)"
-                       },
-                       {
-                          "name":"Statistical power/saturation",
-                          "description":"appropriate statistical power (for quantitative work) or saturation (for qualitative work"
-                       },
-                       {
-                          "name":"Limitations mitigation",
-                          "description":"reasonable attempts to investigate or mitigate limitations"
-                       },
-                       {
-                          "name":"Study realism",
-                          "description":"discusses study’s realism, assumptions and sensitivity of the results to its realism/assumptions"
-                       },
-                       {
-                          "name":"Recommendation providing",
-                          "description":"provides plausibly useful interpretations or recommendations for practice, education or research"
-                       },
-                       {
-                          "name":"Open sharing",
-                          "description":"openly shares data and materials to the extent possible within practical and ethical limits (see the Open Science Supplement)"
-                       },
-                       {
-                          "name":"Presentation",
-                          "description":"concise, precise, well-organized and easy-to-read presentation"
-                       },
-                       {
-                          "name":"Visualizations for argumentation",
-                          "description":"visualizations (e.g. graphs, diagrams, tables) advance the paper’s arguments or contribution"
-                       },
-                       {
-                          "name":"Researchers roles",
-                          "description":"clarifies the roles and responsibilities of the researchers (i.e. who did what?)"
-                       },
-                       {
-                          "name":"Auto-reflection",
-                          "description":"provides an auto-reflection or assessment of the authors’ own work (e.g. lessons learned)"
-                       },
-                       {
-                          "name":"Multiple raters use",
-                          "description":"uses multiple raters for any subjective judgments (see the IRR/IRA Supplement)"
-                       }
-                    ]
-                 },
-                 {
-                    "name":"Extraordinary",
-                    "description":"",
-                    "codes":[
-                       {
-                          "name":"Multiple data collection",
-                          "description":" applies two or more data collection or analysis strategies to the same research question (see the Multimethodology Standard)"
-                       },
-                       {
-                          "name":"Multiple epistemological perspectives",
-                          "description":"approaches the same research question(s) from multiple epistemological perspectives"
-                       },
-                       {
-                          "name":"Research methodology innovation",
-                          "description":"innovates on research methodology while completing an empirical study"
-                       }
-                    ]
-                 }
-              ]
+            "name":"General Standart",
+            "definition":[
+               {
+                  "name":"Essential",
+                  "description":"",
+                  "codes":[
+                     {
+                        "name":"Research purpose",
+                        "description":"states a purpose, problem, objective, or research question"
+                     },
+                     {
+                        "name":"Motivation",
+                        "description":"explains why the problem, objective, or research question is important (motivation)"
+                     },
+                     {
+                        "name":"Definitions",
+                        "description":"defines jargon, acronyms and key concepts"
+                     },
+                     {
+                        "name":"Methodology",
+                        "description":"methodology is appropriate (not necessarily optimal) for stated purpose or questions"
+                     },
+                     {
+                        "name":"Data collection",
+                        "description":"describes in detail what, where, when and how data were collected (see the Sampling Supplement)"
+                     },
+                     {
+                        "name":"Data analysis description",
+                        "description":"describes in detail how the data were analyzed"
+                     },
+                     {
+                        "name":"Statistical assumptions",
+                        "description":"discusses and validates assumptions of any statistical tests used"
+                     },
+                     {
+                        "name":"Result presentation",
+                        "description":"present results"
+                     },
+                     {
+                        "name":"Result addressing research",
+                        "description":"results directly address research questions"
+                     },
+                     {
+                        "name":"Supported claims",
+                        "description":"supports main claims or conclusions with explicit evidence (data/observations) or arguments"
+                     },
+                     {
+                        "name":"Results implications",
+                        "description":"discusses implications of the results"
+                     },
+                     {
+                        "name":"Study limitations",
+                        "description":"discusses the study's limitations and threats to validity"
+                     },
+                     {
+                        "name":"Contribution to BoK",
+                        "description":"contributes in some way to the collective body of knowledge"
+                     },
+                     {
+                        "name":"Language misleading",
+                        "description":"language is not misleading; any grammatical problems do not substantially hinder understanding"
+                     },
+                     {
+                        "name":"Benefit risk balance",
+                        "description":"balances the study's anticipated benefits with its potential risks or harms, minimizing risk or harm wherever possible (see the ethics supplements for studies with Human Participants or Secondary Data)"
+                     },
+                     {
+                        "name":"Visualizations",
+                        "description":"visualizations/graphs are not misleading (see the Information Visualization Supplement)"
+                     }
+                  ]
+               },
+               {
+                  "name":"Desirable",
+                  "description":"",
+                  "codes":[
+                     {
+                        "name":"Related work synthesis",
+                        "description":"summarizes and synthesizes a reasonable selection of related work"
+                     },
+                     {
+                        "name":"Relation with related work",
+                        "description":"clearly describes relationship between contribution(s) and related work"
+                     },
+                     {
+                        "name":"Epistemological stance",
+                        "description":"states epistemological stance (e.g. post-positivism, interpretivism, critical realism)"
+                     },
+                     {
+                        "name":"Statistical power/saturation",
+                        "description":"appropriate statistical power (for quantitative work) or saturation (for qualitative work"
+                     },
+                     {
+                        "name":"Limitations mitigation",
+                        "description":"reasonable attempts to investigate or mitigate limitations"
+                     },
+                     {
+                        "name":"Study realism",
+                        "description":"discusses study’s realism, assumptions and sensitivity of the results to its realism/assumptions"
+                     },
+                     {
+                        "name":"Recommendation providing",
+                        "description":"provides plausibly useful interpretations or recommendations for practice, education or research"
+                     },
+                     {
+                        "name":"Open sharing",
+                        "description":"openly shares data and materials to the extent possible within practical and ethical limits (see the Open Science Supplement)"
+                     },
+                     {
+                        "name":"Presentation",
+                        "description":"concise, precise, well-organized and easy-to-read presentation"
+                     },
+                     {
+                        "name":"Visualizations for argumentation",
+                        "description":"visualizations (e.g. graphs, diagrams, tables) advance the paper’s arguments or contribution"
+                     },
+                     {
+                        "name":"Researchers roles",
+                        "description":"clarifies the roles and responsibilities of the researchers (i.e. who did what?)"
+                     },
+                     {
+                        "name":"Auto-reflection",
+                        "description":"provides an auto-reflection or assessment of the authors’ own work (e.g. lessons learned)"
+                     },
+                     {
+                        "name":"Multiple raters use",
+                        "description":"uses multiple raters for any subjective judgments (see the IRR/IRA Supplement)"
+                     }
+                  ]
+               },
+               {
+                  "name":"Extraordinary",
+                  "description":"",
+                  "codes":[
+                     {
+                        "name":"Multiple data collection",
+                        "description":" applies two or more data collection or analysis strategies to the same research question (see the Multimethodology Standard)"
+                     },
+                     {
+                        "name":"Multiple epistemological perspectives",
+                        "description":"approaches the same research question(s) from multiple epistemological perspectives"
+                     },
+                     {
+                        "name":"Research methodology innovation",
+                        "description":"innovates on research methodology while completing an empirical study"
+                     }
+                  ]
+               }
+            ],
+            "invalidCriticisms": [
+               "Setting arbitrary minimum sample sizes or other data requirements, based on neither power analysis nor theoretical saturation",
+               "Stating that a study:",
+               "(i) lacks detail without enumerating missing details; (ii) is of low quality without explaining specific problems; or (iii) is not new without providing citations to published studies that make practically identical contributions.",
+               "Rejecting a study because it replicates or reproduces existing work",
+               "Cross-paradigmatic criticism (e.g. attacking an interpretivist study for not conforming to positivist norms).",
+               "Criticizing a study for limitations intrinsic to that kind of study or the methodology used (e.g. attacking a case study for low generalizability)",
+               "Rejecting a study because the reviewer would have used a different methodology or design",
+               "Rejecting a study because it reports negative results"
+            ]
            }
         ]
      },
@@ -160,58 +170,244 @@
         "name":"Engineering Methods",
         "methods":[
            {
-              "name":"Engineering research (Design Science)",
-              "definition":[
-                 {
-                    "name":"Essential",
-                    "description":"",
-                    "codes":[
-                       {
-                          "description":"describes the proposed artifact in adequate detail"
-                       },
-                       {
-                          "description":"justifies the need for, usefulness of, or relevance of the proposed artifact"
-                       },
-                       {
-                          "description":"conceptually evaluates the artifact; discusses its strengths, weaknesses and limitations"
-                       },
-                       {
-                          "description":"EITHER: discusses state-of-art alternatives (and their strengths, weaknesses and limitations) OR: explains why no state-of-art alternatives exist OR: provides compelling argument that direct comparisons are impractical"
-                       },
-                       {
-                          "description":"Empirically evaluates the proposed artifact using action research,in which the researchers intervene a real organization using the artifact, a case study in which a real organization uses the artifact without researcher intervention, a controlled experiment in which human participants use the artifact, a simulation in which the artifact is used in an artificial environment, or another method for which a clear and convincing rationale is provided "
-                       },
-                       {
-                          "description":"clearly indicates the empirical methodology being used (e.g. action research, controlled experiment)"
-                       },
-                       {
-                          "description":"EITHER: empirically compares the artifact to one or more state-of-the-art alternative artifacts OR: empirically compares the artifact to one or more state - of -the - art benchmarks OR: provides a clear and convincing rationale for why comparative evaluation is impractical "
-                       },
-                       {
-                          "description":"assumptions (if any) are explicit; do not contradict each other or the contribution's goals; plausibly hold for the evaluation subjects"
-                       },
-                       {
-                          "description":"uses notation consistently (if any notation is used)"
-                       }
-                    ]
-                 }
-              ],
-              "keywords":[
-                 "Artifact",
-                 "Algorithm",
-                 "Model",
-                 "Language",
-                 "Method",
-                 "System",
-                 "Tool",
-                 "Computer-based",
-                 "Relevance",
-                 "Rigor",
-                 "Design",
-                 "Problem statement",
-                 "Causes",
-                 "Consequences"
-              ]
+            "name":"Engineering research (Design Science)",
+            "definition":[
+               {
+                  "name":"Essential",
+                  "description":"",
+                  "codes":[
+                     {
+                        "name": "Artifact description",
+                        "description":"describes the proposed artifact in adequate detail"
+                     },
+                     {
+                        "name": "Usefulness",
+                        "description":"justifies the need for, usefulness of, or relevance of the proposed artifact"
+                     },
+                     {
+                        "name": "Conceptual evaluation",
+                        "description":"conceptually evaluates the artifact; discusses its strengths, weaknesses and limitations"
+                     },
+                     {
+                        "name": "Alternatives",
+                        "description":"EITHER: discusses state-of-art alternatives (and their strengths, weaknesses and limitations) OR: explains why no state-of-art alternatives exist OR: provides compelling argument that direct comparisons are impractical"
+                     },
+                     {
+                        "name": "Empirical evaluation",
+                        "description":"Empirically evaluates the proposed artifact using action research,in which the researchers intervene a real organization using the artifact, a case study in which a real organization uses the artifact without researcher intervention, a controlled experiment in which human participants use the artifact, a simulation in which the artifact is used in an artificial environment, or another method for which a clear and convincing rationale is provided "
+                     },
+                     {
+                        "name": "Methodology",
+                        "description":"clearly indicates the empirical methodology being used (e.g. action research, controlled experiment)"
+                     },
+                     {
+                        "name": "Comparation",
+                        "description":"EITHER: empirically compares the artifact to one or more state-of-the-art alternative artifacts OR: empirically compares the artifact to one or more state - of -the - art benchmarks OR: provides a clear and convincing rationale for why comparative evaluation is impractical "
+                     },
+                     {
+                        "name": "Assumptions",
+                        "description":"assumptions (if any) are explicit; do not contradict each other or the contribution's goals; plausibly hold for the evaluation subjects"
+                     },
+                     {
+                        "name": "Consistent notation",
+                        "description":"uses notation consistently (if any notation is used)"
+                     }
+                  ]
+               },
+               {
+                  "name": "Dessirable",
+                  "description": "",
+                  "codes": [
+                     {
+                        "name": "Theoretical basis",
+                        "description": "reviews the theoretical basis of the artifact"
+                     },
+                     {
+                        "name": "Arguments",
+                        "description": "provides correctness arguments of the key analytical and theoretical contributions (e.g. theorems, complexity analyses, mathematical proofs)"
+                     },
+                     {
+                        "name": "Examples",
+                        "description": "includes one or more running examples to elucidate the artifact"
+                     },
+                     {
+                        "name": "Industry context",
+                        "description": "evaluates the artifact in an industry-relevant context (e.g. widely used open-source projects, professional programmers)"
+                     },
+                     {
+                        "name": "Replication package",
+                        "description": "provides a replication package including datasets and analytical scripts and EITHER a comprehensive description of the artifact OR source code if artifact is virtual"
+                     }
+                  ]
+               },
+               {
+                  "name": "Extraordinary",
+                  "description": "",
+                  "codes": [
+                     {
+                        "name": "Contribution to understanding", 
+                        "description": "contributes to our collective understanding of design practices or principles"
+                     },
+                     {
+                        "name": "Innovation",
+                        "description": "presents ground-breaking innovations with obvious real-world benefits"
+                     }
+                  ]
+               }
+            ],
+            "keywords":[
+               "Artifact",
+               "Algorithm",
+               "Model",
+               "Language",
+               "Method",
+               "System",
+               "Tool",
+               "Computer-based",
+               "Relevance",
+               "Rigor",
+               "Design",
+               "Problem statement",
+               "Causes",
+               "Consequences"
+            ],
+            "invalidCriticisms": [
+               "The paper does not report as ambitious an empirical study as other predominately empirical papers. The more innovative the artifact and more comprehensive the conceptual evaluation, the less we should expect from the empirical study.",
+               "Too few experimental subjects (e.g. the source code used to evaluate a static analysis technique) if few subjects are available in the contribution's domain or the experimental evaluation is part of a more comprehensive validation strategy (e.g. formal arguments). Other criteria, such as the variety, realism, availability, and scale of the subjects, should also be considered to assess the quality of the evaluation.",
+               "No replication package, if there are clear, convincing practical or ethical reasons preventing artifact disclosure.",
+               "The artifact is not experimentally compared with related approaches that are not publicly available. In other words, before saying \"you should have compared this against X, make sure X is actually available and functional\"",
+               "This is not the first known solution to the identified problem. The novelty of the paper can be in how it achieves scalability, better performance on specific classes of problems, applicability to realistic systems, stronger theoretical guarantees, or other aspects of improvement. Proposed artifacts should outperform existing artifacts on some dimension(s).",
+               "The contribution is not technically complicated. What matters is that it works. Unnecessary complexity is undesirable."
+            ]
+           }
+        ]
+     },
+     {
+        "name": "Qualitative Methods",
+        "methods": [
+           {
+            "name": "Action research",
+            "definition":[
+               {
+                  "name": "Essential",
+                  "description": "",
+                  "codes": [
+                  {
+                     "name": "Case justification",
+                     "description":"justifies the selection of the case or site that was studied"
+                  },
+                  {
+                     "name": "Site description",
+                     "description":"describes the site of the intervention(s) in rich detail"
+                  },
+                  {
+                     "name": "Intervention(s)",
+                     "description":"describes the intervention(s) in detail"
+                  },
+                  {
+                     "name": "Relationship",
+                     "description": "describes the relationship between the researcher and the host organization"
+                  },
+                  {
+                     "name": "Research dimension",
+                     "description": "describes the longitudinal dimension of the research design (including the length of the study)"
+                  },
+                  {
+                     "name": "Interventions",
+                     "description": "describes the interactions between researcher(s) and host organization(s)---what the interventions were, who intervened and with which part of the organization, as well as the outcome of the interventions"
+                  },
+                  {
+                     "name": "Determination of interventions",
+                     "description": "describes how interventions were determined (by management, researchers, or participative/co- determination process)"
+                  },
+                  {
+                     "name": "Research cycles",
+                     "description": "explains research cycles or phases, if any, and their relationship to the intervention(s)"
+                  },
+                  {
+                     "name": "Evaluation of interventions",
+                     "description": "explains how the interventions are evaluated"
+                  },
+                  {
+                     "name": "Reactions to interventions",
+                     "description": "reports participant or stakeholder reactions to interventions"
+                  },
+                  {
+                     "name":"Evidence chain",
+                     "description": "presents a clear chain of evidence from observations to findings"
+                  },
+                  {
+                     "name": "Lessons learned",
+                     "description": "reports lessons learned by the organization"
+                  },
+                  {
+                     "name": "Biases",
+                     "description": "researchers reflect on their own possible biases"
+                  }
+                  ]
+               },
+               {
+                  "name": "Dessirable",
+                  "description": "",
+                  "codes": [
+                  {
+                     "name": "Supplemental materials",
+                     "description": "provides supplemental materials such as interview guide(s), coding schemes, coding examples, decision rules, or extended chain-of-evidence tables"
+                  },
+                  {
+                     "name": "Direct quotations",
+                     "description": "uses direct quotations extensively"
+                  },
+                  {
+                     "name": "Results validation",
+                     "description": "validates results using member checking, dialogical interviewing4, feedback from non-participant practitioners or research audits of coding by advisors or other researchers"
+                  },
+                  {
+                     "name": "Findings",
+                     "description": "findings plausibly transferable to other contexts"
+                  },
+                  {
+                     "name": "Data triangulation",
+                     "description": "triangulation across quantitative and qualitative data"
+                  }
+                  ]
+               },
+               {
+                  "name": "Extraordinary",
+                  "description": "",
+                  "codes": [
+                  {
+                     "name": "Researchers triangulation",
+                     "description": "research team with triangulation across researchers (to mitigate researcher bias)"
+                  }
+                  ]
+               }
+            ],
+            "keywords":[
+               "Action research",
+               "Social phenomenon",
+               "Social phenomena",
+               "Organization process",
+               "Culture",
+               "Way of working",
+               "Group dynamics",
+               "Real-life context",
+               "Reflexibility",
+               "Credibility",
+               "Resonance",
+               "Usefulness",
+               "Transferability",
+               "Intervention",
+               "Research cycles"
+            ],
+            "invalidCriticisms": [
+               "The findings and insights are not valid because the research intervened in the context. Though reflexivity is crucial, the whole point of action research is to introduce a change and observe how participants react.",
+               "This is merely consultancy or an experience report. Systematic observation and reflection should not be dismissed as consultancy or experience reports. Inversely, consultancy or experiences should not be falsely presented as action research.",
+               "Lack of quantitative data; causal analysis; objectivity, internal validity, reliability, or generalizability.",
+               "Sample not representative; lack of generalizability; generalizing from one organization.",
+               "Lack of replicability or reproducibility; not releasing transcripts.",
+               "Lack of control group or experimental protocols. An action research study is not an experiment."
+            ]
            }
         ]
      }

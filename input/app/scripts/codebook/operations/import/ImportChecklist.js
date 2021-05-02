@@ -114,7 +114,11 @@ class ImportChecklist {
             let newBody = {
               name: chosenMethod.name,
               definition: [],
-              totalCodes: 0
+              totalCodes: 0,
+              invalidCriticisms: []
+            }
+            if (chosenMethod.invalidCriticisms) {
+              newBody.invalidCriticisms = chosenMethod.invalidCriticisms
             }
             chosenMethod.definition.forEach((category) => {
               let newDefinition = {
