@@ -31,6 +31,12 @@ class AuthorsInfo {
         document.querySelector('#authorsCanvas').parentNode.removeChild(document.querySelector('#authorsCanvas'))
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
+
+      document.querySelector('#canvasOverlay').addEventListener('click', function () {
+        document.querySelector('#authorsCanvas').parentNode.removeChild(document.querySelector('#authorsCanvas'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
+
       document.querySelector('#authorsCanvasTitle').textContent = 'Authors overview for ' + congress.acronym + ' congress'
 
       const canvasContainer = document.querySelector('#authorsCanvasContainer')

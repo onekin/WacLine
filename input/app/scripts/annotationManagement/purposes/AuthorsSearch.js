@@ -4,7 +4,6 @@ import $ from 'jquery'
 import Events from '../../Events'
 import Config from '../../Config'
 import _ from 'lodash'
-require('components-jqueryui')
 
 
 class AuthorsSearch {
@@ -21,15 +20,14 @@ class AuthorsSearch {
    * This function finds the congress set to analize
    * the document in case it has been set
    */
-  loadCongress () {
-    const allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
-    const congressAnnotations = _.filter(allAnnotations, (annotation) => {
-      return _.some(annotation.tags, (tag) => {
-        return tag.includes(Config.namespace + ':' + Config.tags.motivation + ':' + 'describing')
-      })
-    })
-    if (congressAnnotations[0]) {
-      this.congress = congressAnnotations[0].body[0].value
+  loadCongress (newCongress = undefined) {
+    if (!newCongress) {
+      const congressAnnotations = AuthorsSearch.getCongressAnnotations()
+      if (congressAnnotations[0]) {
+        this.congress = congressAnnotations[0].body[0].value
+      }
+    } else {
+      this.congress = newCongress
     }
     if (_.isEmpty(this.congress)) {
       this.initCongress()
@@ -126,6 +124,16 @@ class AuthorsSearch {
       })
     }
     return congressCallback
+  }
+
+  static getCongressAnnotations () {
+    const allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
+    const congressAnnotations = _.filter(allAnnotations, (annotation) => {
+      return _.some(annotation.tags, (tag) => {
+        return tag.includes(Config.namespace + ':' + Config.tags.motivation + ':' + 'describing')
+      })
+    })
+    return congressAnnotations
   }
 }
 export default AuthorsSearch

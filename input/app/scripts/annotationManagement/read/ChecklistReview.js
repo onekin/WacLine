@@ -78,17 +78,21 @@ class ChecklistReview {
         e.stopPropagation()
       })
 
+      const removeCanvasReviewFunction = function () {
+        document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
+        document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
+        document.querySelector('#backToItemReviewArrowContainer').parentNode.removeChild(document.querySelector('#backToItemReviewArrowContainer'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      }
+
+
       document.addEventListener('keydown', function (e) {
         if (e.code === 'Escape' && document.querySelector('#checklistItem') != null) document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
       })
 
-      document.querySelector('#checklistItemOverlay').addEventListener('click', function () {
-        document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
-        document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
-        document.querySelector('#abwaSidebarButton').style.display = 'block'
-      })
+      document.querySelector('#checklistItemOverlay').addEventListener('click', removeCanvasReviewFunction)
 
-      document.querySelector('#backArrow').addEventListener('click', function () {
+      document.querySelector('#backToChecklistReviewArrow').addEventListener('click', function () {
         ChecklistReview.changeItemBackground(chosenCode)
 
         document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
@@ -130,10 +134,25 @@ class ChecklistReview {
           let annotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(code.id)
           annotations.forEach((annotation) => {
             const annotationCard = annotationCardTemplate.content.cloneNode(true)
+            annotationCard.querySelector('.annotationCardContent').addEventListener('click', function () {
+              document.querySelector('#checklistCanvas').style.display = 'none'
+              document.querySelector('#checklistItem').style.display = 'none'
+              document.querySelector('#backToItemReviewArrowContainer').style.display = 'block'
+              document.addEventListener('dblclick', removeCanvasReviewFunction)
+
+              document.querySelector('#backToItemReviewArrowContainer').addEventListener('click', function () {
+                document.querySelector('#checklistItem').style.display = 'block'
+                document.querySelector('#backToItemReviewArrowContainer').style.display = 'none'
+                document.removeEventListener('dblclick', removeCanvasReviewFunction)
+              })
+              window.abwa.annotationManagement.goToAnnotation(annotation)
+            })
             annotationCard.querySelector('.annotationCardContent span').innerText = '"' + annotation.target[0].selector[2].exact + '"'
             let commentBody = annotation.getBodyForPurpose(Commenting.purpose)
             if (commentBody) {
               annotationCard.querySelector('.annotationCardContent ul li').innerText = commentBody.value
+            } else {
+              annotationCard.querySelector('.annotationCardContent').removeChild(annotationCard.querySelector('.annotationCardContent ul'))
             }
             itemAnnotationsContainer.appendChild(annotationCard)
           })

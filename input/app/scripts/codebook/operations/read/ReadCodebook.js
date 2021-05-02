@@ -846,14 +846,20 @@ class ReadCodebook {
       if (!_.isEmpty(codebook)) {
         if (congress) {
           if (!codebook.getThemeByName(authorsThemeName)) {
-            var themeDescription = 'Theme which includes the authors of the document'
-            var newTheme = new Theme({ name: authorsThemeName, description: themeDescription, annotationGuide: codebook })
-            LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+            ReadCodebook.addAuthorsTheme()
           }
         }
       }
     }
   }
+
+  static addAuthorsTheme () {
+    var codebook = window.abwa.codebookManager.codebookReader.codebook
+    var themeDescription = 'Theme which includes the authors of the document'
+    var newTheme = new Theme({ name: 'Authors', description: themeDescription, annotationGuide: codebook })
+    LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+  }
+
   // PVSCL:ENDCOND
 }
 

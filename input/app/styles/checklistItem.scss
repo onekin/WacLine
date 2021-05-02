@@ -46,18 +46,6 @@
   align-items: center
 }
 
-#backArrow {
-  border: solid black;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 8px;
-  transform: rotate(135deg);
-  -webkit-transform: rotate(135deg);  
-  left: 5px;
-  position: relative;
-  cursor: pointer; 
-  margin-left: 3%;
-}
 
 #itemAnnotationsContainer {
   background-color: grey;
@@ -99,6 +87,7 @@
 }
 .annotationCardContent{
 	padding: 10px;
+  cursor: pointer;
 }
 
 .annotationCardContent li{
@@ -138,3 +127,33 @@
   margin-left: 5%;
 }
 
+
+.backArrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 8px;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);  
+  left: 5px;
+  position: relative;
+  cursor: pointer; 
+  margin-left: 3%;
+}
+
+#backToItemReviewArrowContainer{
+  display: none;
+  width: 50px;
+  height: 50px;
+  background: #f5f5f5;
+  position: fixed;
+  top: 3em;
+  left: 1em;
+  transition: all 0.5s ease;
+  border: solid 2px;
+}
+
+#backToItemReviewArrowContainer i{
+  margin-top: 30%;
+  margin-left: 20%;
+}

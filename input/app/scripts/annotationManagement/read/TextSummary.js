@@ -158,17 +158,17 @@ class TextSummary {
       if (endIndex < 0) {
         endIndex = oldReportText.indexOf('<Comments to editors>', startIndex + searchString.length)
       }
-      const comment = oldReportText.substring(startIndex + searchString.length, endIndex).trim()
-
-      startIndex = newReport.indexOf(searchString)
-      endIndex = newReport.indexOf('- (Page ', startIndex + searchString.length)
-      if (endIndex < 0) {
-        endIndex = newReport.indexOf('- ""', startIndex + searchString.length)
+      if (startIndex > 0 && endIndex > 0) {
+        const comment = oldReportText.substring(startIndex + searchString.length, endIndex).trim()
+        startIndex = newReport.indexOf(searchString)
+        endIndex = newReport.indexOf('- (Page ', startIndex + searchString.length)
+        if (endIndex < 0) {
+          endIndex = newReport.indexOf('- ""', startIndex + searchString.length)
+        }
+        if (endIndex > 0 && startIndex >= 0) {
+          newReport = newReport.substring(0, startIndex + searchString.length) + '\n\t' + comment + '\n\t' + newReport.substring(endIndex)
+        }
       }
-      if (endIndex > 0) {
-        newReport = newReport.substring(0, startIndex + searchString.length) + '\n\t' + comment + '\n\t' + newReport.substring(endIndex)
-      }
-
     })
     return newReport
   }

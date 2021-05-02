@@ -17,7 +17,9 @@ import Describing from '../purposes/Describing'
 // PVSCL:IFCOND(ImportChecklist, LINE)
 import Checklist from '../purposes/Checklist'
 import Report from '../purposes/Report'
+// PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
 import MethodsKeywords from '../purposes/MethodsKeywords'
+// PVSCL:ENDCOND
 // PVSCL:ENDCOND
 
 class CreateAnnotation {
@@ -28,11 +30,17 @@ class CreateAnnotation {
   init () {
     // Add event listener for createAnnotation event
     this.initCreateAnnotationEvent()
+    // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
     this.initCreateKeywordAnnotationsEvent()
+    // PVSCL:ENDCOND
   }
 
   initCreateAnnotationEvent (callback) {
-    this.events.createAnnotationEvent = { element: document, event: Events.createAnnotation, handler: this.createAnnotationEventHandler() }
+    this.events.createAnnotationEvent = {
+      element: document,
+      event: Events.createAnnotation,
+      handler: this.createAnnotationEventHandler()
+    }
     this.events.createAnnotationEvent.element.addEventListener(this.events.createAnnotationEvent.event, this.events.createAnnotationEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -54,7 +62,9 @@ class CreateAnnotation {
         let target
         // If selection is child of sidebar, return null
         if ($(document.getSelection().anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0) {
-          Alerts.infoAlert({ text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable') })
+          Alerts.infoAlert({
+            text: chrome.i18n.getMessage('CurrentSelectionNotAnnotable')
+          })
           return
         }
         // Create target
@@ -88,25 +98,32 @@ class CreateAnnotation {
       if (annotationToCreate) {
         window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
           if (err) {
-            Alerts.errorAlert({ text: 'Unexpected error, unable to create annotation' })
+            Alerts.errorAlert({
+              text: 'Unexpected error, unable to create annotation'
+            })
           } else {
             window.getSelection().removeAllRanges()
             // Deserialize retrieved annotation from the server
             const deserializedAnnotation = Annotation.deserialize(annotation)
             // Dispatch annotation created event
-            LanguageUtils.dispatchCustomEvent(Events.annotationCreated, { annotation: deserializedAnnotation })
+            LanguageUtils.dispatchCustomEvent(Events.annotationCreated, {
+              annotation: deserializedAnnotation
+            })
           }
         })
       } else {
         // Show error
-        Alerts.errorAlert({ text: 'Unexpected error creating annotation.' + chrome.i18n.getMessage('ErrorContactDeveloper', ['createAnnotation', encodeURIComponent(new Error().stack)]) })
+        Alerts.errorAlert({
+          text: 'Unexpected error creating annotation.' + chrome.i18n.getMessage('ErrorContactDeveloper', ['createAnnotation', encodeURIComponent(new Error().stack)])
+        })
       }
     }
   }
 
   obtainTagsToCreateAnnotation ({
     tags,
-    /* PVSCL:IFCOND(Classifying) */ codeId /* PVSCL:ENDCOND */
+    /* PVSCL:IFCOND(Classifying) */
+    codeId /* PVSCL:ENDCOND */
   }) {
     if (tags) {
       tags = _.isArray(tags) ? tags : [tags]
@@ -126,9 +143,16 @@ class CreateAnnotation {
   }
 
   obtainBodyToCreateAnnotation ({
-    /* PVSCL:IFCOND(AuthorsSearch) */congress, /* PVSCL:ENDCOND */
-    /* PVSCL:IFCOND(ImportChecklist) */checklist, report, methodsKeywords, /* PVSCL:ENDCOND */
-    /* PVSCL:IFCOND(Classifying) */codeId /* PVSCL:ENDCOND */
+    /* PVSCL:IFCOND(AuthorsSearch) */
+    congress,
+    /* PVSCL:ENDCOND */
+    /* PVSCL:IFCOND(ImportChecklist) */
+    checklist,
+    report,
+    methodsKeywords,
+    /* PVSCL:ENDCOND */
+    /* PVSCL:IFCOND(Classifying) */
+    codeId /* PVSCL:ENDCOND */
   }) {
     // Get bodies and tags for the annotation to be created
     const body = []
@@ -136,38 +160,54 @@ class CreateAnnotation {
     // Get body for classifying
     if (codeId) {
       const codeOrTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(codeId)
-      const classifyingBody = new Classifying({ code: codeOrTheme })
+      const classifyingBody = new Classifying({
+        code: codeOrTheme
+      })
       body.push(classifyingBody.serialize())
     }
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(AuthorsSearch, LINE)
     if (congress) {
-      const describingBody = new Describing({ value: congress })
+      const describingBody = new Describing({
+        value: congress
+      })
       body.push(describingBody.serialize())
     }
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(ImportChecklist, LINE)
     if (checklist) {
-      const checklistBody = new Checklist({ value: checklist })
+      const checklistBody = new Checklist({
+        value: checklist
+      })
       body.push(checklistBody.serialize())
     }
     if (report) {
-      const reportBody = new Report({ value: report })
+      const reportBody = new Report({
+        value: report
+      })
       body.push(reportBody.serialize())
     }
+    // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
     if (methodsKeywords) {
-      const methodsKeywordsBody = new MethodsKeywords({ value: methodsKeywords })
+      const methodsKeywordsBody = new MethodsKeywords({
+        value: methodsKeywords
+      })
       body.push(methodsKeywordsBody.serialize())
     }
+    // PVSCL:ENDCOND
     // PVSCL:ENDCOND
     return body
   }
 
   // Add parameter annotation (pvscl)
-  obtainTargetToCreateAnnotation ({ repliedAnnotation }) {
+  obtainTargetToCreateAnnotation ({
+    repliedAnnotation
+  }) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
-      return [{ source: repliedAnnotation.target[0].source }]
+      return [{
+        source: repliedAnnotation.target[0].source
+      }]
     } else {
       const target = [{}]
       const source = window.abwa.targetManager.getDocumentURIs()
@@ -189,7 +229,9 @@ class CreateAnnotation {
     const range = document.getSelection().getRangeAt(0)
     const selectors = []
     // Create FragmentSelector
-    if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'FragmentSelector' }) !== -1) {
+    if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => {
+      return elem === 'FragmentSelector'
+    }) !== -1) {
       let fragmentSelector = null
       if (window.abwa.targetManager.documentFormat === PDF) {
         fragmentSelector = PDFTextUtils.getFragmentSelector(range)
@@ -201,14 +243,18 @@ class CreateAnnotation {
       }
     }
     // Create RangeSelector
-    if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'RangeSelector' }) !== -1) {
+    if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => {
+      return elem === 'RangeSelector'
+    }) !== -1) {
       const rangeSelector = DOMTextUtils.getRangeSelector(range)
       if (rangeSelector) {
         selectors.push(rangeSelector)
       }
     }
     // Create TextPositionSelector
-    if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'TextPositionSelector' }) !== -1) {
+    if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => {
+      return elem === 'TextPositionSelector'
+    }) !== -1) {
       const rootElement = window.abwa.targetManager.getDocumentRootElement()
       const textPositionSelector = DOMTextUtils.getTextPositionSelector(range, rootElement)
       if (textPositionSelector) {
@@ -216,7 +262,9 @@ class CreateAnnotation {
       }
     }
     // Create TextQuoteSelector
-    if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => { return elem === 'TextQuoteSelector' }) !== -1) {
+    if (_.findIndex(window.abwa.targetManager.documentFormat.selectors, (elem) => {
+      return elem === 'TextQuoteSelector'
+    }) !== -1) {
       const textQuoteSelector = DOMTextUtils.getTextQuoteSelector(range)
       if (textQuoteSelector) {
         selectors.push(textQuoteSelector)
@@ -225,8 +273,13 @@ class CreateAnnotation {
     return selectors
   }
 
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   initCreateKeywordAnnotationsEvent (callback) {
-    this.events.createKeywordAnnotationsEvent = { element: document, event: Events.createKeywordAnnotations, handler: this.createKeywordAnnotationsEventHandler() }
+    this.events.createKeywordAnnotationsEvent = {
+      element: document,
+      event: Events.createKeywordAnnotations,
+      handler: this.createKeywordAnnotationsEventHandler()
+    }
     this.events.createKeywordAnnotationsEvent.element.addEventListener(this.events.createKeywordAnnotationsEvent.event, this.events.createKeywordAnnotationsEvent.handler, false)
     if (_.isFunction(callback)) {
       callback()
@@ -262,7 +315,9 @@ class CreateAnnotation {
         })
         window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
           if (err) {
-            Alerts.errorAlert({ text: 'Unexpected error, unable to create annotation' })
+            Alerts.errorAlert({
+              text: 'Unexpected error, unable to create annotation'
+            })
           } else {
             // Deserialize retrieved annotation from the server
             const deserializedAnnotation = Annotation.deserialize(annotation)
@@ -271,9 +326,12 @@ class CreateAnnotation {
         })
       })
       // Call to event annotations created
-      LanguageUtils.dispatchCustomEvent(Events.keywordAnnotationsCreated, { annotations: newAnnotations })
+      LanguageUtils.dispatchCustomEvent(Events.keywordAnnotationsCreated, {
+        annotations: newAnnotations
+      })
     }
   }
+  // PVSCL:ENDCOND
 
   destroy () {
     // Remove event listeners

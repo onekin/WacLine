@@ -72,8 +72,7 @@ class ContentScriptManager {
       window.abwa.codebookManager.checklistImporter.init()
       if (window.abwa.annotationManagement.annotationReader.allAnnotations.length === 0) {
         ReadCodebook.addKeywordsTheme()
-        window.abwa.codebookManager.checklistImporter.saveChecklistsMethodsKeywords()
-
+        window.abwa.codebookManager.checklistImporter.saveChecklistsMethodsData()
       }
     }
   }

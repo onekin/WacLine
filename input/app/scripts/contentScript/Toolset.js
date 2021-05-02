@@ -31,12 +31,11 @@ import AnnotationImporter from '../importExport/AnnotationImporter'
 import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
 
-// PVSCL:IFCOND(AuthorsSearch, LINE)
 import $ from 'jquery'
+// PVSCL:IFCOND(AuthorsSearch, LINE)
 import AuthorsInfo from '../annotationManagement/read/AuthorsInfo'
 // PVSCL:ENDCOND
 
-import ImportChecklist from '../codebook/operations/import/ImportChecklist'
 
 class Toolset {
   constructor () {
@@ -165,6 +164,7 @@ class Toolset {
       this.importExportButtonHandler()
       // PVSCL:ENDCOND
 
+      // PVSCL:IFCOND(ImportChecklist, LINE)
       const checklistImageUrl = chrome.extension.getURL('/images/checklist.png')
       this.checklistImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.checklistImage.src = checklistImageUrl
@@ -174,6 +174,7 @@ class Toolset {
         window.abwa.codebookManager.checklistImporter.openChecklistMenu()
       })
       this.toolsetBody.appendChild(this.checklistImage)
+      // PVSCL:ENDCOND
 
 
 
