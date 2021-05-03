@@ -10,6 +10,7 @@ const Events = {
   // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   createKeywordAnnotations: 'createKeywordAnnotations',
   keywordAnnotationsCreated: 'keywordAnnotationsCreated',
+  keywordsLoaded: 'keywordsLoaded',
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   congressLoaded: 'congressLoaded',

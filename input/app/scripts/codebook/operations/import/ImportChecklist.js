@@ -23,6 +23,7 @@ class ImportChecklist {
     this.checklistsMethods = {
       methods: []
     }
+    this.events = {}
   }
 
   init () {
@@ -30,6 +31,16 @@ class ImportChecklist {
     this.setChecklistsMethodsKeywords()
     // PVSCL:ENDCOND
   }
+
+  initKeywordsLoadedEvent () {
+    this.events.keywordsLoadedEvent = { element: document, event: Events.keywordsLoaded, handler: this.keywordsLoadedEventHandler() }
+    this.events.keywordsLoadedEvent.element.addEventListener(this.events.keywordsLoadedEvent.event, this.events.keywordsLoadedEvent.handler, false)
+  }
+
+  keywordsLoadedEventHandler () {
+    this.openChecklistMenu()
+  }
+
 
   /**
    * This method opens the checklist's review canvas in case there is an existing checklist for the current
@@ -64,6 +75,15 @@ class ImportChecklist {
         let authorsAnnotations = []
         if (authorsTheme && congressAnnotation) {
           authorsAnnotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(authorsTheme.id)
+        }
+        // PVSCL:ENDCOND
+
+        // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+        const methodsDataAnnotation = ImportChecklist.getMethodsDataAnnotations()[0]
+        const keywordsTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Keywords')
+        let keywordsAnnotations = []
+        if (authorsTheme) {
+          keywordsAnnotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(keywordsTheme.id)
         }
         // PVSCL:ENDCOND
 
@@ -103,7 +123,7 @@ class ImportChecklist {
                   // PVSCL:IFCOND(AuthorsSearch, LINE)
                   // Load authors Annotations (create AuthorsTheme and change group id permission and theme id)
                   if (authorsTheme && congressAnnotation) {
-                    this.askToKeepAuthors(newGroup.id, congressAnnotation, authorsAnnotations)
+                    this.askToKeepAuthors(keywordsAnnotations, methodsDataAnnotation, newGroup.id, congressAnnotation, authorsAnnotations)
                   }
                   // PVSCL:ENDCOND
 
@@ -144,7 +164,7 @@ class ImportChecklist {
               checklist: newBody
             })
             // PVSCL:IFCOND(KeywordBasedAnnotation AND NOT AuthorsSearch, LINE)
-            // this.askToKeepKeywords()
+            // this.askToKeepKeywords(keywordsAnnotations, methodsDataAnnotation, newGroupId)
             // PVSCL:ENDCOND
           }
         })
@@ -153,7 +173,7 @@ class ImportChecklist {
   }
 
   // PVSCL:IFCOND(AuthorsSearch, LINE)
-  askToKeepAuthors (newGroupId, congressAnnotation, authorsAnnotations) {
+  askToKeepAuthors (keywordsAnnotations, methodsDataAnnotation, newGroupId, congressAnnotation, authorsAnnotations) {
     Alerts.confirmAlert({
       alertType: Alerts.alertType.question,
       title: 'Keep Authors Info',
@@ -161,7 +181,7 @@ class ImportChecklist {
       callback: () => {
         this.transferAuthors(newGroupId, congressAnnotation, authorsAnnotations, () => {
           // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-          this.askToKeepKeywords()
+          this.askToKeepKeywords(keywordsAnnotations, methodsDataAnnotation, newGroupId)
           // PVSCL:ENDCOND
         })
       }
@@ -193,7 +213,6 @@ class ImportChecklist {
           if (err) {
             console.log(err)
           }
-          console.log(authorsAnnotations)
         })
       }
       if (_.isFunction(callback)) {
@@ -206,17 +225,45 @@ class ImportChecklist {
 
 
   // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-  askToKeepKeywords () {
+  askToKeepKeywords (keywordsAnnotations, methodsDataAnnotation, newGroupId) {
     Alerts.confirmAlert({
       alertType: Alerts.alertType.question,
       title: 'Keep keywords',
       text: 'Would you like to keep the keywords annotated?',
       callback: () => {
-        ReadCodebook.addKeywordsTheme()
-        this.saveChecklistsMethodsData()
+        this.transferKeywords(keywordsAnnotations, methodsDataAnnotation, newGroupId)
       }
     })
   }
+
+  transferKeywords (keywordsAnnotations, methodsDataAnnotation, newGroupId) {
+    if (_.isEmpty(window.abwa.codebookManager.codebookReader.codebook)) {
+      setTimeout(() => {
+        this.transferKeywords()
+      }, 500)
+    } else {
+      ReadCodebook.addKeywordsTheme()
+      const codebook = window.abwa.codebookManager.codebookReader.codebook
+      const newKeywordsTheme = codebook.getThemeByName('Keywords')
+      if (newKeywordsTheme) {
+        keywordsAnnotations.push(methodsDataAnnotation)
+        keywordsAnnotations.forEach((annotation) => {
+          const classifyingBody = annotation.body.find(body => body.purpose === 'classifying')
+          if (classifyingBody) {
+            annotation.body[annotation.body.findIndex(body => body.purpose === 'classifying')].value = newKeywordsTheme.toObject()
+          }
+          annotation.group = newGroupId
+          annotation.permissions = { read: ['group:' + newGroupId] }
+        })
+        window.abwa.annotationServerManager.client.createNewAnnotations(keywordsAnnotations, (err, annotations) => {
+          if (err) {
+            console.log(err)
+          }
+        })
+      }
+    }
+  }
+
   // PVSCL:ENDCOND
 
   /**
@@ -276,9 +323,9 @@ class ImportChecklist {
    * in the checklistInfo object
    */
   setChecklistsMethodsKeywords () {
-    let getMethodsKeywordsAnnotation = ImportChecklist.getMethodsKeywordsAnnotation()
-    if (getMethodsKeywordsAnnotation[0]) {
-      this.checklistsMethods = getMethodsKeywordsAnnotation[0].body[0].value
+    let methodsDataAnnotations = ImportChecklist.getMethodsDataAnnotations()
+    if (methodsDataAnnotations[0]) {
+      this.checklistsMethods = methodsDataAnnotations[0].body[0].value
     }
   }
 
@@ -287,7 +334,7 @@ class ImportChecklist {
    * about the methods and their amount matching keywords annotation
    * @returns {Object}
    */
-  static getMethodsKeywordsAnnotation () {
+  static getMethodsDataAnnotations () {
     const allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
     const methodsKeywordstAnnotations = _.filter(allAnnotations, (annotation) => {
       return _.some(annotation.tags, (tag) => {
@@ -306,10 +353,10 @@ class ImportChecklist {
   saveChecklistsMethodsData () {
     const numMethods = this.getNumOfMethods()
     Checklists.groups.forEach((group) => {
-      let newMethod = {
-        groupName: group.name
-      }
       group.methods.forEach((method) => {
+        let newMethod = {
+          groupName: group.name
+        }
         newMethod.name = method.name
         // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
         if (method.keywords) {
@@ -358,7 +405,9 @@ class ImportChecklist {
       tags: tags,
       methodsKeywords: this.checklistsMethods
     })
+    LanguageUtils.dispatchCustomEvent(Events.keywordsLoaded)
   }
+
 
   /**
    * This function returns the number of matches for the
