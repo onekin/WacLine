@@ -66,6 +66,9 @@ class CodebookManager {
     // PVSCL:IFCOND(ImportCodebook, LINE)
     this.codebookImporter.init()
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(ImportChecklist, LINE)
+    this.activateLoadKeywords()
+    // PVSCL:ENDCOND
   }
 
   destroy () {
@@ -88,6 +91,26 @@ class CodebookManager {
     this.codebookImporter.destroy()
     // PVSCL:ENDCOND
   }
+
+  /**
+   * This function waits until the codebook is set
+   * and inits the process to search for keywords
+   */
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+  activateLoadKeywords () {
+    if (_.isEmpty(window.abwa.codebookManager.codebookReader.codebook)) {
+      setTimeout(() => {
+        this.activateLoadKeywords()
+      }, 500)
+    } else {
+      this.checklistImporter.init()
+      if (window.abwa.annotationManagement.annotationReader.allAnnotations.length === 0) {
+        ReadCodebook.addKeywordsTheme()
+        this.checklistImporter.saveChecklistsMethodsData()
+      }
+    }
+  }
+  // PVSCL:ENDCOND
 }
 
 export default CodebookManager

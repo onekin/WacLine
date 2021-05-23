@@ -58,7 +58,7 @@ class ImportChecklist {
       this.importChecklist()
     } else {
       ChecklistReview.generateReview()
-    }*/
+    } */
   }
 
   addCoodebookLoadedEvent () {
@@ -114,7 +114,7 @@ class ImportChecklist {
 
         const tempCodebook = Codebook.fromObjects(method)
 
-        // 4- Move to group and Add/Create themes with codes
+        // 4- Create themes with codes
         tempCodebook.annotationServer = window.abwa.codebookManager.codebookReader.codebook.annotationServer
         const annotations = tempCodebook.toAnnotations()
         window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, codebookAnnotations) => {
@@ -162,108 +162,12 @@ class ImportChecklist {
           checklist: newBody
         })
         window.abwa.annotatedContentManager.reloadTagsChosen()
+        Alerts.successAlert({
+          text: 'Method has been imported successfully'
+        })
       }
     })
   }
-
-  // PVSCL:IFCOND(AuthorsSearch, LINE)
-  askToKeepAuthors (newGroupId, congressAnnotation, authorsAnnotations) {
-    let e = Alerts.confirmAlert({
-      alertType: Alerts.alertType.question,
-      title: 'Keep Authors Info',
-      text: 'Would you like to Authors information? (Including annotations)',
-      callback: () => {
-        this.transferAuthors(newGroupId, congressAnnotation, authorsAnnotations)
-      }
-    })
-  }
-
-  transferAuthors (newGroupId, congressAnnotation, authorsAnnotations) {
-    if (_.isEmpty(window.abwa.codebookManager.codebookReader.codebook)) {
-      setTimeout(() => {
-        this.transferAuthors(newGroupId, congressAnnotation, authorsAnnotations)
-      }, 500)
-    } else {
-      ReadCodebook.addAuthorsTheme()
-      const codebook = window.abwa.codebookManager.codebookReader.codebook
-      const newAuthorsTheme = codebook.getThemeByName('Authors')
-      if (newAuthorsTheme) {
-        authorsAnnotations.push(congressAnnotation)
-        authorsAnnotations.forEach((annotation) => {
-          const classifyingBody = annotation.body.find(body => body.purpose === 'classifying')
-          if (classifyingBody) {
-            annotation.body[annotation.body.findIndex(body => body.purpose === 'classifying')].value = newAuthorsTheme.toObject()
-          }
-          annotation.group = newGroupId
-          annotation.permissions = {
-            read: ['group:' + newGroupId]
-          }
-        })
-        const congress = congressAnnotation.body[0].value
-        window.abwa.annotationManagement.authorsSearch.loadCongress(congress)
-        window.abwa.annotationServerManager.client.createNewAnnotations(authorsAnnotations, (err, annotations) => {
-          if (err) {
-            console.log(err)
-          } else {
-            window.abwa.annotationManagement.annotationReader.updateAllAnnotations(() => {
-              window.abwa.codebookManager.codebookReader.init()
-            })
-          }
-        })
-      }
-    }
-  }
-
-  // PVSCL:ENDCOND
-
-
-  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-  askToKeepKeywords (keywordsAnnotations, methodsDataAnnotation, newGroupId) {
-    Alerts.confirmAlert({
-      alertType: Alerts.alertType.question,
-      title: 'Keep keywords',
-      text: 'Would you like to keep the keywords annotated?',
-      callback: () => {
-        this.transferKeywords(keywordsAnnotations, methodsDataAnnotation, newGroupId)
-      }
-    })
-  }
-
-  transferKeywords (keywordsAnnotations, methodsDataAnnotation, newGroupId) {
-    if (_.isEmpty(window.abwa.codebookManager.codebookReader.codebook)) {
-      setTimeout(() => {
-        this.transferKeywords(keywordsAnnotations, methodsDataAnnotation, newGroupId)
-      }, 500)
-    } else {
-      ReadCodebook.addKeywordsTheme()
-      const codebook = window.abwa.codebookManager.codebookReader.codebook
-      const newKeywordsTheme = codebook.getThemeByName('Keywords')
-      if (newKeywordsTheme) {
-        keywordsAnnotations.push(methodsDataAnnotation)
-        keywordsAnnotations.forEach((annotation) => {
-          const classifyingBody = annotation.body.find(body => body.purpose === 'classifying')
-          if (classifyingBody) {
-            annotation.body[annotation.body.findIndex(body => body.purpose === 'classifying')].value = newKeywordsTheme.toObject()
-          }
-          annotation.group = newGroupId
-          annotation.permissions = {
-            read: ['group:' + newGroupId]
-          }
-        })
-        window.abwa.annotationServerManager.client.createNewAnnotations(keywordsAnnotations, (err, annotations) => {
-          if (err) {
-            console.log(err)
-          } else {
-            window.abwa.annotationManagement.annotationReader.updateAllAnnotations(() => {
-              window.abwa.codebookManager.codebookReader.init()
-            })
-          }
-        })
-      }
-    }
-  }
-
-  // PVSCL:ENDCOND
 
   /**
    * This method handles the dialog to let the user choose a checklist

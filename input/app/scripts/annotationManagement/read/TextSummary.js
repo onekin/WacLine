@@ -91,10 +91,12 @@ class TextSummary {
       document.querySelector('#saveReportDraft').addEventListener('click', function () {
         let reportText = document.querySelector('#reportText').value
         TextSummary.saveReport(reportText)
-        Alerts.successAlert({ text: 'Draft has been successfully saved' })
+        Alerts.successAlert({
+          text: 'Draft has been successfully saved'
+        })
       })
 
-      
+
       const invalidCritContainer = document.querySelector('#invalidCriticismsContainer')
       const invalidCritTemplate = document.querySelector('#invalidCritTemplate')
 

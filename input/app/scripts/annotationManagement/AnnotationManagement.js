@@ -45,8 +45,10 @@ class AnnotationManagement {
     // PVSCL:IFCOND(SidebarNavigation, LINE)
     this.initNavigationToAnnotationByCodeEventListener()
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(AuthorsSearch, LINE)
+    this.authorsSearch.init()
+    // PVSCL:ENDCOND
   }
-
 
   activateSelectionEvent (callback) {
     this.events.mouseUpOnDocumentHandler = { element: document, event: 'mouseup', handler: this.mouseUpOnDocumentHandlerConstructor() }

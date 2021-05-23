@@ -2,6 +2,7 @@
 import Config from '../Config'
 // PVSCL:IFCOND(Assessing, LINE)
 import Assessing from '../annotationManagement/purposes/Assessing'
+import Classifying from '../annotationManagement/purposes/Classifying'
 // PVSCL:ENDCOND
 
 export class Review {
@@ -192,7 +193,12 @@ export class Review {
         let textQuoteSelector = null
         let highlightText = ''
         let pageNumber = null
-
+        let classifyingBody = annotations[a].getBodyForPurpose(Classifying.purpose)
+        if (classifyingBody) {
+          if (classifyingBody.value.name === 'Keywords') {
+            continue
+          }
+        }
         for (let k in annotations[a].target) {
           if (annotations[a].target.hasOwnProperty(k)) {
             if (_.isArray(annotations[a].target[k].selector) && annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' }) != null) {

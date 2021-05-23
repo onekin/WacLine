@@ -104,7 +104,11 @@ class UpdateCodebook {
           newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook })
         },
         callback: () => {
-          LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+          if (newTheme.name.toLowerCase() === 'evaluation') {
+            window.abwa.codebookManager.checklistImporter.openChecklistMenu()
+          } else {
+            LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+          }
         }
       })
     })

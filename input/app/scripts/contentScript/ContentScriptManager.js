@@ -16,10 +16,6 @@ import BrowserStorageManager from '../annotationServer/browserStorage/BrowserSto
 // PVSCL:IFCOND(PreviousAssignments, LINE)
 import PreviousAssignments from '../annotationManagement/purposes/PreviousAssignments'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-import KeywordBasedAnnotation from '../annotationManagement/create/KeywordBasedAnnotation'
-import ReadCodebook from '../codebook/operations/read/ReadCodebook'
-// PVSCL:ENDCOND
 
 class ContentScriptManager {
   constructor () {
@@ -45,12 +41,6 @@ class ContentScriptManager {
               // Initialize listener for group change to reload the content
               this.initListenerForGroupChange()
               // PVSCL:ENDCOND
-              // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-              this.activateLoadKeywords()
-              // PVSCL:ENDCOND
-              // PVSCL:IFCOND(AuthorsSearch, LINE)
-              this.initAuthorsSearch()
-              // PVSCL:ENDCOND
             })
           })
         })
@@ -58,41 +48,6 @@ class ContentScriptManager {
     })
   }
 
-  /**
-   * This function waits until the codebook is set
-   * and inits the process to search for keywords
-   */
-  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-  activateLoadKeywords () {
-    if (_.isEmpty(window.abwa.codebookManager.codebookReader.codebook)) {
-      setTimeout(() => {
-        this.activateLoadKeywords()
-      }, 500)
-    } else {
-      window.abwa.codebookManager.checklistImporter.init()
-      if (window.abwa.annotationManagement.annotationReader.allAnnotations.length === 0) {
-        ReadCodebook.addKeywordsTheme()
-        window.abwa.codebookManager.checklistImporter.saveChecklistsMethodsData()
-      }
-    }
-  }
-  // PVSCL:ENDCOND
-
-  /**
-   * This function waits until the AnnotationManagement is set
-   * and inits the process of authors search management
-   */
-  // PVSCL:IFCOND(AuthorsSearch, LINE)
-  initAuthorsSearch () {
-    if (_.isEmpty(window.abwa.annotationManagement)) {
-      setTimeout(() => {
-        this.initAuthorsSearch()
-      }, 500)
-    } else {
-      window.abwa.annotationManagement.authorsSearch.init()
-    }
-  }
-  // PVSCL:ENDCOND
 
   // PVSCL:IFCOND(Manual, LINE)
 
