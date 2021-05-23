@@ -43,6 +43,9 @@ class AuthorsInfo {
       const rowTemplate = document.querySelector('#rowTemplate')
       AuthorsInfo.getAuthorsInfo(authorsAnnotations, congress).then((result) => {
         let authors = result
+        if (authors.length === 0) {
+          document.querySelector('#noAuthors').style.display = 'block'
+        }
         for (const author of authors) {
           const rowElement = rowTemplate.content.cloneNode(true)
           rowElement.querySelector('.authorsName').textContent = author.name

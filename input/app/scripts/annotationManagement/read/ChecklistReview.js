@@ -14,7 +14,11 @@ class ChecklistReview {
    */
   static generateReview () {
     window.abwa.sidebar.closeSidebar()
-    const checklist = ImportChecklist.getChecklists()[0]
+
+    // Recibir como parámetro la anotación de la checklist
+    const checklistAnnotation = ImportChecklist.getChecklistsAnnotations()[0]
+    const checklist = checklistAnnotation.body[0].value
+
     const canvasPageURL = chrome.extension.getURL('pages/specific/checklistCanvas.html')
 
     axios.get(canvasPageURL).then((response) => {
@@ -54,7 +58,7 @@ class ChecklistReview {
           item.querySelector('.checkLiItem span').innerText = code.name
           item.querySelector('.checkLiItem').addEventListener('click', function () {
             document.querySelector('#checklistCanvas').style.display = 'none'
-            ChecklistReview.generateItemReview(type, code)
+            ChecklistReview.generateItemReview(checklistAnnotation, type, code)
           })
           cluster.querySelector('.checklistClusterContainer').appendChild(item)
         })
@@ -68,7 +72,7 @@ class ChecklistReview {
    * This function shows an overview of an item of the checklist with the annotations
    * and the posibility to 'pass', 'fail' or 'undefine' the item.
    */
-  static generateItemReview (type, chosenCode) {
+  static generateItemReview (checklistAnnotation, type, chosenCode) {
     const itemPageURL = chrome.extension.getURL('pages/specific/checklistItem.html')
     var newStatus = chosenCode.status
     axios.get(itemPageURL).then((response) => {
@@ -120,7 +124,6 @@ class ChecklistReview {
             newStatus = 'failed'
           }
         }
-        const checklistAnnotation = ImportChecklist.getChecklistsAnnotations()[0]
         ChecklistReview.changeItemStatus(checklistAnnotation, type, chosenCode, newStatus)
       })
 

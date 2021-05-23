@@ -8,14 +8,12 @@ import Config from '../../../Config'
 import LanguageUtils from '../../../utils/LanguageUtils'
 import Codebook from '../../model/Codebook'
 import Checklist from '../../../annotationManagement/purposes/Checklist'
-import ChecklistReview from '../../../annotationManagement/read/ChecklistReview'
 import KeywordBasedAnnotation from '../../../annotationManagement/create/KeywordBasedAnnotation'
 import axios from 'axios'
 // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
 import MethodsKeywords from '../../../annotationManagement/purposes/MethodsKeywords'
 // PVSCL:ENDCOND
 import ReadCodebook from '../read/ReadCodebook'
-import AuthorsSearch from '../../../annotationManagement/purposes/AuthorsSearch'
 
 class ImportChecklist {
 
@@ -32,14 +30,20 @@ class ImportChecklist {
     // PVSCL:ENDCOND
   }
 
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   initKeywordsLoadedEvent () {
-    this.events.keywordsLoadedEvent = { element: document, event: Events.keywordsLoaded, handler: this.keywordsLoadedEventHandler() }
+    this.events.keywordsLoadedEvent = {
+      element: document,
+      event: Events.keywordsLoaded,
+      handler: this.keywordsLoadedEventHandler()
+    }
     this.events.keywordsLoadedEvent.element.addEventListener(this.events.keywordsLoadedEvent.event, this.events.keywordsLoadedEvent.handler, false)
   }
 
   keywordsLoadedEventHandler () {
     this.openChecklistMenu()
   }
+  // PVSCL:ENDCOND
 
 
   /**
@@ -48,13 +52,30 @@ class ImportChecklist {
    */
   openChecklistMenu () {
     let checklist = ImportChecklist.getChecklistsAnnotations()[0]
+    this.importChecklist()
+    /*
     if (_.isEmpty(checklist)) {
       this.importChecklist()
     } else {
       ChecklistReview.generateReview()
-    }
+    }*/
   }
 
+  addCoodebookLoadedEvent () {
+    this.events.codebookCreated = {
+      element: document,
+      event: Events.codebookRead,
+      handler: this.createCodebookCreatedEventHandler()
+    }
+    this.events.codebookCreated.element.addEventListener(this.events.codebookCreated.event, this.events.codebookCreated.handler, false)
+  }
+
+
+  createCodebookCreatedEventHandler () {
+    return () => {
+      console.log('Yeah')
+    }
+  }
 
   /**
    * This method ask the user to choose a checklist and imports the
@@ -63,30 +84,12 @@ class ImportChecklist {
   importChecklist () {
     // 1- Ask user to choose checklist
     this.askUserToChooseChecklist((err, checklistGroupName, methodName) => {
+      this.addCoodebookLoadedEvent()
       if (err) {
         Alerts.errorAlert({
           text: 'Unable to load checklist. Error:<br/>' + err.message
         })
       } else {
-        // Get authors annotations
-        // PVSCL:IFCOND(AuthorsSearch, LINE)
-        const authorsTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Authors')
-        const congressAnnotation = AuthorsSearch.getCongressAnnotations()[0]
-        let authorsAnnotations = []
-        if (authorsTheme && congressAnnotation) {
-          authorsAnnotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(authorsTheme.id)
-        }
-        // PVSCL:ENDCOND
-
-        // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-        const methodsDataAnnotation = ImportChecklist.getMethodsDataAnnotations()[0]
-        const keywordsTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Keywords')
-        let keywordsAnnotations = []
-        if (authorsTheme) {
-          keywordsAnnotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(keywordsTheme.id)
-        }
-        // PVSCL:ENDCOND
-
         // 2- Find checklist's group and method in JSON file
         let group = Checklists.groups.filter((group) => {
           return group.name === checklistGroupName
@@ -94,104 +97,91 @@ class ImportChecklist {
         let chosenMethod = group.methods.filter((method) => {
           return method.name === methodName
         })[0]
+        console.log(chosenMethod)
+        let method = {
+          name: chosenMethod.name,
+          definition: []
+        }
+        let methodTheme = {
+          name: method.name,
+          description: '',
+          codes: []
+        }
+        chosenMethod.definition.forEach((definition) => {
+          methodTheme.codes = methodTheme.codes.concat(definition.codes)
+        })
+        method.definition.push(methodTheme)
 
-        // 3- Create new group
-        window.abwa.annotationServerManager.client.createNewGroup({
-          name: checklistGroupName,
-          description: 'A group created using annotation tool ' + chrome.runtime.getManifest().name
-        }, (err, newGroup) => {
+        const tempCodebook = Codebook.fromObjects(method)
+
+        // 4- Move to group and Add/Create themes with codes
+        tempCodebook.annotationServer = window.abwa.codebookManager.codebookReader.codebook.annotationServer
+        const annotations = tempCodebook.toAnnotations()
+        window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, codebookAnnotations) => {
           if (err) {
-            console.log(err)
+            Alerts.errorAlert({
+              text: 'An error has occurred loading the evaluation method checklist. Error: ' + err.message
+            })
           } else {
-            const tempCodebook = Codebook.fromObjects(chosenMethod)
-
-            // 4- Move to group and Add/Create themes with codes
-            window.abwa.groupSelector.retrieveGroups(() => {
-              window.abwa.groupSelector.setCurrentGroup(newGroup.id, () => {
-                Codebook.setAnnotationServer(newGroup.id, (annotationServer) => {
-                  tempCodebook.annotationServer = annotationServer
-                  const annotations = tempCodebook.toAnnotations()
-                  window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, codebookAnnotations) => {
-                    if (err) {
-                      Alerts.errorAlert({
-                        text: 'An error has occurred loading the evaluation method checklist. Error: ' + err.message
-                      })
-                    } else {
-                    }
-                  })
-                  Alerts.closeAlert()
-                  // PVSCL:IFCOND(AuthorsSearch, LINE)
-                  // Load authors Annotations (create AuthorsTheme and change group id permission and theme id)
-                  if (authorsTheme && congressAnnotation) {
-                    this.askToKeepAuthors(keywordsAnnotations, methodsDataAnnotation, newGroup.id, congressAnnotation, authorsAnnotations)
-                  }
-                  // PVSCL:ENDCOND
-
-                })
-              })
-            })
-            // 5- Add special annotation to track checklist (checked/not checked)
-            let newBody = {
-              name: chosenMethod.name,
-              definition: [],
-              totalCodes: 0,
-              invalidCriticisms: []
-            }
-            if (chosenMethod.invalidCriticisms) {
-              newBody.invalidCriticisms = chosenMethod.invalidCriticisms
-            }
-            chosenMethod.definition.forEach((category) => {
-              let newDefinition = {
-                name: category.name,
-                description: category.description,
-                codes: []
-              }
-              newDefinition.codes = category.codes.map((code) => {
-                return {
-                  name: code.name,
-                  description: code.description,
-                  status: 'undefined'
-                }
-              })
-              newBody.definition.push(newDefinition)
-              newBody.totalCodes += newDefinition.codes.length
-            })
-            const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'checklist'
-            const tags = [motivationTag]
-            LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-              purpose: Checklist.purpose,
-              tags: tags,
-              checklist: newBody
-            })
-            // PVSCL:IFCOND(KeywordBasedAnnotation AND NOT AuthorsSearch, LINE)
-            // this.askToKeepKeywords(keywordsAnnotations, methodsDataAnnotation, newGroupId)
-            // PVSCL:ENDCOND
+            window.abwa.codebookManager.codebookReader.init()
+            Alerts.closeAlert()
           }
         })
+
+        // 5- Add special annotation to track checklist (checked/not checked)
+        let newBody = {
+          name: chosenMethod.name,
+          definition: [],
+          totalCodes: 0,
+          invalidCriticisms: []
+        }
+        if (chosenMethod.invalidCriticisms) {
+          newBody.invalidCriticisms = chosenMethod.invalidCriticisms
+        }
+        chosenMethod.definition.forEach((category) => {
+          let newDefinition = {
+            name: category.name,
+            description: category.description,
+            codes: []
+          }
+          newDefinition.codes = category.codes.map((code) => {
+            return {
+              name: code.name,
+              description: code.description,
+              status: 'undefined'
+            }
+          })
+          newBody.definition.push(newDefinition)
+          newBody.totalCodes += newDefinition.codes.length
+        })
+        const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'checklist'
+        const tags = [motivationTag]
+        LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+          purpose: Checklist.purpose,
+          tags: tags,
+          checklist: newBody
+        })
+        window.abwa.annotatedContentManager.reloadTagsChosen()
       }
     })
   }
 
   // PVSCL:IFCOND(AuthorsSearch, LINE)
-  askToKeepAuthors (keywordsAnnotations, methodsDataAnnotation, newGroupId, congressAnnotation, authorsAnnotations) {
-    Alerts.confirmAlert({
+  askToKeepAuthors (newGroupId, congressAnnotation, authorsAnnotations) {
+    let e = Alerts.confirmAlert({
       alertType: Alerts.alertType.question,
       title: 'Keep Authors Info',
       text: 'Would you like to Authors information? (Including annotations)',
       callback: () => {
-        this.transferAuthors(newGroupId, congressAnnotation, authorsAnnotations, () => {
-          // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-          this.askToKeepKeywords(keywordsAnnotations, methodsDataAnnotation, newGroupId)
-          // PVSCL:ENDCOND
-        })
+        this.transferAuthors(newGroupId, congressAnnotation, authorsAnnotations)
       }
     })
   }
 
-  transferAuthors (newGroupId, congressAnnotation, authorsAnnotations, callback) {
+  transferAuthors (newGroupId, congressAnnotation, authorsAnnotations) {
     if (_.isEmpty(window.abwa.codebookManager.codebookReader.codebook)) {
       setTimeout(() => {
-        this.transferAuthors(newGroupId, congressAnnotation, authorsAnnotations, callback)
+        this.transferAuthors(newGroupId, congressAnnotation, authorsAnnotations)
       }, 500)
     } else {
       ReadCodebook.addAuthorsTheme()
@@ -205,18 +195,21 @@ class ImportChecklist {
             annotation.body[annotation.body.findIndex(body => body.purpose === 'classifying')].value = newAuthorsTheme.toObject()
           }
           annotation.group = newGroupId
-          annotation.permissions = { read: ['group:' + newGroupId] }
+          annotation.permissions = {
+            read: ['group:' + newGroupId]
+          }
         })
         const congress = congressAnnotation.body[0].value
         window.abwa.annotationManagement.authorsSearch.loadCongress(congress)
         window.abwa.annotationServerManager.client.createNewAnnotations(authorsAnnotations, (err, annotations) => {
           if (err) {
             console.log(err)
+          } else {
+            window.abwa.annotationManagement.annotationReader.updateAllAnnotations(() => {
+              window.abwa.codebookManager.codebookReader.init()
+            })
           }
         })
-      }
-      if (_.isFunction(callback)) {
-        callback()
       }
     }
   }
@@ -239,7 +232,7 @@ class ImportChecklist {
   transferKeywords (keywordsAnnotations, methodsDataAnnotation, newGroupId) {
     if (_.isEmpty(window.abwa.codebookManager.codebookReader.codebook)) {
       setTimeout(() => {
-        this.transferKeywords()
+        this.transferKeywords(keywordsAnnotations, methodsDataAnnotation, newGroupId)
       }, 500)
     } else {
       ReadCodebook.addKeywordsTheme()
@@ -253,11 +246,17 @@ class ImportChecklist {
             annotation.body[annotation.body.findIndex(body => body.purpose === 'classifying')].value = newKeywordsTheme.toObject()
           }
           annotation.group = newGroupId
-          annotation.permissions = { read: ['group:' + newGroupId] }
+          annotation.permissions = {
+            read: ['group:' + newGroupId]
+          }
         })
         window.abwa.annotationServerManager.client.createNewAnnotations(keywordsAnnotations, (err, annotations) => {
           if (err) {
             console.log(err)
+          } else {
+            window.abwa.annotationManagement.annotationReader.updateAllAnnotations(() => {
+              window.abwa.codebookManager.codebookReader.init()
+            })
           }
         })
       }
@@ -273,7 +272,7 @@ class ImportChecklist {
   askUserToChooseChecklist (callback) {
     window.abwa.sidebar.closeSidebar()
     const canvasPageURL = chrome.extension.getURL('pages/specific/chooseChecklist.html')
-
+    const checklistAnnotations = ImportChecklist.getChecklistsAnnotations()
     axios.get(canvasPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
       document.querySelector('#abwaSidebarButton').style.display = 'none'
@@ -300,12 +299,27 @@ class ImportChecklist {
         document.querySelector('#abwaSidebarButton').style.display = 'block'
         callback(null, groupName, methodName)
       })
+      document.querySelector('#cancelChecklistButton').addEventListener('click', function () {
+        document.querySelector('#chooseChecklist').parentNode.removeChild(document.querySelector('#chooseChecklist'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
 
       const select = document.querySelector('#checklistSelect')
+      let filteredMethods = this.checklistsMethods.methods
+      let i = -1
+      for (var method of this.checklistsMethods.methods) {
+        i++
+        for (var checklist of checklistAnnotations) {
+          if (method.name === checklist.body[0].value.name) {
+            filteredMethods.splice(i, 1)
+            break
+          }
+        }
+      }
       // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-      this.checklistsMethods.methods.sort((a, b) => b.keywordsMatches - a.keywordsMatches)
+      filteredMethods.sort((a, b) => b.keywordsMatches - a.keywordsMatches)
       // PVSCL:ENDCOND
-      this.checklistsMethods.methods.forEach((method) => {
+      filteredMethods.forEach((method) => {
         let option = document.createElement('option')
         option.value = method.groupName + ';' + method.name
         option.text = method.name
@@ -368,13 +382,13 @@ class ImportChecklist {
             }
           })
         } else {
-        // PVSCL:ENDCOND
+          // PVSCL:ENDCOND
           newMethod.keywordsMatches = 0
           this.checklistsMethods.methods.push(newMethod)
           if (this.checklistsMethods.methods.length === numMethods) {
             this.saveMethodsData()
           }
-        // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+          // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
         }
         // PVSCL:ENDCOND
 
@@ -423,17 +437,6 @@ class ImportChecklist {
   }
 
   // PVSCL:ENDCOND
-
-  /**
-   * This method returns the checklists value of the current document
-   * @returns {Object}
-   */
-  static getChecklists () {
-    let checklistsAnnotations = ImportChecklist.getChecklistsAnnotations()
-    return checklistsAnnotations.map((checklist) => {
-      return checklist.body[0].value
-    })
-  }
 
   /**
    * This method returns the annotations corresponding to the checklist(s) of the document

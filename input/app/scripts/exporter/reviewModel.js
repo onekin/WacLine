@@ -57,7 +57,9 @@ export class Review {
     // PVSCL:IFCOND(ImportChecklist, LINE)
     if(this.checklist[0]) {
       t += 'CHECKLIST:\n\n'
-      t +=this.checklist[0]._annotations[0]._comment + '\n\n'
+      this.checklist[0]._annotations.forEach((checklist) => {
+        t += checklist._comment + '\n\n'
+      })
     }
     // PVSCL:ENDCOND
 

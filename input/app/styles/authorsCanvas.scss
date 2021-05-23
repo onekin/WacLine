@@ -4,7 +4,6 @@
 #authorsCanvasContainer{
   font-family: Calibri;
   width:70%;
-  height:90%;
   position:fixed;
   top:15%;
   left:20%;
@@ -47,4 +46,11 @@
 .authorsLink{
   text-align:right;
   margin-left:5%;
+}
+
+#noAuthors{
+  background-color:white;
+  text-align:center;
+  display: none;
+  padding: 3%;
 }

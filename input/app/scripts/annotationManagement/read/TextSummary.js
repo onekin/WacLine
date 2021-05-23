@@ -58,13 +58,9 @@ class TextSummary {
    */
   static generateReviewEditor () {
     let report = TextSummary.generateMergedReport()
-    const checklist = ImportChecklist.getChecklists()[0]
-    let invalidCriticisms = []
-    if (checklist) {
-      if (checklist.invalidCriticisms) {
-        invalidCriticisms = checklist.invalidCriticisms
-      }
-    }
+    const checklists = ImportChecklist.getChecklistsAnnotations().map((checklist) => {
+      return checklist.body[0].value
+    })
 
     window.abwa.sidebar.closeSidebar()
     const reviewPageURL = chrome.extension.getURL('pages/specific/reviewEditor.html')
@@ -97,12 +93,25 @@ class TextSummary {
         TextSummary.saveReport(reportText)
         Alerts.successAlert({ text: 'Draft has been successfully saved' })
       })
-      let ul = document.getElementById('invalidCriticismsList')
-      invalidCriticisms.forEach((invalidCriticism) => {
-        var li = document.createElement('li')
-        li.appendChild(document.createTextNode(invalidCriticism))
-        ul.appendChild(li)
-      })
+
+      
+      const invalidCritContainer = document.querySelector('#invalidCriticismsContainer')
+      const invalidCritTemplate = document.querySelector('#invalidCritTemplate')
+
+      for (var checklist of checklists) {
+        if (checklist.invalidCriticisms) {
+          const invalidCriticisms = checklist.invalidCriticisms
+          const invalidCritElement = invalidCritTemplate.content.cloneNode(true)
+          let ul = invalidCritElement.querySelector('.invalidCriticismsList')
+          invalidCritElement.querySelector('.invalidCriticismsTitle').textContent = checklist.name
+          invalidCriticisms.forEach((invalidCriticism) => {
+            var li = document.createElement('li')
+            li.appendChild(document.createTextNode(invalidCriticism))
+            ul.appendChild(li)
+          })
+          invalidCritContainer.appendChild(invalidCritElement)
+        }
+      }
 
       Alerts.closeAlert()
     })
@@ -150,7 +159,6 @@ class TextSummary {
       if (page) {
         searchString = '- (Page ' + page.toString() + ') ' + searchString
       }
-      console.log(searchString)
       let startIndex = oldReportText.indexOf(searchString)
       let endIndex = oldReportText.indexOf('- (Page ', startIndex + searchString.length)
       if (endIndex < 0) {

@@ -97,13 +97,22 @@
   background-color: #f7eac6;
 }
 
-#invalidCriticismsList {
+.invalidCriticismsList {
   height: 90%;
   margin-left: 8%;
   margin-right: 2%;
   margin-top: 3%;
   padding: 0;
   word-wrap: break-word;
+  font-size: 1.2em;
+}
+
+.invalidCriticism {
+  margin: 3%;
+}
+
+h4.invalidCriticismsTitle{
+  margin: 5%;
   font-size: 1.2em;
 }
 

@@ -269,6 +269,12 @@ class Alerts {
   static isVisible () {
     return swal.isVisible()
   }
+
+  static addToQueue (alert) {
+    let e = swal.queue
+    console.log(e)
+    console.log(alert)
+  }
 }
 
 Alerts.alertType = {
