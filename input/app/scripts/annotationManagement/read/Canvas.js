@@ -1,7 +1,8 @@
 import Alerts from '../../utils/Alerts'
 import axios from 'axios'
-
+import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
 import { Review } from '../../exporter/reviewModel'
+import ChecklistReview from './ChecklistReview'
 
 class Canvas {
   static generateCanvas () {
@@ -29,10 +30,38 @@ class Canvas {
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
       const canvasClusters = {}
-      window.abwa.codebookManager.codebookReader.codebook.themes.forEach((theme) => {
-        canvasClusters[theme.name] = theme.codes.map((code) => { return code.name })
-        canvasClusters[theme.name].push(theme.name)
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      const checklistsTheme = {
+        name: 'Checklists',
+        codes: []
+      }
+      const checklistsAnnotations = ImportChecklist.getChecklistsAnnotations()
+      checklistsTheme.codes = checklistsAnnotations.map((checklist) => {
+        return checklist.body[0].value.name
       })
+      // PVSCL:ENDCOND
+      window.abwa.codebookManager.codebookReader.codebook.themes.forEach((theme) => {
+        // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+        if (theme.name !== 'Keywords') {
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(ImportChecklist, LINE)
+          if (!checklistsAnnotations.find((checklist) => checklist.body[0].value.name === theme.name)) {
+            // PVSCL:ENDCOND
+            canvasClusters[theme.name] = theme.codes.map((code) => { return code.name })
+            canvasClusters[theme.name].push(theme.name)
+            // PVSCL:IFCOND(ImportChecklist, LINE)
+          }
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+        }
+        // PVSCL:ENDCOND
+      })
+
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      if (checklistsTheme.codes.length > 0) {
+        canvasClusters[checklistsTheme.name] = checklistsTheme.codes
+      }
+      // PVSCL:ENDCOND
 
       const clusterTemplate = document.querySelector('#propertyClusterTemplate')
       const columnTemplate = document.querySelector('#clusterColumnTemplate')
@@ -129,7 +158,16 @@ class Canvas {
           else if (i % 2 === 1) propertyHeight = getPropertyHeight(canvasClusters[key][i], [canvasClusters[key][i], canvasClusters[key][i - 1]])
           clusterProperty.querySelector('.clusterProperty').style.height = propertyHeight + '%'
           clusterProperty.querySelector('.clusterProperty').style.width = '100%'
-
+          // PVSCL:IFCOND(ImportChecklist, LINE)
+          if (key === checklistsTheme.name) {
+            clusterProperty.querySelector('.clusterProperty').style.cursor = 'pointer'
+            clusterProperty.querySelector('.clusterProperty').addEventListener('click', () => {
+              const foundChecklist = checklistsAnnotations.find((checklistAn) => checklistAn.body[0].value.name === canvasClusters[key][i])
+              document.querySelector('#reviewCanvas').style.display = 'none'
+              ChecklistReview.generateReview(foundChecklist)
+            })
+          }
+          // PVSCL:ENDCOND
           const criterionAnnotations = review.annotations.filter((e) => { return e.criterion === canvasClusters[key][i] })
           if (criterionAnnotations.length === 0) clusterProperty.querySelector('.propertyAnnotations').style.display = 'none'
           clusterProperty.querySelector('.clusterProperty').className += ' ' + getCriterionLevel(criterionAnnotations)

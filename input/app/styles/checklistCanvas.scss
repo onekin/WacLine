@@ -22,6 +22,8 @@
 #checklistCanvasTitle {
   background-color: white;
   text-align: center;
+  margin: 0 auto 0 auto;
+  padding: 1%;
 }
 
 .checklistPropertyCluster {
@@ -100,24 +102,32 @@
   cursor: pointer;
 }
 
-#checklistCanvasCloseButton span {
-  margin: 0 auto;
-  width: 80%;
-  height: 2px;
-  margin: 0 auto;
-  display: block;
-  background: #555;
-  transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
+.backArrow {
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 8px;
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);  
+  left: 5px;
+  position: relative;
+  cursor: pointer; 
+  margin-left: 3%;
 }
 
-#checklistCanvasCloseButton span:first-of-type {
-  transform: rotate(45deg) translate(14px, 14px);
+#backToCanvasArrow i{
+  margin-top: 30%;
+  margin-left: 20%;
 }
 
-#checklistCanvasCloseButton span:nth-of-type(2) {
-  opacity: 0;
-}
 
-#checklistCanvasCloseButton span:last-of-type {
-  transform: rotate(-45deg) translate(-11px, 11px);
+#checklistCanvasHeader {
+  border-width: 3px;
+  padding: 3px;
+  border-style: solid;
+  border-color: #2c62ba;
+  flex: 0 1 auto;
+  display: flex;  
+  align-items: center;
+  background-color: white;
 }

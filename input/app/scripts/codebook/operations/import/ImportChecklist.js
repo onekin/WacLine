@@ -51,30 +51,7 @@ class ImportChecklist {
    * document or opens the dialog so that the user chooses one in case there isn't
    */
   openChecklistMenu () {
-    let checklist = ImportChecklist.getChecklistsAnnotations()[0]
     this.importChecklist()
-    /*
-    if (_.isEmpty(checklist)) {
-      this.importChecklist()
-    } else {
-      ChecklistReview.generateReview()
-    } */
-  }
-
-  addCoodebookLoadedEvent () {
-    this.events.codebookCreated = {
-      element: document,
-      event: Events.codebookRead,
-      handler: this.createCodebookCreatedEventHandler()
-    }
-    this.events.codebookCreated.element.addEventListener(this.events.codebookCreated.event, this.events.codebookCreated.handler, false)
-  }
-
-
-  createCodebookCreatedEventHandler () {
-    return () => {
-      console.log('Yeah')
-    }
   }
 
   /**

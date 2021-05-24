@@ -1,4 +1,3 @@
-import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
 import _ from 'lodash'
 import axios from 'axios'
 import Commenting from '../purposes/Commenting'
@@ -12,11 +11,9 @@ class ChecklistReview {
   /**
    * This function shows an overview of the current document's checklist.
    */
-  static generateReview () {
+  static generateReview (checklistAnnotation) {
     window.abwa.sidebar.closeSidebar()
 
-    // Recibir como parámetro la anotación de la checklist
-    const checklistAnnotation = ImportChecklist.getChecklistsAnnotations()[0]
     const checklist = checklistAnnotation.body[0].value
 
     const canvasPageURL = chrome.extension.getURL('pages/specific/checklistCanvas.html')
@@ -30,15 +27,18 @@ class ChecklistReview {
 
       document.querySelector('#canvasOverlay').addEventListener('click', function (e) {
         document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
+        document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
+      document.querySelector('#backToCanvasArrow').addEventListener('click', function (e) {
+        document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
+        document.querySelector('#reviewCanvas').style.display = 'block'
+      })
+
 
       document.addEventListener('keydown', function (e) {
         if (e.code === 'Escape' && document.querySelector('#checklistCanvas') != null) document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
-        document.querySelector('#abwaSidebarButton').style.display = 'block'
-      })
-      document.querySelector('#checklistCanvasCloseButton').addEventListener('click', function () {
-        document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
+        document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
       document.querySelector('#checklistCanvasTitle').textContent = checklist.name
