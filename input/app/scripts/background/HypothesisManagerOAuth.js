@@ -21,6 +21,8 @@ class HypothesisManagerOAuth {
   constructor () {
     // Define token
     this.tokens = {}
+    // Login window
+    this.authWindow = null
   }
 
   /**
@@ -75,7 +77,7 @@ class HypothesisManagerOAuth {
    * @param callback
    */
   authorize (callback) {
-    const authWindow = OAuthClient.openAuthPopupWindow(window)
+    this.authWindow = OAuthClient.openAuthPopupWindow(window)
 
     let promise = this.client.authorize(window, authWindow)
 

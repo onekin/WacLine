@@ -1,6 +1,7 @@
 import gulp from 'gulp'
 import gulpif from 'gulp-if'
-import { log, colors } from 'gulp-util'
+import log from 'fancy-log'
+import colors from 'ansi-colors'
 import named from 'vinyl-named'
 import webpack from 'webpack'
 import gulpWebpack from 'webpack-stream'
@@ -30,8 +31,7 @@ gulp.task('scripts', () => {
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
-          'window.jQuery': 'jquery',
-          Popper: ['popper.js', 'default']
+          'window.jQuery': 'jquery'
         }),
         new webpack.DefinePlugin({
           'process.env.NODE_ENV': JSON.stringify(ENV),
