@@ -61,7 +61,6 @@ class ImportChecklist {
   importChecklist () {
     // 1- Ask user to choose checklist
     this.askUserToChooseChecklist((err, checklistGroupName, methodName) => {
-      this.addCoodebookLoadedEvent()
       if (err) {
         Alerts.errorAlert({
           text: 'Unable to load checklist. Error:<br/>' + err.message
@@ -74,7 +73,6 @@ class ImportChecklist {
         let chosenMethod = group.methods.filter((method) => {
           return method.name === methodName
         })[0]
-        console.log(chosenMethod)
         let method = {
           name: chosenMethod.name,
           definition: []

@@ -38,7 +38,15 @@ class Checklist extends Body {
         return 0
       })
       group.codes.forEach((code) => {
-        str += '\t-' + code.name + ' -> ' + code.status + '\n'
+        let status = ''
+        if (code.status === 'passed') {
+          status = '✓'
+        } else if (code.status === 'failed') {
+          status = 'X'
+        } else {
+          status = '?'
+        }
+        str += '\t [' + status + ']-' + code.name + '\n'
       })
     })
     return str
