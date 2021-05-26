@@ -10,6 +10,7 @@ import livereload from 'gulp-livereload'
 import args from './lib/args'
 import 'regenerator-runtime/runtime'
 import 'core-js/stable'
+import ESLintPlugin from 'eslint-webpack-plugin'
 
 const ENV = args.production ? 'production' : 'development'
 
@@ -28,6 +29,7 @@ gulp.task('scripts', () => {
       },
       mode: ENV, // TODO Set to ENV. Currently uglify is not encoding contentScript.js in UTF-8
       plugins: [
+        new ESLintPlugin(),
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
@@ -40,13 +42,6 @@ gulp.task('scripts', () => {
       ],
       module: {
         rules: [{
-          test: /\.js$/,
-          use: [{
-            loader: 'eslint-loader'
-          }],
-          exclude: /node_modules/,
-          enforce: 'pre'
-        }, {
           test: /\.js$/,
           exclude: /node_modules/,
           use: [{

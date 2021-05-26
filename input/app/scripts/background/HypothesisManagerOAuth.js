@@ -79,7 +79,7 @@ class HypothesisManagerOAuth {
   authorize (callback) {
     this.authWindow = OAuthClient.openAuthPopupWindow(window)
 
-    let promise = this.client.authorize(window, authWindow)
+    let promise = this.client.authorize(window, this.authWindow)
 
     promise.catch(() => {
       // Return user has closed login window

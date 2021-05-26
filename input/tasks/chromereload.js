@@ -1,5 +1,6 @@
 import gulp from 'gulp'
-import gutil from 'gulp-util'
+import log from 'fancy-log'
+import colors from 'ansi-colors'
 import livereload from 'gulp-livereload'
 import args from './lib/args'
 
@@ -27,7 +28,7 @@ gulp.task('chromereload', (cb) => {
     quiet: !args.verbose
   })
 
-  gutil.log('Starting', gutil.colors.cyan('\'livereload-server\''))
+  log('Starting', colors.cyan('\'livereload-server\''))
 
   // The watching for javascript files is done by webpack
   // Check out ./tasks/scripts.js for further info.
