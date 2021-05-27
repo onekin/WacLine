@@ -94,5 +94,35 @@
         </cm:property>
       </cm:properties>
     </cm:element>
+    <cm:element cm:id="iRPGcJzd12qM-uPhC" cm:type="ps:selected" cm:class="ps:selection">
+      <cm:relations cm:id="ilaVaSDpv-OhICVT6" cm:class="ps:references">
+        <cm:relation cm:id="itRWuBAqfnhG4Aydc" cm:type="ps:references">
+          <cm:target cm:id="iRSMDWzH52vOoy6Tp">iivhJRwmojkiJvYc5/i0OQU875T4LHYFzNv</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i9112Qn4fgSIMc-tq" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="iHLarhmdMO77x1EY3" cm:type="ps:string">ps:auto</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iEM7Rb8voCUVUDUxD" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/ipaIptNGXwqXJsHyV">
+          <cm:constant cm:id="if6V79W83PNNU9lIz" cm:type="ps:string">FRAMEndeley</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ioCiT6W4OKNP2IBwL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iMZstED0ygowNLktM" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i9lx93WkoB-Abc3jf" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ixsqne9FCX1Rrk5Ww" cm:type="ps:datetime">2021-05-27T15:25:23.532Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i6xvihHobsZTgcw2w" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iaiatiBlLMXFYx0eX" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iMI-wfcNisn0_vTtc" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ixmOJUSi2o4xcGNtS" cm:type="ps:datetime">2021-05-27T15:25:29.795Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iuQlGJLjjEvywu6_4" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/iLzroTwOrb9YFVy8z">
+          <cm:constant cm:id="iqYNUZ3PPQbPG1kb7" cm:type="ps:string">0.2.0</cm:constant>
+        </cm:property>
+      </cm:properties>
+    </cm:element>
   </cm:elements>
 </cm:consulmodel>
