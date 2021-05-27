@@ -4,10 +4,12 @@ import log from 'fancy-log'
 import colors from 'ansi-colors'
 import sourcemaps from 'gulp-sourcemaps'
 import less from 'gulp-less'
-import sass from 'gulp-sass'
+import sass from 'gulp-dart-sass'
 import cleanCSS from 'gulp-clean-css'
 import livereload from 'gulp-livereload'
 import args from './lib/args'
+
+sass.compiler = require('sass')
 
 gulp.task('styles:css', function () {
   return gulp.src('app/styles/*.css')
@@ -34,7 +36,7 @@ gulp.task('styles:less', function () {
 gulp.task('styles:sass', function () {
   return gulp.src('app/styles/*.scss')
     .pipe(gulpif(args.sourcemaps, sourcemaps.init()))
-    .pipe(sass({ includePaths: ['./app'] }).on('error', function (error) {
+    .pipe(sass().on('error', function (error) {
       log(colors.red('Error (' + error.plugin + '): ' + error.message))
       this.emit('end')
     }))
