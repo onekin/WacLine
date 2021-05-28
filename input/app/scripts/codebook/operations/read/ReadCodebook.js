@@ -330,7 +330,7 @@ class ReadCodebook {
         result = (window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(a.id).length - window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(b.id).length) > 0 ? 1 : 0
         // PVSCL:ELSEIFCOND(Date, LINE)
 
-        // PVSCL:ENDCOND        
+        // PVSCL:ENDCOND
         return result
       })
       // PVSCL:IFCOND(Alphabetical, LINE)
@@ -821,12 +821,12 @@ class ReadCodebook {
    */
   // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   static addKeywordsTheme () {
-    var codebook = window.abwa.codebookManager.codebookReader.codebook
-    var keywordThemeName = 'Keywords'
+    let codebook = window.abwa.codebookManager.codebookReader.codebook
+    let keywordThemeName = 'Keywords'
     if (!_.isEmpty(codebook)) {
       if (!codebook.getThemeByName(keywordThemeName)) {
-        var themeDescription = 'Theme which includes the keywords found in the text'
-        var newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
+        let themeDescription = 'Theme which includes the keywords found in the text'
+        let newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
         LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
       }
     }
@@ -840,9 +840,9 @@ class ReadCodebook {
    */
   congressLoadedEventHandler () {
     return (event) => {
-      var congress = event.detail.congress
-      var codebook = window.abwa.codebookManager.codebookReader.codebook
-      var authorsThemeName = 'Authors'
+      let congress = event.detail.congress
+      let codebook = window.abwa.codebookManager.codebookReader.codebook
+      let authorsThemeName = 'Authors'
       if (!_.isEmpty(codebook)) {
         if (congress) {
           if (!codebook.getThemeByName(authorsThemeName)) {
@@ -854,9 +854,9 @@ class ReadCodebook {
   }
 
   static addAuthorsTheme () {
-    var codebook = window.abwa.codebookManager.codebookReader.codebook
-    var themeDescription = 'Theme which includes the authors of the document'
-    var newTheme = new Theme({ name: 'Authors', description: themeDescription, annotationGuide: codebook })
+    let codebook = window.abwa.codebookManager.codebookReader.codebook
+    let themeDescription = 'Theme which includes the authors of the document'
+    let newTheme = new Theme({ name: 'Authors', description: themeDescription, annotationGuide: codebook })
     LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
   }
 

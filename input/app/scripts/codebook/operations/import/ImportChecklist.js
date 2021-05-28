@@ -186,9 +186,9 @@ class ImportChecklist {
       const select = document.querySelector('#checklistSelect')
       let filteredMethods = this.checklistsMethods.methods
       let i = -1
-      for (var method of this.checklistsMethods.methods) {
+      for (let method of this.checklistsMethods.methods) {
         i++
-        for (var checklist of checklistAnnotations) {
+        for (let checklist of checklistAnnotations) {
           if (method.name === checklist.body[0].value.name) {
             filteredMethods.splice(i, 1)
             break

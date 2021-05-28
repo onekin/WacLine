@@ -21,6 +21,8 @@ class HypothesisManagerOAuth {
   constructor () {
     // Define token
     this.tokens = {}
+    // Login window
+    this.authWindow = null
   }
 
   /**
@@ -75,11 +77,12 @@ class HypothesisManagerOAuth {
    * @param callback
    */
   authorize (callback) {
-    const authWindow = OAuthClient.openAuthPopupWindow(window)
+    if (_.isNull(this.authWindow) || this.authWindow.closed || _.isNull(this.authPromise)) {
+      this.authWindow = OAuthClient.openAuthPopupWindow(window)
+      this.authPromise = this.client.authorize(window, this.authWindow)
+    }
 
-    let promise = this.client.authorize(window, authWindow)
-
-    promise.catch(() => {
+    this.authPromise.catch(() => {
       // Return user has closed login window
       if (_.isFunction(callback)) {
         callback(new Error('Unable to autorize Hypothes.is.'))
@@ -92,6 +95,8 @@ class HypothesisManagerOAuth {
         this.saveTokensInStorage(tokens)
         // Return tokens in callback
         if (_.isFunction(callback)) {
+          this.authPromise = null
+          this.authWindow = null
           callback(null, this.tokens)
         }
       })

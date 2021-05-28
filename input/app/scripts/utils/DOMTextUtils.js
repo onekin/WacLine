@@ -2,7 +2,8 @@ import DOM from './DOM'
 import LanguageUtils from './LanguageUtils'
 import $ from 'jquery'
 import _ from 'lodash'
-const domAnchorTextQuote = require('dom-anchor-text-quote')
+import domAnchorTextQuote from './dom-anchor-text-quote'
+// const domAnchorTextQuote = require('dom-anchor-text-quote')
 const domAnchorTextPosition = require('dom-anchor-text-position')
 const xpathRange = require('xpath-range')
 
@@ -28,14 +29,14 @@ class DOMTextUtils {
     return rangeSelector
   }
 
-  static getTextPositionSelector (range) {
-    const textPositionSelector = domAnchorTextPosition.fromRange(document.body, range)
+  static getTextPositionSelector (range, root = document.body) {
+    const textPositionSelector = domAnchorTextPosition.fromRange(root, range)
     textPositionSelector.type = 'TextPositionSelector'
     return textPositionSelector
   }
 
-  static getTextQuoteSelector (range) {
-    const textQuoteSelector = domAnchorTextQuote.fromRange(document.body, range)
+  static getTextQuoteSelector (range, root = document.body) {
+    const textQuoteSelector = domAnchorTextQuote.fromRange(root, range)
     textQuoteSelector.type = 'TextQuoteSelector'
     return textQuoteSelector
   }
@@ -156,15 +157,17 @@ class DOMTextUtils {
     let range
     if (fragmentSelector.page) {
       // Check only in corresponding page
-      const pageElement = document.querySelector('.page[data-page-number="' + fragmentSelector.page + '"][data-loaded="true"]')
+      const pageElement = document.querySelector('.page[data-page-number="' + fragmentSelector.page + '"][data-loaded="true"] > div.textLayer')
       if (_.isElement(pageElement)) {
         fragmentElement = pageElement
       } else {
         console.debug('Document page is not loaded, annotation missing.')
         return null
       }
+    } else {
+      fragmentElement = document.body
     }
-    range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(textPositionSelector, textQuoteSelector.exact)
+    range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(fragmentElement, textPositionSelector, textQuoteSelector.exact)
     if (!range) {
       if (exhaustive) { // Try by hard exhaustive
         range = DOMTextUtils.tryRetrieveRangeTextSelector(fragmentElement, textQuoteSelector)
@@ -176,7 +179,7 @@ class DOMTextUtils {
   static retrieveRangeForTXTDocument ({ textPositionSelector, textQuoteSelector }) {
     let range = null
     if (_.isObject(textPositionSelector) && _.isObject(textQuoteSelector)) {
-      range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(textPositionSelector, textQuoteSelector.exact)
+      range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(document.body, textPositionSelector, textQuoteSelector.exact)
       if (!range) {
         range = DOMTextUtils.tryRetrieveRangeTextSelector(document.body, textQuoteSelector)
       }
@@ -205,7 +208,7 @@ class DOMTextUtils {
         if (_.isElement(startRangeElement) && _.isElement(endRangeElement)) {
           range = DOMTextUtils.tryRetrieveRangeTextSelector(fragmentElement, textQuoteSelector)
         } else {
-          range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(textPositionSelector, textQuoteSelector.exact)
+          range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(document.body, textPositionSelector, textQuoteSelector.exact)
           if (!range) {
             if (exhaustive) { // Try by hard exhaustive
               range = DOMTextUtils.tryRetrieveRangeTextSelector(document.body, textQuoteSelector)
@@ -219,7 +222,7 @@ class DOMTextUtils {
         }
       }
     } else if (textQuoteSelector && textPositionSelector) { // It is a text of PDF
-      range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(textPositionSelector, textQuoteSelector.exact)
+      range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(document.body, textPositionSelector, textQuoteSelector.exact)
       if (!range) {
         if (exhaustive) { // Try by hard exhaustive
           range = DOMTextUtils.tryRetrieveRangeTextSelector(document.body, textQuoteSelector)
@@ -230,16 +233,21 @@ class DOMTextUtils {
   }
 
   /**
-   *
+   * Giving a text position selector retrieves the possible range if exact text is matches
+   * @param fragmentElement
    * @param textPositionSelector
    * @param exactText
    * @returns {null|*}
    */
-  static tryRetrieveRangeTextPositionSelector (textPositionSelector, exactText) {
-    const possibleRange = domAnchorTextPosition.toRange(document.body, { start: textPositionSelector.start, end: textPositionSelector.end })
-    if (possibleRange && possibleRange.toString() === exactText) {
-      return possibleRange
-    } else {
+  static tryRetrieveRangeTextPositionSelector (fragmentElement, textPositionSelector, exactText) {
+    try {
+      const possibleRange = domAnchorTextPosition.toRange(fragmentElement, { start: textPositionSelector.start, end: textPositionSelector.end })
+      if (possibleRange && possibleRange.toString() === exactText) {
+        return possibleRange
+      } else {
+        return null
+      }
+    } catch (e) {
       return null
     }
   }

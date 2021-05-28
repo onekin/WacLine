@@ -100,14 +100,14 @@ class TextSummary {
       const invalidCritContainer = document.querySelector('#invalidCriticismsContainer')
       const invalidCritTemplate = document.querySelector('#invalidCritTemplate')
 
-      for (var checklist of checklists) {
+      for (let checklist of checklists) {
         if (checklist.invalidCriticisms) {
           const invalidCriticisms = checklist.invalidCriticisms
           const invalidCritElement = invalidCritTemplate.content.cloneNode(true)
           let ul = invalidCritElement.querySelector('.invalidCriticismsList')
           invalidCritElement.querySelector('.invalidCriticismsTitle').textContent = checklist.name
           invalidCriticisms.forEach((invalidCriticism) => {
-            var li = document.createElement('li')
+            let li = document.createElement('li')
             li.appendChild(document.createTextNode(invalidCriticism))
             ul.appendChild(li)
           })

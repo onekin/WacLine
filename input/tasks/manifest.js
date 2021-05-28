@@ -1,6 +1,7 @@
 import gulp from 'gulp'
 import gulpif from 'gulp-if'
-import { colors, log } from 'gulp-util'
+import log from 'fancy-log'
+import colors from 'ansi-colors'
 import livereload from 'gulp-livereload'
 import jsonTransform from 'gulp-json-transform'
 import plumber from 'gulp-plumber'

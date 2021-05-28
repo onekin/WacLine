@@ -5,14 +5,14 @@ import axios from 'axios'
 
 // Configuration constants
 const now = new Date()
-var contextus = []
-var contextualization = [ 'http://www.w3.org/ns/anno.jsonld', {"assessing":"oa:assessing", "slr":"http://rdf.onekin.org/resource/ns/slr/"}, {"datacite":"http://purl.org/spar/datacite/", "urn":"datacite:urn", "url":"datacite:url", "doi":"datacite:doi"}, {"dcterms": "http://purl.org/dc/terms/", "title": "dcterms:title", "created": "dcterms:created", "modified": "dcterms:modified"}, { '@vocab': 'http://rdf.onekin.org/resources/ns/' } ]
+let contextus = []
+let contextualization = [ 'http://www.w3.org/ns/anno.jsonld', {"assessing":"oa:assessing", "slr":"http://rdf.onekin.org/resource/ns/slr/"}, {"datacite":"http://purl.org/spar/datacite/", "urn":"datacite:urn", "url":"datacite:url", "doi":"datacite:doi"}, {"dcterms": "http://purl.org/dc/terms/", "title": "dcterms:title", "created": "dcterms:created", "modified": "dcterms:modified"}, { '@vocab': 'http://rdf.onekin.org/resources/ns/' } ]
 
 /// /UTILS
 function doNothing () {}
 
 function sleep (miliseconds) {
-  var currentTime = new Date().getTime()
+  let currentTime = new Date().getTime()
   while (currentTime + miliseconds >= new Date().getTime()) { }
 }
 
@@ -91,7 +91,7 @@ function descapalo (data){
 }
 
 function traverse (o) {
-  for (var i in o) {
+  for (let i in o) {
     //debuggingg('>>>> ' + i + ' <<<<' + JSON.stringify(o[i]))
     if (i === 'text') {
       o[i] = unescape(o[i])
@@ -185,7 +185,7 @@ function commitNeo4J (query, callback) {
   apiCall(settings, callback)
 }
 
-var verbose = true
+let verbose = true
 function debuggingg (msg, priority) {
   if (priority === true) verbose = true
   if (verbose) {
@@ -205,8 +205,8 @@ function randomString (length = 17, charSet) {
 }
 
 function escapify (myJSON) {
-  var myJSONString = JSON.stringify(myJSON)
-  var myEscapedJSONString = myJSONString.replace(/'/g, "\\'").replace(/"/g, '\\"')
+  let myJSONString = JSON.stringify(myJSON)
+  let myEscapedJSONString = myJSONString.replace(/'/g, "\\'").replace(/"/g, '\\"')
     .replace(/&/g, '\\&')
   // myEscapedJSONString is now ready to be POST'ed to the server.
   return myEscapedJSONString
@@ -379,9 +379,9 @@ console.debug ('2' + data['agreement'])
     // data['permissions'] = null
 console.debug ('3')
     let today = new Date();
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
-    var dateTime = date+'T'+time+'Z'
+    let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()
+    let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
+    let dateTime = date+'T'+time+'Z'
     if (!data['dcterms:created'] && !data['created']) {
       data['created'] = dateTime
     }
@@ -732,7 +732,7 @@ debuggingg ('result:: ' + JSON.stringify(data) )
       if (qwhereboolean) qwhere += ` AND `
       qwhere += ` '` + tags + `' IN n.onekin__tags `
       qwhereboolean = true
-      var linking = false
+      let linking = false
       if (tags[0] === 'motivation:linking') {
         linking = true
         qreturn = ` return n,c`

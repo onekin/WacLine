@@ -74,7 +74,7 @@ class ChecklistReview {
    */
   static generateItemReview (checklistAnnotation, type, chosenCode) {
     const itemPageURL = chrome.extension.getURL('pages/specific/checklistItem.html')
-    var newStatus = chosenCode.status
+    let newStatus = chosenCode.status
     axios.get(itemPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
       document.querySelector('#abwaSidebarButton').style.display = 'none'
@@ -129,9 +129,9 @@ class ChecklistReview {
 
       const itemAnnotationsContainer = document.querySelector('#itemAnnotationsContainer')
       const annotationCardTemplate = document.querySelector('#annotationCardTemplate')
-      var codebook = window.abwa.codebookManager.codebookReader.codebook
+      let codebook = window.abwa.codebookManager.codebookReader.codebook
       if (!_.isEmpty(codebook)) {
-        let theme = codebook.getThemeByName(type.name)
+        let theme = codebook.getThemeByName(checklistAnnotation.body[0].value.name)
         if (theme) {
           let code = theme.getCodeByName(chosenCode.name)
           let annotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(code.id)
