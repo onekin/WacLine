@@ -159,7 +159,10 @@ class Canvas {
           clusterProperty.querySelector('.clusterProperty').style.height = propertyHeight + '%'
           clusterProperty.querySelector('.clusterProperty').style.width = '100%'
           // PVSCL:IFCOND(ImportChecklist, LINE)
+          // PVSCL:ENDCOND
+          let criterionAnnotations = review.annotations.filter((e) => { return e.criterion === canvasClusters[key][i] })
           if (key === checklistsTheme.name) {
+            criterionAnnotations = []
             clusterProperty.querySelector('.clusterProperty').style.cursor = 'pointer'
             clusterProperty.querySelector('.clusterProperty').addEventListener('click', () => {
               const foundChecklist = checklistsAnnotations.find((checklistAn) => checklistAn.body[0].value.name === canvasClusters[key][i])
@@ -167,8 +170,6 @@ class Canvas {
               ChecklistReview.generateReview(foundChecklist)
             })
           }
-          // PVSCL:ENDCOND
-          const criterionAnnotations = review.annotations.filter((e) => { return e.criterion === canvasClusters[key][i] })
           if (criterionAnnotations.length === 0) clusterProperty.querySelector('.propertyAnnotations').style.display = 'none'
           clusterProperty.querySelector('.clusterProperty').className += ' ' + getCriterionLevel(criterionAnnotations)
 

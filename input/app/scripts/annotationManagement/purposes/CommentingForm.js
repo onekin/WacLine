@@ -246,6 +246,13 @@ class CommentingForm {
         })
       })
       // PVSCL:ENDCOND
+
+
+      const comment = document.getElementById('comment')
+      comment.focus()
+      const commentValue = comment.value
+      comment.value = ''
+      comment.value = commentValue
       // PVSCL:IFCOND(SuggestedLiterature, LINE)
       // Add the option to delete a suggestedLiterature from the comment
       $('.removeReference').on('click', function () {

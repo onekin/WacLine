@@ -38,7 +38,6 @@ class ChecklistReview {
 
       document.addEventListener('keydown', function (e) {
         if (e.code === 'Escape' && document.querySelector('#checklistCanvas') != null) document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
-        document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
       document.querySelector('#checklistCanvasTitle').textContent = checklist.name
@@ -83,6 +82,7 @@ class ChecklistReview {
       })
 
       const removeCanvasReviewFunction = function () {
+        document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
         document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
         document.querySelector('#checklistItem').parentNode.removeChild(document.querySelector('#checklistItem'))
         document.querySelector('#backToItemReviewArrowContainer').parentNode.removeChild(document.querySelector('#backToItemReviewArrowContainer'))

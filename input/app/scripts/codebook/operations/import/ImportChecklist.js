@@ -13,7 +13,6 @@ import axios from 'axios'
 // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
 import MethodsKeywords from '../../../annotationManagement/purposes/MethodsKeywords'
 // PVSCL:ENDCOND
-import ReadCodebook from '../read/ReadCodebook'
 
 class ImportChecklist {
 
@@ -88,7 +87,6 @@ class ImportChecklist {
         method.definition.push(methodTheme)
 
         const tempCodebook = Codebook.fromObjects(method)
-
         // 4- Create themes with codes
         tempCodebook.annotationServer = window.abwa.codebookManager.codebookReader.codebook.annotationServer
         const annotations = tempCodebook.toAnnotations()
@@ -98,7 +96,9 @@ class ImportChecklist {
               text: 'An error has occurred loading the evaluation method checklist. Error: ' + err.message
             })
           } else {
-            window.abwa.codebookManager.codebookReader.init()
+            window.abwa.codebookManager.init(() => {
+              window.abwa.annotatedContentManager.updateAnnotationForAssignment()
+            })
             Alerts.closeAlert()
           }
         })
@@ -138,8 +138,10 @@ class ImportChecklist {
         })
         window.abwa.annotatedContentManager.reloadTagsChosen()
         Alerts.successAlert({
-          text: 'Method has been imported successfully'
+          text: 'Checklist has been imported successfully',
+          callback: () => window.abwa.sidebar.openSidebar()
         })
+        window.abwa.sidebar.openSidebar()
       }
     })
   }

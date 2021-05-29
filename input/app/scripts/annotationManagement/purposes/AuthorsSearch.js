@@ -62,6 +62,7 @@ class AuthorsSearch {
    */
   generateOnBeforeOpenForm () {
     let onBeforeOpen = () => {
+      $('#swal-input1').trigger('click')
       $('#swal-input1').autocomplete({
         source: function (request, response) {
           $.ajax({
