@@ -13,6 +13,7 @@ import ColorUtils from '../../../utils/ColorUtils'
 import LanguageUtils from '../../../utils/LanguageUtils'
 // PVSCL:IFCOND(CodebookUpdate, LINE)
 import UpdateCodebook from '../update/UpdateCodebook'
+import ImportChecklist from '../import/ImportChecklist'
 // PVSCL:ENDCOND
 
 class ReadCodebook {
@@ -611,12 +612,32 @@ class ReadCodebook {
   themeRightClickHandler () {
     return (themeId) => {
       const items = {}
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      const theme = this.codebook.getCodeOrThemeFromId(themeId)
+      const themeChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
+      // PVSCL:ENDCOND
+
       // PVSCL:IFCOND(CodebookUpdate, LINE)
       // PVSCL:IFCOND(Hierarchy, LINE)
-      items.createNewCode = { name: 'Create new code' }
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      if (!themeChecklist) {
+        // PVSCL:ENDCOND
+        items.createNewCode = { name: 'Create new code' }
+        // PVSCL:IFCOND(ImportChecklist, LINE)
+      }
       // PVSCL:ENDCOND
-      items.updateTheme = { name: 'Modify theme' }
-      items.removeTheme = { name: 'Remove theme' }
+
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      if (!themeChecklist) {
+        // PVSCL:ENDCOND
+        items.updateTheme = { name: 'Modify theme' }
+        items.removeTheme = { name: 'Remove theme' }
+      	// PVSCL:IFCOND(ImportChecklist, LINE)
+      } else {
+        items.removeChecklist = { name: 'Remove checklist' }
+      }
+      // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(SidebarNavigation, LINE)
       // TODO Implement page annotation and uncomment this:
@@ -643,6 +664,14 @@ class ReadCodebook {
               LanguageUtils.dispatchCustomEvent(Events.removeTheme, { theme: theme })
             }
           }
+          // PVSCL:IFCOND(ImportChecklist, LINE)
+          if (key === 'removeChecklist') {
+            const theme = this.codebook.getCodeOrThemeFromId(themeId)
+            if (LanguageUtils.isInstanceOf(theme, Theme)) {
+              LanguageUtils.dispatchCustomEvent(Events.removeChecklist, { theme: theme })
+            }
+          }
+          // PVSCL:ENDCOND
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(SidebarNavigation, LINE)
           if (key === 'pageAnnotation') {
@@ -670,11 +699,24 @@ class ReadCodebook {
     return (codeId) => {
       // Get code from id
       const code = this.codebook.getCodeOrThemeFromId(codeId)
+
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      const theme = code.theme
+      const themeChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
+      // PVSCL:ENDCOND
       if (LanguageUtils.isInstanceOf(code, Code)) {
         const items = {}
         // PVSCL:IFCOND(CodebookUpdate, LINE)
-        items.updateCode = { name: 'Modify code' }
-        items.removeCode = { name: 'Remove code' }
+        // PVSCL:IFCOND(ImportChecklist, LINE)
+        if (!themeChecklist) {
+          // PVSCL:ENDCOND
+          items.updateCode = { name: 'Modify code' }
+          items.removeCode = { name: 'Remove code' }
+          // PVSCL:IFCOND(ImportChecklist, LINE)
+        } else {
+          items.removeCriteria = { name: 'Remove checklist criteria' }
+        }
+        // PVSCL:ENDCOND
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(SidebarNavigation, LINE)
         // items['pageAnnotation'] = {name: 'Page annotation'}
@@ -688,6 +730,11 @@ class ReadCodebook {
             if (key === 'updateCode') {
               LanguageUtils.dispatchCustomEvent(Events.updateCode, { code: code })
             }
+            // PVSCL:IFCOND(ImportChecklist, LINE)
+            if (key === 'removeCriteria') {
+              LanguageUtils.dispatchCustomEvent(Events.removeCriteria, { checklist: themeChecklist, code: code })
+            }
+            // PVSCL:ENDCOND
             // PVSCL:ENDCOND
             // PVSCL:IFCOND(SidebarNavigation, LINE)
             // TODO Page level annotations, take into account that tags are necessary here (take into account Moodle related case)

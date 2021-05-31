@@ -34,24 +34,12 @@ class ImportChecklist {
     this.events.keywordsLoadedEvent = {
       element: document,
       event: Events.keywordsLoaded,
-      handler: this.keywordsLoadedEventHandler()
+      handler: this.importChecklist()
     }
     this.events.keywordsLoadedEvent.element.addEventListener(this.events.keywordsLoadedEvent.event, this.events.keywordsLoadedEvent.handler, false)
   }
-
-  keywordsLoadedEventHandler () {
-    this.openChecklistMenu()
-  }
   // PVSCL:ENDCOND
 
-
-  /**
-   * This method opens the checklist's review canvas in case there is an existing checklist for the current
-   * document or opens the dialog so that the user chooses one in case there isn't
-   */
-  openChecklistMenu () {
-    this.importChecklist()
-  }
 
   /**
    * This method ask the user to choose a checklist and imports the

@@ -171,7 +171,7 @@ class Toolset {
       this.checklistImage.id = 'checklistButton'
       this.checklistImage.title = 'Choose checklist' // TODO i18n
       this.checklistImage.addEventListener('click', () => {
-        window.abwa.codebookManager.checklistImporter.openChecklistMenu()
+        window.abwa.codebookManager.checklistImporter.importChecklist()
       })
       this.toolsetBody.appendChild(this.checklistImage)
       // PVSCL:ENDCOND
