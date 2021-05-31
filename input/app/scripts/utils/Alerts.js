@@ -59,7 +59,7 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      const fire = () => {
+      let fire = () => {
         let timerInterval
         swal.fire({
           type: Alerts.alertType.info,
