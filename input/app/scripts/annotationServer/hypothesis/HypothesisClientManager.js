@@ -5,6 +5,8 @@ import HypothesisClient from 'hypothesis-api-client'
 import AnnotationServerManager from '../AnnotationServerManager'
 import HypothesisClientInterface from './HypothesisClientInterface'
 
+import Alerts from '../../utils/Alerts'
+
 const reloadIntervalInSeconds = 1 // Reload the hypothesis client every 10 seconds
 
 class HypothesisClientManager extends AnnotationServerManager {
@@ -115,15 +117,11 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 
   askUserToLogInHypothesis (callback) {
-    const swal = require('sweetalert2').default
-    // Ask question
-    swal({
-      title: 'Hypothes.is login required', // TODO i18n
-      text: chrome.i18n.getMessage('HypothesisLoginRequired'),
-      type: 'info',
-      showCancelButton: true
-    }).then((result) => {
-      if (result.value) {
+    Alerts.confirmAlert({
+      alertType: Alerts.alertType.info,
+      title: 'Log in required',
+      text: chrome.i18n.getMessage('hypothesisLoginWillBeShown'),
+      callback: () => {
         // Prompt hypothesis login form
         chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'userLoginForm' }, (result) => {
           if (result.error) {
@@ -138,7 +136,8 @@ class HypothesisClientManager extends AnnotationServerManager {
             })
           }
         })
-      } else {
+      },
+      cancelCallback: () => {
         callback(new Error('User don\'t want to log in hypothes.is'))
       }
     })

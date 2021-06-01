@@ -27,6 +27,10 @@
     "message": "You are not logged in, please login in Hypothes.is or check internet connection.",
     "description": "Message to show when login is required"
   },
+  "hypothesisLoginWillBeShown": {
+    "message": "You are not logged in Hypothes.is, click OK and follow the instructions in the prompted window to log in correctly.",
+    "description": ""
+  },
   "VisitTheCreatedGroup": {
     "message": "You can start annotating. Visit the created group and share it with your colleagues",
     "description": "Message to show when group is created"
