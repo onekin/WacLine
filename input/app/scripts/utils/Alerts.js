@@ -68,14 +68,14 @@ class Alerts {
           allowOutsideClick,
           allowEscapeKey,
           showConfirmButton: true,
-          onOpen: () => {
+          didOpen: () => {
             if (_.isFunction(timerIntervalHandler)) {
               timerInterval = setInterval(() => {
                 timerIntervalHandler(swal, timerInterval)
               }, timerIntervalPeriodInSeconds * 1000)
             }
           },
-          onClose: () => {
+          didClose: () => {
             clearInterval(timerInterval)
           }
         })
@@ -154,7 +154,7 @@ class Alerts {
         title: title,
         html: text,
         showConfirmButton: confirmButton,
-        onBeforeOpen: () => {
+        willOpen: () => {
           swal.showLoading()
           if (_.isFunction(timerIntervalHandler)) {
             timerInterval = setInterval(() => {
@@ -166,7 +166,7 @@ class Alerts {
             }, 100)
           }
         },
-        onAfterClose: () => {
+        didClose: () => {
           clearInterval(timerInterval)
         }
       })
@@ -218,7 +218,7 @@ class Alerts {
         focusConfirm: false,
         preConfirm: preConfirm,
         position: position,
-        onBeforeOpen: onBeforeOpen,
+        willOpen: onBeforeOpen,
         allowOutsideClick,
         allowEscapeKey,
         customClass: customClass,
