@@ -407,6 +407,13 @@ class ContentScriptManager {
         window.abwa.annotationServerManager = new Neo4JClientManager()
       }
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+      if (annotationServer === 'googlesheetannotationserver') {
+        // Browser storage
+        const GoogleSheetAnnotationClientManager = require('../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager').default
+        window.abwa.annotationServerManager = new GoogleSheetAnnotationClientManager()
+      }
+      // PVSCL:ENDCOND
       if (window.abwa.annotationServerManager) {
         window.abwa.annotationServerManager.init((err) => {
           if (_.isFunction(callback)) {

@@ -94,7 +94,8 @@
   "permissions": [
     "https://hypothes.is/",
     "activeTab",
-    "storage"PVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer),
+    "storage",PVSCL:IFCOND(GoogleSheetAnnotationServer)
+    "identity.email"PVSCL:ENDCONDPVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer),
     "identity"PVSCL:ENDCONDPVSCL:IFCOND(URN),
     "downloads",
     "notifications",
@@ -108,7 +109,7 @@
     "*://www.dropbox.com/s/",
     "*://*.dropboxusercontent.com/*"PVSCL:ENDCOND
   ],
-  PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
+  PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer or GoogleSheetAnnotationServer or GoogleSheetAudit, LINE)
   "oauth2": {
   	PVSCL:IFCOND(GoogleSheetProvider, LINE)
     "client_id": "PVSCL:EVAL(GoogleSheetProvider->pv:Attribute('clientId'))",
@@ -116,7 +117,8 @@
     "client_id": "PVSCL:EVAL(GoogleSheetConsumer->pv:Attribute('clientId'))",
     PVSCL:ENDCOND
     "scopes": [
-      "https://www.googleapis.com/auth/spreadsheets"
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/drive"
     ]
   },
   PVSCL:ENDCOND
