@@ -42,7 +42,7 @@ class AuthorsSearch {
    * This function shows a form to ask the user for the congress
    */
   initCongress () {
-    let html = '<p>Enter the name of the congress you want to get authors information from</p>'
+    let html = '<p>Which congress owns this article?</p>'
     html += '<input placeholder="Choose congress" id="swal-input1" class="swal2-input">'
     const onBeforeOpen = this.generateOnBeforeOpenForm()
     const preConfirm = this.generateCongressFormPreConfirm()
@@ -122,6 +122,9 @@ class AuthorsSearch {
       })
       LanguageUtils.dispatchCustomEvent(Events.congressLoaded, {
         congress: this.congress
+      })
+      Alerts.successAlert({
+        text: 'Congress has been successfully loaded. Anotate the authors into the \'Authors\' theme to be able to their information.'
       })
     }
     return congressCallback

@@ -165,7 +165,7 @@ class Toolset {
       // PVSCL:ENDCOND
 
       // PVSCL:IFCOND(ImportChecklist, LINE)
-      const checklistImageUrl = chrome.extension.getURL('/images/checklist.png')
+      const checklistImageUrl = chrome.extension.getURL('/images/methods.png')
       this.checklistImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.checklistImage.src = checklistImageUrl
       this.checklistImage.id = 'checklistButton'
@@ -308,7 +308,7 @@ class Toolset {
   congressLoadedEventHandler () {
     return () => {
       const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
-      const authorsInfoImageUrl = chrome.extension.getURL('/images/signature.png')
+      const authorsInfoImageUrl = chrome.extension.getURL('/images/authors.png')
       this.authorsInfoImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.authorsInfoImage.src = authorsInfoImageUrl
       this.authorsInfoImage.title = 'Get authors information' // TODO i18n

@@ -194,11 +194,20 @@ export class Review {
         let highlightText = ''
         let pageNumber = null
         let classifyingBody = annotations[a].getBodyForPurpose(Classifying.purpose)
+        // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
         if (classifyingBody) {
           if (classifyingBody.value.name === 'Keywords') {
             continue
           }
         }
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(AuthorsSearch, LINE)
+        if (classifyingBody) {
+          if (classifyingBody.value.name === 'Authors') {
+            continue
+          }
+        }
+        // PVSCL:ENDCOND
         for (let k in annotations[a].target) {
           if (annotations[a].target.hasOwnProperty(k)) {
             if (_.isArray(annotations[a].target[k].selector) && annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' }) != null) {
