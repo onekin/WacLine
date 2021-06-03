@@ -57,7 +57,7 @@ class GoogleSheetAnnotationClient {
   getListOfGroups (data, callback) { // TODO Check if data can be removed
     this.driveClient = new GoogleDriveClient(this.token)
     this.driveClient.listFiles({
-      q: 'name contains ".' + Config.urlParamName + '" and mimeType = "application/vnd.google-apps.spreadsheet"',
+      q: 'appProperties has {key="wacline" and value="' + Config.urlParamName + '"} and mimeType = "application/vnd.google-apps.spreadsheet" and trashed = false',
       supportsAllDrives: true // Search in user's drive and shared ones
     }, (err, list) => {
       if (err) {
@@ -96,23 +96,23 @@ class GoogleSheetAnnotationClient {
 
   updateGroup (id, data, callback) {
     if (_.isString(id)) {
-      const groupToUpdateIndex = _.findIndex(this.database.groups, (group) => {
-        return group.id === id
+      // Copy google sheet using Google Drive API
+      this.driveClient = new GoogleDriveClient(this.token)
+      this.driveClient.updateFile(id, {
+        name: data.name,
+        appProperties: { wacline: Config.urlParamName }
+      }, (err, response) => {
+        if (err) {
+          callback(err)
+        } else {
+          let group = {
+            id: response.id,
+            name: response.name,
+            links: 'https://docs.google.com/spreadsheets/d/' + response.id
+          }
+          callback(null, group)
+        }
       })
-      if (groupToUpdateIndex > -1) {
-        // Retrieve group data
-        const groupToUpdate = this.database.groups[groupToUpdateIndex]
-        // Update group data
-        const updatedGroup = Object.assign(groupToUpdate, data)
-        // Update in-memory database
-        this.database.groups[groupToUpdateIndex] = updatedGroup
-        // TODO Update Storage
-        this.manager.saveDatabase(this.database)
-        // Callback
-        callback(null, updatedGroup)
-      } else {
-        callback(new Error('Group with ID ' + id + ' does not exist'))
-      }
     } else {
       callback(new Error('Required parameter to update the group missing: id'))
     }
@@ -121,46 +121,24 @@ class GoogleSheetAnnotationClient {
   createNewGroup (data, callback) {
     // Copy google sheet using Google Drive API
     this.driveClient = new GoogleDriveClient(this.token)
-    this.driveClient.copyFile({ originFileId: '1WA0jjmC7qQdtNfFeBgJcLy2iTO1i_7rEDQNQACC8nv0', metadata: { name: data.name } }, (err, response) => {
+    this.driveClient.copyFile({
+      originFileId: '1WA0jjmC7qQdtNfFeBgJcLy2iTO1i_7rEDQNQACC8nv0',
+      data: {
+        name: data.name,
+        appProperties: { wacline: Config.urlParamName }
+      }
+    }, (err, response) => {
       if (err) {
         callback(err)
       } else {
         let group = {
           id: response.id,
-          name: response.name + '.' + Config.urlParamName,
+          name: response.name,
           links: 'https://docs.google.com/spreadsheets/d/' + response.id
         }
         callback(null, group)
       }
     }) // TODO parametrize originFieldId
-
-    if (_.has(data, 'name')) {
-      const createdGroup = GoogleSheetAnnotationClient.constructGroup({
-        name: data.name,
-        description: data.description,
-        annotationServerUrl: this.manager.annotationServerUrl,
-        groups: this.database.groups
-      })
-      this.database.groups.push(createdGroup)
-      // TODO Update Storage
-      this.manager.saveDatabase(this.database)
-      // Callback
-      callback(null, createdGroup)
-    } else {
-      callback(new Error('Required parameter to create new group missing: name'))
-    }
-  }
-
-  static constructGroup ({ name, description = '', groups, annotationServerUrl }) {
-    // Get a random id
-    const arrayOfIds = _.map(groups, 'id')
-    const groupId = RandomUtils.randomUnique(arrayOfIds, 8)
-    return {
-      name: name,
-      description: description || '',
-      links: { html: annotationServerUrl + '/group/' + groupId },
-      id: groupId
-    }
   }
 
   static setAnnotationPermissions (annotation, currentUser) {
@@ -180,22 +158,15 @@ class GoogleSheetAnnotationClient {
   }
 
   removeAMemberFromAGroup ({ id, user = null }, callback) {
-    if (_.isString(id)) {
-      // Remove group from group list
-      const removedGroup = _.remove(this.database.groups, (group) => {
-        return group.id === id
-      })
-      // Remove annotations that pertain to the group
-      _.remove(this.database.annotations, (annotation) => {
-        return annotation.group === id
-      })
-      if (removedGroup) {
-        this.manager.saveDatabase(this.database)
-        callback(null, removedGroup)
+    // Copy google sheet using Google Drive API
+    this.driveClient = new GoogleDriveClient(this.token)
+    this.driveClient.trashFile(id, (err, result) => {
+      if (err) {
+        callback(new Error('Unable to trash spreadsheet, only the owner is able to do it. If you want to delete the file from this tool go to Google Drive and remove yourself from sharing options: https://docs.google.com/spreadsheets/d/' + id))
       } else {
-        callback(new Error('The group trying to leave does not exist.'))
+        callback(null, result)
       }
-    }
+    })
   }
 }
 
