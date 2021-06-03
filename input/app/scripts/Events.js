@@ -16,6 +16,8 @@ const Events = {
   // PVSCL:IFCOND(ImportChecklist, LINE)
   removeChecklist: 'removeChecklist',
   removeCriteria: 'removeCriteria',
+  createCodes: 'createCodes',
+  codesCreated: 'codesCreated',
   // PVSCL:ENDCOND
   updateAnnotation: 'updateAnnotation',
   deleteAnnotation: 'deleteAnnotation',

@@ -6,12 +6,12 @@ import Checklists from './Checklists'
 import Config from '../../../Config'
 
 import LanguageUtils from '../../../utils/LanguageUtils'
-import Codebook from '../../model/Codebook'
 import Checklist from '../../../annotationManagement/purposes/Checklist'
 import KeywordBasedAnnotation from '../../../annotationManagement/create/KeywordBasedAnnotation'
 import axios from 'axios'
 // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
 import MethodsKeywords from '../../../annotationManagement/purposes/MethodsKeywords'
+import ReadCodebook from '../read/ReadCodebook'
 // PVSCL:ENDCOND
 
 class ImportChecklist {
@@ -23,10 +23,14 @@ class ImportChecklist {
     this.events = {}
   }
 
-  init () {
+  init (callback) {
+    ReadCodebook.addChecklistsThemes()
     // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
     this.setChecklistsMethodsKeywords()
     // PVSCL:ENDCOND
+    if (_.isFunction(callback)) {
+      callback()
+    }
   }
 
   // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
@@ -69,29 +73,37 @@ class ImportChecklist {
           description: '',
           codes: []
         }
+        let essentialTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Essential')
+        let desirableTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Desirable')
+        let extraordinaryTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Extraordinary')
+        let essentials = []
+        let desirables = []
+        let extraordinaries = []
         chosenMethod.definition.forEach((definition) => {
-          methodTheme.codes = methodTheme.codes.concat(definition.codes)
-        })
-        method.definition.push(methodTheme)
-
-        const tempCodebook = Codebook.fromObjects(method)
-        // 4- Create themes with codes
-        tempCodebook.annotationServer = window.abwa.codebookManager.codebookReader.codebook.annotationServer
-        const annotations = tempCodebook.toAnnotations()
-        window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, codebookAnnotations) => {
-          if (err) {
-            Alerts.errorAlert({
-              text: 'An error has occurred loading the evaluation method checklist. Error: ' + err.message
-            })
-          } else {
-            window.abwa.codebookManager.init(() => {
-              window.abwa.annotatedContentManager.updateAnnotationForAssignment()
-            })
-            Alerts.closeAlert()
+          if (definition.name === 'Essential') {
+            essentials = methodTheme.codes.concat(definition.codes)
+          } else if (definition.name === 'Desirable') {
+            desirables = methodTheme.codes.concat(definition.codes)
+          } else if (definition.name === 'Extraordinary') {
+            extraordinaries = methodTheme.codes.concat(definition.codes)
           }
         })
 
-        // 5- Add special annotation to track checklist (checked/not checked)
+        // Adds all the criteria to the corresponding theme
+        LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+          theme: essentialTheme,
+          codesInfo: essentials
+        })
+        LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+          theme: desirableTheme,
+          codesInfo: desirables
+        })
+        LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+          theme: extraordinaryTheme,
+          codesInfo: extraordinaries
+        })
+
+        // 5- Add special annotation to track invalid criticisms and that checklist has been added
         let newBody = {
           name: chosenMethod.name,
           definition: [],
@@ -101,36 +113,89 @@ class ImportChecklist {
         if (chosenMethod.invalidCriticisms) {
           newBody.invalidCriticisms = chosenMethod.invalidCriticisms
         }
-        chosenMethod.definition.forEach((category) => {
-          let newDefinition = {
-            name: category.name,
-            description: category.description,
-            codes: []
-          }
-          newDefinition.codes = category.codes.map((code) => {
+        let newEssentialDefinition = {
+          name: chosenMethod.name,
+          description: '',
+          codes: essentials.map((criterion) => {
             return {
-              name: code.name,
-              description: code.description,
+              name: criterion.name,
+              description: criterion.description,
               status: 'undefined'
             }
           })
-          newBody.definition.push(newDefinition)
-          newBody.totalCodes += newDefinition.codes.length
+        }
+
+        let newDesirableDefinition = {
+          name: chosenMethod.name,
+          description: '',
+          codes: desirables.map((criterion) => {
+            return {
+              name: criterion.name,
+              description: criterion.description,
+              status: 'undefined'
+            }
+          })
+        }
+
+        let newExtraordinaryDefinition = {
+          name: chosenMethod.name,
+          description: '',
+          codes: extraordinaries.map((criterion) => {
+            return {
+              name: criterion.name,
+              description: criterion.description,
+              status: 'undefined'
+            }
+          })
+        }
+
+        // Update essential, desirable and extraordinary checklist annotations
+        const essentialChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Essential')
+        essentialChecklist.body[0].value.totalCodes += essentials.length
+        essentialChecklist.body[0].value.definition.push(newEssentialDefinition)
+        essentialChecklist.body[0].value.chosenChecklists.push(chosenMethod.name)
+        LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+          annotation: essentialChecklist
         })
-        const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'checklist'
-        const tags = [motivationTag]
-        LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-          purpose: Checklist.purpose,
-          tags: tags,
-          checklist: newBody
+
+        const desirableChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Desirable')
+        desirableChecklist.body[0].value.totalCodes += desirables.length
+        desirableChecklist.body[0].value.definition.push(newDesirableDefinition)
+        desirableChecklist.body[0].value.chosenChecklists.push(chosenMethod.name)
+        LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+          annotation: desirableChecklist
         })
-        window.abwa.annotatedContentManager.reloadTagsChosen()
+
+        const extraordinaryChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Extraordinary')
+        extraordinaryChecklist.body[0].value.totalCodes += extraordinaries.length
+        extraordinaryChecklist.body[0].value.definition.push(newExtraordinaryDefinition)
+        extraordinaryChecklist.body[0].value.chosenChecklists.push(chosenMethod.name)
+        LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+          annotation: extraordinaryChecklist
+        })
+
+        // Create annotation to keep chosen checklists and invalid criticisms
+
         Alerts.successAlert({
-          text: 'Checklist has been imported successfully',
-          callback: () => window.abwa.sidebar.openSidebar()
+          text: 'Checklist has been imported successfully'
         })
-        window.abwa.sidebar.openSidebar()
       }
+    })
+  }
+
+  static createChecklistAnnotation (name) {
+    let newBody = {
+      name: name,
+      definition: [],
+      totalCodes: 0,
+      chosenChecklists: []
+    }
+    const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'checklist'
+    const tags = [motivationTag]
+    LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+      purpose: Checklist.purpose,
+      tags: tags,
+      checklist: newBody
     })
   }
 
@@ -176,10 +241,11 @@ class ImportChecklist {
       const select = document.querySelector('#checklistSelect')
       let filteredMethods = this.checklistsMethods.methods
       let i = -1
+      const alreadyChosenChecklists = checklistAnnotations[0].body[0].value.chosenChecklists
       for (let method of this.checklistsMethods.methods) {
         i++
-        for (let checklist of checklistAnnotations) {
-          if (method.name === checklist.body[0].value.name) {
+        for (let checklist of alreadyChosenChecklists) {
+          if (method.name === checklist) {
             filteredMethods.splice(i, 1)
             break
           }

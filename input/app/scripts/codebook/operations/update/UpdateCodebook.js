@@ -27,6 +27,7 @@ class UpdateCodebook {
     this.initUpdateCodeEvent()
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(ImportChecklist, LINE)
+    this.initCreateCodesEvent()
     this.initRemoveChecklistEvent()
     this.initRemoveCriteriaEvent()
     // PVSCL:ENDCOND
@@ -85,6 +86,16 @@ class UpdateCodebook {
       callback()
     }
   }
+
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  initCreateCodesEvent (callback) {
+    this.events.createCodesEvent = { element: document, event: Events.createCodes, handler: this.createCodesEventHandler() }
+    this.events.createCodesEvent.element.addEventListener(this.events.createCodesEvent.event, this.events.createCodesEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+  // PVSCL:ENDCOND
 
   initUpdateCodeEvent () {
     this.events.updateCodeEvent = { element: document, event: Events.updateCode, handler: this.createUpdateCodeEventHandler() }
@@ -239,7 +250,7 @@ class UpdateCodebook {
       // Ask user is sure to remove
       Alerts.confirmAlert({
         title: 'Removing checklist ' + theme.name,
-        text: 'Are you sure that you want to remove the checklist ' + theme.name + '. You cannot undo this operation.',
+        text: 'Are you sure that you want to remove the checklist ' + theme.name + '? You cannot undo this operation.',
         alertType: Alerts.alertType.warning,
         callback: () => {
           let annotationsToDelete = [theme.id]
@@ -311,6 +322,32 @@ class UpdateCodebook {
     }
   }
 
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  createCodesEventHandler () {
+    return (event) => {
+      const theme = event.detail.theme
+      if (!LanguageUtils.isInstanceOf(theme, Theme)) {
+        Alerts.errorAlert({ text: 'An error has ocurred creating codes.' })
+      } else {
+        const codesInfo = event.detail.codesInfo
+        let newCode
+        let newCodesAnnotations = []
+        codesInfo.forEach((codeInfo) => {
+          newCode = new Code({ name: codeInfo.name, description: codeInfo.description, theme: theme })
+          newCodesAnnotations.push(newCode.toAnnotation())
+        })
+        window.abwa.annotationServerManager.client.createNewAnnotations(newCodesAnnotations, (err, annotations) => {
+          if (err) {
+            Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })
+          } else {
+            LanguageUtils.dispatchCustomEvent(Events.codesCreated, { newCodesAnnotations: annotations, theme: theme })
+          }
+        })
+      }
+    }
+  }
+
+  // PVSCL:ENDCOND
   createUpdateCodeEventHandler () {
     return (event) => {
       const code = event.detail.code

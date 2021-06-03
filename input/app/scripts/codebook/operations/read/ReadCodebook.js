@@ -29,6 +29,7 @@ class ReadCodebook {
     this.initThemeRemovedEvent()
     // PVSCL:IFCOND(Hierarchy,LINE)
     this.initCodeCreatedEvent()
+    this.initCodesCreatedEvent()
     this.initCodeUpdatedEvent()
     this.initCodeRemovedEvent()
     // PVSCL:ENDCOND
@@ -77,6 +78,13 @@ class ReadCodebook {
     this.events.codeCreatedEvent.element.addEventListener(this.events.codeCreatedEvent.event, this.events.codeCreatedEvent.handler, false)
   }
 
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  initCodesCreatedEvent () {
+    this.events.codesCreatedEvent = { element: document, event: Events.codesCreated, handler: this.codesCreatedEventHandler() }
+    this.events.codesCreatedEvent.element.addEventListener(this.events.codesCreatedEvent.event, this.events.codesCreatedEvent.handler, false)
+  }
+
+  // PVSCL:ENDCOND
   initCodeUpdatedEvent () {
     this.events.codeUpdatedEvent = { element: document, event: Events.codeUpdated, handler: this.codeUpdatedEventHandler() }
     this.events.codeUpdatedEvent.element.addEventListener(this.events.codeUpdatedEvent.event, this.events.codeUpdatedEvent.handler, false)
@@ -820,6 +828,25 @@ class ReadCodebook {
     }
   }
 
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  codesCreatedEventHandler () {
+    return (event) => {
+      const theme = event.detail.theme
+      const codes = event.detail.newCodesAnnotations
+      codes.forEach((code) => {
+        // Add to the model the new theme
+        theme.addCode(code)
+      })
+      // Reload button container
+      // his.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+      // Reopen sidebar to see the new added codes
+      window.abwa.sidebar.openSidebar()
+    }
+  }
+
+  // PVSCL:ENDCOND
   codeUpdatedEventHandler () {
     return (event) => {
       // Update model
@@ -862,22 +889,59 @@ class ReadCodebook {
     }
   }
 
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   /**
    * This function creates (in case that it doesn't exist)
    * the theme to store the keywords
    */
-  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   static addKeywordsTheme () {
-    let codebook = window.abwa.codebookManager.codebookReader.codebook
-    let keywordThemeName = 'Keywords'
+    const codebook = window.abwa.codebookManager.codebookReader.codebook
+    const keywordThemeName = 'Keywords'
     if (!_.isEmpty(codebook)) {
       if (!codebook.getThemeByName(keywordThemeName)) {
-        let themeDescription = 'Theme which includes the keywords found in the text'
-        let newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
+        const themeDescription = 'Theme which includes the keywords found in the text'
+        const newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
         LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+        window.abwa.codebookManager.checklistImporter.saveChecklistsMethodsData()
       }
     }
   }
+  // PVSCL:ENDCOND
+
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+ /**
+   * This function creates (in case that it doesn't exist)
+   * the theme to store the checklists
+   */
+  static addChecklistsThemes () {
+    const codebook = window.abwa.codebookManager.codebookReader.codebook
+    if (!_.isEmpty(codebook)) {
+      let themeName = 'Essential'
+      let newTheme
+      let themeDescription
+      if (!codebook.getThemeByName(themeName)) {
+        themeDescription = 'Theme which includes the essential criteria to evaluate the document'
+        newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
+        LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+        ImportChecklist.createChecklistAnnotation(themeName)
+      }
+      themeName = 'Desirable'
+      if (!codebook.getThemeByName(themeName)) {
+        themeDescription = 'Theme which includes the desirable criteria to evaluate the document'
+        newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
+        LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+        ImportChecklist.createChecklistAnnotation(themeName)
+      }
+      themeName = 'Extraordinary'
+      if (!codebook.getThemeByName(themeName)) {
+        themeDescription = 'Theme which includes the extraordinary criteria to evaluate the document'
+        newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
+        LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+        ImportChecklist.createChecklistAnnotation(themeName)
+      }
+    }
+  }
+
   // PVSCL:ENDCOND
 
   // PVSCL:IFCOND(AuthorsSearch, LINE)
