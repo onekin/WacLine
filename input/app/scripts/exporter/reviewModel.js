@@ -56,12 +56,7 @@ export class Review {
     let t = "<Summarize the work>\n\n";
 
     // PVSCL:IFCOND(ImportChecklist, LINE)
-    if(this.checklist[0]) {
-      t += 'CHECKLIST:\n\n'
-      this.checklist[0]._annotations.forEach((checklist) => {
-        t += checklist._comment + '\n\n'
-      })
-    }
+    
     // PVSCL:ENDCOND
 
     // Strengths

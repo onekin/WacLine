@@ -833,12 +833,14 @@ class ReadCodebook {
     return (event) => {
       const theme = event.detail.theme
       const codes = event.detail.newCodesAnnotations
-      codes.forEach((code) => {
+      let code
+      codes.forEach((codeAnnot) => {
+        code = Code.fromAnnotation(codeAnnot, theme)
         // Add to the model the new theme
         theme.addCode(code)
       })
       // Reload button container
-      // his.reloadButtonContainer()
+      this.reloadButtonContainer()
       // Dispatch codebook updated event
       LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
       // Reopen sidebar to see the new added codes
@@ -909,7 +911,7 @@ class ReadCodebook {
   // PVSCL:ENDCOND
 
   // PVSCL:IFCOND(ImportChecklist, LINE)
- /**
+  /**
    * This function creates (in case that it doesn't exist)
    * the theme to store the checklists
    */

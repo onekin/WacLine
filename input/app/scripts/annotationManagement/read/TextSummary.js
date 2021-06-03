@@ -86,7 +86,8 @@ class TextSummary {
       document.querySelector('#reportText').value = report
       document.querySelector('#downloadReport').addEventListener('click', function () {
         let reportText = document.querySelector('#reportText').value
-        TextSummary.downloadReport(reportText)
+        let summary = TextSummary.generateChecklistsSummary()
+        TextSummary.downloadReport(summary + reportText)
       })
       document.querySelector('#saveReportDraft').addEventListener('click', function () {
         let reportText = document.querySelector('#reportText').value
@@ -100,23 +101,42 @@ class TextSummary {
       const invalidCritContainer = document.querySelector('#invalidCriticismsContainer')
       const invalidCritTemplate = document.querySelector('#invalidCritTemplate')
 
-      for (let checklist of checklists) {
-        if (checklist.invalidCriticisms) {
-          const invalidCriticisms = checklist.invalidCriticisms
-          const invalidCritElement = invalidCritTemplate.content.cloneNode(true)
-          let ul = invalidCritElement.querySelector('.invalidCriticismsList')
-          invalidCritElement.querySelector('.invalidCriticismsTitle').textContent = checklist.name
-          invalidCriticisms.forEach((invalidCriticism) => {
-            let li = document.createElement('li')
-            li.appendChild(document.createTextNode(invalidCriticism))
-            ul.appendChild(li)
-          })
-          invalidCritContainer.appendChild(invalidCritElement)
+      if (checklists[0]) {
+        const chosenChecklists = checklists[0].chosenChecklists
+        if (chosenChecklists) {
+          for (let checklist of chosenChecklists) {
+            if (checklist.invalidCriticisms) {
+              const invalidCriticisms = checklist.invalidCriticisms
+              const invalidCritElement = invalidCritTemplate.content.cloneNode(true)
+              let ul = invalidCritElement.querySelector('.invalidCriticismsList')
+              invalidCritElement.querySelector('.invalidCriticismsTitle').textContent = checklist.name
+              invalidCriticisms.forEach((invalidCriticism) => {
+                let li = document.createElement('li')
+                li.appendChild(document.createTextNode(invalidCriticism))
+                ul.appendChild(li)
+              })
+              invalidCritContainer.appendChild(invalidCritElement)
+            }
+          }
         }
       }
 
       Alerts.closeAlert()
     })
+  }
+
+
+
+  static generateChecklistsSummary () {
+    const checklistAnnotations = ImportChecklist.getChecklistsAnnotations()
+    let summary = ''
+    if (checklistAnnotations) {
+      summary += 'CHECKLIST:\n\n'
+      checklistAnnotations.forEach((checklist) => {
+        summary += checklist.getBodyForPurpose('checklist').toString() + '\n\n'
+      })
+    }
+    return summary
   }
 
   /**

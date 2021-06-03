@@ -50,14 +50,14 @@ class ChecklistReview {
         cluster.querySelector('.checklistClusterLabel span').innerText = type.name
         const height = type.codes.length / checklist.totalCodes * 70 + 10
         cluster.querySelector('.checklistPropertyCluster').style.height = height + '%'
-        
+
         const codebook = window.abwa.codebookManager.codebookReader.codebook
         const theme = codebook.getThemeByName(checklistAnnotation.body[0].value.name)
-        
+
         type.codes.forEach((code) => {
           let themeCode = theme.getCodeByName(code.name)
           let annotations = window.abwa.annotatedContentManager.getAnnotationsDoneWithThemeOrCodeId(themeCode.id)
-        
+
           const item = itemTemplate.content.cloneNode(true)
           if (code.status === 'undefined' && annotations.length > 0) {
             item.querySelector('.checkLiItem').classList.add('annotated')
@@ -210,7 +210,7 @@ class ChecklistReview {
   static changeItemBackground (chosenCode, numAnnotations) {
     document.getElementById(chosenCode.name).classList.remove('passed', 'failed', 'undefined', 'annotated')
     if (chosenCode.status === 'undefined' && numAnnotations > 0) {
-      document.getElementById(chosenCode.name).classList.add('annotated')  
+      document.getElementById(chosenCode.name).classList.add('annotated')
     } else {
       document.getElementById(chosenCode.name).classList.add(chosenCode.status)
     }

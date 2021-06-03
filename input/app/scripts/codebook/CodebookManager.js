@@ -106,7 +106,7 @@ class CodebookManager {
       this.checklistImporter.init(() => {
         ReadCodebook.addKeywordsTheme()
       })
-      
+
     }
   }
   // PVSCL:ENDCOND

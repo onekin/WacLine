@@ -64,120 +64,136 @@ class ImportChecklist {
         let chosenMethod = group.methods.filter((method) => {
           return method.name === methodName
         })[0]
-        let method = {
-          name: chosenMethod.name,
-          definition: []
-        }
-        let methodTheme = {
-          name: method.name,
-          description: '',
-          codes: []
-        }
-        let essentialTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Essential')
-        let desirableTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Desirable')
-        let extraordinaryTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Extraordinary')
-        let essentials = []
-        let desirables = []
-        let extraordinaries = []
-        chosenMethod.definition.forEach((definition) => {
-          if (definition.name === 'Essential') {
-            essentials = methodTheme.codes.concat(definition.codes)
-          } else if (definition.name === 'Desirable') {
-            desirables = methodTheme.codes.concat(definition.codes)
-          } else if (definition.name === 'Extraordinary') {
-            extraordinaries = methodTheme.codes.concat(definition.codes)
+
+        this.askUserToChooseCriteria(chosenMethod, (toAddCriteria) => {
+          let method = {
+            name: chosenMethod.name,
+            definition: []
           }
-        })
+          let methodTheme = {
+            name: method.name,
+            description: '',
+            codes: []
+          }
+          let essentialTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Essential')
+          let desirableTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Desirable')
+          let extraordinaryTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Extraordinary')
+          let essentials = toAddCriteria.essential
+          let desirables = toAddCriteria.desirable
+          let extraordinaries = toAddCriteria.extraordinary
 
-        // Adds all the criteria to the corresponding theme
-        LanguageUtils.dispatchCustomEvent(Events.createCodes, {
-          theme: essentialTheme,
-          codesInfo: essentials
-        })
-        LanguageUtils.dispatchCustomEvent(Events.createCodes, {
-          theme: desirableTheme,
-          codesInfo: desirables
-        })
-        LanguageUtils.dispatchCustomEvent(Events.createCodes, {
-          theme: extraordinaryTheme,
-          codesInfo: extraordinaries
-        })
-
-        // 5- Add special annotation to track invalid criticisms and that checklist has been added
-        let newBody = {
-          name: chosenMethod.name,
-          definition: [],
-          totalCodes: 0,
-          invalidCriticisms: []
-        }
-        if (chosenMethod.invalidCriticisms) {
-          newBody.invalidCriticisms = chosenMethod.invalidCriticisms
-        }
-        let newEssentialDefinition = {
-          name: chosenMethod.name,
-          description: '',
-          codes: essentials.map((criterion) => {
-            return {
-              name: criterion.name,
-              description: criterion.description,
-              status: 'undefined'
+          let i = 0
+          for (let essential of essentials) {
+            if (essentialTheme.getCodeByName(essential.name)) {
+              essentials.splice(i, 1)
             }
-          })
-        }
+            i++
+          }
 
-        let newDesirableDefinition = {
-          name: chosenMethod.name,
-          description: '',
-          codes: desirables.map((criterion) => {
-            return {
-              name: criterion.name,
-              description: criterion.description,
-              status: 'undefined'
+          i = 0
+          for (let desirable of desirables) {
+            if (desirableTheme.getCodeByName(desirable.name)) {
+              desirables.splice(i, 1)
             }
-          })
-        }
+            i++
+          }
 
-        let newExtraordinaryDefinition = {
-          name: chosenMethod.name,
-          description: '',
-          codes: extraordinaries.map((criterion) => {
-            return {
-              name: criterion.name,
-              description: criterion.description,
-              status: 'undefined'
+          i = 0
+          for (let extraordinary of extraordinaries) {
+            if (extraordinaryTheme.getCodeByName(extraordinary.name)) {
+              extraordinaries.splice(i, 1)
             }
+            i++
+          }
+
+          // Adds all the criteria to the corresponding theme
+          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+            theme: essentialTheme,
+            codesInfo: essentials
           })
-        }
+          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+            theme: desirableTheme,
+            codesInfo: desirables
+          })
+          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+            theme: extraordinaryTheme,
+            codesInfo: extraordinaries
+          })
 
-        // Update essential, desirable and extraordinary checklist annotations
-        const essentialChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Essential')
-        essentialChecklist.body[0].value.totalCodes += essentials.length
-        essentialChecklist.body[0].value.definition.push(newEssentialDefinition)
-        essentialChecklist.body[0].value.chosenChecklists.push(chosenMethod.name)
-        LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-          annotation: essentialChecklist
-        })
+          // 5- Add special annotation to track invalid criticisms and that checklist has been added
+          let checklistWithInvalidCrit = {
+            name: chosenMethod.name,
+            invalidCriticisms: []
+          }
+          if (chosenMethod.invalidCriticisms) {
+            checklistWithInvalidCrit.invalidCriticisms = chosenMethod.invalidCriticisms
+          }
+          let newEssentialDefinition = {
+            name: chosenMethod.name,
+            description: '',
+            codes: essentials.map((criterion) => {
+              return {
+                name: criterion.name,
+                description: criterion.description,
+                status: 'undefined'
+              }
+            })
+          }
 
-        const desirableChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Desirable')
-        desirableChecklist.body[0].value.totalCodes += desirables.length
-        desirableChecklist.body[0].value.definition.push(newDesirableDefinition)
-        desirableChecklist.body[0].value.chosenChecklists.push(chosenMethod.name)
-        LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-          annotation: desirableChecklist
-        })
+          let newDesirableDefinition = {
+            name: chosenMethod.name,
+            description: '',
+            codes: desirables.map((criterion) => {
+              return {
+                name: criterion.name,
+                description: criterion.description,
+                status: 'undefined'
+              }
+            })
+          }
 
-        const extraordinaryChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Extraordinary')
-        extraordinaryChecklist.body[0].value.totalCodes += extraordinaries.length
-        extraordinaryChecklist.body[0].value.definition.push(newExtraordinaryDefinition)
-        extraordinaryChecklist.body[0].value.chosenChecklists.push(chosenMethod.name)
-        LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-          annotation: extraordinaryChecklist
-        })
+          let newExtraordinaryDefinition = {
+            name: chosenMethod.name,
+            description: '',
+            codes: extraordinaries.map((criterion) => {
+              return {
+                name: criterion.name,
+                description: criterion.description,
+                status: 'undefined'
+              }
+            })
+          }
 
-        // Create annotation to keep chosen checklists and invalid criticisms
+          // Update essential, desirable and extraordinary checklist annotations
+          const essentialChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Essential')
+          essentialChecklist.body[0].value.totalCodes += essentials.length
+          essentialChecklist.body[0].value.definition.push(newEssentialDefinition)
+          essentialChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: essentialChecklist
+          })
 
-        Alerts.successAlert({
-          text: 'Checklist has been imported successfully'
+          const desirableChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Desirable')
+          desirableChecklist.body[0].value.totalCodes += desirables.length
+          desirableChecklist.body[0].value.definition.push(newDesirableDefinition)
+          desirableChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: desirableChecklist
+          })
+
+          const extraordinaryChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Extraordinary')
+          extraordinaryChecklist.body[0].value.totalCodes += extraordinaries.length
+          extraordinaryChecklist.body[0].value.definition.push(newExtraordinaryDefinition)
+          extraordinaryChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: extraordinaryChecklist
+          })
+
+          // Create annotation to keep chosen checklists and invalid criticisms
+
+          Alerts.successAlert({
+            text: 'Checklist has been imported successfully'
+          })
         })
       }
     })
@@ -230,7 +246,6 @@ class ImportChecklist {
         const groupName = choiceSplited[0]
         const methodName = choiceSplited[1]
         document.querySelector('#chooseChecklist').parentNode.removeChild(document.querySelector('#chooseChecklist'))
-        document.querySelector('#abwaSidebarButton').style.display = 'block'
         callback(null, groupName, methodName)
       })
       document.querySelector('#cancelChecklistButton').addEventListener('click', function () {
@@ -245,7 +260,7 @@ class ImportChecklist {
       for (let method of this.checklistsMethods.methods) {
         i++
         for (let checklist of alreadyChosenChecklists) {
-          if (method.name === checklist) {
+          if (method.name === checklist.name) {
             filteredMethods.splice(i, 1)
             break
           }
@@ -262,6 +277,99 @@ class ImportChecklist {
         option.text += ' (' + method.keywordsMatches + ')'
         // PVSCL:ENDCOND
         select.appendChild(option)
+      })
+    })
+  }
+
+
+  askUserToChooseCriteria (method, callback) {
+    window.abwa.sidebar.closeSidebar()
+    const canvasPageURL = chrome.extension.getURL('pages/specific/chooseCriteria.html')
+    axios.get(canvasPageURL).then((response) => {
+      document.body.insertAdjacentHTML('beforeend', response.data)
+      document.querySelector('#abwaSidebarButton').style.display = 'none'
+
+      document.addEventListener('keydown', function (e) {
+        if (e.code === 'Escape' && document.querySelector('#chooseCriteria') != null) {
+          document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+          document.querySelector('#abwaSidebarButton').style.display = 'block'
+        }
+      })
+
+      document.querySelector('#cancelCriteriaButton').addEventListener('click', function (e) {
+        document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
+
+      document.querySelector('#chooseChecklistOverlay').addEventListener('click', function (e) {
+        document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
+
+      document.querySelector('#acceptCriteriaButton').addEventListener('click', function (e) {
+        // Get for each category the selected criteria and return them with callback
+        const clusters = document.querySelectorAll('.categoryCluster')
+        let chosenCriteria = {
+          essential: [],
+          desirable: [],
+          extraordinary: []
+        }
+        clusters.forEach((cluster) => {
+          const type = cluster.querySelector('.categoryTitle').innerText.toLowerCase()
+          cluster.querySelectorAll('.selected').forEach((selCriterion) => {
+            const criterionName = selCriterion.querySelector('span').innerText
+            chosenCriteria[type].push(criterionName)
+          })
+        })
+
+        let toAddCriteria = {
+          essential: [],
+          desirable: [],
+          extraordinary: []
+        }
+
+        method.definition.forEach((category) => {
+          category.codes.forEach((criterion) => {
+            if (chosenCriteria[category.name.toLowerCase()].includes(criterion.name)) {
+              toAddCriteria[category.name.toLowerCase()].push(criterion)
+            }
+          })
+        })
+        document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+        callback(toAddCriteria)
+      })
+
+
+
+      document.querySelector('#chooseCriteriaContainer').addEventListener('click', function (e) {
+        e.stopPropagation()
+      })
+      const clusterContainer = document.querySelector('#definitionClusterContainer')
+      const categoryTemplate = document.querySelector('#definitionCategoryTemplate')
+      const totalCodes = method.definition.reduce((numCodes, category) => {
+        return numCodes + category.codes.length
+      }, 0)
+      method.definition.forEach((category) => {
+        const categoryCluster = categoryTemplate.content.cloneNode(true)
+        categoryCluster.querySelector('.categoryTitle').innerText = category.name
+        const height = category.codes.length / totalCodes * 70
+        categoryCluster.querySelector('.categoryCluster').style.height = height + '%'
+        const categoryCriteriaContainer = categoryCluster.querySelector('.criteria')
+        const criterionCardTemplate = document.querySelector('#criterionCardTemplate')
+        category.codes.forEach((criterion) => {
+          const categoryCard = criterionCardTemplate.content.cloneNode(true)
+          categoryCard.querySelector('.criterionCardContent span').innerText = criterion.name
+          categoryCard.querySelector('.criterion').addEventListener('click', function (e) {
+            if (e.currentTarget.classList.contains('selected')) {
+              e.currentTarget.classList.remove('selected')
+            } else {
+              e.currentTarget.classList.add('selected')
+            }
+          })
+
+          categoryCriteriaContainer.appendChild(categoryCard)
+        })
+        clusterContainer.appendChild(categoryCluster)
       })
     })
   }
