@@ -49,9 +49,9 @@ class ImportChecklist {
    * This method ask the user to choose a checklist and imports the
    * corresponding themes and codes, it also creates the checklist annotation
    */
-  importChecklist () {
+  importChecklist (filter) {
     // 1- Ask user to choose checklist
-    this.askUserToChooseChecklist((err, checklistGroupName, methodName) => {
+    this.askUserToChooseChecklist(filter, (err, checklistGroupName, methodName) => {
       if (err) {
         Alerts.errorAlert({
           text: 'Unable to load checklist. Error:<br/>' + err.message
@@ -166,24 +166,30 @@ class ImportChecklist {
 
           // Update essential, desirable and extraordinary checklist annotations
           const essentialChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Essential')
-          essentialChecklist.body[0].value.totalCodes += essentials.length
-          essentialChecklist.body[0].value.definition.push(newEssentialDefinition)
+          if (essentials.length > 0) {
+            essentialChecklist.body[0].value.totalCodes += essentials.length
+            essentialChecklist.body[0].value.definition.push(newEssentialDefinition)
+          }
           essentialChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
           LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
             annotation: essentialChecklist
           })
 
           const desirableChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Desirable')
-          desirableChecklist.body[0].value.totalCodes += desirables.length
-          desirableChecklist.body[0].value.definition.push(newDesirableDefinition)
+          if (desirables.length > 0) {
+            desirableChecklist.body[0].value.totalCodes += desirables.length
+            desirableChecklist.body[0].value.definition.push(newDesirableDefinition)
+          }
           desirableChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
           LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
             annotation: desirableChecklist
           })
 
           const extraordinaryChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Extraordinary')
-          extraordinaryChecklist.body[0].value.totalCodes += extraordinaries.length
-          extraordinaryChecklist.body[0].value.definition.push(newExtraordinaryDefinition)
+          if (extraordinaries.length > 0) {
+            extraordinaryChecklist.body[0].value.totalCodes += extraordinaries.length
+            extraordinaryChecklist.body[0].value.definition.push(newExtraordinaryDefinition)
+          }
           extraordinaryChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
           LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
             annotation: extraordinaryChecklist
@@ -219,7 +225,7 @@ class ImportChecklist {
    * This method handles the dialog to let the user choose a checklist
    * @param {*} callback
    */
-  askUserToChooseChecklist (callback) {
+  askUserToChooseChecklist (filter, callback) {
     window.abwa.sidebar.closeSidebar()
     const canvasPageURL = chrome.extension.getURL('pages/specific/chooseChecklist.html')
     const checklistAnnotations = ImportChecklist.getChecklistsAnnotations()
@@ -253,16 +259,28 @@ class ImportChecklist {
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
 
+      if (filter) {
+        document.querySelector('#chooseChecklistContainer h1').innerText = 'Choose ' + filter + ' method'
+      } else {
+        document.querySelector('#chooseChecklistContainer h1').innerText = 'Choose criteria list'
+      }
+
       const select = document.querySelector('#checklistSelect')
-      let filteredMethods = this.checklistsMethods.methods
+      let filteredMethods = [...this.checklistsMethods.methods]
       let i = -1
       const alreadyChosenChecklists = checklistAnnotations[0].body[0].value.chosenChecklists
       for (let method of this.checklistsMethods.methods) {
         i++
-        for (let checklist of alreadyChosenChecklists) {
-          if (method.name === checklist.name) {
-            filteredMethods.splice(i, 1)
-            break
+        if (filter && filter !== method.filter) {
+          filteredMethods.splice(i, 1)
+          i--
+        } else {
+          for (let checklist of alreadyChosenChecklists) {
+            if (method.name === checklist.name) {
+              filteredMethods.splice(i, 1)
+              i--
+              break
+            }
           }
         }
       }
@@ -412,9 +430,10 @@ class ImportChecklist {
     Checklists.groups.forEach((group) => {
       group.methods.forEach((method) => {
         let newMethod = {
-          groupName: group.name
+          groupName: group.name,
+          name: method.name,
+          filter: method.filter
         }
-        newMethod.name = method.name
         // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
         if (method.keywords) {
           this.getNumKeywordsForMethod(method, (totalMatches) => {

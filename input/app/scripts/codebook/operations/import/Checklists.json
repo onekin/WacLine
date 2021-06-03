@@ -1,6 +1,7 @@
 {
    "groups": [{
          "name": "Empirical Standard",
+         "filter": "",
          "methods": [{
             "name": "General Standard",
             "definition": [{
@@ -273,6 +274,7 @@
          "name": "Qualitative Methods",
          "methods": [{
                "name": "Action research",
+               "filter": "Evaluation",
                "definition": [{
                      "name": "Essential",
                      "description": "",
@@ -392,6 +394,7 @@
             },
             {
                "name": "Case studies and ethnography",
+               "filter": "Evaluation",
                "definition": [{
                      "name": "Essential",
                      "description": "",
@@ -513,6 +516,7 @@
             },
             {
                "name": "Grounded Theory",
+               "filter": "Evaluation",
                "definition": [{
                      "name": "Essential",
                      "description": "",
@@ -636,6 +640,7 @@
             },
             {
                "name": "Qualitative Surveys",
+               "filter": "Evaluation",
                "definition": [{
                   "name": "Essential",
                   "description": "",
@@ -718,6 +723,7 @@
             },
             {
                "name": "Case survey",
+               "filter": "Evaluation",
                "definition": [{
                   "name": "Essential",
                   "description": "",

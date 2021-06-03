@@ -140,7 +140,7 @@ class UpdateCodebook {
         },
         callback: () => {
           if (newTheme.name.toLowerCase() === 'evaluation') {
-            window.abwa.codebookManager.checklistImporter.importChecklist()
+            window.abwa.codebookManager.checklistImporter.importChecklist('Evaluation')
           } else {
             LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
           }
