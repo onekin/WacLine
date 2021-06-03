@@ -35,6 +35,20 @@ const Config = {
   // PVSCL:IFCOND(BuiltIn or ApplicationBased OR NOT(Codebook), LINE)
   groupName: 'DefaultReviewModel',
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+  spreadsheetsIds: {
+    setClassifyingRange: '%27LOG-classifying%27%21A4%3AN',
+    setCodebookDevelopmentRange: '%27LOG-codebookDevelopment%27%21A%3AO',
+    setPaperRange: '%27Papers%27%21A%3AG',
+    setLinkingRange: '%27LOG-linking%27%21A%3AH',
+    setAssessingRange: '%27LOG-assessing%27%21A%3AJ',
+    getClassifyingRange: '%27LOG-classifying%27!M4%3AN',
+    getCodebookDevelopmentRange: '%27LOG-codebookDevelopment%27!M4%3AN',
+    getPaperRange: '%27Papers%27!A2%3AE',
+    getLinkingRange: '%27LOG-linking%27!G3%3AH',
+    getAssessingRange: '%27LOG-assessing%27!I4%3AJ'
+  },
+  // PVSCL:ENDCOND
   defaultAnnotationServer: defaultAnnotationServer,
   namespace: 'oa',
   // eslint-disable-next-line quotes

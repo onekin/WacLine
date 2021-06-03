@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import BrowserStorageManager from '../browserStorage/BrowserStorageManager'
 
 class GoogleSheetAnnotationBackgroundManager {
   init () {
@@ -144,6 +145,14 @@ class GoogleSheetAnnotationBackgroundManager {
             })
           } else if (request.cmd === 'removeAMemberFromAGroup') {
             window.background.googleSheetAnnotationManager.annotationServerManager.client.removeAMemberFromAGroup(request.data, (err, result) => {
+              if (err) {
+                sendResponse({ error: err })
+              } else {
+                sendResponse(result)
+              }
+            })
+          } else if (request.cmd === 'reloadCacheDatabase') {
+            window.background.googleSheetAnnotationManager.annotationServerManager.client.reloadCacheDatabase(request.data, (err, result) => {
               if (err) {
                 sendResponse({ error: err })
               } else {

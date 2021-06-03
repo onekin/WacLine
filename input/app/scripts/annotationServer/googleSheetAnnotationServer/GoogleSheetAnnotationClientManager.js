@@ -25,6 +25,9 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
         } else {
           window.background.googleSheetAnnotationManager.annotationServerManager.googleToken = token
           window.background.googleSheetAnnotationManager.annotationServerManager.client = new GoogleSheetAnnotationClient(token, window.background.googleSheetAnnotationManager.annotationServerManager)
+          if (_.isFunction(callback)) {
+            callback()
+          }
         }
       })
     } else {

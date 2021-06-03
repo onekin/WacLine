@@ -1,5 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
+import qs from 'qs'
 
 let $
 if (typeof window === 'undefined') {
@@ -289,6 +290,114 @@ class GoogleSheetClient {
         },
         inheritFromBefore: false
       }
+    }
+  }
+
+  /**
+   * Appends a row in a google sheet for a given range
+   * @param spreadsheetId Spreadsheet Id
+   * @param range The range of the spreadsheet where to append the row
+   * @param row The sheet row as an array of values
+   * @param callback
+   */
+  appendRowSpreadSheet (spreadsheetId, range, row, callback) {
+    try {
+      if (spreadsheetId) {
+        let settings = {
+          async: true,
+          crossDomain: true,
+          url: this.baseURI + '/' + spreadsheetId + '/values/' + range + ':append',
+          params: {
+            valueInputOption: 'RAW'
+          },
+          data: row,
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache'
+          }
+        }
+        // Call using axios
+        axios(settings).then((response) => {
+          console.debug('Responding: ' + JSON.stringify(response.data, null, 4))
+          if (_.isFunction(callback)) {
+            callback(null, response.data)
+          }
+        })
+      } else {
+        callback(new Error('The spreadsheet id is required'))
+      }
+    } catch (err) {
+      callback(err)
+    }
+  }
+
+  getSheetRowsRawData (spreadsheetId, sheetName, callback) {
+    let settings = {
+      async: true,
+      crossDomain: true,
+      url: this.baseURI + '/' + spreadsheetId + '/values/' + sheetName,
+      method: 'GET',
+      headers: {
+        Authorization: 'Bearer ' + this.token,
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      }
+    }
+
+    axios(settings).then((response) => {
+      callback(null, response.data.values || [])
+    }).catch((err) => {
+      callback(err)
+    })
+  }
+
+  /**
+   * Get rows for a given spreadsheet and range
+   * @param spreadsheetId Spreadsheet Id
+   * @param ranges Array of the ranges to retrieve from the spreadsheet.
+   * @param row The sheet row as an array of values
+   * @param callback
+   */
+  getSpreadSheetRows (spreadsheetId, ranges, callback) {
+    try {
+      let rangesParam = ''
+      let first = true
+      // TODO Change query string by paramsSerializer in axios
+      for (let range in ranges) {
+        if (first) {
+          first = false
+          rangesParam = rangesParam + 'ranges=' + ranges[range]
+        } else {
+          rangesParam = rangesParam + '&ranges=' + ranges[range]
+        }
+      }
+      if (spreadsheetId) {
+        let settings = {
+          async: true,
+          crossDomain: true,
+          url: this.baseURI + '/' + spreadsheetId + '?' + rangesParam + '&includeGridData=true&fields=sheets.data.rowData.values.userEnteredValue.stringValue',
+          data: null,
+          method: 'GET',
+          headers: {
+            Authorization: 'Bearer ' + this.token,
+            'Content-Type': 'application/json',
+            'Cache-Control': 'no-cache'
+          }
+        }
+        // Call using axios
+        axios(settings).then((response) => {
+          console.debug('Responding: ' + JSON.stringify(response.data, null, 4))
+          if (_.isFunction(callback)) {
+            callback(null, response.data)
+          }
+        })
+      } else {
+        callback(new Error('The spreadsheet id is required.'))
+      }
+    } catch (err) {
+      callback(err)
     }
   }
 }

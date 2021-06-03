@@ -10,7 +10,7 @@ class GoogleSheetAnnotation extends AnnotationServer {
   }
 
   getGroupUrl () {
-    return 'https://localannotationsdatabase.org/group/' + this.group.id
+    return 'https://docs.google.com/spreadsheets/d/' + this.group.id
   }
 }
 

@@ -16,6 +16,9 @@ import BrowserStorageManager from '../annotationServer/browserStorage/BrowserSto
 // PVSCL:IFCOND(PreviousAssignments, LINE)
 import PreviousAssignments from '../annotationManagement/purposes/PreviousAssignments'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+import GoogleSheetAnnotationClientManager from '../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
+// PVSCL:ENDCOND
 
 class ContentScriptManager {
   constructor () {
@@ -62,8 +65,20 @@ class ContentScriptManager {
   // PVSCL:ENDCOND
 
   reloadContentByGroup (callback) {
+    let promise
+    // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+    if (window.abwa.annotationServerManager instanceof GoogleSheetAnnotationClientManager) {
+      promise = this.retrieveSpreadsheetAnnotationsToBrowserLocalStorage()
+    } else {
+      promise = new Promise((resolve) => { resolve() })
+    }
+    // PVSCL:ELSECOND
+    promise = new Promise((resolve) => { resolve() })
+    // PVSCL:ENDCOND
     // TODO Use async await or promises
-    this.reloadCodebookManager()
+    promise.then(() => {
+      return this.reloadCodebookManager()
+    })
       // PVSCL:IFCOND(MoodleResource, LINE)
       .then(() => {
         return this.reloadRolesManager()
@@ -100,6 +115,20 @@ class ContentScriptManager {
         this.status = ContentScriptManager.status.initialized
         console.debug('Initialized content script manager')
       })
+  }
+
+  retrieveSpreadsheetAnnotationsToBrowserLocalStorage () {
+    return new Promise((resolve, reject) => {
+      window.abwa.annotationServerManager.client.reloadCacheDatabase(
+        { user: window.abwa.groupSelector.user, group: window.abwa.groupSelector.currentGroup }
+        , (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+    })
   }
 
   reloadAnnotatedContentManager () {

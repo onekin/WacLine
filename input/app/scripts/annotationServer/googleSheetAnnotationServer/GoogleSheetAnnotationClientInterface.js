@@ -181,6 +181,15 @@ class GoogleSheetAnnotationClientInterface {
   removeAMemberFromAGroup (data, callback) {
     GoogleSheetAnnotationClientInterface.sendCallToBackground('removeAMemberFromAGroup', data, callback)
   }
+
+  /**
+   * Given a group ID reloads the cache from the spreadsheet
+   * @param data
+   * @param callback
+   */
+  reloadCacheDatabase (data, callback) {
+    GoogleSheetAnnotationClientInterface.sendCallToBackground('reloadCacheDatabase', data, callback)
+  }
 }
 
 
