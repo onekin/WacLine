@@ -134,7 +134,8 @@ class GoogleSheetClient {
     }
   }
 
-  batchUpdate (data, callback) {
+  batchUpdate (requests, callback) {
+    //  TODO Pass this call to axios
     $.ajax({
       async: true,
       crossDomain: true,
@@ -145,7 +146,7 @@ class GoogleSheetClient {
         'Content-Type': 'application/json'
       },
       data: JSON.stringify({
-        requests: data.requests
+        requests: requests
       })
     }).done(() => {
       // TODO Manage responses

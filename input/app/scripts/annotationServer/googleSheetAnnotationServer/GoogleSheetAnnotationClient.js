@@ -29,9 +29,9 @@ class GoogleSheetAnnotationClient {
             }
           } else {
             result.shift() // Remove headers
-            let annotations = result.map(encodedAnnotation => {
+            let annotations = result.map(encodedAnnotationRow => {
               try {
-                return JSON.parse(encodedAnnotation[1]) // The cell B has the encoded annotation (what we need)
+                return GoogleSheetAnnotationClient.decodeAnnotation(encodedAnnotationRow[1]) // The cell B (array[1]) has the encoded annotation (what we need), the other is just the ID
               } catch (e) {
                 return null // Error parsing the annotation, ignoring
               }
@@ -134,7 +134,7 @@ class GoogleSheetAnnotationClient {
         callback(err)
       } else {
         let client = new GoogleSheetClient(this.token)
-        let row = { values: [[browserStorageAnnotation.id, JSON.stringify(browserStorageAnnotation)]] }
+        let row = { values: [[browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation)]] }
         client.appendRowSpreadSheet(browserStorageAnnotation.group, Config.namespace, row, (err) => {
           if (err) {
             callback(err)
@@ -153,7 +153,7 @@ class GoogleSheetAnnotationClient {
       } else {
         let client = new GoogleSheetClient(this.token)
         let values = browserStorageAnnotations.map((browserStorageAnnotation) => {
-          return [browserStorageAnnotation.id, JSON.stringify(browserStorageAnnotation)]
+          return [browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation)]
         })
         let row = { values: values }
         client.appendRowSpreadSheet(browserStorageAnnotations[0].group, Config.namespace, row, (err) => {
@@ -187,11 +187,24 @@ class GoogleSheetAnnotationClient {
           } else {
             // Find the corresponding row
             let row = response.findIndex(row => { return row[0] === id })
-            console.log(row)
-            debugger
-            // TODO Delete row by filter (maybe) https://stackoverflow.com/questions/49161249/google-sheets-api-how-to-find-a-row-by-value-and-update-its-content
-            // https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/batchUpdateByDataFilter
-            // https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/batchUpdate
+            client.batchUpdate([
+              {
+                deleteDimension: {
+                  range: {
+                    dimension: 'ROWS',
+                    startIndex: row,
+                    endIndex: row + 1,
+                    sheetId: 855346762
+                  }
+                }
+              }
+            ], (err, result) => {
+              if (err) {
+                callback(err)
+              } else {
+                callback(null, browserStorageResult)
+              }
+            })
           }
         })
       }
@@ -219,7 +232,7 @@ class GoogleSheetAnnotationClient {
           return {
             id: elem.id,
             name: elem.name,
-            links: 'https://docs.google.com/spreadsheets/d/' + elem.id,
+            links: { html: 'https://docs.google.com/spreadsheets/d/' + elem.id },
             description: '',
             url: 'https://docs.google.com/spreadsheets/d/' + elem.id
           }
@@ -321,12 +334,12 @@ class GoogleSheetAnnotationClient {
     })
   }
 
-  static encodeAnnotation (annotationText) {
-    return btoa(unescape(encodeURIComponent(annotationText)))
+  static encodeAnnotation (annotation) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(annotation))))
   }
 
   static decodeAnnotation (encodedAnnotation) {
-    return decodeURIComponent(escape(atob(encodedAnnotation)))
+    return JSON.parse(decodeURIComponent(escape(atob(encodedAnnotation))))
   }
 }
 

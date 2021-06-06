@@ -15,6 +15,10 @@ import BrowserStorage from '../../annotationServer/browserStorage/BrowserStorage
 // PVSCL:IFCOND(CodebookUpdate, LINE)
 import ColorUtils from '../../utils/ColorUtils'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+import GoogleSheetAnnotation from '../../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotation'
+import GoogleSheetAnnotationClient from '../../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClient'
+// PVSCL:ENDCOND
 
 class Codebook {
   constructor ({
@@ -186,7 +190,6 @@ class Codebook {
   }
 
   static setAnnotationServer (newGroupId, callback) {
-    let annotationServerInstance
     let group
     if (_.has(window.abwa, 'groupSelector')) {
       if (newGroupId === null) {
@@ -199,15 +202,27 @@ class Codebook {
     } else {
       group = { id: newGroupId } // Faking group object only with ID property, currently this is the only property used, but in case in any future feature is required to be used with more, this line must be taken into account for further modification
     }
+    let annotationServerInstance
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1,LINE)
     chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
+      // PVSCL:IFCOND(Hypothesis, LINE)
       if (annotationServer === 'hypothesis') {
         // Hypothesis
         annotationServerInstance = new Hypothesis({ group: group })
-      } else {
+      }
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(BrowserStorage, LINE)
+      if (annotationServer === 'browserstorage') {
         // Browser storage
         annotationServerInstance = new BrowserStorage({ group: group })
       }
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+      if (annotationServer === 'googlesheetannotationserver') {
+        // Google sheet as annotation storage
+        annotationServerInstance = new GoogleSheetAnnotation({ group: group })
+      }
+      // PVSCL:ENDCOND
       if (_.isFunction(callback)) {
         callback(annotationServerInstance)
       }
@@ -218,6 +233,9 @@ class Codebook {
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage,LINE)
     annotationServerInstance = new BrowserStorage({ group: group })
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+    annotationServerInstance = new GoogleSheetAnnotation({ group: group })
     // PVSCL:ENDCOND
     if (_.isFunction(callback)) {
       callback(annotationServerInstance)
