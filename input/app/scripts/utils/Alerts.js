@@ -6,7 +6,7 @@ if (document && document.head) {
 }
 
 class Alerts {
-  static confirmAlert ({ alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', reverseButtons, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback }) {
+  static confirmAlert ({ alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', showCancelButton = true, reverseButtons, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -22,7 +22,7 @@ class Alerts {
         reverseButtons,
         allowOutsideClick,
         allowEscapeKey,
-        showCancelButton: true
+        showCancelButton: showCancelButton
       }).then((result) => {
         if (result.value) {
           if (_.isFunction(callback)) {
@@ -52,6 +52,31 @@ class Alerts {
     }
   }
 
+  /**
+   * Same as info alert, with the difference that the execution of callback is stopped until user clicks okay or closes somehow the alert
+   * @param text
+   * @param title
+   * @param callback
+   */
+  static infoSyncAlert ({ text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), title = 'Info', callback }) {
+    Alerts.tryToLoadSwal()
+    if (_.isNull(swal)) {
+      if (_.isFunction(callback)) {
+        callback(new Error('Unable to load swal'))
+      }
+    } else {
+      swal.fire({
+        type: Alerts.alertType.info,
+        title: title,
+        html: text
+      }).then(() => {
+        if (_.isFunction(callback)) {
+          callback(null)
+        }
+      })
+    }
+  }
+
   static updateableAlert ({ text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), type = Alerts.alertType.info, title = 'Info', timerIntervalHandler = null, timerIntervalPeriodInSeconds = 0.1, allowOutsideClick = true, allowEscapeKey = true, callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
@@ -62,7 +87,7 @@ class Alerts {
       const fire = () => {
         let timerInterval
         swal.fire({
-          type: Alerts.alertType.info,
+          type: type,
           title: title,
           html: text,
           allowOutsideClick,
@@ -99,7 +124,8 @@ class Alerts {
       swal.fire({
         type: Alerts.alertType.error,
         title: title,
-        html: text
+        html: text,
+        onClose: onClose
       }).then(() => {
         if (_.isFunction(callback)) {
           callback(null)

@@ -172,7 +172,53 @@ class GoogleSheetAnnotationClient {
   }
 
   updateAnnotation (id, annotation, callback) {
-    this.browserStorageManager.client.updateAnnotation(id, annotation, callback)
+    this.browserStorageManager.client.updateAnnotation(id, annotation, (err, browserStorageAnnotation) => {
+      if (err) {
+        callback(err)
+      } else {
+        let client = new GoogleSheetClient(this.token)
+        client.getSheetRowsRawData(browserStorageAnnotation.group, Config.namespace, (err, response) => {
+          if (err) {
+            callback(err)
+          } else {
+            // Find the corresponding row for the annotation
+            let row = response.findIndex(row => { return row[0] === id })
+            client.batchUpdate({
+              spreadsheetId: browserStorageAnnotation.group,
+              requests: [{
+                updateCells: {
+                  range: {
+                    startRowIndex: row,
+                    endRowIndex: row + 1,
+                    startColumnIndex: 1, // Always is in column B, 1 to 2 column index
+                    endColumnIndex: 2,
+                    sheetId: 903177749 // TODO Parametrize this sheet number if possible
+                  },
+                  fields: 'userEnteredValue(stringValue)',
+                  rows: [
+                    {
+                      values: [
+                        {
+                          userEnteredValue: {
+                            stringValue: GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation)
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }]
+            }, (err, result) => {
+              if (err) {
+                callback(err)
+              } else {
+                callback(null, browserStorageAnnotation)
+              }
+            })
+          }
+        })
+      }
+    })
   }
 
   deleteAnnotation (id, callback) {
@@ -195,7 +241,7 @@ class GoogleSheetAnnotationClient {
                     dimension: 'ROWS',
                     startIndex: row,
                     endIndex: row + 1,
-                    sheetId: 855346762 // TODO Parametrize this sheet number
+                    sheetId: 903177749 // TODO Parametrize this sheet number
                   }
                 }
               }]
@@ -236,7 +282,7 @@ class GoogleSheetAnnotationClient {
                       dimension: 'ROWS',
                       startIndex: rowNumber,
                       endIndex: rowNumber + 1,
-                      sheetId: 855346762 // TODO Parametrize this sheet number
+                      sheetId: 903177749 // TODO Parametrize this sheet number
                     }
                   }
                 }
@@ -293,8 +339,8 @@ class GoogleSheetAnnotationClient {
           callback(err)
         } else {
           let profile = {
-            userid: data.email,
-            display_name: data.email // TODO Get google's name if possible
+            userid: data.email.replace('@gmail.com', ''),
+            display_name: data.email.replace('@gmail.com', '') // TODO Get google's name if possible
           }
           profile.groups = groups
           callback(null, profile)
@@ -317,7 +363,8 @@ class GoogleSheetAnnotationClient {
           let group = {
             id: response.id,
             name: response.name,
-            links: 'https://docs.google.com/spreadsheets/d/' + response.id
+            links: { html: 'https://docs.google.com/spreadsheets/d/' + response.id },
+            url: 'https://docs.google.com/spreadsheets/d/' + response.id
           }
           callback(null, group)
         }
@@ -343,7 +390,8 @@ class GoogleSheetAnnotationClient {
         let group = {
           id: response.id,
           name: response.name,
-          links: 'https://docs.google.com/spreadsheets/d/' + response.id
+          links: { html: 'https://docs.google.com/spreadsheets/d/' + response.id },
+          url: 'https://docs.google.com/spreadsheets/d/' + response.id
         }
         callback(null, group)
       }

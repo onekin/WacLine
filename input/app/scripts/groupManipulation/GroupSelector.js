@@ -200,7 +200,11 @@ class GroupSelector {
                     }
                     // PVSCL:ENDCOND
                     this.currentGroup = group
+                    // PVSCL:IFCOND(ShareableCodebook , LINE)
+                    this.openGroupShareAlert(group, callback)
+                    // PVSCL:ELSECOND
                     callback(null)
+                    // PVSCL:ENDCOND
                   }
                 })
               } else { // If group was found in extension annotation server
@@ -220,7 +224,7 @@ class GroupSelector {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
               }
               if (_.isEmpty(window.abwa.groupSelector.groups)) {
-                Alerts.errorAlert({ text: 'No groups found. Please configure the tool in the third-party provider.' })
+                Alerts.errorAlert({ text: 'No groups found. Please configure the tool in the corresponding third-party provider.' })
               }
               if (_.isFunction(callback)) {
                 callback()
@@ -402,6 +406,9 @@ class GroupSelector {
       // PVSCL:IFCOND(RenameCodebook,LINE)
       groupSelectorItem.querySelector('.renameGroup').addEventListener('click', this.createGroupSelectorRenameOptionEventHandler(group))
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(ShareableCodebook, LINE)
+      groupSelectorItem.querySelector('.shareGroup').addEventListener('click', this.createGroupSelectorShareOptionEventHandler(group))
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(ExportCodebook,LINE)
       groupSelectorItem.querySelector('.exportGroup').addEventListener('click', this.createGroupSelectorExportOptionEventHandler(group))
       // PVSCL:ENDCOND
@@ -487,7 +494,7 @@ class GroupSelector {
       }
     })
   }
-  // PVSCL:IFCOND(RenameCodebook or ExportCodebook or CodebookDelete,LINE)
+  // PVSCL:IFCOND(ShareableCodebook or RenameCodebook or ExportCodebook or CodebookDelete, LINE)
 
   createGroupSelectorItemToggleEventHandler (groupId) {
     return (e) => {
@@ -548,7 +555,17 @@ class GroupSelector {
           window.abwa.annotationServerManager.client.createNewGroup({
             name: groupName,
             description: 'A group created using annotation tool ' + chrome.runtime.getManifest().name
-          }, callback)
+          }, (err, group) => {
+            if (err) {
+              callback(err)
+            } else {
+              // PVSCL:IFCOND(ShareableCodebook , LINE)
+              this.openGroupShareAlert(group, callback)
+              // PVSCL:ELSECOND
+              callback(null, group)
+              // PVSCL:ENDCOND
+            }
+          })
         }
       }
     })
@@ -586,7 +603,7 @@ class GroupSelector {
     }
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(RenameCodebook,LINE)
+  // PVSCL:IFCOND(RenameCodebook, LINE)
 
   createGroupSelectorRenameOptionEventHandler (group) {
     return () => {
@@ -610,7 +627,25 @@ class GroupSelector {
     }
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(ImportCodebook,LINE)
+  // PVSCL:IFCOND(ShareableCodebook , LINE)
+
+  createGroupSelectorShareOptionEventHandler (group) {
+    return () => {
+      this.openGroupShareAlert(group)
+    }
+  }
+
+  openGroupShareAlert (group, callback) {
+    Alerts.infoSyncAlert({
+      text: 'You can share your annotation group via this link: <a href="' + group.url + '" target="_blank">' + group.url + '</a>',
+      title: 'Share annotation codebook',
+      callback: () => {
+        callback(null, group)
+      }
+    })
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ImportCodebook, LINE)
 
   createImportGroupButtonEventHandler () {
     return () => {

@@ -845,7 +845,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
 &lt;/div&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
-    <cm:element cm:id="i4zTrONY9hhrFIG2J" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+    <cm:element cm:id="i4zTrONY9hhrFIG2J" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i0Rih-9DHXDFXzcH2" cm:class="ps:parents">
         <cm:relation cm:id="i0jw8HNk-k9kH2wxG" cm:type="ps:parent">
           <cm:target cm:id="igHwDDYRKVEypWy9a">./i3kWFU7xg1gvK1BJS</cm:target>
@@ -862,7 +862,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iQhfceMAbav2NB01w" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iqO7WQR44ygIcfeQt" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iG1leeSsbbFcwe7pz" cm:type="ps:datetime">2020-03-04T08:46:14.313Z</cm:constant>
+          <cm:constant cm:id="iG1leeSsbbFcwe7pz" cm:type="ps:datetime">2021-06-07T10:16:46.582Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -883,8 +883,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iM1m98Wj73NiqNlAX" cm:class="ps:children">
-        <cm:relation cm:id="iNIYiXtbiIK2UC_tw" cm:type="ps:mandatory" cm:range="n">
-          <cm:target cm:id="i5scr1UNK1aa9F2zj">./i4zTrONY9hhrFIG2J</cm:target>
+        <cm:relation cm:id="iU4WGdKdgO49ZYARf" cm:type="ps:optional" cm:range="[0,n]">
+          <cm:target cm:id="i1owcV6aSQu0nXwnF">./irFkD3urra-mHYN5C</cm:target>
+          <cm:target cm:id="iqAYWLgclR0LsFriv">./i4zTrONY9hhrFIG2J</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iIax34UMvh-pwMwlU" cm:class="ps:dependencies">
@@ -903,7 +904,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iMshjpdXVtnauqI4u" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iqOfYE-OeVlmu0shI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iP3DWUw8HHiKIMg6t" cm:type="ps:datetime">2020-03-04T08:46:08.067Z</cm:constant>
+          <cm:constant cm:id="iP3DWUw8HHiKIMg6t" cm:type="ps:datetime">2021-06-07T10:16:46.581Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2394,8 +2395,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="ijsQAR-C1GoNXBDnb" cm:class="ps:children">
-        <cm:relation cm:id="i9hQSx60Ih8VFhXsI" cm:type="ps:optional">
+        <cm:relation cm:id="i9hQSx60Ih8VFhXsI" cm:type="ps:optional" cm:range="[0,n]">
           <cm:target cm:id="i5asHjUlc5YDSbAsF">./i2E8IgoKCVFFmVA-u</cm:target>
+          <cm:target cm:id="iNYF7VkMeTfKnO1V2">./iwqouOtRFI77Z8VAu</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -2409,7 +2411,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iK2Ya-pY9Y8DFpo9O" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i4kxXcfg_32YDGTBE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="isiPwjaLYxb7fcNEt" cm:type="ps:datetime">2020-02-25T14:03:48.682Z</cm:constant>
+          <cm:constant cm:id="isiPwjaLYxb7fcNEt" cm:type="ps:datetime">2021-06-07T09:28:53.649Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2967,6 +2969,62 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="isc5M04B_r7frODE4" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;The selection of this feature allows multivalued themes, but must be splicitely set by the user, allowing, monovalued and multivalued themes in the codebook hierarchy&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iwqouOtRFI77Z8VAu" cm:name="ShareableCodebook" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i4mU13-1K2xiZl1tB" cm:class="ps:parents">
+        <cm:relation cm:id="i79xjzwte78wOMWvv" cm:type="ps:parent">
+          <cm:target cm:id="iEPLwof_Lfd5HBu2v">./i1x3iYEoGqxxR_L7o</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ib2pIETWEaLWwTio_" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i7GUHcYtfwKJjjG2h" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ihG7rcOblYyZEk_wp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iuGacDU55oKK1zdGQ" cm:type="ps:datetime">2021-06-07T09:28:29.913Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ibEBLEse2MS2sPojI" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iWKSnYdMQgCkDw2Dp" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izOQO2RKKQWj1X3An" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iHpcOEhQyTdWGA9lc" cm:type="ps:datetime">2021-06-07T09:31:04.460Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ihRQXwqqyT7y7b0v4" cm:mimetype="text/plain" cm:encoding="utf-8">Shareable</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="irFkD3urra-mHYN5C" cm:name="Voting" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iJSxoO_QZY5Tod4qu" cm:class="ps:parents">
+        <cm:relation cm:id="i6vcQBNI24XvSLm9o" cm:type="ps:parent">
+          <cm:target cm:id="i_0UK6DIL_Y00LtMy">./i3kWFU7xg1gvK1BJS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iyxP-oZ4tYyNnDnOL" cm:class="ps:dependencies">
+        <cm:relation cm:id="in6APsFcNsPdyANvr" cm:type="ps:requires">
+          <cm:target cm:id="ifBvhLtuqFGO3LBgO">iivhJRwmojkiJvYc5/iTX52aKLiU5bPOxWs</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iUEd3Cf8L_M5wKVt7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i7l51iYXEdZKm-KNl" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iSIG5_lyTA5hM4FR2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iWFWuv5K-JpjXrHlY" cm:type="ps:datetime">2021-06-07T10:16:30.151Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i2dCF8tB9C5QwM87d" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iERas8LIEl40cIOY6" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijAmSdNb7-VpPbPkN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iUJAQyCr-OcBkmweG" cm:type="ps:datetime">2021-06-07T10:20:31.429Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iQBN8L-FRJ7ufUBJd" cm:mimetype="text/plain" cm:encoding="utf-8">Voting</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ih1-LDIAPqQ4em0b6" cm:mimetype="text/html" cm:encoding="utf-8">This feature allows upvoting/downvoting for other user&apos;s annotations</cm:mimedesc>
       </cm:desc>
     </cm:element>
   </cm:elements>

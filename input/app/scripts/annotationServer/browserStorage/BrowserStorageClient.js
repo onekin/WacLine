@@ -248,7 +248,7 @@ class BrowserStorageClient {
           annotations: this.database.annotations,
           currentUser: this.database.user
         })
-        // TODO Update storage
+        // Update storage
         this.manager.saveDatabase(this.database)
         callback(null, updatedAnnotation)
       } catch (e) {

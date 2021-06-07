@@ -9,11 +9,11 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
     super()
     this.client = null
     this.googleToken = null
-    this.storageMetadata = {
-      annotationUrl: '',
-      storageUrl: '',
-      groupUrl: '',
-      userUrl: ''
+    this.annotationServerMetadata = {
+      annotationUrl: 'https://localannotationsdatabase.org/annotation/',
+      groupUrl: 'https://docs.google.com/spreadsheets/d/',
+      userUrl: 'https://localannotationsdatabase.org/user/',
+      annotationServerUrl: 'https://docs.google.com/spreadsheets/'
     }
   }
 
