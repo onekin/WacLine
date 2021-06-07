@@ -190,7 +190,7 @@ class UpdateCodebook {
           }
           window.abwa.annotationServerManager.client.deleteAnnotations(annotationsToDelete, (err, result) => {
             if (err) {
-              Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
+              Alerts.errorAlert({ text: 'Unexpected error when deleting the code. Error: ' + err.message })
             } else {
               LanguageUtils.dispatchCustomEvent(Events.themeRemoved, { theme: theme })
             }
@@ -314,7 +314,7 @@ class UpdateCodebook {
         callback: () => {
           window.abwa.annotationServerManager.client.deleteAnnotation(code.id, (err, result) => {
             if (err) {
-              Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
+              Alerts.errorAlert({ text: 'Unexpected error when deleting the code. Error: ' + err.message })
             } else {
               LanguageUtils.dispatchCustomEvent(Events.codeRemoved, { code: code })
             }

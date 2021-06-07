@@ -187,18 +187,19 @@ class GoogleSheetAnnotationClient {
           } else {
             // Find the corresponding row
             let row = response.findIndex(row => { return row[0] === id })
-            client.batchUpdate([
-              {
+            client.batchUpdate({
+              spreadsheetId: browserStorageResult.annotation.group,
+              requests: [{
                 deleteDimension: {
                   range: {
                     dimension: 'ROWS',
                     startIndex: row,
                     endIndex: row + 1,
-                    sheetId: 855346762
+                    sheetId: 855346762 // TODO Parametrize this sheet number
                   }
                 }
-              }
-            ], (err, result) => {
+              }]
+            }, (err, result) => {
               if (err) {
                 callback(err)
               } else {
@@ -212,7 +213,50 @@ class GoogleSheetAnnotationClient {
   }
 
   deleteAnnotations (annotationsArray, callback) {
-    this.browserStorageManager.client.deleteAnnotations(annotationsArray, callback)
+    this.browserStorageManager.client.deleteAnnotations(annotationsArray, (err, browserStorageResult) => {
+      if (err) {
+        callback(err)
+      } else {
+        let client = new GoogleSheetClient(this.token)
+        if (_.has(browserStorageResult.annotations[0], 'group')) {
+          client.getSheetRowsRawData(browserStorageResult.annotations[0].group, Config.namespace, (err, response) => {
+            if (err) {
+              callback(err)
+            } else {
+              // Find the corresponding row for all the annotations
+              let rows = annotationsArray.map((id) => {
+                return response.findIndex(row => { return row[0] === id })
+              })
+              rows = rows.sort((a, b) => b - a) // Sort from highest row to lowest (this is done to ensure all the rows are deleted, as if you delete first row 5 and then 6, the line 6 becomes 5 so then row 6 is never deleted)
+              // Construct batch update call
+              let requests = rows.map((rowNumber) => {
+                return {
+                  deleteDimension: {
+                    range: {
+                      dimension: 'ROWS',
+                      startIndex: rowNumber,
+                      endIndex: rowNumber + 1,
+                      sheetId: 855346762 // TODO Parametrize this sheet number
+                    }
+                  }
+                }
+              })
+              // Call google sheet client to delete corresponding cells
+              client.batchUpdate({
+                spreadsheetId: browserStorageResult.annotations[0].group,
+                requests: requests
+              }, (err, result) => {
+                if (err) {
+                  callback(err)
+                } else {
+                  callback(null, browserStorageResult)
+                }
+              })
+            }
+          })
+        }
+      }
+    })
   }
 
   fetchAnnotation (id, callback) {
