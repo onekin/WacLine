@@ -66,6 +66,8 @@ class ReadAnnotation {
   }
 
   destroy () {
+    // Unhighlight all annotations from DOM
+    this.unHighlightAllAnnotations()
     // Remove event listeners
     const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
