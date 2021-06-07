@@ -6,6 +6,7 @@ import Events from '../../Events'
 import LanguageUtils from '../../utils/LanguageUtils'
 import Alerts from '../../utils/Alerts'
 import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
+import Canvas from './Canvas'
 
 class ChecklistReview {
 
@@ -32,14 +33,18 @@ class ChecklistReview {
         e.stopPropagation()
       })
 
-      document.querySelector('#canvasOverlay').addEventListener('click', function (e) {
+      document.querySelector('#checklistCanvasOverlay').addEventListener('click', function (e) {
         document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
-        document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
+        if (document.querySelector('#reviewCanvas')) document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
       document.querySelector('#backToCanvasArrow').addEventListener('click', function (e) {
         document.querySelector('#checklistCanvas').parentNode.removeChild(document.querySelector('#checklistCanvas'))
-        document.querySelector('#reviewCanvas').style.display = 'block'
+        if (document.querySelector('#reviewCanvas')) {
+          document.querySelector('#reviewCanvas').style.display = 'block'
+        } else {
+          Canvas.generateCanvas()
+        }
       })
 
 

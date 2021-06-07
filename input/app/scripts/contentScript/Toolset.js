@@ -87,7 +87,7 @@ class Toolset {
       this.essentialChecklistImage.addEventListener('click', function () {
         ChecklistReview.generateEssentialReview()
       })
-      this.toolsetBody.appendChild(this.essentialChecklistImageUrl)
+      this.toolsetBody.appendChild(this.essentialChecklistImage)
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Canvas, LINE)
       // Set Canvas image
