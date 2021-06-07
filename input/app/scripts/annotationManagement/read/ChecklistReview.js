@@ -5,8 +5,15 @@ import $ from 'jquery'
 import Events from '../../Events'
 import LanguageUtils from '../../utils/LanguageUtils'
 import Alerts from '../../utils/Alerts'
+import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
 
 class ChecklistReview {
+
+  static generateEssentialReview () {
+    const checklistsAnnotations = ImportChecklist.getChecklistsAnnotations()
+    const foundChecklist = checklistsAnnotations.find((checklistAn) => checklistAn.body[0].value.name === 'Essential')
+    ChecklistReview.generateReview(foundChecklist)
+  }
 
   /**
    * This function shows an overview of the current document's checklist.
