@@ -640,7 +640,9 @@ class GroupSelector {
       text: 'You can share your annotation group via this link: <a href="' + group.url + '" target="_blank">' + group.url + '</a>',
       title: 'Share annotation codebook',
       callback: () => {
-        callback(null, group)
+        if (_.isFunction(callback)) {
+          callback(null, group)
+        }
       }
     })
   }

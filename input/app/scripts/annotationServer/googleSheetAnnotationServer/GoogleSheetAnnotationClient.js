@@ -135,7 +135,7 @@ class GoogleSheetAnnotationClient {
       } else {
         let client = new GoogleSheetClient(this.token)
         let row = { values: [[browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation)]] }
-        client.appendRowSpreadSheet(browserStorageAnnotation.group, Config.namespace, row, (err) => {
+        client.appendValuesSpreadSheet(browserStorageAnnotation.group, Config.namespace, row, (err) => {
           if (err) {
             callback(err)
           } else {
@@ -156,7 +156,7 @@ class GoogleSheetAnnotationClient {
           return [browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation)]
         })
         let row = { values: values }
-        client.appendRowSpreadSheet(browserStorageAnnotations[0].group, Config.namespace, row, (err) => {
+        client.appendValuesSpreadSheet(browserStorageAnnotations[0].group, Config.namespace, row, (err) => {
           if (err) {
             callback(err)
           } else {

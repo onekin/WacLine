@@ -18,6 +18,7 @@ import PreviousAssignments from '../annotationManagement/purposes/PreviousAssign
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
 import GoogleSheetAnnotationClientManager from '../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
+import GoogleSheetAuditLogging from '../annotationManagement/read/GoogleSheetAuditLogging'
 // PVSCL:ENDCOND
 
 class ContentScriptManager {
@@ -111,9 +112,23 @@ class ContentScriptManager {
         return this.reloadPreviousAssignments()
       })
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+      .then(() => {
+        return this.reloadGoogleSheetAuditLogging()
+      })
+      // PVSCL:ENDCOND
       .then(() => {
         this.status = ContentScriptManager.status.initialized
         console.debug('Initialized content script manager')
+      })
+      .catch((err) => {
+        if (err) {
+          const Alerts = require('../utils/Alerts').default
+          Alerts.errorAlert({
+            text: 'Error while loading an extension module. Error: ' + err.message,
+            title: 'Oops!'
+          })
+        }
       })
   }
 
@@ -180,6 +195,28 @@ class ContentScriptManager {
       })
     })
   }
+  // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+
+  reloadGoogleSheetAuditLogging () {
+    return new Promise((resolve, reject) => {
+      this.destroyGoogleSheetAuditLogging()
+      window.abwa.googleSheetAuditLogging = new GoogleSheetAuditLogging()
+      window.abwa.googleSheetAuditLogging.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+
+  destroyGoogleSheetAuditLogging () {
+    if (window.abwa.googleSheetAuditLogging) {
+      window.abwa.googleSheetAuditLogging.destroy()
+    }
+  }
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleReport, LINE)
 
   reloadMoodleReport () {
@@ -422,7 +459,7 @@ class ContentScriptManager {
         const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager').default
         window.abwa.annotationServerManager = new HypothesisClientManager()
       }
-      // PVSCL:ENDCOND
+      // PVSCL:ENDCOND// sass-lint:disable no-important
       // PVSCL:IFCOND(BrowserStorage, LINE)
       if (annotationServer === 'browserstorage') {
         // Browser storage
@@ -455,7 +492,7 @@ class ContentScriptManager {
         })
       } else {
         const Alerts = require('../utils/Alerts').default
-        Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in options page.' })
+        Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in <a href="' + chrome.extension.getURL('pages/options.html') + '">options page</a>.' })
       }
     })
     // PVSCL:ENDCOND

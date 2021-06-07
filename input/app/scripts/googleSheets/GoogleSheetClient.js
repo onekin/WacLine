@@ -298,10 +298,10 @@ class GoogleSheetClient {
    * Appends a row in a google sheet for a given range
    * @param spreadsheetId Spreadsheet Id
    * @param range The range of the spreadsheet where to append the row
-   * @param row The sheet row as an array of values
+   * @param values The sheet row as an array of values
    * @param callback
    */
-  appendRowSpreadSheet (spreadsheetId, range, row, callback) {
+  appendValuesSpreadSheet (spreadsheetId, range, values, callback) {
     try {
       if (spreadsheetId) {
         let settings = {
@@ -311,7 +311,7 @@ class GoogleSheetClient {
           params: {
             valueInputOption: 'RAW'
           },
-          data: row,
+          data: values,
           method: 'POST',
           headers: {
             Authorization: 'Bearer ' + this.token,

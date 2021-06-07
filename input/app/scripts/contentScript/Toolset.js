@@ -154,6 +154,10 @@ class Toolset {
       // PVSCL:ENDCOND
       // Add link to configuration page of the tool
       this.toolsetHeader.querySelector('#appNameBadge').href = chrome.extension.getURL('/pages/options.html')
+      this.toolsetHeader.querySelector('#sidebarConfigButton').src = chrome.extension.getURL('/images/configuration.png')
+      this.toolsetHeader.querySelector('#sidebarConfigButton').addEventListener('click', () => {
+        window.open(chrome.extension.getURL('/pages/options.html'))
+      })
       // Check if exist any element in the tools and show it
       if (!_.isEmpty(this.toolsetBody.innerHTML)) {
         this.show()
