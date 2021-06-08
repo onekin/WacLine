@@ -2,6 +2,7 @@ import Events from '../../Events'
 import GoogleSheetClient from '../../googleSheets/GoogleSheetClient'
 import _ from 'lodash'
 import Classifying from '../purposes/Classifying'
+import Commenting from '../purposes/Commenting'
 
 class GoogleSheetAuditLogging {
   init (callback) {
@@ -9,6 +10,15 @@ class GoogleSheetAuditLogging {
 
     // Listeners initialization
     this.listenersInit()
+  }
+
+  destroy () {
+    // Destroy event listeners
+    // Remove event listeners
+    const events = _.values(this.events)
+    for (let i = 0; i < events.length; i++) {
+      events[i].element.removeEventListener(events[i].event, events[i].handler)
+    }
   }
 
   sendCallToBackground (cmd, data, callback) {
@@ -27,8 +37,53 @@ class GoogleSheetAuditLogging {
 
   listenersInit () {
     this.events = {}
+    // annotationCreated event
     this.events.annotationCreatedEvent = { element: document, event: Events.annotationCreated, handler: this.createdAnnotationHandler() }
     this.events.annotationCreatedEvent.element.addEventListener(this.events.annotationCreatedEvent.event, this.events.annotationCreatedEvent.handler, false)
+    // annotationUpdated event
+    this.events.annotationUpdatedEvent = { element: document, event: Events.annotationUpdated, handler: this.updatedAnnotationHandler() }
+    this.events.annotationUpdatedEvent.element.addEventListener(this.events.annotationUpdatedEvent.event, this.events.annotationUpdatedEvent.handler, false)
+    // annotationDeleted event
+    this.events.annotationDeletedEvent = { element: document, event: Events.annotationDeleted, handler: this.deletedAnnotationHandler() }
+    this.events.annotationDeletedEvent.element.addEventListener(this.events.annotationDeletedEvent.event, this.events.annotationDeletedEvent.handler, false)
+  }
+
+  deletedAnnotationHandler () {
+    return (event) => {
+      // Everytime an annotation is deleted
+      let annotation = event.detail.annotation
+      let row = this.classifying2Row(annotation, 'schema:DeleteAction')
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-classifying',
+        data: { values: [row] }
+      }, (err, result) => {
+        if (err) {
+          console.error(err)
+        } else {
+          console.log(result)
+        }
+      })
+    }
+  }
+
+  updatedAnnotationHandler () {
+    return (event) => {
+      // Everytime an annotation is updated
+      let annotation = event.detail.annotation
+      let row = this.classifying2Row(annotation, 'schema:ReplaceAction') // TODO UpdateAction ¿?
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-classifying',
+        data: { values: [row] }
+      }, (err, result) => {
+        if (err) {
+          console.error(err)
+        } else {
+          console.log(result)
+        }
+      })
+    }
   }
 
   createdAnnotationHandler () {
@@ -47,15 +102,6 @@ class GoogleSheetAuditLogging {
           console.log(result)
         }
       })
-    }
-  }
-
-  destroy () {
-    // Destroy event listeners
-    // Remove event listeners
-    const events = _.values(this.events)
-    for (let i = 0; i < events.length; i++) {
-      events[i].element.removeEventListener(events[i].event, events[i].handler)
     }
   }
 
@@ -286,7 +332,10 @@ class GoogleSheetAuditLogging {
       let position = this.searchInArray(data.target[0].selector, 'type', 'TextPositionSelector')
       row[start] = position.start
       row[end] = position.end
-      row[comment] = data.text || ''
+      let commentingBody = data.body.find(elem => elem instanceof Commenting)
+      if (commentingBody) {
+        row[comment] = commentingBody.value || ''
+      }
       row[motivatedby] = 'oa:classifying' // TODO Verify with Iker if this is correct or not
       row[potentialaction] = action
       // row[encoding] = this.encodeHide(JSON.stringify(data)) // TODO Verify with Iker if this is still necessary
