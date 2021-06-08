@@ -11,6 +11,8 @@ import URLUtils from '../utils/URLUtils'
 
 class Options {
   init () {
+    // Rate us, manual and contact initialization
+    document.querySelector('#chromeStoreLink').href = 'https://chrome.google.com/webstore/detail/' + (new URL(chrome.extension.getURL(''))).host
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
     // annotationServer type
     document.querySelector('#annotationServerDropdown').addEventListener('change', (event) => {

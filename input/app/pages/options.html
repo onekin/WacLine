@@ -21,14 +21,6 @@
     <div class="jumbotron">
       <img class="logo" src="../images/PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))/icon-38.png">
       <h2 class="title">PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appName')) configuration</h2>
-      <div class="card">
-        <div class="card-header bg-dark text-white">User manual</div>
-        <div class="card-body">
-          <div class="form-group">
-            Visit whenever you want the <a href="PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('userManualUrl'))" target="_blank">user manual</a> for further information.
-          </div>
-        </div>
-      </div>
       // PVSCL:IFCOND(MoodleProvider,LINE)
       <div class="card" aria-hidden="true">
         <div class="card-header bg-dark text-white">Feedback</div>
@@ -129,6 +121,39 @@
         </div>
       </div>
       // PVSCL:ENDCOND
+    </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card">
+          <img src="../images/chromeStore.png" class="card-img-top cardImage" alt="Rate us in Chrome Store">
+          <div class="card-body">
+            <h5 class="card-title">Rate us!</h5>
+            <p class="card-text">If you like the application you can rate us and give your opinion!</p>
+            <a id="chromeStoreLink" class="btn btn-primary">Chrome Store</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img src="../images/manual.png" class="card-img-top cardImage" alt="Check the user manual">
+          <div class="card-body">
+            <h5 class="card-title">User manual</h5>
+            <p class="card-text">Visit whenever you want the user manual for further information!</p>
+            <a href="PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('userManualUrl'))" class="btn btn-primary">User manual</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <img src="../images/github.png" class="card-img-top cardImage" alt="Contact us via github">
+          <div class="card-body">
+            <h5 class="card-title">Contact us</h5>
+            <p class="card-text">Contact us if you have suggestions to improve, problems, etc.</p>
+            <a href="https://github.com/onekin/wacline/issues" class="btn btn-primary">Github</a>
+            <a href="mailto:haritzmedina@gmail.com" class="btn btn-primary">Email</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
