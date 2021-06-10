@@ -1,4 +1,5 @@
 import Events from '../../Events'
+import jsYaml from 'js-yaml'
 import GoogleSheetClient from '../../googleSheets/GoogleSheetClient'
 import _ from 'lodash'
 import Classifying from '../purposes/Classifying'
@@ -37,6 +38,7 @@ class GoogleSheetAuditLogging {
 
   listenersInit () {
     this.events = {}
+    // Events for classification spreadsheet
     // annotationCreated event
     this.events.annotationCreatedEvent = { element: document, event: Events.annotationCreated, handler: this.createdAnnotationHandler() }
     this.events.annotationCreatedEvent.element.addEventListener(this.events.annotationCreatedEvent.event, this.events.annotationCreatedEvent.handler, false)
@@ -46,13 +48,119 @@ class GoogleSheetAuditLogging {
     // annotationDeleted event
     this.events.annotationDeletedEvent = { element: document, event: Events.annotationDeleted, handler: this.deletedAnnotationHandler() }
     this.events.annotationDeletedEvent.element.addEventListener(this.events.annotationDeletedEvent.event, this.events.annotationDeletedEvent.handler, false)
+    // TODO Events for codebook development and linking spreadsheets
+    // themeCreated event
+    this.events.themeCreatedEvent = { element: document, event: Events.themeCreated, handler: this.createdThemeHandler() }
+    this.events.themeCreatedEvent.element.addEventListener(this.events.themeCreatedEvent.event, this.events.themeCreatedEvent.handler, false)
+    // themeUpdated event
+    this.events.themeUpdatedEvent = { element: document, event: Events.themeUpdated, handler: this.updatedThemeHandler() }
+    this.events.themeUpdatedEvent.element.addEventListener(this.events.themeUpdatedEvent.event, this.events.themeUpdatedEvent.handler, false)
+    // themeRemoved event
+    this.events.themeDeletedEvent = { element: document, event: Events.themeRemoved, handler: this.deletedThemeHandler() }
+    this.events.themeDeletedEvent.element.addEventListener(this.events.themeDeletedEvent.event, this.events.themeDeletedEvent.handler, false)
+    // codeCreated event
+    this.events.codeCreatedEvent = { element: document, event: Events.codeCreated, handler: this.createdCodeHandler() }
+    this.events.codeCreatedEvent.element.addEventListener(this.events.codeCreatedEvent.event, this.events.codeCreatedEvent.handler, false)
+    // codeUpdated event
+    this.events.codeUpdatedEvent = { element: document, event: Events.codeUpdated, handler: this.updatedCodeHandler() }
+    this.events.codeUpdatedEvent.element.addEventListener(this.events.codeUpdatedEvent.event, this.events.codeUpdatedEvent.handler, false)
+    // codeRemoved event
+    this.events.codeDeletedEvent = { element: document, event: Events.codeRemoved, handler: this.deletedCodeHandler() }
+    this.events.codeDeletedEvent.element.addEventListener(this.events.codeDeletedEvent.event, this.events.codeDeletedEvent.handler, false)
+    // TODO Events for assessing spreadsheet
   }
 
-  deletedAnnotationHandler () {
+  createdThemeHandler () {
     return (event) => {
-      // Everytime an annotation is deleted
+      // Everytime a theme is created
+      let annotation = event.detail.themeAnnotation
+      let row = this.codebooking2Row(annotation, 'schema:CreateAction')
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-codebookDevelopment',
+        data: { values: [row] }
+      })
+    }
+  }
+
+  updatedThemeHandler () {
+    return (event) => {
+      // Everytime a theme is updated
+      let annotations = event.detail.themeAnnotations
+      if (_.isArray(annotations)) {
+        let annotation = annotations.find(annotation => annotation.tags.find(tag => tag.includes('oa:theme:'))) // Get only the annotation for the theme
+        let row = this.codebooking2Row(annotation, 'schema:ReplaceAction')
+        this.sendCallToBackground('appendRowSpreadSheet', {
+          spreadsheetId: annotation.group,
+          range: 'LOG-codebookDevelopment',
+          data: { values: [row] }
+        })
+      }
+    }
+  }
+
+  deletedThemeHandler () {
+    return (event) => {
+      // Everytime a theme is deleted
+      let annotation = event.detail.themeAnnotation
+      let row = this.codebooking2Row(annotation, 'schema:DeleteAction')
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-codebookDevelopment',
+        data: { values: [row] }
+      })
+      // TODO Comment with @ikerazpeitia: should we add to the linking log that themes and it's codes where unlinked ¿?
+    }
+  }
+
+  createdCodeHandler () {
+    return (event) => {
+      // Everytime a code is created
+      let annotation = event.detail.codeAnnotation
+      let codebookRow = this.codebooking2Row(annotation, 'schema:CreateAction')
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-codebookDevelopment',
+        data: { values: [codebookRow] }
+      })
+      // TODO Add to linking spreadsheet
+      let linkingRow = this.linking2Row(annotation, 'schema:CreateAction')
+    }
+  }
+
+  updatedCodeHandler () {
+    return (event) => {
+      // Everytime a code is updated
+      let annotation = event.detail.codeAnnotation
+      let row = this.codebooking2Row(annotation, 'schema:ReplaceAction')
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-codebookDevelopment',
+        data: { values: [row] }
+      })
+    }
+  }
+
+  deletedCodeHandler () {
+    return (event) => {
+      // Everytime a code is deleted
+      let annotation = event.detail.codeAnnotation
+      let row = this.codebooking2Row(annotation, 'schema:DeleteAction')
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-codebookDevelopment',
+        data: { values: [row] }
+      })
+      // TODO Add to linking spreadsheet
+
+    }
+  }
+
+  createdAnnotationHandler () {
+    return (event) => {
+      // Everytime an annotation is created
       let annotation = event.detail.annotation
-      let row = this.classifying2Row(annotation, 'schema:DeleteAction')
+      let row = this.classifying2Row(annotation, 'schema:CreateAction')
       this.sendCallToBackground('appendRowSpreadSheet', {
         spreadsheetId: annotation.group,
         range: 'LOG-classifying',
@@ -86,11 +194,11 @@ class GoogleSheetAuditLogging {
     }
   }
 
-  createdAnnotationHandler () {
+  deletedAnnotationHandler () {
     return (event) => {
-      // Everytime an annotation is created
+      // Everytime an annotation is deleted
       let annotation = event.detail.annotation
-      let row = this.classifying2Row(annotation, 'schema:CreateAction')
+      let row = this.classifying2Row(annotation, 'schema:DeleteAction')
       this.sendCallToBackground('appendRowSpreadSheet', {
         spreadsheetId: annotation.group,
         range: 'LOG-classifying',
@@ -208,16 +316,14 @@ class GoogleSheetAuditLogging {
       let hastarget = 4
       let motivatedby = 5
       let potentialaction = 6
-      let encoding = 7
       let row = []
       row[id] = data.id
       row[created] = data.created
-      row[creator] = window.background.googleSheetAnnotationManager.annotationServerManager.userEmail // data.user
+      row[creator] = data.user // data.user
       row[hasbody] = data.body
-      row[hastarget] = data.target[0].source.id
-      row[motivatedby] = data.motivation // 'slr:linking'
+      row[hastarget] = data.target
+      row[motivatedby] = 'oa:linking' // TODO Comment with @ikerazpeitia that OA has linking
       row[potentialaction] = action
-      row[encoding] = this.encodeHide(JSON.stringify(data))
       return row
     } catch (err) {
       return err
@@ -277,21 +383,29 @@ class GoogleSheetAuditLogging {
       let row = []
       row[id] = data.id
       row[created] = data.created
-      row[creator] = window.background.googleSheetAnnotationManager.annotationServerManager.userEmail // data.user
-      row[hasbody] = data.body.value
-      row[hassource] = data.target[0].source.id
-      let quote = this.searchInArray(data.target[0].selector, 'type', 'TextQuoteSelector')
-      row[exact] = quote.exact
-      row[prefix] = quote.prefix
-      row[suffix] = quote.suffix
-      let position = this.searchInArray(data.target[0].selector, 'type', 'TextPositionSelector')
-      row[start] = position.start
-      row[end] = position.end
-      row[comment] = data.body.description // data.text
-      row[motivatedby] = data.motivation // 'slr:codebookDevelopment'
+      row[creator] = data.user // data.user
+      row[hasbody] = data.tags[0].replace('oa:theme:', '').replace('oa:code:', '') // For the case of themes and codes
+      // Find the target that talks about where was created (must include source.id, textquoteselector and textpositionselector
+      let evidenceTarget = data.target.find(target => { return _.has(target, 'source.id') && _.has(target, 'selector') && target.selector.find(selector => selector.type === 'TextPositionSelector') && target.selector.find(selector => selector.type === 'TextQuoteSelector') })
+      if (!_.isEmpty(evidenceTarget)) {
+        row[hassource] = evidenceTarget.source.id
+        let quote = this.searchInArray(evidenceTarget.selector, 'type', 'TextQuoteSelector')
+        row[exact] = quote.exact
+        row[prefix] = quote.prefix
+        row[suffix] = quote.suffix
+        let position = this.searchInArray(evidenceTarget.selector, 'type', 'TextPositionSelector')
+        row[start] = position.start
+        row[end] = position.end
+      }
+      try {
+        let config = jsYaml.load(data.text)
+        let description = config.description
+        row[comment] = description
+      } catch (e) {
+        // Ignore error
+      }
+      row[motivatedby] = 'slr:codebookDevelopment'
       row[potentialaction] = action
-      row[encoding] = this.encodeHide(JSON.stringify(data))
-      row[multivalued] = data.body.multivalued
       return row
     } catch (err) {
       return err

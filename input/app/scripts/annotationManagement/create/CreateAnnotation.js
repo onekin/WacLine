@@ -49,7 +49,7 @@ class CreateAnnotation {
           return
         }
         // Create target
-        target = this.obtainTargetToCreateAnnotation(event.detail)
+        target = CreateAnnotation.obtainTargetToCreateAnnotation(event.detail)
         // Create body
         const body = this.obtainBodyToCreateAnnotation(event.detail)
         // Create tags
@@ -117,7 +117,7 @@ class CreateAnnotation {
     return body
   }
 
-  obtainTargetToCreateAnnotation ({ repliedAnnotation }) {
+  static obtainTargetToCreateAnnotation ({ repliedAnnotation }) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
       return [{ source: repliedAnnotation.target[0].source }]

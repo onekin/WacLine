@@ -9,6 +9,8 @@ class Code {
     name,
     description = '',
     createdDate = new Date(),
+    updatedDate = new Date(),
+    target = [],
     color, theme/* PVSCL:IFCOND(MoodleProvider) */,
     moodleLevelId/* PVSCL:ENDCOND */
   }) {
@@ -16,6 +18,7 @@ class Code {
     this.name = name
     this.color = color
     this.theme = theme
+    this.target = target
     this.description = description
     if (LanguageUtils.isInstanceOf(createdDate, Date)) {
       this.createdDate = createdDate
@@ -23,6 +26,14 @@ class Code {
       const timestamp = Date.parse(createdDate)
       if (_.isNumber(timestamp)) {
         this.createdDate = new Date(createdDate)
+      }
+    }
+    if (LanguageUtils.isInstanceOf(updatedDate, Date)) {
+      this.updatedDate = updatedDate
+    } else {
+      const timestamp = Date.parse(updatedDate)
+      if (_.isNumber(timestamp)) {
+        this.updatedDate = new Date(updatedDate)
       }
     }
     // PVSCL:IFCOND(MoodleProvider, LINE)
@@ -52,7 +63,7 @@ class Code {
       motivation: 'codebookDevelopment',
       references: [],
       tags: tags,
-      target: [],
+      target: this.target, // TODO Check if discrepancy between target and URI values works well in Hypothes.is annotation server
       text: jsYaml.dump({ id: this.id || '', description: this.description }),
       uri: this.theme.annotationGuide.annotationServer.getGroupUrl()
     }
@@ -67,6 +78,7 @@ class Code {
   }
 
   static fromAnnotation (annotation, theme = {}) {
+    // TODO Change use of tags to body
     const codeTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':' + Config.tags.grouped.subgroup + ':')
     })
@@ -79,9 +91,9 @@ class Code {
         let codeToReturn
         // PVSCL:IFCOND(MoodleProvider, LINE)
         const moodleLevelId = config.id
-        codeToReturn = new Code({ id, name, description, theme, moodleLevelId, createdDate: annotation.updated })
+        codeToReturn = new Code({ id, name, description, theme, moodleLevelId, createdDate: annotation.created, updatedDate: annotation.updated, target: annotation.target })
         // PVSCL:ELSECOND
-        codeToReturn = new Code({ id, name, description, theme, createdDate: annotation.updated })
+        codeToReturn = new Code({ id, name, description, theme, createdDate: annotation.created, updatedDate: annotation.updated, target: annotation.target })
         // PVSCL:ENDCOND
         return codeToReturn
       } else {

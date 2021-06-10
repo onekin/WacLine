@@ -299,7 +299,7 @@ class BrowserStorageClient {
         annotations: this.database.annotations,
         currentUser: this.database.user
       })
-      // TODO Update storage
+      // Update storage
       this.manager.saveDatabase(this.database)
       // Callback
       callback(null, { deleted: true, id: deletedAnnotation.id, annotation: deletedAnnotation })

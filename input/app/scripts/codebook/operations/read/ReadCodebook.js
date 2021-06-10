@@ -684,7 +684,7 @@ class ReadCodebook {
    */
   themeCreatedEventHandler () {
     return (event) => {
-      const theme = Theme.fromAnnotation(event.detail.newThemeAnnotation, this.codebook)
+      const theme = Theme.fromAnnotation(event.detail.themeAnnotation, this.codebook)
       // Add to the model the new theme
       this.codebook.addTheme(theme)
       // Reload button container
@@ -699,7 +699,7 @@ class ReadCodebook {
   themeUpdatedEventHandler () {
     return (event) => {
       // Update model
-      this.codebook.updateTheme(event.detail.updatedTheme)
+      this.codebook.updateTheme(event.detail.theme)
       // Reload button container
       this.reloadButtonContainer()
       // Dispatch codebook updated event
@@ -730,7 +730,7 @@ class ReadCodebook {
   codeCreatedEventHandler () {
     return (event) => {
       const theme = event.detail.theme
-      const code = Code.fromAnnotation(event.detail.newCodeAnnotation, theme)
+      const code = Code.fromAnnotation(event.detail.codeAnnotation, theme)
       // Add to the model the new theme
       theme.addCode(code)
       // Reload button container
@@ -745,7 +745,7 @@ class ReadCodebook {
   codeUpdatedEventHandler () {
     return (event) => {
       // Update model
-      const code = event.detail.updatedCode
+      const code = event.detail.code
       const theme = code.theme
       theme.updateCode(code)
       this.codebook.updateTheme(theme)
