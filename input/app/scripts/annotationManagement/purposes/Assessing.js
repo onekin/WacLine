@@ -19,7 +19,9 @@ class Assessing extends Body {
   }
 
   tooltip () {
-    return 'Assessing: ' + this.value
+    if (this.value) {
+      return 'Assessing: ' + this.value
+    }
   }
 }
 

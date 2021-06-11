@@ -883,9 +883,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iM1m98Wj73NiqNlAX" cm:class="ps:children">
-        <cm:relation cm:id="iU4WGdKdgO49ZYARf" cm:type="ps:optional" cm:range="[0,n]">
-          <cm:target cm:id="i1owcV6aSQu0nXwnF">./irFkD3urra-mHYN5C</cm:target>
-          <cm:target cm:id="iqAYWLgclR0LsFriv">./i4zTrONY9hhrFIG2J</cm:target>
+        <cm:relation cm:id="ic6RcfmolTrtHWeHL" cm:type="ps:alternative" cm:range="1">
+          <cm:target cm:id="iFt4Ci9UaFmiimxzz">./irFkD3urra-mHYN5C</cm:target>
+          <cm:target cm:id="i76Mb9QBuzoWZ69AW">./i4zTrONY9hhrFIG2J</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iIax34UMvh-pwMwlU" cm:class="ps:dependencies">
@@ -904,7 +904,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iMshjpdXVtnauqI4u" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iqOfYE-OeVlmu0shI" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iP3DWUw8HHiKIMg6t" cm:type="ps:datetime">2021-06-07T10:16:46.581Z</cm:constant>
+          <cm:constant cm:id="iP3DWUw8HHiKIMg6t" cm:type="ps:datetime">2021-06-11T07:13:01.546Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2996,7 +2996,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:mimedesc cm:id="ihRQXwqqyT7y7b0v4" cm:mimetype="text/plain" cm:encoding="utf-8">Shareable</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="irFkD3urra-mHYN5C" cm:name="Voting" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+    <cm:element cm:id="irFkD3urra-mHYN5C" cm:name="Voting" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iJSxoO_QZY5Tod4qu" cm:class="ps:parents">
         <cm:relation cm:id="i6vcQBNI24XvSLm9o" cm:type="ps:parent">
           <cm:target cm:id="i_0UK6DIL_Y00LtMy">./i3kWFU7xg1gvK1BJS</cm:target>
@@ -3018,7 +3018,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iERas8LIEl40cIOY6" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="ijAmSdNb7-VpPbPkN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iUJAQyCr-OcBkmweG" cm:type="ps:datetime">2021-06-07T10:20:31.429Z</cm:constant>
+          <cm:constant cm:id="iUJAQyCr-OcBkmweG" cm:type="ps:datetime">2021-06-11T07:12:57.334Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

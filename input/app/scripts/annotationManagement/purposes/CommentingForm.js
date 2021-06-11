@@ -24,6 +24,9 @@ import Assessing from './Assessing'
 import SuggestingLiterature from './SuggestingLiterature'
 require('components-jqueryui')
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Voting, LINE)
+
+// PVSCL:ENDCOND
 
 class CommentingForm {
   /**
@@ -135,6 +138,10 @@ class CommentingForm {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Categorize, LINE)
       preConfirmData.categorizeData = document.querySelector('#categorizeDropdown').value
+      // PVSCL:ELSEIFCOND(Voting, LINE)
+      if (document.querySelector('input[name="voteRadio"]:checked')) {
+        preConfirmData.votingData = document.querySelector('input[name="voteRadio"]:checked').value
+      }
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(SentimentAnalysis, LINE)
       if (preConfirmData.comment !== null && preConfirmData.comment !== '') {
@@ -202,6 +209,32 @@ class CommentingForm {
       select.add(option)
     })
     html += select.outerHTML
+    // PVSCL:ELSEIFCOND(Voting, LINE)
+    if (annotation.references.length > 0) { // Only can be voted annotations that reply to another one
+      const voting = document.createElement('div')
+      voting.id = 'votingContainer'
+      const upVoteInputRadio = document.createElement('input')
+      upVoteInputRadio.type = 'radio'
+      upVoteInputRadio.name = 'voteRadio'
+      upVoteInputRadio.value = 'up'
+      upVoteInputRadio.id = 'upVoteRadio'
+      const upVoteLabel = document.createElement('label')
+      upVoteLabel.setAttribute('for', 'upVoteRadio')
+      upVoteLabel.innerHTML = '<img title="Thumb up vote" id="upVoteImage" class="voteImage"/>'
+      voting.append(upVoteInputRadio)
+      voting.append(upVoteLabel)
+      const downVoteInputRadio = document.createElement('input')
+      downVoteInputRadio.type = 'radio'
+      downVoteInputRadio.name = 'voteRadio'
+      downVoteInputRadio.value = 'down'
+      downVoteInputRadio.id = 'downVoteRadio'
+      const downVoteLabel = document.createElement('label')
+      downVoteLabel.setAttribute('for', 'downVoteRadio')
+      downVoteLabel.innerHTML = '<img title="Thumb down vote" id="downVoteImage" class="voteImage"/>'
+      voting.append(downVoteInputRadio)
+      voting.append(downVoteLabel)
+      html += voting.outerHTML
+    }
     // PVSCL:ENDCOND
     let purposeCommentingBody
     if (_.isArray(annotation.body)) {
@@ -230,7 +263,7 @@ class CommentingForm {
 
   static generateOnBeforeOpenForm ({ annotation }) {
     // On before open
-    let onBeforeOpen = () => {
+    let onBeforeOpen = (root) => {
       // PVSCL:IFCOND(Autocomplete,LINE)
       // Load datalist with previously used texts
       const themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(annotation)
@@ -303,12 +336,22 @@ class CommentingForm {
         }
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(Categorize, LINE)
-      // Get if annotation has a previous category
+      // PVSCL:IFCOND(Assessing, LINE)
       const assessingBody = annotation.getBodyForPurpose(Assessing.purpose)
-      // Change value to previously selected one
       if (assessingBody) {
-        document.querySelector('#categorizeDropdown').value = assessingBody.value
+        // PVSCL:IFCOND(Categorize, LINE)
+        // Get if annotation has a previous category
+        // Change value to previously selected one
+        root.querySelector('#categorizeDropdown').value = assessingBody.value
+        // PVSCL:ELSEIFCOND(Voting, LINE)
+        if (annotation.references.length > 0) { // Only can be voted annotations that reply to another one
+          if (assessingBody.value === 'up') {
+            root.querySelector('#upVoteRadio').checked = 'checked'
+          } else if (assessingBody.value === 'down') {
+            root.querySelector('#downVoteRadio').checked = 'checked'
+          }
+        }
+        // PVSCL:ENDCOND
       }
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(PreviousAssignments,LINE)
@@ -389,13 +432,21 @@ class CommentingForm {
           }
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(Assessing, LINE)
-          // Assessment category support
           const assessmentBody = annotation.getBodyForPurpose(Assessing.purpose)
+          // PVSCL:IFCOND(Categorize, LINE)
+          // Assessment category support
           if (assessmentBody) {
             assessmentBody.value = preConfirmData.categorizeData
           } else {
             annotation.body.push(new Assessing({ value: preConfirmData.categorizeData }))
           }
+          // PVSCL:ELSEIFCOND(Voting, LINE)
+          if (assessmentBody) {
+            assessmentBody.value = preConfirmData.votingData
+          } else {
+            annotation.body.push(new Assessing({ value: preConfirmData.votingData }))
+          }
+          // PVSCL:ENDCOND
           // PVSCL:ENDCOND
           // Update annotation's body
           annotation.body = _.uniqBy(_.concat(bodyToUpdate, annotation.body), a => a.purpose)

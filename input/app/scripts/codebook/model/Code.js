@@ -54,12 +54,17 @@ class Code {
     const cmidTag = 'cmid:' + this.theme.annotationGuide.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
+    let body = []
+    if (this.theme) {
+      body.push({ type: 'Theme', name: this.theme.name, id: this.theme.id })
+    }
     return {
       id: this.id,
       group: this.theme.annotationGuide.annotationServer.getGroupId(),
       permissions: {
         read: ['group:' + this.theme.annotationGuide.annotationServer.getGroupId()]
       },
+      body: body,
       motivation: 'codebookDevelopment',
       references: [],
       tags: tags,
@@ -97,10 +102,10 @@ class Code {
         // PVSCL:ENDCOND
         return codeToReturn
       } else {
-        console.error('Unable to retrieve mark configuration from annotation')
+        console.error('Unable to retrieve code configuration from annotation')
       }
     } else {
-      console.error('Unable to retrieve mark from annotation')
+      console.error('Unable to retrieve code from annotation')
     }
   }
 

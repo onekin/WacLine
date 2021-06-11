@@ -4,6 +4,8 @@ import GoogleSheetClient from '../../googleSheets/GoogleSheetClient'
 import _ from 'lodash'
 import Classifying from '../purposes/Classifying'
 import Commenting from '../purposes/Commenting'
+import RandomUtils from '../../utils/RandomUtils'
+import Assessing from '../purposes/Assessing'
 
 class GoogleSheetAuditLogging {
   init (callback) {
@@ -123,8 +125,13 @@ class GoogleSheetAuditLogging {
         range: 'LOG-codebookDevelopment',
         data: { values: [codebookRow] }
       })
-      // TODO Add to linking spreadsheet
+      // Add to linking spreadsheet
       let linkingRow = this.linking2Row(annotation, 'schema:CreateAction')
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-linking',
+        data: { values: [linkingRow] }
+      })
     }
   }
 
@@ -151,8 +158,13 @@ class GoogleSheetAuditLogging {
         range: 'LOG-codebookDevelopment',
         data: { values: [row] }
       })
-      // TODO Add to linking spreadsheet
-
+      // Add to linking spreadsheet
+      let linkingRow = this.linking2Row(annotation, 'schema:DeleteAction')
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-linking',
+        data: { values: [linkingRow] }
+      })
     }
   }
 
@@ -160,10 +172,18 @@ class GoogleSheetAuditLogging {
     return (event) => {
       // Everytime an annotation is created
       let annotation = event.detail.annotation
-      let row = this.classifying2Row(annotation, 'schema:CreateAction')
+      let row, range
+      // Check if annotation is for classification or works as a reply
+      if (annotation.references.length > 0) {
+        row = this.assessing2Row(annotation, 'schema:CreateAction')
+        range = 'LOG-assessing'
+      } else {
+        row = this.classifying2Row(annotation, 'schema:CreateAction')
+        range = 'LOG-classifying'
+      }
       this.sendCallToBackground('appendRowSpreadSheet', {
         spreadsheetId: annotation.group,
-        range: 'LOG-classifying',
+        range: range,
         data: { values: [row] }
       }, (err, result) => {
         if (err) {
@@ -179,10 +199,18 @@ class GoogleSheetAuditLogging {
     return (event) => {
       // Everytime an annotation is updated
       let annotation = event.detail.annotation
-      let row = this.classifying2Row(annotation, 'schema:ReplaceAction') // TODO UpdateAction ¿?
+      let row, range
+      // Check if annotation is for classification or works as a reply
+      if (annotation.references.length > 0) {
+        row = this.assessing2Row(annotation, 'schema:CreateAction')
+        range = 'LOG-assessing'
+      } else {
+        row = this.classifying2Row(annotation, 'schema:CreateAction')
+        range = 'LOG-classifying'
+      }
       this.sendCallToBackground('appendRowSpreadSheet', {
         spreadsheetId: annotation.group,
-        range: 'LOG-classifying',
+        range: range,
         data: { values: [row] }
       }, (err, result) => {
         if (err) {
@@ -199,6 +227,7 @@ class GoogleSheetAuditLogging {
       // Everytime an annotation is deleted
       let annotation = event.detail.annotation
       let row = this.classifying2Row(annotation, 'schema:DeleteAction')
+      // TODO Currently it is not possible to delete a reply (should be implemented in wacline) When that occurs, this should handle also annotation deletions for replies in the same way as createdAnnotationHandler and updatedAnnotationHandler
       this.sendCallToBackground('appendRowSpreadSheet', {
         spreadsheetId: annotation.group,
         range: 'LOG-classifying',
@@ -213,100 +242,6 @@ class GoogleSheetAuditLogging {
     }
   }
 
-  createNewGSheetAnnotations (annotations = [], callback) {
-    try {
-      this.processGSheetAnnotations(annotations, callback, 'schema:CreateAction')
-    } catch (err) {
-      callback(err)
-    }
-  }
-
-  processGSheetAnnotations (annotations = [], callback, action) {
-    try {
-      // this.LocalStorageManager.client.createNewAnnotations(annotations, callback)
-      let spreadsheetId = window.abwa.groupSelector.currentGroup.id
-      let classifyingRange = window.background.googleSheetAnnotationManager.classifyingRange
-      let codebookDevelopmentRange = window.background.googleSheetAnnotationManager.codebookDevelopmentRange
-      let paperRange = window.background.googleSheetAnnotationManager.paperRange
-      let linkingRange = window.background.googleSheetAnnotationManager.linkingRange
-      let assessingRange = window.background.googleSheetAnnotationManager.assessingRange
-      let rows = this.annotations2Rows(annotations, action)
-      if (rows.classifying.length > 0) {
-        let data = { values: rows.classifying }
-        this.client.appendRowSpreadSheet(spreadsheetId, classifyingRange, data, callback)
-      }
-      if (rows.codebookDevelopment.length > 0) {
-        let data = { values: rows.codebookDevelopment }
-        this.client.appendRowSpreadSheet(spreadsheetId, codebookDevelopmentRange, data, callback)
-      }
-      if (rows.paper.length > 0) {
-        let doi = 2
-        let uri = 3
-        let urn = 4
-        let newPapers = []
-        let newPapersExist = false
-        for (let rp in rows.paper) {
-          let rowpaper = rows.paper[rp]
-          let paperExists = false
-          for (let p in this.papers) {
-            let paper = this.papers[p]
-            if ((paper[doi] === rowpaper[doi] && !_.isEmpty(paper[doi])) || (paper[uri] === rowpaper[uri] && !_.isEmpty(paper[uri])) || (paper[urn] === rowpaper[urn] && !_.isEmpty(paper[urn]))) {
-              paperExists = true
-            }
-          }
-          if (!paperExists) {
-            newPapers.push(rowpaper)
-            this.papers.push(rowpaper)
-            newPapersExist = true
-          }
-        }
-        if (newPapersExist) {
-          let data = { values: newPapers }
-          this.client.appendRowSpreadSheet(spreadsheetId, paperRange, data, callback)
-        }
-      }
-      if (rows.linking.length > 0) {
-        let data = { values: rows.linking }
-        this.client.appendRowSpreadSheet(spreadsheetId, linkingRange, data, callback)
-      }
-      if (rows.assessing.length > 0) {
-        let data = { values: rows.assessing }
-        this.client.appendRowSpreadSheet(spreadsheetId, assessingRange, data, callback)
-      }
-    } catch (err) {
-      callback(err)
-    }
-  }
-
-  annotations2Rows (annotations = [], action) {
-    let codebookDevelopment = []
-    let linking = []
-    let classifying = []
-    let assessing = []
-    let paper = []
-    for (let ann in annotations) {
-      let data = annotations[ann]
-      switch (data.motivation) {
-        case 'codebookDevelopment': {
-          codebookDevelopment.push(this.codebooking2Row(data, action))
-          paper.push(this.paper2Row(data.target[0].source))
-          break }
-        case 'linking': {
-          linking.push(this.linking2Row(data, action))
-          break }
-        case 'classifying': {
-          classifying.push(this.classifying2Row(data, action))
-          paper.push(this.paper2Row(data.target[0].source))
-          break }
-        case 'assessing': {
-          assessing.push(this.assessing2Row(data, action))
-          break }
-      }
-    }
-    let rows = { codebookDevelopment: codebookDevelopment, linking: linking, classifying: classifying, assessing: assessing, paper: paper }
-    return rows
-  }
-
   linking2Row (data, action) { // IKER: verificar y completar este
     try {
       let id = 0
@@ -317,11 +252,14 @@ class GoogleSheetAuditLogging {
       let motivatedby = 5
       let potentialaction = 6
       let row = []
-      row[id] = data.id
+      row[id] = RandomUtils.randomString(22)
       row[created] = data.created
-      row[creator] = data.user // data.user
-      row[hasbody] = data.body
-      row[hastarget] = data.target
+      row[creator] = data.user // TODO Should we change to data.creator?
+      let themeBody = data.body.find(elem => elem.type === 'Theme')
+      if (themeBody) {
+        row[hasbody] = themeBody.id
+      }
+      row[hastarget] = data.id
       row[motivatedby] = 'oa:linking' // TODO Comment with @ikerazpeitia that OA has linking
       row[potentialaction] = action
       return row
@@ -336,27 +274,31 @@ class GoogleSheetAuditLogging {
       let created = 1
       let creator = 2
       let hastarget = 3
-      let hasbody = 4
-      let comment = 5
-      let purpose = 6
-      let motivatedby = 7
-      let potentialaction = 8
-      let encoding = 9
+      let comment = 4
+      let purpose = 5
+      let motivatedby = 6
+      let potentialaction = 7
       let row = []
       row[id] = data.id
-      row[created] = new Date().toISOString()
-      row[creator] = window.background.googleSheetAnnotationManager.annotationServerManager.userEmail // data.user
-      row[hastarget] = data['oa:target'] // data.target[0].selector
-      row[hasbody] = null // COMO DETECTARLO??
-      row[comment] = data.text
-      let verdict = 'slr:agreeing'
-      if (data.agreement === 'disagree') {
-        verdict = 'slr:disagreeing'
+      row[created] = data.created
+      row[creator] = data.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
+      row[hastarget] = data.references[0] // Check if references array should be inserted as part of target
+      let commentingBody = data.body.find(elem => elem instanceof Commenting)
+      if (commentingBody) {
+        row[comment] = commentingBody.value || ''
       }
-      row[purpose] = verdict
-      row[motivatedby] = 'oa:' + data.motivation // 'oa:assessing'
+      let assessingBody = data.body.find(body => body instanceof Assessing)
+      if (assessingBody) {
+        if (assessingBody.value === 'up') {
+          row[purpose] = 'slr:agreeing'
+        } else if (assessingBody.value === 'down') {
+          row[purpose] = 'slr:disagreeing'
+        } else {
+          throw new Error('No assessment')
+        }
+      }
+      row[motivatedby] = 'oa:assessing'
       row[potentialaction] = action
-      row[encoding] = this.encodeHide(JSON.stringify(data))
       return row
     } catch (err) {
       return err
@@ -383,7 +325,7 @@ class GoogleSheetAuditLogging {
       let row = []
       row[id] = data.id
       row[created] = data.created
-      row[creator] = data.user // data.user
+      row[creator] = data.user // TODO Should we change to data.creator?
       row[hasbody] = data.tags[0].replace('oa:theme:', '').replace('oa:code:', '') // For the case of themes and codes
       // Find the target that talks about where was created (must include source.id, textquoteselector and textpositionselector
       let evidenceTarget = data.target.find(target => { return _.has(target, 'source.id') && _.has(target, 'selector') && target.selector.find(selector => selector.type === 'TextPositionSelector') && target.selector.find(selector => selector.type === 'TextQuoteSelector') })
@@ -452,7 +394,6 @@ class GoogleSheetAuditLogging {
       }
       row[motivatedby] = 'oa:classifying' // TODO Verify with Iker if this is correct or not
       row[potentialaction] = action
-      // row[encoding] = this.encodeHide(JSON.stringify(data)) // TODO Verify with Iker if this is still necessary
       return row
     } catch (err) {
       return err

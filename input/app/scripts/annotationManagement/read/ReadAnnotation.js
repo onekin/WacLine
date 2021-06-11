@@ -525,6 +525,7 @@ class ReadAnnotation {
     for (let i = 0; i < highlights.length; i++) {
       const highlight = highlights[i]
       highlight.addEventListener('dblclick', () => {
+        // TODO Open commenting form if you are the owner of the annotation
         this.openCommentingForm(annotation)
       })
     }
