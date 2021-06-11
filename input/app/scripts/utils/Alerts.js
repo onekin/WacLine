@@ -52,6 +52,31 @@ class Alerts {
     }
   }
 
+  /**
+   * Same as info alert, with the difference that the execution of callback is stopped until user clicks okay or closes somehow the alert
+   * @param text
+   * @param title
+   * @param callback
+   */
+  static infoSyncAlert ({ text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), title = 'Info', callback }) {
+    Alerts.tryToLoadSwal()
+    if (_.isNull(swal)) {
+      if (_.isFunction(callback)) {
+        callback(new Error('Unable to load swal'))
+      }
+    } else {
+      swal.fire({
+        type: Alerts.alertType.info,
+        title: title,
+        html: text
+      }).then(() => {
+        if (_.isFunction(callback)) {
+          callback(null)
+        }
+      })
+    }
+  }
+
   static updateableAlert ({ text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), type = Alerts.alertType.info, title = 'Info', timerIntervalHandler = null, timerIntervalPeriodInSeconds = 0.1, allowOutsideClick = true, allowEscapeKey = true, callback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {

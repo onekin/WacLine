@@ -42,61 +42,6 @@ class GoogleSheetAnnotationClient {
             }, callback)
           }
         })
-        // TODO Retrieve data from spreadsheet
-        /* let spreadsheetId = data.group.id
-        client.getSpreadSheetRows(spreadsheetId, [Config.spreadsheetsIds.getPaperRange], (err, result) => {
-          if (err) {
-            console.error('ERROR: ' + err + ' in ' + name)
-          } else {
-            for (let val in result.values) {
-              let row = result.values[val]
-              this.papers.push(row)
-            }
-          }
-        })
-        client.getSpreadSheetRows(
-          spreadsheetId,
-          [
-            Config.spreadsheetsIds.getClassifyingRange,
-            Config.spreadsheetsIds.getCodebookDevelopmentRange,
-            Config.spreadsheetsIds.getLinkingRange,
-            Config.spreadsheetsIds.getAssessingRange
-          ],
-          (err, result) => {
-            if (err) {
-              console.error('ERROR: ' + err + ' in ' + name)
-            } else {
-              let sheets = result.sheets
-              let annotations = []
-              let processedAnnotations = []
-              for (let sh in sheets) {
-                let sheet = sheets[sh]
-                if (!_.isEmpty(sheet.data[0].rowData)) {
-                  for (let rd = sheet.data[0].rowData.length - 1; rd >= 0; rd--) {
-                    let rD = sheet.data[0].rowData[rd]
-                    let status = rD.values[0].userEnteredValue.stringValue
-                    let value = rD.values[1].userEnteredValue.stringValue
-                    let an = GoogleSheetAnnotationClient.decodeAnnotation(value)
-                    let annotation = JSON.parse(an)
-                    if (processedAnnotations.indexOf(annotation.id) === -1) {
-                      if (status === 'schema:ReplaceAction') {
-                        annotations.push(annotation)
-                      }
-                      if (status === 'schema:CreateAction') {
-                        annotations.push(annotation)
-                      }
-                      processedAnnotations.push(annotation.id)
-                    }
-                  }
-                }
-              }
-              console.debug(JSON.stringify(annotations, null, 4))
-              console.debug(JSON.stringify(processedAnnotations, null, 4))
-              this.populateCache({
-                annotations, user: data.user, groups: data.user.groups
-              }, callback)
-            }
-          }) */
       }
     })
   }
@@ -192,7 +137,7 @@ class GoogleSheetAnnotationClient {
                     endRowIndex: row + 1,
                     startColumnIndex: 1, // Always is in column B, 1 to 2 column index
                     endColumnIndex: 2,
-                    sheetId: 903177749 // TODO Parametrize this sheet number if possible
+                    sheetId: Config.googleSheetConfig.db
                   },
                   fields: 'userEnteredValue(stringValue)',
                   rows: [
@@ -241,7 +186,7 @@ class GoogleSheetAnnotationClient {
                     dimension: 'ROWS',
                     startIndex: row,
                     endIndex: row + 1,
-                    sheetId: 903177749 // TODO Parametrize this sheet number
+                    sheetId: Config.googleSheetConfig.db
                   }
                 }
               }]
@@ -282,7 +227,7 @@ class GoogleSheetAnnotationClient {
                       dimension: 'ROWS',
                       startIndex: rowNumber,
                       endIndex: rowNumber + 1,
-                      sheetId: 903177749 // TODO Parametrize this sheet number
+                      sheetId: Config.googleSheetConfig.db
                     }
                   }
                 }
@@ -378,7 +323,7 @@ class GoogleSheetAnnotationClient {
     // Copy google sheet using Google Drive API
     this.driveClient = new GoogleDriveClient(this.token)
     this.driveClient.copyFile({
-      originFileId: '18iHV_QSgmT_v7girbKaILU8pPDz9br_gn93WIkH4Znw', // TODO Change this URL to Iker's spreadsheet
+      originFileId: Config.googleSheetConfig.template,
       data: {
         name: data.name,
         appProperties: { wacline: Config.urlParamName }
@@ -395,7 +340,7 @@ class GoogleSheetAnnotationClient {
         }
         callback(null, group)
       }
-    }) // TODO parametrize originFieldId
+    })
   }
 
   static setAnnotationPermissions (annotation, currentUser) {
