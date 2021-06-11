@@ -108,6 +108,17 @@ class GoogleSheetsManager {
               }
             })
           })
+        } else if (request.cmd === 'getSheetRowsRawData') {
+          chrome.identity.getAuthToken({ interactive: true }, function (token) {
+            let googleSheetClient = new GoogleSheetClient(token)
+            googleSheetClient.getSheetRowsRawData(request.data.spreadsheetId, request.data.sheetName, (err, result) => {
+              if (err) {
+                sendResponse({ error: err })
+              } else {
+                sendResponse(result)
+              }
+            })
+          })
         }
       }
     })

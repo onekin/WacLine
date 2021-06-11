@@ -1,6 +1,5 @@
 import Events from '../../Events'
 import jsYaml from 'js-yaml'
-import GoogleSheetClient from '../../googleSheets/GoogleSheetClient'
 import _ from 'lodash'
 import Classifying from '../purposes/Classifying'
 import Commenting from '../purposes/Commenting'
@@ -9,7 +8,9 @@ import Assessing from '../purposes/Assessing'
 
 class GoogleSheetAuditLogging {
   init (callback) {
-    // Init database
+    // Init papers database
+    this.papers = []
+    this.initPapersDatabase()
 
     // Listeners initialization
     this.listenersInit()
@@ -38,9 +39,22 @@ class GoogleSheetAuditLogging {
     })
   }
 
+  initPapersDatabase (callback) {
+    this.sendCallToBackground('getSheetRowsRawData', { spreadsheetId: window.abwa.groupSelector.currentGroup.id, sheetName: 'Papers' }, (err, result) => {
+      if (err) {
+        callback(err)
+      } else {
+        result.shift() // Remove headers
+        this.papers = result.map((row) => {
+          return row[0]
+        })
+      }
+    })
+  }
+
   listenersInit () {
     this.events = {}
-    // Events for classification spreadsheet
+    // Events for classification spreadsheet and assessing
     // annotationCreated event
     this.events.annotationCreatedEvent = { element: document, event: Events.annotationCreated, handler: this.createdAnnotationHandler() }
     this.events.annotationCreatedEvent.element.addEventListener(this.events.annotationCreatedEvent.event, this.events.annotationCreatedEvent.handler, false)
@@ -50,7 +64,7 @@ class GoogleSheetAuditLogging {
     // annotationDeleted event
     this.events.annotationDeletedEvent = { element: document, event: Events.annotationDeleted, handler: this.deletedAnnotationHandler() }
     this.events.annotationDeletedEvent.element.addEventListener(this.events.annotationDeletedEvent.event, this.events.annotationDeletedEvent.handler, false)
-    // TODO Events for codebook development and linking spreadsheets
+    // Events for codebook development and linking spreadsheets
     // themeCreated event
     this.events.themeCreatedEvent = { element: document, event: Events.themeCreated, handler: this.createdThemeHandler() }
     this.events.themeCreatedEvent.element.addEventListener(this.events.themeCreatedEvent.event, this.events.themeCreatedEvent.handler, false)
@@ -69,7 +83,6 @@ class GoogleSheetAuditLogging {
     // codeRemoved event
     this.events.codeDeletedEvent = { element: document, event: Events.codeRemoved, handler: this.deletedCodeHandler() }
     this.events.codeDeletedEvent.element.addEventListener(this.events.codeDeletedEvent.event, this.events.codeDeletedEvent.handler, false)
-    // TODO Events for assessing spreadsheet
   }
 
   createdThemeHandler () {
@@ -192,6 +205,28 @@ class GoogleSheetAuditLogging {
           console.log(result)
         }
       })
+      // Check if paper is already registered in the papers log
+      let paperRow
+      if (_.has(annotation.target[0], 'source.id')) {
+        let paper = this.papers.find(paper => paper === annotation.target[0].source.id)
+        if (_.isEmpty(paper)) {
+          this.papers.push(annotation.target[0].source.id) // Add to list of added papers
+          paperRow = this.paper2Row({
+            id: annotation.target[0].source.id,
+            title: annotation.target[0].source.title || '',
+            doi: annotation.target[0].source.doi || '',
+            url: annotation.target[0].source.url || '',
+            urn: annotation.target[0].source.urn || ''
+          })
+        }
+      }
+      if (!_.isEmpty(row)) {
+        this.sendCallToBackground('appendRowSpreadSheet', {
+          spreadsheetId: annotation.group,
+          range: 'Papers',
+          data: { values: [paperRow] }
+        })
+      }
     }
   }
 
@@ -400,21 +435,24 @@ class GoogleSheetAuditLogging {
     }
   }
 
-  paper2Row (data) {
+  paper2Row ({
+    id,
+    title = '',
+    doi = '',
+    url = '',
+    urn = '',
+    authorList = '',
+    publisher = ''
+  }) {
     try {
-      let id = 0
-      let title = 1
-      let doi = 2
-      let uri = 3
-      let urn = 4
-      let encoding = 5
       let rowPaper = []
-      rowPaper[id] = data.id
-      rowPaper[title] = data.title
-      rowPaper[doi] = data.doi
-      rowPaper[uri] = data.url
-      rowPaper[urn] = data.urn
-      rowPaper[encoding] = this.encodeHide(JSON.stringify(data))
+      rowPaper[0] = id
+      rowPaper[1] = title
+      rowPaper[2] = doi
+      rowPaper[3] = url
+      rowPaper[4] = urn
+      rowPaper[5] = authorList || ''
+      rowPaper[6] = publisher || ''
       return rowPaper
     } catch (err) {
       return err

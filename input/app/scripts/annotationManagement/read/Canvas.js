@@ -53,11 +53,19 @@ class Canvas {
 
       const displayAnnotation = (annotation) => {
         let swalContent = ''
-        if (annotation.highlightText != null && annotation.highlightText !== '') swalContent += '<h2 style="text-align:left;margin-bottom:10px;">Highlight</h2><div style="text-align:justify;font-style:italic">"' + annotation.highlightText.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '"</div>'
-        if (annotation.comment != null && annotation.comment !== '') swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Comment</h2><div style="text-align:justify;">' + annotation.comment.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>'
-        if (annotation.suggestedLiterature != null && annotation.suggestedLiterature.length > 0) swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Suggested literature</h2><div style="text-align:justify;"><ul style="padding-left:10px;">' + annotation.suggestedLiterature.map((e) => { return '<li>' + e.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</li>' }).join('') + '</ul></div>'
+        if (annotation.highlightText != null && annotation.highlightText !== '') {
+          swalContent += '<h2 style="text-align:left;margin-bottom:10px;">Highlight</h2><div style="text-align:justify;font-style:italic">"' + annotation.highlightText.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '"</div>'
+        }
+        if (annotation.comment != null && annotation.comment !== '') {
+          swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Comment</h2><div style="text-align:justify;">' + annotation.comment.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</div>'
+        }
+        // PVSCL:IFCOND(SuggestedLiterature, LINE)
+        if (annotation.suggestedLiterature != null && annotation.suggestedLiterature.length > 0) {
+          swalContent += '<h2 style="text-align:left;margin-top:10px;margin-bottom:10px;">Suggested literature</h2><div style="text-align:justify;"><ul style="padding-left:10px;">' + annotation.suggestedLiterature.map((e) => { return '<li>' + e.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '</li>' }).join('') + '</ul></div>'
+        }
+        // PVSCL:ENDCOND
         const swal = require('sweetalert2').default
-        swal({
+        swal.fire({
           html: swalContent,
           confirmButtonText: 'View in context'
         }).then((result) => {
@@ -121,8 +129,6 @@ class Canvas {
           }
           const clusterProperty = propertyTemplate.content.cloneNode(true)
           clusterProperty.querySelector('.propertyLabel').innerText = canvasClusters[key][i]
-          /* if(canvasClusters[key].length==1||canvasClusters[key].length==2||(canvasClusters[key].length%2==1&&i==canvasClusters[key].length-1)) clusterProperty.querySelector(".clusterProperty").style.height = "100%"
-          else clusterProperty.querySelector(".clusterProperty").style.height = "50%"; */
           let propertyHeight = 100
           if (canvasClusters[key].length === 2) propertyHeight = getPropertyHeight(canvasClusters[key][i], [canvasClusters[key][i]])
           else if (i % 2 === 0 && i < canvasClusters[key].length - 1) propertyHeight = getPropertyHeight(canvasClusters[key][i], [canvasClusters[key][i], canvasClusters[key][i + 1]])
