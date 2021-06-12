@@ -1,8 +1,10 @@
 {
-   "groups": [{
+   "groups": [
+      {
          "name": "Empirical Standard",
          "filter": "",
-         "methods": [{
+         "methods": [
+            {
             "name": "General Standard",
             "definition": [{
                   "name": "Essential",
@@ -135,7 +137,7 @@
                   "description": "",
                   "codes": [{
                         "name": "Multiple data collection",
-                        "description": " applies two or more data collection or analysis strategies to the same research question (see the Multimethodology Standard)"
+                        "description": "applies two or more data collection or analysis strategies to the same research question (see the Multimethodology Standard)"
                      },
                      {
                         "name": "Multiple epistemological perspectives",
@@ -763,31 +765,31 @@
                      "description": "provides supplementary materials including: the list of primary studies, coding scheme, decision rules, complete dataset; analysis scripts3"
                   }, {
                      "name": "Instrument design",
-                     "description": " explains and justifies the coding scheme instrument design"
+                     "description": "explains and justifies the coding scheme instrument design"
                   }, {
                      "name": "Employs coders",
-                     "description": " employs multiple coders and evaluates the inter-rater reliability"
+                     "description": "employs multiple coders and evaluates the inter-rater reliability"
                   }, {
                      "name": "Explains discrepancies",
-                     "description": " explains how discrepancies among coders were resolved4"
+                     "description": "explains how discrepancies among coders were resolved4"
                   }, {
                      "name": "Describes contacts",
-                     "description": " describes contacting authors of primary studies for more information, to check coding accuracy, or resolve coding disagreements"
+                     "description": "describes contacting authors of primary studies for more information, to check coding accuracy, or resolve coding disagreements"
                   }, {
                      "name": "Priori scheme",
-                     "description": " assesses quality of primary studies using an a priori scheme (e.g. the Case Survey Standard); explains how quality was assessed; models study quality as a moderating variable"
+                     "description": "assesses quality of primary studies using an a priori scheme (e.g. the Case Survey Standard); explains how quality was assessed; models study quality as a moderating variable"
                   }, {
                      "name": "Consolidates results",
-                     "description": " consolidates results using tables, diagrams, or charts"
+                     "description": "consolidates results using tables, diagrams, or charts"
                   }, {
-                     "name": "Integrates results",
-                     "description": " integrates results into prior theory or research; identifies gaps, biases, or future directions"
+                     "name": "Results integration",
+                     "description": "integrates results into prior theory or research; identifies gaps, biases, or future directions"
                   }, {
                      "name": "Presents results",
-                     "description": " presents results as practical, evidence-based guidelines for practitioners, researchers, or educators"
+                     "description": "presents results as practical, evidence-based guidelines for practitioners, researchers, or educators"
                   }, {
-                     "name": "Evidence-based results",
-                     "description": " clearly distinguishes evidence-based results from interpretations and speculation5"
+                     "name": "Distinguish results and interpretations",
+                     "description": "clearly distinguishes evidence-based results from interpretations and speculation5"
                   }]
                }, {
                   "name": "Extraordinary",
@@ -829,6 +831,777 @@
 
             }
          ]
+      },
+      {
+         "name": "Quantitative methods",
+         "methods": [
+            {
+               "name": "Experiments",
+               "filter": "Quantitative",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Characteristics relation", "description": "describes how characteristics of phenomenon under investigation relate to experimental constructs"},
+                        {"name": "Formal hypotheses", "description": "states formal hypotheses"},
+                        {"name": "One-sided hypotheses", "description": "justifies use of one-sided hypotheses (if any) based on face validity or previous work"},
+                        {"name": "Variables description", "description": "describes independent, dependent and extraneous variables; how extraneous vars are controlled"},
+                        {"name": "Research design and protocol", "description": "describes the research design and protocol including treatments, materials, tasks, design (e.g. 2x2 factorial), participant allocation, period and sequences (for crossover designs), and logistics"},
+                        {"name": "Appropiate design and protocol", "description": "design and protocol appropriate (not optimal) for stated research questions and hypotheses"},
+                        {"name": "Random assignment", "description": "EITHER: uses random assignment; explains logistics (e.g. how random numbers were generated) OR: justifies why random assignment is impractical or unethical (compelling reason needed); and mitigates unequal groups threat to validity (e.g. using pre-test/post-test and matched subjects design)"},
+                        {"name": "Experimental objects", "description": "describes experimental objects (e.g. real or toy system) and their characteristics (e.g. size, type);"},
+                        {"name": "Justification of experimental objects", "description": "justifies selection of experimental objects; checks for object-treatment confounds1"},
+                        {"name": "Dependent variables justification", "description": "describes and justifies how the dependent variable is measured (including units, instruments)"},
+                        {"name": "Dependent and independent variables measurement ", "description": "describes how independent and dependent variables are measured"},
+                        {"name": "Participants description", "description": "describes participants (e.g. age, gender, education, relevant experience or preferences)"},
+                        {"name": "Statistics reports justification", "description": "reports distribution-appropriate descriptive and inferential statistics; enumerates and checks assumptions; justifies tests used"},
+                        {"name": "Confidence intervals", "description": "reports effects sizes with confidence intervals (if using frequentist approach)"},
+                        {"name": "Raw data", "description": "EITHER: shares raw, de-identified data OR: explains why sharing raw data is impractical or unethical"},
+                        {"name": "Validity discussion", "description": "discusses construct, conclusion internal and external validity"},
+                        {"name": "Alternative results and interpretations", "description": "discusses alternative interpretations of results"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Hypothses justification", "description": "justifies hypotheses and Bayesian priors (if applicable) based on previous studies and theory"},
+                        {"name": "Alternative experimental designs", "description": "discusses alternative experimental designs and why they were not used (e.g. validity trade-offs)"},
+                        {"name": "Data distributions visualizations", "description": "includes visualizations of data distributions"},
+                        {"name": "Citation of statistics papers", "description": "cites statistics papers to support any nuanced issues or unusual approaches"},
+                        {"name": "Desviations between design and execution", "description": "explains deviations between design and execution, and their implications"},
+                        {"name": "Supplementary material", "description": "includes supplementary material: complete, algorithmic research protocol, task materials, de-identified dataset, analyses scripts"},
+                        {"name": "Named experiment design", "description": "named experiment design (e.g. simple 2-group, 2x2 factorial, randomized block)"},
+                        {"name": "A-priori power analysis", "description": "presents a-priori power analysis and sufficient n for expected effect sizes."},
+                        {"name": "Analyze validity of variable", "description": "analyzes construct validity of dependent variable"},
+                        {"name": "Manipulation checks", "description": "uses and reports manipulation checks"},
+                        {"name": "Pre-registration of hypotheses", "description": "pre-registration of hypotheses and design where venue allows"},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation4"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Multiple experiments report", "description": "reports multiple experiments or replications in different cultures or regions"},
+                        {"name": "Data triangulation", "description": "uses multiple methods of data collection; data triangulation"},
+                        {"name": "Time-series analysis of data", "description": "longitudinal data collection with appropriate time-series analysis"}
+                     ]
+                  }
+
+               ],
+               "keywords": [
+                 "Controlled experiment",
+                 "Human participant",
+                 "Quasi-experiment",
+                 "Independent variables",
+                 "Extraneous variables",
+                 "Experimental unit",
+                 "Random allocation",
+                 "Randomly allocated",
+                 "Repeated measures",
+                 "Between-subject",
+                 "Within-subject",
+                 "Control group"
+               ],
+               "invalidCriticisms": [
+                 "participants are students---appropriateness of participant characteristics should be judged based on the context, desired level of control, trade-off choices between internal and external validity, and the specifics of the technology (i.e. method, technique, tool, process, etc.) under evaluation; the choice must be explained in the paper",
+                 "low external validity",
+                 "the experiment is a replication",
+                 "the reviewer would have investigated the topic in any other way than an experiment",
+                 "not enough participants (unless supported by power analysis)"
+               ]
+            },
+            {
+               "name": "Questionnaire surveys",
+               "filter": "Quantitative",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Target population", "description": "identifies the target population & defines the sampling strategy (see the Sampling Supplement)"},
+                        {"name": "Creation of questionary instrument", "description": "describes how the questionnaire instrument was created"},
+                        {"name": "Provide questionary instrument", "description": "provides the questionnaire instrument (as an appendix or supplementary materials)"},
+                        {"name": "Match quyestionary with aim", "description": "the questionnaire design matches the research aims and the target population"},
+                        {"name": "selection of participants", "description": "describes how participants were selected, including invitations and incentives"},
+                        {"name": "Data collection analysis", "description": "step-by-step, systematic, replicable description of data collection and analysis"},
+                        {"name": "Responses management", "description": "describes how responses were managed/monitored, including contingency actions for non-responses and drop-outs"},
+                        {"name": "Construct validity", "description": "EITHER: measures constructs using (or adapting) validated scales OR: analyzes construct validity (including content, convergent, discriminant and predictive validity) ex post3"},
+                        {"name": "Handling missing data", "description": "explains handling of missing data (e.g. imputation, weighting adjustments, discarding)"},
+                        {"name": "Generalizability threats acknoledgement", "description": "acknowledges generalizability threats; discusses how respondents may differ from target population"},
+                        {"name": "Response rates analysis", "description": "analyzes response rates"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Supplementary material", "description": "provides supplementary materials including instrument(s), code books, analysis scripts and dataset(s)"},
+                        {"name": "Characterize the target", "description": "characterizes the target population including demographic information (e.g. culture, knowledge)"},
+                        {"name": "Principles of research ethnics", "description": "accounts for the principles of research ethics (e.g. informed consent, re-identification risk)"},
+                        {"name": "Instrument design and choice", "description": "explains and justifies instrument design and choice of scales (e.g. by research objectives or by analogy to similar studies)."},
+                        {"name": "Instrument appropiation ", "description": "validates whether the instrument's items, layout, duration, and technology are appropriate (e.g. using pilots, test-retest, or expert and non-expert reviews)."},
+                        {"name": "Instrument evolution", "description": "reports how the instrument has evolved through the validation process (if at all)"},
+                        {"name": "Analysis of response bias", "description": "analyzes response bias (quantitatively)"},
+                        {"name": "Improving response rates techniques", "description": "applies techniques for improving response rates (e.g. incentives, reminders, targeted advertising)"},
+                        {"name": "Possible effects of incentives", "description": "discusses possible effects of incentives (e.g. on voluntariness, response rates, response bias) if used"},
+                        {"name": "Stratification of the analysis", "description": "describes the stratification of the analysis (if stratified sampling is used)"},
+                        {"name": "Population strata estimation", "description": "defines and estimates the size of the population strata (if applicable)"},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Feasibility check of data analysis techniques", "description": "provides feasibility check of the anticipated data analysis techniques"},
+                        {"name": "Report scale validation", "description": "reports on the scale validation in terms of dimensionality, reliability, and validity of measures"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Closed-ended question",
+                  "Participants’ answers systematic analysis",
+                  "Online questionnaire",
+                  "Paper (form) questionnaire",
+                  "Target population",
+                  "Sampling strategy",
+                  "Questionnaire instrument"
+               ],
+               "invalidCriticisms": [
+                  "Not reporting response rate for open public subscription surveys (i.e. surveys open to the anonymous public so that everyone with a link---typically broadcasted among social networks---can participate).",
+                  "Failure to release full data sets despite the data being sensitive.",
+                  "Claiming the sample size is too small without justifying why the sample size is insufficient to answer the research questions.",
+                  "Criticizing the relevance of a survey on the basis that responses only capture general people's perceptions.",
+                  "The results are considered controversial or hardly surprising.",
+                  "The results do not accord with the reviewer's personal experience or previous studies."
+               ]
+            },
+            {
+               "name": "Systematic Reviews",
+               "filter": "Quantitative",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Search process description", "description": "presents step-by-step, systematic, replicable description of search process including search terms"},
+                        {"name": "Criteria inclusion and exclusion", "description": "defines clear inclusion and exclusion criteria"},
+                        {"name": "Specification of data from each study", "description": "specifies the data extracted from each primary study ; explains relationships to research questions"},
+                        {"name": "Data extraction description", "description": "describes in detail how data were extracted and synthesized (can be qualitative or quantitative)"},
+                        {"name": "Coding scheme(s) and use", "description": "describes coding scheme(s) and their use"},
+                        {"name": "Data and reseach answer link", "description": "clear chain of evidence from the extracted data to the answers to the research question(s)"},
+                        {"name": "Clonclusions for non-specialists", "description": "presents conclusions or recommendations for practitioners/non-specialists"},
+                        {"name": "Method identification", "description": "identifies method (e.g. systematic review, meta-analysis, mapping study, narrative synthesis, etc.)"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Replication package", "description" : "provides replication package including protocol, search terms, search results, selection process results; complete dataset, analysis scripts; examples of coding, decision rules or edge cases"},
+                        {"name": "Mitigation of sampling bias", "description" : "mitigates sampling bias and publication bias, using some combination of: (i) manual and keyword automated searches; (ii) backward and forward snowballing searches; (iii) checking profiles of prolific authors in the area; (iv) searching both formal databases (e.g. ACM Digital Library) and indexes (e.g. Google Scholar); (v) searching for relevant dissertations; (vi) searching pre-print servers (e.g. arXiv); (iiv) soliciting unpublished manuscripts through appropriate listservs or social media; (iiiv) contacting known authors in the area."},
+                        {"name": "Search process rigor ", "description" : "demonstrates that the search process is sufficiently rigorous for the systematic review goals"},
+                        {"name": "Quality assesment", "description" : "assesses quality of primary studies; explains how quality was assessed"},
+                        {"name": "Coverage assessment", "description" : "assesses coverage using funnel plots or percentage of known papers found"},
+                        {"name": "Inter'rater reliability analysis", "description" : "(positivist reviews), uses 2+ independent analysts; analyzes inter-rater reliability (e.g. KALPHA)"},
+                        {"name": "Biases effect for analysis", "description" : "(interpretivist reviews) reflects on how researcher’s biases may have affected their analysis"},
+                        {"name": "Results consolidation", "description" : "consolidates results using tables, diagrams, or charts; PRISMA flow diagram (cf. Moher et al. 2009)"},
+                        {"name": "Analysis perform", "description" : "performs analysis through an existing or new conceptual framework (qualitative synthesis)"},
+                        {"name": "Meta'analysis methods use", "description" : "uses meta-analysis methods appropriate for primary studies; does not use vote counting"},
+                        {"name": "Results integration", "description" : "integrates results into prior theory or research; identifies gaps, biases, or future directions"},
+                        {"name": "Results presentation", "description" : "presents results as practical, evidence-based guidelines for practitioners, researchers, or educators"},
+                        {"name": "Distinguish results and interpretations", "description" : "clearly distinguishes evidence-based results from interpretations and speculation"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Undertake of search process", "description": "two or more researchers independently undertaking the preliminary search process before finalizing the search scope and search keywords"},
+                        {"name": "Primary study authors contact", "description": "contacted primary study authors to ensure interpretations are correct, and elicit additional details not found in the papers such as access to raw data"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Systematic review",
+                  "Systematic literature review",
+                  "Mapping study",
+                  "Primary study",
+                  "Secondary study",
+                  "Tertiary study",
+                  "Existing literature",
+                  "Replicable",
+                  "Search string",
+                  "Inclusion criteria",
+                  "Exclusion criteria",
+                  "Research question",
+                  "Data extraction",
+                  "Data synthesis",
+                  "Data analysis"
+               ],
+               "invalidCriticisms": []
+            }
+         ]
+      },
+      {
+         "name": "Supplements",
+         "methods": [
+            {
+               "name": "Information Visualization",
+               "filter": "Visualization",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                     ]
+                  }
+
+               ],
+               "keywords": [
+                  "Visualization",
+                  "Visualize",
+                  "Quantitative data visualization",
+                  "Graphical visualization",
+                  "Visual attributes",
+                  "Values",
+                  "Measures",
+                  "Diagram",
+                  "Chart",
+                  "Layout",
+                  "Axis",
+                  "Logarithmic scale"
+               ],
+               "invalidCriticisms": [
+                 
+               ]
+            },
+            {
+               "name": "Registered reports",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Essential General standard", "description": "meets all essential criteria in The General Standard except those that require data: (i) does not present results (ii) does not validate assumptions of statistical tests (iii) does not discuss implications (iv) does not contribute to collective body of knowledge (v) does not support conclusions with evidence or arguments"},
+                        {"name": "Meets essential criteria", "description": "meets all essential criteria, in applicable empirical standards, that can be met before data collection"},
+                        {"name": "Justificates importance of purpose", "description": "justifies importance of the purpose, problem, objective, or research question(s)"},
+                        {"name": "Description of research method", "description": "describes the research method in detail sufficient for an independent researcher to exactly replicate the proposed data collection and analysis procedures"},
+                        {"name": "Test of stated hypotheses", "description": "the stated hypotheses can be tested with the data the researchers propose to collect"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Premilinary data presentation", "description": "presents preliminary data (e.g. from a pilot study) to justify the chosen approach (e.g. probability distributions)."},
+                        {"name": "Conditional structure", "description": "includes a conditional structure (e.g. pre-specifying different tests for normal and non-normal distributions)"},
+                        {"name": "Study change by results", "description": "explains how the study will change based on the results of data analysis (i.e. conditional analysis)"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Complete General Standard", "description": "meets all essential criteria in The General Standard (no exceptions)"},
+                        {"name": "R", "description": "introduction, rationale and stated hypotheses are the same as the approved RR1 submission except for improvements based on feedback from RR1 reviews"},
+                        {"name": "Adheres to registered procedures", "description": "EITHER: adheres precisely to the registered procedures OR: thoroughly justifies all deviations and explains how they affect the final analysis."},
+                        {"name": "Deviations justification", "description": "deviations, if any, are not justified based on the data"},
+                        {"name": "Designate post hoc analysis", "description": "clearly designates as exploratory any unregistered post hoc analyses"},
+                        {"name": "Justify post hoc analysis", "description": "unregistered post hoc analysis, if any, are justified, methodologically sound, and informative"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Registered report",
+                  "Pre-register",
+                  "Two phases",
+                  "Plan",
+                  "Executing the plan",
+                  "Execution of the plan",
+                  "Purpose",
+                  "Research question",
+                  "Preliminary data"
+               ],
+               "invalidCriticisms": [
+                  "RR1: Insisting on complete data collection or detailed analysis and results",
+                  "RR1: Rejecting exploratory or qualitative research: all kinds of research can be pre-registered even it's not covered here",
+                  "RR2: in hindsight, the RR1 plan was not appropriate (RR2 reviews should not criticize any aspect of the RR1 plan)",
+                  "RR2: results are not statistically significant, novel, relevant or compelling; effect sizes too small"
+               ]
+            },
+            {
+               "name": "Methodological Guidelines and Meta-Science",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Recommendation",
+                  "Methodology",
+                  "Meta-science",
+                  "Guidelines"
+
+               ],
+               "invalidCriticisms": [
+                 "Guidelines are not based on empirical evidence. Empirically testing meta-scientific propositions is typically impractical or impossible. Reviewers should evaluate the face validity, comprehensiveness and usefulness of the guidelines. It is not appropriate to reject methodological guidelines over lack of empirical support."
+               ]
+            },
+            {
+               "name": "Open Science",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Open source",
+                  "Open science",
+                  "Open data",
+                  "Free",
+                  "Re-use",
+                  "Re-purpose",
+                  "License",
+                  "Data availability",
+                  "Available",
+                  "Download",
+                  "Supplementary material",
+                  "Replicable / Replicability",
+                  "Reproducible / Reproducibility",
+                  "Github",
+                  "Open Science Framework / OSF",
+                  "Zenodo",
+                  "ResearchGate",
+                  "Arxiv"
+               ],
+               "invalidCriticisms": [
+                 "Researchers should not complain that a study involves artifacts which— for good reasons—cannot be released."
+               ]
+            },
+            {
+               "name": "Sampling",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Small group",
+                  "Sample",
+                  "Sampling frame",
+                  "User story",
+                  "Sampling strategy",
+                  "Sample size",
+                  "Unit of analysis"
+               ],
+               "invalidCriticisms": [
+                  "complaining about lack of representativeness or low external validity in studies where representativeness is not a goal",
+                  "abstractly criticizing generalizability rather than pointing to best practices, e.g.:",
+                  "invalid: 'as most respondents work in app development, the results may not generalize to other settings'",
+                  "valid: 'the researchers should have sent participation reminders to mitigate response bias'",
+                  "for qualitative research, claiming that the sample size is too small without considering how the items were selected (e.g. theoretical sampling) or the authors' argument for saturation."
+               ]
+            },
+            {
+               "name": "Longitudinal Studies",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Claiming that the time span between measurements is too short or too long.",
+                  "Claiming that the number of waves is inadequate without a reasoned explanation.",
+                  "Claiming that the sample size is too small without performing a post hoc power calculation.",
+                  "Claiming that the paper with a modest number of comparisons should have used more conservative alphas or adopted a Bayesian approach.",
+                  "Complaining about generalizability when the paper clearly acknowledges limitations to generalizability."
+               ],
+               "invalidCriticisms": [
+                  "complaining about lack of representativeness or low external validity in studies where representativeness is not a goal",
+                  "abstractly criticizing generalizability rather than pointing to best practices, e.g.:",
+                  "invalid: 'as most respondents work in app development, the results may not generalize to other settings'",
+                  "valid: 'the researchers should have sent participation reminders to mitigate response bias'",
+                  "for qualitative research, claiming that the sample size is too small without considering how the items were selected (e.g. theoretical sampling) or the authors' argument for saturation."
+               ]
+            },
+            {
+               "name": "Data Science",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Data-centric analysis",
+                  "Machine learning",
+                  "Search-based",
+                  "Data selection",
+                  "Dataflow diagram",
+                  "Data pre-process",
+                  "Data filter",
+                  "Data transformation",
+                  "Modeling"
+               ],
+               "invalidCriticisms": [
+                  "You should have analyzed data ABC. The question reviewers should ask is whether the papers main claims are supported by the data that was analyzed, not whether some other data would have been better.",
+                  "Does not have a reproduction package. These are desirable, not essential (yet).",
+                  "Findings are not actionable: not all studies may have directly actionable findings in the short term.",
+                  "'Needs more data' as a generic criticism without a clear, justified reason.",
+                  "Study does not use qualitative data.",
+                  "Study does not make causal claims, when it cannot.",
+                  "Study does not use the most precise data source, unless the data source is clearly problematic for the study at hand. Some data is impractical to collect at scale."
+               ]
+            },
+            {
+               "name": "Multi-Methodology and Mixed Methods Research",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Mixed-method",
+                  "Multi-methodology",
+                  "Multiple methodologies / methods",
+                  "Multiple analysis methods"
+               ],
+               "invalidCriticisms": [
+                  "The method(ologie)s do not contribute equally (a non-equal design) or the minor method is limited (e.g. few participants).",
+                  "The mixed- or multi-method approach isn't necessary (when it is beneficial)",
+                  "The method(ologie)s have different philosophical foundations or are otherwise incompatible",
+                  "In an unequal design, the wrong method is dominant (this is a study design choice not a flaw )",
+                  "The method(ologie)s have inconsistent findings"
+               ]
+            },
+            {
+               "name": "Ethics (Studies with Human Participants)",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+
+               ],
+               "invalidCriticisms": [
+                  "'Study was not approved by an ethical review board' is not itself grounds for rejection unless there is a substantive ethical concern that such a board should have prevented.",
+                  "'No consent form was used' is not a valid criticism where consent was given orally or implied (e.g., by completing a questionnaire that is explicitly part of a research project)."
+               ]
+            },
+            {
+               "name": "Ethics (Studies with Secondary Human Data)",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+
+               ],
+               "invalidCriticisms": [
+                  "'Study was not approved by an ethical review board' is not grounds for rejection unless there is a substantive ethical concern that such a board should have prevented"
+               ]
+            },
+            {
+               "name": "Inter-Rater Reliability and Agreement",
+               "filter": "IRR",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+
+               ],
+               "invalidCriticisms": [
+                  "Criticizing use of a single rater where multiple raters would be impractical or inconsistent with the study's underlying philosophy..",
+                  "Criticizing use of a single rater when the data is such that there is no reason to suspect different raters would reach different conclusions.",
+                  "Criticizing use of multiple raters. It is difficult to imagine a scenario in which multiple raters would actively harm a study's credibility.",
+                  "'IRR/IRA is too low' when there is no evidence-based threshold and reliability threats are clearly acknowledged."
+               ]
+            }
+         ]
+      },
+      {
+         "name": "Unclassified codebooks",
+         "methods": [
+            {
+               "name": "Optimization Studies",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Software engineering problem",
+                  "Optimization",
+                  "Software optimization",
+                  "Task optimization",
+                  "Manual optimization",
+                  "Simplification",
+                  "Constraint",
+                  "Fitness",
+                  "Trial",
+                  "Proposed technique",
+                  "Test suite",
+                  "Test case"
+               ],
+               "invalidCriticisms": [
+                  "The paper is unimportant. Be cautious of rejecting papers that seem 'unimportant' (in the eyes of a reviewer). Research is exploratory and it is about taking risks. Clealy-motivated research and speculative exploration are both important and should be rewarded.",
+                  "The paper just uses older algorithms with no reference to recent work. Using older (and widely understood algorithms) may be valid when they are used, e.g., (1) as part of a larger set that compares many approaches; e.g. (2) to offer a “straw man” method that defines the “floor” of the performance (that everything else needs to beat); or (3), as a workbench within which one thing is changed (e.g., the fitness function) but everything else remains constant.",
+                  "That an approach is not benchmarked against an inappropriate or unavailable baseline. If a state-of-the-art approach lacks an available and functional implementation, it is not reasonable to expect the author to recreate that approach for benchmarking purposes.",
+                  "That a multi-objective approach is not compared to a single-objective approach by evaluating each objective separately. This is not a meaningful comparison because, in a multi-objective problem, the trade-off between the objectives is a major factor in result quality. It is more important to consider the Pareto frontiers and quality indicators.",
+                  "That one or very few subjects are used, as long as the paper offers a reasonable justification for why this was the case."
+               ]
+            },
+            {
+               "name": "Simulation (quantitative)",
+               "filter": "",
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Simulation",
+                  "Real-world system",
+                  "Imitate",
+                  "Sandbox",
+                  "Virtual",
+                  "Process simulation"
+               ],
+               "invalidCriticisms": [
+                  "The mere presence of assumptions in the model is not a valid basis for criticism as long as the assumptions are documented and justified, and their implications for the validity of the simulation are sufficiently addressed. All models make assumptions.",
+                  "Claiming that the model is too abstact without explaining why the level of abstraction is inadequate for the purposes of the study.",
+                  "Claiming that the study is invalid because it uses generated data, secondary data or approximations based on expert opinion, when no appropriate primary data is available."
+               ]
+            }
+         ]
       }
+     
    ]
 }
