@@ -154,9 +154,13 @@ class ReadCodebook {
       } else {
         const initCodebookPromise = new Promise((resolve, reject) => {
           if (codebookDefinitionAnnotations.length === 0) {
-            // PVSCL:IFCOND(BuiltIn AND NOT(ApplicationBased), LINE)
+            // PVSCL:IFCOND((BuiltIn OR EmptyCodebook) AND NOT(ApplicationBased), LINE)
             const currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
             // PVSCL:IFCOND(CodebookUpdate, LINE)
+            // PVSCL:IFCOND(EmptyCodebook, LINE)
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'emptyCodebook' })
+            resolve()
+            // PVSCL:ELSECOND
             // As codebook can be updated, the user can create an empty one and update it later
             Alerts.confirmAlert({
               title: 'Do you want to create a default annotation codebook?',
@@ -174,12 +178,11 @@ class ReadCodebook {
                 resolve()
               },
               cancelCallback: () => {
-                // PVSCL:IFCOND(CodebookUpdate,LINE)
                 LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'emptyCodebook' })
-                // PVSCL:ENDCOND
                 resolve()
               }
             })
+            // PVSCL:ENDCOND
             // PVSCL:ELSECOND
             // If codebook is not updateable, it is necessary to create the default one, as otherwise the user can select empty codebook and get an unusable configuration
             LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'builtIn' })
@@ -190,6 +193,9 @@ class ReadCodebook {
             resolve()
             // PVSCL:ELSEIFCOND(NOT(Codebook))
             LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'noCodebook' }) // The parameter howCreate is not really necessary in current implementation
+            resolve()
+            // PVSCL:ELSEIFCOND(EmptyCodebook, LINE)
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'emptyCodebook' })
             resolve()
             // PVSCL:ELSECOND
             // Show alert no group is defined

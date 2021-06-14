@@ -32,7 +32,7 @@ tags.statics = {
 }
 // PVSCL:ENDCOND
 const Config = {
-  // PVSCL:IFCOND(BuiltIn or ApplicationBased OR NOT(Codebook), LINE)
+  // PVSCL:IFCOND(BuiltIn or EmptyCodebook or ApplicationBased OR NOT(Codebook), LINE)
   groupName: 'DefaultReviewModel',
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(GoogleSheetAnnotationServer OR GoogleSheetAuditLog, LINE)

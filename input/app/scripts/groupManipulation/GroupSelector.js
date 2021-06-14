@@ -12,9 +12,11 @@ import MoodleUtils from '../moodle/MoodleUtils'
 // PVSCL:IFCOND(Hypothesis,LINE)
 import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(BuiltIn or ApplicationBased or NOT(Codebook), LINE)
-import Config from '../Config'
+// PVSCL:IFCOND(Neo4J, LINE)
 import Neo4JClientManager from '../annotationServer/neo4j/Neo4JClientManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(BuiltIn or EmptyCodebook or ApplicationBased or NOT(Codebook), LINE)
+import Config from '../Config'
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
 
@@ -120,7 +122,7 @@ class GroupSelector {
                 callback(null)
               }
             } else {
-              // PVSCL:IFCOND(BuiltIn, LINE)
+              // PVSCL:IFCOND(BuiltIn or EmptyCodebook, LINE)
               // TODO i18n
               Alerts.loadingAlert({ title: 'First time annotating?', text: 'It seems that it is your first time using the extension. We are configuring everything to start your annotation activity.', position: Alerts.position.center })
               // TODO Create default group
@@ -174,7 +176,7 @@ class GroupSelector {
                 }
               }
               // If group cannot be retrieved from saved in extension annotationServer
-              // PVSCL:IFCOND(BuiltIn or NOT(Codebook), LINE)
+              // PVSCL:IFCOND(BuiltIn or EmptyCodebook or NOT(Codebook), LINE)
               // Try to load a group with defaultName
               if (_.isEmpty(this.currentGroup)) {
                 this.currentGroup = _.find(window.abwa.groupSelector.groups, (group) => { return group.name === GroupName })
@@ -315,19 +317,6 @@ class GroupSelector {
           if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
             // Show login form for Hypothes.is in sidebar
             $('#hypothesisLoginContainer').attr('aria-hidden', 'false')
-            // Start listening to when is logged in continuously
-            /* this.loggedInInterval = setInterval(() => {
-              window.abwa.annotationServerManager.reloadClient(() => {
-                window.abwa.annotationServerManager.isLoggedIn((err, result) => {
-                  if (_.isEmpty(err) || result) {
-                    console.debug('Logged in. Reloading...')
-                    window.location.reload()
-                  } else {
-                    console.debug('Still not logged in.')
-                  }
-                })
-              })
-            }, 2000) */
           }
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(Neo4J, LINE)
@@ -348,7 +337,7 @@ class GroupSelector {
       })
     })
   }
-  // PVSCL:IFCOND(BuiltIn OR NOT(Codebook),LINE)
+  // PVSCL:IFCOND(BuiltIn OR EmptyCodebook OR NOT(Codebook),LINE)
 
   createApplicationBasedGroupForUser (callback) {
     window.abwa.annotationServerManager.client.createNewGroup({ name: Config.groupName }, callback)
@@ -417,7 +406,7 @@ class GroupSelector {
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
     }
-    // PVSCL:IFCOND(BuiltIn,LINE)
+    // PVSCL:IFCOND(BuiltIn or EmptyCodebook,LINE)
     // New group button
     const newGroupButton = document.createElement('div')
     newGroupButton.innerText = 'Create codebook'
@@ -507,7 +496,7 @@ class GroupSelector {
     }
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(BuiltIn,LINE)
+  // PVSCL:IFCOND(BuiltIn or EmptyCodebook,LINE)
 
   createNewReviewModelEventHandler () {
     return () => {

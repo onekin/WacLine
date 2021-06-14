@@ -16,7 +16,7 @@ class Alerts {
       swal.fire({
         title: title,
         html: text,
-        type: alertType,
+        icon: alertType,
         confirmButtonText,
         cancelButtonText,
         reverseButtons,
@@ -45,7 +45,7 @@ class Alerts {
       }
     } else {
       swal.fire({
-        type: Alerts.alertType.info,
+        icon: Alerts.alertType.info,
         title: title,
         html: text
       })
@@ -66,7 +66,7 @@ class Alerts {
       }
     } else {
       swal.fire({
-        type: Alerts.alertType.info,
+        icon: Alerts.alertType.info,
         title: title,
         html: text
       }).then(() => {
@@ -87,7 +87,7 @@ class Alerts {
       let fire = () => {
         let timerInterval
         swal.fire({
-          type: Alerts.alertType.info,
+          icon: Alerts.alertType.info,
           title: title,
           html: text,
           allowOutsideClick,
@@ -122,7 +122,7 @@ class Alerts {
       }
     } else {
       swal.fire({
-        type: Alerts.alertType.error,
+        icon: Alerts.alertType.error,
         title: title,
         html: text,
         willClose: onClose
@@ -142,7 +142,7 @@ class Alerts {
       }
     } else {
       swal.fire({
-        type: Alerts.alertType.success,
+        icon: Alerts.alertType.success,
         title: title,
         html: text
       })
@@ -158,7 +158,7 @@ class Alerts {
     } else {
       swal.fire({
         position: position,
-        type: type,
+        icon: type,
         title: title, // TODO i18n
         html: text,
         showConfirmButton: false,
@@ -212,7 +212,7 @@ class Alerts {
         inputPlaceholder: inputPlaceholder,
         inputValue: inputValue,
         html: html,
-        type: type,
+        icon: type,
         preConfirm: preConfirm,
         allowOutsideClick,
         allowEscapeKey,
@@ -281,7 +281,7 @@ class Alerts {
       }
     } else {
       swal.fire({
-        type: Alerts.alertType.warning,
+        icon: Alerts.alertType.warning,
         title: title,
         html: text
       })

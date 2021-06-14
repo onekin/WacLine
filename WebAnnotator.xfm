@@ -2155,6 +2155,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:relation cm:id="i8FS8HLy6YW90xc45" cm:type="ps:alternative">
           <cm:target cm:id="i1oK6WeJvB87ASxMv">./iv-1TW9HrC_mqG0PE</cm:target>
           <cm:target cm:id="itswamivJBoY7NUiB">./iV1VTsMrn7e6nACxf</cm:target>
+          <cm:target cm:id="icwjw7elvFGtG1PJa">./iLKM-bXWejZXhXrIo</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iMLOZXxm1QW3etybd" cm:class="ps:parents">
@@ -2173,7 +2174,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ivzkjkKjIDlxsOvm4" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iNnP5jznHL43uZqRp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iQ_nDiroL64VPNaFC" cm:type="ps:datetime">2020-02-25T13:39:40.263Z</cm:constant>
+          <cm:constant cm:id="iQ_nDiroL64VPNaFC" cm:type="ps:datetime">2021-06-14T15:09:10.700Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2709,6 +2710,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:relations cm:id="ihZB5M1ZsATrctP6-" cm:class="ps:dependencies">
         <cm:relation cm:id="id8CIEir6LXD9Onvd" cm:type="ps:requires">
           <cm:target cm:id="iLWXRtlsS6dOIomwj">iivhJRwmojkiJvYc5/iv-1TW9HrC_mqG0PE</cm:target>
+          <cm:target cm:id="iQCC8GLa1lYUzV_4S">iivhJRwmojkiJvYc5/iLKM-bXWejZXhXrIo</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="ifHEZqB7Sw0tZu1dp" cm:class="ps:parents">
@@ -2732,7 +2734,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iBouChqEyv1Iz-Fvo" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iMumw3as4a3JKKkDq" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iHlMLTSjk7_oajYZ2" cm:type="ps:datetime">2020-03-04T08:59:57.513Z</cm:constant>
+          <cm:constant cm:id="iHlMLTSjk7_oajYZ2" cm:type="ps:datetime">2021-06-14T15:14:13.784Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -3053,6 +3055,38 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iPUgfravtw1h-6VxO" cm:mimetype="text/html" cm:encoding="utf-8">Codes and themes can be created from evidences found in documents or web resources (are annotated)</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iLKM-bXWejZXhXrIo" cm:name="EmptyCodebook" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="ixjcJC-cDHrFkYoy9" cm:class="ps:parents">
+        <cm:relation cm:id="icsv1v7vcsOS8_JHj" cm:type="ps:parent">
+          <cm:target cm:id="iiTGyyjWbEGOaWl3O">./iQeiEpiGYC0HWicyS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ixDlPIzEN468b3Kbl" cm:class="ps:dependencies">
+        <cm:relation cm:id="iw15C3pT6kgNwduKi" cm:type="ps:requires">
+          <cm:target cm:id="iQdU5fqmBy0zoTJLM">iivhJRwmojkiJvYc5/iZt_QaIU0OC-6uFyb</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ij3SMaWoZChTd2bzR" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ivn92dDnWIG0AlmLn" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="im7nPOCgu7sUO3w-I" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ilzR9JIG7-UtZ9HOi" cm:type="ps:datetime">2021-06-14T15:09:10.701Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i98OK0eC95xgRrnPL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i6VZ8sMPAyLqOExDT" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iTb0DaaVQSLQ9KuDm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ioF5kQ4qX4A4psZpo" cm:type="ps:datetime">2021-06-14T15:23:46.833Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i2xZJFAAY9wC2JPY7" cm:mimetype="text/plain" cm:encoding="utf-8">Empty</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iyYFGydZkZ_9HkdFY" cm:mimetype="text/html" cm:encoding="utf-8">Creates a group with an empty codebook (not themes or codes), user will later start defining it using the sidebar</cm:mimedesc>
       </cm:desc>
     </cm:element>
   </cm:elements>

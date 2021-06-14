@@ -8,10 +8,12 @@ class GoogleSheetAnnotationClientInterface {
       cmd: cmd,
       data: data
     }, (result) => {
-      if (_.has(result, 'error')) {
-        callback(result.error)
-      } else {
-        callback(null, result)
+      if (_.isFunction(callback)) {
+        if (_.has(result, 'error')) {
+          callback(result.error)
+        } else {
+          callback(null, result)
+        }
       }
     })
   }

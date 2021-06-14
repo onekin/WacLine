@@ -221,7 +221,7 @@
     </cm:restset>
     <cm:restset cm:id="iv6JmU8W9XHAP5Aoj">
       <cm:restriction cm:id="irxDea729ezmbR3MJ">
-        <cm:script cm:id="inGqs-CMa4hadro2k" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.BuiltIn</cm:script>
+        <cm:script cm:id="inGqs-CMa4hadro2k" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.BuiltIn OR WebAnnotator.EmptyCodebook</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="iyqhicm26YCmk-7er">
