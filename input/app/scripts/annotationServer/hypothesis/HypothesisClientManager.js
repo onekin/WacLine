@@ -93,7 +93,7 @@ class HypothesisClientManager extends AnnotationServerManager {
     return this.annotationServerMetadata.groupUrl + groupId
   }
 
-  logIn (callback) {
+  logIn (options, callback) {
     // TODO Check if user grant permission to access hypothesis account
     this.isLoggedIn((err, isLogged) => {
       if (err) {

@@ -448,44 +448,7 @@ class ReadAnnotation {
                 annotation: annotation
               })
             }/* PVSCL:IFCOND(Replying) */ else if (key === 'reply') {
-              // Update your last reply if exists, otherwise create a new reply
-              const replies = ReplyAnnotation.getReplies(annotation, this.replyAnnotations)
-              // Get last reply and check if it is current user's annotation or not
-              const lastReply = _.last(replies)
-              if (lastReply && lastReply.creator === window.abwa.groupSelector.getCreatorData()) {
-                // Annotation to be updated is the reply
-                const replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
-                const repliesHtml = replyData.htmlText
-                CommentingForm.showCommentingForm(lastReply, (err, replyAnnotation) => {
-                  if (err) {
-                    // Show error
-                    Alerts.errorAlert({ text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message })
-                  } else {
-                    LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-                      annotation: replyAnnotation
-                    })
-                  }
-                }, repliesHtml)
-              } else {
-                // Annotation to be created is new and replies the previous one
-                // Create target for new reply annotation
-                const target = [{ source: annotation.target[0].source }]
-                const replyAnnotation = new Annotation({ target: target, references: [annotation.id] })
-                const replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
-                const repliesHtml = replyData.htmlText
-                CommentingForm.showCommentingForm(replyAnnotation, (err, replyAnnotation) => {
-                  if (err) {
-                    // Show error
-                    Alerts.errorAlert({ text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message })
-                  } else {
-                    LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-                      purpose: 'replying',
-                      replyingAnnotation: replyAnnotation,
-                      repliedAnnotation: annotation
-                    })
-                  }
-                }, repliesHtml)
-              }
+              this.openReplyingForm(annotation)
             }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
               // Open commenting form
               this.openCommentingForm(annotation)
@@ -496,6 +459,49 @@ class ReadAnnotation {
       }
     })
   }
+
+  // PVSCL:IFCOND(Replying, LINE)
+  openReplyingForm (annotation) {
+    // Update your last reply if exists, otherwise create a new reply
+    const replies = ReplyAnnotation.getReplies(annotation, this.replyAnnotations)
+    // Get last reply and check if it is current user's annotation or not
+    const lastReply = _.last(replies)
+    if (lastReply && lastReply.creator === window.abwa.groupSelector.getCreatorData()) {
+      // Annotation to be updated is the reply
+      const replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
+      const repliesHtml = replyData.htmlText
+      CommentingForm.showCommentingForm(lastReply, (err, replyAnnotation) => {
+        if (err) {
+          // Show error
+          Alerts.errorAlert({ text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message })
+        } else {
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: replyAnnotation
+          })
+        }
+      }, repliesHtml)
+    } else {
+      // Annotation to be created is new and replies the previous one
+      // Create target for new reply annotation
+      const target = [{ source: annotation.target[0].source }]
+      const replyAnnotation = new Annotation({ target: target, references: [annotation.id] })
+      const replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
+      const repliesHtml = replyData.htmlText
+      CommentingForm.showCommentingForm(replyAnnotation, (err, replyAnnotation) => {
+        if (err) {
+          // Show error
+          Alerts.errorAlert({ text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message })
+        } else {
+          LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+            purpose: 'replying',
+            replyingAnnotation: replyAnnotation,
+            repliedAnnotation: annotation
+          })
+        }
+      }, repliesHtml)
+    }
+  }
+  // PVSCL:ENDCOND
 
   // PVSCL:IFCOND(Commenting, LINE)
   openCommentingForm (annotation) {
@@ -536,8 +542,15 @@ class ReadAnnotation {
     for (let i = 0; i < highlights.length; i++) {
       const highlight = highlights[i]
       highlight.addEventListener('dblclick', () => {
-        // TODO Open commenting form if you are the owner of the annotation
-        this.openCommentingForm(annotation)
+        let annotationCreator = annotation.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '') // As annotations include creator as URL to its profile, should be replace with only the ID, what is gathered in groupSelector
+        // Open commenting form if you are the owner of the annotation, otherwise should be replace
+        if (annotationCreator === window.abwa.groupSelector.user.userid) {
+          this.openCommentingForm(annotation)
+        } else {
+          // PVSCL:IFCOND(Replying, LINE)
+          this.openReplyingForm(annotation)
+          // PVSCL:ENDCOND
+        }
       })
     }
   }

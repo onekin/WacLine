@@ -17,7 +17,7 @@ class AnnotationServerManager {
     }
   }
 
-  logIn (callback) {
+  logIn (options, callback) {
     if (_.isFunction(callback)) {
       callback(null)
     }

@@ -1637,14 +1637,14 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:desc>
     </cm:element>
     <cm:element cm:id="i2065vzUUlQLbU8vB" cm:name="IRR" cm:type="ps:feature" cm:class="ps:feature">
-      <cm:relations cm:id="iP9c1ZRTI0qYrBHWT" cm:class="ps:parents">
-        <cm:relation cm:id="inQGym5vRWQF-gWLo" cm:type="ps:parent">
-          <cm:target cm:id="iq69Ki5-Tc57Ghdlg">./i14bKbeRjWqUbd0zH</cm:target>
-        </cm:relation>
-      </cm:relations>
       <cm:relations cm:id="i386BZyPD8u8dIZqC" cm:class="ps:dependencies">
         <cm:relation cm:id="izLHcbr_gVadNrNBt" cm:type="ps:requires">
           <cm:target cm:id="iDuDsOZAntWOXOLXM">iivhJRwmojkiJvYc5/i4zTrONY9hhrFIG2J</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ikAzaFMa_oMyMnXFi" cm:class="ps:parents">
+        <cm:relation cm:id="iYjIXZF0TQYU7eJoz" cm:type="ps:parent">
+          <cm:target cm:id="iYNZ6E--qhz1V9s_S">./iDUhEt2shGW2_5EFi</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -1670,9 +1670,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
     </cm:element>
     <cm:element cm:id="i14bKbeRjWqUbd0zH" cm:name="GoogleSheetConsumer" cm:type="ps:toolsetFeature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iWlvyMrgNlFPmfdI1" cm:class="ps:children">
-        <cm:relation cm:id="iYOGLLX55YnB3X5vC" cm:type="ps:optional" cm:range="[0,n]">
-          <cm:target cm:id="iF5Ei-qXdTHMZLMlr">./i2065vzUUlQLbU8vB</cm:target>
-          <cm:target cm:id="i8gOJmSzKZu6W1SbB">./ioizxqSK5pDRhAIyP</cm:target>
+        <cm:relation cm:id="iEbR5aBPMmOcpJnOA" cm:type="ps:alternative" cm:range="1">
+          <cm:target cm:id="iYEpx1-bHq7HWjivO">./iDUhEt2shGW2_5EFi</cm:target>
+          <cm:target cm:id="i24eYX7xTJ0t_3FVf">./ioizxqSK5pDRhAIyP</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iY6ypdAR1V_xFbRLV" cm:class="ps:parents">
@@ -1693,10 +1693,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="izOYCnR0iafKw4Dt6" cm:type="ps:datetime">2019-11-07T11:57:45.594Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iu4y-VRWuyH26-DvL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iyoZcdE6N0v1kCJUO" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="iyoZcdE6N0v1kCJUO" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iH_O8ySA4PxNGN-59" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="imSNSRsDjKE7_Cmd1" cm:type="ps:datetime">2021-06-02T15:54:33.575Z</cm:constant>
+          <cm:constant cm:id="imSNSRsDjKE7_Cmd1" cm:type="ps:datetime">2021-06-15T15:55:01.624Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ivoGkUam8WoLPHvEr" cm:type="ps:string" cm:name="clientId">
           <cm:constant cm:id="iYopaaPrxFqW84R6a" cm:type="ps:string"></cm:constant>
@@ -3091,6 +3091,35 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iyYFGydZkZ_9HkdFY" cm:mimetype="text/html" cm:encoding="utf-8">Creates a group with an empty codebook (not themes or codes), user will later start defining it using the sidebar</cm:mimedesc>
       </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iDUhEt2shGW2_5EFi" cm:name="GoogleSheetThematicSheet" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iKbU2e7EX9GwgrSlo" cm:class="ps:parents">
+        <cm:relation cm:id="iZR7ZJqrjZQFhyoUb" cm:type="ps:parent">
+          <cm:target cm:id="iN8pByL1W3YE9VhcE">./i14bKbeRjWqUbd0zH</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="imGuLOjUn_8BVvSFi" cm:class="ps:children">
+        <cm:relation cm:id="iNNhprnydJLnzyNYL" cm:type="ps:alternative">
+          <cm:target cm:id="i1XMF82riCxuDKHex">./i2065vzUUlQLbU8vB</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iiWrCdrS4aF3vS58Z" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iAN94elJ_7FlZg4jz" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ih3v22t9OBUJmpiny" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iCPjgYIX3OiTqf9Yg" cm:type="ps:datetime">2021-06-15T15:54:19.128Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i1lXY2TjWqc1uxBLV" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iKO9omM45ELscURN4" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iQ7JVoXioLMjzxtf7" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ifq34cFAHXhEMRDIF" cm:type="ps:datetime">2021-06-15T15:56:37.084Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iqL39pGzfcEPEUKhI" cm:mimetype="text/plain" cm:encoding="utf-8">ThematicView</cm:mimedesc>
+      </cm:vname>
     </cm:element>
   </cm:elements>
 </cm:consulmodel>

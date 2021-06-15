@@ -16,7 +16,6 @@ class GoogleSheetClient {
     }
     this.baseURI = 'https://sheets.googleapis.com/v4/spreadsheets'
   }
-  // PVSCL:IFCOND(GoogleSheetConsumer, LINE)
 
   createSpreadsheet (data, callback) {
     $.ajax({
@@ -83,7 +82,6 @@ class GoogleSheetClient {
       callback(new Error('To update spreadsheet it is required '))
     }
   }
-  // PVSCL:ENDCOND
 
   getSpreadsheet (spreadsheetId, callback) {
     $.ajax({

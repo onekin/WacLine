@@ -29,7 +29,7 @@ class GoogleSheetsManager {
             }
           })
           return true
-        }/* PVSCL:IFCOND(GoogleSheetProvider) */ else if (request.cmd === 'getSpreadsheet') {
+        } else if (request.cmd === 'getSpreadsheet') {
           chrome.identity.getAuthToken({ interactive: true }, function (token) {
             if (chrome.runtime.lastError) {
               sendResponse({ error: chrome.runtime.lastError })
@@ -69,7 +69,7 @@ class GoogleSheetsManager {
               }
             }
           })
-        }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(GoogleSheetConsumer) */ else if (request.cmd === 'createSpreadsheet') {
+        } else if (request.cmd === 'createSpreadsheet') {
           chrome.identity.getAuthToken({ interactive: true }, function (token) {
             if (_.isUndefined(token)) {
               sendResponse({ error: new Error('Unable to retrieve token, please check if you have synced your browser and your google account. If the application did not ask you for login, please contact developer.') })
@@ -97,7 +97,7 @@ class GoogleSheetsManager {
             })
           })
           return true
-        }/* PVSCL:ENDCOND */ else if (request.cmd === 'appendRowSpreadSheet') {
+        } else if (request.cmd === 'appendRowSpreadSheet') {
           chrome.identity.getAuthToken({ interactive: true }, function (token) {
             let googleSheetClient = new GoogleSheetClient(token)
             googleSheetClient.appendValuesSpreadSheet(request.data.spreadsheetId, request.data.range, request.data.data, (err, result) => {

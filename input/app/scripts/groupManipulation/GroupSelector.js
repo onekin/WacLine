@@ -540,6 +540,12 @@ class GroupSelector {
         if (err) {
           window.alert('Unable to load swal. Please contact developer.')
         } else {
+          // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+          Alerts.loadingAlert({
+            title: 'Creating a new group',
+            text: 'We are setting up everything to start. It will only take few seconds!'
+          })
+          // PVSCL:ENDCOND
           groupName = LanguageUtils.normalizeString(groupName)
           window.abwa.annotationServerManager.client.createNewGroup({
             name: groupName,

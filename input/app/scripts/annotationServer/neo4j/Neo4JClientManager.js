@@ -51,7 +51,7 @@ class Neo4JClientManager extends AnnotationServerManager {
     })
   }
 
-  logIn (callback) {
+  logIn (options, callback) {
     if (!this.isLoggedIn()) {
       this.askUserToLogIn((err) => {
         if (err) {

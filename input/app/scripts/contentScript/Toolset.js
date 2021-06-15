@@ -6,7 +6,7 @@ import Canvas from '../annotationManagement/read/Canvas'
 // PVSCL:IFCOND(AnnotatedPDF, LINE)
 import Screenshots from '../annotationManagement/read/Screenshots'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(GoogleSheetConsumer, LINE)
+// PVSCL:IFCOND(GoogleSheetThematicSheet, LINE)
 import GoogleSheetGenerator from '../annotationManagement/read/GoogleSheetGenerator'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(LastAnnotation, LINE)
@@ -116,7 +116,12 @@ class Toolset {
       this.googleSheetImage.title = 'Generate a spreadsheet with classified content' // TODO i18n
       this.toolsetBody.appendChild(this.googleSheetImage)
       this.googleSheetImage.addEventListener('click', () => {
+        // PVSCL:IFCOND(GoogleSheetThematicSheet, LINE)
         GoogleSheetGenerator.generate()
+        // PVSCL:ELSEIFCOND(GoogleSheetAuditLog, LINE)
+        // Open a new URL with the spreadsheet for audit
+        window.open(window.abwa.groupSelector.currentGroup.url)
+        // PVSCL:ENDCOND
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleReport, LINE)

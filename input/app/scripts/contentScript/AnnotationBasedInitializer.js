@@ -13,7 +13,7 @@ class AnnotationBasedInitializer {
     const annotationId = AnnotationBasedInitializer.getAnnotationHashParam()
     if (annotationId) {
       if (window.abwa.annotationServerManager.isLoggedIn() === false) {
-        window.abwa.annotationServerManager.logIn((err, token) => {
+        window.abwa.annotationServerManager.logIn({}, (err, token) => {
           if (err) {
             Alerts.errorAlert({ title: 'Log in is required', text: 'It is necessary to log in your annotation server.' })
           } else {
