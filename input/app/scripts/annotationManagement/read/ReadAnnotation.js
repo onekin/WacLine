@@ -42,10 +42,6 @@ class ReadAnnotation {
     this.initAnnotationUpdatedEventListener()
     // PVSCL:ENDCOND
     this.loadAnnotations((err) => {
-      // PVSCL:IFCOND(UserFilter, LINE)
-      this.initUserFilter()
-      this.initUserFilterChangeEvent()
-      // PVSCL:ENDCOND
       if (_.isFunction(callback)) {
         callback(err)
       }
@@ -260,22 +256,37 @@ class ReadAnnotation {
         // TODO Show user no able to load all annotations
         console.error('Unable to load annotations')
       } else {
-        let unHiddenAnnotations
+        let promise = new Promise((resolve) => { resolve() })
         // PVSCL:IFCOND(UserFilter, LINE)
-        // Current annotations will be
-        this.currentAnnotations = this.retrieveCurrentAnnotations()
-        LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, { annotations: this.currentAnnotations })
-        unHiddenAnnotations = this.currentAnnotations
-        // PVSCL:ELSECOND
-        unHiddenAnnotations = this.allAnnotations
+        promise = new Promise((resolve, reject) => {
+          this.initUserFilter(() => {
+            if (err) {
+              reject(err)
+            } else {
+              this.initUserFilterChangeEvent()
+              resolve()
+            }
+          })
+        })
         // PVSCL:ENDCOND
-        // PVSCL:IFCOND(Selector, LINE)
-        // If annotations have a selector, are highlightable in the target
-        this.highlightAnnotations(unHiddenAnnotations)
-        // PVSCL:ENDCOND
-        if (_.isFunction(callback)) {
-          callback()
-        }
+        promise.then(() => {
+          let unHiddenAnnotations
+          // PVSCL:IFCOND(UserFilter, LINE)
+          // Current annotations will be
+          this.currentAnnotations = this.retrieveCurrentAnnotations()
+          LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, { annotations: this.currentAnnotations })
+          unHiddenAnnotations = this.currentAnnotations
+          // PVSCL:ELSECOND
+          unHiddenAnnotations = this.allAnnotations
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(Selector, LINE)
+          // If annotations have a selector, are highlightable in the target
+          this.redrawAnnotations()
+          // PVSCL:ENDCOND
+          if (_.isFunction(callback)) {
+            callback()
+          }
+        })
       }
     })
   }
@@ -533,10 +544,10 @@ class ReadAnnotation {
 
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(UserFilter, LINE)
-  initUserFilter () {
+  initUserFilter (callback) {
     // Create augmentation operations for the current group
     this.userFilter = new UserFilter()
-    this.userFilter.init()
+    this.userFilter.init(callback)
   }
 
   initUserFilterChangeEvent (callback) {

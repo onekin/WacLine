@@ -41,6 +41,12 @@ const Config = {
     template: '1nX0WP0YHvHAlog75_cnBkLxQ3uB0QV9Jj4ZFczkPuJw'
   },
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Filter, LINE)
+  filter: {
+    // eslint-disable-next-line quotes
+    userFilter: { individual: "PVSCL:EVAL(UserFilter->pv:Attribute('individual'))" }
+  },
+  // PVSCL:ENDCOND
   defaultAnnotationServer: defaultAnnotationServer,
   namespace: 'oa',
   // eslint-disable-next-line quotes

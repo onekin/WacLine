@@ -1380,7 +1380,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iGD-xM4PXXtjC388R" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i9P7TfHoRrD-S4qaw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iL7M_hR1IWVjbPbyt" cm:type="ps:datetime">2020-03-04T09:05:15.825Z</cm:constant>
+          <cm:constant cm:id="iL7M_hR1IWVjbPbyt" cm:type="ps:datetime">2021-06-15T06:53:23.358Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iygx5YgjP04s4NlEt" cm:type="ps:boolean" cm:inheritable="true" cm:name="individual">
+          <cm:constant cm:id="i7YqsmuSm2r6DWQzR" cm:type="ps:boolean">false</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

@@ -115,7 +115,11 @@ export class AnnotatedContentManager {
     })
     // PVSCL:ELSECOND
     promise = new Promise((resolve, reject) => {
+      // PVSCL:IFCOND(Filter, LINE)
+      resolve(window.abwa.annotationManagement.annotationReader.currentAnnotations)
+      // PVSCL:ELSECOND
       resolve(window.abwa.annotationManagement.annotationReader.allAnnotations)
+      // PVSCL:ENDCOND
     })
     // PVSCL:ENDCOND
     // Return retrieved annotations
@@ -327,6 +331,11 @@ export class AnnotatedContentManager {
     // Create event listener for updated all annotations
     this.events.deletedAllAnnotations = { element: document, event: Events.deletedAllAnnotations, handler: this.createDeletedAllAnnotationsEventHandler() }
     this.events.deletedAllAnnotations.element.addEventListener(this.events.deletedAllAnnotations.event, this.events.deletedAllAnnotations.handler, false)
+    // PVSCL:IFCOND(UserFilter, LINE)
+    // TODO Update number of annotations depending on user filtering also
+    this.events.updatedCurrentAnnotations = { element: document, event: Events.updatedCurrentAnnotations, handler: this.createUpdatedCurrentAnnotationsEventHandler() }
+    this.events.updatedCurrentAnnotations.element.addEventListener(this.events.updatedCurrentAnnotations.event, this.events.updatedCurrentAnnotations.handler, false)
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(NOT(Multivalued), LINE)
     // Event for tag manager reloaded
     this.events.codeToAllEvent = { element: document, event: Events.codeToAll, handler: this.createCodeToAllEventHandler() }
@@ -341,6 +350,17 @@ export class AnnotatedContentManager {
     this.events.codebookUpdatedEvent.element.addEventListener(this.events.codebookUpdatedEvent.event, this.events.codebookUpdatedEvent.handler, false)
     // PVSCL:ENDCOND
   }
+
+  // PVSCL:IFCOND(UserFilter, LINE)
+  createUpdatedCurrentAnnotationsEventHandler () {
+    return (event) => {
+      // Retrieve all the annotations for this assignment
+      this.updateAnnotationForAssignment(() => {
+        this.reloadTagsChosen()
+      })
+    }
+  }
+  // PVSCL:ENDCOND
 
   // PVSCL:IFCOND(CodebookUpdate, LINE)
   createCodebookUpdatedEventHandler () {
