@@ -120,8 +120,8 @@ class ReadAnnotation {
       annotationsToHighlight = this.allAnnotations
       // PVSCL:ENDCOND
       if (annotationsToHighlight) {
-        for (let i = 0; i < this.allAnnotations.length; i++) {
-          const annotation = this.allAnnotations[i]
+        for (let i = 0; i < annotationsToHighlight.length; i++) {
+          const annotation = annotationsToHighlight[i]
           // Search if annotation exist
           const element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
           // If annotation doesn't exist, try to find it
