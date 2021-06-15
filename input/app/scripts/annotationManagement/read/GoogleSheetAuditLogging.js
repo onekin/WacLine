@@ -239,10 +239,10 @@ class GoogleSheetAuditLogging {
       let row, range
       // Check if annotation is for classification or works as a reply
       if (annotation.references.length > 0) {
-        row = this.assessing2Row(annotation, 'schema:CreateAction')
+        row = this.assessing2Row(annotation, 'schema:ReplaceAction')
         range = 'LOG-assessing'
       } else {
-        row = this.classifying2Row(annotation, 'schema:CreateAction')
+        row = this.classifying2Row(annotation, 'schema:ReplaceAction')
         range = 'LOG-classifying'
       }
       this.sendCallToBackground('appendRowSpreadSheet', {
