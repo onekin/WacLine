@@ -5,16 +5,29 @@ class GoogleSheetAnnotationBackgroundManager {
   init () {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.scope === 'googleSheetAnnotation') {
-        let promise = Promise.resolve()
-        // Check if client is initialized correctly, otherwise, reload it again
-        if (_.isNull(window.background.googleSheetAnnotationManager.annotationServerManager.client)) {
-          promise = new Promise((resolve) => {
-            window.background.googleSheetAnnotationManager.annotationServerManager.reloadClient(() => {
-              resolve()
-            })
+        let promise = new Promise((resolve, reject) => {
+          window.background.googleSheetAnnotationManager.annotationServerManager.isLoggedIn((err, isLoggedIn) => {
+            if (err) {
+              reject(err)
+            } else {
+              if (isLoggedIn) {
+                resolve()
+              } else {
+                window.background.googleSheetAnnotationManager.annotationServerManager.logIn({ interactive: true }, (err) => {
+                  if (err) {
+                    reject(err)
+                  } else {
+                    resolve()
+                  }
+                })
+              }
+            }
           })
-        }
+        })
         promise.then(() => {
+          if (request.cmd === 'getToken') {
+            sendResponse({ token: window.background.googleSheetAnnotationManager.annotationServerManager.googleToken })
+          }
           if (request.cmd === 'searchAnnotations') {
             window.background.googleSheetAnnotationManager.annotationServerManager.client.searchAnnotations(request.data, (err, result) => {
               if (err) {

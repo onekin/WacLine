@@ -1,5 +1,7 @@
 import _ from 'lodash'
 
+import GoogleSheetsManager from '../../background/GoogleSheetsManager'
+
 import GoogleSheetAnnotationClient from './GoogleSheetAnnotationClient'
 import GoogleSheetAnnotationClientInterface from './GoogleSheetAnnotationClientInterface'
 import AnnotationServerManager from '../AnnotationServerManager'
@@ -24,12 +26,37 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
     this.logIn({}, callback)
   }
 
+  reloadClient (callback) {
+    this.isLoggedIn((err, isLogged) => {
+      if (err) {
+        if (_.isFunction(callback)) {
+          callback(err)
+        }
+      } else {
+        if (isLogged) {
+          this.client = new GoogleSheetAnnotationClient(this.googleToken, this)
+          callback(null, this.googleToken)
+        } else {
+          this.logIn({ interactive: true }, callback)
+        }
+      }
+    })
+  }
+
   isLoggedIn (callback) {
     if (_.isFunction(callback)) {
-      if (_.has(window.background, 'googleSheetAnnotationManager.annotationServerManager.googleToken')) {
-        callback(null, _.isString(window.background.googleSheetAnnotationManager.annotationServerManager.googleToken))
+      if (window.background) {
+        if (window.background.googleSheetAnnotationManager.annotationServerManager.client) {
+          if (_.has(window.background, 'googleSheetAnnotationManager.annotationServerManager.googleToken')) {
+            GoogleSheetsManager.checkTokenIsStillActive(window.background.googleSheetAnnotationManager.annotationServerManager.googleToken, callback)
+          } else {
+            callback(null, false)
+          }
+        } else {
+          callback(null, false)
+        }
       } else {
-        chrome.runtime.sendMessage({ scope: 'googleSheets', cmd: 'getToken' }, ({ token }) => {
+        chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'getToken' }, ({ token }) => {
           callback(null, !_.isEmpty(token))
         })
       }
@@ -42,20 +69,35 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
 
   logIn ({ interactive = true }, callback) {
     if (window.background) {
-      chrome.identity.getAuthToken({ interactive: interactive }, function (token) {
+      chrome.identity.getAuthToken({ interactive: interactive }, (token) => {
         if (chrome.runtime.lastError) {
           callback(chrome.runtime.lastError)
         } else {
-          window.background.googleSheetAnnotationManager.annotationServerManager.googleToken = token
-          window.background.googleSheetAnnotationManager.annotationServerManager.client = new GoogleSheetAnnotationClient(token, window.background.googleSheetAnnotationManager.annotationServerManager)
-          if (_.isFunction(callback)) {
-            callback(null, token)
-          }
+          GoogleSheetsManager.checkTokenIsStillActive(token, (err, result) => {
+            if (err || !result) {
+              console.error('Unable to verify if token is active or is inactive, retrieving a new one')
+              GoogleSheetsManager.removeCachedToken(token, () => {
+                chrome.identity.getAuthToken({ interactive: interactive }, (newToken) => {
+                  window.background.googleSheetAnnotationManager.annotationServerManager.googleToken = newToken
+                  window.background.googleSheetAnnotationManager.annotationServerManager.client = new GoogleSheetAnnotationClient(newToken, window.background.googleSheetAnnotationManager.annotationServerManager)
+                  if (_.isFunction(callback)) {
+                    callback(null, newToken)
+                  }
+                })
+              })
+            } else {
+              window.background.googleSheetAnnotationManager.annotationServerManager.googleToken = token
+              window.background.googleSheetAnnotationManager.annotationServerManager.client = new GoogleSheetAnnotationClient(token, window.background.googleSheetAnnotationManager.annotationServerManager)
+              if (_.isFunction(callback)) {
+                callback(null, token)
+              }
+            }
+          })
         }
       })
     } else {
       // Check if user is logged in googleSheet
-      chrome.runtime.sendMessage({ scope: 'googleSheets', cmd: 'getToken' }, ({ token }) => {
+      chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'getToken' }, ({ token }) => {
         if (this.googleToken !== token) {
           this.googleToken = token
         }

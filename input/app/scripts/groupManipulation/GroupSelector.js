@@ -17,6 +17,8 @@ import Neo4JClientManager from '../annotationServer/neo4j/Neo4JClientManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BuiltIn or EmptyCodebook or ApplicationBased or NOT(Codebook), LINE)
 import Config from '../Config'
+import GoogleSheetAnnotationClientManager
+  from '../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
 
@@ -317,6 +319,24 @@ class GroupSelector {
           if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
             // Show login form for Hypothes.is in sidebar
             $('#hypothesisLoginContainer').attr('aria-hidden', 'false')
+          }
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+          document.getElementById('googleLoginButton').addEventListener('click', () => {
+            chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'getToken' }, () => {
+              if (result.error) {
+                if (_.isFunction(callback)) {
+                  callback(new Error(result.error))
+                }
+              } else {
+                console.debug('Logged in. Reloading...')
+                window.location.reload()
+              }
+            })
+          })
+          if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, GoogleSheetAnnotationClientManager)) {
+            // Show login form for Hypothes.is in sidebar
+            $('#googleLoginContainer').attr('aria-hidden', 'false')
           }
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(Neo4J, LINE)

@@ -1,4 +1,5 @@
 import GoogleSheetClient from '../googleSheets/GoogleSheetClient'
+import axios from 'axios'
 // PVSCL:IFCOND(GoogleSheetConsumer,LINE)
 import _ from 'lodash'
 // PVSCL:ENDCOND
@@ -16,7 +17,18 @@ class GoogleSheetsManager {
             if (chrome.runtime.lastError) {
               sendResponse({ error: chrome.runtime.lastError })
             } else {
-              sendResponse({ token: token })
+              GoogleSheetsManager.checkTokenIsStillActive(token, (err, result) => {
+                if (err || !result) {
+                  console.error('Unable to verify if token is active or is inactive, retrieving a new one')
+                  GoogleSheetsManager.removeCachedToken(token, () => {
+                    chrome.identity.getAuthToken({ interactive: true }, (token) => {
+                      sendResponse({ token: token })
+                    })
+                  })
+                } else {
+                  sendResponse({ token: token })
+                }
+              })
             }
           })
           return true
@@ -122,6 +134,22 @@ class GoogleSheetsManager {
         }
       }
     })
+  }
+
+  static checkTokenIsStillActive (token, callback) {
+    axios.post('https://oauth2.googleapis.com/tokeninfo', {
+      access_token: token
+    }, {
+      headers: { 'Content-Type': 'application/json; charset=utf-8' }
+    }).then(() => {
+      callback(null, true)
+    }).catch(() => {
+      callback(null, false)
+    })
+  }
+
+  static removeCachedToken (token, callback) {
+    chrome.identity.removeCachedAuthToken({ token: token }, callback)
   }
 }
 

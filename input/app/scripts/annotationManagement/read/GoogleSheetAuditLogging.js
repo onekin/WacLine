@@ -97,6 +97,30 @@ class GoogleSheetAuditLogging {
         range: 'LOG-codebookDevelopment',
         data: { values: [row] }
       })
+      // Check if paper is already registered in the papers log
+      let paperRow
+      // TODO: HARITZ. annotation.target[0] no es del paper sino del SpreadSheet. Annotation lo hace bien
+      if (_.has(annotation.target[0], 'source.id')) {
+        let paper = this.papers.find(paper => paper === annotation.target[0].source.id)
+        if (_.isEmpty(paper)) {
+          this.papers.push(annotation.target[0].source.id) // Add to list of added papers
+          paperRow = this.paper2Row({
+            id: annotation.target[0].source.id,
+            purpose: 'slr:codebookDevelopment',
+            title: annotation.target[0].source.title || '',
+            doi: annotation.target[0].source.doi || '',
+            url: annotation.target[0].source.url || '',
+            urn: annotation.target[0].source.urn || ''
+          })
+        }
+      }
+      if (!_.isEmpty(paperRow)) {
+        this.sendCallToBackground('appendRowSpreadSheet', {
+          spreadsheetId: annotation.group,
+          range: 'Papers',
+          data: { values: [paperRow] }
+        })
+      }
     }
   }
 
@@ -147,6 +171,30 @@ class GoogleSheetAuditLogging {
         range: 'LOG-linking',
         data: { values: [linkingRow] }
       })
+      // Check if paper is already registered in the papers log
+      let paperRow
+      // TODO: HARITZ. annotation.target[0] no es del paper sino del SpreadSheet.
+      if (_.has(annotation.target[0], 'source.id')) {
+        let paper = this.papers.find(paper => paper === annotation.target[0].source.id)
+        if (_.isEmpty(paper)) {
+          this.papers.push(annotation.target[0].source.id) // Add to list of added papers
+          paperRow = this.paper2Row({
+            id: annotation.target[0].source.id,
+            purpose: 'oa:classifying',
+            title: annotation.target[0].source.title || '',
+            doi: annotation.target[0].source.doi || '',
+            url: annotation.target[0].source.url || '',
+            urn: annotation.target[0].source.urn || ''
+          })
+        }
+      }
+      if (!_.isEmpty(paperRow)) {
+        this.sendCallToBackground('appendRowSpreadSheet', {
+          spreadsheetId: annotation.group,
+          range: 'Papers',
+          data: { values: [paperRow] }
+        })
+      }
     }
   }
 
@@ -215,6 +263,7 @@ class GoogleSheetAuditLogging {
           this.papers.push(annotation.target[0].source.id) // Add to list of added papers
           paperRow = this.paper2Row({
             id: annotation.target[0].source.id,
+            purpose: 'oa:classifying',
             title: annotation.target[0].source.title || '',
             doi: annotation.target[0].source.doi || '',
             url: annotation.target[0].source.url || '',
@@ -222,7 +271,7 @@ class GoogleSheetAuditLogging {
           })
         }
       }
-      if (!_.isEmpty(row)) {
+      if (!_.isEmpty(paperRow)) {
         this.sendCallToBackground('appendRowSpreadSheet', {
           spreadsheetId: annotation.group,
           range: 'Papers',
@@ -290,7 +339,13 @@ class GoogleSheetAuditLogging {
       let potentialaction = 6
       let row = []
       row[id] = RandomUtils.randomString(22)
-      row[created] = data.created
+      if (action === 'schema:CreateAction') {
+        row[created] = data.created || (new Date()).toISOString()
+      } else if (action === 'schema:ReplaceAction') {
+        row[created] = data.updated || (new Date()).toISOString()
+      } else {
+        row[created] = data.updated || (new Date()).toISOString()
+      }
       row[creator] = data.user // TODO Should we change to data.creator?
       let themeBody = data.body.find(elem => elem.type === 'Theme')
       if (themeBody) {
@@ -317,7 +372,13 @@ class GoogleSheetAuditLogging {
       let potentialaction = 7
       let row = []
       row[id] = data.id
-      row[created] = data.created
+      if (action === 'schema:CreateAction') {
+        row[created] = data.created || (new Date()).toISOString()
+      } else if (action === 'schema:ReplaceAction') {
+        row[created] = data.updated || (new Date()).toISOString()
+      } else {
+        row[created] = data.updated || (new Date()).toISOString()
+      }
       row[creator] = data.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
       row[hastarget] = data.references[0] // Check if references array should be inserted as part of target
       let commentingBody = data.body.find(elem => elem instanceof Commenting)
@@ -361,7 +422,13 @@ class GoogleSheetAuditLogging {
       let multivalued = 14
       let row = []
       row[id] = data.id
-      row[created] = data.created
+      if (action === 'schema:CreateAction') {
+        row[created] = data.created || (new Date()).toISOString()
+      } else if (action === 'schema:ReplaceAction') {
+        row[created] = data.updated || (new Date()).toISOString()
+      } else {
+        row[created] = data.updated || (new Date()).toISOString()
+      }
       row[creator] = data.user // TODO Should we change to data.creator?
       row[hasbody] = data.tags[0].replace('oa:theme:', '').replace('oa:code:', '') // For the case of themes and codes
       // Find the target that talks about where was created (must include source.id, textquoteselector and textpositionselector
@@ -409,7 +476,13 @@ class GoogleSheetAuditLogging {
       let encoding = 13
       let row = []
       row[id] = data.id
-      row[created] = data.created
+      if (action === 'schema:CreateAction') {
+        row[created] = data.created || (new Date()).toISOString()
+      } else if (action === 'schema:ReplaceAction') {
+        row[created] = data.updated || (new Date()).toISOString()
+      } else {
+        row[created] = data.updated || (new Date()).toISOString()
+      }
       row[creator] = data.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
       let classifyingBody = data.body.find(elem => elem instanceof Classifying)
       if (classifyingBody) {
@@ -439,6 +512,7 @@ class GoogleSheetAuditLogging {
 
   paper2Row ({
     id,
+    purpose = 'oa:classifying',
     title = '',
     doi = '',
     url = '',
@@ -449,12 +523,13 @@ class GoogleSheetAuditLogging {
     try {
       let rowPaper = []
       rowPaper[0] = id
-      rowPaper[1] = title
-      rowPaper[2] = doi
-      rowPaper[3] = url
-      rowPaper[4] = urn
-      rowPaper[5] = authorList || ''
-      rowPaper[6] = publisher || ''
+      rowPaper[1] = purpose || 'oa:classifying'
+      rowPaper[2] = title
+      rowPaper[3] = doi
+      rowPaper[4] = url
+      rowPaper[5] = urn
+      rowPaper[6] = authorList || ''
+      rowPaper[7] = publisher || ''
       return rowPaper
     } catch (err) {
       return err

@@ -21,6 +21,17 @@
       </div>
     </div>
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GoogleSheetAnnotationClient, LINE)
+    <div id="googleLoginContainer" class="loginContainer" aria-hidden="true">
+      <div id="googleLogin" class="containerHeader">
+        Please give permissions to access your google account
+      </div>
+      <div>
+        Please login or create your account and reload the page if it is not reloaded automatically.
+        <button id="googleLoginButton">Log in</button>
+      </div>
+    </div>
+    // PVSCL:ENDCOND
   </div>
   // PVSCL:IFCOND(Manual, LINE)
   <div id="loggedInGroupContainer" class="sidebarContainer">
