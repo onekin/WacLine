@@ -33,7 +33,7 @@ class ScienceDirectContentScript {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1,LINE)
+    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size() = 1, LINE)
     chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       // PVSCL:IFCOND(Hypothesis, LINE)
       if (annotationServer === 'hypothesis') {
@@ -72,6 +72,7 @@ class ScienceDirectContentScript {
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
     window.scienceDirect.annotationServerManager = new GoogleSheetAnnotationClientManager()
+    // PVSCL:ENDCOND
     // PVSCL:ENDCOND
     window.scienceDirect.annotationServerManager.init((err) => {
       if (_.isFunction(callback)) {

@@ -22,7 +22,7 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
   init (callback) {
     setInterval(() => {
       this.logIn({ interactive: false })
-    }, 30 * 60 * 1000)
+    }, 1 * 30 * 1000) // TODO Change this
     this.logIn({}, callback)
   }
 
@@ -35,7 +35,11 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
       } else {
         if (isLogged) {
           this.client = new GoogleSheetAnnotationClient(this.googleToken, this)
-          callback(null, this.googleToken)
+          this.client.init(() => {
+            if (_.isFunction(callback)) {
+              callback(null, this.googleToken)
+            }
+          })
         } else {
           this.logIn({ interactive: true }, callback)
         }
@@ -78,19 +82,23 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
               console.error('Unable to verify if token is active or is inactive, retrieving a new one')
               GoogleSheetsManager.removeCachedToken(token, () => {
                 chrome.identity.getAuthToken({ interactive: interactive }, (newToken) => {
-                  window.background.googleSheetAnnotationManager.annotationServerManager.googleToken = newToken
-                  window.background.googleSheetAnnotationManager.annotationServerManager.client = new GoogleSheetAnnotationClient(newToken, window.background.googleSheetAnnotationManager.annotationServerManager)
-                  if (_.isFunction(callback)) {
-                    callback(null, newToken)
-                  }
+                  this.googleToken = newToken
+                  this.client = new GoogleSheetAnnotationClient(newToken, this)
+                  this.client.init(() => {
+                    if (_.isFunction(callback)) {
+                      callback(null, newToken)
+                    }
+                  })
                 })
               })
             } else {
-              window.background.googleSheetAnnotationManager.annotationServerManager.googleToken = token
-              window.background.googleSheetAnnotationManager.annotationServerManager.client = new GoogleSheetAnnotationClient(token, window.background.googleSheetAnnotationManager.annotationServerManager)
-              if (_.isFunction(callback)) {
-                callback(null, token)
-              }
+              this.googleToken = token
+              this.client = new GoogleSheetAnnotationClient(token, this)
+              this.client.init(() => {
+                if (_.isFunction(callback)) {
+                  callback(null, token)
+                }
+              })
             }
           })
         }

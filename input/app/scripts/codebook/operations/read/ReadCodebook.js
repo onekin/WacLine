@@ -726,6 +726,8 @@ class ReadCodebook {
       this.reloadButtonContainer()
       // Dispatch codebook updated event
       LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+      // Open the sidebar
+      window.abwa.sidebar.openSidebar()
     }
   }
 
@@ -775,6 +777,8 @@ class ReadCodebook {
       this.reloadButtonContainer()
       // Dispatch codebook updated event
       LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+      // Open the sidebar
+      window.abwa.sidebar.openSidebar()
     }
   }
   // PVSCL:ENDCOND

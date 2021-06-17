@@ -3,6 +3,8 @@ import GoogleDriveClient from '../../googleDrive/GoogleDriveClient'
 import GoogleSheetClient from '../../googleSheets/GoogleSheetClient'
 import BrowserStorageManager from '../browserStorage/BrowserStorageManager'
 import Config from '../../Config'
+import GoogleSheetCache from './GoogleSheetCache'
+import GoogleSheetCacheManager from './GoogleSheetCacheManager'
 
 class GoogleSheetAnnotationClient {
   constructor (token, manager) {
@@ -12,37 +14,42 @@ class GoogleSheetAnnotationClient {
     this.cacheInterval = null
   }
 
+  init () {
+    this.browserStorageManager.ini
+  }
+
   updateCacheDatabase (data, callback) {
-    this.browserStorageManager = new BrowserStorageManager('db.annotations.gsheet.' + data.group.id)
-    this.browserStorageManager.init()
-    this.browserStorageManager.cleanDatabase((err) => {
-      if (err) {
-        if (_.isFunction(callback)) {
-          callback(err)
-        }
-      } else {
-        let client = new GoogleSheetClient(this.token)
-        client.getSheetRowsRawData(data.group.id, Config.namespace, (err, result) => {
-          if (err) {
-            if (_.isFunction(callback)) {
-              callback(err)
-            }
-          } else {
-            result.shift() // Remove headers
-            let annotations = result.map(encodedAnnotationRow => {
-              try {
-                return GoogleSheetAnnotationClient.decodeAnnotation(encodedAnnotationRow[1]) // The cell B (array[1]) has the encoded annotation (what we need), the other is just the ID
-              } catch (e) {
-                return null // Error parsing the annotation, ignoring
-              }
-            })
-            annotations = _.compact(annotations)
-            this.populateCache({
-              annotations, user: data.user, groups: data.user.groups
-            }, callback)
+    this.browserStorageManager = new GoogleSheetCacheManager('db.annotations.gsheet')
+    this.browserStorageManager.init(() => {
+      this.browserStorageManager.cleanDatabase((err) => {
+        if (err) {
+          if (_.isFunction(callback)) {
+            callback(err)
           }
-        })
-      }
+        } else {
+          let client = new GoogleSheetClient(this.token)
+          client.getSheetRowsRawData(data.group.id, Config.namespace, (err, result) => {
+            if (err) {
+              if (_.isFunction(callback)) {
+                callback(err)
+              }
+            } else {
+              result.shift() // Remove headers
+              let annotations = result.map(encodedAnnotationRow => {
+                try {
+                  return GoogleSheetAnnotationClient.decodeAnnotation(encodedAnnotationRow[1]) // The cell B (array[1]) has the encoded annotation (what we need), the other is just the ID
+                } catch (e) {
+                  return null // Error parsing the annotation, ignoring
+                }
+              })
+              annotations = _.compact(annotations)
+              this.populateCache({
+                annotations, user: data.user, groups: data.user.groups
+              }, callback)
+            }
+          })
+        }
+      })
     })
   }
 
@@ -50,7 +57,7 @@ class GoogleSheetAnnotationClient {
     let reloadData = data
     this.cacheInterval = setInterval(() => {
       this.updateCacheDatabase(reloadData)
-    }, 5 * 60 * 1000) // The cache is reloaded every 5 minutes
+    }, 1 * 30 * 1000) // The cache is reloaded every 5 minutes TODO change this
     // Execute for the first time
     this.updateCacheDatabase(data, callback)
   }
@@ -79,7 +86,7 @@ class GoogleSheetAnnotationClient {
         callback(err)
       } else {
         let client = new GoogleSheetClient(this.token)
-        let row = { values: [[browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation)]] }
+        let row = { values: [[browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation), browserStorageAnnotation]] }
         client.appendValuesSpreadSheet(browserStorageAnnotation.group, Config.namespace, row, (err) => {
           if (err) {
             callback(err)
@@ -98,7 +105,7 @@ class GoogleSheetAnnotationClient {
       } else {
         let client = new GoogleSheetClient(this.token)
         let values = browserStorageAnnotations.map((browserStorageAnnotation) => {
-          return [browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation)]
+          return [browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation), browserStorageAnnotation]
         })
         let row = { values: values }
         client.appendValuesSpreadSheet(browserStorageAnnotations[0].group, Config.namespace, row, (err) => {
@@ -135,8 +142,8 @@ class GoogleSheetAnnotationClient {
                   range: {
                     startRowIndex: row,
                     endRowIndex: row + 1,
-                    startColumnIndex: 1, // Always is in column B, 1 to 2 column index
-                    endColumnIndex: 2,
+                    startColumnIndex: 1, // Always is in column B and non coded in C, 1 to 3 column index
+                    endColumnIndex: 3,
                     sheetId: Config.googleSheetConfig.db
                   },
                   fields: 'userEnteredValue(stringValue)',
@@ -146,6 +153,11 @@ class GoogleSheetAnnotationClient {
                         {
                           userEnteredValue: {
                             stringValue: GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation)
+                          }
+                        },
+                        {
+                          userEnteredValue: {
+                            stringValue: browserStorageAnnotation
                           }
                         }
                       ]

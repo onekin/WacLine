@@ -141,10 +141,10 @@ class GoogleSheetsManager {
       access_token: token
     }, {
       headers: { 'Content-Type': 'application/json; charset=utf-8' }
-    }).then(() => {
-      callback(null, true)
     }).catch(() => {
       callback(null, false)
+    }).then(() => {
+      callback(null, true)
     })
   }
 
