@@ -6,6 +6,11 @@ defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:Attribute('defaultAnn
 // PVSCL:ELSECOND
 defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Item(0)->pv:Name()->pv:ToLowerCase())"
 // PVSCL:ENDCOND
+let defaultGroupName = 'DefaultCodebook'
+// PVSCL:IFCOND(CodebookCreate, LINE)
+// eslint-disable-next-line quotes
+defaultGroupName = "PVSCL:EVAL(CodebookCreate->pv:Attribute('defaultCodebookName'))"
+// PVSCL:ENDCOND
 
 // Tags configuration
 const grouped = {
@@ -33,7 +38,7 @@ tags.statics = {
 // PVSCL:ENDCOND
 const Config = {
   // PVSCL:IFCOND(BuiltIn or EmptyCodebook or ApplicationBased OR NOT(Codebook), LINE)
-  groupName: 'DefaultReviewModel',
+  groupName: defaultGroupName,
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(GoogleSheetAnnotationServer OR GoogleSheetAuditLog, LINE)
   googleSheetConfig: {

@@ -9714,6 +9714,21 @@
         <cm:property cm:id="ipuIaJJAhuuHGduZg" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
           <cm:constant cm:id="idS_bNWAvcnU9Nt3q" cm:type="ps:string">ps:auto</cm:constant>
         </cm:property>
+        <cm:property cm:id="izcuEfOFA2UL5HCRV" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/i_HEAGqmFNvGDEswd">
+          <cm:constant cm:id="ivCIGpLcI8oEA2VzK" cm:type="ps:string">DefaultSLR</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iluMKwYSnN6pe3dUU" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i8yWjs8pk2NibQgAg" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iehLVSUzimouWlK8Q" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iUVJ4AipzfUnLq8BP" cm:type="ps:datetime">2021-06-17T07:40:36.755Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i4ie2J8jXCezS6f1k" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i01NhlmAbGxfypY4o" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNheSOiEYcqiF3DYx" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i9mXX2wojKCeuLOZT" cm:type="ps:datetime">2021-06-17T07:40:36.755Z</cm:constant>
+        </cm:property>
       </cm:properties>
     </cm:element>
     <cm:element cm:id="iODYV-Lx0ye0ntTbE" cm:type="ps:selected" cm:class="ps:selection">

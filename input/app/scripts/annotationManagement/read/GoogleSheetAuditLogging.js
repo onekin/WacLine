@@ -44,12 +44,17 @@ class GoogleSheetAuditLogging {
   initPapersDatabase (callback) {
     this.sendCallToBackground('getSheetRowsRawData', { spreadsheetId: window.abwa.groupSelector.currentGroup.id, sheetName: 'Papers' }, (err, result) => {
       if (err) {
-        callback(err)
+        if (_.isFunction(callback)) {
+          callback(err)
+        }
       } else {
         result.shift() // Remove headers
         this.papers = result.map((row) => {
           return row[0]
         })
+        if (_.isFunction(callback)) {
+          callback(null, this.papers)
+        }
       }
     })
   }
@@ -99,18 +104,19 @@ class GoogleSheetAuditLogging {
       })
       // Check if paper is already registered in the papers log
       let paperRow
-      // TODO: HARITZ. annotation.target[0] no es del paper sino del SpreadSheet. Annotation lo hace bien
-      if (_.has(annotation.target[0], 'source.id')) {
-        let paper = this.papers.find(paper => paper === annotation.target[0].source.id)
+      // Get the target that corresponds to where the evidence for the theme is taken from (if exists)
+      let sourceTarget = annotation.target.find(target => _.has(target, 'source.id'))
+      if (sourceTarget) {
+        let paper = this.papers.find(paper => paper === sourceTarget.source.id)
         if (_.isEmpty(paper)) {
           this.papers.push(annotation.target[0].source.id) // Add to list of added papers
           paperRow = this.paper2Row({
-            id: annotation.target[0].source.id,
+            id: sourceTarget.source.id,
             purpose: 'slr:codebookDevelopment',
-            title: annotation.target[0].source.title || '',
-            doi: annotation.target[0].source.doi || '',
-            url: annotation.target[0].source.url || '',
-            urn: annotation.target[0].source.urn || ''
+            title: sourceTarget.source.title || '',
+            doi: sourceTarget.source.doi || '',
+            url: sourceTarget.source.url || '',
+            urn: sourceTarget.source.urn || ''
           })
         }
       }
@@ -173,18 +179,19 @@ class GoogleSheetAuditLogging {
       })
       // Check if paper is already registered in the papers log
       let paperRow
-      // TODO: HARITZ. annotation.target[0] no es del paper sino del SpreadSheet.
-      if (_.has(annotation.target[0], 'source.id')) {
-        let paper = this.papers.find(paper => paper === annotation.target[0].source.id)
+      // Get the target that corresponds to where the evidence for the theme is taken from (if exists)
+      let sourceTarget = annotation.target.find(target => _.has(target, 'source.id'))
+      if (sourceTarget) {
+        let paper = this.papers.find(paper => paper === sourceTarget.source.id)
         if (_.isEmpty(paper)) {
           this.papers.push(annotation.target[0].source.id) // Add to list of added papers
           paperRow = this.paper2Row({
-            id: annotation.target[0].source.id,
-            purpose: 'oa:classifying',
-            title: annotation.target[0].source.title || '',
-            doi: annotation.target[0].source.doi || '',
-            url: annotation.target[0].source.url || '',
-            urn: annotation.target[0].source.urn || ''
+            id: sourceTarget.source.id,
+            purpose: 'slr:codebookDevelopment',
+            title: sourceTarget.source.title || '',
+            doi: sourceTarget.source.doi || '',
+            url: sourceTarget.source.url || '',
+            urn: sourceTarget.source.urn || ''
           })
         }
       }
@@ -339,24 +346,28 @@ class GoogleSheetAuditLogging {
       let potentialaction = 6
       let row = []
       row[id] = RandomUtils.randomString(22)
-      if (action === 'schema:CreateAction') {
-        row[created] = data.created || (new Date()).toISOString()
-      } else if (action === 'schema:ReplaceAction') {
-        row[created] = data.updated || (new Date()).toISOString()
-      } else {
-        row[created] = data.updated || (new Date()).toISOString()
-      }
-      row[creator] = data.user // TODO Should we change to data.creator?
+      row[created] = this.getDateBasedOnAction(data, action)
+      row[creator] = data.user || window.abwa.groupSelector.user.userid // TODO Should we change to data.creator?
       let themeBody = data.body.find(elem => elem.type === 'Theme')
       if (themeBody) {
         row[hasbody] = themeBody.id
       }
       row[hastarget] = data.id
-      row[motivatedby] = 'oa:linking' // TODO Comment with @ikerazpeitia that OA has linking
+      row[motivatedby] = 'oa:linking'
       row[potentialaction] = action
       return row
     } catch (err) {
       return err
+    }
+  }
+
+  getDateBasedOnAction (annotation, action) {
+    if (action === 'schema:CreateAction') {
+      return annotation.created || (new Date()).toISOString()
+    } else if (action === 'schema:ReplaceAction') {
+      return annotation.updated || (new Date()).toISOString()
+    } else if (action === 'schema:DeleteAction') {
+      return (new Date()).toISOString()
     }
   }
 
@@ -372,13 +383,7 @@ class GoogleSheetAuditLogging {
       let potentialaction = 7
       let row = []
       row[id] = data.id
-      if (action === 'schema:CreateAction') {
-        row[created] = data.created || (new Date()).toISOString()
-      } else if (action === 'schema:ReplaceAction') {
-        row[created] = data.updated || (new Date()).toISOString()
-      } else {
-        row[created] = data.updated || (new Date()).toISOString()
-      }
+      row[created] = this.getDateBasedOnAction(data, action)
       row[creator] = data.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
       row[hastarget] = data.references[0] // Check if references array should be inserted as part of target
       let commentingBody = data.body.find(elem => elem instanceof Commenting)
@@ -422,14 +427,8 @@ class GoogleSheetAuditLogging {
       let multivalued = 14
       let row = []
       row[id] = data.id
-      if (action === 'schema:CreateAction') {
-        row[created] = data.created || (new Date()).toISOString()
-      } else if (action === 'schema:ReplaceAction') {
-        row[created] = data.updated || (new Date()).toISOString()
-      } else {
-        row[created] = data.updated || (new Date()).toISOString()
-      }
-      row[creator] = data.user // TODO Should we change to data.creator?
+      row[created] = this.getDateBasedOnAction(data, action)
+      row[creator] = data.user || window.abwa.groupSelector.user.userid // TODO Should we change to data.creator?
       row[hasbody] = data.tags[0].replace('oa:theme:', '').replace('oa:code:', '') // For the case of themes and codes
       // Find the target that talks about where was created (must include source.id, textquoteselector and textpositionselector
       let evidenceTarget = data.target.find(target => { return _.has(target, 'source.id') && _.has(target, 'selector') && target.selector.find(selector => selector.type === 'TextPositionSelector') && target.selector.find(selector => selector.type === 'TextQuoteSelector') })
@@ -476,13 +475,7 @@ class GoogleSheetAuditLogging {
       let encoding = 13
       let row = []
       row[id] = data.id
-      if (action === 'schema:CreateAction') {
-        row[created] = data.created || (new Date()).toISOString()
-      } else if (action === 'schema:ReplaceAction') {
-        row[created] = data.updated || (new Date()).toISOString()
-      } else {
-        row[created] = data.updated || (new Date()).toISOString()
-      }
+      row[created] = this.getDateBasedOnAction(data, action)
       row[creator] = data.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
       let classifyingBody = data.body.find(elem => elem instanceof Classifying)
       if (classifyingBody) {
@@ -502,7 +495,7 @@ class GoogleSheetAuditLogging {
       if (commentingBody) {
         row[comment] = commentingBody.value || ''
       }
-      row[motivatedby] = 'oa:classifying' // TODO Verify with Iker if this is correct or not
+      row[motivatedby] = 'oa:classifying'
       row[potentialaction] = action
       return row
     } catch (err) {

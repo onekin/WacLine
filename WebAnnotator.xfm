@@ -2177,7 +2177,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="ivzkjkKjIDlxsOvm4" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iNnP5jznHL43uZqRp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iQ_nDiroL64VPNaFC" cm:type="ps:datetime">2021-06-14T15:09:10.700Z</cm:constant>
+          <cm:constant cm:id="iQ_nDiroL64VPNaFC" cm:type="ps:datetime">2021-06-17T07:20:08.912Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i_HEAGqmFNvGDEswd" cm:type="ps:string" cm:inheritable="true" cm:name="defaultCodebookName">
+          <cm:constant cm:id="iwm8dCPLMK0JzpPXk" cm:type="ps:string">DefaultCodebook</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

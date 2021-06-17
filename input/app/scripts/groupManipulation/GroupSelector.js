@@ -19,6 +19,7 @@ import Neo4JClientManager from '../annotationServer/neo4j/Neo4JClientManager'
 import Config from '../Config'
 import GoogleSheetAnnotationClientManager
   from '../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
+import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
 
@@ -140,6 +141,7 @@ class GroupSelector {
                   // PVSCL:ENDCOND
                   this.currentGroup = group
                   callback(null)
+                  Alerts.closeAlert()
                 }
               })
               // PVSCL:ELSECOND
@@ -195,6 +197,7 @@ class GroupSelector {
                   if (err) {
                     Alerts.errorAlert({ text: 'We are unable to create the group. Please check if you are logged in the annotation server.' })
                   } else {
+                    Alerts.closeAlert()
                     // PVSCL:IFCOND(Hypothesis, LINE)
                     // Modify group URL in hypothesis
                     if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
@@ -646,18 +649,38 @@ class GroupSelector {
 
   createGroupSelectorShareOptionEventHandler (group) {
     return () => {
-      this.openGroupShareAlert(group)
+      if (window.abwa.annotationServerManager instanceof BrowserStorageManager) {
+        Alerts.warningAlert({
+          title: 'Unshareable group',
+          text: 'Remember that you have selected browser storage to store your annotations, making not possible to share them with others via an URL. Please check the <a target="_blank" href="' + chrome.extension.getURL('pages/options.html') + '">options page</a> for sharing options.'
+        })
+      } else {
+        this.openGroupShareAlert(group)
+      }
     }
   }
 
   openGroupShareAlert (group, callback) {
-    Alerts.infoSyncAlert({
-      text: 'You can share your annotation group via this link: <a href="' + group.url + '" target="_blank">' + group.url + '</a>',
-      title: 'Share annotation codebook',
-      callback: () => {
-        if (_.isFunction(callback)) {
-          callback(null, group)
+    let promise = Promise.resolve()
+    let shareAlertFunction = (resolve) => {
+      Alerts.infoSyncAlert({
+        text: 'You can share your annotation group via this link: <a href="' + group.url + '" target="_blank">' + group.url + '</a>',
+        title: 'Share annotation codebook',
+        callback: () => {
+          resolve()
         }
+      })
+    }
+    // PVSCL:IFCOND(BrowserStorage, LINE)
+    if (!(window.abwa.annotationServerManager instanceof BrowserStorageManager)) {
+      promise = new Promise(shareAlertFunction)
+    }
+    // PVSCL:ELSECOND
+    promise = new Promise(shareAlertFunction)
+    // PVSCL:ENDCOND
+    promise.then(() => {
+      if (_.isFunction(callback)) {
+        callback(null, group)
       }
     })
   }

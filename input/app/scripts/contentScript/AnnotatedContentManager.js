@@ -262,9 +262,12 @@ export class AnnotatedContentManager {
     if (classifyingBody) {
       const codeId = classifyingBody.value.id
       const annotatedThemeOrCode = this.getAnnotatedThemeOrCodeFromThemeOrCodeId(codeId)
-      _.remove(annotatedThemeOrCode.annotations, (anno) => {
-        return anno.id === annotation.id
-      })
+      // Check if code still exists or annotation classification purpose pertains to a deleted code/theme
+      if (annotatedThemeOrCode) {
+        _.remove(annotatedThemeOrCode.annotations, (anno) => {
+          return anno.id === annotation.id
+        })
+      }
     }
   }
 
