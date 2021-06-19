@@ -18,6 +18,8 @@ import PreviousAssignments from '../annotationManagement/purposes/PreviousAssign
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
 import GoogleSheetAnnotationClientManager from '../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
 import GoogleSheetAuditLogging from '../annotationManagement/read/GoogleSheetAuditLogging'
 // PVSCL:ENDCOND
 
@@ -440,6 +442,9 @@ class ContentScriptManager {
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage, LINE)
     window.abwa.annotationServerManager = new BrowserStorageManager()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+    window.abwa.annotationServerManager = new GoogleSheetAnnotationClientManager()
     // PVSCL:ENDCOND
     window.abwa.annotationServerManager.init((err) => {
       if (_.isFunction(callback)) {

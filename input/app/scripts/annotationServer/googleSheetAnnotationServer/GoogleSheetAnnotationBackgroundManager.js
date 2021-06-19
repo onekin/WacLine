@@ -5,30 +5,40 @@ class GoogleSheetAnnotationBackgroundManager {
   init () {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if (request.scope === 'googleSheetAnnotation') {
+        // Check if it is logged in
         let promise = new Promise((resolve, reject) => {
-          window.background.googleSheetAnnotationManager.annotationServerManager.isLoggedIn((err, isLoggedIn) => {
-            if (err) {
-              reject(err)
-            } else {
-              if (isLoggedIn) {
-                resolve()
+          if (window.background.googleSheetAnnotationManager.annotationServerManager.googleToken) {
+            resolve()
+          } else {
+            this.logIn((err) => {
+              if (err) {
+                reject(err)
               } else {
-                window.background.googleSheetAnnotationManager.annotationServerManager.logIn({ interactive: true }, (err) => {
-                  if (err) {
-                    reject(err)
-                  } else {
-                    resolve()
-                  }
-                })
+                resolve()
               }
-            }
-          })
+            })
+          }
         })
         promise.then(() => {
-          if (request.cmd === 'getToken') {
+          if (request.cmd === 'logIn') {
+            window.background.googleSheetAnnotationManager.annotationServerManager.logIn({ interactive: true }, (err, result) => {
+              if (err) {
+                sendResponse({ error: err })
+              } else {
+                sendResponse(result)
+              }
+            })
+          } else if (request.cmd === 'isLoggedIn') {
+            window.background.googleSheetAnnotationManager.annotationServerManager.isLoggedIn((err, isLoggedIn) => {
+              if (err) {
+                sendResponse({ error: err })
+              } else {
+                sendResponse(isLoggedIn)
+              }
+            })
+          } else if (request.cmd === 'getToken') {
             sendResponse({ token: window.background.googleSheetAnnotationManager.annotationServerManager.googleToken })
-          }
-          if (request.cmd === 'searchAnnotations') {
+          } else if (request.cmd === 'searchAnnotations') {
             window.background.googleSheetAnnotationManager.annotationServerManager.client.searchAnnotations(request.data, (err, result) => {
               if (err) {
                 sendResponse({ error: err })
@@ -175,6 +185,26 @@ class GoogleSheetAnnotationBackgroundManager {
           }
         })
         return true
+      }
+    })
+  }
+
+  logIn (callback) {
+    window.background.googleSheetAnnotationManager.annotationServerManager.isLoggedIn((err, isLoggedIn) => {
+      if (err) {
+        callback(err)
+      } else {
+        if (isLoggedIn) {
+          callback(null)
+        } else {
+          window.background.googleSheetAnnotationManager.annotationServerManager.logIn({ interactive: true }, (err) => {
+            if (err) {
+              callback(err)
+            } else {
+              callback(null)
+            }
+          })
+        }
       }
     })
   }

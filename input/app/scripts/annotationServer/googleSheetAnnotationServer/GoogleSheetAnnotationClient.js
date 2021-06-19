@@ -1,10 +1,8 @@
 import _ from 'lodash'
 import GoogleDriveClient from '../../googleDrive/GoogleDriveClient'
 import GoogleSheetClient from '../../googleSheets/GoogleSheetClient'
-import BrowserStorageManager from '../browserStorage/BrowserStorageManager'
 import Config from '../../Config'
 import GoogleSheetCache from './GoogleSheetCache'
-import GoogleSheetCacheManager from './GoogleSheetCacheManager'
 
 class GoogleSheetAnnotationClient {
   constructor (token, manager) {
@@ -14,79 +12,85 @@ class GoogleSheetAnnotationClient {
     this.cacheInterval = null
   }
 
-  init () {
-    this.browserStorageManager.ini
+  init (callback) {
+    this.cacheInterval = setInterval(() => {
+      this.reloadCacheDatabase()
+    }, 60 * 1000)
+    this.reloadCacheDatabase(callback)
   }
 
-  updateCacheDatabase (data, callback) {
-    this.browserStorageManager = new GoogleSheetCacheManager('db.annotations.gsheet')
-    this.browserStorageManager.init(() => {
-      this.browserStorageManager.cleanDatabase((err) => {
-        if (err) {
-          if (_.isFunction(callback)) {
-            callback(err)
-          }
-        } else {
-          let client = new GoogleSheetClient(this.token)
-          client.getSheetRowsRawData(data.group.id, Config.namespace, (err, result) => {
-            if (err) {
-              if (_.isFunction(callback)) {
-                callback(err)
-              }
-            } else {
-              result.shift() // Remove headers
-              let annotations = result.map(encodedAnnotationRow => {
-                try {
-                  return GoogleSheetAnnotationClient.decodeAnnotation(encodedAnnotationRow[1]) // The cell B (array[1]) has the encoded annotation (what we need), the other is just the ID
-                } catch (e) {
-                  return null // Error parsing the annotation, ignoring
-                }
-              })
-              annotations = _.compact(annotations)
-              this.populateCache({
-                annotations, user: data.user, groups: data.user.groups
-              }, callback)
-            }
-          })
+  destroy () {
+    clearInterval(this.cacheInterval)
+  }
+
+  getDatabase (callback) {
+    this.getUserProfile((err, profile) => {
+      if (err) {
+        callback(err)
+      } else {
+        let database = {
+          user: {},
+          groups: [],
+          annotations: []
         }
-      })
+        database.user = profile
+        database.groups = profile.groups
+        let promises = []
+        let client = new GoogleSheetClient(this.token)
+        database.groups.forEach((group) => {
+          promises.push(new Promise((resolve, reject) => {
+            client.getSheetRowsRawData(group.id, Config.namespace, (err, result) => {
+              if (err) {
+                if (_.isFunction(callback)) {
+                  callback(err)
+                }
+              } else {
+                result.shift() // Remove headers
+                let annotations = result.map(encodedAnnotationRow => {
+                  try {
+                    return GoogleSheetAnnotationClient.decodeAnnotation(encodedAnnotationRow[1]) // The cell B (array[1]) has the encoded annotation (what we need), the other is just the ID
+                  } catch (e) {
+                    return null // Error parsing the annotation, ignoring
+                  }
+                })
+                resolve(_.compact(annotations))
+              }
+            })
+          }))
+        })
+        Promise.all(promises).then((resolves) => {
+          database.annotations = _.flatten(resolves)
+          callback(null, database)
+        })
+      }
     })
   }
 
-  reloadCacheDatabase (data, callback) {
-    let reloadData = data
-    this.cacheInterval = setInterval(() => {
-      this.updateCacheDatabase(reloadData)
-    }, 1 * 30 * 1000) // The cache is reloaded every 5 minutes TODO change this
-    // Execute for the first time
-    this.updateCacheDatabase(data, callback)
-  }
-
-  populateCache ({
-    annotations = [],
-    user = {
-      userid: 'generic_user',
-      display_name: 'Generic user'
-    },
-    groups = []
-  }, callback) {
-    // Populate cache
-    this.browserStorageManager.annotationsDatabase.annotations = annotations
-    this.browserStorageManager.annotationsDatabase.user = user
-    this.browserStorageManager.annotationsDatabase.groups = groups
-    this.browserStorageManager.saveDatabase(this.browserStorageManager.annotationsDatabase)
-    if (_.isFunction(callback)) {
-      callback()
-    }
+  reloadCacheDatabase (callback) {
+    console.debug('Reloading Google Sheet cache')
+    // Get the database from google sheets
+    this.getDatabase((err, database) => {
+      if (err) {
+        if (_.isFunction(callback)) {
+          callback(err)
+        }
+      } else {
+        this.cache = new GoogleSheetCache(database, this.manager)
+        console.debug('Reloaded Google Sheet cache')
+        if (_.isFunction(callback)) {
+          callback()
+        }
+      }
+    })
   }
 
   createNewAnnotation (annotation, callback) {
-    this.browserStorageManager.client.createNewAnnotation(annotation, (err, browserStorageAnnotation) => { // browserStorageAnnotation includes generated ID
+    this.cache.createNewAnnotation(annotation, (err, browserStorageAnnotation) => { // browserStorageAnnotation includes generated ID
       if (err) {
         callback(err)
       } else {
         let client = new GoogleSheetClient(this.token)
-        let row = { values: [[browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation), browserStorageAnnotation]] }
+        let row = { values: [[browserStorageAnnotation.id, GoogleSheetAnnotationClient.encodeAnnotation(browserStorageAnnotation), JSON.stringify(browserStorageAnnotation)]] }
         client.appendValuesSpreadSheet(browserStorageAnnotation.group, Config.namespace, row, (err) => {
           if (err) {
             callback(err)
@@ -99,7 +103,7 @@ class GoogleSheetAnnotationClient {
   }
 
   createNewAnnotations (annotations = [], callback) {
-    this.browserStorageManager.client.createNewAnnotations(annotations, (err, browserStorageAnnotations) => {
+    this.cache.createNewAnnotations(annotations, (err, browserStorageAnnotations) => {
       if (err) {
         callback(err)
       } else {
@@ -120,11 +124,11 @@ class GoogleSheetAnnotationClient {
   }
 
   searchAnnotations (data = {}, callback) {
-    this.browserStorageManager.client.searchAnnotations(data, callback)
+    this.cache.searchAnnotations(data, callback)
   }
 
   updateAnnotation (id, annotation, callback) {
-    this.browserStorageManager.client.updateAnnotation(id, annotation, (err, browserStorageAnnotation) => {
+    this.cache.updateAnnotation(id, annotation, (err, browserStorageAnnotation) => {
       if (err) {
         callback(err)
       } else {
@@ -157,7 +161,7 @@ class GoogleSheetAnnotationClient {
                         },
                         {
                           userEnteredValue: {
-                            stringValue: browserStorageAnnotation
+                            stringValue: JSON.stringify(browserStorageAnnotation)
                           }
                         }
                       ]
@@ -179,7 +183,7 @@ class GoogleSheetAnnotationClient {
   }
 
   deleteAnnotation (id, callback) {
-    this.browserStorageManager.client.deleteAnnotation(id, (err, browserStorageResult) => {
+    this.cache.deleteAnnotation(id, (err, browserStorageResult) => {
       if (err) {
         callback(err)
       } else {
@@ -216,7 +220,7 @@ class GoogleSheetAnnotationClient {
   }
 
   deleteAnnotations (annotationsArray, callback) {
-    this.browserStorageManager.client.deleteAnnotations(annotationsArray, (err, browserStorageResult) => {
+    this.cache.deleteAnnotations(annotationsArray, (err, browserStorageResult) => {
       if (err) {
         callback(err)
       } else {
@@ -263,7 +267,7 @@ class GoogleSheetAnnotationClient {
   }
 
   fetchAnnotation (id, callback) {
-    this.browserStorageManager.client.fetchAnnotation(id, callback)
+    this.cache.fetchAnnotation(id, callback)
   }
 
   getListOfGroups (data, callback) { // TODO Check if data can be removed

@@ -19,8 +19,6 @@ class GoogleSheetCache {
       console.debug(annotationToStore)
       // Store in database
       this.database.annotations.push(annotationToStore)
-      // Update storage
-      this.manager.saveDatabase(this.database)
       // Callback
       callback(null, annotationToStore)
     } catch (e) {
@@ -42,8 +40,6 @@ class GoogleSheetCache {
       }
       // Store in database
       this.database.annotations = this.database.annotations.concat(toStoreAnnotations)
-      // Update storage
-      this.manager.saveDatabase(this.database)
       callback(null, toStoreAnnotations)
     } catch (e) {
       callback(e)
@@ -248,8 +244,6 @@ class GoogleSheetCache {
           annotations: this.database.annotations,
           currentUser: this.database.user
         })
-        // Update storage
-        this.manager.saveDatabase(this.database)
         callback(null, updatedAnnotation)
       } catch (e) {
         callback(e)
@@ -299,8 +293,6 @@ class GoogleSheetCache {
         annotations: this.database.annotations,
         currentUser: this.database.user
       })
-      // Update storage
-      this.manager.saveDatabase(this.database)
       // Callback
       callback(null, { deleted: true, id: deletedAnnotation.id, annotation: deletedAnnotation })
     } catch (e) {
@@ -329,8 +321,6 @@ class GoogleSheetCache {
         })
         deletedAnnotations.push(deletedAnnotation)
       }
-      // Update Storage
-      this.manager.saveDatabase(this.database)
       // Callback
       callback(null, { deleted: true, annotations: deletedAnnotations })
     } catch (e) {
@@ -392,8 +382,6 @@ class GoogleSheetCache {
         const updatedGroup = Object.assign(groupToUpdate, data)
         // Update in-memory database
         this.database.groups[groupToUpdateIndex] = updatedGroup
-        // TODO Update Storage
-        this.manager.saveDatabase(this.database)
         // Callback
         callback(null, updatedGroup)
       } else {
@@ -413,8 +401,6 @@ class GoogleSheetCache {
         groups: this.database.groups
       })
       this.database.groups.push(createdGroup)
-      // TODO Update Storage
-      this.manager.saveDatabase(this.database)
       // Callback
       callback(null, createdGroup)
     } else {
@@ -461,7 +447,6 @@ class GoogleSheetCache {
         return annotation.group === id
       })
       if (removedGroup) {
-        this.manager.saveDatabase(this.database)
         callback(null, removedGroup)
       } else {
         callback(new Error('The group trying to leave does not exist.'))

@@ -11,6 +11,7 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
     super()
     this.client = null
     this.googleToken = null
+    this.loginInterval = null
     this.annotationServerMetadata = {
       annotationUrl: 'https://localannotationsdatabase.org/annotation/',
       groupUrl: 'https://docs.google.com/spreadsheets/d/',
@@ -20,8 +21,8 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
   }
 
   init (callback) {
-    setInterval(() => {
-      this.logIn({ interactive: false })
+    this.reloadInterval = setInterval(() => {
+      this.reloadClient()
     }, 1 * 30 * 1000) // TODO Change this
     this.logIn({}, callback)
   }
@@ -60,8 +61,12 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
           callback(null, false)
         }
       } else {
-        chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'getToken' }, ({ token }) => {
-          callback(null, !_.isEmpty(token))
+        chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'isLoggedIn' }, (isLoggedIn) => {
+          if (isLoggedIn.error) {
+            callback(isLoggedIn.error)
+          } else {
+            callback(null, isLoggedIn)
+          }
         })
       }
     }
@@ -105,7 +110,7 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
       })
     } else {
       // Check if user is logged in googleSheet
-      chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'getToken' }, ({ token }) => {
+      chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'logIn' }, ({ token }) => {
         if (this.googleToken !== token) {
           this.googleToken = token
         }
