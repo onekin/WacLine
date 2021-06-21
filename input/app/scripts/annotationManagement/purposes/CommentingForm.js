@@ -386,7 +386,7 @@ class CommentingForm {
           reject(err)
         } else {
           // Remove those which are from the classification scheme
-          const annotationsRetrievedFiltered = annotationsRetrieved.filter(a => a.motivation !== 'codebookDevelopment')
+          const annotationsRetrievedFiltered = annotationsRetrieved.filter(a => a.motivation !== 'codebookDevelopment' && a.motivation !== 'defining')
           // Deserialize annotations
           let annotations = annotationsRetrievedFiltered.map(a => Annotation.deserialize(a))
           // Filter by purpose classifying

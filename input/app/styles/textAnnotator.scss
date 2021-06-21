@@ -99,4 +99,20 @@ input[name="voteRadio"]{
 #downVoteImage {
   content:url($chromeExtensionMainURL + "images/downvote.png");
 }
+
+.voteReplyImage {
+  max-width: 10px;
+  padding: 2px;
+  margin-left: 10px;
+}
+
+.voteReplyImage[data-vote="up"] {
+  content:url($chromeExtensionMainURL + "images/upvote.png");
+  background-color: rgba(0, 255, 0, 0.6);
+}
+
+.voteReplyImage[data-vote="down"] {
+  content:url($chromeExtensionMainURL + "images/downvote.png");
+  background-color: rgba(255, 0, 0, 0.6);
+}
 /* PVSCL:ENDCOND */
