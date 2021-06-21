@@ -28,7 +28,7 @@
       //PVSCL:ENDCOND
       "js": ["scripts/contentScript.js"],
       "css": ["styles/contentScript.css"],
-      "run_at": "document_start",
+      "run_at": "document_end",
       "all_frames": false
     }PVSCL:IFCOND(GoogleSheetProvider),
     {
@@ -37,7 +37,7 @@
       "run_at": "document_end"
     }PVSCL:ENDCONDPVSCL:IFCOND(ACM),
     {
-      "matches": ["*://dl.acm.org/citation.cfm?*"],
+      "matches": ["*://dl.acm.org/citation.cfm?*", "*://dl.acm.org/doi/*"],
       "js": ["scripts/acmContentScript.js"],
       "run_at": "document_end"
     }PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),

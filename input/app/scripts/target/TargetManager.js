@@ -244,9 +244,14 @@ class TargetManager {
     // Try to load doi from page metadata
     if (_.isEmpty(this.doi)) {
       try {
-        this.doi = document.querySelector('meta[name="citation_doi"]').content
-        if (!this.doi) {
-          this.doi = document.querySelector('meta[name="dc.identifier"]').content
+        let citationDoiElement = document.querySelector('meta[name="citation_doi"]')
+        if (citationDoiElement) {
+          this.doi = document.querySelector('meta[name="citation_doi"]').content
+        } else {
+          let dcIdentifierElement = document.querySelector('meta[name="dc.identifier"]')
+          if (dcIdentifierElement) {
+            this.doi = document.querySelector('meta[name="dc.identifier"]').content
+          }
         }
       } catch (e) {
         console.debug('Doi not found for this document')
@@ -399,24 +404,17 @@ class TargetManager {
     // Try to load by doi
     const promise = new Promise((resolve, reject) => {
       if (this.doi) {
-        const settings = {
-          async: true,
-          crossDomain: true,
-          url: 'https://doi.org/' + this.doi,
-          method: 'GET',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Cache-Control': 'no-cache'
+        chrome.runtime.sendMessage({
+          scope: 'target',
+          cmd: 'getMetadataFromDoi',
+          data: { doi: this.doi }
+        }, (result) => {
+          if (_.has(result, 'error')) {
+            reject(result.error)
+          } else {
+            this.documentTitle = result.title
+            resolve(result)
           }
-        }
-        // Call using axios
-        const axios = require('axios').default
-        axios(settings).then((response) => {
-          if (response.data && response.data.title) {
-            this.documentTitle = response.data.title
-          }
-          resolve()
         })
       } else {
         resolve()
