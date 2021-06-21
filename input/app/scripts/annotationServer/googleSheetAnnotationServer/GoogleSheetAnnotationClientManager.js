@@ -28,24 +28,30 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
   }
 
   reloadClient (callback) {
-    this.isLoggedIn((err, isLogged) => {
-      if (err) {
-        if (_.isFunction(callback)) {
-          callback(err)
-        }
-      } else {
-        if (isLogged) {
-          this.client = new GoogleSheetAnnotationClient(this.googleToken, this)
-          this.client.init(() => {
-            if (_.isFunction(callback)) {
-              callback(null, this.googleToken)
-            }
-          })
+    if (window.background) {
+      this.isLoggedIn((err, isLogged) => {
+        if (err) {
+          if (_.isFunction(callback)) {
+            callback(err)
+          }
         } else {
-          this.logIn({ interactive: true }, callback)
+          if (isLogged) {
+            this.client = new GoogleSheetAnnotationClient(this.googleToken, this)
+            this.client.init(() => {
+              if (_.isFunction(callback)) {
+                callback(null, this.googleToken)
+              }
+            })
+          } else {
+            this.logIn({ interactive: true }, callback)
+          }
         }
+      })
+    } else {
+      if (_.isFunction(callback)) {
+        callback()
       }
-    })
+    }
   }
 
   isLoggedIn (callback) {

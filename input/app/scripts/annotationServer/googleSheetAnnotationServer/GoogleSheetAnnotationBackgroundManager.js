@@ -175,7 +175,7 @@ class GoogleSheetAnnotationBackgroundManager {
               }
             })
           } else if (request.cmd === 'reloadCacheDatabase') {
-            window.background.googleSheetAnnotationManager.annotationServerManager.client.reloadCacheDatabase(request.data, (err, result) => {
+            window.background.googleSheetAnnotationManager.annotationServerManager.client.reloadCacheDatabaseForGroup(request.data, (err, result) => {
               if (err) {
                 sendResponse({ error: err })
               } else {

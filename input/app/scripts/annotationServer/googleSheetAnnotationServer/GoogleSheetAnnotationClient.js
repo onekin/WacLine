@@ -84,6 +84,30 @@ class GoogleSheetAnnotationClient {
     })
   }
 
+  reloadCacheDatabaseForGroup (data, callback) {
+    let client = new GoogleSheetClient(this.token)
+    client.getSheetRowsRawData(data.group.id, Config.namespace, (err, result) => {
+      if (err) {
+        if (_.isFunction(callback)) {
+          callback(err)
+        }
+      } else {
+        result.shift() // Remove headers
+        let annotations = result.map(encodedAnnotationRow => {
+          try {
+            return GoogleSheetAnnotationClient.decodeAnnotation(encodedAnnotationRow[1]) // The cell B (array[1]) has the encoded annotation (what we need), the other is just the ID
+          } catch (e) {
+            return null // Error parsing the annotation, ignoring
+          }
+        })
+        if (_.isFunction(callback)) {
+          this.cache.database.annotations = _.unionBy(annotations, this.cache.database.annotations, 'id')
+          callback(null, this.cache.database.annotations)
+        }
+      }
+    })
+  }
+
   createNewAnnotation (annotation, callback) {
     this.cache.createNewAnnotation(annotation, (err, browserStorageAnnotation) => { // browserStorageAnnotation includes generated ID
       if (err) {
