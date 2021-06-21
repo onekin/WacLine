@@ -410,6 +410,26 @@ class ReadAnnotation {
         tooltipString += body.tooltip() + '\n'
       }
     })
+    // PVSCL:IFCOND(Replying, LINE)
+    // Get number of replies
+    let replies = window.abwa.annotationManagement.annotationReader.allAnnotations.filter((anno) => {
+      if (_.has(anno, 'references') && anno.references.length > 0) {
+        return !!anno.references.find(ref => ref === annotation.id)
+      } else {
+        return false
+      }
+    })
+    if (replies.length > 0) {
+      tooltipString += 'Number of replies: ' + replies.length + '\n'
+    }
+    // PVSCL:IFCOND(Voting, LINE)
+    // Get last voting decision
+    let lastDecisionAnnotation = replies.filter(rep => rep.body.find(body => body.purpose === 'assessing' && body.value)).sort((a, b) => a.modified > b.modified).slice(-1)[0]
+    if (lastDecisionAnnotation) {
+      tooltipString += 'Decision: ' + lastDecisionAnnotation.body.find(body => body.purpose === 'assessing').value + '\n'
+    }
+    // PVSCL:ENDCOND
+    // PVSCL:ENDCOND
     return tooltipString
   }
 

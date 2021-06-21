@@ -6,7 +6,12 @@ import { Review } from '../../exporter/reviewModel'
 class Canvas {
   static generateCanvas () {
     window.abwa.sidebar.closeSidebar()
-    const review = Review.parseAnnotations(window.abwa.annotationManagement.annotationReader.allAnnotations)
+    let review = null
+    // PVSCL:IFCOND(Filter, LINE)
+    review = Review.parseAnnotations(window.abwa.annotationManagement.annotationReader.currentAnnotations)
+    // PVSCL:ELSECOND
+    review = Review.parseAnnotations(window.abwa.annotationManagement.annotationReader.allAnnotations)
+    // PVSCL:ENDCOND
     const canvasPageURL = chrome.extension.getURL('pages/specific/reviewCanvas.html')
     axios.get(canvasPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
