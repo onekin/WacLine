@@ -137,7 +137,7 @@ class UserFilter {
         return annotation.creator
       }))
       // Filtered users will be only current in case of individual
-      if (this.individual) {
+      if (this.individual && _.isEmpty(window.abwa.annotationBasedInitializer.initAnnotation)) {
         this.filteredUsers = [window.abwa.annotationServerManager.annotationServerMetadata.userUrl + window.abwa.groupSelector.user.userid]
       } else {
         this.filteredUsers = _.clone(this.allUsers)

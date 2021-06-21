@@ -164,10 +164,11 @@ class DOMTextUtils {
         console.debug('Document page is not loaded, annotation missing.')
         return null
       }
+      // Range text position selector is only useful if page is retrieved
+      range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(fragmentElement, textPositionSelector, textQuoteSelector.exact)
     } else {
       fragmentElement = document.body
     }
-    range = DOMTextUtils.tryRetrieveRangeTextPositionSelector(fragmentElement, textPositionSelector, textQuoteSelector.exact)
     if (!range) {
       if (exhaustive) { // Try by hard exhaustive
         range = DOMTextUtils.tryRetrieveRangeTextSelector(fragmentElement, textQuoteSelector)
@@ -258,12 +259,20 @@ class DOMTextUtils {
     }
     let range = null
     try {
-      range = domAnchorTextQuote.toRange(fragmentElement.parentNode, textQuoteSelector)
+      range = domAnchorTextQuote.toRange(fragmentElement, textQuoteSelector)
     } catch (e) {
-      range = DOMTextUtils.tryRetrieveRangeTextSelector(fragmentElement.parentNode, textQuoteSelector)
+      if (fragmentElement.parentNode.id !== 'viewer') {
+        range = DOMTextUtils.tryRetrieveRangeTextSelector(fragmentElement.parentNode, textQuoteSelector)
+      } else {
+        return null
+      }
     }
     if (_.isNull(range)) {
-      range = DOMTextUtils.tryRetrieveRangeTextSelector(fragmentElement.parentNode, textQuoteSelector)
+      if (fragmentElement.parentNode.id !== 'viewer') {
+        range = DOMTextUtils.tryRetrieveRangeTextSelector(fragmentElement.parentNode, textQuoteSelector)
+      } else {
+        return null
+      }
     }
     return range
   }
