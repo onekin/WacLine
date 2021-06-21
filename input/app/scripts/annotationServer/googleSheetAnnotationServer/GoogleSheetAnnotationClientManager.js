@@ -11,7 +11,7 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
     super()
     this.client = null
     this.googleToken = null
-    this.loginInterval = null
+    this.reloadInterval = null
     this.annotationServerMetadata = {
       annotationUrl: 'https://localannotationsdatabase.org/annotation/',
       groupUrl: 'https://docs.google.com/spreadsheets/d/',
@@ -36,12 +36,19 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
           }
         } else {
           if (isLogged) {
-            this.client = new GoogleSheetAnnotationClient(this.googleToken, this)
-            this.client.init(() => {
-              if (_.isFunction(callback)) {
-                callback(null, this.googleToken)
+            if (this.client && this.client.token === this.googleToken) {
+              // If client exists and has the same token as current, no need to reload the client
+            } else {
+              if (this.client) {
+                this.client.destroy()
               }
-            })
+              this.client = new GoogleSheetAnnotationClient(this.googleToken, this)
+              this.client.init(() => {
+                if (_.isFunction(callback)) {
+                  callback(null, this.googleToken)
+                }
+              })
+            }
           } else {
             this.logIn({ interactive: true }, callback)
           }
@@ -93,6 +100,9 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
               console.error('Unable to verify if token is active or is inactive, retrieving a new one')
               GoogleSheetsManager.removeCachedToken(token, () => {
                 chrome.identity.getAuthToken({ interactive: interactive }, (newToken) => {
+                  if (this.client) {
+                    this.client.destroy()
+                  }
                   this.googleToken = newToken
                   this.client = new GoogleSheetAnnotationClient(newToken, this)
                   this.client.init(() => {
@@ -103,6 +113,9 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
                 })
               })
             } else {
+              if (this.client) {
+                this.client.destroy()
+              }
               this.googleToken = token
               this.client = new GoogleSheetAnnotationClient(token, this)
               this.client.init(() => {

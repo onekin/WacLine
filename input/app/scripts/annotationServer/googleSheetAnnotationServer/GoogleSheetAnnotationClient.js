@@ -86,6 +86,7 @@ class GoogleSheetAnnotationClient {
 
   reloadCacheDatabaseForGroup (data, callback) {
     let client = new GoogleSheetClient(this.token)
+    console.debug('Reloading Google Sheet cache for group: ' + data.group.id)
     client.getSheetRowsRawData(data.group.id, Config.namespace, (err, result) => {
       if (err) {
         if (_.isFunction(callback)) {
@@ -102,6 +103,7 @@ class GoogleSheetAnnotationClient {
         })
         if (_.isFunction(callback)) {
           this.cache.database.annotations = _.unionBy(annotations, this.cache.database.annotations, 'id')
+          console.debug('Reloaded Google Sheet cache for group: ' + data.group.id)
           callback(null, this.cache.database.annotations)
         }
       }

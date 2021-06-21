@@ -31,7 +31,6 @@ class GoogleSheetsManager {
               })
             }
           })
-          return true
         } else if (request.cmd === 'getTokenSilent') {
           chrome.identity.getAuthToken({ interactive: false }, function (token) {
             if (chrome.runtime.lastError) {
@@ -96,7 +95,6 @@ class GoogleSheetsManager {
               })
             }
           })
-          return true
         } else if (request.cmd === 'updateSpreadsheet') {
           chrome.identity.getAuthToken({ interactive: true }, function (token) {
             let googleSheetClient = new GoogleSheetClient(token)
@@ -108,7 +106,6 @@ class GoogleSheetsManager {
               }
             })
           })
-          return true
         } else if (request.cmd === 'appendRowSpreadSheet') {
           chrome.identity.getAuthToken({ interactive: true }, function (token) {
             let googleSheetClient = new GoogleSheetClient(token)
@@ -132,6 +129,7 @@ class GoogleSheetsManager {
             })
           })
         }
+        return true
       }
     })
   }
