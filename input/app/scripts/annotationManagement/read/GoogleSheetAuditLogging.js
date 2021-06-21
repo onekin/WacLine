@@ -150,13 +150,33 @@ class GoogleSheetAuditLogging {
     return (event) => {
       // Everytime a theme is deleted
       let annotation = event.detail.themeAnnotation
-      let row = this.codebooking2Row(annotation, 'schema:DeleteAction')
+      let codebookDevelopmentRows = []
+      let linkingRows = []
+      codebookDevelopmentRows.push(this.codebooking2Row(annotation, 'schema:DeleteAction'))
+      // Log delete action for each of the codes pertaining to the theme and the links between theme and codes
+      let theme = event.detail.theme
+      if (theme.codes.length > 0) {
+        theme.codes.forEach((code) => {
+          let codebookRow = this.codebooking2Row(code.toAnnotation(), 'schema:DeleteAction')
+          if (_.isArray(codebookRow)) {
+            codebookDevelopmentRows.push(codebookRow)
+          }
+          let linkingRow = this.linking2Row(code.toAnnotation(), 'schema:DeleteAction')
+          if (_.isArray(linkingRow)) {
+            linkingRows.push(linkingRow)
+          }
+        })
+      }
       this.sendCallToBackground('appendRowSpreadSheet', {
         spreadsheetId: annotation.group,
         range: 'LOG-codebookDevelopment',
-        data: { values: [row] }
+        data: { values: codebookDevelopmentRows }
       })
-      // TODO Comment with @ikerazpeitia: should we add to the linking log that themes and it's codes where unlinked ¿?
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'LOG-linking',
+        data: { values: linkingRows }
+      })
     }
   }
 
