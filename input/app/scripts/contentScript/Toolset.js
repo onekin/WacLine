@@ -37,7 +37,8 @@ import BrowserStorageManager from '../annotationServer/browserStorage/BrowserSto
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(AuthorsSearch, LINE)
 import AuthorsInfo from '../annotationManagement/read/AuthorsInfo'
-import ImportChecklist from '../codebook/operations/import/ImportChecklist'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(ImportChecklist, LINE)
 import ChecklistReview from '../annotationManagement/read/ChecklistReview'
 // PVSCL:ENDCOND
 
