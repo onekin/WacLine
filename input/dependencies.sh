@@ -1,7 +1,7 @@
 #!/bin/bash
 
 PROJECT_DIR="./node_modules"
-NODE_MODULES_DIR="../../../node_modules"
+NODE_MODULES_DIR="../../node_modules"
 if [ -d "$PROJECT_DIR" ]; then
     echo "Nothing to do"
 else
