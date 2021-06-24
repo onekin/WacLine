@@ -62,9 +62,13 @@ class AnnotationManagement {
     return (event) => {
       // Check if something is selected
       if (document.getSelection().toString().length !== 0) {
+        // TODO Change this with vanilla javascript functions
         if ($(event.target).parents('#abwaSidebarWrapper').toArray().length === 0 &&
           $(event.target).parents('.swal2-container').toArray().length === 0 &&
-          $(event.target).parents('#canvasContainer').toArray().length === 0
+          $(event.target).parents('#canvasContainer').toArray().length === 0 &&
+          $(event.target).parents('#reviewEditor').toArray().length === 0 &&
+          $(event.target).parents('#checklistCanvas').toArray().length === 0 &&
+          $(event.target).parents('#checklistItem').toArray().length === 0
         ) {
           window.abwa.sidebar.openSidebar()
         }
