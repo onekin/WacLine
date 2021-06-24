@@ -299,6 +299,11 @@
         <cm:script cm:id="is1l8QbcEna6ELWDy" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.MoodleProvider</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="iJJK9JVkD5S-bXhmT">
+      <cm:restriction cm:id="ifYU-JlUEHiRXC6VW">
+        <cm:script cm:id="iaD66nEPsqyexOQ48" cm:language="ps:pvscl" cm:type="ps:boolean">ImportChecklist</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -30520,7 +30525,7 @@
         <cm:mimedesc cm:id="istzUmqPCk2jU7KBt" cm:mimetype="text/plain" cm:encoding="utf-8">authorsCanvas.scss</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="i1az97NQ-I7_CVAuT-O8h6Iebxgj" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="i1az97NQ-I7_CVAuT-O8h6Iebxgj" cm:restriction="iJJK9JVkD5S-bXhmT" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="i1az97NQ-I7_CVAuT-O8h6Iebxgjdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iFNaaFNoZDhdqWmSRhHMzYmrKq0kcUBfrZSvvdaHi" cm:class="ps:parents">
@@ -30544,7 +30549,7 @@
           <cm:constant cm:id="iUmGCGVT64akl0ypP" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="icugucHyOLHDNsuMm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="inTEeiUDRZvkCvy9B" cm:type="ps:datetime">2021-04-23T16:00:12.375Z</cm:constant>
+          <cm:constant cm:id="inTEeiUDRZvkCvy9B" cm:type="ps:datetime">2021-06-24T10:42:39.607Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
