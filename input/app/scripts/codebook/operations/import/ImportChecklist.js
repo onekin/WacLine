@@ -6,14 +6,13 @@ import Checklists from './Checklists'
 import Config from '../../../Config'
 
 import LanguageUtils from '../../../utils/LanguageUtils'
-import Codebook from '../../model/Codebook'
 import Checklist from '../../../annotationManagement/purposes/Checklist'
 import KeywordBasedAnnotation from '../../../annotationManagement/create/KeywordBasedAnnotation'
 import axios from 'axios'
 // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
 import MethodsKeywords from '../../../annotationManagement/purposes/MethodsKeywords'
-// PVSCL:ENDCOND
 import ReadCodebook from '../read/ReadCodebook'
+// PVSCL:ENDCOND
 
 class ImportChecklist {
 
@@ -24,10 +23,14 @@ class ImportChecklist {
     this.events = {}
   }
 
-  init () {
+  init (callback) {
+    ReadCodebook.addChecklistsThemes()
     // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
     this.setChecklistsMethodsKeywords()
     // PVSCL:ENDCOND
+    if (_.isFunction(callback)) {
+      callback()
+    }
   }
 
   // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
@@ -35,32 +38,20 @@ class ImportChecklist {
     this.events.keywordsLoadedEvent = {
       element: document,
       event: Events.keywordsLoaded,
-      handler: this.keywordsLoadedEventHandler()
+      handler: this.importChecklist()
     }
     this.events.keywordsLoadedEvent.element.addEventListener(this.events.keywordsLoadedEvent.event, this.events.keywordsLoadedEvent.handler, false)
-  }
-
-  keywordsLoadedEventHandler () {
-    this.openChecklistMenu()
   }
   // PVSCL:ENDCOND
 
 
   /**
-   * This method opens the checklist's review canvas in case there is an existing checklist for the current
-   * document or opens the dialog so that the user chooses one in case there isn't
-   */
-  openChecklistMenu () {
-    this.importChecklist()
-  }
-
-  /**
    * This method ask the user to choose a checklist and imports the
    * corresponding themes and codes, it also creates the checklist annotation
    */
-  importChecklist () {
+  importChecklist (filter) {
     // 1- Ask user to choose checklist
-    this.askUserToChooseChecklist((err, checklistGroupName, methodName) => {
+    this.askUserToChooseChecklist(filter, (err, checklistGroupName, methodName) => {
       if (err) {
         Alerts.errorAlert({
           text: 'Unable to load checklist. Error:<br/>' + err.message
@@ -73,74 +64,160 @@ class ImportChecklist {
         let chosenMethod = group.methods.filter((method) => {
           return method.name === methodName
         })[0]
-        let method = {
-          name: chosenMethod.name,
-          definition: []
-        }
-        let methodTheme = {
-          name: method.name,
-          description: '',
-          codes: []
-        }
-        chosenMethod.definition.forEach((definition) => {
-          methodTheme.codes = methodTheme.codes.concat(definition.codes)
-        })
-        method.definition.push(methodTheme)
 
-        const tempCodebook = Codebook.fromObjects(method)
-
-        // 4- Create themes with codes
-        tempCodebook.annotationServer = window.abwa.codebookManager.codebookReader.codebook.annotationServer
-        const annotations = tempCodebook.toAnnotations()
-        window.abwa.annotationServerManager.client.createNewAnnotations(annotations, (err, codebookAnnotations) => {
-          if (err) {
-            Alerts.errorAlert({
-              text: 'An error has occurred loading the evaluation method checklist. Error: ' + err.message
-            })
-          } else {
-            window.abwa.codebookManager.codebookReader.init()
-            Alerts.closeAlert()
+        this.askUserToChooseCriteria(chosenMethod, (toAddCriteria) => {
+          let method = {
+            name: chosenMethod.name,
+            definition: []
           }
-        })
-
-        // 5- Add special annotation to track checklist (checked/not checked)
-        let newBody = {
-          name: chosenMethod.name,
-          definition: [],
-          totalCodes: 0,
-          invalidCriticisms: []
-        }
-        if (chosenMethod.invalidCriticisms) {
-          newBody.invalidCriticisms = chosenMethod.invalidCriticisms
-        }
-        chosenMethod.definition.forEach((category) => {
-          let newDefinition = {
-            name: category.name,
-            description: category.description,
+          let methodTheme = {
+            name: method.name,
+            description: '',
             codes: []
           }
-          newDefinition.codes = category.codes.map((code) => {
-            return {
-              name: code.name,
-              description: code.description,
-              status: 'undefined'
+          let essentialTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Essential')
+          let desirableTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Desirable')
+          let extraordinaryTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Extraordinary')
+          let essentials = toAddCriteria.essential
+          let desirables = toAddCriteria.desirable
+          let extraordinaries = toAddCriteria.extraordinary
+
+          let i = 0
+          for (let essential of essentials) {
+            if (essentialTheme.getCodeByName(essential.name)) {
+              essentials.splice(i, 1)
             }
+            i++
+          }
+
+          i = 0
+          for (let desirable of desirables) {
+            if (desirableTheme.getCodeByName(desirable.name)) {
+              desirables.splice(i, 1)
+            }
+            i++
+          }
+
+          i = 0
+          for (let extraordinary of extraordinaries) {
+            if (extraordinaryTheme.getCodeByName(extraordinary.name)) {
+              extraordinaries.splice(i, 1)
+            }
+            i++
+          }
+
+          // Adds all the criteria to the corresponding theme
+          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+            theme: essentialTheme,
+            codesInfo: essentials
           })
-          newBody.definition.push(newDefinition)
-          newBody.totalCodes += newDefinition.codes.length
-        })
-        const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'checklist'
-        const tags = [motivationTag]
-        LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-          purpose: Checklist.purpose,
-          tags: tags,
-          checklist: newBody
-        })
-        window.abwa.annotatedContentManager.reloadTagsChosen()
-        Alerts.successAlert({
-          text: 'Method has been imported successfully'
+          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+            theme: desirableTheme,
+            codesInfo: desirables
+          })
+          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+            theme: extraordinaryTheme,
+            codesInfo: extraordinaries
+          })
+
+          // 5- Add special annotation to track invalid criticisms and that checklist has been added
+          let checklistWithInvalidCrit = {
+            name: chosenMethod.name,
+            invalidCriticisms: []
+          }
+          if (chosenMethod.invalidCriticisms) {
+            checklistWithInvalidCrit.invalidCriticisms = chosenMethod.invalidCriticisms
+          }
+          let newEssentialDefinition = {
+            name: chosenMethod.name,
+            description: '',
+            codes: essentials.map((criterion) => {
+              return {
+                name: criterion.name,
+                description: criterion.description,
+                status: 'undefined'
+              }
+            })
+          }
+
+          let newDesirableDefinition = {
+            name: chosenMethod.name,
+            description: '',
+            codes: desirables.map((criterion) => {
+              return {
+                name: criterion.name,
+                description: criterion.description,
+                status: 'undefined'
+              }
+            })
+          }
+
+          let newExtraordinaryDefinition = {
+            name: chosenMethod.name,
+            description: '',
+            codes: extraordinaries.map((criterion) => {
+              return {
+                name: criterion.name,
+                description: criterion.description,
+                status: 'undefined'
+              }
+            })
+          }
+
+          // Update essential, desirable and extraordinary checklist annotations
+          const essentialChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Essential')
+          if (essentials.length > 0) {
+            essentialChecklist.body[0].value.totalCodes += essentials.length
+            essentialChecklist.body[0].value.definition.push(newEssentialDefinition)
+          }
+          essentialChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: essentialChecklist
+          })
+
+          const desirableChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Desirable')
+          if (desirables.length > 0) {
+            desirableChecklist.body[0].value.totalCodes += desirables.length
+            desirableChecklist.body[0].value.definition.push(newDesirableDefinition)
+          }
+          desirableChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: desirableChecklist
+          })
+
+          const extraordinaryChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Extraordinary')
+          if (extraordinaries.length > 0) {
+            extraordinaryChecklist.body[0].value.totalCodes += extraordinaries.length
+            extraordinaryChecklist.body[0].value.definition.push(newExtraordinaryDefinition)
+          }
+          extraordinaryChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: extraordinaryChecklist
+          })
+
+          // Create annotation to keep chosen checklists and invalid criticisms
+
+          Alerts.successAlert({
+            text: 'Checklist has been imported successfully'
+          })
         })
       }
+    })
+  }
+
+  static createChecklistAnnotation (name) {
+    let newBody = {
+      name: name,
+      definition: [],
+      totalCodes: 0,
+      chosenChecklists: []
+    }
+    const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'checklist'
+    const tags = [motivationTag]
+    LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+      purpose: Checklist.purpose,
+      tags: tags,
+      checklist: newBody
     })
   }
 
@@ -148,7 +225,7 @@ class ImportChecklist {
    * This method handles the dialog to let the user choose a checklist
    * @param {*} callback
    */
-  askUserToChooseChecklist (callback) {
+  askUserToChooseChecklist (filter, callback) {
     window.abwa.sidebar.closeSidebar()
     const canvasPageURL = chrome.extension.getURL('pages/specific/chooseChecklist.html')
     const checklistAnnotations = ImportChecklist.getChecklistsAnnotations()
@@ -175,7 +252,6 @@ class ImportChecklist {
         const groupName = choiceSplited[0]
         const methodName = choiceSplited[1]
         document.querySelector('#chooseChecklist').parentNode.removeChild(document.querySelector('#chooseChecklist'))
-        document.querySelector('#abwaSidebarButton').style.display = 'block'
         callback(null, groupName, methodName)
       })
       document.querySelector('#cancelChecklistButton').addEventListener('click', function () {
@@ -183,15 +259,28 @@ class ImportChecklist {
         document.querySelector('#abwaSidebarButton').style.display = 'block'
       })
 
+      if (filter) {
+        document.querySelector('#chooseChecklistContainer h1').innerText = 'Choose ' + filter + ' method'
+      } else {
+        document.querySelector('#chooseChecklistContainer h1').innerText = 'Choose criteria list'
+      }
+
       const select = document.querySelector('#checklistSelect')
-      let filteredMethods = this.checklistsMethods.methods
+      let filteredMethods = [...this.checklistsMethods.methods]
       let i = -1
+      const alreadyChosenChecklists = checklistAnnotations[0].body[0].value.chosenChecklists
       for (let method of this.checklistsMethods.methods) {
         i++
-        for (let checklist of checklistAnnotations) {
-          if (method.name === checklist.body[0].value.name) {
-            filteredMethods.splice(i, 1)
-            break
+        if (filter && method.filter ? !method.filter.includes(filter) : true) {
+          filteredMethods.splice(i, 1)
+          i--
+        } else {
+          for (let checklist of alreadyChosenChecklists) {
+            if (method.name === checklist.name) {
+              filteredMethods.splice(i, 1)
+              i--
+              break
+            }
           }
         }
       }
@@ -206,6 +295,99 @@ class ImportChecklist {
         option.text += ' (' + method.keywordsMatches + ')'
         // PVSCL:ENDCOND
         select.appendChild(option)
+      })
+    })
+  }
+
+
+  askUserToChooseCriteria (method, callback) {
+    window.abwa.sidebar.closeSidebar()
+    const canvasPageURL = chrome.extension.getURL('pages/specific/chooseCriteria.html')
+    axios.get(canvasPageURL).then((response) => {
+      document.body.insertAdjacentHTML('beforeend', response.data)
+      document.querySelector('#abwaSidebarButton').style.display = 'none'
+
+      document.addEventListener('keydown', function (e) {
+        if (e.code === 'Escape' && document.querySelector('#chooseCriteria') != null) {
+          document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+          document.querySelector('#abwaSidebarButton').style.display = 'block'
+        }
+      })
+
+      document.querySelector('#cancelCriteriaButton').addEventListener('click', function (e) {
+        document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
+
+      document.querySelector('#chooseChecklistOverlay').addEventListener('click', function (e) {
+        document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
+      })
+
+      document.querySelector('#acceptCriteriaButton').addEventListener('click', function (e) {
+        // Get for each category the selected criteria and return them with callback
+        const clusters = document.querySelectorAll('.categoryCluster')
+        let chosenCriteria = {
+          essential: [],
+          desirable: [],
+          extraordinary: []
+        }
+        clusters.forEach((cluster) => {
+          const type = cluster.querySelector('.categoryTitle').innerText.toLowerCase()
+          cluster.querySelectorAll('.selected').forEach((selCriterion) => {
+            const criterionName = selCriterion.querySelector('span').innerText
+            chosenCriteria[type].push(criterionName)
+          })
+        })
+
+        let toAddCriteria = {
+          essential: [],
+          desirable: [],
+          extraordinary: []
+        }
+
+        method.definition.forEach((category) => {
+          category.codes.forEach((criterion) => {
+            if (chosenCriteria[category.name.toLowerCase()].includes(criterion.name)) {
+              toAddCriteria[category.name.toLowerCase()].push(criterion)
+            }
+          })
+        })
+        document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+        callback(toAddCriteria)
+      })
+
+
+
+      document.querySelector('#chooseCriteriaContainer').addEventListener('click', function (e) {
+        e.stopPropagation()
+      })
+      const clusterContainer = document.querySelector('#definitionClusterContainer')
+      const categoryTemplate = document.querySelector('#definitionCategoryTemplate')
+      const totalCodes = method.definition.reduce((numCodes, category) => {
+        return numCodes + category.codes.length
+      }, 0)
+      method.definition.forEach((category) => {
+        const categoryCluster = categoryTemplate.content.cloneNode(true)
+        categoryCluster.querySelector('.categoryTitle').innerText = category.name
+        const height = category.codes.length / totalCodes * 70
+        categoryCluster.querySelector('.categoryCluster').style.height = height + '%'
+        const categoryCriteriaContainer = categoryCluster.querySelector('.criteria')
+        const criterionCardTemplate = document.querySelector('#criterionCardTemplate')
+        category.codes.forEach((criterion) => {
+          const categoryCard = criterionCardTemplate.content.cloneNode(true)
+          categoryCard.querySelector('.criterionCardContent span').innerText = criterion.name
+          categoryCard.querySelector('.criterion').addEventListener('click', function (e) {
+            if (e.currentTarget.classList.contains('selected')) {
+              e.currentTarget.classList.remove('selected')
+            } else {
+              e.currentTarget.classList.add('selected')
+            }
+          })
+
+          categoryCriteriaContainer.appendChild(categoryCard)
+        })
+        clusterContainer.appendChild(categoryCluster)
       })
     })
   }
@@ -248,9 +430,10 @@ class ImportChecklist {
     Checklists.groups.forEach((group) => {
       group.methods.forEach((method) => {
         let newMethod = {
-          groupName: group.name
+          groupName: group.name,
+          name: method.name,
+          filter: method.filter
         }
-        newMethod.name = method.name
         // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
         if (method.keywords) {
           this.getNumKeywordsForMethod(method, (totalMatches) => {

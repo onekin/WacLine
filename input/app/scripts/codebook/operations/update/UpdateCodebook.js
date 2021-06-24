@@ -9,6 +9,7 @@ import Annotation from '../../../annotationManagement/Annotation'
 import Code from '../../model/Code'
 // PVSCL:ENDCOND
 import LanguageUtils from '../../../utils/LanguageUtils'
+import ImportChecklist from '../import/ImportChecklist'
 
 class UpdateCodebook {
   constructor () {
@@ -25,6 +26,12 @@ class UpdateCodebook {
     this.initRemoveCodeEvent()
     this.initUpdateCodeEvent()
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(ImportChecklist, LINE)
+    this.initCreateCodesEvent()
+    this.initRemoveChecklistEvent()
+    this.initRemoveCriteriaEvent()
+    // PVSCL:ENDCOND
+
   }
 
   destroy () {
@@ -52,6 +59,24 @@ class UpdateCodebook {
       callback()
     }
   }
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+
+  initRemoveChecklistEvent (callback) {
+    this.events.removeChecklistEvent = { element: document, event: Events.removeChecklist, handler: this.removeChecklistEventHandler() }
+    this.events.removeChecklistEvent.element.addEventListener(this.events.removeChecklistEvent.event, this.events.removeChecklistEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+
+  initRemoveCriteriaEvent (callback) {
+    this.events.removeCriteriaEvent = { element: document, event: Events.removeCriteria, handler: this.removeCriteriaEventHandler() }
+    this.events.removeCriteriaEvent.element.addEventListener(this.events.removeCriteriaEvent.event, this.events.removeCriteriaEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(Hierarchy,LINE)
 
   initCreateCodeEvent (callback) {
@@ -61,6 +86,16 @@ class UpdateCodebook {
       callback()
     }
   }
+
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  initCreateCodesEvent (callback) {
+    this.events.createCodesEvent = { element: document, event: Events.createCodes, handler: this.createCodesEventHandler() }
+    this.events.createCodesEvent.element.addEventListener(this.events.createCodesEvent.event, this.events.createCodesEvent.handler, false)
+    if (_.isFunction(callback)) {
+      callback()
+    }
+  }
+  // PVSCL:ENDCOND
 
   initUpdateCodeEvent () {
     this.events.updateCodeEvent = { element: document, event: Events.updateCode, handler: this.createUpdateCodeEventHandler() }
@@ -105,7 +140,15 @@ class UpdateCodebook {
         },
         callback: () => {
           if (newTheme.name.toLowerCase() === 'evaluation') {
-            window.abwa.codebookManager.checklistImporter.openChecklistMenu()
+            window.abwa.codebookManager.checklistImporter.importChecklist('Evaluation')
+          } else if (newTheme.name.toLowerCase() === 'qualitative') {
+            window.abwa.codebookManager.checklistImporter.importChecklist('Qualitative')
+          } else if (newTheme.name.toLowerCase() === 'quantitative') {
+            window.abwa.codebookManager.checklistImporter.importChecklist('Quantitative')
+          } else if (newTheme.name.toLowerCase() === 'visualization') {
+            window.abwa.codebookManager.checklistImporter.importChecklist('Visualization')
+          } else if (newTheme.name.toLowerCase() === 'irr') {
+            window.abwa.codebookManager.checklistImporter.importChecklist('IRR')
           } else {
             LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
           }
@@ -203,6 +246,44 @@ class UpdateCodebook {
       })
     }
   }
+
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  /**
+   * This function creates a handler to remove a checklist when it receives the removeChecklist event.
+   * @return Event
+   */
+  removeChecklistEventHandler () {
+    return (event) => {
+      const theme = event.detail.theme
+      // Ask user is sure to remove
+      Alerts.confirmAlert({
+        title: 'Removing checklist ' + theme.name,
+        text: 'Are you sure that you want to remove the checklist ' + theme.name + '? You cannot undo this operation.',
+        alertType: Alerts.alertType.warning,
+        callback: () => {
+          let annotationsToDelete = [theme.id]
+          const themeChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
+          // Get theme codes id to be removed too
+          const codesId = _.map(theme.codes, (code) => { return code.id })
+          if (_.every(codesId, _.isString)) {
+            annotationsToDelete = annotationsToDelete.concat(codesId)
+          }
+          if (themeChecklist) {
+            annotationsToDelete = annotationsToDelete.concat(themeChecklist.id)
+          }
+          window.abwa.annotationServerManager.client.deleteAnnotations(annotationsToDelete, (err, result) => {
+            if (err) {
+              Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
+            } else {
+              LanguageUtils.dispatchCustomEvent(Events.themeRemoved, { theme: theme })
+            }
+          })
+        }
+      })
+    }
+  }
+  // PVSCL:ENDCOND
+
   // PVSCL:IFCOND(Hierarchy, LINE)
 
   /**
@@ -249,6 +330,32 @@ class UpdateCodebook {
     }
   }
 
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  createCodesEventHandler () {
+    return (event) => {
+      const theme = event.detail.theme
+      if (!LanguageUtils.isInstanceOf(theme, Theme)) {
+        Alerts.errorAlert({ text: 'An error has ocurred creating codes.' })
+      } else {
+        const codesInfo = event.detail.codesInfo
+        let newCode
+        let newCodesAnnotations = []
+        codesInfo.forEach((codeInfo) => {
+          newCode = new Code({ name: codeInfo.name, description: codeInfo.description, theme: theme })
+          newCodesAnnotations.push(newCode.toAnnotation())
+        })
+        window.abwa.annotationServerManager.client.createNewAnnotations(newCodesAnnotations, (err, annotations) => {
+          if (err) {
+            Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })
+          } else {
+            LanguageUtils.dispatchCustomEvent(Events.codesCreated, { newCodesAnnotations: annotations, theme: theme })
+          }
+        })
+      }
+    }
+  }
+
+  // PVSCL:ENDCOND
   createUpdateCodeEventHandler () {
     return (event) => {
       const code = event.detail.code
@@ -327,6 +434,42 @@ class UpdateCodebook {
       })
     }
   }
+
+
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+
+  /**
+   * This function creates a handler to remove a criteria when it receives the removeCriteria event.
+   * @return Events
+   */
+  removeCriteriaEventHandler () {
+    return (event) => {
+      const code = event.detail.code
+      let checklist = event.detail.checklist
+      // Ask user is sure to remove
+      Alerts.confirmAlert({
+        title: 'Removing criteria ' + code.name,
+        text: 'Are you sure that you want to remove the criteria ' + code.name + ' for ' + checklist.body[0].value.name + ' checklist? You cannot undo this operation.',
+        alertType: Alerts.alertType.warning,
+        callback: () => {
+          window.abwa.annotationServerManager.client.deleteAnnotation(code.id, (err, result) => {
+            if (err) {
+              Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
+            } else {
+              checklist.body[0].value.definition.forEach((definition) => {
+                definition.codes = definition.codes.filter((defCode) => defCode.name !== code.name)
+              })
+              LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+                annotation: checklist
+              })
+              LanguageUtils.dispatchCustomEvent(Events.codeRemoved, { code: code })
+            }
+          })
+        }
+      })
+    }
+  }
+  // PVSCL:ENDCOND
   // PVSCL:ENDCOND
 
   updateCodebookTheme (themeToUpdate, callback) {

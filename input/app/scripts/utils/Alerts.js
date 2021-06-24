@@ -154,7 +154,7 @@ class Alerts {
         title: title,
         html: text,
         showConfirmButton: confirmButton,
-        onBeforeOpen: () => {
+        didOpen: () => {
           swal.showLoading()
           if (_.isFunction(timerIntervalHandler)) {
             timerInterval = setInterval(() => {
@@ -218,7 +218,7 @@ class Alerts {
         focusConfirm: false,
         preConfirm: preConfirm,
         position: position,
-        onBeforeOpen: onBeforeOpen,
+        didOpen: onBeforeOpen,
         allowOutsideClick,
         allowEscapeKey,
         customClass: customClass,

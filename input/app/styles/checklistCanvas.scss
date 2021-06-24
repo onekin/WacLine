@@ -58,6 +58,7 @@
   height: 100%;
   box-sizing: border-box;
   float: left;
+  background-color: #c7c2c2;
 }
 
 .checklistClusterProperty {
@@ -86,6 +87,10 @@
 
 .undefined {
   background-color: white;
+}
+
+.annotated {
+  background-color: rgb(238, 177, 63);
 }
 
 #checklistCanvasCloseButton {

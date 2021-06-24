@@ -34,6 +34,8 @@ import AnnotationExporter from '../importExport/AnnotationExporter'
 import $ from 'jquery'
 // PVSCL:IFCOND(AuthorsSearch, LINE)
 import AuthorsInfo from '../annotationManagement/read/AuthorsInfo'
+import ImportChecklist from '../codebook/operations/import/ImportChecklist'
+import ChecklistReview from '../annotationManagement/read/ChecklistReview'
 // PVSCL:ENDCOND
 
 
@@ -74,6 +76,18 @@ class Toolset {
       this.screenshotImage.addEventListener('click', () => {
         this.screenshotButtonHandler()
       })
+      // PVSCL:ENDCOND
+
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      const essentialChecklistImageUrl = chrome.extension.getURL('/images/essentialChecklist.png')
+      this.essentialChecklistImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.essentialChecklistImage.src = essentialChecklistImageUrl
+      this.essentialChecklistImage.id = 'essentialChecklistButton'
+      this.essentialChecklistImage.title = 'Essential\'s checklist' // TODO i18n
+      this.essentialChecklistImage.addEventListener('click', function () {
+        ChecklistReview.generateEssentialReview()
+      })
+      this.toolsetBody.appendChild(this.essentialChecklistImage)
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Canvas, LINE)
       // Set Canvas image
@@ -165,13 +179,13 @@ class Toolset {
       // PVSCL:ENDCOND
 
       // PVSCL:IFCOND(ImportChecklist, LINE)
-      const checklistImageUrl = chrome.extension.getURL('/images/checklist.png')
+      const checklistImageUrl = chrome.extension.getURL('/images/methods.png')
       this.checklistImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.checklistImage.src = checklistImageUrl
       this.checklistImage.id = 'checklistButton'
       this.checklistImage.title = 'Choose checklist' // TODO i18n
       this.checklistImage.addEventListener('click', () => {
-        window.abwa.codebookManager.checklistImporter.openChecklistMenu()
+        window.abwa.codebookManager.checklistImporter.importChecklist()
       })
       this.toolsetBody.appendChild(this.checklistImage)
       // PVSCL:ENDCOND
@@ -308,7 +322,7 @@ class Toolset {
   congressLoadedEventHandler () {
     return () => {
       const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
-      const authorsInfoImageUrl = chrome.extension.getURL('/images/signature.png')
+      const authorsInfoImageUrl = chrome.extension.getURL('/images/authors.png')
       this.authorsInfoImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.authorsInfoImage.src = authorsInfoImageUrl
       this.authorsInfoImage.title = 'Get authors information' // TODO i18n

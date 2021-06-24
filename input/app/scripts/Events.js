@@ -11,9 +11,13 @@ const Events = {
   createKeywordAnnotations: 'createKeywordAnnotations',
   keywordAnnotationsCreated: 'keywordAnnotationsCreated',
   keywordsLoaded: 'keywordsLoaded',
-  // PVSCL:ENDCOND
-  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   congressLoaded: 'congressLoaded',
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  removeChecklist: 'removeChecklist',
+  removeCriteria: 'removeCriteria',
+  createCodes: 'createCodes',
+  codesCreated: 'codesCreated',
   // PVSCL:ENDCOND
   updateAnnotation: 'updateAnnotation',
   deleteAnnotation: 'deleteAnnotation',

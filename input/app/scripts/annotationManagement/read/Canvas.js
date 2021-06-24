@@ -44,12 +44,18 @@ class Canvas {
         // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
         if (theme.name !== 'Keywords') {
           // PVSCL:ENDCOND
-          // PVSCL:IFCOND(ImportChecklist, LINE)
-          if (!checklistsAnnotations.find((checklist) => checklist.body[0].value.name === theme.name)) {
+          // PVSCL:IFCOND(AuthorsSearch, LINE)
+          if (theme.name !== 'Authors') {
             // PVSCL:ENDCOND
-            canvasClusters[theme.name] = theme.codes.map((code) => { return code.name })
-            canvasClusters[theme.name].push(theme.name)
             // PVSCL:IFCOND(ImportChecklist, LINE)
+            if (!checklistsAnnotations.find((checklist) => checklist.body[0].value.name === theme.name)) {
+              // PVSCL:ENDCOND
+              canvasClusters[theme.name] = theme.codes.map((code) => { return code.name })
+              canvasClusters[theme.name].push(theme.name)
+              // PVSCL:IFCOND(ImportChecklist, LINE)
+            }
+            // PVSCL:ENDCOND
+            // PVSCL:IFCOND(AuthorsSearch, LINE)
           }
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
@@ -159,7 +165,10 @@ class Canvas {
           clusterProperty.querySelector('.clusterProperty').style.height = propertyHeight + '%'
           clusterProperty.querySelector('.clusterProperty').style.width = '100%'
           // PVSCL:IFCOND(ImportChecklist, LINE)
+          // PVSCL:ENDCOND
+          let criterionAnnotations = review.annotations.filter((e) => { return e.criterion === canvasClusters[key][i] })
           if (key === checklistsTheme.name) {
+            criterionAnnotations = []
             clusterProperty.querySelector('.clusterProperty').style.cursor = 'pointer'
             clusterProperty.querySelector('.clusterProperty').addEventListener('click', () => {
               const foundChecklist = checklistsAnnotations.find((checklistAn) => checklistAn.body[0].value.name === canvasClusters[key][i])
@@ -167,8 +176,6 @@ class Canvas {
               ChecklistReview.generateReview(foundChecklist)
             })
           }
-          // PVSCL:ENDCOND
-          const criterionAnnotations = review.annotations.filter((e) => { return e.criterion === canvasClusters[key][i] })
           if (criterionAnnotations.length === 0) clusterProperty.querySelector('.propertyAnnotations').style.display = 'none'
           clusterProperty.querySelector('.clusterProperty').className += ' ' + getCriterionLevel(criterionAnnotations)
 

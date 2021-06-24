@@ -103,11 +103,10 @@ class CodebookManager {
         this.activateLoadKeywords()
       }, 500)
     } else {
-      this.checklistImporter.init()
-      if (window.abwa.annotationManagement.annotationReader.allAnnotations.length === 0) {
+      this.checklistImporter.init(() => {
         ReadCodebook.addKeywordsTheme()
-        this.checklistImporter.saveChecklistsMethodsData()
-      }
+      })
+
     }
   }
   // PVSCL:ENDCOND

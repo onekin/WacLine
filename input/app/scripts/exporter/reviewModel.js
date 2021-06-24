@@ -56,12 +56,7 @@ export class Review {
     let t = "<Summarize the work>\n\n";
 
     // PVSCL:IFCOND(ImportChecklist, LINE)
-    if(this.checklist[0]) {
-      t += 'CHECKLIST:\n\n'
-      this.checklist[0]._annotations.forEach((checklist) => {
-        t += checklist._comment + '\n\n'
-      })
-    }
+    
     // PVSCL:ENDCOND
 
     // Strengths
@@ -194,11 +189,20 @@ export class Review {
         let highlightText = ''
         let pageNumber = null
         let classifyingBody = annotations[a].getBodyForPurpose(Classifying.purpose)
+        // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
         if (classifyingBody) {
           if (classifyingBody.value.name === 'Keywords') {
             continue
           }
         }
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(AuthorsSearch, LINE)
+        if (classifyingBody) {
+          if (classifyingBody.value.name === 'Authors') {
+            continue
+          }
+        }
+        // PVSCL:ENDCOND
         for (let k in annotations[a].target) {
           if (annotations[a].target.hasOwnProperty(k)) {
             if (_.isArray(annotations[a].target[k].selector) && annotations[a].target[k].selector.find((e) => { return e.type === 'TextQuoteSelector' }) != null) {

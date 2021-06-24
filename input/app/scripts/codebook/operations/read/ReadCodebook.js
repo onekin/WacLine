@@ -13,6 +13,7 @@ import ColorUtils from '../../../utils/ColorUtils'
 import LanguageUtils from '../../../utils/LanguageUtils'
 // PVSCL:IFCOND(CodebookUpdate, LINE)
 import UpdateCodebook from '../update/UpdateCodebook'
+import ImportChecklist from '../import/ImportChecklist'
 // PVSCL:ENDCOND
 
 class ReadCodebook {
@@ -28,6 +29,7 @@ class ReadCodebook {
     this.initThemeRemovedEvent()
     // PVSCL:IFCOND(Hierarchy,LINE)
     this.initCodeCreatedEvent()
+    this.initCodesCreatedEvent()
     this.initCodeUpdatedEvent()
     this.initCodeRemovedEvent()
     // PVSCL:ENDCOND
@@ -76,6 +78,13 @@ class ReadCodebook {
     this.events.codeCreatedEvent.element.addEventListener(this.events.codeCreatedEvent.event, this.events.codeCreatedEvent.handler, false)
   }
 
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  initCodesCreatedEvent () {
+    this.events.codesCreatedEvent = { element: document, event: Events.codesCreated, handler: this.codesCreatedEventHandler() }
+    this.events.codesCreatedEvent.element.addEventListener(this.events.codesCreatedEvent.event, this.events.codesCreatedEvent.handler, false)
+  }
+
+  // PVSCL:ENDCOND
   initCodeUpdatedEvent () {
     this.events.codeUpdatedEvent = { element: document, event: Events.codeUpdated, handler: this.codeUpdatedEventHandler() }
     this.events.codeUpdatedEvent.element.addEventListener(this.events.codeUpdatedEvent.event, this.events.codeUpdatedEvent.handler, false)
@@ -611,12 +620,32 @@ class ReadCodebook {
   themeRightClickHandler () {
     return (themeId) => {
       const items = {}
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      const theme = this.codebook.getCodeOrThemeFromId(themeId)
+      const themeChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
+      // PVSCL:ENDCOND
+
       // PVSCL:IFCOND(CodebookUpdate, LINE)
       // PVSCL:IFCOND(Hierarchy, LINE)
-      items.createNewCode = { name: 'Create new code' }
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      if (!themeChecklist) {
+        // PVSCL:ENDCOND
+        items.createNewCode = { name: 'Create new code' }
+        // PVSCL:IFCOND(ImportChecklist, LINE)
+      }
       // PVSCL:ENDCOND
-      items.updateTheme = { name: 'Modify theme' }
-      items.removeTheme = { name: 'Remove theme' }
+
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      if (!themeChecklist) {
+        // PVSCL:ENDCOND
+        items.updateTheme = { name: 'Modify theme' }
+        items.removeTheme = { name: 'Remove theme' }
+      	// PVSCL:IFCOND(ImportChecklist, LINE)
+      } else {
+        items.removeChecklist = { name: 'Remove checklist' }
+      }
+      // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(SidebarNavigation, LINE)
       // TODO Implement page annotation and uncomment this:
@@ -643,6 +672,14 @@ class ReadCodebook {
               LanguageUtils.dispatchCustomEvent(Events.removeTheme, { theme: theme })
             }
           }
+          // PVSCL:IFCOND(ImportChecklist, LINE)
+          if (key === 'removeChecklist') {
+            const theme = this.codebook.getCodeOrThemeFromId(themeId)
+            if (LanguageUtils.isInstanceOf(theme, Theme)) {
+              LanguageUtils.dispatchCustomEvent(Events.removeChecklist, { theme: theme })
+            }
+          }
+          // PVSCL:ENDCOND
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(SidebarNavigation, LINE)
           if (key === 'pageAnnotation') {
@@ -670,11 +707,24 @@ class ReadCodebook {
     return (codeId) => {
       // Get code from id
       const code = this.codebook.getCodeOrThemeFromId(codeId)
+
+      // PVSCL:IFCOND(ImportChecklist, LINE)
+      const theme = code.theme
+      const themeChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
+      // PVSCL:ENDCOND
       if (LanguageUtils.isInstanceOf(code, Code)) {
         const items = {}
         // PVSCL:IFCOND(CodebookUpdate, LINE)
-        items.updateCode = { name: 'Modify code' }
-        items.removeCode = { name: 'Remove code' }
+        // PVSCL:IFCOND(ImportChecklist, LINE)
+        if (!themeChecklist) {
+          // PVSCL:ENDCOND
+          items.updateCode = { name: 'Modify code' }
+          items.removeCode = { name: 'Remove code' }
+          // PVSCL:IFCOND(ImportChecklist, LINE)
+        } else {
+          items.removeCriteria = { name: 'Remove checklist criteria' }
+        }
+        // PVSCL:ENDCOND
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(SidebarNavigation, LINE)
         // items['pageAnnotation'] = {name: 'Page annotation'}
@@ -688,6 +738,11 @@ class ReadCodebook {
             if (key === 'updateCode') {
               LanguageUtils.dispatchCustomEvent(Events.updateCode, { code: code })
             }
+            // PVSCL:IFCOND(ImportChecklist, LINE)
+            if (key === 'removeCriteria') {
+              LanguageUtils.dispatchCustomEvent(Events.removeCriteria, { checklist: themeChecklist, code: code })
+            }
+            // PVSCL:ENDCOND
             // PVSCL:ENDCOND
             // PVSCL:IFCOND(SidebarNavigation, LINE)
             // TODO Page level annotations, take into account that tags are necessary here (take into account Moodle related case)
@@ -773,6 +828,27 @@ class ReadCodebook {
     }
   }
 
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  codesCreatedEventHandler () {
+    return (event) => {
+      const theme = event.detail.theme
+      const codes = event.detail.newCodesAnnotations
+      let code
+      codes.forEach((codeAnnot) => {
+        code = Code.fromAnnotation(codeAnnot, theme)
+        // Add to the model the new theme
+        theme.addCode(code)
+      })
+      // Reload button container
+      this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+      // Reopen sidebar to see the new added codes
+      window.abwa.sidebar.openSidebar()
+    }
+  }
+
+  // PVSCL:ENDCOND
   codeUpdatedEventHandler () {
     return (event) => {
       // Update model
@@ -815,22 +891,59 @@ class ReadCodebook {
     }
   }
 
+  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   /**
    * This function creates (in case that it doesn't exist)
    * the theme to store the keywords
    */
-  // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
   static addKeywordsTheme () {
-    let codebook = window.abwa.codebookManager.codebookReader.codebook
-    let keywordThemeName = 'Keywords'
+    const codebook = window.abwa.codebookManager.codebookReader.codebook
+    const keywordThemeName = 'Keywords'
     if (!_.isEmpty(codebook)) {
       if (!codebook.getThemeByName(keywordThemeName)) {
-        let themeDescription = 'Theme which includes the keywords found in the text'
-        let newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
+        const themeDescription = 'Theme which includes the keywords found in the text'
+        const newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
         LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+        window.abwa.codebookManager.checklistImporter.saveChecklistsMethodsData()
       }
     }
   }
+  // PVSCL:ENDCOND
+
+  // PVSCL:IFCOND(ImportChecklist, LINE)
+  /**
+   * This function creates (in case that it doesn't exist)
+   * the theme to store the checklists
+   */
+  static addChecklistsThemes () {
+    const codebook = window.abwa.codebookManager.codebookReader.codebook
+    if (!_.isEmpty(codebook)) {
+      let themeName = 'Essential'
+      let newTheme
+      let themeDescription
+      if (!codebook.getThemeByName(themeName)) {
+        themeDescription = 'Theme which includes the essential criteria to evaluate the document'
+        newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
+        LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+        ImportChecklist.createChecklistAnnotation(themeName)
+      }
+      themeName = 'Desirable'
+      if (!codebook.getThemeByName(themeName)) {
+        themeDescription = 'Theme which includes the desirable criteria to evaluate the document'
+        newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
+        LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+        ImportChecklist.createChecklistAnnotation(themeName)
+      }
+      themeName = 'Extraordinary'
+      if (!codebook.getThemeByName(themeName)) {
+        themeDescription = 'Theme which includes the extraordinary criteria to evaluate the document'
+        newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
+        LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+        ImportChecklist.createChecklistAnnotation(themeName)
+      }
+    }
+  }
+
   // PVSCL:ENDCOND
 
   // PVSCL:IFCOND(AuthorsSearch, LINE)

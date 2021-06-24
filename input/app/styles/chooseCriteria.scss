@@ -1,0 +1,88 @@
+#chooseCriteriaContainer {
+  font-family: Calibri;
+  height: 70%;
+  position: fixed;
+  top: 5%;
+  left: 18.5%;
+  right: 18.5%;
+  z-index: 1000;
+  text-align: center;
+  background-color: white;
+  border: 1px solid;
+  padding: 2%;
+  width: 65%,
+}
+
+
+
+#definitionClusterContainer {
+  height: 85%;
+  overflow: auto;
+}
+
+.criteria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  width: 100%;
+  box-sizing: border-box;
+  float: left;
+  background-color: #e0d7d7;  
+  margin-bottom: 3%;
+  border-width: 2px;
+  border-radius: 5px;
+}
+
+
+.criterion {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 2px;
+  background-color: white;
+  margin: 10px;
+  text-align: center;
+  cursor: pointer;
+  border: solid 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#acceptCriteriaButton,
+#cancelCriteriaButton {
+  border: 0;
+  border-radius: .25em;
+  color: #fff;
+  width: 25%;
+  height: 5%;
+  cursor: pointer;
+  margin-top: 2%;
+}
+
+#acceptCriteriaButton {
+  background-color: #3085d6;
+}
+
+#cancelCriteriaButton {
+  background-color: #878585;
+}
+
+
+#definitionClusterContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+#definitionClusterContainer::-webkit-scrollbar-track {
+  background: white;
+}
+
+#definitionClusterContainer::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background: #2c62ba
+}
+
+
+.selected {
+  background-color: #7cf17c;
+}

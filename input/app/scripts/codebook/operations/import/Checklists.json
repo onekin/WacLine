@@ -1,154 +1,151 @@
 {
-  "groups":[
-     {
-        "name":"Empirical Standart",
-        "methods":[
-           {
-            "name":"General Standart",
-            "definition":[
-               {
-                  "name":"Essential",
-                  "description":"",
-                  "codes":[
-                     {
-                        "name":"Research purpose",
-                        "description":"states a purpose, problem, objective, or research question"
+   "groups": [
+      {
+         "name": "Empirical Standard",
+         "filter": [],
+         "methods": [
+            {
+            "name": "General Standard",
+            "definition": [{
+                  "name": "Essential",
+                  "description": "",
+                  "codes": [{
+                        "name": "Research purpose",
+                        "description": "states a purpose, problem, objective, or research question"
                      },
                      {
-                        "name":"Motivation",
-                        "description":"explains why the problem, objective, or research question is important (motivation)"
+                        "name": "Motivation",
+                        "description": "explains why the problem, objective, or research question is important (motivation)"
                      },
                      {
-                        "name":"Definitions",
-                        "description":"defines jargon, acronyms and key concepts"
+                        "name": "Definitions",
+                        "description": "defines jargon, acronyms and key concepts"
                      },
                      {
-                        "name":"Methodology",
-                        "description":"methodology is appropriate (not necessarily optimal) for stated purpose or questions"
+                        "name": "Methodology",
+                        "description": "methodology is appropriate (not necessarily optimal) for stated purpose or questions"
                      },
                      {
-                        "name":"Data collection",
-                        "description":"describes in detail what, where, when and how data were collected (see the Sampling Supplement)"
+                        "name": "Data collection",
+                        "description": "describes in detail what, where, when and how data were collected (see the Sampling Supplement)"
                      },
                      {
-                        "name":"Data analysis description",
-                        "description":"describes in detail how the data were analyzed"
+                        "name": "Data analysis description",
+                        "description": "describes in detail how the data were analyzed"
                      },
                      {
-                        "name":"Statistical assumptions",
-                        "description":"discusses and validates assumptions of any statistical tests used"
+                        "name": "Statistical assumptions",
+                        "description": "discusses and validates assumptions of any statistical tests used"
                      },
                      {
-                        "name":"Result presentation",
-                        "description":"present results"
+                        "name": "Result presentation",
+                        "description": "present results"
                      },
                      {
-                        "name":"Result addressing research",
-                        "description":"results directly address research questions"
+                        "name": "Result addressing research",
+                        "description": "results directly address research questions"
                      },
                      {
-                        "name":"Supported claims",
-                        "description":"supports main claims or conclusions with explicit evidence (data/observations) or arguments"
+                        "name": "Supported claims",
+                        "description": "supports main claims or conclusions with explicit evidence (data/observations) or arguments"
                      },
                      {
-                        "name":"Results implications",
-                        "description":"discusses implications of the results"
+                        "name": "Results implications",
+                        "description": "discusses implications of the results"
                      },
                      {
-                        "name":"Study limitations",
-                        "description":"discusses the study's limitations and threats to validity"
+                        "name": "Study limitations",
+                        "description": "discusses the study's limitations and threats to validity"
                      },
                      {
-                        "name":"Contribution to BoK",
-                        "description":"contributes in some way to the collective body of knowledge"
+                        "name": "Contribution to BoK",
+                        "description": "contributes in some way to the collective body of knowledge"
                      },
                      {
-                        "name":"Language misleading",
-                        "description":"language is not misleading; any grammatical problems do not substantially hinder understanding"
+                        "name": "Language misleading",
+                        "description": "language is not misleading; any grammatical problems do not substantially hinder understanding"
                      },
                      {
-                        "name":"Benefit risk balance",
-                        "description":"balances the study's anticipated benefits with its potential risks or harms, minimizing risk or harm wherever possible (see the ethics supplements for studies with Human Participants or Secondary Data)"
+                        "name": "Benefit risk balance",
+                        "description": "balances the study's anticipated benefits with its potential risks or harms, minimizing risk or harm wherever possible (see the ethics supplements for studies with Human Participants or Secondary Data)"
                      },
                      {
-                        "name":"Visualizations",
-                        "description":"visualizations/graphs are not misleading (see the Information Visualization Supplement)"
+                        "name": "Visualizations",
+                        "description": "visualizations/graphs are not misleading (see the Information Visualization Supplement)"
                      }
                   ]
                },
                {
-                  "name":"Desirable",
-                  "description":"",
-                  "codes":[
-                     {
-                        "name":"Related work synthesis",
-                        "description":"summarizes and synthesizes a reasonable selection of related work"
+                  "name": "Desirable",
+                  "description": "",
+                  "codes": [{
+                        "name": "Related work synthesis",
+                        "description": "summarizes and synthesizes a reasonable selection of related work"
                      },
                      {
-                        "name":"Relation with related work",
-                        "description":"clearly describes relationship between contribution(s) and related work"
+                        "name": "Relation with related work",
+                        "description": "clearly describes relationship between contribution(s) and related work"
                      },
                      {
-                        "name":"Epistemological stance",
-                        "description":"states epistemological stance (e.g. post-positivism, interpretivism, critical realism)"
+                        "name": "Epistemological stance",
+                        "description": "states epistemological stance (e.g. post-positivism, interpretivism, critical realism)"
                      },
                      {
-                        "name":"Statistical power/saturation",
-                        "description":"appropriate statistical power (for quantitative work) or saturation (for qualitative work"
+                        "name": "Statistical power/saturation",
+                        "description": "appropriate statistical power (for quantitative work) or saturation (for qualitative work"
                      },
                      {
-                        "name":"Limitations mitigation",
-                        "description":"reasonable attempts to investigate or mitigate limitations"
+                        "name": "Limitations mitigation",
+                        "description": "reasonable attempts to investigate or mitigate limitations"
                      },
                      {
-                        "name":"Study realism",
-                        "description":"discusses study’s realism, assumptions and sensitivity of the results to its realism/assumptions"
+                        "name": "Study realism",
+                        "description": "discusses study’s realism, assumptions and sensitivity of the results to its realism/assumptions"
                      },
                      {
-                        "name":"Recommendation providing",
-                        "description":"provides plausibly useful interpretations or recommendations for practice, education or research"
+                        "name": "Recommendation providing",
+                        "description": "provides plausibly useful interpretations or recommendations for practice, education or research"
                      },
                      {
-                        "name":"Open sharing",
-                        "description":"openly shares data and materials to the extent possible within practical and ethical limits (see the Open Science Supplement)"
+                        "name": "Open sharing",
+                        "description": "openly shares data and materials to the extent possible within practical and ethical limits (see the Open Science Supplement)"
                      },
                      {
-                        "name":"Presentation",
-                        "description":"concise, precise, well-organized and easy-to-read presentation"
+                        "name": "Presentation",
+                        "description": "concise, precise, well-organized and easy-to-read presentation"
                      },
                      {
-                        "name":"Visualizations for argumentation",
-                        "description":"visualizations (e.g. graphs, diagrams, tables) advance the paper’s arguments or contribution"
+                        "name": "Visualizations for argumentation",
+                        "description": "visualizations (e.g. graphs, diagrams, tables) advance the paper’s arguments or contribution"
                      },
                      {
-                        "name":"Researchers roles",
-                        "description":"clarifies the roles and responsibilities of the researchers (i.e. who did what?)"
+                        "name": "Researchers roles",
+                        "description": "clarifies the roles and responsibilities of the researchers (i.e. who did what?)"
                      },
                      {
-                        "name":"Auto-reflection",
-                        "description":"provides an auto-reflection or assessment of the authors’ own work (e.g. lessons learned)"
+                        "name": "Auto-reflection",
+                        "description": "provides an auto-reflection or assessment of the authors’ own work (e.g. lessons learned)"
                      },
                      {
-                        "name":"Multiple raters use",
-                        "description":"uses multiple raters for any subjective judgments (see the IRR/IRA Supplement)"
+                        "name": "Multiple raters use",
+                        "description": "uses multiple raters for any subjective judgments (see the IRR/IRA Supplement)"
                      }
                   ]
                },
                {
-                  "name":"Extraordinary",
-                  "description":"",
-                  "codes":[
-                     {
-                        "name":"Multiple data collection",
-                        "description":" applies two or more data collection or analysis strategies to the same research question (see the Multimethodology Standard)"
+                  "name": "Extraordinary",
+                  "description": "",
+                  "codes": [{
+                        "name": "Multiple data collection",
+                        "description": "applies two or more data collection or analysis strategies to the same research question (see the Multimethodology Standard)"
                      },
                      {
-                        "name":"Multiple epistemological perspectives",
-                        "description":"approaches the same research question(s) from multiple epistemological perspectives"
+                        "name": "Multiple epistemological perspectives",
+                        "description": "approaches the same research question(s) from multiple epistemological perspectives"
                      },
                      {
-                        "name":"Research methodology innovation",
-                        "description":"innovates on research methodology while completing an empirical study"
+                        "name": "Research methodology innovation",
+                        "description": "innovates on research methodology while completing an empirical study"
                      }
                   ]
                }
@@ -163,62 +160,57 @@
                "Rejecting a study because the reviewer would have used a different methodology or design",
                "Rejecting a study because it reports negative results"
             ]
-           }
-        ]
-     },
-     {
-        "name":"Engineering Methods",
-        "methods":[
-           {
-            "name":"Engineering research (Design Science)",
-            "definition":[
-               {
-                  "name":"Essential",
-                  "description":"",
-                  "codes":[
-                     {
+         }]
+      },
+      {
+         "name": "Engineering Methods",
+         "methods": [{
+            "name": "Engineering research (Design Science)",
+            "definition": [{
+                  "name": "Essential",
+                  "description": "",
+                  "codes": [{
                         "name": "Artifact description",
-                        "description":"describes the proposed artifact in adequate detail"
+                        "description": "describes the proposed artifact in adequate detail"
                      },
                      {
                         "name": "Usefulness",
-                        "description":"justifies the need for, usefulness of, or relevance of the proposed artifact"
+                        "description": "justifies the need for, usefulness of, or relevance of the proposed artifact"
                      },
                      {
                         "name": "Conceptual evaluation",
-                        "description":"conceptually evaluates the artifact; discusses its strengths, weaknesses and limitations"
+                        "description": "conceptually evaluates the artifact; discusses its strengths, weaknesses and limitations"
                      },
                      {
                         "name": "Alternatives",
-                        "description":"EITHER: discusses state-of-art alternatives (and their strengths, weaknesses and limitations) OR: explains why no state-of-art alternatives exist OR: provides compelling argument that direct comparisons are impractical"
+                        "description": "EITHER: discusses state-of-art alternatives (and their strengths, weaknesses and limitations) OR: explains why no state-of-art alternatives exist OR: provides compelling argument that direct comparisons are impractical"
                      },
                      {
                         "name": "Empirical evaluation",
-                        "description":"Empirically evaluates the proposed artifact using action research,in which the researchers intervene a real organization using the artifact, a case study in which a real organization uses the artifact without researcher intervention, a controlled experiment in which human participants use the artifact, a simulation in which the artifact is used in an artificial environment, or another method for which a clear and convincing rationale is provided "
+                        "description": "Empirically evaluates the proposed artifact using action research,in which the researchers intervene a real organization using the artifact, a case study in which a real organization uses the artifact without researcher intervention, a controlled experiment in which human participants use the artifact, a simulation in which the artifact is used in an artificial environment, or another method for which a clear and convincing rationale is provided "
                      },
                      {
                         "name": "Methodology",
-                        "description":"clearly indicates the empirical methodology being used (e.g. action research, controlled experiment)"
+                        "description": "clearly indicates the empirical methodology being used (e.g. action research, controlled experiment)"
                      },
                      {
                         "name": "Comparation",
-                        "description":"EITHER: empirically compares the artifact to one or more state-of-the-art alternative artifacts OR: empirically compares the artifact to one or more state - of -the - art benchmarks OR: provides a clear and convincing rationale for why comparative evaluation is impractical "
+                        "description": "EITHER: empirically compares the artifact to one or more state-of-the-art alternative artifacts OR: empirically compares the artifact to one or more state - of -the - art benchmarks OR: provides a clear and convincing rationale for why comparative evaluation is impractical "
                      },
                      {
                         "name": "Assumptions",
-                        "description":"assumptions (if any) are explicit; do not contradict each other or the contribution's goals; plausibly hold for the evaluation subjects"
+                        "description": "assumptions (if any) are explicit; do not contradict each other or the contribution's goals; plausibly hold for the evaluation subjects"
                      },
                      {
                         "name": "Consistent notation",
-                        "description":"uses notation consistently (if any notation is used)"
+                        "description": "uses notation consistently (if any notation is used)"
                      }
                   ]
                },
                {
-                  "name": "Dessirable",
+                  "name": "Desirable",
                   "description": "",
-                  "codes": [
-                     {
+                  "codes": [{
                         "name": "Theoretical basis",
                         "description": "reviews the theoretical basis of the artifact"
                      },
@@ -243,9 +235,8 @@
                {
                   "name": "Extraordinary",
                   "description": "",
-                  "codes": [
-                     {
-                        "name": "Contribution to understanding", 
+                  "codes": [{
+                        "name": "Contribution to understanding",
                         "description": "contributes to our collective understanding of design practices or principles"
                      },
                      {
@@ -255,7 +246,7 @@
                   ]
                }
             ],
-            "keywords":[
+            "keywords": [
                "Artifact",
                "Algorithm",
                "Model",
@@ -279,390 +270,1474 @@
                "This is not the first known solution to the identified problem. The novelty of the paper can be in how it achieves scalability, better performance on specific classes of problems, applicability to realistic systems, stronger theoretical guarantees, or other aspects of improvement. Proposed artifacts should outperform existing artifacts on some dimension(s).",
                "The contribution is not technically complicated. What matters is that it works. Unnecessary complexity is undesirable."
             ]
-           }
-        ]
-     },
-     {
-        "name": "Qualitative Methods",
-        "methods": [
-           {
-            "name": "Action research",
-            "definition":[
-               {
+         }]
+      },
+      {
+         "name": "Qualitative Methods",
+         "methods": [{
+               "name": "Action research",
+               "filter": ["Evaluation", "Qualitative"],
+               "definition": [{
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [{
+                           "name": "Case justification",
+                           "description": "justifies the selection of the case or site that was studied"
+                        },
+                        {
+                           "name": "Site description",
+                           "description": "describes the site of the intervention(s) in rich detail"
+                        },
+                        {
+                           "name": "Intervention(s)",
+                           "description": "describes the intervention(s) in detail"
+                        },
+                        {
+                           "name": "Relationship",
+                           "description": "describes the relationship between the researcher and the host organization"
+                        },
+                        {
+                           "name": "Research dimension",
+                           "description": "describes the longitudinal dimension of the research design (including the length of the study)"
+                        },
+                        {
+                           "name": "Interventions",
+                           "description": "describes the interactions between researcher(s) and host organization(s)---what the interventions were, who intervened and with which part of the organization, as well as the outcome of the interventions"
+                        },
+                        {
+                           "name": "Determination of interventions",
+                           "description": "describes how interventions were determined (by management, researchers, or participative/co- determination process)"
+                        },
+                        {
+                           "name": "Research cycles",
+                           "description": "explains research cycles or phases, if any, and their relationship to the intervention(s)"
+                        },
+                        {
+                           "name": "Evaluation of interventions",
+                           "description": "explains how the interventions are evaluated"
+                        },
+                        {
+                           "name": "Reactions to interventions",
+                           "description": "reports participant or stakeholder reactions to interventions"
+                        },
+                        {
+                           "name": "Evidence chain",
+                           "description": "presents a clear chain of evidence from observations to findings"
+                        },
+                        {
+                           "name": "Lessons learned",
+                           "description": "reports lessons learned by the organization"
+                        },
+                        {
+                           "name": "Biases",
+                           "description": "researchers reflect on their own possible biases"
+                        }
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [{
+                           "name": "Supplemental materials",
+                           "description": "provides supplemental materials such as interview guide(s), coding schemes, coding examples, decision rules, or extended chain-of-evidence tables"
+                        },
+                        {
+                           "name": "Direct quotations",
+                           "description": "uses direct quotations extensively"
+                        },
+                        {
+                           "name": "Results validation",
+                           "description": "validates results using member checking, dialogical interviewing4, feedback from non-participant practitioners or research audits of coding by advisors or other researchers"
+                        },
+                        {
+                           "name": "Findings",
+                           "description": "findings plausibly transferable to other contexts"
+                        },
+                        {
+                           "name": "Data triangulation",
+                           "description": "triangulation across quantitative and qualitative data"
+                        }
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [{
+                        "name": "Researchers triangulation",
+                        "description": "research team with triangulation across researchers (to mitigate researcher bias)"
+                     }]
+                  }
+               ],
+               "keywords": [
+                  "Action research",
+                  "Social phenomenon",
+                  "Social phenomena",
+                  "Organization process",
+                  "Culture",
+                  "Way of working",
+                  "Group dynamics",
+                  "Real-life context",
+                  "Reflexibility",
+                  "Credibility",
+                  "Resonance",
+                  "Usefulness",
+                  "Transferability",
+                  "Intervention",
+                  "Research cycles"
+               ],
+               "invalidCriticisms": [
+                  "The findings and insights are not valid because the research intervened in the context. Though reflexivity is crucial, the whole point of action research is to introduce a change and observe how participants react.",
+                  "This is merely consultancy or an experience report. Systematic observation and reflection should not be dismissed as consultancy or experience reports. Inversely, consultancy or experiences should not be falsely presented as action research.",
+                  "Lack of quantitative data; causal analysis; objectivity, internal validity, reliability, or generalizability.",
+                  "Sample not representative; lack of generalizability; generalizing from one organization.",
+                  "Lack of replicability or reproducibility; not releasing transcripts.",
+                  "Lack of control group or experimental protocols. An action research study is not an experiment."
+               ]
+            },
+            {
+               "name": "Case studies and ethnography",
+               "filter": ["Evaluation", "Qualitative"],
+               "definition": [{
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [{
+                           "name": "Case justification",
+                           "description": "justifies the selection of the case or site that was studied"
+                        },
+                        {
+                           "name": "Site description",
+                           "description": "describes the site in rich detail"
+                        },
+                        {
+                           "name": "Data source",
+                           "description": "describes data sources (e.g. participants' demographics and work roles, )"
+                        },
+                        {
+                           "name": "Units of analysis",
+                           "description": "defines unit(s) of analysis"
+                        },
+                        {
+                           "name": "Evidence chain",
+                           "description": "presents a clear chain of evidence from observations to findings"
+                        }
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [{
+                           "name": "Supplemental materials",
+                           "description": "provides supplemental materials such as interview guide(s), coding schemes, coding examples, decision rules, or extended chain-of-evidence tables"
+                        },
+                        {
+                           "name": "Data triangulation",
+                           "description": "triangulates across data sources, informants or researchers"
+                        },
+                        {
+                           "name": "Statements check",
+                           "description": "cross-checks interviewee statements (e.g. against direct observation or archival records)"
+                        },
+                        {
+                           "name": "Results validation",
+                           "description": "validates results using member checking, dialogical interviewing1, feedback from non-participant practitioners or research audits of coding by advisors or other researchers"
+                        },
+                        {
+                           "name": "Case study report",
+                           "description": "reports the type of case study (see Types of Case Studies)"
+                        },
+                        {
+                           "name": "External events",
+                           "description": "describes external events and other factors that may have affected the case or site"
+                        },
+                        {
+                           "name": "Quotations",
+                           "description": "uses quotations to illustrate findings (note: quotations should not be the only representation of a finding; each finding should be described independently of supporting quotations)"
+                        },
+                        {
+                           "name": "Theory evaluation",
+                           "description": "EITHER: evaluates an a priori theory (or model, framework, taxonomy, etc.) using deductive coding with an a priori coding scheme based on the prior theory OR: synthesizes results into a new, mature, fully-developed and clearly articulated theory (or model, etc.) using some form of inductive coding (coding scheme generated from data)"
+                        }
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [{
+                           "name": "cross-case triangulation",
+                           "description": "multiple, deep, fully-developed cases with cross-case triangulation"
+                        },
+                        {
+                           "name": "Inter-rater reliability",
+                           "description": "uses multiple judges and analyzes inter-rater reliability (see the IRR/IRA Supplement)"
+                        },
+                        {
+                           "name": "Direct observation",
+                           "description": "uses direct observation and clearly integrates direct observations into results"
+                        },
+                        {
+                           "name": "Case study publication",
+                           "description": "published a case study protocol beforehand and made it publicly accessible"
+                        }
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Case study",
+                  "Case studies",
+                  "Ethnography",
+                  "Specific instance",
+                  "Phenomenon at a site",
+                  "Site selection",
+                  "Study site",
+                  "Unit of analysis",
+                  "Observation",
+                  "Interview",
+                  "Questionnaires",
+                  "Brainstorming",
+                  "Focus group",
+                  "Conceptual modeling",
+                  "Work diary",
+                  "Think-aloud",
+                  "Shadowing",
+                  "Participant observation",
+                  "Instrumentation",
+                  "Fly on the wall",
+                  "Participants recording",
+                  "Analysis of electronic databases",
+                  "Analysis of tool logs",
+                  "Documentation analysis",
+                  "Analysis of a system"
+               ],
+               "invalidCriticisms": [
+                  "Does not present quantitative data; only collects a single data type.",
+                  "Sample of 1; findings not generalizable. The point of a case study is to study one thing deeply, not to generalize to a population. Case studies should lead to theoretical generalization; that is, concepts that are transferable in principle.",
+                  "Lack of internal validity. Internal validity only applies to explanatory case studies that seek to establish causality.",
+                  "Lack of reproducibility or a \"replication package\"; Data are not disclosed (qualitative data are often confidential).",
+                  "Insufficient number of length of interviews. There is no magic number; what matters is that there is enough data that the findings are credible, and the description is deep and rich."
+               ]
+            },
+            {
+               "name": "Grounded Theory",
+               "filter": ["Evaluation", "Qualitative"],
+               "definition": [{
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [{
+                           "name": "Theory version",
+                           "description": "identifies the version of Grounded Theory used/adapted (Glaser, Strauss-Corbin, Charmaz, etc.)"
+                        },
+                        {
+                           "name": "Data source access",
+                           "description": "explains how data source(s) were selected and accessed (e.g. participant sampling strategy)"
+                        },
+                        {
+                           "name": "Data source description",
+                           "description": "describes data sources (e.g. participants' demographics, work roles)"
+                        },
+                        {
+                           "name": "Research iterations",
+                           "description": "explains how the research iterated between data collection and analysis using constant comparison and theoretical sampling"
+                        },
+                        {
+                           "name": "Saturation evidence",
+                           "description": "provides evidence of saturation; explains how saturation was achieved"
+                        },
+                        {
+                           "name": "Key patterns",
+                           "description": "explains how key patterns (e.g. categories) emerged from GT steps (e.g. selective coding)"
+                        },
+                        {
+                           "name": "Chain of evidence",
+                           "description": "provides clear chain of evidence from raw data (e.g. interviewee quotations) to derived codes, concepts, and categories"
+                        }
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [{
+                           "name": "Supplemental materials",
+                           "description": "provides supplemental materials such as interview guide(s), coding schemes, coding examples, decision rules, or extended chain-of-evidence tables"
+                        },
+                        {
+                           "name": "Desviations",
+                           "description": "explains how and why study adapts or deviates from claimed GT version"
+                        },
+                        {
+                           "name": "Theory or taxonomy",
+                           "description": "presents a mature, fully-developed theory or taxonomy"
+                        },
+                        {
+                           "name": "Participants and data sources",
+                           "description": "includes highly diverse participants and/or data sources (e.g. software repositories, forums)"
+                        },
+                        {
+                           "name": "Direct quotations",
+                           "description": "uses direct quotations extensively to support key points"
+                        },
+                        {
+                           "name": "Memo writing",
+                           "description": "explains how memo writing was used to drive the work"
+                        },
+                        {
+                           "name": "Results validation",
+                           "description": "validates results using member checking, dialogical interviewing, feedback from non-participant practitioners or research audits of coding by advisors or other researchers"
+                        },
+                        {
+                           "name": "Transferability",
+                           "description": "discusses transferability; characterizes the setting such that readers can assess transferability"
+                        },
+                        {
+                           "name": "Results comparison",
+                           "description": "compares results with (or integrates them into) prior theory or related research"
+                        },
+                        {
+                           "name": "Theoretical sampling",
+                           "description": "explains theoretical sampling vis-à-vis the interplay between the sampling process, the emerging findings, and theoretical gaps perceived therei"
+                        },
+                        {
+                           "name": "Biases affection",
+                           "description": "reflects on how researcher’s biases may have affected their analysis"
+                        },
+                        {
+                           "name": "Literature role",
+                           "description": "explains the role of literature, especially where an extensive review preceded the GT study"
+                        }
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [{
+                        "name": "Data triangularization",
+                        "description": "triangulates with extensive quantitative data (e.g. questionnaires, sentiment analysis)"
+                     }, {
+                        "name": "Researchers team",
+                        "description": "employs a team of researchers and explains their roles"
+                     }]
+                  }
+               ],
+               "keywords": [
+                  "Iterative rounds",
+                  "Interleaved rounds",
+                  "Research iterate/iteration",
+                  "Key patterns",
+                  "Concepts",
+                  "Categories",
+                  "Broad area",
+                  "Raw data",
+                  "Glaser",
+                  "Strauss(-Corbin)",
+                  "Charmaz",
+                  "Participant sampling",
+                  "Quotation"
+               ],
+               "invalidCriticisms": [
+                  "Lack of quantitative data; causal analysis; objectivity, internal validity, reliability, or generalizability.",
+                  "Lack of replicability or reproducibility; not releasing transcripts",
+                  "lack of representativeness (e.g. of a study of Turkish programmers, 'how does this generalize to America?')",
+                  "Research questions should have been different",
+                  "Findings should have been presented as a different set of relationships, hypotheses, or a different theory."
+               ]
+            },
+            {
+               "name": "Qualitative Surveys",
+               "filter": ["Evaluation", "Qualitative"],
+               "definition": [{
                   "name": "Essential",
                   "description": "",
-                  "codes": [
-                  {
-                     "name": "Case justification",
-                     "description":"justifies the selection of the case or site that was studied"
-                  },
-                  {
-                     "name": "Site description",
-                     "description":"describes the site of the intervention(s) in rich detail"
-                  },
-                  {
-                     "name": "Intervention(s)",
-                     "description":"describes the intervention(s) in detail"
-                  },
-                  {
-                     "name": "Relationship",
-                     "description": "describes the relationship between the researcher and the host organization"
-                  },
-                  {
-                     "name": "Research dimension",
-                     "description": "describes the longitudinal dimension of the research design (including the length of the study)"
-                  },
-                  {
-                     "name": "Interventions",
-                     "description": "describes the interactions between researcher(s) and host organization(s)---what the interventions were, who intervened and with which part of the organization, as well as the outcome of the interventions"
-                  },
-                  {
-                     "name": "Determination of interventions",
-                     "description": "describes how interventions were determined (by management, researchers, or participative/co- determination process)"
-                  },
-                  {
-                     "name": "Research cycles",
-                     "description": "explains research cycles or phases, if any, and their relationship to the intervention(s)"
-                  },
-                  {
-                     "name": "Evaluation of interventions",
-                     "description": "explains how the interventions are evaluated"
-                  },
-                  {
-                     "name": "Reactions to interventions",
-                     "description": "reports participant or stakeholder reactions to interventions"
-                  },
-                  {
-                     "name":"Evidence chain",
-                     "description": "presents a clear chain of evidence from observations to findings"
-                  },
-                  {
-                     "name": "Lessons learned",
-                     "description": "reports lessons learned by the organization"
-                  },
-                  {
-                     "name": "Biases",
-                     "description": "researchers reflect on their own possible biases"
-                  }
-                  ]
-               },
-               {
-                  "name": "Dessirable",
+                  "codes": [{
+                     "name": "Interviewees selection",
+                     "description": "explains how interviewees were selected (i.e. sampling strategy; see the Sampling Supplement)"
+                  }, {
+                     "name": "Describe interviewees",
+                     "description": "describes interviewees (e.g. demographics, work roles)"
+                  }, {
+                     "name": "Quotations to findings",
+                     "description": "presents clear chain of evidence from interviewee quotations to findings (e.g. proposed concepts)"
+                  }, {
+                     "name": "Reseach questions",
+                     "description": "clearly answers the research question(s)"
+                  }, {
+                     "name": "Saturation",
+                     "description": "provides evidence of saturation; explains how saturation was achieved"
+                  }]
+               }, {
+                  "name": "Desirable",
                   "description": "",
-                  "codes": [
-                  {
-                     "name": "Supplemental materials",
-                     "description": "provides supplemental materials such as interview guide(s), coding schemes, coding examples, decision rules, or extended chain-of-evidence tables"
-                  },
-                  {
-                     "name": "Direct quotations",
-                     "description": "uses direct quotations extensively"
-                  },
-                  {
-                     "name": "Results validation",
-                     "description": "validates results using member checking, dialogical interviewing4, feedback from non-participant practitioners or research audits of coding by advisors or other researchers"
-                  },
-                  {
-                     "name": "Findings",
-                     "description": "findings plausibly transferable to other contexts"
-                  },
-                  {
-                     "name": "Data triangulation",
-                     "description": "triangulation across quantitative and qualitative data"
-                  }
-                  ]
-               },
-               {
+                  "codes": [{
+                     "name": "Supplemental material",
+                     "description": "provides supplemental materials including interview guide(s), coding schemes, coding examples, decision rules, or extended chain-of-evidence table(s)"
+                  }, {
+                     "name": "Diverse participants",
+                     "description": "includes highly diverse participants"
+                  }, {
+                     "name": "Direct quotation",
+                     "description": "uses direct quotations extensively to support key points"
+                  }, {
+                     "name": "Deductive/Inductive coding",
+                     "description": "EITHER: evaluates an a priori theory (or model, framework, taxonomy, etc.) using deductive coding with an a priori coding scheme based on the prior theory OR: synthesizes results into a new, mature, fully-developed and clearly articulated theory (or model, etc.) using some form of inductive coding (coding scheme generated from data)"
+                  }, {
+                     "name": "Validates results",
+                     "description": "validates results using member checking, dialogical interviewing, feedback from non-participant practitioners or research audits of coding by advisors or other researchers 1)"
+                  }, {
+                     "name": "Discusses transferibility",
+                     "description": "discusses transferability; findings plausibly transferable to different contexts"
+                  }, {
+                     "name": "Compares results",
+                     "description": "compares results with (or integrates them into) prior theory or related research"
+                  }, {
+                     "name": "Reasearchers'biases",
+                     "description": "reflects on how researchers' biases may have affected their analysis"
+                  }]
+               }, {
                   "name": "Extraordinary",
                   "description": "",
-                  "codes": [
+                  "codes": [{
+                     "name": "Data analysis methods",
+                     "description": "employs multiple methods of data analysis (e.g. open coding vs. process coding; manual coding vs. automated sentiment analysis) with method-triangulation"
+                  }, {
+                     "name": "Longitudinal design",
+                     "description": "employs longitudinal design (i.e. each interviewee participates multiple times) and analysis"
+                  }, {
+                     "name": "Probabilistic sampling",
+                     "description": "employs probabilistic sampling strategy; statistical analysis of response bias"
+                  }, {
+                     "name": "Multiple coders",
+                     "description": "uses multiple coders and analyzes inter-coder reliability"
+                  }]
+               }],
+               "invalidCriticisms": ["Lack of quantitative data; causal analysis; objectivity, internal validity, reliability, or generalizability.",
+                  "Lack of replicability or reproducibility; not releasing transcripts.",
+                  "Lack of probability sampling, statistical generalizability or representativeness unless representative sampling was an explicit goal of the study.",
+                  "Failure to apply grounded theory or case study practices. A qualitative survey is not grounded theory or a case study."
+               ],
+               "keywords": [
+                  "Semi-structured interview",
+                  "Open-ended interview",
+                  "Synchronous conversation",
+                  "One participant at a time",
+                  "Participants’ answers",
+                  "Interview guide",
+                  "Diverse participants",
+                  "Direct quotations"
+               ]
+            },
+            {
+               "name": "Case survey",
+               "filter": ["Evaluation", "Qualitative"],
+               "definition": [{
+                  "name": "Essential",
+                  "description": "",
+                  "codes": [{
+                     "name": "Search process",
+                     "description": " presents step-by-step, systematic, replicable description of the search process for published case studies (not necessarily in peer-reviewed venues)"
+                  }, {
+                     "name": "Inclusion/Exclusion criteria",
+                     "description": " defines clear inclusion and exclusion criteria for cases"
+                  }, {
+                     "name": "Sampling strategy",
+                     "description": " describes the sampling strategy (see the Sampling Supplement)"
+                  }, {
+                     "name": "Define coding scheme",
+                     "description": " defines a coding scheme to convert qualitative case descriptions into quantitative variables2"
+                  }, {
+                     "name": "Coding scheme details",
+                     "description": " EITHER: describes the coding scheme in detail; OR: provides the coding scheme in supplementary materials"
+                  }, {
+                     "name": "Draw conclusions",
+                     "description": " draws conclusions based on the quantitative variables derived"
+                  }, {
+                     "name": "Generalizability threats",
+                     "description": " acknowledges generalizability threats; discusses how case studies reviewed may differ from target population"
+                  }, {
+                     "name": "Missingness in dataset",
+                     "description": " clearly explains how missingness in the dataset was managed"
+                  }]
+               }, {
+                  "name": "Desirable",
+                  "description": "",
+                  "codes": [{
+                     "name": "Sampling/Publication bias",
+                     "description": " mitigates sampling bias and publication bias, using some combination of: (i) manual and keyword automated searches; (ii) backward and forward snowballing searches; (iii) checking profiles of prolific authors in the area; (iv) searching both formal databases (e.g. ACM Digital Library) and indexes (e.g. Google Scholar); (v) searching for relevant dissertations; (vi) searching pre-print servers (e.g. arXiv); (vii) soliciting unpublished manuscripts through appropriate listservs or social media; (viii) contacting known authors in the area."
+                  }, {
+                     "name": "Supplementary material",
+                     "description": "provides supplementary materials including: the list of primary studies, coding scheme, decision rules, complete dataset; analysis scripts3"
+                  }, {
+                     "name": "Instrument design",
+                     "description": "explains and justifies the coding scheme instrument design"
+                  }, {
+                     "name": "Employs coders",
+                     "description": "employs multiple coders and evaluates the inter-rater reliability"
+                  }, {
+                     "name": "Explains discrepancies",
+                     "description": "explains how discrepancies among coders were resolved4"
+                  }, {
+                     "name": "Describes contacts",
+                     "description": "describes contacting authors of primary studies for more information, to check coding accuracy, or resolve coding disagreements"
+                  }, {
+                     "name": "Priori scheme",
+                     "description": "assesses quality of primary studies using an a priori scheme (e.g. the Case Survey Standard); explains how quality was assessed; models study quality as a moderating variable"
+                  }, {
+                     "name": "Consolidates results",
+                     "description": "consolidates results using tables, diagrams, or charts"
+                  }, {
+                     "name": "Results integration",
+                     "description": "integrates results into prior theory or research; identifies gaps, biases, or future directions"
+                  }, {
+                     "name": "Presents results",
+                     "description": "presents results as practical, evidence-based guidelines for practitioners, researchers, or educators"
+                  }, {
+                     "name": "Distinguish results and interpretations",
+                     "description": "clearly distinguishes evidence-based results from interpretations and speculation5"
+                  }]
+               }, {
+                  "name": "Extraordinary",
+                  "description": "",
+                  "codes": [{
+                     "name": "Theory select/sample cases",
+                     "description": " uses theory to select and sample cases"
+                  }, {
+                     "name": "Preliminary search",
+                     "description": " two or more researchers independently undertake the preliminary search process before finalizing the search scope and search keywords"
+                  }, {
+                     "name": "Other sources data",
+                     "description": " adds data from other sources to the selected cases"
+                  }, {
+                     "name": "Employs authors",
+                     "description": " employs authors of primary studies to conduct the coding or ensure interpretations are correct"
+                  }, {
+                     "name": "Studies'characteristics",
+                     "description": " analyzes if/how studies' characteristics (e.g., research design, publication venue or date) influence the coding"
+                  }]
+               }],
+               "invalidCriticisms": [
+                  "the studies were not published in peer-reviewed venues",
+                  "the original studies do not employ a common research design",
+                  "the cases are not a random sample of the phenomenon"
+               ],
+               "keywords": [
+                  "Case survey",
+                  "Case meta-analysis",
+                  "Systematically convert(-ing) qualitative",
+                  "Qualitative case",
+                  "Quantitative data",
+                  "Quantitative variables",
+                  "Generalizable results",
+                  "Generalizability threats",
+                  "Target population",
+                  "Coding scheme"
+               ]
+
+            }
+         ]
+      },
+      {
+         "name": "Quantitative methods",
+         "methods": [
+            {
+               "name": "Experiments",
+               "filter": ["Evaluation", "Quantitative"],
+               "definition": [
                   {
-                     "name": "Researchers triangulation",
-                     "description": "research team with triangulation across researchers (to mitigate researcher bias)"
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Characteristics relation", "description": "describes how characteristics of phenomenon under investigation relate to experimental constructs"},
+                        {"name": "Formal hypotheses", "description": "states formal hypotheses"},
+                        {"name": "One-sided hypotheses", "description": "justifies use of one-sided hypotheses (if any) based on face validity or previous work"},
+                        {"name": "Variables description", "description": "describes independent, dependent and extraneous variables; how extraneous vars are controlled"},
+                        {"name": "Research design and protocol", "description": "describes the research design and protocol including treatments, materials, tasks, design (e.g. 2x2 factorial), participant allocation, period and sequences (for crossover designs), and logistics"},
+                        {"name": "Appropiate design and protocol", "description": "design and protocol appropriate (not optimal) for stated research questions and hypotheses"},
+                        {"name": "Random assignment", "description": "EITHER: uses random assignment; explains logistics (e.g. how random numbers were generated) OR: justifies why random assignment is impractical or unethical (compelling reason needed); and mitigates unequal groups threat to validity (e.g. using pre-test/post-test and matched subjects design)"},
+                        {"name": "Experimental objects", "description": "describes experimental objects (e.g. real or toy system) and their characteristics (e.g. size, type);"},
+                        {"name": "Justification of experimental objects", "description": "justifies selection of experimental objects; checks for object-treatment confounds1"},
+                        {"name": "Dependent variables justification", "description": "describes and justifies how the dependent variable is measured (including units, instruments)"},
+                        {"name": "Dependent and independent variables measurement ", "description": "describes how independent and dependent variables are measured"},
+                        {"name": "Participants description", "description": "describes participants (e.g. age, gender, education, relevant experience or preferences)"},
+                        {"name": "Statistics reports justification", "description": "reports distribution-appropriate descriptive and inferential statistics; enumerates and checks assumptions; justifies tests used"},
+                        {"name": "Confidence intervals", "description": "reports effects sizes with confidence intervals (if using frequentist approach)"},
+                        {"name": "Raw data", "description": "EITHER: shares raw, de-identified data OR: explains why sharing raw data is impractical or unethical"},
+                        {"name": "Validity discussion", "description": "discusses construct, conclusion internal and external validity"},
+                        {"name": "Alternative results and interpretations", "description": "discusses alternative interpretations of results"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Hypothses justification", "description": "justifies hypotheses and Bayesian priors (if applicable) based on previous studies and theory"},
+                        {"name": "Alternative experimental designs", "description": "discusses alternative experimental designs and why they were not used (e.g. validity trade-offs)"},
+                        {"name": "Data distributions visualizations", "description": "includes visualizations of data distributions"},
+                        {"name": "Citation of statistics papers", "description": "cites statistics papers to support any nuanced issues or unusual approaches"},
+                        {"name": "Desviations between design and execution", "description": "explains deviations between design and execution, and their implications"},
+                        {"name": "Supplementary material", "description": "includes supplementary material: complete, algorithmic research protocol, task materials, de-identified dataset, analyses scripts"},
+                        {"name": "Named experiment design", "description": "named experiment design (e.g. simple 2-group, 2x2 factorial, randomized block)"},
+                        {"name": "A-priori power analysis", "description": "presents a-priori power analysis and sufficient n for expected effect sizes."},
+                        {"name": "Analyze validity of variable", "description": "analyzes construct validity of dependent variable"},
+                        {"name": "Manipulation checks", "description": "uses and reports manipulation checks"},
+                        {"name": "Pre-registration of hypotheses", "description": "pre-registration of hypotheses and design where venue allows"},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation4"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Multiple experiments report", "description": "reports multiple experiments or replications in different cultures or regions"},
+                        {"name": "Data triangulation", "description": "uses multiple methods of data collection; data triangulation"},
+                        {"name": "Time-series analysis of data", "description": "longitudinal data collection with appropriate time-series analysis"}
+                     ]
                   }
-                  ]
-               }
-            ],
-            "keywords":[
-               "Action research",
-               "Social phenomenon",
-               "Social phenomena",
-               "Organization process",
-               "Culture",
-               "Way of working",
-               "Group dynamics",
-               "Real-life context",
-               "Reflexibility",
-               "Credibility",
-               "Resonance",
-               "Usefulness",
-               "Transferability",
-               "Intervention",
-               "Research cycles"
-            ],
-            "invalidCriticisms": [
-               "The findings and insights are not valid because the research intervened in the context. Though reflexivity is crucial, the whole point of action research is to introduce a change and observe how participants react.",
-               "This is merely consultancy or an experience report. Systematic observation and reflection should not be dismissed as consultancy or experience reports. Inversely, consultancy or experiences should not be falsely presented as action research.",
-               "Lack of quantitative data; causal analysis; objectivity, internal validity, reliability, or generalizability.",
-               "Sample not representative; lack of generalizability; generalizing from one organization.",
-               "Lack of replicability or reproducibility; not releasing transcripts.",
-               "Lack of control group or experimental protocols. An action research study is not an experiment."
-            ]
-           },
-           {
-              "name": "Case studies and ethnography",
-              "definition": [
-                 {
-                    "name": "Essential",
-                    "description": "",
-                    "codes":[
-                     {
-                        "name": "Case justification",
-                        "description": "justifies the selection of the case or site that was studied"
-                     },
-                     {
-                        "name": "Site description",
-                        "description": "describes the site in rich detail"
-                     },
-                     {
-                        "name": "Data source",
-                        "description": "describes data sources (e.g. participants' demographics and work roles, )"
-                     },
-                     {
-                        "name": "Units of analysis",
-                        "description": "defines unit(s) of analysis"
-                     },
-                     {
-                        "name": "Evidence chain",
-                        "description": "presents a clear chain of evidence from observations to findings"
-                     }
-                    ]
-                 },
-                 {
-                    "name": "Dessirable",
-                    "description": "",
-                    "codes": [
-                       {
-                          "name": "Supplemental materials",
-                          "description": "provides supplemental materials such as interview guide(s), coding schemes, coding examples, decision rules, or extended chain-of-evidence tables"
-                       },
-                       {
-                          "name": "Data triangulation",
-                          "description": "triangulates across data sources, informants or researchers"
-                       },
-                       {
-                          "name": "Statements check",
-                          "description": "cross-checks interviewee statements (e.g. against direct observation or archival records)"
-                       },
-                       {
-                          "name": "Results validation",
-                          "description": "validates results using member checking, dialogical interviewing1, feedback from non-participant practitioners or research audits of coding by advisors or other researchers"
-                       },
-                       {
-                          "name": "Case study report",
-                          "description": "reports the type of case study (see Types of Case Studies)"
-                       },
-                       {
-                          "name": "External events",
-                          "description": "describes external events and other factors that may have affected the case or site"
-                       },
-                       {
-                          "name": "Quotations",
-                          "description": "uses quotations to illustrate findings (note: quotations should not be the only representation of a finding; each finding should be described independently of supporting quotations)"
-                       },
-                       {
-                          "name": "Theory evaluation",
-                          "description": "EITHER: evaluates an a priori theory (or model, framework, taxonomy, etc.) using deductive coding with an a priori coding scheme based on the prior theory OR: synthesizes results into a new, mature, fully-developed and clearly articulated theory (or model, etc.) using some form of inductive coding (coding scheme generated from data)"
-                       }
-                    ]
-                 },
-                 {
-                    "name": "Extraordinary",
-                    "description": "",
-                    "codes":[
-                       {
-                        "name": "cross-case triangulation",
-                        "description": "multiple, deep, fully-developed cases with cross-case triangulation"
-                       },
-                       {
-                        "name": "Inter-rater reliability",
-                        "description": "uses multiple judges and analyzes inter-rater reliability (see the IRR/IRA Supplement)"
-                       },
-                       {
-                        "name": "Direct observation",
-                        "description": "uses direct observation and clearly integrates direct observations into results"
-                       },
-                       {
-                        "name": "Case study publication",
-                        "description": "published a case study protocol beforehand and made it publicly accessible"
-                       }
-                    ]
-                 }
-              ],
-              "keywords": [
-               "Case study",
-               "Case studies",
-               "Ethnography",
-               "Specific instance",
-               "Phenomenon at a site",
-               "Site selection",
-               "Study site",
-               "Unit of analysis",
-               "Observation",
-               "Interview",
-               "Questionnaires",
-               "Brainstorming",
-               "Focus group",
-               "Conceptual modeling",
-               "Work diary",
-               "Think-aloud",
-               "Shadowing",
-               "Participant observation",
-               "Instrumentation",
-               "Fly on the wall",
-               "Participants recording",
-               "Analysis of electronic databases",
-               "Analysis of tool logs",
-               "Documentation analysis",
-               "Analysis of a system"
-              ],
-              "invalidCriticisms": [
-               "Does not present quantitative data; only collects a single data type.",
-               "Sample of 1; findings not generalizable. The point of a case study is to study one thing deeply, not to generalize to a population. Case studies should lead to theoretical generalization; that is, concepts that are transferable in principle.",
-               "Lack of internal validity. Internal validity only applies to explanatory case studies that seek to establish causality.",
-               "Lack of reproducibility or a \"replication package\"; Data are not disclosed (qualitative data are often confidential).",
-               "Insufficient number of length of interviews. There is no magic number; what matters is that there is enough data that the findings are credible, and the description is deep and rich."
-              ]
-           },
-           {
-              "name": "Grounded Theory",
-              "definition": [
-                 {
-                    "name": "Essential",
-                    "description": "",
-                    "codes": [
-                     {
-                        "name": "Theory version",
-                        "description": "identifies the version of Grounded Theory used/adapted (Glaser, Strauss-Corbin, Charmaz, etc.)"
-                     },
-                     {
-                        "name": "Data source access",
-                        "description": "explains how data source(s) were selected and accessed (e.g. participant sampling strategy)"
-                     },
-                     {
-                        "name": "Data source description",
-                        "description": "describes data sources (e.g. participants' demographics, work roles)"
-                     },
-                     {
-                        "name": "Research iterations",
-                        "description": "explains how the research iterated between data collection and analysis using constant comparison and theoretical sampling"
-                     },
-                     {
-                        "name": "Saturation evidence",
-                        "description": "provides evidence of saturation; explains how saturation was achieved"
-                     },
-                     {
-                        "name": "Key patterns",
-                        "description": "explains how key patterns (e.g. categories) emerged from GT steps (e.g. selective coding)"
-                     },
-                     {
-                        "name": "Chain of evidence",
-                        "description": "provides clear chain of evidence from raw data (e.g. interviewee quotations) to derived codes, concepts, and categories"
-                     }
-                    ]
-                 },
-                 {
-                    "name": "Dessirable",
-                    "description": "",
-                    "codes": [
-                       {
-                        "name": "Supplemental materials",
-                        "description": "provides supplemental materials such as interview guide(s), coding schemes, coding examples, decision rules, or extended chain-of-evidence tables"
-                       },
-                       {
-                        "name": "Desviations",
-                        "description": "explains how and why study adapts or deviates from claimed GT version"
-                       },
-                       {
-                          "name": "Theory or taxonomy",
-                          "description": "presents a mature, fully-developed theory or taxonomy"
-                       },
-                       {
-                          "name": "Participants and data sources",
-                          "description": "includes highly diverse participants and/or data sources (e.g. software repositories, forums)"
-                       },
-                       {
-                          "name": "Direct quotations",
-                          "description": "uses direct quotations extensively to support key points"
-                       },
-                       {
-                          "name": "Memo writing",
-                          "description": "explains how memo writing was used to drive the work"
-                       },
-                       {
-                          "name": "Results validation",
-                          "description": "validates results using member checking, dialogical interviewing, feedback from non-participant practitioners or research audits of coding by advisors or other researchers"
-                       },
-                       {
-                          "name": "Transferability",
-                          "description": "discusses transferability; characterizes the setting such that readers can assess transferability"
-                       },
-                       {
-                          "name": "Results comparison",
-                          "description": "compares results with (or integrates them into) prior theory or related research"
-                       },
-                       {
-                          "name": "Theoretical sampling",
-                          "description": "explains theoretical sampling vis-à-vis the interplay between the sampling process, the emerging findings, and theoretical gaps perceived therei"
-                       },
-                       {
-                          "name": "Biases affection",
-                          "description": "reflects on how researcher’s biases may have affected their analysis"
-                       },
-                       {
-                          "name": "Literature role",
-                          "description": "explains the role of literature, especially where an extensive review preceded the GT study"
-                       }
-                    ]
-                 },
-                 {
-                    "name": "Extraordinary",
-                    "description": "",
-                    "codes": [
-                     {
-                     "name": "Data triangularization",
-                     "description": "triangulates with extensive quantitative data (e.g. questionnaires, sentiment analysis)"
-                     },{
-                     "name": "Researchers team",
-                     "description": "employs a team of researchers and explains their roles"
-                     }
-                    ]
-                 }
-              ],
-              "keywords": [
-               "Iterative rounds",
-               "Interleaved rounds",
-               "Research iterate/iteration",
-               "Key patterns",
-               "Concepts",
-               "Categories",
-               "Broad area",
-               "Raw data",
-               "Glaser",
-               "Strauss(-Corbin)",
-               "Charmaz",
-               "Participant sampling",
-               "Quotation"
-              ],
-              "invalidCriticisms": [
-               "Lack of quantitative data; causal analysis; objectivity, internal validity, reliability, or generalizability.",
-               "Lack of replicability or reproducibility; not releasing transcripts",
-               "lack of representativeness (e.g. of a study of Turkish programmers, 'how does this generalize to America?')",
-               "Research questions should have been different",
-               "Findings should have been presented as a different set of relationships, hypotheses, or a different theory."
-              ]
-           }
-        ]
-     }
-  ]
+
+               ],
+               "keywords": [
+                 "Controlled experiment",
+                 "Human participant",
+                 "Quasi-experiment",
+                 "Independent variables",
+                 "Extraneous variables",
+                 "Experimental unit",
+                 "Random allocation",
+                 "Randomly allocated",
+                 "Repeated measures",
+                 "Between-subject",
+                 "Within-subject",
+                 "Control group"
+               ],
+               "invalidCriticisms": [
+                 "participants are students---appropriateness of participant characteristics should be judged based on the context, desired level of control, trade-off choices between internal and external validity, and the specifics of the technology (i.e. method, technique, tool, process, etc.) under evaluation; the choice must be explained in the paper",
+                 "low external validity",
+                 "the experiment is a replication",
+                 "the reviewer would have investigated the topic in any other way than an experiment",
+                 "not enough participants (unless supported by power analysis)"
+               ]
+            },
+            {
+               "name": "Questionnaire surveys",
+               "filter": ["Evaluation", "Quantitative"],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Target population", "description": "identifies the target population & defines the sampling strategy (see the Sampling Supplement)"},
+                        {"name": "Creation of questionary instrument", "description": "describes how the questionnaire instrument was created"},
+                        {"name": "Provide questionary instrument", "description": "provides the questionnaire instrument (as an appendix or supplementary materials)"},
+                        {"name": "Match quyestionary with aim", "description": "the questionnaire design matches the research aims and the target population"},
+                        {"name": "selection of participants", "description": "describes how participants were selected, including invitations and incentives"},
+                        {"name": "Data collection analysis", "description": "step-by-step, systematic, replicable description of data collection and analysis"},
+                        {"name": "Responses management", "description": "describes how responses were managed/monitored, including contingency actions for non-responses and drop-outs"},
+                        {"name": "Construct validity", "description": "EITHER: measures constructs using (or adapting) validated scales OR: analyzes construct validity (including content, convergent, discriminant and predictive validity) ex post3"},
+                        {"name": "Handling missing data", "description": "explains handling of missing data (e.g. imputation, weighting adjustments, discarding)"},
+                        {"name": "Generalizability threats acknoledgement", "description": "acknowledges generalizability threats; discusses how respondents may differ from target population"},
+                        {"name": "Response rates analysis", "description": "analyzes response rates"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Supplementary material", "description": "provides supplementary materials including instrument(s), code books, analysis scripts and dataset(s)"},
+                        {"name": "Characterize the target", "description": "characterizes the target population including demographic information (e.g. culture, knowledge)"},
+                        {"name": "Principles of research ethnics", "description": "accounts for the principles of research ethics (e.g. informed consent, re-identification risk)"},
+                        {"name": "Instrument design and choice", "description": "explains and justifies instrument design and choice of scales (e.g. by research objectives or by analogy to similar studies)."},
+                        {"name": "Instrument appropiation ", "description": "validates whether the instrument's items, layout, duration, and technology are appropriate (e.g. using pilots, test-retest, or expert and non-expert reviews)."},
+                        {"name": "Instrument evolution", "description": "reports how the instrument has evolved through the validation process (if at all)"},
+                        {"name": "Analysis of response bias", "description": "analyzes response bias (quantitatively)"},
+                        {"name": "Improving response rates techniques", "description": "applies techniques for improving response rates (e.g. incentives, reminders, targeted advertising)"},
+                        {"name": "Possible effects of incentives", "description": "discusses possible effects of incentives (e.g. on voluntariness, response rates, response bias) if used"},
+                        {"name": "Stratification of the analysis", "description": "describes the stratification of the analysis (if stratified sampling is used)"},
+                        {"name": "Population strata estimation", "description": "defines and estimates the size of the population strata (if applicable)"},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Feasibility check of data analysis techniques", "description": "provides feasibility check of the anticipated data analysis techniques"},
+                        {"name": "Report scale validation", "description": "reports on the scale validation in terms of dimensionality, reliability, and validity of measures"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Closed-ended question",
+                  "Participants’ answers systematic analysis",
+                  "Online questionnaire",
+                  "Paper (form) questionnaire",
+                  "Target population",
+                  "Sampling strategy",
+                  "Questionnaire instrument"
+               ],
+               "invalidCriticisms": [
+                  "Not reporting response rate for open public subscription surveys (i.e. surveys open to the anonymous public so that everyone with a link---typically broadcasted among social networks---can participate).",
+                  "Failure to release full data sets despite the data being sensitive.",
+                  "Claiming the sample size is too small without justifying why the sample size is insufficient to answer the research questions.",
+                  "Criticizing the relevance of a survey on the basis that responses only capture general people's perceptions.",
+                  "The results are considered controversial or hardly surprising.",
+                  "The results do not accord with the reviewer's personal experience or previous studies."
+               ]
+            },
+            {
+               "name": "Systematic Reviews",
+               "filter": ["Evaluation", "Quantitative"],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Search process description", "description": "presents step-by-step, systematic, replicable description of search process including search terms"},
+                        {"name": "Criteria inclusion and exclusion", "description": "defines clear inclusion and exclusion criteria"},
+                        {"name": "Specification of data from each study", "description": "specifies the data extracted from each primary study ; explains relationships to research questions"},
+                        {"name": "Data extraction description", "description": "describes in detail how data were extracted and synthesized (can be qualitative or quantitative)"},
+                        {"name": "Coding scheme(s) and use", "description": "describes coding scheme(s) and their use"},
+                        {"name": "Data and reseach answer link", "description": "clear chain of evidence from the extracted data to the answers to the research question(s)"},
+                        {"name": "Clonclusions for non-specialists", "description": "presents conclusions or recommendations for practitioners/non-specialists"},
+                        {"name": "Method identification", "description": "identifies method (e.g. systematic review, meta-analysis, mapping study, narrative synthesis, etc.)"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Replication package", "description" : "provides replication package including protocol, search terms, search results, selection process results; complete dataset, analysis scripts; examples of coding, decision rules or edge cases"},
+                        {"name": "Mitigation of sampling bias", "description" : "mitigates sampling bias and publication bias, using some combination of: (i) manual and keyword automated searches; (ii) backward and forward snowballing searches; (iii) checking profiles of prolific authors in the area; (iv) searching both formal databases (e.g. ACM Digital Library) and indexes (e.g. Google Scholar); (v) searching for relevant dissertations; (vi) searching pre-print servers (e.g. arXiv); (iiv) soliciting unpublished manuscripts through appropriate listservs or social media; (iiiv) contacting known authors in the area."},
+                        {"name": "Search process rigor ", "description" : "demonstrates that the search process is sufficiently rigorous for the systematic review goals"},
+                        {"name": "Quality assesment", "description" : "assesses quality of primary studies; explains how quality was assessed"},
+                        {"name": "Coverage assessment", "description" : "assesses coverage using funnel plots or percentage of known papers found"},
+                        {"name": "Inter'rater reliability analysis", "description" : "(positivist reviews), uses 2+ independent analysts; analyzes inter-rater reliability (e.g. KALPHA)"},
+                        {"name": "Biases effect for analysis", "description" : "(interpretivist reviews) reflects on how researcher’s biases may have affected their analysis"},
+                        {"name": "Results consolidation", "description" : "consolidates results using tables, diagrams, or charts; PRISMA flow diagram (cf. Moher et al. 2009)"},
+                        {"name": "Analysis perform", "description" : "performs analysis through an existing or new conceptual framework (qualitative synthesis)"},
+                        {"name": "Meta'analysis methods use", "description" : "uses meta-analysis methods appropriate for primary studies; does not use vote counting"},
+                        {"name": "Results integration", "description" : "integrates results into prior theory or research; identifies gaps, biases, or future directions"},
+                        {"name": "Results presentation", "description" : "presents results as practical, evidence-based guidelines for practitioners, researchers, or educators"},
+                        {"name": "Distinguish results and interpretations", "description" : "clearly distinguishes evidence-based results from interpretations and speculation"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Undertake of search process", "description": "two or more researchers independently undertaking the preliminary search process before finalizing the search scope and search keywords"},
+                        {"name": "Primary study authors contact", "description": "contacted primary study authors to ensure interpretations are correct, and elicit additional details not found in the papers such as access to raw data"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Systematic review",
+                  "Systematic literature review",
+                  "Mapping study",
+                  "Primary study",
+                  "Secondary study",
+                  "Tertiary study",
+                  "Existing literature",
+                  "Replicable",
+                  "Search string",
+                  "Inclusion criteria",
+                  "Exclusion criteria",
+                  "Research question",
+                  "Data extraction",
+                  "Data synthesis",
+                  "Data analysis"
+               ],
+               "invalidCriticisms": []
+            }
+         ]
+      },
+      {
+         "name": "Supplements",
+         "methods": [
+            {
+               "name": "Information Visualization",
+               "filter": ["Visualization"],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                     ]
+                  }
+
+               ],
+               "keywords": [
+                  "Visualization",
+                  "Visualize",
+                  "Quantitative data visualization",
+                  "Graphical visualization",
+                  "Visual attributes",
+                  "Values",
+                  "Measures",
+                  "Diagram",
+                  "Chart",
+                  "Layout",
+                  "Axis",
+                  "Logarithmic scale"
+               ],
+               "invalidCriticisms": [
+                 
+               ]
+            },
+            {
+               "name": "Registered reports",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Essential General standard", "description": "meets all essential criteria in The General Standard except those that require data: (i) does not present results (ii) does not validate assumptions of statistical tests (iii) does not discuss implications (iv) does not contribute to collective body of knowledge (v) does not support conclusions with evidence or arguments"},
+                        {"name": "Meets essential criteria", "description": "meets all essential criteria, in applicable empirical standards, that can be met before data collection"},
+                        {"name": "Justificates importance of purpose", "description": "justifies importance of the purpose, problem, objective, or research question(s)"},
+                        {"name": "Description of research method", "description": "describes the research method in detail sufficient for an independent researcher to exactly replicate the proposed data collection and analysis procedures"},
+                        {"name": "Test of stated hypotheses", "description": "the stated hypotheses can be tested with the data the researchers propose to collect"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Premilinary data presentation", "description": "presents preliminary data (e.g. from a pilot study) to justify the chosen approach (e.g. probability distributions)."},
+                        {"name": "Conditional structure", "description": "includes a conditional structure (e.g. pre-specifying different tests for normal and non-normal distributions)"},
+                        {"name": "Study change by results", "description": "explains how the study will change based on the results of data analysis (i.e. conditional analysis)"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Complete General Standard", "description": "meets all essential criteria in The General Standard (no exceptions)"},
+                        {"name": "R", "description": "introduction, rationale and stated hypotheses are the same as the approved RR1 submission except for improvements based on feedback from RR1 reviews"},
+                        {"name": "Adheres to registered procedures", "description": "EITHER: adheres precisely to the registered procedures OR: thoroughly justifies all deviations and explains how they affect the final analysis."},
+                        {"name": "Deviations justification", "description": "deviations, if any, are not justified based on the data"},
+                        {"name": "Designate post hoc analysis", "description": "clearly designates as exploratory any unregistered post hoc analyses"},
+                        {"name": "Justify post hoc analysis", "description": "unregistered post hoc analysis, if any, are justified, methodologically sound, and informative"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Registered report",
+                  "Pre-register",
+                  "Two phases",
+                  "Plan",
+                  "Executing the plan",
+                  "Execution of the plan",
+                  "Purpose",
+                  "Research question",
+                  "Preliminary data"
+               ],
+               "invalidCriticisms": [
+                  "RR1: Insisting on complete data collection or detailed analysis and results",
+                  "RR1: Rejecting exploratory or qualitative research: all kinds of research can be pre-registered even it's not covered here",
+                  "RR2: in hindsight, the RR1 plan was not appropriate (RR2 reviews should not criticize any aspect of the RR1 plan)",
+                  "RR2: results are not statistically significant, novel, relevant or compelling; effect sizes too small"
+               ]
+            },
+            {
+               "name": "Methodological Guidelines and Meta-Science",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Useful information", "description":"presents information that is useful for other researchers"},
+                        {"name": "Valid arguments", "description":"presents clear, valid arguments supporting recommendations"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Synthesises related work", "description": "synthesizes related work from reference disciplines"},
+                        {"name": "Engineering insight", "description": "provides insight specifically for software engineering; goes beyond summarizing methodological guidance from existing works or reference disciplines;"},
+                        {"name": "Results ", "description": "results integrated back into prior theory or research"},
+                        {"name": "Helpful artifacts", "description": "develops helpful artifacts (e.g. checklists, templates, tests, tools, sets of criteria)"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Empirical study" , "description": "includes an empirical study (e.g. a systematic literature review) that motivates the analysis of guidance"},
+                        {"name": "Methodological issues" , "description": "quantitative simulation illustrating methodological issues"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Recommendation",
+                  "Methodology",
+                  "Meta-science",
+                  "Guidelines"
+
+               ],
+               "invalidCriticisms": [
+                 "Guidelines are not based on empirical evidence. Empirically testing meta-scientific propositions is typically impractical or impossible. Reviewers should evaluate the face validity, comprehensiveness and usefulness of the guidelines. It is not appropriate to reject methodological guidelines over lack of empirical support."
+               ]
+            },
+            {
+               "name": "Open Science",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                       
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Data availability", "description": "includes a section named data availability (typically after conclusion)"},
+                        {"name": "Link suplementary materials", "description": "EITHER: links to supplementary materials OR explains why materials cannot be released (reasons for limited disclosure of data should be trusted)"},
+                        {"name": "Suplementary materials", "description": "includes supplementary materials such as: raw, deidentified or transformed data, extended proofs, analysis scripts, software, virtual machines and containers, or qualitative codebooks."},
+                        {"name": "Digital supplementary materials", "description": "archives supplementary materials on preserved digital repositories such as zenodo.org, figshare.com, softwareheritage.org, osf.io, or institutional repositories"},
+                        {"name": "Open license material", "description": "releases supplementary material under a clearly-identified open license such as CC0 or CC-BY 4.0"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Open source",
+                  "Open science",
+                  "Open data",
+                  "Free",
+                  "Re-use",
+                  "Re-purpose",
+                  "License",
+                  "Data availability",
+                  "Available",
+                  "Download",
+                  "Supplementary material",
+                  "Replicable / Replicability",
+                  "Reproducible / Reproducibility",
+                  "Github",
+                  "Open Science Framework / OSF",
+                  "Zenodo",
+                  "ResearchGate",
+                  "Arxiv"
+               ],
+               "invalidCriticisms": [
+                 "Researchers should not complain that a study involves artifacts which— for good reasons—cannot be released."
+               ]
+            },
+            {
+               "name": "Sampling",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Goal of sampling", "description": "explains the goal of sampling (e.g. aiming for representativeness, identifying exceptional cases)"},
+                        {"name": "Filtering steps sampling", "description": "explains the sampling strategy, in particular the different filtering steps involved or the reasons for selecting certain objects"},
+                        {"name": "Reasoning sampling strategy", "description": "explains why the sampling strategy is reasonable (not necessarily optimal) for the sampling goal"},
+                        {"name": "Study objects", "description": "explains the reasoning behind the selection of study objects (especially qualitative studies)"},
+                        {"name": "Sample size", "description": "reports the sample size"},
+                        {"name": "Theoretical population", "description": "states the theoretical population (what would the researcher like to generalize to?)"},
+                        {"name": "Sample derivation", "description": "presents a replicable, concise, algorithmic account of how other researchers could derive the same sample"},
+                        {"name": "Representativeness argue", "description": "explicitly argues for representativeness (e.g. compares sample and population parameters, provides confidence interval and confidence level for sample size)"},
+                        {"name": "Sample bias", "description": "explains how the sample could be biased along the sampling steps"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Population exact size", "description": "reports the approximate or exact sizes of populations and sampling frames"},
+                        {"name": "Sample as supplementary", "description": "provides the sample, sampling frame, and sampling scripts as supplementary material (subject to the collected data containing sensitive or protected information)."},
+                        {"name": "Sophisticated sampling", "description": "uses more sophisticated sampling strategies where appropriate, e.g.: exploratory research: using purposive rather than convenience sampling for unit of analysis case study: using purposive rather than convenience sampling for site selection, repository mining: using probability rather than convenience or purposive sampling (if a sampling frame is available), online survey: using respondent-driven rather than snowball sampling, study with identifiable strata: using stratified random rather than simple random sampling, theory building: using theoretical rather than convenience sampling"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Small group",
+                  "Sample",
+                  "Sampling frame",
+                  "User story",
+                  "Sampling strategy",
+                  "Sample size",
+                  "Unit of analysis"
+               ],
+               "invalidCriticisms": [
+                  "complaining about lack of representativeness or low external validity in studies where representativeness is not a goal",
+                  "abstractly criticizing generalizability rather than pointing to best practices, e.g.:",
+                  "invalid: 'as most respondents work in app development, the results may not generalize to other settings'",
+                  "valid: 'the researchers should have sent participation reminders to mitigate response bias'",
+                  "for qualitative research, claiming that the sample size is too small without considering how the items were selected (e.g. theoretical sampling) or the authors' argument for saturation."
+               ]
+            },
+            {
+               "name": "Longitudinal Studies",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Identification of subjects", "description": "subjects (humans or artifacts) are identifiable between waves"},
+                        {"name": "Data collection waves", "description": "uses at least two data collection waves"},
+                        {"name": "Number of waves determintaion", "description": "determines the appropriate number of waves based on the natural oscillation of the research phenomenon"},
+                        {"name": "Appropriate analysis strategy", "description": "the data analysis strategy is appropriate for the interdependent nature of the data"},
+                        {"name": "Justify analysis strategy", "description": "justifies the data analysis strategy"},
+                        {"name": "Alpha levels", "description": "discusses the critical alpha levels"},
+                        {"name": "Sample size", "description": "determines appropriate sample size using a power calculation"},
+                        {"name": "Subjects", "description": "describes the subjects (e.g., demographic information in the case of humans)"},
+                        {"name": "Data loss", "description": "describes data loss throughout the different waves"},
+                        {"name": "Research instrument", "description": "describes the research instrument (e.g., survey, software repository) and provide it as supplementary material"},
+                        {"name": "Reasearch model operationalization", "description": "discusses the operationalization of the research model (i.e. construct validity)"},
+                        {"name": "Missing dfata treatment", "description": "reports treatment of missing data"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Supplementary materials", "description": "provides supplementary materials including the data sets, data collection scripts or instruments, analytical scripts, a description of how to reproduce the work and any other materials used"},
+                        {"name": "Build or test theory", "description": "either builds new theory or tests existing theory"},
+                        {"name": "Causality investigation", "description": "investigates causality using the longitudinal nature of the data to establish precedence and statistically controlling for third-variable explanations"},
+                        {"name": "Cofounding factors", "description": "discusses potential confounding factors (for inferential analyses) that cannot be statistically controlled"},
+                        {"name": "Data inconsistency", "description": "discusses data (in)consistency across waves (e.g., test-retest reliability)"},
+                        {"name": "Waves distributions", "description": "examines differences in distributions between waves (and uses an appropriate parametric or non-parametric data analysis strategy)"},
+                        {"name": "Data cost and incentives", "description": "describes the cost of gathering data and any incentives used"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Multy stage selection", "description": "uses a multi-stage selection process to identify the study's subjects"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Claiming that the time span between measurements is too short or too long.",
+                  "Claiming that the number of waves is inadequate without a reasoned explanation.",
+                  "Claiming that the sample size is too small without performing a post hoc power calculation.",
+                  "Claiming that the paper with a modest number of comparisons should have used more conservative alphas or adopted a Bayesian approach.",
+                  "Complaining about generalizability when the paper clearly acknowledges limitations to generalizability."
+               ],
+               "invalidCriticisms": [
+                  "complaining about lack of representativeness or low external validity in studies where representativeness is not a goal",
+                  "abstractly criticizing generalizability rather than pointing to best practices, e.g.:",
+                  "invalid: 'as most respondents work in app development, the results may not generalize to other settings'",
+                  "valid: 'the researchers should have sent participation reminders to mitigate response bias'",
+                  "for qualitative research, claiming that the sample size is too small without considering how the items were selected (e.g. theoretical sampling) or the authors' argument for saturation."
+               ]
+            },
+            {
+               "name": "Data Science",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Investigation motivation", "description" :"discusses motivation; explains what claims are being investigated and why it is useful/timely to explore this problem using this method"},
+                        {"name": "Data selection", "description" :"explains how data was selected"},
+                        {"name": "Experimental setup", "description" :"presents the experimental setup (e.g. using a dataflow diagram)"},
+                        {"name": "Feature engineering aproach", "description" :"describes the feature engineering approaches, and transformations were applied"},
+                        {"name": "Data pre-processing", "description" :"explains how the data was pre-processed, filtered, and categorized"},
+                        {"name": "State-of-art baselines", "description" :"EITHER: discusses state-of-art baselines (and their strengths, weaknesses and limitations) OR: explains why no state-of-art baselines exist OR: provides compelling argument that direct comparisons are impractical"},
+                        {"name": "Modeling aproach(es)", "description" :"defines the modeling approach(es) used (e.g. clustering then decision tree learning), typically in pseudocode"},
+                        {"name": "Hardware and software", "description" :"discusses the hardware and software infrastructure used"},
+                        {"name": "Statistics and heuristics", "description" :"justifies all statistics and (automated or manual) heuristics used"},
+                        {"name": "Evaluation metrics", "description" :"describes and justifies the evaluation metrics used"},
+                        {"name": "Distributional information", "description" :"goes beyond single-dimensional summaries of performance (e.g., average; median) to include measures of variation, confidence, or other distributional information"},
+                        {"name": "Technical assumptions", "description" :"discusses technical assumptions and threats to validity that are specific to data science"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Source data", "description": "provides a replication package including source code and data set(s), or if data cannot be shared, synthetic data to illustrate the use of the algorithms6"},
+                        {"name": "Data learners", "description": "data is processed by multiple learners, of different types, e.g. regression, bayes classifier, decision tree, random forests, SVM (maybe with different kernels); e.g. see7 for guidance"},
+                        {"name": "Data tests", "description": "data is processed multiple times with different, randomly selected, training/test examples; the results of which are compared via significance tests and effect size tests (e.g. cross-validation)"},
+                        {"name": "Hyperparameters select", "description": "carefully selects the hyperparameters that control the data miners (e.g. via analysis of settings in related work or some automatic hyperparameter optimizer such as grid search)"},
+                        {"name": "Non-trivial-data inspect", "description": "manually inspects some non-trivial portion of the data (i.e. data sanity checks)"},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Longitudinal analysis", "description": "leverages temporal data via longitudinal (i.e. over large time) analyses when appropriate (see the Longitudinal Studies Standard)"},
+                        {"name": "Qualitative analysis", "description": "triangulates with qualitative data analysis of selected samples of the data"},
+                        {"name": "Triangularisation with data sources", "description": "triangulates with other data sources, such as surveys or interviews"},
+                        {"name": "Finding reports to authors", "description": "reports findings to, or interacts with, authors of SE artifacts to double check with them"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Data-centric analysis",
+                  "Machine learning",
+                  "Search-based",
+                  "Data selection",
+                  "Dataflow diagram",
+                  "Data pre-process",
+                  "Data filter",
+                  "Data transformation",
+                  "Modeling"
+               ],
+               "invalidCriticisms": [
+                  "You should have analyzed data ABC. The question reviewers should ask is whether the papers main claims are supported by the data that was analyzed, not whether some other data would have been better.",
+                  "Does not have a reproduction package. These are desirable, not essential (yet).",
+                  "Findings are not actionable: not all studies may have directly actionable findings in the short term.",
+                  "'Needs more data' as a generic criticism without a clear, justified reason.",
+                  "Study does not use qualitative data.",
+                  "Study does not make causal claims, when it cannot.",
+                  "Study does not use the most precise data source, unless the data source is clearly problematic for the study at hand. Some data is impractical to collect at scale."
+               ]
+            },
+            {
+               "name": "Multi-Methodology and Mixed Methods Research",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Useful information", "description": "presents information that is useful for other researchers"},
+                        {"name": "Valid arguments", "description": "presents clear, valid arguments supporting recommendations"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Synthesize related work", "description": "synthesizes related work from reference disciplines"},
+                        {"name": "Software engineering insights", "description": "provides insight specifically for software engineering; goes beyond summarizing methodological guidance from existing works or reference disciplines;"},
+                        {"name": "Integrate results", "description": "results integrated back into prior theory or research"},
+                        {"name": "Helpful artifacts", "description": "develops helpful artifacts (e.g. checklists, templates, tests, tools, sets of criteria)"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Empirical study", "description": "includes an empirical study (e.g. a systematic literature review) that motivates the analysis of guidance"},
+                        {"name": "Illustration methodological issues", "description": "quantitative simulation illustrating methodological issues"}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Mixed-method",
+                  "Multi-methodology",
+                  "Multiple methodologies / methods",
+                  "Multiple analysis methods"
+               ],
+               "invalidCriticisms": [
+                  "The method(ologie)s do not contribute equally (a non-equal design) or the minor method is limited (e.g. few participants).",
+                  "The mixed- or multi-method approach isn't necessary (when it is beneficial)",
+                  "The method(ologie)s have different philosophical foundations or are otherwise incompatible",
+                  "In an unequal design, the wrong method is dominant (this is a study design choice not a flaw )",
+                  "The method(ologie)s have inconsistent findings"
+               ]
+            },
+            {
+               "name": "Ethics (Studies with Human Participants)",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Harms for participants", "description": "describes all plausible, non-trivial potential risks or harms to participants (if any)"},
+                        {"name": "Steps to mitigate harm", "description": "describes any steps taken to mitigate risks or harms"},
+                        {"name": "Justification of harms", "description": "explains how benefits of the research justify any non-trivial risks or harms"},
+                        {"name": "Recruitment", "description": "explains how participants were recruited"},
+                        {"name": "Compensation", "description": "explains the compensation (if any) offered for participation and how coercion was mitigated"},
+                        {"name": "Consent of participants", "description": "explains how participants' free, individual, informed consent to participate was obtained"},
+                        {"name": "Participants privacy", "description": "explains how participants' privacy and reputation was respected in the conduct and reporting of the research."},
+                        {"name": "Data protection", "description": "explains how data about or supplied by participants was protected in the conduct of the research"},
+                        {"name": "Permision by participants", "description": "explains the permissions given by participants for publication and sharing of their data by the researchers, and the permissions given by participants for others to use this data in future"},
+                        {"name": "Barriers to participants", "description": "explains the permissionsstates any barriers to participation in the research process and EITHER justifies them OR explains how they were minimized"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Review board approval", "description": "cites (with application number) approval of a national, institutional, or other appropriate scholarly ethical review board"},
+                        {"name": "Reference ethnics", "description": "cites the reference ethics framework(s) within which the work was conducted"},
+                        {"name": "Issues from eligibility", "description": "discusses justice, ethics, diversity and inclusion issues arising from eligibility and participation"},
+                        {"name": "Impact on participants", "description": "explains how the impact of the research process on participants was considered"},
+                        {"name": "Mitigation of risks", "description": "explains, where relevant, how risks to the researchers themselves were mitigated in the conduct of the research"},
+                        {"name": "Privacity of identifiables ", "description": "where the research refers to identifiable persons (other than participants), explains how their privacy is respected and protected (since they have not formally consented to participation)"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Supplementary materials", "description":"supplementary materials include a complete application to a scholarly ethical review board and documentation of its approval"}
+                        
+                     ]
+                  }
+               ],
+               "keywords": [
+
+               ],
+               "invalidCriticisms": [
+                  "'Study was not approved by an ethical review board' is not itself grounds for rejection unless there is a substantive ethical concern that such a board should have prevented.",
+                  "'No consent form was used' is not a valid criticism where consent was given orally or implied (e.g., by completing a questionnaire that is explicitly part of a research project)."
+               ]
+            },
+            {
+               "name": "Ethics (Studies with Secondary Human Data)",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Harms for custodians", "description": "describes all plausible, non-trivial potential risks or harms to data custodians and data subjects"},
+                        {"name": "Steps to mitigate harm", "description": "describes any steps taken to mitigate risks or harms"},
+                        {"name": "Justification of harms", "description": "justifies the taking of risks and/or the causing of harm in terms of the claimed benefits of the research."},
+                        {"name": "Data avilability legitimitation", "description": "states the grounds on which the data used was legitimately available to the researchers"},
+                        {"name": "Permission by subjects", "description": "explains how the research falls within the permissions given by the original data subjects"},
+                        {"name": "Provenance of data", "description": "explains the provenance of the original data in terms of the data custodian's documentation of the conditions of data capture, and whether this capture met the standards required for Studies with Human Participants (particularly in respect of consent for capture and future use)."},
+                        {"name": "Participants privacy", "description": "explains how participants' privacy and reputation was respected in the conduct and reporting of the research. In particular, where multiple datasets are combined, explains how any additional privacy risks raised by this were mitigated."},
+                        {"name": "Respect of privacy", "description": "explains how the privacy and consent of data subjects was respected during the research with reference to the conditions under which data was made available to the researcher , and how any further publication of the data (in existing, combined, or transformed form) will respect the expectations and consent given by data subjects."}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Impact on participants", "description": "explains how the researchers considered the impact of the research on those whose data was used"},
+                        {"name": "Review board approval", "description": "cites, with application number, approval of a national, institutional, or other appropriate scholarly ethical review board"},
+                        {"name": "Reference ethnics", "description": "cites the reference ethics framework(s) within which the work was conducted"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Supplementary materials", "description": "supplementary materials include a complete application to a scholarly ethical review board and documentation of its approval"}
+                     ]
+                  }
+               ],
+               "keywords": [
+
+               ],
+               "invalidCriticisms": [
+                  "'Study was not approved by an ethical review board' is not grounds for rejection unless there is a substantive ethical concern that such a board should have prevented"
+               ]
+            },
+            {
+               "name": "Inter-Rater Reliability and Agreement",
+               "filter": ["IRR"],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Rated properties", "description": "clearly states what properties were rated"},
+                        {"name": "Raters", "description": "clearly states how many raters rated each property"},
+                        {"name": "Justification single rater", "description": "provides reasonable justification for using a single rater"},
+                        {"name": "Rating process", "description": "describes the process by which two or more raters independently rated properties of research objects"},
+                        {"name": "Resolution of disagreements", "description": "describes how disagreements were resolved"},
+                        {"name": "Variable type", "description": "indicates the variable type (nominal, ordinal, interval, ratio) of the ratings"},
+                        {"name": "IRR/IRA measure", "description": "reports an appropriate statistical measure of IRR/IRA"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Supplementary material", "description": "provides supplementary materials including: rating scheme(s), decision rules, example disagreements, IRR/IRA broken down by property or wave of analysis."},
+                        {"name": "Used statistics", "description": "justifies the statistic used"},
+                        {"name": "Established interpretations", "description": "reports established interpretations or thresholds for the statistics used"},
+                        {"name": "Anomalous results", "description": "analyzes anomalous results in light of the properties of the statistic used (e.g. Cohen's kappa anomalies)"},
+                        {"name": "Reters'training", "description": "describes the raters' training or experience in the research topic"},
+                        {"name": "Disagreement resolving", "description": "resolves disagreements through discussion (rather than voting)"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Amount of raters", "description": "employs more than three raters per property"},
+                        {"name": "Iterative IRR/IRA report", "description": "reports an iterative process with multiple cycles of (i) rating a subset of the data, (ii) resolving disagreements, and (iii) updating the rating scheme or decision rules until a minimum threshold indicates acceptable reliability/agreement; reports IRR/IRA for each cycle in an iterative process"},
+                        {"name": "IRR/IRA calculation", "description": "calculates IRR/IRA for internal quality of the research, i.e., as a tool for progressively improving the consistency of rating systems thus improving researchers' reflexivity"}
+                     ]
+                  }
+               ],
+               "keywords": [
+
+               ],
+               "invalidCriticisms": [
+                  "Criticizing use of a single rater where multiple raters would be impractical or inconsistent with the study's underlying philosophy..",
+                  "Criticizing use of a single rater when the data is such that there is no reason to suspect different raters would reach different conclusions.",
+                  "Criticizing use of multiple raters. It is difficult to imagine a scenario in which multiple raters would actively harm a study's credibility.",
+                  "'IRR/IRA is too low' when there is no evidence-based threshold and reliability threats are clearly acknowledged."
+               ]
+            }
+         ]
+      },
+      {
+         "name": "Unclassified codebooks",
+         "methods": [
+            {
+               "name": "Optimization Studies",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Search space","description": "Describe the search space (e.g., constraints, independent variables choices)."},
+                        {"name": "Problem optimization","description": "Explain why the problem cannot be optimized manually or by brute force within a reasonable timeframe."},
+                        {"name": "Realistic simplifications","description": "Use realistic and limited simplifications and constraints for the optimization problem. Simplifications and constraints must not reduce the search to one where all solutions could be enumerated through brute force."},
+                        {"name": "Prior state of art","description": "EITHER include a description of prior state of the art in this area, OR carefully motivate and define the problem tackled and the solution proposed."},
+                        {"name": "Algorithm justification","description": "Justify the choice of algorithm underlying an approach."},
+                        {"name": "Approaches comparison","description": "Compare approaches to a justified and appropriate baseline."},
+                        {"name": "Solution formulation","description": "Explictly define the solution formulation, including a description of what a solution represents, how it is represented, and how it is manipulated."},
+                        {"name": "Fitness functions","description": "Explicitly define all fitness functions, including the type of goals that are optimized and the equations for calculating fitness values."},
+                        {"name": "Evaluated approaches","description": "Explicitly define evaluated approaches, including the techniques, specific heuristics, and the parameters and their values."},
+                        {"name": "Data source","description": "EITHER follow and clearly describe a sound process to collect and prepare the datasets used to run and to evaluate the optimization approach and make data publicly available or explain why this is not possible, OR, if the subjects are taken from previous work, fully reference the original source and explain whether any transformation or cleaning was applied to the datasets."},
+                        {"name": "Possible sources","description": "Identify and explain all possible sources of stochasticity."},
+                        {"name": "Stochastic approach","description": "EITHER execute stochastic approaches or elements multiple times OR explain why this is not possible"}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Motivate for proposed approach", "description": "Motivate the novelty and soundness of the proposed approach."},
+                        {"name": "Problem type", "description": "Explain whether the study explores a new problem type (or a new area within an existing problem space), or how it reproduces, replicates, or improves upon prior work."},
+                        {"name": "Data collection", "description": "Explain in detail how subjects or datasets were collected/chosen to mitigate selection bias and improve the generalization of findings."},
+                        {"name": "Main features", "description": "Describe the main features of the subjects used to run and evaluate the optimization approach(es) and discuss what characterizes the different instances in terms of 'hardness'."},
+                        {"name": "Synthetic data", "description": "Justify the use of synthetic data (if any); explain why real-world data cannot be used; discusses the extent to which the proposed approach and the findings can apply to the real world."},
+                        {"name": "Replication for SIGSOFT", "description": "Make available a replication package that conforms to SIGSOFT standards for artifacts."},
+                        {"name": "sample datasets", "description": "If data cannot be shared, create a sample dataset that can be shared to illustrate the approach."},
+                        {"name": "Space for solution", "description": "Select a realistic option space for formulating a solution. Any values set for attributes should reflect one that might be chosen in a 'real-world' solution, and not generated from an arbitrary distribution."},
+                        {"name": "Parameter values justification", "description": "Justify the parameter values used when executing the evaluated approaches (and note that experiments trying a wide range of different parameter values would be extraordinary, see below)."},
+                        {"name": "Multiple sampling", "description": "Sample from data multiple times in a controlled manner (where appropriate and possible)."},
+                        {"name": "Cross-validation", "description": "Perform multiple trials either as a cross-validation (multiple independent executions) or temporally (multiple applications as part of a timed sequence), depending on the problem at hand."},
+                        {"name": "Random data splits", "description": "Make available random data splits (e.g., those used in data-driven approaches) or, at least, ensure splits are reproducibile."},
+                        {"name": "Distributions comparison", "description": "Compare distributions (rather than means) of results using appropriate statistics."},
+                        {"name": "Meta-evaluation criteria", "description": "Compare solutions using an appropriate meta-evaluation criteria. Justify the chosen criteria."},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Parameter choices", "description": "Analyze different parameter choices to the algorithm, indicating how the final parameters were selected."},
+                        {"name": "Fitness landscape", "description": "Analyze the fitness landscape for one or more of the chosen fitness functions."}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Software engineering problem",
+                  "Optimization",
+                  "Software optimization",
+                  "Task optimization",
+                  "Manual optimization",
+                  "Simplification",
+                  "Constraint",
+                  "Fitness",
+                  "Trial",
+                  "Proposed technique",
+                  "Test suite",
+                  "Test case"
+               ],
+               "invalidCriticisms": [
+                  "The paper is unimportant. Be cautious of rejecting papers that seem 'unimportant' (in the eyes of a reviewer). Research is exploratory and it is about taking risks. Clealy-motivated research and speculative exploration are both important and should be rewarded.",
+                  "The paper just uses older algorithms with no reference to recent work. Using older (and widely understood algorithms) may be valid when they are used, e.g., (1) as part of a larger set that compares many approaches; e.g. (2) to offer a “straw man” method that defines the “floor” of the performance (that everything else needs to beat); or (3), as a workbench within which one thing is changed (e.g., the fitness function) but everything else remains constant.",
+                  "That an approach is not benchmarked against an inappropriate or unavailable baseline. If a state-of-the-art approach lacks an available and functional implementation, it is not reasonable to expect the author to recreate that approach for benchmarking purposes.",
+                  "That a multi-objective approach is not compared to a single-objective approach by evaluating each objective separately. This is not a meaningful comparison because, in a multi-objective problem, the trade-off between the objectives is a major factor in result quality. It is more important to consider the Pareto frontiers and quality indicators.",
+                  "That one or very few subjects are used, as long as the paper offers a reasonable justification for why this was the case."
+               ]
+            },
+            {
+               "name": "Simulation (quantitative)",
+               "filter": [],
+               "definition": [
+                  {
+                     "name": "Essential",
+                     "description": "",
+                     "codes": [
+                        {"name": "Simulation justification", "description": "justifies that simulation is a suitable method for investigating the problem at hand."},
+                        {"name": "Simulation model", "description": "describes the simulation model (conceptual, implementation, or hybrid abstraction levels), including input parameters and response variables."},
+                        {"name": "Underlying simulation approach", "description": "describes the underlying simulation approach (discrete-event simulation, system dynamics, agent-based simulation, or others)."},
+                        {"name": "Simulation packages", "description": "describes simulation packages or tools used to develop and run the simulation model, as well as their associated versions, and computational environment."},
+                        {"name": "Data for calibration", "description": "describes the data used for model calibration, the calibration procedures, and contextual information."},
+                        {"name": "Verification of model", "description": "describes how the simulation model was verified and validated at different abstraction levels."},
+                        {"name": "Study protocol", "description": "describes the study protocol, including independent variables, scenarios, number of runs per scenario (in case of using stochastic simulation), and steady-state or terminating conditions."},
+                        {"name": "Validity theats", "description": "analyzes validity threats considering the supporting data and the simulation model."},
+                        {"name": "Simulation assumptions", "description": "clearly explicates the assumptions in the simulation model."}
+                     ]
+                  },
+                  {
+                     "name": "Desirable",
+                     "description": "",
+                     "codes": [
+                        {"name": "Supplementary materials", "description": "provides supplementary materials including raw data (for real data) or generation mechanism (for synthetic data) used for model calibration, all simulation models and source code, and analysis scripts."},
+                        {"name": "Reference behaviours", "description": "characterizes reference behaviors for the definition of simulation scenarios with representative and known values or probability distributions for input parameters."},
+                        {"name": "Conceptual and implementation levels ofsimulation", "description": "separates conceptual and implementation levels of the simulation model."},
+                        {"name": "Sensitivity analysis", "description": "reports sensitivity analysis for input parameters or factors."},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation"}
+                     ]
+                  },
+                  {
+                     "name": "Extraordinary",
+                     "description": "",
+                     "codes": [
+                        {"name": "Involvement of stakeholders", "description": "describes how stakeholders were involved in developing and validating the simulation model."},
+                        {"name": "Modular view", "description": "provides a modular view of the simulation model, allowing reuse in different contexts."}
+                     ]
+                  }
+               ],
+               "keywords": [
+                  "Simulation",
+                  "Real-world system",
+                  "Imitate",
+                  "Sandbox",
+                  "Virtual",
+                  "Process simulation"
+               ],
+               "invalidCriticisms": [
+                  "The mere presence of assumptions in the model is not a valid basis for criticism as long as the assumptions are documented and justified, and their implications for the validity of the simulation are sufficiently addressed. All models make assumptions.",
+                  "Claiming that the model is too abstact without explaining why the level of abstraction is inadequate for the purposes of the study.",
+                  "Claiming that the study is invalid because it uses generated data, secondary data or approximations based on expert opinion, when no appropriate primary data is available."
+               ]
+            }
+         ]
+      }
+     
+   ]
 }
