@@ -2,9 +2,11 @@ import $ from 'jquery'
 import _ from 'lodash'
 import Events from '../../Events'
 import LanguageUtils from '../../utils/LanguageUtils'
+import Config from '../../Config'
 
 class UserFilter {
   constructor () {
+    this.individual = Config.filter.userFilter.individual === 'true'
     this.filteredUsers = [] // Includes only the users that are filtered by
     this.allUsers = [] // Includes all the users that have created annotation in the document
     this.events = {}
@@ -134,17 +136,24 @@ class UserFilter {
       this.allUsers = _.uniq(_.map(annotations, (annotation) => {
         return annotation.creator
       }))
-      this.filteredUsers = _.clone(this.allUsers)
+      // Filtered users will be only current in case of individual
+      if (this.individual && _.isEmpty(window.abwa.annotationBasedInitializer.initAnnotation)) {
+        this.filteredUsers = [window.abwa.annotationServerManager.annotationServerMetadata.userUrl + window.abwa.groupSelector.user.userid]
+      } else {
+        this.filteredUsers = _.clone(this.allUsers)
+      }
       // Upload sidebar panel with users
       this.usersContainer.innerHTML = '' // Empty the container
       for (let i = 0; i < this.allUsers.length; i++) {
         $(this.usersContainer).append(this.createUserFilterElement(this.allUsers[i]))
       }
-      // Activate all users
+      // Activate filtered users
       const checkboxes = this.usersContainer.querySelectorAll('input')
       for (let i = 0; i < checkboxes.length; i++) {
         const currentCheckbox = checkboxes[i]
-        currentCheckbox.checked = true
+        if (this.filteredUsers.find(user => user === currentCheckbox.dataset.userid)) {
+          currentCheckbox.checked = true
+        }
       }
       // If all old filtered users are current all users, just activate all of them
       this.checkAllActivated()
@@ -183,6 +192,7 @@ class UserFilter {
     // Set text and properties for label and input
     const input = userFilterElement.querySelector('input')
     input.id = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
+    input.dataset.userid = name
     const label = userFilterElement.querySelector('label')
     label.innerText = name.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '')
     label.htmlFor = 'userFilter_' + LanguageUtils.normalizeStringToValidID(name)
@@ -216,6 +226,8 @@ class UserFilter {
     const deactivatedCheckboxes = _.find(allCheckboxes, (checkbox) => { return checkbox.checked === false })
     if (_.isUndefined(deactivatedCheckboxes)) { // There are not found any deactivated checkboxes
       document.querySelector('#userFilter_all').checked = true
+    } else {
+      document.querySelector('#userFilter_all').checked = false
     }
   }
 

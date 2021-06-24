@@ -45,10 +45,6 @@ class ReadAnnotation {
     this.initAnnotationUpdatedEventListener()
     // PVSCL:ENDCOND
     this.loadAnnotations((err) => {
-      // PVSCL:IFCOND(UserFilter, LINE)
-      this.initUserFilter()
-      this.initUserFilterChangeEvent()
-      // PVSCL:ENDCOND
       if (_.isFunction(callback)) {
         callback(err)
       }
@@ -69,6 +65,8 @@ class ReadAnnotation {
   }
 
   destroy () {
+    // Unhighlight all annotations from DOM
+    this.unHighlightAllAnnotations()
     // Remove event listeners
     const events = _.values(this.events)
     for (let i = 0; i < events.length; i++) {
@@ -121,8 +119,8 @@ class ReadAnnotation {
       annotationsToHighlight = this.allAnnotations
       // PVSCL:ENDCOND
       if (annotationsToHighlight) {
-        for (let i = 0; i < this.allAnnotations.length; i++) {
-          const annotation = this.allAnnotations[i]
+        for (let i = 0; i < annotationsToHighlight.length; i++) {
+          const annotation = annotationsToHighlight[i]
           // Search if annotation exist
           const element = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
           // If annotation doesn't exist, try to find it
@@ -277,22 +275,37 @@ class ReadAnnotation {
         // TODO Show user no able to load all annotations
         console.error('Unable to load annotations')
       } else {
-        let unHiddenAnnotations
+        let promise = new Promise((resolve) => { resolve() })
         // PVSCL:IFCOND(UserFilter, LINE)
-        // Current annotations will be
-        this.currentAnnotations = this.retrieveCurrentAnnotations()
-        LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, { annotations: this.currentAnnotations })
-        unHiddenAnnotations = this.currentAnnotations
-        // PVSCL:ELSECOND
-        unHiddenAnnotations = this.allAnnotations
+        promise = new Promise((resolve, reject) => {
+          this.initUserFilter(() => {
+            if (err) {
+              reject(err)
+            } else {
+              this.initUserFilterChangeEvent()
+              resolve()
+            }
+          })
+        })
         // PVSCL:ENDCOND
-        // PVSCL:IFCOND(Selector, LINE)
-        // If annotations have a selector, are highlightable in the target
-        this.highlightAnnotations(unHiddenAnnotations)
-        // PVSCL:ENDCOND
-        if (_.isFunction(callback)) {
-          callback()
-        }
+        promise.then(() => {
+          let unHiddenAnnotations
+          // PVSCL:IFCOND(UserFilter, LINE)
+          // Current annotations will be
+          this.currentAnnotations = this.retrieveCurrentAnnotations()
+          LanguageUtils.dispatchCustomEvent(Events.updatedCurrentAnnotations, { annotations: this.currentAnnotations })
+          unHiddenAnnotations = this.currentAnnotations
+          // PVSCL:ELSECOND
+          unHiddenAnnotations = this.allAnnotations
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(Selector, LINE)
+          // If annotations have a selector, are highlightable in the target
+          this.redrawAnnotations()
+          // PVSCL:ENDCOND
+          if (_.isFunction(callback)) {
+            callback()
+          }
+        })
       }
     })
   }
@@ -416,6 +429,26 @@ class ReadAnnotation {
         tooltipString += body.tooltip() + '\n'
       }
     })
+    // PVSCL:IFCOND(Replying, LINE)
+    // Get number of replies
+    let replies = window.abwa.annotationManagement.annotationReader.allAnnotations.filter((anno) => {
+      if (_.has(anno, 'references') && anno.references.length > 0) {
+        return !!anno.references.find(ref => ref === annotation.id)
+      } else {
+        return false
+      }
+    })
+    if (replies.length > 0) {
+      tooltipString += 'Number of replies: ' + replies.length + '\n'
+    }
+    // PVSCL:IFCOND(Voting, LINE)
+    // Get last voting decision
+    let lastDecisionAnnotation = replies.filter(rep => rep.body.find(body => body.purpose === 'assessing' && body.value)).sort((a, b) => a.modified > b.modified).slice(-1)[0]
+    if (lastDecisionAnnotation) {
+      tooltipString += 'Decision: ' + lastDecisionAnnotation.body.find(body => body.purpose === 'assessing').value + '\n'
+    }
+    // PVSCL:ENDCOND
+    // PVSCL:ENDCOND
     return tooltipString
   }
 
@@ -454,44 +487,7 @@ class ReadAnnotation {
                 annotation: annotation
               })
             }/* PVSCL:IFCOND(Replying) */ else if (key === 'reply') {
-              // Update your last reply if exists, otherwise create a new reply
-              const replies = ReplyAnnotation.getReplies(annotation, this.replyAnnotations)
-              // Get last reply and check if it is current user's annotation or not
-              const lastReply = _.last(replies)
-              if (lastReply && lastReply.creator === window.abwa.groupSelector.getCreatorData()) {
-                // Annotation to be updated is the reply
-                const replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
-                const repliesHtml = replyData.htmlText
-                CommentingForm.showCommentingForm(lastReply, (err, replyAnnotation) => {
-                  if (err) {
-                    // Show error
-                    Alerts.errorAlert({ text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message })
-                  } else {
-                    LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-                      annotation: replyAnnotation
-                    })
-                  }
-                }, repliesHtml)
-              } else {
-                // Annotation to be created is new and replies the previous one
-                // Create target for new reply annotation
-                const target = [{ source: annotation.target[0].source }]
-                const replyAnnotation = new Annotation({ target: target, references: [annotation.id] })
-                const replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
-                const repliesHtml = replyData.htmlText
-                CommentingForm.showCommentingForm(replyAnnotation, (err, replyAnnotation) => {
-                  if (err) {
-                    // Show error
-                    Alerts.errorAlert({ text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message })
-                  } else {
-                    LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
-                      purpose: 'replying',
-                      replyingAnnotation: replyAnnotation,
-                      repliedAnnotation: annotation
-                    })
-                  }
-                }, repliesHtml)
-              }
+              this.openReplyingForm(annotation)
             }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
               // Open commenting form
               this.openCommentingForm(annotation)
@@ -502,6 +498,49 @@ class ReadAnnotation {
       }
     })
   }
+
+  // PVSCL:IFCOND(Replying, LINE)
+  openReplyingForm (annotation) {
+    // Update your last reply if exists, otherwise create a new reply
+    const replies = ReplyAnnotation.getReplies(annotation, this.replyAnnotations)
+    // Get last reply and check if it is current user's annotation or not
+    const lastReply = _.last(replies)
+    if (lastReply && lastReply.creator === window.abwa.groupSelector.getCreatorData()) {
+      // Annotation to be updated is the reply
+      const replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
+      const repliesHtml = replyData.htmlText
+      CommentingForm.showCommentingForm(lastReply, (err, replyAnnotation) => {
+        if (err) {
+          // Show error
+          Alerts.errorAlert({ text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message })
+        } else {
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: replyAnnotation
+          })
+        }
+      }, repliesHtml)
+    } else {
+      // Annotation to be created is new and replies the previous one
+      // Create target for new reply annotation
+      const target = [{ source: annotation.target[0].source }]
+      const replyAnnotation = new Annotation({ target: target, references: [annotation.id] })
+      const replyData = ReplyAnnotation.createRepliesData(annotation, this.replyAnnotations)
+      const repliesHtml = replyData.htmlText
+      CommentingForm.showCommentingForm(replyAnnotation, (err, replyAnnotation) => {
+        if (err) {
+          // Show error
+          Alerts.errorAlert({ text: 'Unexpected error when updating reply. Please reload webpage and try again. Error: ' + err.message })
+        } else {
+          LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
+            purpose: 'replying',
+            replyingAnnotation: replyAnnotation,
+            repliedAnnotation: annotation
+          })
+        }
+      }, repliesHtml)
+    }
+  }
+  // PVSCL:ENDCOND
 
   // PVSCL:IFCOND(Commenting, LINE)
   openCommentingForm (annotation) {
@@ -542,17 +581,25 @@ class ReadAnnotation {
     for (let i = 0; i < highlights.length; i++) {
       const highlight = highlights[i]
       highlight.addEventListener('dblclick', () => {
-        this.openCommentingForm(annotation)
+        let annotationCreator = annotation.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '') // As annotations include creator as URL to its profile, should be replace with only the ID, what is gathered in groupSelector
+        // Open commenting form if you are the owner of the annotation, otherwise should be replace
+        if (annotationCreator === window.abwa.groupSelector.user.userid) {
+          this.openCommentingForm(annotation)
+        } /* PVSCL:IFCOND(Replying) */ else {
+          // PVSCL:IFCOND(Replying, LINE)
+          this.openReplyingForm(annotation)
+          // PVSCL:ENDCOND
+        }/* PVSCL:ENDCOND */
       })
     }
   }
 
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(UserFilter, LINE)
-  initUserFilter () {
+  initUserFilter (callback) {
     // Create augmentation operations for the current group
     this.userFilter = new UserFilter()
-    this.userFilter.init()
+    this.userFilter.init(callback)
   }
 
   initUserFilterChangeEvent (callback) {

@@ -5,6 +5,9 @@ import HypothesisManager from './background/HypothesisManager'
 // PVSCL:IFCOND(Neo4J, LINE)
 import Neo4JManager from './background/Neo4JManager'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+import GoogleSheetAnnotationManager from './background/GoogleSheetAnnotationManager'
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
 import GoogleSheetsManager from './background/GoogleSheetsManager'
 // PVSCL:ENDCOND
@@ -57,6 +60,10 @@ class Background {
     this.neo4jManager = new Neo4JManager()
     this.neo4jManager.init()
 
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+    this.googleSheetAnnotationManager = new GoogleSheetAnnotationManager()
+    this.googleSheetAnnotationManager.init()
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
     // Initialize google sheets manager

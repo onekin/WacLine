@@ -16,6 +16,12 @@ import BrowserStorageManager from '../annotationServer/browserStorage/BrowserSto
 // PVSCL:IFCOND(PreviousAssignments, LINE)
 import PreviousAssignments from '../annotationManagement/purposes/PreviousAssignments'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+import GoogleSheetAnnotationClientManager from '../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+import GoogleSheetAuditLogging from '../annotationManagement/read/GoogleSheetAuditLogging'
+// PVSCL:ENDCOND
 
 class ContentScriptManager {
   constructor () {
@@ -64,8 +70,20 @@ class ContentScriptManager {
   // PVSCL:ENDCOND
 
   reloadContentByGroup (callback) {
+    let promise
+    // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+    if (window.abwa.annotationServerManager instanceof GoogleSheetAnnotationClientManager) {
+      promise = this.retrieveSpreadsheetAnnotationsToBrowserLocalStorage()
+    } else {
+      promise = new Promise((resolve) => { resolve() })
+    }
+    // PVSCL:ELSECOND
+    promise = new Promise((resolve) => { resolve() })
+    // PVSCL:ENDCOND
     // TODO Use async await or promises
-    this.reloadCodebookManager()
+    promise.then(() => {
+      return this.reloadCodebookManager()
+    })
       // PVSCL:IFCOND(MoodleResource, LINE)
       .then(() => {
         return this.reloadRolesManager()
@@ -98,10 +116,38 @@ class ContentScriptManager {
         return this.reloadPreviousAssignments()
       })
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+      .then(() => {
+        return this.reloadGoogleSheetAuditLogging()
+      })
+      // PVSCL:ENDCOND
       .then(() => {
         this.status = ContentScriptManager.status.initialized
         console.debug('Initialized content script manager')
       })
+      .catch((err) => {
+        if (err) {
+          const Alerts = require('../utils/Alerts').default
+          Alerts.errorAlert({
+            text: 'Error while loading an extension module. Error: ' + err.message,
+            title: 'Oops!'
+          })
+        }
+      })
+  }
+
+  retrieveSpreadsheetAnnotationsToBrowserLocalStorage () {
+    return new Promise((resolve, reject) => {
+      window.abwa.annotationServerManager.client.reloadCacheDatabase(
+        { user: window.abwa.groupSelector.user, group: window.abwa.groupSelector.currentGroup }
+        , (err) => {
+          if (err) {
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+    })
   }
 
   reloadAnnotatedContentManager () {
@@ -153,6 +199,28 @@ class ContentScriptManager {
       })
     })
   }
+  // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+
+  reloadGoogleSheetAuditLogging () {
+    return new Promise((resolve, reject) => {
+      this.destroyGoogleSheetAuditLogging()
+      window.abwa.googleSheetAuditLogging = new GoogleSheetAuditLogging()
+      window.abwa.googleSheetAuditLogging.init((err) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve()
+        }
+      })
+    })
+  }
+
+  destroyGoogleSheetAuditLogging () {
+    if (window.abwa.googleSheetAuditLogging) {
+      window.abwa.googleSheetAuditLogging.destroy()
+    }
+  }
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleReport, LINE)
 
   reloadMoodleReport () {
@@ -377,6 +445,9 @@ class ContentScriptManager {
     // PVSCL:IFCOND(BrowserStorage, LINE)
     window.abwa.annotationServerManager = new BrowserStorageManager()
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+    window.abwa.annotationServerManager = new GoogleSheetAnnotationClientManager()
+    // PVSCL:ENDCOND
     window.abwa.annotationServerManager.init((err) => {
       if (_.isFunction(callback)) {
         if (err) {
@@ -395,7 +466,7 @@ class ContentScriptManager {
         const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager').default
         window.abwa.annotationServerManager = new HypothesisClientManager()
       }
-      // PVSCL:ENDCOND
+      // PVSCL:ENDCOND// sass-lint:disable no-important
       // PVSCL:IFCOND(BrowserStorage, LINE)
       if (annotationServer === 'browserstorage') {
         // Browser storage
@@ -407,6 +478,13 @@ class ContentScriptManager {
         // Browser storage
         const Neo4JClientManager = require('../annotationServer/neo4j/Neo4JClientManager').default
         window.abwa.annotationServerManager = new Neo4JClientManager()
+      }
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+      if (annotationServer === 'googlesheetannotationserver') {
+        // Browser storage
+        const GoogleSheetAnnotationClientManager = require('../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager').default
+        window.abwa.annotationServerManager = new GoogleSheetAnnotationClientManager()
       }
       // PVSCL:ENDCOND
       if (window.abwa.annotationServerManager) {
@@ -421,7 +499,7 @@ class ContentScriptManager {
         })
       } else {
         const Alerts = require('../utils/Alerts').default
-        Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in options page.' })
+        Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in <a href="' + chrome.extension.getURL('pages/options.html') + '">options page</a>.' })
       }
     })
     // PVSCL:ENDCOND

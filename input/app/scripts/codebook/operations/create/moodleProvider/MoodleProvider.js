@@ -23,7 +23,7 @@ class MoodleProvider {
     this.assignmentId = null
     this.moodleEndpoint = null
     this.assignmentName = null
-    this.AnnotationServerClientManager = null
+    this.annotationServerClientManager = null
   }
 
   init (callback) {
@@ -186,12 +186,12 @@ class MoodleProvider {
   loadAnnotationServer (callback) {
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
     // PVSCL:IFCOND(Hypothesis, LINE)
-    this.AnnotationServerClientManager = new HypothesisClientManager()
+    this.annotationServerClientManager = new HypothesisClientManager()
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage, LINE)
-    this.AnnotationServerClientManager = new BrowserStorageManager()
+    this.annotationServerClientManager = new BrowserStorageManager()
     // PVSCL:ENDCOND
-    this.AnnotationServerClientManager.init(() => {
+    this.annotationServerClientManager.init(() => {
       this.initLoginProcess((err) => {
         if (_.isFunction(callback)) {
           if (err) {
@@ -206,12 +206,12 @@ class MoodleProvider {
     chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       if (annotationServer === 'hypothesis') {
         // Hypothesis
-        this.AnnotationServerClientManager = new HypothesisClientManager()
+        this.annotationServerClientManager = new HypothesisClientManager()
       } else {
         // Browser storage
-        this.AnnotationServerClientManager = new BrowserStorageManager()
+        this.annotationServerClientManager = new BrowserStorageManager()
       }
-      this.AnnotationServerClientManager.init(() => {
+      this.annotationServerClientManager.init(() => {
         this.initLoginProcess((err) => {
           if (_.isFunction(callback)) {
             if (err) {
@@ -227,7 +227,7 @@ class MoodleProvider {
   }
 
   initLoginProcess (callback) {
-    this.AnnotationServerClientManager.logIn((err) => {
+    this.annotationServerClientManager.logIn({interactive: true}, (err) => {
       if (err) {
         callback(err)
       } else {

@@ -6,13 +6,14 @@ import Canvas from '../annotationManagement/read/Canvas'
 // PVSCL:IFCOND(AnnotatedPDF, LINE)
 import Screenshots from '../annotationManagement/read/Screenshots'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(GoogleSheetConsumer, LINE)
+// PVSCL:IFCOND(GoogleSheetThematicSheet, LINE)
 import GoogleSheetGenerator from '../annotationManagement/read/GoogleSheetGenerator'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(LastAnnotation, LINE)
 import Resume from '../annotationManagement/read/Resume'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
+// TODO @inigoBereciartua check if this functionality is from checklist
 import TextSummary from '../annotationManagement/read/TextSummary'
 // PVSCL:ENDCOND
 import Events from '../Events'
@@ -30,19 +31,21 @@ import AnnotationImporter from '../importExport/AnnotationImporter'
 // PVSCL:IFCOND(Export, LINE)
 import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
-
 import $ from 'jquery'
+// PVSCL:IFCOND(BrowserStorage, LINE)
+import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(AuthorsSearch, LINE)
 import AuthorsInfo from '../annotationManagement/read/AuthorsInfo'
 import ImportChecklist from '../codebook/operations/import/ImportChecklist'
 import ChecklistReview from '../annotationManagement/read/ChecklistReview'
 // PVSCL:ENDCOND
 
-
 class Toolset {
   constructor () {
     this.page = chrome.extension.getURL('pages/sidebar/toolset.html')
     // PVSCL:IFCOND(AuthorsSearch, LINE)
+    // TODO @inigoBereciartua review if this event still exists
     this.events = {}
     // PVSCL:ENDCOND
   }
@@ -64,6 +67,7 @@ class Toolset {
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
       const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
       // PVSCL:IFCOND(AuthorsSearch, LINE)
+      // TODO @inigoBereciartua review if this event still exists
       this.initCongressLoadedEvent()
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(AnnotatedPDF, LINE)
@@ -101,6 +105,7 @@ class Toolset {
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
+      // TODO @inigoBereciartua review if importchecklist should be added or not in PV clause
       // Set TextSummary image
       const textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -139,9 +144,19 @@ class Toolset {
       this.googleSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.googleSheetImage.src = googleSheetImageUrl
       this.googleSheetImage.title = 'Generate a spreadsheet with classified content' // TODO i18n
-      this.toolsetBody.appendChild(this.googleSheetImage)
+      // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+      // In case google sheet audit log is chosen and browser storage is selected by user, the sharing button won't work, as it is not possible to share the group
+      if (!(window.abwa.annotationServerManager instanceof BrowserStorageManager)) {
+        this.toolsetBody.appendChild(this.googleSheetImage)
+      }
+      // PVSCL:ENDCOND
       this.googleSheetImage.addEventListener('click', () => {
+        // PVSCL:IFCOND(GoogleSheetThematicSheet, LINE)
         GoogleSheetGenerator.generate()
+        // PVSCL:ELSEIFCOND(GoogleSheetAuditLog, LINE)
+        // Open a new URL with the spreadsheet for audit
+        window.open(window.abwa.groupSelector.currentGroup.url)
+        // PVSCL:ENDCOND
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleReport, LINE)
@@ -189,13 +204,12 @@ class Toolset {
       })
       this.toolsetBody.appendChild(this.checklistImage)
       // PVSCL:ENDCOND
-
-
-
-
-
       // Add link to configuration page of the tool
       this.toolsetHeader.querySelector('#appNameBadge').href = chrome.extension.getURL('/pages/options.html')
+      this.toolsetHeader.querySelector('#sidebarConfigButton').src = chrome.extension.getURL('/images/configuration.png')
+      this.toolsetHeader.querySelector('#sidebarConfigButton').addEventListener('click', () => {
+        window.open(chrome.extension.getURL('/pages/options.html'))
+      })
       // Check if exist any element in the tools and show it
       if (!_.isEmpty(this.toolsetBody.innerHTML)) {
         this.show()
@@ -220,6 +234,7 @@ class Toolset {
 
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
+  // TODO @inigoBereciartua review this PV clause
   textSummaryButtonHandler () {
     TextSummary.proccessReview()
   }

@@ -16,6 +16,8 @@ class Theme {
     color,
     annotationGuide,
     createdDate = new Date(),
+    updatedDate = new Date(),
+    target = [],
     description = ''/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
     multivalued,
     inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
@@ -26,12 +28,21 @@ class Theme {
     this.description = description
     this.color = color
     this.annotationGuide = annotationGuide
+    this.target = target
     if (LanguageUtils.isInstanceOf(createdDate, Date)) {
       this.createdDate = createdDate
     } else {
       const timestamp = Date.parse(createdDate)
       if (_.isNumber(timestamp)) {
         this.createdDate = new Date(createdDate)
+      }
+    }
+    if (LanguageUtils.isInstanceOf(updatedDate, Date)) {
+      this.updatedDate = updatedDate
+    } else {
+      const timestamp = Date.parse(updatedDate)
+      if (_.isNumber(timestamp)) {
+        this.updatedDate = new Date(updatedDate)
       }
     }
     // PVSCL:IFCOND(Hierarchy,LINE)
@@ -84,7 +95,7 @@ class Theme {
       motivation: 'codebookDevelopment',
       references: [],
       tags: tags,
-      target: [],
+      target: this.target, // TODO Check if discrepancy between target and URI values works well in Hypothes.is annotation server
       text: jsYaml.dump({
         id: this.id || ''/* PVSCL:IFCOND(BuiltIn) */,
         description: this.description/* PVSCL:ENDCOND */
@@ -98,6 +109,7 @@ class Theme {
   }
 
   static fromAnnotation (annotation, annotationGuide = {}) {
+    // TODO Change use of tags to body
     const themeTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
     })
@@ -127,7 +139,9 @@ class Theme {
           id,
           name,
           description,
-          createdDate: annotation.updated,
+          createdDate: annotation.created,
+          updatedDate: annotation.updated,
+          target: annotation.target,
           annotationGuide/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
           multivalued,
           inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,

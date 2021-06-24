@@ -16,7 +16,7 @@ class Alerts {
       swal.fire({
         title: title,
         html: text,
-        type: alertType,
+        icon: alertType,
         confirmButtonText,
         cancelButtonText,
         reverseButtons,
@@ -45,9 +45,34 @@ class Alerts {
       }
     } else {
       swal.fire({
-        type: Alerts.alertType.info,
+        icon: Alerts.alertType.info,
         title: title,
         html: text
+      })
+    }
+  }
+
+  /**
+   * Same as info alert, with the difference that the execution of callback is stopped until user clicks okay or closes somehow the alert
+   * @param text
+   * @param title
+   * @param callback
+   */
+  static infoSyncAlert ({ text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), title = 'Info', callback }) {
+    Alerts.tryToLoadSwal()
+    if (_.isNull(swal)) {
+      if (_.isFunction(callback)) {
+        callback(new Error('Unable to load swal'))
+      }
+    } else {
+      swal.fire({
+        icon: Alerts.alertType.info,
+        title: title,
+        html: text
+      }).then(() => {
+        if (_.isFunction(callback)) {
+          callback(null)
+        }
       })
     }
   }
@@ -59,23 +84,23 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      const fire = () => {
+      let fire = () => {
         let timerInterval
         swal.fire({
-          type: Alerts.alertType.info,
+          icon: Alerts.alertType.info,
           title: title,
           html: text,
           allowOutsideClick,
           allowEscapeKey,
           showConfirmButton: true,
-          onOpen: () => {
+          didOpen: () => {
             if (_.isFunction(timerIntervalHandler)) {
               timerInterval = setInterval(() => {
                 timerIntervalHandler(swal, timerInterval)
               }, timerIntervalPeriodInSeconds * 1000)
             }
           },
-          onClose: () => {
+          didClose: () => {
             clearInterval(timerInterval)
           }
         })
@@ -97,9 +122,10 @@ class Alerts {
       }
     } else {
       swal.fire({
-        type: Alerts.alertType.error,
+        icon: Alerts.alertType.error,
         title: title,
-        html: text
+        html: text,
+        willClose: onClose
       }).then(() => {
         if (_.isFunction(callback)) {
           callback(null)
@@ -116,7 +142,7 @@ class Alerts {
       }
     } else {
       swal.fire({
-        type: Alerts.alertType.success,
+        icon: Alerts.alertType.success,
         title: title,
         html: text
       })
@@ -132,7 +158,7 @@ class Alerts {
     } else {
       swal.fire({
         position: position,
-        type: type,
+        icon: type,
         title: title, // TODO i18n
         html: text,
         showConfirmButton: false,
@@ -154,7 +180,7 @@ class Alerts {
         title: title,
         html: text,
         showConfirmButton: confirmButton,
-        didOpen: () => {
+        willOpen: () => {
           swal.showLoading()
           if (_.isFunction(timerIntervalHandler)) {
             timerInterval = setInterval(() => {
@@ -166,7 +192,7 @@ class Alerts {
             }, 100)
           }
         },
-        onAfterClose: () => {
+        didClose: () => {
           clearInterval(timerInterval)
         }
       })
@@ -186,7 +212,7 @@ class Alerts {
         inputPlaceholder: inputPlaceholder,
         inputValue: inputValue,
         html: html,
-        type: type,
+        icon: type,
         preConfirm: preConfirm,
         allowOutsideClick,
         allowEscapeKey,
@@ -218,7 +244,7 @@ class Alerts {
         focusConfirm: false,
         preConfirm: preConfirm,
         position: position,
-        didOpen: onBeforeOpen,
+        willOpen: onBeforeOpen,
         allowOutsideClick,
         allowEscapeKey,
         customClass: customClass,
@@ -255,7 +281,7 @@ class Alerts {
       }
     } else {
       swal.fire({
-        type: Alerts.alertType.warning,
+        icon: Alerts.alertType.warning,
         title: title,
         html: text
       })
@@ -268,12 +294,6 @@ class Alerts {
 
   static isVisible () {
     return swal.isVisible()
-  }
-
-  static addToQueue (alert) {
-    let e = swal.queue
-    console.log(e)
-    console.log(alert)
   }
 }
 

@@ -1,4 +1,5 @@
 import DOI from 'doi-regex'
+import axios from 'axios'
 // PVSCL:IFCOND(ScienceDirect, LINE)
 import URLUtils from '../utils/URLUtils'
 // PVSCL:ENDCOND
@@ -21,6 +22,7 @@ class TargetManager {
   }
 
   init () {
+    this.initContentScriptCallsListener()
     // PVSCL:IFCOND(DOI, LINE)
     // Requests to doi.org
     chrome.webRequest.onHeadersReceived.addListener((responseDetails) => {
@@ -123,6 +125,47 @@ class TargetManager {
     } else {
       return null
     }
+  }
+
+  initContentScriptCallsListener () {
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      if (request.scope === 'target') {
+        if (request.cmd === 'getMetadataFromDoi') {
+          this.getMetadataFromDoi(request.data.doi, (err, result) => {
+            if (err) {
+              sendResponse({ error: err })
+            } else {
+              sendResponse(result)
+            }
+          })
+        }
+      }
+      return true
+    })
+  }
+
+  getMetadataFromDoi (doi, callback) {
+    const settings = {
+      async: true,
+      crossDomain: true,
+      url: 'https://doi.org/' + doi,
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      }
+    }
+    // Call using axios
+    axios(settings).catch(err => {
+      if (_.isFunction(callback)) {
+        callback(err)
+      }
+    }).then((response) => {
+      if (_.isFunction(callback)) {
+        callback(null, response.data)
+      }
+    })
   }
 }
 

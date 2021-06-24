@@ -1,7 +1,9 @@
 import Events from '../../../Events'
 import _ from 'lodash'
+// PVSCL:IFCOND(BuiltIn or EmptyCodebook, LINE)
 // PVSCL:IFCOND(BuiltIn, LINE)
 import BuiltIn from './builtIn/BuiltIn'
+// PVSCL:ENDCOND
 import EmptyCodebook from './emptyCodebook/EmptyCodebook'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(NOT(Classifying), LINE)
@@ -44,6 +46,7 @@ class CreateCodebook {
     return (event) => {
       const promise = new Promise((resolve, reject) => {
         const howCreate = event.detail.howCreate
+        // PVSCL:IFCOND(BuiltIn or EmptyCodebook, LINE)
         // PVSCL:IFCOND(BuiltIn, LINE)
         if (howCreate === 'builtIn') {
           BuiltIn.createDefaultAnnotations((err, annotations) => {
@@ -54,6 +57,7 @@ class CreateCodebook {
             }
           })
         }
+        // PVSCL:ENDCOND
         if (howCreate === 'emptyCodebook') {
           EmptyCodebook.createDefaultAnnotations((err, annotations) => {
             if (err) {
