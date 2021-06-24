@@ -52,7 +52,7 @@ class GoogleSheetContentScriptManager {
   }
 
   initLoginProcess (callback) {
-    window.googleSheetProvider.annotationServerManager.logIn((err) => {
+    window.googleSheetProvider.annotationServerManager.logIn({interactive: true}, (err) => {
       if (err) {
         callback(err)
       } else {

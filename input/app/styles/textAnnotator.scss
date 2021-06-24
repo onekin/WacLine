@@ -1,3 +1,5 @@
+@import "./variables";
+
 /* For plain text files, must be shown moved to avoid sidebar hides annotable content */
 body > pre {
   margin-left: 161px;
@@ -27,7 +29,7 @@ body > pre {
 }
 
 #comment {
-  width: 100%;
+  width: 85%;
 }
 
 .awesomplete {
@@ -63,5 +65,54 @@ body > pre {
 /* PVSCL:IFCOND(Commenting, LINE) */
 .swal2-bottom > div {
   margin-bottom: 75px;
+}
+/* PVSCL:ENDCOND */
+
+/* PVSCL:IFCOND(Voting, LINE) */
+input[name="voteRadio"]{
+  margin:0;padding:0;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;
+}
+
+.voteImage {
+  padding: 5px;
+  border-radius: 7px;
+  max-width: 20px;
+  max-height: 20px;
+  cursor: pointer;
+}
+
+#votingContainer input:checked + label > .voteImage#upVoteImage {
+  background-color: rgba(0, 255, 0, 0.6);
+}
+
+#votingContainer input:checked + label > .voteImage#downVoteImage {
+  background-color: rgba(255, 0, 0, 0.6);
+}
+
+#upVoteImage {
+  content:url($chromeExtensionMainURL + "images/upvote.png");
+}
+
+#downVoteImage {
+  content:url($chromeExtensionMainURL + "images/downvote.png");
+}
+
+.voteReplyImage {
+  max-width: 10px;
+  padding: 2px;
+  margin-left: 10px;
+}
+
+.voteReplyImage[data-vote="up"] {
+  content:url($chromeExtensionMainURL + "images/upvote.png");
+  background-color: rgba(0, 255, 0, 0.6);
+}
+
+.voteReplyImage[data-vote="down"] {
+  content:url($chromeExtensionMainURL + "images/downvote.png");
+  background-color: rgba(255, 0, 0, 0.6);
 }
 /* PVSCL:ENDCOND */

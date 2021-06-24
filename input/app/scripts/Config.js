@@ -6,6 +6,11 @@ defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:Attribute('defaultAnn
 // PVSCL:ELSECOND
 defaultAnnotationServer = "PVSCL:EVAL(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Item(0)->pv:Name()->pv:ToLowerCase())"
 // PVSCL:ENDCOND
+let defaultGroupName = 'DefaultCodebook'
+// PVSCL:IFCOND(CodebookCreate, LINE)
+// eslint-disable-next-line quotes
+defaultGroupName = "PVSCL:EVAL(CodebookCreate->pv:Attribute('defaultCodebookName'))"
+// PVSCL:ENDCOND
 
 // Tags configuration
 const grouped = {
@@ -32,8 +37,20 @@ tags.statics = {
 }
 // PVSCL:ENDCOND
 const Config = {
-  // PVSCL:IFCOND(BuiltIn or ApplicationBased OR NOT(Codebook), LINE)
-  groupName: 'DefaultReviewModel',
+  // PVSCL:IFCOND(BuiltIn or EmptyCodebook or ApplicationBased OR NOT(Codebook), LINE)
+  groupName: defaultGroupName,
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(GoogleSheetAnnotationServer OR GoogleSheetAuditLog, LINE)
+  googleSheetConfig: {
+    db: 323696129,
+    template: '1nX0WP0YHvHAlog75_cnBkLxQ3uB0QV9Jj4ZFczkPuJw'
+  },
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(Filter, LINE)
+  filter: {
+    // eslint-disable-next-line quotes
+    userFilter: { individual: "PVSCL:EVAL(UserFilter->pv:Attribute('individual'))" }
+  },
   // PVSCL:ENDCOND
   defaultAnnotationServer: defaultAnnotationServer,
   namespace: 'oa',

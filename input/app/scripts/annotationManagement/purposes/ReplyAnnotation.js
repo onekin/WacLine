@@ -41,7 +41,7 @@ class ReplyAnnotation {
     // What and who
     for (let i = 0; i < replies.length; i++) {
       const reply = replies[i]
-      htmlText += this.createReplyLog(reply)
+      htmlText += ReplyAnnotation.createReplyLog(reply)
       if (replies.length - 1 > i) {
         htmlText += '<hr/>'
       }
@@ -71,10 +71,16 @@ class ReplyAnnotation {
     // PVSCL:IFCOND(Commenting, LINE)
     const replyCommentBody = reply.body.find(body => body.purpose === 'commenting')
     let textComment = 'No comment'
-    if (replyCommentBody) {
+    if (replyCommentBody && replyCommentBody.value.length > 0) {
       textComment = replyCommentBody.value
     }
     htmlText += '<span class="' + textSpanClassName + '">' + textComment + '</span>'
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Voting, LINE)
+    let replyAssessingBody = reply.body.find(body => body.purpose === 'assessing')
+    if (replyAssessingBody && replyAssessingBody.value) {
+      htmlText += '<img title="Voted ' + replyAssessingBody.value + '" data-vote="' + replyAssessingBody.value + '" class="voteReplyImage"/>'
+    }
     // PVSCL:ENDCOND
     if (reply.modified) {
       htmlText += '<span title="' + moment(reply.modified).format('MMMM Do YYYY, h:mm:ss a') + '" class="' + dateSpanClassName + '">' + moment(reply.modified).fromNow() + '</span>'

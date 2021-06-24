@@ -7,8 +7,9 @@ import EmptyDatabase from './EmptyDatabase'
 import _ from 'lodash'
 
 class BrowserStorageManager extends AnnotationServerManager {
-  constructor () {
+  constructor (namespace = 'db.annotations') {
     super()
+    this.namespace = namespace
     this.browserStorageClient = this.client
     this.annotationServerUrl = 'https://localannotationsdatabase.org'
     this.annotationServerMetadata = {
@@ -22,9 +23,11 @@ class BrowserStorageManager extends AnnotationServerManager {
 
   init (callback) {
     // Retrieve database of annotations
-    ChromeStorage.getData('db.annotations', ChromeStorage.local, (err, data) => {
+    ChromeStorage.getData(this.namespace, ChromeStorage.local, (err, data) => {
       if (err) {
-        callback(err)
+        if (_.isFunction(callback)) {
+          callback(err)
+        }
       } else {
         if (_.isString(data)) {
           // Parse
@@ -41,14 +44,16 @@ class BrowserStorageManager extends AnnotationServerManager {
           this.client = new BrowserStorageClient(this.annotationsDatabase, this)
         }
         // Callback
-        callback()
+        if (_.isFunction(callback)) {
+          callback()
+        }
       }
     })
   }
 
   saveDatabase (database, callback) {
     const stringifiedDatabase = JSON.stringify(database)
-    ChromeStorage.setData('db.annotations', stringifiedDatabase, ChromeStorage.local, (err) => {
+    ChromeStorage.setData(this.namespace, stringifiedDatabase, ChromeStorage.local, (err) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)

@@ -1,4 +1,5 @@
 import GoogleSheetClient from '../googleSheets/GoogleSheetClient'
+import axios from 'axios'
 // PVSCL:IFCOND(GoogleSheetConsumer,LINE)
 import _ from 'lodash'
 // PVSCL:ENDCOND
@@ -16,10 +17,20 @@ class GoogleSheetsManager {
             if (chrome.runtime.lastError) {
               sendResponse({ error: chrome.runtime.lastError })
             } else {
-              sendResponse({ token: token })
+              GoogleSheetsManager.checkTokenIsStillActive(token, (err, result) => {
+                if (err || !result) {
+                  console.error('Unable to verify if token is active or is inactive, retrieving a new one')
+                  GoogleSheetsManager.removeCachedToken(token, () => {
+                    chrome.identity.getAuthToken({ interactive: true }, (token) => {
+                      sendResponse({ token: token })
+                    })
+                  })
+                } else {
+                  sendResponse({ token: token })
+                }
+              })
             }
           })
-          return true
         } else if (request.cmd === 'getTokenSilent') {
           chrome.identity.getAuthToken({ interactive: false }, function (token) {
             if (chrome.runtime.lastError) {
@@ -29,7 +40,7 @@ class GoogleSheetsManager {
             }
           })
           return true
-        }/* PVSCL:IFCOND(GoogleSheetProvider) */ else if (request.cmd === 'getSpreadsheet') {
+        } else if (request.cmd === 'getSpreadsheet') {
           chrome.identity.getAuthToken({ interactive: true }, function (token) {
             if (chrome.runtime.lastError) {
               sendResponse({ error: chrome.runtime.lastError })
@@ -37,8 +48,8 @@ class GoogleSheetsManager {
               const data = JSON.parse(request.data)
               if (data.spreadsheetId) {
                 // Create client
-                this.googleSheetClient = new GoogleSheetClient(token)
-                this.googleSheetClient.getSpreadsheet(data.spreadsheetId, (err, spreadsheet) => {
+                let googleSheetClient = new GoogleSheetClient(token)
+                googleSheetClient.getSpreadsheet(data.spreadsheetId, (err, spreadsheet) => {
                   if (err) {
                     sendResponse({ error: err })
                   } else {
@@ -58,8 +69,8 @@ class GoogleSheetsManager {
             } else {
               const data = JSON.parse(request.data)
               if (data.data) {
-                this.googleSheetClient = new GoogleSheetClient(token)
-                this.googleSheetClient.batchUpdate(data.data, (err) => {
+                let googleSheetClient = new GoogleSheetClient(token)
+                googleSheetClient.batchUpdate(data.data, (err) => {
                   if (err) {
                     sendResponse({ error: err })
                   } else {
@@ -69,13 +80,13 @@ class GoogleSheetsManager {
               }
             }
           })
-        }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(GoogleSheetConsumer) */ else if (request.cmd === 'createSpreadsheet') {
+        } else if (request.cmd === 'createSpreadsheet') {
           chrome.identity.getAuthToken({ interactive: true }, function (token) {
             if (_.isUndefined(token)) {
               sendResponse({ error: new Error('Unable to retrieve token, please check if you have synced your browser and your google account. If the application did not ask you for login, please contact developer.') })
             } else {
-              this.googleSheetClient = new GoogleSheetClient(token)
-              this.googleSheetClient.createSpreadsheet(request.data, (err, result) => {
+              let googleSheetClient = new GoogleSheetClient(token)
+              googleSheetClient.createSpreadsheet(request.data, (err, result) => {
                 if (err) {
                   sendResponse({ error: err })
                 } else {
@@ -84,11 +95,10 @@ class GoogleSheetsManager {
               })
             }
           })
-          return true
         } else if (request.cmd === 'updateSpreadsheet') {
           chrome.identity.getAuthToken({ interactive: true }, function (token) {
-            this.googleSheetClient = new GoogleSheetClient(token)
-            this.googleSheetClient.updateSheetCells(request.data, (err, result) => {
+            let googleSheetClient = new GoogleSheetClient(token)
+            googleSheetClient.updateSheetCells(request.data, (err, result) => {
               if (err) {
                 sendResponse({ error: err })
               } else {
@@ -96,10 +106,48 @@ class GoogleSheetsManager {
               }
             })
           })
-          return true
-        }/* PVSCL:ENDCOND */
+        } else if (request.cmd === 'appendRowSpreadSheet') {
+          chrome.identity.getAuthToken({ interactive: true }, function (token) {
+            let googleSheetClient = new GoogleSheetClient(token)
+            googleSheetClient.appendValuesSpreadSheet(request.data.spreadsheetId, request.data.range, request.data.data, (err, result) => {
+              if (err) {
+                sendResponse({ error: err })
+              } else {
+                sendResponse(result)
+              }
+            })
+          })
+        } else if (request.cmd === 'getSheetRowsRawData') {
+          chrome.identity.getAuthToken({ interactive: true }, function (token) {
+            let googleSheetClient = new GoogleSheetClient(token)
+            googleSheetClient.getSheetRowsRawData(request.data.spreadsheetId, request.data.sheetName, (err, result) => {
+              if (err) {
+                sendResponse({ error: err })
+              } else {
+                sendResponse(result)
+              }
+            })
+          })
+        }
+        return true
       }
     })
+  }
+
+  static checkTokenIsStillActive (token, callback) {
+    axios.post('https://oauth2.googleapis.com/tokeninfo', {
+      access_token: token
+    }, {
+      headers: { 'Content-Type': 'application/json; charset=utf-8' }
+    }).catch(() => {
+      callback(null, false)
+    }).then(() => {
+      callback(null, true)
+    })
+  }
+
+  static removeCachedToken (token, callback) {
+    chrome.identity.removeCachedAuthToken({ token: token }, callback)
   }
 }
 

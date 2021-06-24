@@ -28,7 +28,7 @@
       //PVSCL:ENDCOND
       "js": ["scripts/contentScript.js"],
       "css": ["styles/contentScript.css"],
-      "run_at": "document_start",
+      "run_at": "document_end",
       "all_frames": false
     }PVSCL:IFCOND(GoogleSheetProvider),
     {
@@ -37,7 +37,7 @@
       "run_at": "document_end"
     }PVSCL:ENDCONDPVSCL:IFCOND(ACM),
     {
-      "matches": ["*://dl.acm.org/citation.cfm?*"],
+      "matches": ["*://dl.acm.org/citation.cfm?*", "*://dl.acm.org/doi/*"],
       "js": ["scripts/acmContentScript.js"],
       "run_at": "document_end"
     }PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),
@@ -94,7 +94,8 @@
   "permissions": [
     "https://hypothes.is/",
     "activeTab",
-    "storage"PVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer),
+    "storage",PVSCL:IFCOND(GoogleSheetAnnotationServer)
+    "identity.email"PVSCL:ENDCONDPVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer),
     "identity"PVSCL:ENDCONDPVSCL:IFCOND(URN),
     "downloads",
     "notifications",
@@ -108,7 +109,7 @@
     "*://www.dropbox.com/s/",
     "*://*.dropboxusercontent.com/*"PVSCL:ENDCOND
   ],
-  PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer, LINE)
+  PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer or GoogleSheetAnnotationServer or GoogleSheetAudit, LINE)
   "oauth2": {
   	PVSCL:IFCOND(GoogleSheetProvider, LINE)
     "client_id": "PVSCL:EVAL(GoogleSheetProvider->pv:Attribute('clientId'))",
@@ -116,7 +117,8 @@
     "client_id": "PVSCL:EVAL(GoogleSheetConsumer->pv:Attribute('clientId'))",
     PVSCL:ENDCOND
     "scopes": [
-      "https://www.googleapis.com/auth/spreadsheets"
+      "https://www.googleapis.com/auth/spreadsheets",
+      "https://www.googleapis.com/auth/drive"
     ]
   },
   PVSCL:ENDCOND

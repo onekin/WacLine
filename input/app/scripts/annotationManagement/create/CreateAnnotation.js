@@ -68,7 +68,7 @@ class CreateAnnotation {
           return
         }
         // Create target
-        target = this.obtainTargetToCreateAnnotation(event.detail)
+        target = CreateAnnotation.obtainTargetToCreateAnnotation(event.detail)
         // Create body
         const body = this.obtainBodyToCreateAnnotation(event.detail)
         // Create tags
@@ -121,8 +121,7 @@ class CreateAnnotation {
   }
 
   obtainTagsToCreateAnnotation ({
-    tags,
-    /* PVSCL:IFCOND(Classifying) */
+    tags,/* PVSCL:IFCOND(Classifying) */
     codeId /* PVSCL:ENDCOND */
   }) {
     if (tags) {
@@ -199,10 +198,7 @@ class CreateAnnotation {
     return body
   }
 
-  // Add parameter annotation (pvscl)
-  obtainTargetToCreateAnnotation ({
-    repliedAnnotation
-  }) {
+  static obtainTargetToCreateAnnotation ({ repliedAnnotation }) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
       return [{

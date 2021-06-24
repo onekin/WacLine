@@ -174,9 +174,13 @@ class ReadCodebook {
       } else {
         const initCodebookPromise = new Promise((resolve, reject) => {
           if (codebookDefinitionAnnotations.length === 0) {
-            // PVSCL:IFCOND(BuiltIn AND NOT(ApplicationBased), LINE)
+            // PVSCL:IFCOND((BuiltIn OR EmptyCodebook) AND NOT(ApplicationBased), LINE)
             const currentGroupName = window.abwa.groupSelector.currentGroup.name || ''
             // PVSCL:IFCOND(CodebookUpdate, LINE)
+            // PVSCL:IFCOND(EmptyCodebook, LINE)
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'emptyCodebook' })
+            resolve()
+            // PVSCL:ELSECOND
             // As codebook can be updated, the user can create an empty one and update it later
             Alerts.confirmAlert({
               title: 'Do you want to create a default annotation codebook?',
@@ -194,12 +198,11 @@ class ReadCodebook {
                 resolve()
               },
               cancelCallback: () => {
-                // PVSCL:IFCOND(CodebookUpdate,LINE)
                 LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'emptyCodebook' })
-                // PVSCL:ENDCOND
                 resolve()
               }
             })
+            // PVSCL:ENDCOND
             // PVSCL:ELSECOND
             // If codebook is not updateable, it is necessary to create the default one, as otherwise the user can select empty codebook and get an unusable configuration
             LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'builtIn' })
@@ -210,6 +213,9 @@ class ReadCodebook {
             resolve()
             // PVSCL:ELSEIFCOND(NOT(Codebook))
             LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'noCodebook' }) // The parameter howCreate is not really necessary in current implementation
+            resolve()
+            // PVSCL:ELSEIFCOND(EmptyCodebook, LINE)
+            LanguageUtils.dispatchCustomEvent(Events.createCodebook, { howCreate: 'emptyCodebook' })
             resolve()
             // PVSCL:ELSECOND
             // Show alert no group is defined
@@ -770,7 +776,7 @@ class ReadCodebook {
    */
   themeCreatedEventHandler () {
     return (event) => {
-      const theme = Theme.fromAnnotation(event.detail.newThemeAnnotation, this.codebook)
+      const theme = Theme.fromAnnotation(event.detail.themeAnnotation, this.codebook)
       // Add to the model the new theme
       this.codebook.addTheme(theme)
       // Reload button container
@@ -785,7 +791,7 @@ class ReadCodebook {
   themeUpdatedEventHandler () {
     return (event) => {
       // Update model
-      this.codebook.updateTheme(event.detail.updatedTheme)
+      this.codebook.updateTheme(event.detail.theme)
       // Reload button container
       this.reloadButtonContainer()
       // Dispatch codebook updated event
@@ -806,6 +812,8 @@ class ReadCodebook {
       this.reloadButtonContainer()
       // Dispatch codebook updated event
       LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+      // Open the sidebar
+      window.abwa.sidebar.openSidebar()
     }
   }
 
@@ -816,7 +824,7 @@ class ReadCodebook {
   codeCreatedEventHandler () {
     return (event) => {
       const theme = event.detail.theme
-      const code = Code.fromAnnotation(event.detail.newCodeAnnotation, theme)
+      const code = Code.fromAnnotation(event.detail.codeAnnotation, theme)
       // Add to the model the new theme
       theme.addCode(code)
       // Reload button container
@@ -852,7 +860,7 @@ class ReadCodebook {
   codeUpdatedEventHandler () {
     return (event) => {
       // Update model
-      const code = event.detail.updatedCode
+      const code = event.detail.code
       const theme = code.theme
       theme.updateCode(code)
       this.codebook.updateTheme(theme)
@@ -876,6 +884,8 @@ class ReadCodebook {
       this.reloadButtonContainer()
       // Dispatch codebook updated event
       LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+      // Open the sidebar
+      window.abwa.sidebar.openSidebar()
     }
   }
   // PVSCL:ENDCOND

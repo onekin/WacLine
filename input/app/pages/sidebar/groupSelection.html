@@ -21,6 +21,17 @@
       </div>
     </div>
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GoogleSheetAnnotationClient, LINE)
+    <div id="googleLoginContainer" class="loginContainer" aria-hidden="true">
+      <div id="googleLogin" class="containerHeader">
+        Please give permissions to access your google account
+      </div>
+      <div>
+        Please login or create your account and reload the page if it is not reloaded automatically.
+        <button id="googleLoginButton">Log in</button>
+      </div>
+    </div>
+    // PVSCL:ENDCOND
   </div>
   // PVSCL:IFCOND(Manual, LINE)
   <div id="loggedInGroupContainer" class="sidebarContainer">
@@ -36,17 +47,20 @@
   <template id="groupSelectorItem">
     <div class="groupSelectorItemContainer" aria-expanded="false">
       <span class="groupSelectorItemName"></span>
-      // PVSCL:IFCOND(RenameCodebook or ExportCodebook or CodebookDelete, LINE)
-      <span pv:condition="RenameCodebook or ExportCodebook or CodebookDelete" class="groupSelectorItemToggle"></span>
-      <div pv:condition="RenameCodebook or ExportCodebook or CodebookDelete" class="groupSelectorItemOptionsContainer">
+      // PVSCL:IFCOND(ShareableCodebook or RenameCodebook or ExportCodebook or CodebookDelete, LINE)
+      <span class="groupSelectorItemToggle"></span>
+      <div class="groupSelectorItemOptionsContainer">
         // PVSCL:IFCOND(RenameCodebook, LINE)
-        <span pv:condition="RenameCodebook" class="groupSelectorItemOption renameGroup" title="Rename codebook">Rename</span>
+        <span class="groupSelectorItemOption renameGroup" title="Rename codebook">Rename</span>
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(ShareableCodebook, LINE)
+        <span class="groupSelectorItemOption shareGroup" title="Share codebook">Share</span>
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(ExportCodebook, LINE)
-        <span pv:condition="ExportCodebook" class="groupSelectorItemOption exportGroup" title="Export codebook">Export</span>
+        <span class="groupSelectorItemOption exportGroup" title="Export codebook">Export</span>
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(CodebookDelete, LINE)
-        <span pv:condition="CodebookDelete" class="groupSelectorItemOption deleteGroup" title="Delete codebook">Delete</span>
+        <span class="groupSelectorItemOption deleteGroup" title="Delete codebook">Delete</span>
         // PVSCL:ENDCOND
       </div>
       // PVSCL:ENDCOND

@@ -2,7 +2,7 @@ import _ from 'lodash'
 import RandomUtils from '../../utils/RandomUtils'
 import wildcard from 'wildcard'
 
-class BrowserStorageClient {
+class GoogleSheetCache {
   constructor (database, manager) {
     this.database = database
     this.manager = manager
@@ -10,7 +10,7 @@ class BrowserStorageClient {
 
   createNewAnnotation (annotation, callback) {
     try {
-      const annotationToStore = BrowserStorageClient.constructAnnotation({
+      const annotationToStore = GoogleSheetCache.constructAnnotation({
         annotation,
         user: this.database.user,
         annotations: this.database.annotations
@@ -19,8 +19,6 @@ class BrowserStorageClient {
       console.debug(annotationToStore)
       // Store in database
       this.database.annotations.push(annotationToStore)
-      // Update storage
-      this.manager.saveDatabase(this.database)
       // Callback
       callback(null, annotationToStore)
     } catch (e) {
@@ -33,7 +31,7 @@ class BrowserStorageClient {
       const toStoreAnnotations = []
       for (let i = 0; i < annotations.length; i++) {
         const annotation = annotations[i]
-        const toStoreAnnotation = BrowserStorageClient.constructAnnotation({
+        const toStoreAnnotation = GoogleSheetCache.constructAnnotation({
           annotation,
           user: this.database.user,
           annotations: this.database.annotations
@@ -42,8 +40,6 @@ class BrowserStorageClient {
       }
       // Store in database
       this.database.annotations = this.database.annotations.concat(toStoreAnnotations)
-      // Update storage
-      this.manager.saveDatabase(this.database)
       callback(null, toStoreAnnotations)
     } catch (e) {
       callback(e)
@@ -54,7 +50,7 @@ class BrowserStorageClient {
     // Check if the required parameter group exists
     if (annotation.group) {
       // TODO Check if annotation follows the standard schema
-      let annotationToCreate = BrowserStorageClient.constructEmptyAnnotation()
+      let annotationToCreate = GoogleSheetCache.constructEmptyAnnotation()
       // Override properties of annotation with inserted content
       annotationToCreate = Object.assign(annotationToCreate, annotation)
 
@@ -71,7 +67,7 @@ class BrowserStorageClient {
       annotationToCreate.id = RandomUtils.randomUnique(arrayOfIds, 22)
 
       // Permissions
-      BrowserStorageClient.setAnnotationPermissions(annotationToCreate, user)
+      GoogleSheetCache.setAnnotationPermissions(annotationToCreate, user)
       // TODO Links property ¿?
       // Return constructed annotation to create
       return annotationToCreate
@@ -224,7 +220,7 @@ class BrowserStorageClient {
             })
           }
           // Permissions
-          BrowserStorageClient.setAnnotationPermissions(annotationUpdated, currentUser)
+          GoogleSheetCache.setAnnotationPermissions(annotationUpdated, currentUser)
           // Update the annotation from list
           annotations[annotationToUpdateIndex] = annotationUpdated
           // Return deleted annotation
@@ -242,14 +238,12 @@ class BrowserStorageClient {
   updateAnnotation (id, annotation, callback) {
     if (_.isString(id) && _.isObject(annotation)) {
       try {
-        const updatedAnnotation = BrowserStorageClient.updateAnnotationFromList({
+        const updatedAnnotation = GoogleSheetCache.updateAnnotationFromList({
           id: id,
           annotation: annotation,
           annotations: this.database.annotations,
           currentUser: this.database.user
         })
-        // Update storage
-        this.manager.saveDatabase(this.database)
         callback(null, updatedAnnotation)
       } catch (e) {
         callback(e)
@@ -294,13 +288,11 @@ class BrowserStorageClient {
       return
     }
     try {
-      const deletedAnnotation = BrowserStorageClient.deleteAnnotationFromList({
+      const deletedAnnotation = GoogleSheetCache.deleteAnnotationFromList({
         id: annotationId,
         annotations: this.database.annotations,
         currentUser: this.database.user
       })
-      // Update storage
-      this.manager.saveDatabase(this.database)
       // Callback
       callback(null, { deleted: true, id: deletedAnnotation.id, annotation: deletedAnnotation })
     } catch (e) {
@@ -322,15 +314,13 @@ class BrowserStorageClient {
       const deletedAnnotations = []
       for (let i = 0; i < toDeleteAnnotationIds.length; i++) {
         const toDeleteAnnotationId = toDeleteAnnotationIds[i]
-        const deletedAnnotation = BrowserStorageClient.deleteAnnotationFromList({
+        const deletedAnnotation = GoogleSheetCache.deleteAnnotationFromList({
           id: toDeleteAnnotationId,
           annotations: this.database.annotations,
           currentUser: this.database.user
         })
         deletedAnnotations.push(deletedAnnotation)
       }
-      // Update Storage
-      this.manager.saveDatabase(this.database)
       // Callback
       callback(null, { deleted: true, annotations: deletedAnnotations })
     } catch (e) {
@@ -392,8 +382,6 @@ class BrowserStorageClient {
         const updatedGroup = Object.assign(groupToUpdate, data)
         // Update in-memory database
         this.database.groups[groupToUpdateIndex] = updatedGroup
-        // TODO Update Storage
-        this.manager.saveDatabase(this.database)
         // Callback
         callback(null, updatedGroup)
       } else {
@@ -406,15 +394,13 @@ class BrowserStorageClient {
 
   createNewGroup (data, callback) {
     if (_.has(data, 'name')) {
-      const createdGroup = BrowserStorageClient.constructGroup({
+      const createdGroup = GoogleSheetCache.constructGroup({
         name: data.name,
         description: data.description,
         annotationServerUrl: this.manager.annotationServerUrl,
         groups: this.database.groups
       })
       this.database.groups.push(createdGroup)
-      // TODO Update Storage
-      this.manager.saveDatabase(this.database)
       // Callback
       callback(null, createdGroup)
     } else {
@@ -461,7 +447,6 @@ class BrowserStorageClient {
         return annotation.group === id
       })
       if (removedGroup) {
-        this.manager.saveDatabase(this.database)
         callback(null, removedGroup)
       } else {
         callback(new Error('The group trying to leave does not exist.'))
@@ -470,4 +455,4 @@ class BrowserStorageClient {
   }
 }
 
-export default BrowserStorageClient
+export default GoogleSheetCache

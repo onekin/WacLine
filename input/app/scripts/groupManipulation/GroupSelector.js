@@ -12,9 +12,14 @@ import MoodleUtils from '../moodle/MoodleUtils'
 // PVSCL:IFCOND(Hypothesis,LINE)
 import HypothesisClientManager from '../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(BuiltIn or ApplicationBased or NOT(Codebook), LINE)
-import Config from '../Config'
+// PVSCL:IFCOND(Neo4J, LINE)
 import Neo4JClientManager from '../annotationServer/neo4j/Neo4JClientManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(BuiltIn or EmptyCodebook or ApplicationBased or NOT(Codebook), LINE)
+import Config from '../Config'
+import GoogleSheetAnnotationClientManager
+  from '../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
+import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
 
@@ -120,7 +125,7 @@ class GroupSelector {
                 callback(null)
               }
             } else {
-              // PVSCL:IFCOND(BuiltIn, LINE)
+              // PVSCL:IFCOND(BuiltIn or EmptyCodebook, LINE)
               // TODO i18n
               Alerts.loadingAlert({ title: 'First time annotating?', text: 'It seems that it is your first time using the extension. We are configuring everything to start your annotation activity.', position: Alerts.position.center })
               // TODO Create default group
@@ -136,6 +141,7 @@ class GroupSelector {
                   // PVSCL:ENDCOND
                   this.currentGroup = group
                   callback(null)
+                  Alerts.closeAlert()
                 }
               })
               // PVSCL:ELSECOND
@@ -174,7 +180,7 @@ class GroupSelector {
                 }
               }
               // If group cannot be retrieved from saved in extension annotationServer
-              // PVSCL:IFCOND(BuiltIn or NOT(Codebook), LINE)
+              // PVSCL:IFCOND(BuiltIn or EmptyCodebook or NOT(Codebook), LINE)
               // Try to load a group with defaultName
               if (_.isEmpty(this.currentGroup)) {
                 this.currentGroup = _.find(window.abwa.groupSelector.groups, (group) => { return group.name === GroupName })
@@ -191,6 +197,7 @@ class GroupSelector {
                   if (err) {
                     Alerts.errorAlert({ text: 'We are unable to create the group. Please check if you are logged in the annotation server.' })
                   } else {
+                    Alerts.closeAlert()
                     // PVSCL:IFCOND(Hypothesis, LINE)
                     // Modify group URL in hypothesis
                     if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
@@ -200,7 +207,11 @@ class GroupSelector {
                     }
                     // PVSCL:ENDCOND
                     this.currentGroup = group
+                    // PVSCL:IFCOND(ShareableCodebook , LINE)
+                    this.openGroupShareAlert(group, callback)
+                    // PVSCL:ELSECOND
                     callback(null)
+                    // PVSCL:ENDCOND
                   }
                 })
               } else { // If group was found in extension annotation server
@@ -220,7 +231,7 @@ class GroupSelector {
                 this.currentGroup = _.first(window.abwa.groupSelector.groups)
               }
               if (_.isEmpty(window.abwa.groupSelector.groups)) {
-                Alerts.errorAlert({ text: 'No groups found. Please configure the tool in the third-party provider.' })
+                Alerts.errorAlert({ text: 'No groups found. Please configure the tool in the corresponding third-party provider.' })
               }
               if (_.isFunction(callback)) {
                 callback()
@@ -311,19 +322,24 @@ class GroupSelector {
           if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
             // Show login form for Hypothes.is in sidebar
             $('#hypothesisLoginContainer').attr('aria-hidden', 'false')
-            // Start listening to when is logged in continuously
-            /* this.loggedInInterval = setInterval(() => {
-              window.abwa.annotationServerManager.reloadClient(() => {
-                window.abwa.annotationServerManager.isLoggedIn((err, result) => {
-                  if (_.isEmpty(err) || result) {
-                    console.debug('Logged in. Reloading...')
-                    window.location.reload()
-                  } else {
-                    console.debug('Still not logged in.')
-                  }
-                })
-              })
-            }, 2000) */
+          }
+          // PVSCL:ENDCOND
+          // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+          document.getElementById('googleLoginButton').addEventListener('click', () => {
+            chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'getToken' }, () => {
+              if (result.error) {
+                if (_.isFunction(callback)) {
+                  callback(new Error(result.error))
+                }
+              } else {
+                console.debug('Logged in. Reloading...')
+                window.location.reload()
+              }
+            })
+          })
+          if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, GoogleSheetAnnotationClientManager)) {
+            // Show login form for Hypothes.is in sidebar
+            $('#googleLoginContainer').attr('aria-hidden', 'false')
           }
           // PVSCL:ENDCOND
           // PVSCL:IFCOND(Neo4J, LINE)
@@ -344,7 +360,7 @@ class GroupSelector {
       })
     })
   }
-  // PVSCL:IFCOND(BuiltIn OR NOT(Codebook),LINE)
+  // PVSCL:IFCOND(BuiltIn OR EmptyCodebook OR NOT(Codebook),LINE)
 
   createApplicationBasedGroupForUser (callback) {
     window.abwa.annotationServerManager.client.createNewGroup({ name: Config.groupName }, callback)
@@ -402,6 +418,9 @@ class GroupSelector {
       // PVSCL:IFCOND(RenameCodebook,LINE)
       groupSelectorItem.querySelector('.renameGroup').addEventListener('click', this.createGroupSelectorRenameOptionEventHandler(group))
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(ShareableCodebook, LINE)
+      groupSelectorItem.querySelector('.shareGroup').addEventListener('click', this.createGroupSelectorShareOptionEventHandler(group))
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(ExportCodebook,LINE)
       groupSelectorItem.querySelector('.exportGroup').addEventListener('click', this.createGroupSelectorExportOptionEventHandler(group))
       // PVSCL:ENDCOND
@@ -410,7 +429,7 @@ class GroupSelector {
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
     }
-    // PVSCL:IFCOND(BuiltIn,LINE)
+    // PVSCL:IFCOND(BuiltIn or EmptyCodebook,LINE)
     // New group button
     const newGroupButton = document.createElement('div')
     newGroupButton.innerText = 'Create codebook'
@@ -487,7 +506,7 @@ class GroupSelector {
       }
     })
   }
-  // PVSCL:IFCOND(RenameCodebook or ExportCodebook or CodebookDelete,LINE)
+  // PVSCL:IFCOND(ShareableCodebook or RenameCodebook or ExportCodebook or CodebookDelete, LINE)
 
   createGroupSelectorItemToggleEventHandler (groupId) {
     return (e) => {
@@ -500,7 +519,7 @@ class GroupSelector {
     }
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(BuiltIn,LINE)
+  // PVSCL:IFCOND(BuiltIn or EmptyCodebook,LINE)
 
   createNewReviewModelEventHandler () {
     return () => {
@@ -544,11 +563,27 @@ class GroupSelector {
         if (err) {
           window.alert('Unable to load swal. Please contact developer.')
         } else {
+          // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+          Alerts.loadingAlert({
+            title: 'Creating a new group',
+            text: 'We are setting up everything to start. It will only take few seconds!'
+          })
+          // PVSCL:ENDCOND
           groupName = LanguageUtils.normalizeString(groupName)
           window.abwa.annotationServerManager.client.createNewGroup({
             name: groupName,
             description: 'A group created using annotation tool ' + chrome.runtime.getManifest().name
-          }, callback)
+          }, (err, group) => {
+            if (err) {
+              callback(err)
+            } else {
+              // PVSCL:IFCOND(ShareableCodebook , LINE)
+              this.openGroupShareAlert(group, callback)
+              // PVSCL:ELSECOND
+              callback(null, group)
+              // PVSCL:ENDCOND
+            }
+          })
         }
       }
     })
@@ -586,7 +621,7 @@ class GroupSelector {
     }
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(RenameCodebook,LINE)
+  // PVSCL:IFCOND(RenameCodebook, LINE)
 
   createGroupSelectorRenameOptionEventHandler (group) {
     return () => {
@@ -610,7 +645,47 @@ class GroupSelector {
     }
   }
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(ImportCodebook,LINE)
+  // PVSCL:IFCOND(ShareableCodebook , LINE)
+
+  createGroupSelectorShareOptionEventHandler (group) {
+    return () => {
+      if (window.abwa.annotationServerManager instanceof BrowserStorageManager) {
+        Alerts.warningAlert({
+          title: 'Unshareable group',
+          text: 'Remember that you have selected browser storage to store your annotations, making not possible to share them with others via an URL. Please check the <a target="_blank" href="' + chrome.extension.getURL('pages/options.html') + '">options page</a> for sharing options.'
+        })
+      } else {
+        this.openGroupShareAlert(group)
+      }
+    }
+  }
+
+  openGroupShareAlert (group, callback) {
+    let promise = Promise.resolve()
+    let shareAlertFunction = (resolve) => {
+      Alerts.infoSyncAlert({
+        text: 'You can share your annotation group via this link: <a href="' + group.url + '" target="_blank">' + group.url + '</a>',
+        title: 'Share annotation codebook',
+        callback: () => {
+          resolve()
+        }
+      })
+    }
+    // PVSCL:IFCOND(BrowserStorage, LINE)
+    if (!(window.abwa.annotationServerManager instanceof BrowserStorageManager)) {
+      promise = new Promise(shareAlertFunction)
+    }
+    // PVSCL:ELSECOND
+    promise = new Promise(shareAlertFunction)
+    // PVSCL:ENDCOND
+    promise.then(() => {
+      if (_.isFunction(callback)) {
+        callback(null, group)
+      }
+    })
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(ImportCodebook, LINE)
 
   createImportGroupButtonEventHandler () {
     return () => {
