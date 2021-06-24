@@ -2,7 +2,7 @@
    "groups": [
       {
          "name": "Empirical Standard",
-         "filter": "",
+         "filter": [],
          "methods": [
             {
             "name": "General Standard",
@@ -276,7 +276,7 @@
          "name": "Qualitative Methods",
          "methods": [{
                "name": "Action research",
-               "filter": "Evaluation",
+               "filter": ["Evaluation", "Qualitative"],
                "definition": [{
                      "name": "Essential",
                      "description": "",
@@ -396,7 +396,7 @@
             },
             {
                "name": "Case studies and ethnography",
-               "filter": "Evaluation",
+               "filter": ["Evaluation", "Qualitative"],
                "definition": [{
                      "name": "Essential",
                      "description": "",
@@ -518,7 +518,7 @@
             },
             {
                "name": "Grounded Theory",
-               "filter": "Evaluation",
+               "filter": ["Evaluation", "Qualitative"],
                "definition": [{
                      "name": "Essential",
                      "description": "",
@@ -642,7 +642,7 @@
             },
             {
                "name": "Qualitative Surveys",
-               "filter": "Evaluation",
+               "filter": ["Evaluation", "Qualitative"],
                "definition": [{
                   "name": "Essential",
                   "description": "",
@@ -725,7 +725,7 @@
             },
             {
                "name": "Case survey",
-               "filter": "Evaluation",
+               "filter": ["Evaluation", "Qualitative"],
                "definition": [{
                   "name": "Essential",
                   "description": "",
@@ -837,7 +837,7 @@
          "methods": [
             {
                "name": "Experiments",
-               "filter": "Quantitative",
+               "filter": ["Evaluation", "Quantitative"],
                "definition": [
                   {
                      "name": "Essential",
@@ -915,7 +915,7 @@
             },
             {
                "name": "Questionnaire surveys",
-               "filter": "Quantitative",
+               "filter": ["Evaluation", "Quantitative"],
                "definition": [
                   {
                      "name": "Essential",
@@ -981,7 +981,7 @@
             },
             {
                "name": "Systematic Reviews",
-               "filter": "Quantitative",
+               "filter": ["Evaluation", "Quantitative"],
                "definition": [
                   {
                      "name": "Essential",
@@ -1051,7 +1051,7 @@
          "methods": [
             {
                "name": "Information Visualization",
-               "filter": "Visualization",
+               "filter": ["Visualization"],
                "definition": [
                   {
                      "name": "Essential",
@@ -1093,7 +1093,7 @@
             },
             {
                "name": "Registered reports",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
@@ -1148,27 +1148,32 @@
             },
             {
                "name": "Methodological Guidelines and Meta-Science",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Useful information", "description":"presents information that is useful for other researchers"},
+                        {"name": "Valid arguments", "description":"presents clear, valid arguments supporting recommendations"}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Synthesises related work", "description": "synthesizes related work from reference disciplines"},
+                        {"name": "Engineering insight", "description": "provides insight specifically for software engineering; goes beyond summarizing methodological guidance from existing works or reference disciplines;"},
+                        {"name": "Results ", "description": "results integrated back into prior theory or research"},
+                        {"name": "Helpful artifacts", "description": "develops helpful artifacts (e.g. checklists, templates, tests, tools, sets of criteria)"}
                      ]
                   },
                   {
                      "name": "Extraordinary",
                      "description": "",
                      "codes": [
-                        
+                        {"name": "Empirical study" , "description": "includes an empirical study (e.g. a systematic literature review) that motivates the analysis of guidance"},
+                        {"name": "Methodological issues" , "description": "quantitative simulation illustrating methodological issues"}
                      ]
                   }
                ],
@@ -1185,7 +1190,7 @@
             },
             {
                "name": "Open Science",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
@@ -1198,7 +1203,11 @@
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Data availability", "description": "includes a section named data availability (typically after conclusion)"},
+                        {"name": "Link suplementary materials", "description": "EITHER: links to supplementary materials OR explains why materials cannot be released (reasons for limited disclosure of data should be trusted)"},
+                        {"name": "Suplementary materials", "description": "includes supplementary materials such as: raw, deidentified or transformed data, extended proofs, analysis scripts, software, virtual machines and containers, or qualitative codebooks."},
+                        {"name": "Digital supplementary materials", "description": "archives supplementary materials on preserved digital repositories such as zenodo.org, figshare.com, softwareheritage.org, osf.io, or institutional repositories"},
+                        {"name": "Open license material", "description": "releases supplementary material under a clearly-identified open license such as CC0 or CC-BY 4.0"}
                      ]
                   },
                   {
@@ -1235,20 +1244,30 @@
             },
             {
                "name": "Sampling",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Goal of sampling", "description": "explains the goal of sampling (e.g. aiming for representativeness, identifying exceptional cases)"},
+                        {"name": "Filtering steps sampling", "description": "explains the sampling strategy, in particular the different filtering steps involved or the reasons for selecting certain objects"},
+                        {"name": "Reasoning sampling strategy", "description": "explains why the sampling strategy is reasonable (not necessarily optimal) for the sampling goal"},
+                        {"name": "Study objects", "description": "explains the reasoning behind the selection of study objects (especially qualitative studies)"},
+                        {"name": "Sample size", "description": "reports the sample size"},
+                        {"name": "Theoretical population", "description": "states the theoretical population (what would the researcher like to generalize to?)"},
+                        {"name": "Sample derivation", "description": "presents a replicable, concise, algorithmic account of how other researchers could derive the same sample"},
+                        {"name": "Representativeness argue", "description": "explicitly argues for representativeness (e.g. compares sample and population parameters, provides confidence interval and confidence level for sample size)"},
+                        {"name": "Sample bias", "description": "explains how the sample could be biased along the sampling steps"}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Population exact size", "description": "reports the approximate or exact sizes of populations and sampling frames"},
+                        {"name": "Sample as supplementary", "description": "provides the sample, sampling frame, and sampling scripts as supplementary material (subject to the collected data containing sensitive or protected information)."},
+                        {"name": "Sophisticated sampling", "description": "uses more sophisticated sampling strategies where appropriate, e.g.: exploratory research: using purposive rather than convenience sampling for unit of analysis case study: using purposive rather than convenience sampling for site selection, repository mining: using probability rather than convenience or purposive sampling (if a sampling frame is available), online survey: using respondent-driven rather than snowball sampling, study with identifiable strata: using stratified random rather than simple random sampling, theory building: using theoretical rather than convenience sampling"}
                      ]
                   },
                   {
@@ -1278,27 +1297,44 @@
             },
             {
                "name": "Longitudinal Studies",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Identification of subjects", "description": "subjects (humans or artifacts) are identifiable between waves"},
+                        {"name": "Data collection waves", "description": "uses at least two data collection waves"},
+                        {"name": "Number of waves determintaion", "description": "determines the appropriate number of waves based on the natural oscillation of the research phenomenon"},
+                        {"name": "Appropriate analysis strategy", "description": "the data analysis strategy is appropriate for the interdependent nature of the data"},
+                        {"name": "Justify analysis strategy", "description": "justifies the data analysis strategy"},
+                        {"name": "Alpha levels", "description": "discusses the critical alpha levels"},
+                        {"name": "Sample size", "description": "determines appropriate sample size using a power calculation"},
+                        {"name": "Subjects", "description": "describes the subjects (e.g., demographic information in the case of humans)"},
+                        {"name": "Data loss", "description": "describes data loss throughout the different waves"},
+                        {"name": "Research instrument", "description": "describes the research instrument (e.g., survey, software repository) and provide it as supplementary material"},
+                        {"name": "Reasearch model operationalization", "description": "discusses the operationalization of the research model (i.e. construct validity)"},
+                        {"name": "Missing dfata treatment", "description": "reports treatment of missing data"}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Supplementary materials", "description": "provides supplementary materials including the data sets, data collection scripts or instruments, analytical scripts, a description of how to reproduce the work and any other materials used"},
+                        {"name": "Build or test theory", "description": "either builds new theory or tests existing theory"},
+                        {"name": "Causality investigation", "description": "investigates causality using the longitudinal nature of the data to establish precedence and statistically controlling for third-variable explanations"},
+                        {"name": "Cofounding factors", "description": "discusses potential confounding factors (for inferential analyses) that cannot be statistically controlled"},
+                        {"name": "Data inconsistency", "description": "discusses data (in)consistency across waves (e.g., test-retest reliability)"},
+                        {"name": "Waves distributions", "description": "examines differences in distributions between waves (and uses an appropriate parametric or non-parametric data analysis strategy)"},
+                        {"name": "Data cost and incentives", "description": "describes the cost of gathering data and any incentives used"}
                      ]
                   },
                   {
                      "name": "Extraordinary",
                      "description": "",
                      "codes": [
-                        
+                        {"name": "Multy stage selection", "description": "uses a multi-stage selection process to identify the study's subjects"}
                      ]
                   }
                ],
@@ -1319,27 +1355,46 @@
             },
             {
                "name": "Data Science",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Investigation motivation", "description" :"discusses motivation; explains what claims are being investigated and why it is useful/timely to explore this problem using this method"},
+                        {"name": "Data selection", "description" :"explains how data was selected"},
+                        {"name": "Experimental setup", "description" :"presents the experimental setup (e.g. using a dataflow diagram)"},
+                        {"name": "Feature engineering aproach", "description" :"describes the feature engineering approaches, and transformations were applied"},
+                        {"name": "Data pre-processing", "description" :"explains how the data was pre-processed, filtered, and categorized"},
+                        {"name": "State-of-art baselines", "description" :"EITHER: discusses state-of-art baselines (and their strengths, weaknesses and limitations) OR: explains why no state-of-art baselines exist OR: provides compelling argument that direct comparisons are impractical"},
+                        {"name": "Modeling aproach(es)", "description" :"defines the modeling approach(es) used (e.g. clustering then decision tree learning), typically in pseudocode"},
+                        {"name": "Hardware and software", "description" :"discusses the hardware and software infrastructure used"},
+                        {"name": "Statistics and heuristics", "description" :"justifies all statistics and (automated or manual) heuristics used"},
+                        {"name": "Evaluation metrics", "description" :"describes and justifies the evaluation metrics used"},
+                        {"name": "Distributional information", "description" :"goes beyond single-dimensional summaries of performance (e.g., average; median) to include measures of variation, confidence, or other distributional information"},
+                        {"name": "Technical assumptions", "description" :"discusses technical assumptions and threats to validity that are specific to data science"}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Source data", "description": "provides a replication package including source code and data set(s), or if data cannot be shared, synthetic data to illustrate the use of the algorithms6"},
+                        {"name": "Data learners", "description": "data is processed by multiple learners, of different types, e.g. regression, bayes classifier, decision tree, random forests, SVM (maybe with different kernels); e.g. see7 for guidance"},
+                        {"name": "Data tests", "description": "data is processed multiple times with different, randomly selected, training/test examples; the results of which are compared via significance tests and effect size tests (e.g. cross-validation)"},
+                        {"name": "Hyperparameters select", "description": "carefully selects the hyperparameters that control the data miners (e.g. via analysis of settings in related work or some automatic hyperparameter optimizer such as grid search)"},
+                        {"name": "Non-trivial-data inspect", "description": "manually inspects some non-trivial portion of the data (i.e. data sanity checks)"},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation"}
                      ]
                   },
                   {
                      "name": "Extraordinary",
                      "description": "",
                      "codes": [
-                        
+                        {"name": "Longitudinal analysis", "description": "leverages temporal data via longitudinal (i.e. over large time) analyses when appropriate (see the Longitudinal Studies Standard)"},
+                        {"name": "Qualitative analysis", "description": "triangulates with qualitative data analysis of selected samples of the data"},
+                        {"name": "Triangularisation with data sources", "description": "triangulates with other data sources, such as surveys or interviews"},
+                        {"name": "Finding reports to authors", "description": "reports findings to, or interacts with, authors of SE artifacts to double check with them"}
                      ]
                   }
                ],
@@ -1366,27 +1421,32 @@
             },
             {
                "name": "Multi-Methodology and Mixed Methods Research",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Useful information", "description": "presents information that is useful for other researchers"},
+                        {"name": "Valid arguments", "description": "presents clear, valid arguments supporting recommendations"}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Synthesize related work", "description": "synthesizes related work from reference disciplines"},
+                        {"name": "Software engineering insights", "description": "provides insight specifically for software engineering; goes beyond summarizing methodological guidance from existing works or reference disciplines;"},
+                        {"name": "Integrate results", "description": "results integrated back into prior theory or research"},
+                        {"name": "Helpful artifacts", "description": "develops helpful artifacts (e.g. checklists, templates, tests, tools, sets of criteria)"}
                      ]
                   },
                   {
                      "name": "Extraordinary",
                      "description": "",
                      "codes": [
-                        
+                        {"name": "Empirical study", "description": "includes an empirical study (e.g. a systematic literature review) that motivates the analysis of guidance"},
+                        {"name": "Illustration methodological issues", "description": "quantitative simulation illustrating methodological issues"}
                      ]
                   }
                ],
@@ -1406,26 +1466,41 @@
             },
             {
                "name": "Ethics (Studies with Human Participants)",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Harms for participants", "description": "describes all plausible, non-trivial potential risks or harms to participants (if any)"},
+                        {"name": "Steps to mitigate harm", "description": "describes any steps taken to mitigate risks or harms"},
+                        {"name": "Justification of harms", "description": "explains how benefits of the research justify any non-trivial risks or harms"},
+                        {"name": "Recruitment", "description": "explains how participants were recruited"},
+                        {"name": "Compensation", "description": "explains the compensation (if any) offered for participation and how coercion was mitigated"},
+                        {"name": "Consent of participants", "description": "explains how participants' free, individual, informed consent to participate was obtained"},
+                        {"name": "Participants privacy", "description": "explains how participants' privacy and reputation was respected in the conduct and reporting of the research."},
+                        {"name": "Data protection", "description": "explains how data about or supplied by participants was protected in the conduct of the research"},
+                        {"name": "Permision by participants", "description": "explains the permissions given by participants for publication and sharing of their data by the researchers, and the permissions given by participants for others to use this data in future"},
+                        {"name": "Barriers to participants", "description": "explains the permissionsstates any barriers to participation in the research process and EITHER justifies them OR explains how they were minimized"}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Review board approval", "description": "cites (with application number) approval of a national, institutional, or other appropriate scholarly ethical review board"},
+                        {"name": "Reference ethnics", "description": "cites the reference ethics framework(s) within which the work was conducted"},
+                        {"name": "Issues from eligibility", "description": "discusses justice, ethics, diversity and inclusion issues arising from eligibility and participation"},
+                        {"name": "Impact on participants", "description": "explains how the impact of the research process on participants was considered"},
+                        {"name": "Mitigation of risks", "description": "explains, where relevant, how risks to the researchers themselves were mitigated in the conduct of the research"},
+                        {"name": "Privacity of identifiables ", "description": "where the research refers to identifiable persons (other than participants), explains how their privacy is respected and protected (since they have not formally consented to participation)"}
                      ]
                   },
                   {
                      "name": "Extraordinary",
                      "description": "",
                      "codes": [
+                        {"name": "Supplementary materials", "description":"supplementary materials include a complete application to a scholarly ethical review board and documentation of its approval"}
                         
                      ]
                   }
@@ -1440,27 +1515,36 @@
             },
             {
                "name": "Ethics (Studies with Secondary Human Data)",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Harms for custodians", "description": "describes all plausible, non-trivial potential risks or harms to data custodians and data subjects"},
+                        {"name": "Steps to mitigate harm", "description": "describes any steps taken to mitigate risks or harms"},
+                        {"name": "Justification of harms", "description": "justifies the taking of risks and/or the causing of harm in terms of the claimed benefits of the research."},
+                        {"name": "Data avilability legitimitation", "description": "states the grounds on which the data used was legitimately available to the researchers"},
+                        {"name": "Permission by subjects", "description": "explains how the research falls within the permissions given by the original data subjects"},
+                        {"name": "Provenance of data", "description": "explains the provenance of the original data in terms of the data custodian's documentation of the conditions of data capture, and whether this capture met the standards required for Studies with Human Participants (particularly in respect of consent for capture and future use)."},
+                        {"name": "Participants privacy", "description": "explains how participants' privacy and reputation was respected in the conduct and reporting of the research. In particular, where multiple datasets are combined, explains how any additional privacy risks raised by this were mitigated."},
+                        {"name": "Respect of privacy", "description": "explains how the privacy and consent of data subjects was respected during the research with reference to the conditions under which data was made available to the researcher , and how any further publication of the data (in existing, combined, or transformed form) will respect the expectations and consent given by data subjects."}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Impact on participants", "description": "explains how the researchers considered the impact of the research on those whose data was used"},
+                        {"name": "Review board approval", "description": "cites, with application number, approval of a national, institutional, or other appropriate scholarly ethical review board"},
+                        {"name": "Reference ethnics", "description": "cites the reference ethics framework(s) within which the work was conducted"}
                      ]
                   },
                   {
                      "name": "Extraordinary",
                      "description": "",
                      "codes": [
-                        
+                        {"name": "Supplementary materials", "description": "supplementary materials include a complete application to a scholarly ethical review board and documentation of its approval"}
                      ]
                   }
                ],
@@ -1473,27 +1557,40 @@
             },
             {
                "name": "Inter-Rater Reliability and Agreement",
-               "filter": "IRR",
+               "filter": ["IRR"],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Rated properties", "description": "clearly states what properties were rated"},
+                        {"name": "Raters", "description": "clearly states how many raters rated each property"},
+                        {"name": "Justification single rater", "description": "provides reasonable justification for using a single rater"},
+                        {"name": "Rating process", "description": "describes the process by which two or more raters independently rated properties of research objects"},
+                        {"name": "Resolution of disagreements", "description": "describes how disagreements were resolved"},
+                        {"name": "Variable type", "description": "indicates the variable type (nominal, ordinal, interval, ratio) of the ratings"},
+                        {"name": "IRR/IRA measure", "description": "reports an appropriate statistical measure of IRR/IRA"}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Supplementary material", "description": "provides supplementary materials including: rating scheme(s), decision rules, example disagreements, IRR/IRA broken down by property or wave of analysis."},
+                        {"name": "Used statistics", "description": "justifies the statistic used"},
+                        {"name": "Established interpretations", "description": "reports established interpretations or thresholds for the statistics used"},
+                        {"name": "Anomalous results", "description": "analyzes anomalous results in light of the properties of the statistic used (e.g. Cohen's kappa anomalies)"},
+                        {"name": "Reters'training", "description": "describes the raters' training or experience in the research topic"},
+                        {"name": "Disagreement resolving", "description": "resolves disagreements through discussion (rather than voting)"}
                      ]
                   },
                   {
                      "name": "Extraordinary",
                      "description": "",
                      "codes": [
-                        
+                        {"name": "Amount of raters", "description": "employs more than three raters per property"},
+                        {"name": "Iterative IRR/IRA report", "description": "reports an iterative process with multiple cycles of (i) rating a subset of the data, (ii) resolving disagreements, and (iii) updating the rating scheme or decision rules until a minimum threshold indicates acceptable reliability/agreement; reports IRR/IRA for each cycle in an iterative process"},
+                        {"name": "IRR/IRA calculation", "description": "calculates IRR/IRA for internal quality of the research, i.e., as a tool for progressively improving the consistency of rating systems thus improving researchers' reflexivity"}
                      ]
                   }
                ],
@@ -1514,27 +1611,53 @@
          "methods": [
             {
                "name": "Optimization Studies",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Search space","description": "Describe the search space (e.g., constraints, independent variables choices)."},
+                        {"name": "Problem optimization","description": "Explain why the problem cannot be optimized manually or by brute force within a reasonable timeframe."},
+                        {"name": "Realistic simplifications","description": "Use realistic and limited simplifications and constraints for the optimization problem. Simplifications and constraints must not reduce the search to one where all solutions could be enumerated through brute force."},
+                        {"name": "Prior state of art","description": "EITHER include a description of prior state of the art in this area, OR carefully motivate and define the problem tackled and the solution proposed."},
+                        {"name": "Algorithm justification","description": "Justify the choice of algorithm underlying an approach."},
+                        {"name": "Approaches comparison","description": "Compare approaches to a justified and appropriate baseline."},
+                        {"name": "Solution formulation","description": "Explictly define the solution formulation, including a description of what a solution represents, how it is represented, and how it is manipulated."},
+                        {"name": "Fitness functions","description": "Explicitly define all fitness functions, including the type of goals that are optimized and the equations for calculating fitness values."},
+                        {"name": "Evaluated approaches","description": "Explicitly define evaluated approaches, including the techniques, specific heuristics, and the parameters and their values."},
+                        {"name": "Data source","description": "EITHER follow and clearly describe a sound process to collect and prepare the datasets used to run and to evaluate the optimization approach and make data publicly available or explain why this is not possible, OR, if the subjects are taken from previous work, fully reference the original source and explain whether any transformation or cleaning was applied to the datasets."},
+                        {"name": "Possible sources","description": "Identify and explain all possible sources of stochasticity."},
+                        {"name": "Stochastic approach","description": "EITHER execute stochastic approaches or elements multiple times OR explain why this is not possible"}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Motivate for proposed approach", "description": "Motivate the novelty and soundness of the proposed approach."},
+                        {"name": "Problem type", "description": "Explain whether the study explores a new problem type (or a new area within an existing problem space), or how it reproduces, replicates, or improves upon prior work."},
+                        {"name": "Data collection", "description": "Explain in detail how subjects or datasets were collected/chosen to mitigate selection bias and improve the generalization of findings."},
+                        {"name": "Main features", "description": "Describe the main features of the subjects used to run and evaluate the optimization approach(es) and discuss what characterizes the different instances in terms of 'hardness'."},
+                        {"name": "Synthetic data", "description": "Justify the use of synthetic data (if any); explain why real-world data cannot be used; discusses the extent to which the proposed approach and the findings can apply to the real world."},
+                        {"name": "Replication for SIGSOFT", "description": "Make available a replication package that conforms to SIGSOFT standards for artifacts."},
+                        {"name": "sample datasets", "description": "If data cannot be shared, create a sample dataset that can be shared to illustrate the approach."},
+                        {"name": "Space for solution", "description": "Select a realistic option space for formulating a solution. Any values set for attributes should reflect one that might be chosen in a 'real-world' solution, and not generated from an arbitrary distribution."},
+                        {"name": "Parameter values justification", "description": "Justify the parameter values used when executing the evaluated approaches (and note that experiments trying a wide range of different parameter values would be extraordinary, see below)."},
+                        {"name": "Multiple sampling", "description": "Sample from data multiple times in a controlled manner (where appropriate and possible)."},
+                        {"name": "Cross-validation", "description": "Perform multiple trials either as a cross-validation (multiple independent executions) or temporally (multiple applications as part of a timed sequence), depending on the problem at hand."},
+                        {"name": "Random data splits", "description": "Make available random data splits (e.g., those used in data-driven approaches) or, at least, ensure splits are reproducibile."},
+                        {"name": "Distributions comparison", "description": "Compare distributions (rather than means) of results using appropriate statistics."},
+                        {"name": "Meta-evaluation criteria", "description": "Compare solutions using an appropriate meta-evaluation criteria. Justify the chosen criteria."},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation"}
                      ]
                   },
                   {
                      "name": "Extraordinary",
                      "description": "",
                      "codes": [
-                        
+                        {"name": "Parameter choices", "description": "Analyze different parameter choices to the algorithm, indicating how the final parameters were selected."},
+                        {"name": "Fitness landscape", "description": "Analyze the fitness landscape for one or more of the chosen fitness functions."}
                      ]
                   }
                ],
@@ -1562,27 +1685,40 @@
             },
             {
                "name": "Simulation (quantitative)",
-               "filter": "",
+               "filter": [],
                "definition": [
                   {
                      "name": "Essential",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Simulation justification", "description": "justifies that simulation is a suitable method for investigating the problem at hand."},
+                        {"name": "Simulation model", "description": "describes the simulation model (conceptual, implementation, or hybrid abstraction levels), including input parameters and response variables."},
+                        {"name": "Underlying simulation approach", "description": "describes the underlying simulation approach (discrete-event simulation, system dynamics, agent-based simulation, or others)."},
+                        {"name": "Simulation packages", "description": "describes simulation packages or tools used to develop and run the simulation model, as well as their associated versions, and computational environment."},
+                        {"name": "Data for calibration", "description": "describes the data used for model calibration, the calibration procedures, and contextual information."},
+                        {"name": "Verification of model", "description": "describes how the simulation model was verified and validated at different abstraction levels."},
+                        {"name": "Study protocol", "description": "describes the study protocol, including independent variables, scenarios, number of runs per scenario (in case of using stochastic simulation), and steady-state or terminating conditions."},
+                        {"name": "Validity theats", "description": "analyzes validity threats considering the supporting data and the simulation model."},
+                        {"name": "Simulation assumptions", "description": "clearly explicates the assumptions in the simulation model."}
                      ]
                   },
                   {
                      "name": "Desirable",
                      "description": "",
                      "codes": [
-                       
+                        {"name": "Supplementary materials", "description": "provides supplementary materials including raw data (for real data) or generation mechanism (for synthetic data) used for model calibration, all simulation models and source code, and analysis scripts."},
+                        {"name": "Reference behaviours", "description": "characterizes reference behaviors for the definition of simulation scenarios with representative and known values or probability distributions for input parameters."},
+                        {"name": "Conceptual and implementation levels ofsimulation", "description": "separates conceptual and implementation levels of the simulation model."},
+                        {"name": "Sensitivity analysis", "description": "reports sensitivity analysis for input parameters or factors."},
+                        {"name": "Distinguish results and interpretations", "description": "clearly distinguishes evidence-based results from interpretations and speculation"}
                      ]
                   },
                   {
                      "name": "Extraordinary",
                      "description": "",
                      "codes": [
-                        
+                        {"name": "Involvement of stakeholders", "description": "describes how stakeholders were involved in developing and validating the simulation model."},
+                        {"name": "Modular view", "description": "provides a modular view of the simulation model, allowing reuse in different contexts."}
                      ]
                   }
                ],

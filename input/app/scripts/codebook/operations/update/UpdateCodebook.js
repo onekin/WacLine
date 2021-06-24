@@ -141,6 +141,14 @@ class UpdateCodebook {
         callback: () => {
           if (newTheme.name.toLowerCase() === 'evaluation') {
             window.abwa.codebookManager.checklistImporter.importChecklist('Evaluation')
+          } else if (newTheme.name.toLowerCase() === 'qualitative') {
+            window.abwa.codebookManager.checklistImporter.importChecklist('Qualitative')
+          } else if (newTheme.name.toLowerCase() === 'quantitative') {
+            window.abwa.codebookManager.checklistImporter.importChecklist('Quantitative')
+          } else if (newTheme.name.toLowerCase() === 'visualization') {
+            window.abwa.codebookManager.checklistImporter.importChecklist('Visualization')
+          } else if (newTheme.name.toLowerCase() === 'irr') {
+            window.abwa.codebookManager.checklistImporter.importChecklist('IRR')
           } else {
             LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
           }
