@@ -248,9 +248,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="ibAX6D8rQOSZkUIc7" cm:class="ps:children">
-        <cm:relation cm:id="ioWyCZfhyxBTJJ9lE" cm:type="ps:or">
+        <cm:relation cm:id="ioWyCZfhyxBTJJ9lE" cm:type="ps:or" cm:range="[1,n]">
           <cm:target cm:id="iTKpqVqZVcGGKG8CD">./iKPZ7FOheJ8Z7dw0G</cm:target>
           <cm:target cm:id="i_rBskgnmVFjpzlFU">./iKaWQRey8XRPnJnpV</cm:target>
+          <cm:target cm:id="iJmfkrFfmJWYeS7pv7sC_WfWL_In">./iF9U4xKJHRoezHYO8</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -623,8 +624,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="ioxoMSj2TuqmXK-z4">./iq8KhwKzipWRNNLFw</cm:target>
         </cm:relation>
       </cm:relations>
-      <cm:relations cm:id="iD7yYBJGHM0H-kZZz" cm:class="ps:dependencies">
-      </cm:relations>
+      <cm:relations cm:id="iD7yYBJGHM0H-kZZz" cm:class="ps:dependencies" />
       <cm:relations cm:id="iRSMZt6HZy4waAoN3" cm:class="ps:children">
         <cm:relation cm:id="inkrojPmICmsh2QnK" cm:type="ps:optional">
           <cm:target cm:id="iJi5Af9b7NFhMerYm">./izD4D4WmgR_9lzhA2</cm:target>
@@ -851,7 +851,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
 &lt;/div&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
-    <cm:element cm:id="i4zTrONY9hhrFIG2J" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature" cm:default="on">
+    <cm:element cm:id="i4zTrONY9hhrFIG2J" cm:name="Categorize" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="i0Rih-9DHXDFXzcH2" cm:class="ps:parents">
         <cm:relation cm:id="i0jw8HNk-k9kH2wxG" cm:type="ps:parent">
           <cm:target cm:id="igHwDDYRKVEypWy9a">./i3kWFU7xg1gvK1BJS</cm:target>
@@ -889,8 +889,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iM1m98Wj73NiqNlAX" cm:class="ps:children">
-        <cm:relation cm:id="iNIYiXtbiIK2UC_tw" cm:type="ps:mandatory" cm:range="n">
-          <cm:target cm:id="i5scr1UNK1aa9F2zj">./i4zTrONY9hhrFIG2J</cm:target>
+        <cm:relation cm:id="iNIYiXtbiIK2UC_tw" cm:type="ps:mandatory" cm:range="n" />
+        <cm:relation cm:id="iLDq5YQOXKG2I9d1u1s7AMInR34b" cm:type="ps:alternative" cm:range="1">
+          <cm:target cm:id="iofa4wHQXennOrcisCSMk8Yzhj-o">./i4zTrONY9hhrFIG2J</cm:target>
+          <cm:target cm:id="iNkFgjrLgCrCjbhX9p8qSyHSkc3l">./irFkD3urra-mHYN5C</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iIax34UMvh-pwMwlU" cm:class="ps:dependencies">
@@ -1392,6 +1394,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:property cm:id="i9P7TfHoRrD-S4qaw" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
           <cm:constant cm:id="iL7M_hR1IWVjbPbyt" cm:type="ps:datetime">2020-03-04T09:05:15.825Z</cm:constant>
         </cm:property>
+        <cm:property cm:id="iygx5YgjP04s4NlEt" cm:type="ps:boolean" cm:inheritable="true" cm:name="individual">
+          <cm:constant cm:id="i7YqsmuSm2r6DWQzR" cm:type="ps:boolean">false</cm:constant>
+        </cm:property>
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iEhQRcUCkX8WJd4-t" cm:mimetype="text/plain" cm:encoding="utf-8">ByUser</cm:mimedesc>
@@ -1646,7 +1651,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
     <cm:element cm:id="i2065vzUUlQLbU8vB" cm:name="IRR" cm:type="ps:feature" cm:class="ps:feature">
       <cm:relations cm:id="iP9c1ZRTI0qYrBHWT" cm:class="ps:parents">
         <cm:relation cm:id="inQGym5vRWQF-gWLo" cm:type="ps:parent">
-          <cm:target cm:id="iq69Ki5-Tc57Ghdlg">./i14bKbeRjWqUbd0zH</cm:target>
+          <cm:target cm:id="iq69Ki5-Tc57Ghdlg">./iDUhEt2shGW2_5EFi</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="i386BZyPD8u8dIZqC" cm:class="ps:dependencies">
@@ -1677,8 +1682,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
     </cm:element>
     <cm:element cm:id="i14bKbeRjWqUbd0zH" cm:name="GoogleSheetConsumer" cm:type="ps:toolsetFeature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iWlvyMrgNlFPmfdI1" cm:class="ps:children">
-        <cm:relation cm:id="iYOGLLX55YnB3X5vC" cm:type="ps:optional" cm:range="[0,n]">
-          <cm:target cm:id="iF5Ei-qXdTHMZLMlr">./i2065vzUUlQLbU8vB</cm:target>
+        <cm:relation cm:id="iYOGLLX55YnB3X5vC" cm:type="ps:optional" cm:range="[0,n]" />
+        <cm:relation cm:id="iwAx6gMjnHtTykYNfSp542noNdsb" cm:type="ps:alternative">
+          <cm:target cm:id="ig-9qct1wqRuAPqLZolkj3u-ptIa">./iDUhEt2shGW2_5EFi</cm:target>
+          <cm:target cm:id="ivldcFEOWJbvPplMcWgPpET84RBm">./ioizxqSK5pDRhAIyP</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iY6ypdAR1V_xFbRLV" cm:class="ps:parents">
@@ -2164,6 +2171,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:relation cm:id="i8FS8HLy6YW90xc45" cm:type="ps:alternative">
           <cm:target cm:id="i1oK6WeJvB87ASxMv">./iv-1TW9HrC_mqG0PE</cm:target>
           <cm:target cm:id="itswamivJBoY7NUiB">./iV1VTsMrn7e6nACxf</cm:target>
+          <cm:target cm:id="in0pPYnBPOxOvFmzCfOdouLCL1qa">./iLKM-bXWejZXhXrIo</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iMLOZXxm1QW3etybd" cm:class="ps:parents">
@@ -2183,6 +2191,9 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:property>
         <cm:property cm:id="iNnP5jznHL43uZqRp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
           <cm:constant cm:id="iQ_nDiroL64VPNaFC" cm:type="ps:datetime">2020-02-25T13:39:40.263Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i_HEAGqmFNvGDEswd" cm:type="ps:string" cm:inheritable="true" cm:name="defaultCodebookName">
+          <cm:constant cm:id="iwm8dCPLMK0JzpPXk" cm:type="ps:string">DefaultCodebook</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -2367,6 +2378,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="igILWkjC6tnDnWO52">./i2E8IgoKCVFFmVA-u</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:relations cm:id="iKiRht3Ajh6tTzyxvEiQhSeAMlyj" cm:class="ps:children">
+        <cm:relation cm:id="i-qPWto7rz3pfRZ85voFWnmUz1ra" cm:type="ps:optional">
+          <cm:target cm:id="iQ6oJAU3FAWVN0RO4Qz6fAKZE4sh">./ioyiFvZDBDeRB9mdA</cm:target>
+        </cm:relation>
+      </cm:relations>
       <cm:properties>
         <cm:property cm:id="ifibZZkx5JPPFGqRP" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="ii0MlEEOOOOY0lO9C" cm:type="ps:string">haritz</cm:constant>
@@ -2397,8 +2413,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="ijsQAR-C1GoNXBDnb" cm:class="ps:children">
-        <cm:relation cm:id="i9hQSx60Ih8VFhXsI" cm:type="ps:optional">
+        <cm:relation cm:id="i9hQSx60Ih8VFhXsI" cm:type="ps:optional" cm:range="[0,n]">
           <cm:target cm:id="i5asHjUlc5YDSbAsF">./i2E8IgoKCVFFmVA-u</cm:target>
+          <cm:target cm:id="i5yXA26f9AByl32sCYyBz9vhV94c">./iwqouOtRFI77Z8VAu</cm:target>
+          <cm:target cm:id="iVrfdBOM-BKpmoK9h9iNwsVaozwa">./ioe0NqvdK5itp6BcK</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -2710,6 +2728,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:relations cm:id="ihZB5M1ZsATrctP6-" cm:class="ps:dependencies">
         <cm:relation cm:id="id8CIEir6LXD9Onvd" cm:type="ps:requires">
           <cm:target cm:id="iLWXRtlsS6dOIomwj">iivhJRwmojkiJvYc5/iv-1TW9HrC_mqG0PE</cm:target>
+          <cm:target cm:id="iQCC8GLa1lYUzV_4S">iivhJRwmojkiJvYc5/iLKM-bXWejZXhXrIo</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="ifHEZqB7Sw0tZu1dp" cm:class="ps:parents">
@@ -2996,6 +3015,236 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       <cm:desc>
         <cm:mimedesc cm:id="iI5KeT67ixtjUD5DX" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
 &lt;p&gt;Orders themes and its codes by the amount of annotations (from lower to higher), facilitating the remaining codes to evaluate in a checklist.&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iF9U4xKJHRoezHYO8" cm:name="GoogleSheetAnnotationServer" cm:type="ps:annotationServer" cm:class="ps:feature">
+      <cm:relations cm:id="imbFmEejIrGk_yheU" cm:class="ps:parents">
+        <cm:relation cm:id="i9oclfK0dd2klFFui" cm:type="ps:parent">
+          <cm:target cm:id="iuhz7Q8mEwBBl5W1h">./iL58X6bULcvtAMo6U</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i4IIacSSOgLfbJ8Sh" cm:class="ps:dependencies" />
+      <cm:properties>
+        <cm:property cm:id="iIR49h7LGvcTaxYYC" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i7Hr-4tHFtWpd1m7x" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iKw1LetUIuvk9_hcj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iBH7Qmo4TkvTf7er5" cm:type="ps:datetime">2021-06-02T09:41:20.244Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ivuOrwf45dTCk691l" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="ibZaTiobIW651AN3H" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iNjYsSqEAN0bJJAbv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iKpJPE7F2z5BoSnrr" cm:type="ps:datetime">2021-06-17T14:32:31.241Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iyUTvS5Klp68KGsqc" cm:mimetype="text/plain" cm:lang="en" cm:encoding="utf-8">GoogleSheet</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="irFkD3urra-mHYN5C" cm:name="Voting" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iJSxoO_QZY5Tod4qu" cm:class="ps:parents">
+        <cm:relation cm:id="i6vcQBNI24XvSLm9o" cm:type="ps:parent">
+          <cm:target cm:id="i_0UK6DIL_Y00LtMy">./i3kWFU7xg1gvK1BJS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iyxP-oZ4tYyNnDnOL" cm:class="ps:dependencies">
+        <cm:relation cm:id="in6APsFcNsPdyANvr" cm:type="ps:requires">
+          <cm:target cm:id="ifBvhLtuqFGO3LBgO">iivhJRwmojkiJvYc5/iTX52aKLiU5bPOxWs</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iUEd3Cf8L_M5wKVt7" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i7l51iYXEdZKm-KNl" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iSIG5_lyTA5hM4FR2" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iWFWuv5K-JpjXrHlY" cm:type="ps:datetime">2021-06-07T10:16:30.151Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i2dCF8tB9C5QwM87d" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iERas8LIEl40cIOY6" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ijAmSdNb7-VpPbPkN" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iUJAQyCr-OcBkmweG" cm:type="ps:datetime">2021-06-11T07:12:57.334Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iQBN8L-FRJ7ufUBJd" cm:mimetype="text/plain" cm:encoding="utf-8">Voting</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="ih1-LDIAPqQ4em0b6" cm:mimetype="text/html" cm:encoding="utf-8">This feature allows upvoting/downvoting for other user&apos;s annotations</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iDUhEt2shGW2_5EFi" cm:name="GoogleSheetThematicSheet" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iKbU2e7EX9GwgrSlo" cm:class="ps:parents">
+        <cm:relation cm:id="iZR7ZJqrjZQFhyoUb" cm:type="ps:parent">
+          <cm:target cm:id="iN8pByL1W3YE9VhcE">./i14bKbeRjWqUbd0zH</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iYulWzxb2VQOxUVTA_5ADhRXtHBc" cm:class="ps:children">
+        <cm:relation cm:id="imrylWQLvfmtw2uszYriXELGNMkh" cm:type="ps:alternative">
+          <cm:target cm:id="io3hdUlzx1txz-eZDYHvw6Q8j2Ef">./i2065vzUUlQLbU8vB</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iiWrCdrS4aF3vS58Z" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iAN94elJ_7FlZg4jz" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ih3v22t9OBUJmpiny" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iCPjgYIX3OiTqf9Yg" cm:type="ps:datetime">2021-06-15T15:54:19.128Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i1lXY2TjWqc1uxBLV" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iKO9omM45ELscURN4" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iQ7JVoXioLMjzxtf7" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ifq34cFAHXhEMRDIF" cm:type="ps:datetime">2021-06-15T15:56:37.084Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iqL39pGzfcEPEUKhI" cm:mimetype="text/plain" cm:encoding="utf-8">ThematicView</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ioizxqSK5pDRhAIyP" cm:name="GoogleSheetAuditLog" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="ibfkIOn4m263IVERJ" cm:class="ps:parents">
+        <cm:relation cm:id="itJAlYu_ka15lRIw8" cm:type="ps:parent">
+          <cm:target cm:id="iwJd7UVdsjwUztVOv">./i14bKbeRjWqUbd0zH</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="iVsL7r2i1wWhIQPJW" cm:class="ps:dependencies">
+        <cm:relation cm:id="iHg1W7vdw-E9PES9a" cm:type="ps:requires">
+          <cm:target cm:id="ip0TPoN4HwKeBCyeP">iivhJRwmojkiJvYc5/iF9U4xKJHRoezHYO8</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i3IDzWURVNspDmGCq" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ij-kzyHi8iykYuUv4" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iiYKOW6rimGm1Rv3p" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iEkPIUh0_hDafE2pc" cm:type="ps:datetime">2021-06-02T10:35:43.209Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="igdsIOAk_0n0qsJnk" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="isBlUsRUs09PHS-K3" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ioF5fOp_9ZNkMNz9Z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iySiGzyigeP3y9ub7" cm:type="ps:datetime">2021-06-03T16:27:53.065Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iKDKxapqXQoxFNkFM" cm:mimetype="text/plain" cm:lang="en" cm:encoding="utf-8">Audit</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iLKM-bXWejZXhXrIo" cm:name="EmptyCodebook" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="ixjcJC-cDHrFkYoy9" cm:class="ps:parents">
+        <cm:relation cm:id="icsv1v7vcsOS8_JHj" cm:type="ps:parent">
+          <cm:target cm:id="iiTGyyjWbEGOaWl3O">./iQeiEpiGYC0HWicyS</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="ixDlPIzEN468b3Kbl" cm:class="ps:dependencies">
+        <cm:relation cm:id="iw15C3pT6kgNwduKi" cm:type="ps:requires">
+          <cm:target cm:id="iQdU5fqmBy0zoTJLM">iivhJRwmojkiJvYc5/iZt_QaIU0OC-6uFyb</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ij3SMaWoZChTd2bzR" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="ivn92dDnWIG0AlmLn" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="im7nPOCgu7sUO3w-I" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ilzR9JIG7-UtZ9HOi" cm:type="ps:datetime">2021-06-14T15:09:10.701Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i98OK0eC95xgRrnPL" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i6VZ8sMPAyLqOExDT" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iTb0DaaVQSLQ9KuDm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ioF5kQ4qX4A4psZpo" cm:type="ps:datetime">2021-06-14T15:23:46.833Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i2xZJFAAY9wC2JPY7" cm:mimetype="text/plain" cm:encoding="utf-8">Empty</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iyYFGydZkZ_9HkdFY" cm:mimetype="text/html" cm:encoding="utf-8">Creates a group with an empty codebook (not themes or codes), user will later start defining it using the sidebar</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="ioyiFvZDBDeRB9mdA" cm:name="MixedMultivalued" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="isDh3Wfoq523NXTOf" cm:class="ps:parents">
+        <cm:relation cm:id="i0S4E6e7fQsnvw6KB" cm:type="ps:parent">
+          <cm:target cm:id="iVboOwBEPYbjzPqDW">./iDY06iZyA7N-YzILL</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i0HBKPsUWa2nm1KEH" cm:class="ps:dependencies">
+        <cm:relation cm:id="isppbijZWn40g3O9Z" cm:type="ps:requires">
+          <cm:target cm:id="iX9XcMdCXJYIwzocF">iivhJRwmojkiJvYc5/iL9clt1_lu8MGDEqZ</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iSPiXax1BdE_AsyuP" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i3Y1ztBZce1QccEMT" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ins3GjHqIvpBkmy5C" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i3SY9rFUaB0NMiin4" cm:type="ps:datetime">2021-06-04T12:47:16.219Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iOh3ptGwWnBPhE_tx" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="itzvbXKBmaSuHGQUf" cm:type="ps:string">pirqu</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iOmzno-4fyPqTAOoE" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i2DbIHKzJL-Y3Lqe4" cm:type="ps:datetime">2021-06-04T12:48:05.729Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iD-WHPAeQIDKE238q" cm:mimetype="text/plain" cm:lang="en" cm:encoding="utf-8">Mixed</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="isc5M04B_r7frODE4" cm:mimetype="text/html" cm:lang="en" cm:encoding="utf-8">&lt;p&gt;The selection of this feature allows multivalued themes, but must be splicitely set by the user, allowing, monovalued and multivalued themes in the codebook hierarchy&lt;/p&gt;</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iwqouOtRFI77Z8VAu" cm:name="ShareableCodebook" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="i4mU13-1K2xiZl1tB" cm:class="ps:parents">
+        <cm:relation cm:id="i79xjzwte78wOMWvv" cm:type="ps:parent">
+          <cm:target cm:id="iEPLwof_Lfd5HBu2v">./i1x3iYEoGqxxR_L7o</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ib2pIETWEaLWwTio_" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i7GUHcYtfwKJjjG2h" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ihG7rcOblYyZEk_wp" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iuGacDU55oKK1zdGQ" cm:type="ps:datetime">2021-06-07T09:28:29.913Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ibEBLEse2MS2sPojI" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iWKSnYdMQgCkDw2Dp" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="izOQO2RKKQWj1X3An" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iHpcOEhQyTdWGA9lc" cm:type="ps:datetime">2021-06-07T09:31:04.460Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ihRQXwqqyT7y7b0v4" cm:mimetype="text/plain" cm:encoding="utf-8">Shareable</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="ioe0NqvdK5itp6BcK" cm:name="EvidencedCodebook" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="il8kQVLlxbpAsWGM5" cm:class="ps:parents">
+        <cm:relation cm:id="i9vIJPvgMfUoUOmmT" cm:type="ps:parent">
+          <cm:target cm:id="iXY15I2Zq5DtRNYZV">./i1x3iYEoGqxxR_L7o</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ixfqMFcG-P15A1jBj" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iUJVKli-5DbxmH9hP" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iZ3_c-sMOW_Q3LZFq" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ilCWjMZy80rI5HFaI" cm:type="ps:datetime">2021-06-07T17:48:51.944Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iUhs1qS6zaqvFvNCc" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iHyYq0rY7rBWmwxIL" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iFckTkGrD1SVjPPS9" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="im8Na59wvrgwcAChg" cm:type="ps:datetime">2021-06-07T17:48:51.944Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iA6Vo-tXkpZ2V4E82" cm:mimetype="text/plain" cm:encoding="utf-8">Evidenced</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="iPUgfravtw1h-6VxO" cm:mimetype="text/html" cm:encoding="utf-8">Codes and themes can be created from evidences found in documents or web resources (are annotated)</cm:mimedesc>
       </cm:desc>
     </cm:element>
   </cm:elements>

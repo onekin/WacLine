@@ -22,7 +22,7 @@
       // PVSCL:IFCOND(Manual and Hypothesis and NOT (MoodleProvider),LINE)
       "exclude_matches": ["https://hypothes.is/login"],
       // PVSCL:ENDCOND
-      //PVSCL:ENDCOND
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleProvider,LINE)
       "exclude_matches": ["*://*/*grade/grading/*", "*://*/*mod/assign/view.php*", "*://*/*course/modedit.php?add=assign*"PVSCL:IFCOND(Manual and Hypothesis), "https://hypothes.is/login"PVSCL:ENDCOND],
       //PVSCL:ENDCOND
@@ -94,7 +94,7 @@
   "permissions": [
     "https://hypothes.is/",
     "activeTab",
-    "storage",PVSCL:IFCOND(GoogleSheetAnnotationServer)
+    "storage"PVSCL:IFCOND(GoogleSheetAnnotationServer),
     "identity.email"PVSCL:ENDCONDPVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer),
     "identity"PVSCL:ENDCONDPVSCL:IFCOND(URN),
     "downloads",

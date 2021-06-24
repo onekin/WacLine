@@ -121,8 +121,8 @@ class CreateAnnotation {
   }
 
   obtainTagsToCreateAnnotation ({
-    tags,/* PVSCL:IFCOND(Classifying) */
-    codeId /* PVSCL:ENDCOND */
+    tags/* PVSCL:IFCOND(Classifying) */,
+    codeId/* PVSCL:ENDCOND */
   }) {
     if (tags) {
       tags = _.isArray(tags) ? tags : [tags]

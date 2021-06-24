@@ -585,11 +585,11 @@ class ReadAnnotation {
         // Open commenting form if you are the owner of the annotation, otherwise should be replace
         if (annotationCreator === window.abwa.groupSelector.user.userid) {
           this.openCommentingForm(annotation)
-        } else {
+        } /* PVSCL:IFCOND(Replying) */ else {
           // PVSCL:IFCOND(Replying, LINE)
           this.openReplyingForm(annotation)
           // PVSCL:ENDCOND
-        }
+        }/* PVSCL:ENDCOND */
       })
     }
   }

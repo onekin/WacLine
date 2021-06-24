@@ -17,9 +17,12 @@ import Neo4JClientManager from '../annotationServer/neo4j/Neo4JClientManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(BuiltIn or EmptyCodebook or ApplicationBased or NOT(Codebook), LINE)
 import Config from '../Config'
-import GoogleSheetAnnotationClientManager
-  from '../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
+// PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+import GoogleSheetAnnotationClientManager from '../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(BrowserStorage, LINE)
 import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
+// PVSCL:ENDCOND
 const GroupName = Config.groupName
 // PVSCL:ENDCOND
 
