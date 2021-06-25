@@ -55,7 +55,9 @@ class AnnotationBasedInitializer {
     const decodedUri = decodeURIComponent(window.location.href)
     const params = URLUtils.extractHashParamsFromUrl(decodedUri)
     if (!_.isEmpty(params) && _.has(params, 'autoOpen')) {
-      return params.autoOpen
+      // Check if autoOpen is for you (see issue #99)
+      // eslint-disable-next-line quotes
+      return params.autoOpen === "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))"
     } else {
       return false
     }

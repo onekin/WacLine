@@ -96,7 +96,8 @@ class MoodleDownloadManager {
             } else {
               const autoOpen = result ? result.activated : true // By default it is activated
               if (autoOpen) {
-                const localUrl = this.files[downloadItem.id].localPath + '#autoOpen:true'
+                // eslint-disable-next-line quotes
+                const localUrl = this.files[downloadItem.id].localPath + "#autoOpen:PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))"
                 // Check if permission to access files is enabled, otherwise open a new tab with the message.
                 chrome.extension.isAllowedFileSchemeAccess((isAllowedAccess) => {
                   if (isAllowedAccess === false) {

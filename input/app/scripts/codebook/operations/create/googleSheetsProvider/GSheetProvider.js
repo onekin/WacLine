@@ -3,7 +3,6 @@ import GoogleSheetsClientManager from '../../../../googleSheets/GoogleSheetsClie
 import GSheetParser from './GSheetParser'
 import GroupInitializer from './GroupInitializer'
 import Alerts from '../../../../utils/Alerts'
-import swal from 'sweetalert2'
 // PVSCL:IFCOND(Hypothesis, LINE)
 import HypothesisClientManager from '../../../../annotationServer/hypothesis/HypothesisClientManager'
 // PVSCL:ENDCOND
@@ -17,9 +16,10 @@ class GoogleSheetContentScriptManager {
     this.loadAnnotationServer(() => {
       this.initLoginProcess((err, tokens) => {
         if (err) {
-          swal('Oops!',
-            'Unable to configure current spreadsheet. Failed login to services.', // TODO i18n
-            'error') // Notify error to user
+          Alerts.errorAlert({
+            title: 'Oops!',
+            text: 'Unable to configure current spreadsheet. Failed login to services.' // TODO i18n
+          })
           if (_.isFunction(callback)) {
             callback()
           }
@@ -40,14 +40,10 @@ class GoogleSheetContentScriptManager {
   }
 
   showToolIsConfiguring () {
-    swal({
-      position: 'top-end',
+    Alerts.loadingAlert({
+      position: Alerts.position.topEnd,
       title: 'Configuring the tool, please be patient', // TODO i18n
-      text: 'If the tool takes too much time, please reload the page and try again.',
-      showConfirmButton: false,
-      onOpen: () => {
-        swal.showLoading()
-      }
+      text: 'If the tool takes too much time, please reload the page and try again.'
     })
   }
 
