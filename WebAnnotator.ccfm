@@ -336,17 +336,17 @@
     </cm:restset>
     <cm:restset cm:id="ifbdIZXp4k0b4sxri">
       <cm:restriction cm:id="isP1vPuGjVexbtUl0">
-        <cm:script cm:id="iWQv6I2pCIjbckjpl" cm:language="ps:pvscl" cm:type="ps:boolean"></cm:script>
+        <cm:script cm:id="iWQv6I2pCIjbckjpl" cm:language="ps:pvscl" cm:type="ps:boolean">KeywordBasedAnnotation</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="iMr_Zr41spIgDMizB">
       <cm:restriction cm:id="i2Rt0f_tAotBh3TEI">
-        <cm:script cm:id="iQVkgdQ08m1llfljP" cm:language="ps:pvscl" cm:type="ps:boolean"></cm:script>
+        <cm:script cm:id="iQVkgdQ08m1llfljP" cm:language="ps:pvscl" cm:type="ps:boolean">ImportChecklist</cm:script>
       </cm:restriction>
     </cm:restset>
     <cm:restset cm:id="iKNyQ3H5ZT1Ya9Fod">
       <cm:restriction cm:id="iU0H2Jd259fCUEE5q">
-        <cm:script cm:id="iXUNBUHJEeh84zntB" cm:language="ps:pvscl" cm:type="ps:boolean"></cm:script>
+        <cm:script cm:id="iXUNBUHJEeh84zntB" cm:language="ps:pvscl" cm:type="ps:boolean">AuthorsSearch</cm:script>
       </cm:restriction>
     </cm:restset>
   </cm:restrictions>
