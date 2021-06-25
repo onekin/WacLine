@@ -80,13 +80,11 @@ class ReadCodebook {
     this.events.codeCreatedEvent.element.addEventListener(this.events.codeCreatedEvent.event, this.events.codeCreatedEvent.handler, false)
   }
 
-  // PVSCL:IFCOND(ImportChecklist, LINE)
   initCodesCreatedEvent () {
     this.events.codesCreatedEvent = { element: document, event: Events.codesCreated, handler: this.codesCreatedEventHandler() }
     this.events.codesCreatedEvent.element.addEventListener(this.events.codesCreatedEvent.event, this.events.codesCreatedEvent.handler, false)
   }
 
-  // PVSCL:ENDCOND
   initCodeUpdatedEvent () {
     this.events.codeUpdatedEvent = { element: document, event: Events.codeUpdated, handler: this.codeUpdatedEventHandler() }
     this.events.codeUpdatedEvent.element.addEventListener(this.events.codeUpdatedEvent.event, this.events.codeUpdatedEvent.handler, false)
@@ -839,7 +837,6 @@ class ReadCodebook {
     }
   }
 
-  // PVSCL:IFCOND(ImportChecklist, LINE)
   codesCreatedEventHandler () {
     return (event) => {
       const theme = event.detail.theme
@@ -859,7 +856,6 @@ class ReadCodebook {
     }
   }
 
-  // PVSCL:ENDCOND
   codeUpdatedEventHandler () {
     return (event) => {
       // Update model
