@@ -145,7 +145,7 @@ class Toolset {
       this.googleSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.googleSheetImage.src = googleSheetImageUrl
       this.googleSheetImage.title = 'Generate a spreadsheet with classified content' // TODO i18n
-      // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+      // PVSCL:IFCOND(GoogleSheetAuditLog AND BrowserStorage, LINE)
       // In case google sheet audit log is chosen and browser storage is selected by user, the sharing button won't work, as it is not possible to share the group
       if (!(window.abwa.annotationServerManager instanceof BrowserStorageManager)) {
         this.toolsetBody.appendChild(this.googleSheetImage)

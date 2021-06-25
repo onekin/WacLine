@@ -652,6 +652,7 @@ class GroupSelector {
 
   createGroupSelectorShareOptionEventHandler (group) {
     return () => {
+      // PVSCL:IFCOND(BrowserStorage, LINE)
       if (window.abwa.annotationServerManager instanceof BrowserStorageManager) {
         Alerts.warningAlert({
           title: 'Unshareable group',
@@ -660,6 +661,9 @@ class GroupSelector {
       } else {
         this.openGroupShareAlert(group)
       }
+      // PVSCL:ELSECOND
+      this.openGroupShareAlert(group)
+      // PVSCL:ENDCOND
     }
   }
 
