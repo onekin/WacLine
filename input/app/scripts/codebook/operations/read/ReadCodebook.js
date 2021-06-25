@@ -637,22 +637,22 @@ class ReadCodebook {
       // PVSCL:IFCOND(Hierarchy, LINE)
       // PVSCL:IFCOND(ImportChecklist, LINE)
       if (!themeChecklist) {
-        // PVSCL:ENDCOND
         items.createNewCode = { name: 'Create new code' }
-        // PVSCL:IFCOND(ImportChecklist, LINE)
       }
+      // PVSCL:ELSECOND
+      items.createNewCode = { name: 'Create new code' }
       // PVSCL:ENDCOND
-
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(ImportChecklist, LINE)
       if (!themeChecklist) {
-        // PVSCL:ENDCOND
         items.updateTheme = { name: 'Modify theme' }
         items.removeTheme = { name: 'Remove theme' }
-      	// PVSCL:IFCOND(ImportChecklist, LINE)
       } else {
         items.removeChecklist = { name: 'Remove checklist' }
       }
+      // PVSCL:ELSECOND
+      items.updateTheme = { name: 'Modify theme' }
+      items.removeTheme = { name: 'Remove theme' }
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(SidebarNavigation, LINE)
@@ -725,13 +725,14 @@ class ReadCodebook {
         // PVSCL:IFCOND(CodebookUpdate, LINE)
         // PVSCL:IFCOND(ImportChecklist, LINE)
         if (!themeChecklist) {
-          // PVSCL:ENDCOND
           items.updateCode = { name: 'Modify code' }
           items.removeCode = { name: 'Remove code' }
-          // PVSCL:IFCOND(ImportChecklist, LINE)
         } else {
           items.removeCriteria = { name: 'Remove checklist criteria' }
         }
+        // PVSCL:ELSECOND
+        items.updateCode = { name: 'Modify code' }
+        items.removeCode = { name: 'Remove code' }
         // PVSCL:ENDCOND
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(SidebarNavigation, LINE)

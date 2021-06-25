@@ -48,26 +48,20 @@ class Canvas {
       })
       // PVSCL:ENDCOND
       window.abwa.codebookManager.codebookReader.codebook.themes.forEach((theme) => {
+        let themeShouldBeAdded = true
         // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-        if (theme.name !== 'Keywords') {
-          // PVSCL:ENDCOND
-          // PVSCL:IFCOND(AuthorsSearch, LINE)
-          if (theme.name !== 'Authors') {
-            // PVSCL:ENDCOND
-            // PVSCL:IFCOND(ImportChecklist, LINE)
-            if (!checklistsAnnotations.find((checklist) => checklist.body[0].value.name === theme.name)) {
-              // PVSCL:ENDCOND
-              canvasClusters[theme.name] = theme.codes.map((code) => { return code.name })
-              canvasClusters[theme.name].push(theme.name)
-              // PVSCL:IFCOND(ImportChecklist, LINE)
-            }
-            // PVSCL:ENDCOND
-            // PVSCL:IFCOND(AuthorsSearch, LINE)
-          }
-          // PVSCL:ENDCOND
-          // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
-        }
+        themeShouldBeAdded = theme.name !== 'Keywords'
         // PVSCL:ENDCOND
+        // PVSCL:IFCOND(AuthorsSearch, LINE)
+        themeShouldBeAdded = themeShouldBeAdded ? theme.name !== 'Keywords' : themeShouldBeAdded // If any previous condition set themeShouldBeAdded to false, keeps false
+        // PVSCL:ENDCOND
+        // PVSCL:IFCOND(ImportChecklist, LINE)
+        themeShouldBeAdded = themeShouldBeAdded ? !checklistsAnnotations.find((checklist) => checklist.body[0].value.name === theme.name) : themeShouldBeAdded // If any previous condition set themeShouldBeAdded to false, keeps false
+        // PVSCL:ENDCOND
+        if (themeShouldBeAdded) {
+          canvasClusters[theme.name] = theme.codes.map((code) => { return code.name })
+          canvasClusters[theme.name].push(theme.name)
+        }
       })
 
       // PVSCL:IFCOND(ImportChecklist, LINE)
