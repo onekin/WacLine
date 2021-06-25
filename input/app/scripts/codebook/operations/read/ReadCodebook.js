@@ -13,7 +13,9 @@ import ColorUtils from '../../../utils/ColorUtils'
 import LanguageUtils from '../../../utils/LanguageUtils'
 // PVSCL:IFCOND(CodebookUpdate, LINE)
 import UpdateCodebook from '../update/UpdateCodebook'
+// PVSCL:IFCOND(ImportChecklist, LINE)
 import ImportChecklist from '../import/ImportChecklist'
+// PVSCL:ENDCOND
 // PVSCL:ENDCOND
 
 class ReadCodebook {

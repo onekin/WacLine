@@ -10,8 +10,10 @@ import Code from '../../model/Code'
 // PVSCL:ENDCOND
 import LanguageUtils from '../../../utils/LanguageUtils'
 import CreateAnnotation from '../../../annotationManagement/create/CreateAnnotation'
-// TODO @inigoBereciartua Add the PV clause
+// PVSCL:IFCOND(ImportChecklist, LINE)
 import ImportChecklist from '../import/ImportChecklist'
+// PVSCL:ENDCOND
+
 
 class UpdateCodebook {
   constructor () {

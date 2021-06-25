@@ -624,7 +624,8 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="ioxoMSj2TuqmXK-z4">./iq8KhwKzipWRNNLFw</cm:target>
         </cm:relation>
       </cm:relations>
-      <cm:relations cm:id="iD7yYBJGHM0H-kZZz" cm:class="ps:dependencies" />
+      <cm:relations cm:id="iD7yYBJGHM0H-kZZz" cm:class="ps:dependencies">
+      </cm:relations>
       <cm:relations cm:id="iRSMZt6HZy4waAoN3" cm:class="ps:children">
         <cm:relation cm:id="inkrojPmICmsh2QnK" cm:type="ps:optional">
           <cm:target cm:id="iJi5Af9b7NFhMerYm">./izD4D4WmgR_9lzhA2</cm:target>
@@ -889,7 +890,8 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         </cm:relation>
       </cm:relations>
       <cm:relations cm:id="iM1m98Wj73NiqNlAX" cm:class="ps:children">
-        <cm:relation cm:id="iNIYiXtbiIK2UC_tw" cm:type="ps:mandatory" cm:range="n" />
+        <cm:relation cm:id="iNIYiXtbiIK2UC_tw" cm:type="ps:mandatory" cm:range="n">
+        </cm:relation>
         <cm:relation cm:id="iLDq5YQOXKG2I9d1u1s7AMInR34b" cm:type="ps:alternative" cm:range="1">
           <cm:target cm:id="iofa4wHQXennOrcisCSMk8Yzhj-o">./i4zTrONY9hhrFIG2J</cm:target>
           <cm:target cm:id="iNkFgjrLgCrCjbhX9p8qSyHSkc3l">./irFkD3urra-mHYN5C</cm:target>
@@ -1682,7 +1684,8 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
     </cm:element>
     <cm:element cm:id="i14bKbeRjWqUbd0zH" cm:name="GoogleSheetConsumer" cm:type="ps:toolsetFeature" cm:class="ps:feature" cm:default="off">
       <cm:relations cm:id="iWlvyMrgNlFPmfdI1" cm:class="ps:children">
-        <cm:relation cm:id="iYOGLLX55YnB3X5vC" cm:type="ps:optional" cm:range="[0,n]" />
+        <cm:relation cm:id="iYOGLLX55YnB3X5vC" cm:type="ps:optional" cm:range="[0,n]">
+        </cm:relation>
         <cm:relation cm:id="iwAx6gMjnHtTykYNfSp542noNdsb" cm:type="ps:alternative">
           <cm:target cm:id="ig-9qct1wqRuAPqLZolkj3u-ptIa">./iDUhEt2shGW2_5EFi</cm:target>
           <cm:target cm:id="ivldcFEOWJbvPplMcWgPpET84RBm">./ioizxqSK5pDRhAIyP</cm:target>
@@ -2970,6 +2973,11 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="iCjfehgKkM19k858M">./iL9f02WrlfXgKAbG0</cm:target>
         </cm:relation>
       </cm:relations>
+      <cm:relations cm:id="iTSbTvyRZ_koCfsjX" cm:class="ps:children">
+        <cm:relation cm:id="iZZkRoAiPwDBafQhf" cm:type="ps:optional" cm:range="[0,n]">
+          <cm:target cm:id="ilzW30Heh3YNW0Y-P">./iedynRd9qjPwAVAaG</cm:target>
+        </cm:relation>
+      </cm:relations>
       <cm:properties>
         <cm:property cm:id="iecDQIKCKIowXuufe" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="iD48gzjNtyYbMlsmD" cm:type="ps:string">User</cm:constant>
@@ -2981,7 +2989,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iTIUiLqRKJAjRIuN3" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="ixmAzld61zIJD0f4t" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iXysIcbK7MJ2wk8IJ" cm:type="ps:datetime">2021-04-23T23:08:32.409Z</cm:constant>
+          <cm:constant cm:id="iXysIcbK7MJ2wk8IJ" cm:type="ps:datetime">2021-06-24T21:15:44.168Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -3023,7 +3031,8 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="iuhz7Q8mEwBBl5W1h">./iL58X6bULcvtAMo6U</cm:target>
         </cm:relation>
       </cm:relations>
-      <cm:relations cm:id="i4IIacSSOgLfbJ8Sh" cm:class="ps:dependencies" />
+      <cm:relations cm:id="i4IIacSSOgLfbJ8Sh" cm:class="ps:dependencies">
+      </cm:relations>
       <cm:properties>
         <cm:property cm:id="iIR49h7LGvcTaxYYC" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="i7Hr-4tHFtWpd1m7x" cm:type="ps:string">pirqu</cm:constant>
@@ -3245,6 +3254,34 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:vname>
       <cm:desc>
         <cm:mimedesc cm:id="iPUgfravtw1h-6VxO" cm:mimetype="text/html" cm:encoding="utf-8">Codes and themes can be created from evidences found in documents or web resources (are annotated)</cm:mimedesc>
+      </cm:desc>
+    </cm:element>
+    <cm:element cm:id="iedynRd9qjPwAVAaG" cm:name="EmpiricalStandardChecklists" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iSEM4x25gEqW3TR8A" cm:class="ps:parents">
+        <cm:relation cm:id="iw2_jrk_i9BBel32V" cm:type="ps:parent">
+          <cm:target cm:id="inXWMNBUwwEMh_VuW">./imXhn9HgUTCBbTEkg</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iP3UfVNqJNwHRwM63" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iyzP8J2HMHeltBCiM" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i0A8TKChnn8aq_HRM" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="izyCczvqqKRy8C10L" cm:type="ps:datetime">2021-06-24T21:15:44.168Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iwOSjw21g2guliNA4" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i3Mk9UAxC0gHYuJI5" cm:type="ps:string">User</cm:constant>
+        </cm:property>
+        <cm:property cm:id="itwT1NFqTOcrjZ3h3" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iy1K6xYTxYM-V9UAM" cm:type="ps:datetime">2021-06-24T21:15:44.168Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="igE0fvpw5P23CLzNY" cm:mimetype="text/plain" cm:encoding="utf-8">EmpiricalStandardChecklists</cm:mimedesc>
+      </cm:vname>
+      <cm:desc>
+        <cm:mimedesc cm:id="i5Y9PadEpL5dYNicf" cm:mimetype="text/html" cm:encoding="utf-8">&lt;p&gt;[Language: EN]&lt;/p&gt;
+&lt;p&gt;This feature allows importing Empirical Standard Checklists&lt;/p&gt;</cm:mimedesc>
       </cm:desc>
     </cm:element>
   </cm:elements>

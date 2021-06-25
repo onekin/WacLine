@@ -1,8 +1,10 @@
 import Alerts from '../../utils/Alerts'
 import axios from 'axios'
+// PVSCL:IFCOND(ImportChecklist, LINE)
 import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
-import { Review } from '../../exporter/reviewModel'
 import ChecklistReview from './ChecklistReview'
+// PVSCL:ENDCOND
+import { Review } from '../../exporter/reviewModel'
 
 class Canvas {
   static generateCanvas () {
@@ -175,9 +177,8 @@ class Canvas {
           else if (i % 2 === 1) propertyHeight = getPropertyHeight(canvasClusters[key][i], [canvasClusters[key][i], canvasClusters[key][i - 1]])
           clusterProperty.querySelector('.clusterProperty').style.height = propertyHeight + '%'
           clusterProperty.querySelector('.clusterProperty').style.width = '100%'
-          // PVSCL:IFCOND(ImportChecklist, LINE)
-          // PVSCL:ENDCOND
           let criterionAnnotations = review.annotations.filter((e) => { return e.criterion === canvasClusters[key][i] })
+          // PVSCL:IFCOND(ImportChecklist, LINE)
           if (key === checklistsTheme.name) {
             criterionAnnotations = []
             clusterProperty.querySelector('.clusterProperty').style.cursor = 'pointer'
@@ -187,6 +188,7 @@ class Canvas {
               ChecklistReview.generateReview(foundChecklist)
             })
           }
+          // PVSCL:ENDCOND
           if (criterionAnnotations.length === 0) clusterProperty.querySelector('.propertyAnnotations').style.display = 'none'
           clusterProperty.querySelector('.clusterProperty').className += ' ' + getCriterionLevel(criterionAnnotations)
 

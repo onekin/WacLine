@@ -309,6 +309,46 @@
         <cm:script cm:id="iKzHNurEdWIUDvATy" cm:language="ps:pvscl" cm:type="ps:boolean">GoogleSheetAnnotationServer</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="i_CvO0Ar9lqa1EQEy">
+      <cm:restriction cm:id="iPEFvhdiqmp6lrcml">
+        <cm:script cm:id="iQjRW9XAbKC60wjEB" cm:language="ps:pvscl" cm:type="ps:boolean">EmpiricalStandardChecklists</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iHYtFFWWoXiwYRnIT">
+      <cm:restriction cm:id="iIx1SR49JAFmWPsIy">
+        <cm:script cm:id="i7uz1y1WcJIDFQuNe" cm:language="ps:pvscl" cm:type="ps:boolean">AuthorsSearch</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="io05VS3JIH_VXxFNw">
+      <cm:restriction cm:id="iXJKX0y20ut2103av">
+        <cm:script cm:id="i1e95xRFDwRZOlDif" cm:language="ps:pvscl" cm:type="ps:boolean">ImportChecklist</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iW0kFyLWIyvCACvBi">
+      <cm:restriction cm:id="iBsb9GpjJFxVSZlha">
+        <cm:script cm:id="iWFIC5tKVKZdBHSoF" cm:language="ps:pvscl" cm:type="ps:boolean">ImportChecklist AND KeywordBasedAnnotation</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="ie5SVbE-Z0g3jIXDh">
+      <cm:restriction cm:id="ieaUvd6-568-bFBjd">
+        <cm:script cm:id="ixYUnHgwWhGbzWT0y" cm:language="ps:pvscl" cm:type="ps:boolean">ImportChecklist OR AuthorsSearch</cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="ifbdIZXp4k0b4sxri">
+      <cm:restriction cm:id="isP1vPuGjVexbtUl0">
+        <cm:script cm:id="iWQv6I2pCIjbckjpl" cm:language="ps:pvscl" cm:type="ps:boolean"></cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iMr_Zr41spIgDMizB">
+      <cm:restriction cm:id="i2Rt0f_tAotBh3TEI">
+        <cm:script cm:id="iQVkgdQ08m1llfljP" cm:language="ps:pvscl" cm:type="ps:boolean"></cm:script>
+      </cm:restriction>
+    </cm:restset>
+    <cm:restset cm:id="iKNyQ3H5ZT1Ya9Fod">
+      <cm:restriction cm:id="iU0H2Jd259fCUEE5q">
+        <cm:script cm:id="iXUNBUHJEeh84zntB" cm:language="ps:pvscl" cm:type="ps:boolean"></cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -30162,7 +30202,7 @@
         <cm:mimedesc cm:id="iw8mD6JNgqjLp1WTJ" cm:mimetype="text/plain" cm:encoding="utf-8">fixes.scss</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="i4xMY9YIAYYF_qD8FaVebfDqRVvk" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="i4xMY9YIAYYF_qD8FaVebfDqRVvk" cm:restriction="ifbdIZXp4k0b4sxri" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="i4xMY9YIAYYF_qD8FaVebfDqRVvkdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iKjFxlYeXR6t09V9VSRr0_VoJoJSBR6iscaP6JOt0" cm:class="ps:parents">
@@ -30186,7 +30226,7 @@
           <cm:constant cm:id="iu8iEARw4JlIbF42F" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="io4v-UoF1AWG-iCQ_" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="isr-w6XeC-y3zvpNr" cm:type="ps:datetime">2021-03-24T21:24:38.483Z</cm:constant>
+          <cm:constant cm:id="isr-w6XeC-y3zvpNr" cm:type="ps:datetime">2021-06-24T21:19:02.070Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -30225,7 +30265,7 @@
         <cm:mimedesc cm:id="iSScq8JlhQ50Knz5a" cm:mimetype="text/plain" cm:encoding="utf-8">KeywordBasedAnnotation.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iVhPGWUbdBm3dP3N6rGMekRf3Epd" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iVhPGWUbdBm3dP3N6rGMekRf3Epd" cm:restriction="iHYtFFWWoXiwYRnIT" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iVhPGWUbdBm3dP3N6rGMekRf3Epddependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="i7osuUR2n-_jI4opJQQeb09isaW8p-pxfKjOkeXAM" cm:class="ps:parents">
@@ -30249,7 +30289,7 @@
           <cm:constant cm:id="iJXZubLMz2hJBGsrS" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="i4vO3Kk8BISI98Akr" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i9HObmKjfSXtDgyhv" cm:type="ps:datetime">2021-04-07T11:43:36.026Z</cm:constant>
+          <cm:constant cm:id="i9HObmKjfSXtDgyhv" cm:type="ps:datetime">2021-06-24T21:17:25.066Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -30288,7 +30328,7 @@
         <cm:mimedesc cm:id="iF5XowZzbW-ysbZXY" cm:mimetype="text/plain" cm:encoding="utf-8">AuthorsSearch.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="i6e42iOaoWaXSxwFG-S648q4eVwo" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="i6e42iOaoWaXSxwFG-S648q4eVwo" cm:restriction="ie5SVbE-Z0g3jIXDh" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="i6e42iOaoWaXSxwFG-S648q4eVwodependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="i3TMj_FA2CNgrNz8Fv1BMJOH4RQbacW1nqeN58_Ii" cm:class="ps:parents">
@@ -30312,7 +30352,7 @@
           <cm:constant cm:id="ikvf4rcfiPVkKou6Y" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="icgIrlFR3Gfmh-CPQ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ivcmVvroxItVhsNgl" cm:type="ps:datetime">2021-04-09T18:36:51.891Z</cm:constant>
+          <cm:constant cm:id="ivcmVvroxItVhsNgl" cm:type="ps:datetime">2021-06-24T21:18:45.496Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -30351,7 +30391,7 @@
         <cm:mimedesc cm:id="iDKOOXOXy84qsrR9M" cm:mimetype="text/plain" cm:encoding="utf-8">Describing.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iqvv7WLx1UFLLqCv5XHgGtwzRa2e" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iqvv7WLx1UFLLqCv5XHgGtwzRa2e" cm:restriction="iKNyQ3H5ZT1Ya9Fod" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iqvv7WLx1UFLLqCv5XHgGtwzRa2edependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iqKgHFxJi2nvvN5uLMjLz1T5EYCbqgbdaR6uvGOCN" cm:class="ps:parents">
@@ -30375,7 +30415,7 @@
           <cm:constant cm:id="iGdz9pXTwPyhWOPVa" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="i2aGUb48o5CyEWeD8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iKJi64gF3KrViYWkv" cm:type="ps:datetime">2021-04-12T09:40:47.376Z</cm:constant>
+          <cm:constant cm:id="iKJi64gF3KrViYWkv" cm:type="ps:datetime">2021-06-24T21:19:58.833Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -30603,7 +30643,7 @@
         <cm:mimedesc cm:id="iPl6TUhNAwRFzT9dm" cm:mimetype="text/plain" cm:encoding="utf-8">ImportChecklist.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iIL3f0xcAZlCs5W1-yj6U9bCXzKk" cm:type="ex:json" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iIL3f0xcAZlCs5W1-yj6U9bCXzKk" cm:restriction="i_CvO0Ar9lqa1EQEy" cm:type="ex:json" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iIL3f0xcAZlCs5W1-yj6U9bCXzKkdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iKPQ6seda0T8_2D6oX8H4eH19ruI4pdodreFNT79p" cm:class="ps:parents">
@@ -30627,7 +30667,7 @@
           <cm:constant cm:id="ifhylDxvRWAp-2H0D" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="i3Edh91GED9BWKTOz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iwgL_Hve0U9uqBuCc" cm:type="ps:datetime">2021-04-23T17:03:29.634Z</cm:constant>
+          <cm:constant cm:id="iwgL_Hve0U9uqBuCc" cm:type="ps:datetime">2021-06-24T21:16:07.869Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -30666,7 +30706,7 @@
         <cm:mimedesc cm:id="iEIq7qzuMIs9wk2TY" cm:mimetype="text/plain" cm:encoding="utf-8">Checklists.json</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iVghEz38qCQdETzcnFAJInFg-a_h" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iVghEz38qCQdETzcnFAJInFg-a_h" cm:restriction="io05VS3JIH_VXxFNw" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iVghEz38qCQdETzcnFAJInFg-a_hdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="ibWK5rK2TZmJ4bWIireywgXnJDhca3DPQFN4UmZYC" cm:class="ps:parents">
@@ -30690,7 +30730,7 @@
           <cm:constant cm:id="irFDVgtLuWcEoUpYU" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="idtFzLuNTRxR5jaCB" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iSRq7uGyxTGr7MUwM" cm:type="ps:datetime">2021-04-23T23:49:12.252Z</cm:constant>
+          <cm:constant cm:id="iSRq7uGyxTGr7MUwM" cm:type="ps:datetime">2021-06-24T21:17:39.679Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -30792,7 +30832,7 @@
         <cm:mimedesc cm:id="istViUKeewDHJgAZl" cm:mimetype="text/plain" cm:encoding="utf-8">checklistCanvas.html</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iV0z6SK5f8lFVkKuv-pUlBCaAjae" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iV0z6SK5f8lFVkKuv-pUlBCaAjae" cm:restriction="iMr_Zr41spIgDMizB" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iV0z6SK5f8lFVkKuv-pUlBCaAjaedependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="ix1QAcqseB2dWXSXmz2daFxy2fXYmX8CxAw7oiYic" cm:class="ps:parents">
@@ -30816,7 +30856,7 @@
           <cm:constant cm:id="iUsUSgtcQB0M1OLVa" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="isf_w1sKIXky6pwo7" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iUSnQaAk7oWr6qzjE" cm:type="ps:datetime">2021-04-24T11:29:51.576Z</cm:constant>
+          <cm:constant cm:id="iUSnQaAk7oWr6qzjE" cm:type="ps:datetime">2021-06-24T21:19:42.961Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -31359,7 +31399,7 @@
         <cm:mimedesc cm:id="ikgMZ4NVI3WhA7Xd3" cm:mimetype="text/plain" cm:encoding="utf-8">chooseChecklist.scss</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="iCMGHaBhCEz61YFA0hY5EocjXNab" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="iCMGHaBhCEz61YFA0hY5EocjXNab" cm:restriction="iW0kFyLWIyvCACvBi" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="iCMGHaBhCEz61YFA0hY5EocjXNabdependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iPAjISR1TbadqIyot09G4RkisL5Bw0nxvgHbGMPH4" cm:class="ps:parents">
@@ -31383,7 +31423,7 @@
           <cm:constant cm:id="id9kQBe1sT1l10Uyl" cm:type="ps:string">User</cm:constant>
         </cm:property>
         <cm:property cm:id="iAM5kCehy4pex6bAK" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iEfkry5IDtPpB_B1G" cm:type="ps:datetime">2021-04-28T16:34:46.820Z</cm:constant>
+          <cm:constant cm:id="iEfkry5IDtPpB_B1G" cm:type="ps:datetime">2021-06-24T21:18:19.882Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

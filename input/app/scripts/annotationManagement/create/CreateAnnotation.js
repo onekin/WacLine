@@ -82,7 +82,7 @@ class CreateAnnotation {
         // PVSCL:IFCOND(AuthorsSearch OR ImportChecklist, LINE)
       } else if (event.detail.purpose === 'describing' || event.detail.purpose === 'checklist' || event.detail.purpose === 'report' || event.detail.purpose === 'methodsKeywords') {
         // Create target
-        const target = this.obtainTargetToCreateAnnotation(event.detail)
+        const target = CreateAnnotation.obtainTargetToCreateAnnotation(event.detail)
         // Create body
         const newBody = this.obtainBodyToCreateAnnotation(event.detail)
         // Create tags

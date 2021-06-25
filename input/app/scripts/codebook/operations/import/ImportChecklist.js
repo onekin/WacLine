@@ -271,7 +271,7 @@ class ImportChecklist {
       const alreadyChosenChecklists = checklistAnnotations[0].body[0].value.chosenChecklists
       for (let method of this.checklistsMethods.methods) {
         i++
-        if (filter && method.filter ? !method.filter.includes(filter) : true) {
+        if (filter && (method.filter ? !method.filter.includes(filter) : true)) {
           filteredMethods.splice(i, 1)
           i--
         } else {
