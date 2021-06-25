@@ -53,7 +53,7 @@ class Canvas {
         themeShouldBeAdded = theme.name !== 'Keywords'
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(AuthorsSearch, LINE)
-        themeShouldBeAdded = themeShouldBeAdded ? theme.name !== 'Keywords' : themeShouldBeAdded // If any previous condition set themeShouldBeAdded to false, keeps false
+        themeShouldBeAdded = themeShouldBeAdded ? theme.name !== 'Authors' : themeShouldBeAdded // If any previous condition set themeShouldBeAdded to false, keeps false
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(ImportChecklist, LINE)
         themeShouldBeAdded = themeShouldBeAdded ? !checklistsAnnotations.find((checklist) => checklist.body[0].value.name === theme.name) : themeShouldBeAdded // If any previous condition set themeShouldBeAdded to false, keeps false
