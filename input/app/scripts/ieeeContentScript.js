@@ -162,7 +162,6 @@ window.ieee = {}
 window.ieee.ieeeContentScript = new IEEEContentScript()
 if (window.location.href.includes('ieeexplore.ieee.org/document')) {
   window.ieee.ieeeContentScript.initDocument()
-}// TODO this is not working currently, need to be solved
-/* else if (window.location.href.includes('ieeexplore.ieee.org/stamp/stamp.jsp')) {
+} else if (window.location.href.includes('ieeexplore.ieee.org/stamp/stamp.jsp')) {
   window.ieee.ieeeContentScript.initStamp()
-} */
+}

@@ -107,6 +107,7 @@
     "file://*/*"PVSCL:ENDCONDPVSCL:IFCOND(URL),
     "contextMenus"PVSCL:IFCOND(Dropbox or ScienceDirect or ACM or IEEE or Springer),
     "webRequest",
+    "tabs",
     "webRequestBlocking"PVSCL:ENDCONDPVSCL:ENDCONDPVSCL:IFCOND(DOI),
     "*://doi.org/*",
     "*://dx.doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),

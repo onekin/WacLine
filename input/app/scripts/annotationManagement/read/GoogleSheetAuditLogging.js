@@ -10,7 +10,7 @@ class GoogleSheetAuditLogging {
   init (callback) {
     // Init papers database
     this.papers = []
-    this.initPapersDatabase()
+    this.initPapersDatabase(callback)
 
     // Listeners initialization
     this.listenersInit()

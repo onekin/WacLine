@@ -588,14 +588,24 @@ class ReadAnnotation {
       const highlight = highlights[i]
       highlight.addEventListener('dblclick', () => {
         let annotationCreator = annotation.creator.replace(window.abwa.annotationServerManager.annotationServerMetadata.userUrl, '') // As annotations include creator as URL to its profile, should be replace with only the ID, what is gathered in groupSelector
-        // Open commenting form if you are the owner of the annotation, otherwise should be replace
+        // PVSCL:IFCOND(Replying, LINE)
+        if (annotationCreator === window.abwa.groupSelector.user.userid) {
+          // If current user, if has no replies commenting, otherwise replying
+          if (ReplyAnnotation.hasReplies(annotation, this.replyAnnotations)) {
+            this.openReplyingForm(annotation)
+          } else {
+            this.openCommentingForm(annotation)
+          }
+        } else {
+          // If not current user, always is opened replying
+          this.openReplyingForm(annotation)
+        }
+        // PVSCL:ELSECOND
+        // If you are the owner open, otherwise, do nothing
         if (annotationCreator === window.abwa.groupSelector.user.userid) {
           this.openCommentingForm(annotation)
-        } /* PVSCL:IFCOND(Replying) */ else {
-          // PVSCL:IFCOND(Replying, LINE)
-          this.openReplyingForm(annotation)
-          // PVSCL:ENDCOND
-        }/* PVSCL:ENDCOND */
+        }
+        // PVSCL:ENDCOND
       })
     }
   }

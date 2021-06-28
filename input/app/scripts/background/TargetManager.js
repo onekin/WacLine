@@ -109,7 +109,7 @@ class TargetManager {
       const index = _.findIndex(details.requestHeaders, (header) => { return header.name.toLowerCase() === 'accept' })
       details.requestHeaders[index].value = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
       return { requestHeaders: details.requestHeaders }
-    }, this.dropboxContent, ['blocking', 'requestHeaders'])
+    }, this.dropboxContent, ['blocking', 'requestHeaders', 'extraHeaders'])
 
     chrome.webRequest.onCompleted.addListener((details) => {
       if (this.tabs[details.tabId]) {
@@ -138,7 +138,7 @@ class TargetManager {
         })
         delete this.tabs[requestHeaders.tabId] // Delete metadata saved in tabs for current tab
       }
-    }, this.ieee, ['requestHeaders', 'blocking'])
+    }, this.ieee, ['requestHeaders', 'blocking', 'extraHeaders'])
     // PVSCL:ENDCOND
   }
 
