@@ -24,15 +24,36 @@ if (_.isEmpty(window.abwa)) {
   })
   // Check if uri contains annotation to initialize
   const promise = new Promise((resolve) => {
-    // PVSCL:IFCOND(Dropbox, LINE)
+    // PVSCL:IFCOND(Dropbox, LINE)t
     if (window.location.href.includes('dl.dropboxusercontent.com') && !window.location.href.includes('chrome-extension')) {
       chrome.runtime.onMessage.addListener((request, sender, sendresponse) => {
-        let location = window.location.href + 'url::' + request.url
-        if (request.annotationId) {
-          const Config = require('./Config').default
-          location += '&' + Config.urlParamName + ':' + request.annotationId
+        if (request.scope === 'dropbox' && request.cmd === 'redirection') {
+          let url = new URL(window.location.href)
+          if (!url.hash.includes('url:') && request.data.url) {
+            let location = window.location.href + 'url::' + request.data.url
+            if (request.data.annotationId) {
+              location += '&hag:' + request.data.annotationId
+            }
+            window.location.href = location
+          }
         }
-        window.location.href = location
+        resolve()
+      })
+    } else if (window.location.href.includes('chrome-extension://')) {
+      chrome.runtime.onMessage.addListener((request, sender, sendresponse) => {
+        if (request.scope === 'dropbox' && request.cmd === 'redirection') {
+          let currentUrlParam = window.location.href
+          let currentUrl = new URL(currentUrlParam)
+          let dynamicUrlParam = currentUrl.searchParams.get('file')
+          let dynamicUrl = new URL(dynamicUrlParam)
+          if (!dynamicUrl.hash.includes('url:') && request.data.url) {
+            let definitiveUrl = 'url::' + request.data.url
+            if (request.data.annotationId) {
+              definitiveUrl += '&hag:' + request.data.annotationId
+            }
+            window.location.replace(currentUrlParam + encodeURIComponent(definitiveUrl))
+          }
+        }
         resolve()
       })
     } else {

@@ -56,10 +56,6 @@ class TargetManager {
   }
 
   reloadTargetInformation (callback) {
-    // PVSCL:IFCOND(DOI, LINE)
-    // Try to load doi from the document, page metadata or URL hash param
-    this.tryToLoadDoi()
-    // PVSCL:ENDCOND
     this.tryToLoadPublicationPDF()
     // PVSCL:IFCOND(Dropbox, LINE)
     this.tryToLoadURLParam()
@@ -67,6 +63,10 @@ class TargetManager {
     this.loadDocumentFormat().catch((err) => {
       Alerts.errorAlert({ title: 'Not supported document format', text: err.message })
     }).then(() => {
+      // PVSCL:IFCOND(DOI, LINE)
+      // Try to load doi from the document, page metadata or URL hash param
+      this.tryToLoadDoi()
+      // PVSCL:ENDCOND
       this.tryToLoadTitle()
       this.tryToLoadURL()
       this.tryToLoadURN()
@@ -257,6 +257,20 @@ class TargetManager {
         console.debug('Doi not found for this document')
       }
     }
+    // PVSCL:IFCOND(PDF, LINE)
+    // Try to load doi from pdf metadata
+    if (this.documentFormat === PDF) {
+      if (_.isEmpty(this.doi) && _.has(window.PDFViewerApplication, 'metadata._metadata.pdfx:doi')) {
+        this.doi = window.PDFViewerApplication.metadata._metadata['pdfx:doi']
+      }
+      if (_.isEmpty(this.doi) && _.has(window.PDFViewerApplication, 'metadata._metadata.dc:identifier')) {
+        this.doi = window.PDFViewerApplication.metadata._metadata['dc:identifier']
+      }
+      if (_.isEmpty(this.doi) && _.has(window.PDFViewerApplication, 'metadata._metadata.crossmark:doi')) {
+        this.doi = window.PDFViewerApplication.metadata._metadata['crossmark:doi']
+      }
+    }
+    // PVSCL:ENDCOND
     // TODO Try to load doi from chrome tab storage
   }
   // PVSCL:ENDCOND

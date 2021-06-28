@@ -445,7 +445,13 @@ class ReadAnnotation {
     // Get last voting decision
     let lastDecisionAnnotation = replies.filter(rep => rep.body.find(body => body.purpose === 'assessing' && body.value)).sort((a, b) => a.modified > b.modified).slice(-1)[0]
     if (lastDecisionAnnotation) {
-      tooltipString += 'Decision: ' + lastDecisionAnnotation.body.find(body => body.purpose === 'assessing').value + '\n'
+      if (lastDecisionAnnotation.body.find(body => body.purpose === 'assessing').value === 'up') {
+        tooltipString += 'Decision: ' + chrome.i18n.getMessage('upvote') + '\n'
+      } else if (lastDecisionAnnotation.body.find(body => body.purpose === 'assessing').value === 'down') {
+        tooltipString += 'Decision: ' + chrome.i18n.getMessage('downvote') + '\n'
+      } else {
+        tooltipString += 'Decision: ' + lastDecisionAnnotation.body.find(body => body.purpose === 'assessing').value + '\n'
+      }
     }
     // PVSCL:ENDCOND
     // PVSCL:ENDCOND

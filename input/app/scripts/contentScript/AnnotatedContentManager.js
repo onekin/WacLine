@@ -329,7 +329,7 @@ export class AnnotatedContentManager {
     this.events.annotationCreated = { element: document, event: Events.annotationCreated, handler: this.createAnnotationCreatedEventHandler() }
     this.events.annotationCreated.element.addEventListener(this.events.annotationCreated.event, this.events.annotationCreated.handler, false)
 
-    // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)    
+    // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
     this.events.keywordAnnotationsCreated = { element: document, event: Events.keywordAnnotationsCreated, handler: this.createKeywordAnnotationsCreatedEventHandler() }
     this.events.keywordAnnotationsCreated.element.addEventListener(this.events.keywordAnnotationsCreated.event, this.events.keywordAnnotationsCreated.handler, false)
     // PVSCL:ENDCOND
@@ -357,7 +357,7 @@ export class AnnotatedContentManager {
     // PVSCL:IFCOND(CodebookUpdate, LINE)
     this.events.codebookUpdatedEvent = { element: document, event: Events.codebookUpdated, handler: this.createCodebookUpdatedEventHandler() }
     this.events.codebookUpdatedEvent.element.addEventListener(this.events.codebookUpdatedEvent.event, this.events.codebookUpdatedEvent.handler, false)
-    // PVSCL:ENDCOND    
+    // PVSCL:ENDCOND
   }
 
   // PVSCL:IFCOND(UserFilter, LINE)

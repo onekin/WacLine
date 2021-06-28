@@ -18,9 +18,9 @@ class Theme {
     createdDate = new Date(),
     updatedDate = new Date(),
     target = [],
-    description = ''/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
-    multivalued,
-    inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
+    description = ''/* PVSCL:IFCOND((GoogleSheetProvider and Hierarchy) OR MixedMultivalued) */,
+    multivalued = true/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
+    inductive/* PVSCL:ENDCOND *//* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
     moodleCriteriaId/* PVSCL:ENDCOND */
   }) {
     this.id = id
@@ -48,9 +48,11 @@ class Theme {
     // PVSCL:IFCOND(Hierarchy,LINE)
     this.codes = []
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy,LINE)
+    // PVSCL:IFCOND((GoogleSheetProvider and Hierarchy) OR MixedMultivalued, LINE)
     this.multivalued = multivalued
+    // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy, LINE)
     this.inductive = inductive
+    // PVSCL:ENDCOND
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleProvider, LINE)
     this.moodleCriteriaId = moodleCriteriaId
@@ -78,16 +80,32 @@ class Theme {
     const cmidTag = 'cmid:' + this.annotationGuide.cmid
     tags.push(cmidTag)
     // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy,LINE)
+    let body = []
+    // PVSCL:IFCOND((GoogleSheetProvider and Hierarchy) OR MixedMultivalued, LINE)
     if (this.multivalued) {
+      let describingBody = _.find(body, (bodyElem) => { return bodyElem.purpose === 'describing' })
+      if (describingBody) {
+        describingBody.multivalued = Config.tags.statics.multivalued
+      } else {
+        body.push({ purpose: 'describing', multivalued: Config.tags.statics.multivalued })
+      }
       tags.push(Config.namespace + ':' + Config.tags.statics.multivalued)
     }
+    // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy, LINE)
     if (this.inductive) {
+      let describingBody = _.find(body, (bodyElem) => { return bodyElem.purpose === 'describing' })
+      if (describingBody) {
+        describingBody.inductive = Config.tags.statics.inductive
+      } else {
+        body.push({ purpose: 'describing', inductive: Config.tags.statics.inductive })
+      }
       tags.push(Config.namespace + ':' + Config.tags.statics.inductive)
     }
     // PVSCL:ENDCOND
+    // PVSCL:ENDCOND
     return {
       id: this.id,
+      body: body,
       group: this.annotationGuide.annotationServer.getGroupId(),
       permissions: {
         read: ['group:' + this.annotationGuide.annotationServer.getGroupId()]
@@ -109,25 +127,47 @@ class Theme {
   }
 
   static fromAnnotation (annotation, annotationGuide = {}) {
-    // TODO Change use of tags to body
+    // Change use of tags to body
     const themeTag = _.find(annotation.tags, (tag) => {
       return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
     })
-    // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy,LINE)
-    const multivaluedTag = _.find(annotation.tags, (tag) => {
-      return tag.includes(Config.namespace + ':multivalued')
-    })
-    const inductiveTag = _.find(annotation.tags, (tag) => {
-      return tag.includes(Config.namespace + ':inductive')
-    })
+    // PVSCL:IFCOND((GoogleSheetProvider and Hierarchy) OR MixedMultivalued, LINE)
+    let multivaluedTag
+    // Find if it is multivalued in theme description body
+    let describingBody
+    if (annotation.body) {
+      describingBody = _.find(annotation.body, (bodyElem) => { return bodyElem.purpose === 'describing' })
+      if (describingBody) {
+        multivaluedTag = describingBody.multivalued
+      }
+    }
+    // If not defined in description body, take it from tags
+    if (!_.isString(multivaluedTag)) {
+      multivaluedTag = _.find(annotation.tags, (tag) => {
+        return tag.includes(Config.namespace + ':multivalued')
+      })
+    }
+    // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy, LINE)
+    let inductiveTag
+    if (describingBody) {
+      inductiveTag = describingBody.inductive
+    }
+    if (!_.isString(inductiveTag)) {
+      inductiveTag = _.find(annotation.tags, (tag) => {
+        return tag.includes(Config.namespace + ':inductive')
+      })
+    }
+    // PVSCL:ENDCOND
     // PVSCL:ENDCOND
     if (_.isString(themeTag)) {
       const name = themeTag.replace(Config.namespace + ':' + Config.tags.grouped.group + ':', '')
       const config = jsYaml.load(annotation.text)
-      // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy,LINE)
+      // PVSCL:IFCOND((GoogleSheetProvider and Hierarchy) OR MixedMultivalued, LINE)
       // multivalued and inductive
       const multivalued = _.isString(multivaluedTag)
+      // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy, LINE)
       const inductive = _.isString(inductiveTag)
+      // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       if (_.isObject(config)) {
         const description = config.description
@@ -142,9 +182,9 @@ class Theme {
           createdDate: annotation.created,
           updatedDate: annotation.updated,
           target: annotation.target,
-          annotationGuide/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
-          multivalued,
-          inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
+          annotationGuide/* PVSCL:IFCOND((GoogleSheetProvider and Hierarchy) OR MixedMultivalued) */,
+          multivalued/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,
+          inductive/* PVSCL:ENDCOND *//* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
           moodleCriteriaId/* PVSCL:ENDCOND */
         })
       } else {

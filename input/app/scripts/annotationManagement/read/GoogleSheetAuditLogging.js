@@ -49,8 +49,9 @@ class GoogleSheetAuditLogging {
         }
       } else {
         result.shift() // Remove headers
-        this.papers = result.map((row) => {
-          return row[0]
+        this.papers = []
+        result.forEach((row) => {
+          this.papers = this.papers.concat(row)
         })
         if (_.isFunction(callback)) {
           callback(null, this.papers)
@@ -107,7 +108,7 @@ class GoogleSheetAuditLogging {
       // Get the target that corresponds to where the evidence for the theme is taken from (if exists)
       let sourceTarget = annotation.target.find(target => _.has(target, 'source.id'))
       if (sourceTarget) {
-        let paper = this.papers.find(paper => paper === sourceTarget.source.id)
+        let paper = this.papers.find(paper => paper === sourceTarget.source.id) || this.papers.find(paper => paper === sourceTarget.source.uri) || this.papers.find(paper => paper === sourceTarget.source.url) || this.papers.find(paper => paper === sourceTarget.source.doi)
         if (_.isEmpty(paper)) {
           this.papers.push(annotation.target[0].source.id) // Add to list of added papers
           paperRow = this.paper2Row({
@@ -202,7 +203,7 @@ class GoogleSheetAuditLogging {
       // Get the target that corresponds to where the evidence for the theme is taken from (if exists)
       let sourceTarget = annotation.target.find(target => _.has(target, 'source.id'))
       if (sourceTarget) {
-        let paper = this.papers.find(paper => paper === sourceTarget.source.id)
+        let paper = this.papers.find(paper => paper === sourceTarget.source.id) || this.papers.find(paper => paper === sourceTarget.source.uri) || this.papers.find(paper => paper === sourceTarget.source.url) || this.papers.find(paper => paper === sourceTarget.source.doi)
         if (_.isEmpty(paper)) {
           this.papers.push(annotation.target[0].source.id) // Add to list of added papers
           paperRow = this.paper2Row({
@@ -285,7 +286,7 @@ class GoogleSheetAuditLogging {
       // Check if paper is already registered in the papers log
       let paperRow
       if (_.has(annotation.target[0], 'source.id')) {
-        let paper = this.papers.find(paper => paper === annotation.target[0].source.id)
+        let paper = this.papers.find(paper => paper === annotation.target[0].source.id) || this.papers.find(paper => paper === annotation.target[0].source.uri) || this.papers.find(paper => paper === annotation.target[0].source.url) || this.papers.find(paper => paper === annotation.target[0].source.doi)
         if (_.isEmpty(paper)) {
           this.papers.push(annotation.target[0].source.id) // Add to list of added papers
           paperRow = this.paper2Row({

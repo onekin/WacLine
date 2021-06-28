@@ -132,10 +132,16 @@ class UpdateCodebook {
       target = target.concat(CreateAnnotation.obtainTargetToCreateAnnotation({}))
       // PVSCL:ENDCOND
       let newTheme
+      // Prepare the HTML for the input form
+      let html = ''
+      html += '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" type="text" placeholder="New theme name" value="' + selectedText + '"/>' +
+        '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6"  id="themeDescription" placeholder="Please type a description that describes this theme..."></textarea>'
+      // PVSCL:IFCOND(MixedMultivalued, LINE)
+      html += '<label for="multivalued">Multivalued</label><input type="checkbox" id="multivalued" checked/>' // By default it will be multivalued
+      // PVSCL:ENDCOND
       Alerts.multipleInputAlert({
         title: 'You are creating a new theme: ',
-        html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New theme name" value="' + selectedText + '"/>' +
-          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="themeDescription" placeholder="Please type a description that describes this theme..."></textarea>',
+        html: html,
         preConfirm: () => {
           const themeNameElement = document.querySelector('#themeName')
           let themeName
@@ -147,9 +153,23 @@ class UpdateCodebook {
           if (_.isElement(themeDescriptionElement)) {
             themeDescription = themeDescriptionElement.value
           }
-          newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: window.abwa.codebookManager.codebookReader.codebook, target })
+          // PVSCL:IFCOND(MixedMultivalued, LINE)
+          const multivaluedElement = document.querySelector('#multivalued')
+          let multivalued
+          if (_.isElement(multivaluedElement)) {
+            multivalued = multivaluedElement.checked
+          }
+          // PVSCL:ENDCOND
+          newTheme = new Theme({
+            name: themeName,
+            description: themeDescription,
+            annotationGuide: window.abwa.codebookManager.codebookReader.codebook,
+            target: target/* PVSCL:IFCOND(MixedMultivalued) */,
+            multivalued: multivalued/* PVSCL:ENDCOND */
+          })
         },
         callback: () => {
+          // PVSCL:IFCOND(EmpiricalStandardChecklists, LINE)
           if (newTheme.name.toLowerCase() === 'evaluation') {
             window.abwa.codebookManager.checklistImporter.importChecklist('Evaluation')
           } else if (newTheme.name.toLowerCase() === 'qualitative') {
@@ -163,6 +183,9 @@ class UpdateCodebook {
           } else {
             LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
           }
+          // PVSCL:ELSECOND
+          LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
+          // PVSCL:ENDCOND
         }
       })
     })
@@ -194,11 +217,21 @@ class UpdateCodebook {
     return (event) => {
       const theme = event.detail.theme
       let themeToUpdate
+      // Prepare the HTML for the input form
+      let html = ''
+      html += '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" type="text" placeholder="New theme name" value="' + theme.name + '"/>' +
+        '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6"  id="themeDescription" placeholder="Please type a description that describes this theme...">' + theme.description + '</textarea>'
+      // PVSCL:IFCOND(MixedMultivalued, LINE)
+      if (theme.multivalued) {
+        html += '<label for="multivalued">Multivalued</label><input type="checkbox" id="multivalued" checked/>'
+      } else {
+        html += '<label for="multivalued">Multivalued</label><input type="checkbox" id="multivalued"/>'
+      }
+      // PVSCL:ENDCOND
       // Show form to update theme
       Alerts.multipleInputAlert({
         title: 'You are updating the theme ' + theme.name,
-        html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" type="text" placeholder="New theme name" value="' + theme.name + '"/>' +
-          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6"  id="themeDescription" placeholder="Please type a description that describes this theme...">' + theme.description + '</textarea>',
+        html: html,
         preConfirm: () => {
           const themeNameElement = document.querySelector('#themeName')
           let themeName
@@ -210,12 +243,20 @@ class UpdateCodebook {
           if (_.isElement(themeDescriptionElement)) {
             themeDescription = themeDescriptionElement.value
           }
+          // PVSCL:IFCOND(MixedMultivalued, LINE)
+          const multivaluedElement = document.querySelector('#multivalued')
+          let multivalued
+          if (_.isElement(multivaluedElement)) {
+            multivalued = multivaluedElement.checked
+          }
+          // PVSCL:ENDCOND
           themeToUpdate = new Theme({
             name: themeName,
             description: themeDescription,
             annotationGuide: window.abwa.codebookManager.codebookReader.codebook,
             createdDate: theme.createdDate,
-            target: theme.target
+            target: theme.target/* PVSCL:IFCOND(MixedMultivalued) */,
+            multivalued: multivalued/* PVSCL:ENDCOND */
           })
           // PVSCL:IFCOND(Hierarchy, LINE)
           theme.codes.forEach(code => { code.theme = themeToUpdate })
@@ -577,9 +618,10 @@ class UpdateCodebook {
           return null
         }
       })
+      annotations = _.compact(annotations) // Annotations that are not classifying motivation are returned null from previous map function, should be removed from array
       const promises = annotations.forEach((annotation) => {
         return new Promise((resolve, reject) => {
-          window.abwa.annotationServerManager.client.updateAnnotation(annotation.id, annotation, (err, annotation) => {
+          window.abwa.annotationServerManager.client.updateAnnotation(annotation.id, annotation.serialize(), (err, annotation) => {
             if (err) {
               reject(err)
             } else {

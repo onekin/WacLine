@@ -28,7 +28,7 @@ const tags = {
 tags.producer = 'teacher'
 tags.consumer = 'student'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(GoogleSheetProvider, LINE)
+// PVSCL:IFCOND(GoogleSheetProvider OR MixedMultivalued, LINE)
 tags.statics = {
   multivalued: 'multivalued',
   inductive: 'inductive',

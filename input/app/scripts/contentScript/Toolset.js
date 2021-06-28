@@ -150,6 +150,8 @@ class Toolset {
       if (!(window.abwa.annotationServerManager instanceof BrowserStorageManager)) {
         this.toolsetBody.appendChild(this.googleSheetImage)
       }
+      // PVSCL:ELSECOND
+      this.toolsetBody.appendChild(this.googleSheetImage)
       // PVSCL:ENDCOND
       this.googleSheetImage.addEventListener('click', () => {
         // PVSCL:IFCOND(GoogleSheetThematicSheet, LINE)

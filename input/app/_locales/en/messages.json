@@ -122,5 +122,54 @@
   },
   "annotationServerLoginRequired": {
     "message": "You need to login in the corresponding annotation server to start annotating. Check instructions to login in the sidebar and reload the page if it is not done automatically."
+  },
+  "createCodebook": {
+    // PVSCL:IFCOND(WebAnnotationClient->appShortName = 'hag', LINE)
+    "message": "Create new SLR"
+    // PVSCL:ELSECOND
+    "message": "Create codebook"
+    // PVSCL:ENDCOND
+  },
+  "createNewCodebookModalTitle": {
+    // PVSCL:IFCOND(WebAnnotationClient->appShortName = 'hag', LINE)
+    "message": "Create a new Systematic Review"
+    // PVSCL:ELSECOND
+    "message": "Create a new codebook"
+    // PVSCL:ENDCOND
+  },
+  "createNewCodebookModalInput": {
+    // PVSCL:IFCOND(WebAnnotationClient->appShortName = 'hag', LINE)
+    "message": "Type here the name of your new systematic review..."
+    // PVSCL:ELSECOND
+    "message": "Type here the name of your new codebook..."
+    // PVSCL:ENDCOND
+  },
+  "upvote": {
+    // PVSCL:IFCOND(WebAnnotationClient->appShortName = 'hag', LINE)
+    "message": "Agree"
+    // PVSCL:ELSECOND
+    "message": "Up"
+    // PVSCL:ENDCOND
+  },
+  "downvote": {
+    // PVSCL:IFCOND(WebAnnotationClient->appShortName = 'hag', LINE)
+    "message": "Disagree"
+    // PVSCL:ELSECOND
+    "message": "Down"
+    // PVSCL:ENDCOND
+  },
+  "thumbUpVote": {
+    // PVSCL:IFCOND(WebAnnotationClient->appShortName = 'hag', LINE)
+    "message": "Vote agree"
+    // PVSCL:ELSECOND
+    "message": "Thumb up vote"
+    // PVSCL:ENDCOND
+  },
+  "thumbDownVote": {
+    // PVSCL:IFCOND(WebAnnotationClient->appShortName = 'hag', LINE)
+    "message": "Vote disagree"
+    // PVSCL:ELSECOND
+    "message": "Thumb down vote"
+    // PVSCL:ENDCOND
   }
 }

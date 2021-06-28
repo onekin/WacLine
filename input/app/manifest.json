@@ -50,6 +50,11 @@
       "matches": ["*://link.springer.com/*"],
       "js": ["scripts/springerContentScript.js"],
       "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(IEEE),
+    {
+      "matches": ["*://ieeexplore.ieee.org/*"],
+      "js": ["scripts/ieeeContentScript.js"],
+      "run_at": "document_end"
     }PVSCL:ENDCONDPVSCL:IFCOND(Manual and Hypothesis and AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1),
     {
       "matches": [
@@ -107,7 +112,8 @@
     "*://dx.doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),
     "*://www.sciencedirect.com/science/article/pii/*"PVSCL:ENDCONDPVSCL:IFCOND(Dropbox),
     "*://www.dropbox.com/s/",
-    "*://*.dropboxusercontent.com/*"PVSCL:ENDCOND
+    "*://*.dropboxusercontent.com/*"PVSCL:ENDCONDPVSCL:IFCOND(IEEE),
+    "*://ieeexplore.ieee.org/document/*"PVSCL:ENDCOND
   ],
   PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer or GoogleSheetAnnotationServer or GoogleSheetAudit, LINE)
   "oauth2": {

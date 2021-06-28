@@ -220,7 +220,7 @@ class CommentingForm {
       upVoteInputRadio.id = 'upVoteRadio'
       const upVoteLabel = document.createElement('label')
       upVoteLabel.setAttribute('for', 'upVoteRadio')
-      upVoteLabel.innerHTML = '<img title="Thumb up vote" id="upVoteImage" class="voteImage"/>'
+      upVoteLabel.innerHTML = '<img title="' + chrome.i18n.getMessage('thumbUpVote') + '" id="upVoteImage" class="voteImage"/>'
       voting.append(upVoteInputRadio)
       voting.append(upVoteLabel)
       const downVoteInputRadio = document.createElement('input')
@@ -230,7 +230,7 @@ class CommentingForm {
       downVoteInputRadio.id = 'downVoteRadio'
       const downVoteLabel = document.createElement('label')
       downVoteLabel.setAttribute('for', 'downVoteRadio')
-      downVoteLabel.innerHTML = '<img title="Thumb down vote" id="downVoteImage" class="voteImage"/>'
+      downVoteLabel.innerHTML = '<img title="' + chrome.i18n.getMessage('thumbDownVote') + '" id="downVoteImage" class="voteImage"/>'
       voting.append(downVoteInputRadio)
       voting.append(downVoteLabel)
       html += voting.outerHTML

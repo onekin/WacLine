@@ -17,8 +17,11 @@ class TargetManager {
     // PVSCL:IFCOND(Dropbox, LINE)
     this.dropbox = { urls: ['*://www.dropbox.com/s/*?raw=1*'] }
     this.dropboxContent = { urls: ['*://*.dropboxusercontent.com/*'] }
-    this.tabs = {}
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(IEEE, LINE)
+    this.ieee = { urls: ['*://ieeexplore.ieee.org/document/*', '*://ieeexplore.ieee.org/stamp/stamp.jsp*'] }
+    // PVSCL:ENDCOND
+    this.tabs = {}
   }
 
   init () {
@@ -97,7 +100,7 @@ class TargetManager {
     // Request to dropbox
     chrome.webRequest.onHeadersReceived.addListener((responseDetails) => {
       this.tabs[responseDetails.tabId] = {
-        url: responseDetails.url.split('#')[0],
+        url: encodeURI(responseDetails.url.split('#')[0]),
         annotationId: this.extractAnnotationId(responseDetails.url)
       }
     }, this.dropbox, ['responseHeaders', 'blocking'])
@@ -110,9 +113,32 @@ class TargetManager {
 
     chrome.webRequest.onCompleted.addListener((details) => {
       if (this.tabs[details.tabId]) {
-        chrome.tabs.sendMessage(details.tabId, this.tabs[details.tabId])
+        chrome.tabs.sendMessage(details.tabId, { scope: 'dropbox', cmd: 'redirection', data: this.tabs[details.tabId] })
       }
     }, this.dropboxContent)
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(IEEE, LINE)
+    // Request to IEEE
+    chrome.webRequest.onBeforeSendHeaders.addListener((requestHeaders) => {
+      if (this.tabs[requestHeaders.tabId]) {
+        let data = this.tabs[requestHeaders.tabId]
+        chrome.tabs.get(requestHeaders.tabId, (tab) => {
+          let doi = data.doi
+          let annotationId = data.annotationId
+          if (doi && annotationId) {
+            let redirectUrl = requestHeaders.url + '#doi:' + doi + '&hag:' + annotationId
+            chrome.tabs.update(requestHeaders.tabId, { url: redirectUrl })
+          } else if (doi) {
+            let redirectUrl = requestHeaders.url + '#doi:' + doi
+            chrome.tabs.update(requestHeaders.tabId, { url: redirectUrl })
+          } else if (annotationId) {
+            let redirectUrl = requestHeaders.url + '#hag:' + annotationId
+            chrome.tabs.update(requestHeaders.tabId, { url: redirectUrl })
+          }
+        })
+        delete this.tabs[requestHeaders.tabId] // Delete metadata saved in tabs for current tab
+      }
+    }, this.ieee, ['requestHeaders', 'blocking'])
     // PVSCL:ENDCOND
   }
 

@@ -435,10 +435,10 @@ class GroupSelector {
     // PVSCL:IFCOND(BuiltIn or EmptyCodebook,LINE)
     // New group button
     const newGroupButton = document.createElement('div')
-    newGroupButton.innerText = 'Create codebook'
+    newGroupButton.innerText = chrome.i18n.getMessage('createCodebook')
     newGroupButton.id = 'createNewModelButton'
     newGroupButton.className = 'groupSelectorButton'
-    newGroupButton.title = 'Create a new codebook'
+    newGroupButton.title = chrome.i18n.getMessage('createNewCodebookModalTitle')
     newGroupButton.addEventListener('click', this.createNewReviewModelEventHandler())
     groupsContainer.appendChild(newGroupButton)
     // PVSCL:ENDCOND
@@ -547,8 +547,8 @@ class GroupSelector {
 
   createNewGroup (callback) {
     Alerts.inputTextAlert({
-      title: 'Create a new codebook',
-      inputPlaceholder: 'Type here the name of your new codebook...',
+      title: chrome.i18n.getMessage('createNewCodebookModalTitle'),
+      inputPlaceholder: chrome.i18n.getMessage('createNewCodebookModalInput'),
       preConfirm: (groupName) => {
         if (_.isString(groupName)) {
           if (groupName.length <= 0) {
