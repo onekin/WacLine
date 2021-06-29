@@ -25,6 +25,8 @@ class TargetManager {
     this.urlParam = null
     this.documentId = null
     this.documentTitle = ''
+    this.documentAuthor = ''
+    this.documentPublisher = ''
     this.fileName = ''
     // PVSCL:IFCOND(HTML, LINE)
     this.documentFormat = HTML // By default document type is html
@@ -67,7 +69,7 @@ class TargetManager {
       // Try to load doi from the document, page metadata or URL hash param
       this.tryToLoadDoi()
       // PVSCL:ENDCOND
-      this.tryToLoadTitle()
+      this.tryToLoadMetadata()
       this.tryToLoadURL()
       this.tryToLoadURN()
       this.tryToLoadTargetId()
@@ -454,7 +456,7 @@ class TargetManager {
     return result
   }
 
-  tryToLoadTitle () {
+  tryToLoadMetadata () {
     // Try to load by doi
     const promise = new Promise((resolve, reject) => {
       if (this.doi) {
@@ -475,45 +477,93 @@ class TargetManager {
       }
     })
     promise.then(() => {
-      // Try to load title from page metadata
-      if (_.isEmpty(this.documentTitle)) {
-        try {
-          const documentTitleElement = document.querySelector('meta[name="citation_title"]')
+      this.tryToLoadTitle()
+      this.tryToLoadAuthor()
+      this.tryToLoadPublisher()
+    })
+  }
+
+  tryToLoadAuthor () {
+    if (_.isEmpty(this.documentAuthor)) {
+      // TODO
+    }
+  }
+
+  tryToLoadPublisher () {
+    if (_.isEmpty(this.documentPublisher)) {
+      try {
+        const documentPublisherElement = document.querySelector('meta[name="citation_publisher"]')
+        if (!_.isElement(documentPublisherElement)) {
+          this.documentPublisher = documentPublisherElement.content
+        }
+        if (_.isEmpty(this.documentPublisher)) {
+          const promise = new Promise((resolve, reject) => {
+            // Try to load title from pdf metadata
+            if (this.documentFormat === PDF) {
+              this.waitUntilPDFViewerLoad(() => {
+                if (window.PDFViewerApplication.documentInfo.Title) {
+                  this.documentPublisher = window.PDFViewerApplication.documentInfo.Publisher || window.PDFViewerApplication.metadata._metadata['dc:publisher']
+                }
+                resolve()
+              })
+            } else {
+              resolve()
+            }
+          })
+          promise.then(() => {
+            // Try to load publisher from document publisher
+            if (!this.documentPublisher) {
+              this.documentPublisher = 'Unknown publisher'
+            }
+          })
+        }
+      } catch (e) {
+        console.debug('Publisher not found for this document')
+        this.documentPublisher = 'Unknown publisher'
+      }
+    }
+  }
+
+  tryToLoadTitle () {
+    // Try to load title from page metadata
+    if (_.isEmpty(this.documentTitle)) {
+      try {
+        const documentTitleElement = document.querySelector('meta[name="citation_title"]')
+        if (!_.isNull(documentTitleElement)) {
+          this.documentTitle = documentTitleElement.content
+        }
+        if (!this.documentTitle) {
+          const documentTitleElement = document.querySelector('meta[property="og:title"]')
           if (!_.isNull(documentTitleElement)) {
             this.documentTitle = documentTitleElement.content
           }
           if (!this.documentTitle) {
-            const documentTitleElement = document.querySelector('meta[property="og:title"]')
-            if (!_.isNull(documentTitleElement)) {
-              this.documentTitle = documentTitleElement.content
-            }
-            if (!this.documentTitle) {
-              const promise = new Promise((resolve, reject) => {
-                // Try to load title from pdf metadata
-                if (this.documentFormat === PDF) {
-                  this.waitUntilPDFViewerLoad(() => {
-                    if (window.PDFViewerApplication.documentInfo.Title) {
-                      this.documentTitle = window.PDFViewerApplication.documentInfo.Title
-                    }
-                    resolve()
-                  })
-                } else {
+            const promise = new Promise((resolve, reject) => {
+              // Try to load title from pdf metadata
+              if (this.documentFormat === PDF) {
+                this.waitUntilPDFViewerLoad(() => {
+                  if (window.PDFViewerApplication.documentInfo.Title) {
+                    this.documentTitle = window.PDFViewerApplication.documentInfo.Title
+                    // TODO load from metadata this.documentPublisher = window.PDFViewerApplication.documentInfo.Publisher || window.PDFViewerApplication.metadata._metadata['dc:publisher']
+                  }
                   resolve()
-                }
-              })
-              promise.then(() => {
-                // Try to load title from document title
-                if (!this.documentTitle) {
-                  this.documentTitle = document.title || 'Unknown document'
-                }
-              })
-            }
+                })
+              } else {
+                resolve()
+              }
+            })
+            promise.then(() => {
+              // Try to load title from document title
+              if (!this.documentTitle) {
+                this.documentTitle = document.title || 'Unknown document'
+              }
+            })
           }
-        } catch (e) {
-          console.debug('Title not found for this document')
         }
+      } catch (e) {
+        console.debug('Title not found for this document')
       }
-    })
+    }
   }
 
   /**
