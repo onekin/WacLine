@@ -164,6 +164,18 @@ class TargetManager {
               sendResponse(result)
             }
           })
+        } else if (request.cmd === 'setDoiToTab') {
+          let tabId = sender.tab.id
+          let doi = request.data.doi
+          let annotationId = request.data.annotationId
+          if (tabId && doi) {
+            let obj = { doi: doi }
+            if (annotationId) {
+              obj[annotationId] = annotationId
+            }
+            this.tabs[tabId] = obj
+
+          }
         }
       }
       return true

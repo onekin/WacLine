@@ -117,14 +117,54 @@ class TargetManager {
   }
 
   tryToLoadTargetId () {
-    // Wait until updated all annotations is loaded
-    this.targetIdEventListener = document.addEventListener(Events.updatedAllAnnotations, () => {
-      if (window.abwa.annotationManagement.annotationReader.allAnnotations.length > 0) {
-        this.documentId = window.abwa.annotationManagement.annotationReader.allAnnotations[0].target[0].source.id
-      } else {
-        this.documentId = RandomUtils.randomString()
+    // When all annotations are loaded, we can check whether this document was previously annotated
+    this.updatedAllAnnotationsEvent = {
+      element: document,
+      event: Events.updatedAllAnnotations,
+      handler: () => {
+        if (_.isEmpty(this.documentId)) {
+          if (window.abwa.annotationManagement.annotationReader.allAnnotations.length > 0) {
+            this.documentId = window.abwa.annotationManagement.annotationReader.allAnnotations[0].target[0].source.id
+          } else {
+            this.documentId = RandomUtils.randomString()
+          }
+        }
+        this.updatedAllAnnotationsEvent.element.removeEventListener(this.updatedAllAnnotationsEvent.event, this.updatedAllAnnotationsEvent.handler)
       }
-    })
+    }
+    this.updatedAllAnnotationsEvent.element.addEventListener(this.updatedAllAnnotationsEvent.event, this.updatedAllAnnotationsEvent.handler, false)
+    // PVSCL:IFCOND(EvidencedCodebook, LINE)
+    // In case of evidencing, codebook elements (theme/code) can be taken from documents. We should check whether the current document was used to create codebook elements, as it will have an ID for current document
+    this.codebookLoadedEvent = {
+      element: document,
+      event: Events.codebookLoaded,
+      handler: () => {
+        // Search in current codebook whether it codes/themes have current document as target
+        if (_.isEmpty(this.documentId)) {
+          // Get targets from themes and codes and filter those who have selector (means that were taken from an evidence somewhere)
+          let codebookElementEvidenceTargets = _.flatten(window.abwa.codebookManager.codebookReader.codebook.themes.map(theme =>
+            theme.target.concat(_.flatten(theme.codes.map(code =>
+              code.target
+            )))
+          )).filter(target => target.selector)
+          if (_.isArray(codebookElementEvidenceTargets)) {
+            // Find if any of the source attributes is same as current document
+            let targetCoincidence = codebookElementEvidenceTargets.find(target =>
+              target.source.doi === this.doi ||
+              target.source.url === this.url ||
+              target.source.urn === this.urn ||
+              target.source.title === this.documentTitle)
+            if (targetCoincidence) {
+              this.documentId = targetCoincidence.source.id
+            }
+          }
+        }
+        this.codebookLoadedEvent.element.removeEventListener(this.codebookLoadedEvent.event, this.codebookLoadedEvent.handler)
+        document.removeEventListener(Events.updatedAllAnnotations, this.updatedAllAnnotationsEvent)
+      }
+    }
+    this.codebookLoadedEvent.element.addEventListener(this.codebookLoadedEvent.event, this.codebookLoadedEvent.handler, false)
+    // PVSCL:ENDCOND
   }
 
   tryToLoadURL () {

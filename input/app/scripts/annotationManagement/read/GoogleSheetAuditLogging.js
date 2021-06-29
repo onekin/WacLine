@@ -53,8 +53,12 @@ class GoogleSheetAuditLogging {
         result.forEach((row) => {
           this.papers = this.papers.concat(row)
         })
+        // Filter papers metadata that is not useful to identify documents
+        this.papers = _.compact(this.papers.filter(
+          elem => elem !== 'slr:codebookDevelopment' && elem !== 'oa:classifying' && !_.isEmpty(elem) && !elem.startsWith('file://')
+        ))
         if (_.isFunction(callback)) {
-          callback(null, this.papers)
+          callback(null, _.compact(this.papers))
         }
       }
     })
@@ -97,7 +101,7 @@ class GoogleSheetAuditLogging {
     return (event) => {
       // Everytime a theme is created
       let annotation = event.detail.themeAnnotation
-      let row = this.codebooking2Row(annotation, 'schema:CreateAction')
+      let row = this.codebooking2Row(annotation, 'schema:CreateAction', true)
       this.sendCallToBackground('appendRowSpreadSheet', {
         spreadsheetId: annotation.group,
         range: 'LOG-codebookDevelopment',
@@ -110,7 +114,7 @@ class GoogleSheetAuditLogging {
       if (sourceTarget) {
         let paper = this.papers.find(paper => paper === sourceTarget.source.id) || this.papers.find(paper => paper === sourceTarget.source.uri) || this.papers.find(paper => paper === sourceTarget.source.url) || this.papers.find(paper => paper === sourceTarget.source.doi)
         if (_.isEmpty(paper)) {
-          this.papers.push(annotation.target[0].source.id) // Add to list of added papers
+          this.papers = this.papers.concat([sourceTarget.source.id, sourceTarget.source.title, sourceTarget.source.doi, sourceTarget.source.url, sourceTarget.source.urn]) // Add to list of added papers
           paperRow = this.paper2Row({
             id: sourceTarget.source.id,
             purpose: 'slr:codebookDevelopment',
@@ -137,7 +141,7 @@ class GoogleSheetAuditLogging {
       let annotations = event.detail.themeAnnotations
       if (_.isArray(annotations)) {
         let annotation = annotations.find(annotation => annotation.tags.find(tag => tag.includes('oa:theme:'))) // Get only the annotation for the theme
-        let row = this.codebooking2Row(annotation, 'schema:ReplaceAction')
+        let row = this.codebooking2Row(annotation, 'schema:ReplaceAction', true)
         this.sendCallToBackground('appendRowSpreadSheet', {
           spreadsheetId: annotation.group,
           range: 'LOG-codebookDevelopment',
@@ -153,7 +157,7 @@ class GoogleSheetAuditLogging {
       let annotation = event.detail.themeAnnotation
       let codebookDevelopmentRows = []
       let linkingRows = []
-      codebookDevelopmentRows.push(this.codebooking2Row(annotation, 'schema:DeleteAction'))
+      codebookDevelopmentRows.push(this.codebooking2Row(annotation, 'schema:DeleteAction', true))
       // Log delete action for each of the codes pertaining to the theme and the links between theme and codes
       let theme = event.detail.theme
       if (theme.codes.length > 0) {
@@ -205,7 +209,7 @@ class GoogleSheetAuditLogging {
       if (sourceTarget) {
         let paper = this.papers.find(paper => paper === sourceTarget.source.id) || this.papers.find(paper => paper === sourceTarget.source.uri) || this.papers.find(paper => paper === sourceTarget.source.url) || this.papers.find(paper => paper === sourceTarget.source.doi)
         if (_.isEmpty(paper)) {
-          this.papers.push(annotation.target[0].source.id) // Add to list of added papers
+          this.papers = this.papers.concat([sourceTarget.source.id, sourceTarget.source.title, sourceTarget.source.doi, sourceTarget.source.url, sourceTarget.source.urn]) // Add to list of added papers
           paperRow = this.paper2Row({
             id: sourceTarget.source.id,
             purpose: 'slr:codebookDevelopment',
@@ -286,16 +290,17 @@ class GoogleSheetAuditLogging {
       // Check if paper is already registered in the papers log
       let paperRow
       if (_.has(annotation.target[0], 'source.id')) {
-        let paper = this.papers.find(paper => paper === annotation.target[0].source.id) || this.papers.find(paper => paper === annotation.target[0].source.uri) || this.papers.find(paper => paper === annotation.target[0].source.url) || this.papers.find(paper => paper === annotation.target[0].source.doi)
+        let sourceTarget = annotation.target[0]
+        let paper = this.papers.find(paper => paper === sourceTarget.source.id) || this.papers.find(paper => paper === sourceTarget.source.uri) || this.papers.find(paper => paper === sourceTarget.source.url) || this.papers.find(paper => paper === sourceTarget.source.doi)
         if (_.isEmpty(paper)) {
-          this.papers.push(annotation.target[0].source.id) // Add to list of added papers
+          this.papers = this.papers.concat([sourceTarget.source.id, sourceTarget.source.title, sourceTarget.source.doi, sourceTarget.source.url, sourceTarget.source.urn]) // Add to list of added papers
           paperRow = this.paper2Row({
-            id: annotation.target[0].source.id,
+            id: sourceTarget.source.id,
             purpose: 'oa:classifying',
-            title: annotation.target[0].source.title || '',
-            doi: annotation.target[0].source.doi || '',
-            url: annotation.target[0].source.url || '',
-            urn: annotation.target[0].source.urn || ''
+            title: sourceTarget.source.title || '',
+            doi: sourceTarget.source.doi || '',
+            url: sourceTarget.source.url || '',
+            urn: sourceTarget.source.urn || ''
           })
         }
       }
@@ -429,7 +434,7 @@ class GoogleSheetAuditLogging {
     }
   }
 
-  codebooking2Row (data, action) {
+  codebooking2Row (data, action, isTheme) {
     try {
       let id = 0
       let created = 1
@@ -444,8 +449,7 @@ class GoogleSheetAuditLogging {
       let comment = 10
       let motivatedby = 11
       let potentialaction = 12
-      let encoding = 13
-      let multivalued = 14
+      let multivalued = 13
       let row = []
       row[id] = data.id
       row[created] = this.getDateBasedOnAction(data, action)
@@ -472,6 +476,19 @@ class GoogleSheetAuditLogging {
       }
       row[motivatedby] = 'slr:codebookDevelopment'
       row[potentialaction] = action
+      if (isTheme) {
+        if (_.isArray(data.body)) {
+          let describingBody = data.body.find(body => body.purpose === 'describing')
+          if (describingBody) {
+            row[multivalued] = _.has(describingBody, 'multivalued')
+          } else {
+            row[multivalued] = false
+          }
+        }
+      } else {
+        row[multivalued] = false
+      }
+
       return row
     } catch (err) {
       return err

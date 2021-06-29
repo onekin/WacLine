@@ -42,6 +42,7 @@ const Events = {
   // PVSCL:IFCOND(Codebook, LINE)
   // Annotation codebook management events
   createCodebook: 'createCodebook',
+  codebookLoaded: 'codebookLoaded',
   codebookCreated: 'codebookCreated',
   // PVSCL:IFCOND(CodebookUpdate, LINE)
   codebookUpdated: 'codebookUpdated',

@@ -6,7 +6,6 @@ import DOI from 'doi-regex'
 class IEEEContentScript {
   constructor () {
     this.doi = null
-    this.hag = null
   }
 
   initDocument () {
@@ -34,21 +33,26 @@ class IEEEContentScript {
       let pdfLinkElement = this.getPdfLinkElement()
       if (pdfLinkElement) {
         // Get if this tab has an annotation to open
-        if (!_.isEmpty(params) && !_.isEmpty(Config.urlParamName)) {
+        if (!_.isEmpty(params) && !_.isEmpty(params[Config.urlParamName])) {
           // Activate the extension
           chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, () => {
             console.debug('Activated popup')
             // Retrieve pdf url
             let pdfUrl = pdfLinkElement.href
             // Create hash with required params to open extension
-            let hash = '#hag:' + params.hag
+            let hash = '#' + Config.urlParamName + ':' + params[Config.urlParamName]
             if (this.doi) {
               hash += '&doi:' + this.doi
             }
             // Append hash to pdf url
             pdfUrl += hash
+            chrome.runtime.sendMessage({
+              scope: 'target',
+              cmd: 'setDoiToTab',
+              data: { doi: this.doi, annotationId: params[Config.urlParamName] }
+            })
             // Redirect browser to pdf
-            window.location.replace(pdfUrl)
+            // window.location.replace(pdfUrl)
           })
         } else {
           // Append doi to PDF url
@@ -56,6 +60,11 @@ class IEEEContentScript {
             pdfLinkElement.href += '#doi:' + this.doi
             // Add DOI as metadata in webpage
             document.head.insertAdjacentHTML('beforeend', '<meta name="dc.identifier" content="' + this.doi + '">')
+            chrome.runtime.sendMessage({
+              scope: 'target',
+              cmd: 'setDoiToTab',
+              data: { doi: this.doi }
+            })
           }
         }
       }
@@ -129,14 +138,14 @@ class IEEEContentScript {
     let iframeElement = this.getIframeElement()
     if (iframeElement) {
       // Get if this tab has an annotation to open
-      if (!_.isEmpty(params) && !_.isEmpty(params.hag)) {
+      if (!_.isEmpty(params) && !_.isEmpty(params[Config.urlParamName])) {
         // Activate the extension
         chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, () => {
           console.debug('Activated popup')
           // Retrieve pdf url
           let pdfUrl = iframeElement.src
           // Create hash with required params to open extension
-          let hash = '#hag:' + params.hag
+          let hash = '#' + Config.urlParamName + ':' + params[Config.urlParamName]
           if (this.doi) {
             hash += '&doi:' + this.doi
           }

@@ -227,6 +227,7 @@ class ReadCodebook {
                 Alerts.errorAlert({ text: 'Error parsing codebook. Error: ' + err.message })
               } else {
                 this.codebook = codebook
+                LanguageUtils.dispatchCustomEvent(Events.codebookLoaded, { codebook: codebook })
                 this.renderCodebookInSidebar()
                 resolve()
               }
@@ -842,8 +843,8 @@ class ReadCodebook {
       const theme = event.detail.theme
       const codes = event.detail.newCodesAnnotations
       let code
-      codes.forEach((codeAnnot) => {
-        code = Code.fromAnnotation(codeAnnot, theme)
+      codes.forEach((codeAnnotation) => {
+        code = Code.fromAnnotation(codeAnnotation, theme)
         // Add to the model the new theme
         theme.addCode(code)
       })

@@ -19,7 +19,7 @@ class CreateCodebook {
   }
 
   /**
-   * Initializes codebook creator funcionality
+   * Initializes codebook creator functionality
    */
   init () {
     // Add event listener for createCodebook event
