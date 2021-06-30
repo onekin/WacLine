@@ -107,31 +107,8 @@ class GoogleSheetAuditLogging {
         range: 'LOG-codebookDevelopment',
         data: { values: [row] }
       })
-      // Check if paper is already registered in the papers log
-      let paperRow
-      // Get the target that corresponds to where the evidence for the theme is taken from (if exists)
-      let sourceTarget = annotation.target.find(target => _.has(target, 'source.id'))
-      if (sourceTarget) {
-        let paper = this.papers.find(paper => paper === sourceTarget.source.id) || this.papers.find(paper => paper === sourceTarget.source.uri) || this.papers.find(paper => paper === sourceTarget.source.url) || this.papers.find(paper => paper === sourceTarget.source.doi)
-        if (_.isEmpty(paper)) {
-          this.papers = this.papers.concat([sourceTarget.source.id, sourceTarget.source.title, sourceTarget.source.doi, sourceTarget.source.url, sourceTarget.source.urn]) // Add to list of added papers
-          paperRow = this.paper2Row({
-            id: sourceTarget.source.id,
-            purpose: 'slr:codebookDevelopment',
-            title: sourceTarget.source.title || '',
-            doi: sourceTarget.source.doi || '',
-            url: sourceTarget.source.url || '',
-            urn: sourceTarget.source.urn || ''
-          })
-        }
-      }
-      if (!_.isEmpty(paperRow)) {
-        this.sendCallToBackground('appendRowSpreadSheet', {
-          spreadsheetId: annotation.group,
-          range: 'Papers',
-          data: { values: [paperRow] }
-        })
-      }
+      // Populate papers sheet with if this annotation is the first done in current target
+      this.sendPaperRowIfNecessary({ annotation: annotation, purpose: 'slr:codebookDevelopment' })
     }
   }
 
@@ -202,31 +179,8 @@ class GoogleSheetAuditLogging {
         range: 'LOG-linking',
         data: { values: [linkingRow] }
       })
-      // Check if paper is already registered in the papers log
-      let paperRow
-      // Get the target that corresponds to where the evidence for the theme is taken from (if exists)
-      let sourceTarget = annotation.target.find(target => _.has(target, 'source.id'))
-      if (sourceTarget) {
-        let paper = this.papers.find(paper => paper === sourceTarget.source.id) || this.papers.find(paper => paper === sourceTarget.source.uri) || this.papers.find(paper => paper === sourceTarget.source.url) || this.papers.find(paper => paper === sourceTarget.source.doi)
-        if (_.isEmpty(paper)) {
-          this.papers = this.papers.concat([sourceTarget.source.id, sourceTarget.source.title, sourceTarget.source.doi, sourceTarget.source.url, sourceTarget.source.urn]) // Add to list of added papers
-          paperRow = this.paper2Row({
-            id: sourceTarget.source.id,
-            purpose: 'slr:codebookDevelopment',
-            title: sourceTarget.source.title || '',
-            doi: sourceTarget.source.doi || '',
-            url: sourceTarget.source.url || '',
-            urn: sourceTarget.source.urn || ''
-          })
-        }
-      }
-      if (!_.isEmpty(paperRow)) {
-        this.sendCallToBackground('appendRowSpreadSheet', {
-          spreadsheetId: annotation.group,
-          range: 'Papers',
-          data: { values: [paperRow] }
-        })
-      }
+      // Populate papers sheet with if this annotation is the first done in current target
+      this.sendPaperRowIfNecessary({ annotation: annotation, purpose: 'slr:codebookDevelopment' })
     }
   }
 
@@ -287,30 +241,8 @@ class GoogleSheetAuditLogging {
           console.log(result)
         }
       })
-      // Check if paper is already registered in the papers log
-      let paperRow
-      if (_.has(annotation.target[0], 'source.id')) {
-        let sourceTarget = annotation.target[0]
-        let paper = this.papers.find(paper => paper === sourceTarget.source.id) || this.papers.find(paper => paper === sourceTarget.source.uri) || this.papers.find(paper => paper === sourceTarget.source.url) || this.papers.find(paper => paper === sourceTarget.source.doi)
-        if (_.isEmpty(paper)) {
-          this.papers = this.papers.concat([sourceTarget.source.id, sourceTarget.source.title, sourceTarget.source.doi, sourceTarget.source.url, sourceTarget.source.urn]) // Add to list of added papers
-          paperRow = this.paper2Row({
-            id: sourceTarget.source.id,
-            purpose: 'oa:classifying',
-            title: sourceTarget.source.title || '',
-            doi: sourceTarget.source.doi || '',
-            url: sourceTarget.source.url || '',
-            urn: sourceTarget.source.urn || ''
-          })
-        }
-      }
-      if (!_.isEmpty(paperRow)) {
-        this.sendCallToBackground('appendRowSpreadSheet', {
-          spreadsheetId: annotation.group,
-          range: 'Papers',
-          data: { values: [paperRow] }
-        })
-      }
+      // Populate papers sheet with if this annotation is the first done in current target
+      this.sendPaperRowIfNecessary({ annotation: annotation, purpose: 'oa:classifying' })
     }
   }
 
@@ -572,6 +504,35 @@ class GoogleSheetAuditLogging {
       if (data[j][field] === value) return data[j]
     }
     return {}
+  }
+
+  sendPaperRowIfNecessary ({ annotation, purpose = 'oa:classifying' }) {
+    let paperRow
+    // Get the target that corresponds to where the evidence for the theme is taken from (if exists)
+    let sourceTarget = annotation.target.find(target => _.has(target, 'source.id'))
+    if (sourceTarget) {
+      let paper = this.papers.find(paper => paper === sourceTarget.source.id) || this.papers.find(paper => paper === sourceTarget.source.uri) || this.papers.find(paper => paper === sourceTarget.source.url) || this.papers.find(paper => paper === sourceTarget.source.doi)
+      if (_.isEmpty(paper)) {
+        this.papers = this.papers.concat([sourceTarget.source.id, sourceTarget.source.title, sourceTarget.source.doi, sourceTarget.source.url, sourceTarget.source.urn]) // Add to list of added papers
+        paperRow = this.paper2Row({
+          id: sourceTarget.source.id,
+          purpose: purpose,
+          title: sourceTarget.source.title || '',
+          doi: sourceTarget.source.doi || '',
+          url: sourceTarget.source.url || '',
+          urn: sourceTarget.source.urn || '',
+          authorList: sourceTarget.source.author || '',
+          publisher: sourceTarget.source.publisher || ''
+        })
+      }
+    }
+    if (!_.isEmpty(paperRow)) {
+      this.sendCallToBackground('appendRowSpreadSheet', {
+        spreadsheetId: annotation.group,
+        range: 'Papers',
+        data: { values: [paperRow] }
+      })
+    }
   }
 
 }

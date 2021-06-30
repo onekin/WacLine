@@ -459,6 +459,7 @@ class TargetManager {
   tryToLoadMetadata () {
     // Try to load by doi
     const promise = new Promise((resolve, reject) => {
+      // PVSCL:IFCOND(DOI, LINE)
       if (this.doi) {
         chrome.runtime.sendMessage({
           scope: 'target',
@@ -469,12 +470,18 @@ class TargetManager {
             reject(result.error)
           } else {
             this.documentTitle = result.title
+            if (_.isArray(result.author)) {
+              this.documentAuthor = result.author.map(elem => elem.given + ' ' + elem.family).toString()
+            }
+            this.documentPublisher = result.publisher
             resolve(result)
           }
         })
       } else {
         resolve()
       }
+      // PVSCL:ENDCOND
+      resolve() // Nothing to do
     })
     promise.then(() => {
       this.tryToLoadTitle()
@@ -485,7 +492,39 @@ class TargetManager {
 
   tryToLoadAuthor () {
     if (_.isEmpty(this.documentAuthor)) {
-      // TODO
+      try {
+        const documentPublisherElement = document.querySelector('meta[name="citation_publisher"]')
+        if (!_.isNull(documentPublisherElement)) {
+          this.documentAuthor = documentPublisherElement.content
+        }
+        if (_.isEmpty(this.documentAuthor)) {
+          const promise = new Promise((resolve, reject) => {
+            // Try to load title from pdf metadata
+            if (this.documentFormat === PDF) {
+              this.waitUntilPDFViewerLoad(() => {
+                if (_.isEmpty(this.documentAuthor) && _.has(window.PDFViewerApplication, 'metadata._metadata')) {
+                  this.documentAuthor = window.PDFViewerApplication.metadata._metadata['dc:creator']
+                }
+                if (_.isEmpty(this.documentAuthor) && _.has(window.PDFViewerApplication, 'documentInfo')) {
+                  this.documentAuthor = window.PDFViewerApplication.documentInfo.Author
+                }
+                resolve()
+              })
+            } else {
+              resolve()
+            }
+          })
+          promise.then(() => {
+            // Try to load publisher from document publisher
+            if (!this.documentAuthor) {
+              this.documentAuthor = 'Unknown author'
+            }
+          })
+        }
+      } catch (e) {
+        console.debug('Author not found for this document')
+        this.documentAuthor = 'Unknown author'
+      }
     }
   }
 
@@ -493,16 +532,19 @@ class TargetManager {
     if (_.isEmpty(this.documentPublisher)) {
       try {
         const documentPublisherElement = document.querySelector('meta[name="citation_publisher"]')
-        if (!_.isElement(documentPublisherElement)) {
+        if (_.isElement(documentPublisherElement)) {
           this.documentPublisher = documentPublisherElement.content
         }
-        if (_.isEmpty(this.documentPublisher)) {
+        if (!_.isNull(this.documentPublisher)) {
           const promise = new Promise((resolve, reject) => {
             // Try to load title from pdf metadata
             if (this.documentFormat === PDF) {
               this.waitUntilPDFViewerLoad(() => {
-                if (window.PDFViewerApplication.documentInfo.Title) {
-                  this.documentPublisher = window.PDFViewerApplication.documentInfo.Publisher || window.PDFViewerApplication.metadata._metadata['dc:publisher']
+                if (_.isEmpty(this.documentPublisher) && _.has(window.PDFViewerApplication, 'documentInfo')) {
+                  this.documentPublisher = window.PDFViewerApplication.documentInfo.Publisher
+                }
+                if (_.isEmpty(this.documentPublisher) && _.has(window.PDFViewerApplication, 'metadata._metadata')) {
+                  this.documentPublisher = window.PDFViewerApplication.metadata._metadata['dc:publisher']
                 }
                 resolve()
               })
