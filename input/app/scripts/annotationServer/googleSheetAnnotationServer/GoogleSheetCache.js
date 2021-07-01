@@ -68,7 +68,6 @@ class GoogleSheetCache {
 
       // Permissions
       GoogleSheetCache.setAnnotationPermissions(annotationToCreate, user)
-      // TODO Links property ¿?
       // Return constructed annotation to create
       return annotationToCreate
     } else {
@@ -202,34 +201,23 @@ class GoogleSheetCache {
     })
     if (annotationToUpdateIndex > -1) {
       const annotationToUpdate = annotations[annotationToUpdateIndex]
-      // Check permissions to delete
-      if (_.isArray(annotationToUpdate.permissions.update)) {
-        const owner = _.find(annotationToUpdate.permissions.update, (userid) => {
-          return userid === currentUser.userid
-        })
-        if (_.isString(owner)) {
-          const annotationUpdated = Object.assign(annotationToUpdate, annotation)
-          // Update updated time
-          annotationUpdated.updated = (new Date()).toISOString()
-          // Update url in target if changed
-          if (annotationToUpdate.uri !== annotation.uri) {
-            _.forEach(annotationUpdated.target, (target, index) => {
-              if (annotationUpdated.target[index]) {
-                annotationUpdated.target[index].source = annotation.uri
-              }
-            })
+      const annotationUpdated = Object.assign(annotationToUpdate, annotation)
+      // Update updated time
+      annotationUpdated.updated = (new Date()).toISOString()
+      // Update url in target if changed
+      if (annotationToUpdate.uri !== annotation.uri) {
+        _.forEach(annotationUpdated.target, (target, index) => {
+          if (annotationUpdated.target[index]) {
+            annotationUpdated.target[index].source = annotation.uri
           }
-          // Permissions
-          GoogleSheetCache.setAnnotationPermissions(annotationUpdated, currentUser)
-          // Update the annotation from list
-          annotations[annotationToUpdateIndex] = annotationUpdated
-          // Return deleted annotation
-          return annotationUpdated
-        } else {
-          // Your are not the owner
-          throw new Error('Your are not the owner of the annotation ID: ' + id)
-        }
+        })
       }
+      // Permissions
+      GoogleSheetCache.setAnnotationPermissions(annotationUpdated, currentUser)
+      // Update the annotation from list
+      annotations[annotationToUpdateIndex] = annotationUpdated
+      // Return deleted annotation
+      return annotationUpdated
     } else {
       throw new Error('Annotation with ID ' + id + ' does not exist')
     }
@@ -251,27 +239,16 @@ class GoogleSheetCache {
     }
   }
 
-  static deleteAnnotationFromList ({ id, annotations, currentUser }) {
+  static deleteAnnotationFromList ({ id, annotations }) {
     const annotationToDeleteIndex = _.findIndex(annotations, (annotation) => {
       return annotation.id === id
     })
     if (annotationToDeleteIndex > -1) {
       const annotation = annotations[annotationToDeleteIndex]
-      // Check permissions to delete
-      if (_.isArray(annotation.permissions.delete)) {
-        const owner = _.find(annotation.permissions.delete, (userid) => {
-          return userid === currentUser.userid
-        })
-        if (_.isString(owner)) {
-          // Delete the annotation from list
-          annotations.splice(annotationToDeleteIndex, 1)
-          // Return deleted annotation
-          return annotation
-        } else {
-          // Your are not the owner
-          throw new Error('Your are not the owner of the annotation ID: ' + id)
-        }
-      }
+      // Delete the annotation from list
+      annotations.splice(annotationToDeleteIndex, 1)
+      // Return deleted annotation
+      return annotation
     } else {
       throw new Error('Annotation with ID ' + id + ' does not exist')
     }
@@ -290,8 +267,7 @@ class GoogleSheetCache {
     try {
       const deletedAnnotation = GoogleSheetCache.deleteAnnotationFromList({
         id: annotationId,
-        annotations: this.database.annotations,
-        currentUser: this.database.user
+        annotations: this.database.annotations
       })
       // Callback
       callback(null, { deleted: true, id: deletedAnnotation.id, annotation: deletedAnnotation })
@@ -334,7 +310,6 @@ class GoogleSheetCache {
         return annotation.id === id
       })
       if (_.isObject(foundAnnotation)) {
-        // TODO Check if has reading permissions
         // Callback
         callback(null, foundAnnotation)
       } else {
