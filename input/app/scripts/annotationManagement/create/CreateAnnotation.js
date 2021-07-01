@@ -209,6 +209,16 @@ class CreateAnnotation {
       const source = window.abwa.targetManager.getDocumentURIs()
       // Get document title
       source.title = window.abwa.targetManager.documentTitle || ''
+      // PVSCL:IFCOND(DOI, LINE)
+      // Get document authors
+      if (window.abwa.targetManager.documentAuthor) {
+        source.author = window.abwa.targetManager.documentAuthor || ''
+      }
+      // Get document publisher
+      if (window.abwa.targetManager.documentPublisher) {
+        source.publisher = window.abwa.targetManager.documentPublisher || ''
+      }
+      // PVSCL:ENDCOND
       // Get UUID for current target
       source.id = window.abwa.targetManager.getDocumentId()
       target[0].source = source // Add source to the target

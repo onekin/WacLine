@@ -137,7 +137,7 @@ class UpdateCodebook {
       html += '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" type="text" placeholder="New theme name" value="' + selectedText + '"/>' +
         '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6"  id="themeDescription" placeholder="Please type a description that describes this theme..."></textarea>'
       // PVSCL:IFCOND(MixedMultivalued, LINE)
-      html += '<label for="multivalued">Multivalued</label><input type="checkbox" id="multivalued" checked/>' // By default it will be multivalued
+      html += '<div><label for="multivalued">Multivalued</label> <input type="checkbox" id="multivalued" checked/></div>' // By default it will be multivalued
       // PVSCL:ENDCOND
       Alerts.multipleInputAlert({
         title: 'You are creating a new theme: ',
@@ -223,9 +223,9 @@ class UpdateCodebook {
         '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6"  id="themeDescription" placeholder="Please type a description that describes this theme...">' + theme.description + '</textarea>'
       // PVSCL:IFCOND(MixedMultivalued, LINE)
       if (theme.multivalued) {
-        html += '<label for="multivalued">Multivalued</label><input type="checkbox" id="multivalued" checked/>'
+        html += '<div><label for="multivalued">Multivalued</label> <input type="checkbox" id="multivalued" checked/></div>'
       } else {
-        html += '<label for="multivalued">Multivalued</label><input type="checkbox" id="multivalued"/>'
+        html += '<div><label for="multivalued">Multivalued</label> <input type="checkbox" id="multivalued"/></div>'
       }
       // PVSCL:ENDCOND
       // Show form to update theme
