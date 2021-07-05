@@ -5,9 +5,7 @@ import $ from 'jquery'
 import Events from '../../Events'
 import LanguageUtils from '../../utils/LanguageUtils'
 import Alerts from '../../utils/Alerts'
-// PVSCL:IFCOND(ImportChecklist, LINE)
 import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
-// PVSCL:ENDCOND
 import Canvas from './Canvas'
 
 class ChecklistReview {

@@ -5,19 +5,21 @@ import {
   Review
 } from '../../exporter/reviewModel'
 import axios from 'axios'
-// PVSCL:IFCOND(ImportChecklist, LINE)
+// PVSCL:IFCOND(EditSummary, LINE)
 import LanguageUtils from '../../utils/LanguageUtils'
 import Events from '../../Events'
 import Config from '../../Config'
 import { _ } from 'core-js'
+// PVSCL:IFCOND(ImportChecklist, LINE)
 import Classifying from '../purposes/Classifying'
 import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
+// PVSCL:ENDCOND
 // PVSCL:ENDCOND
 
 class TextSummary {
 
   static proccessReview () {
-    // PVSCL:IFCOND(ImportChecklist, LINE)
+    // PVSCL:IFCOND(EditSummary, LINE)
     TextSummary.generateReviewEditor()
     // PVSCL:ELSECOND
     Alerts.loadingAlert({
@@ -51,17 +53,18 @@ class TextSummary {
     FileSaver.saveAs(blob, docTitle + '.txt')
   }
 
-  // PVSCL:IFCOND(ImportChecklist,LINE)
+  // PVSCL:IFCOND(EditSummary,LINE)
   /**
    * This function generates the dialog to edit, download
    * and store the review report
    */
   static generateReviewEditor () {
     let report = TextSummary.generateMergedReport()
+    // PVSCL:IFCOND(ImportChecklist,LINE)
     const checklists = ImportChecklist.getChecklistsAnnotations().map((checklist) => {
       return checklist.body[0].value
     })
-
+    // PVSCL:ENDCOND
     window.abwa.sidebar.closeSidebar()
     const reviewPageURL = chrome.extension.getURL('pages/specific/reviewEditor.html')
     axios.get(reviewPageURL).then((response) => {
@@ -97,7 +100,7 @@ class TextSummary {
         })
       })
 
-
+      // PVSCL:IFCOND(ImportChecklist,LINE)
       const invalidCritContainer = document.querySelector('#invalidCriticismsContainer')
       const invalidCritTemplate = document.querySelector('#invalidCritTemplate')
 
@@ -120,7 +123,7 @@ class TextSummary {
           }
         }
       }
-
+      // PVSCL:ENDCOND
       Alerts.closeAlert()
     })
   }
