@@ -368,7 +368,7 @@ class CreateHighlighterTask extends Task {
   }
 
   initLoginProcess (callback) {
-    this.annotationServerClientManager.logIn({interactive: true}, (err) => {
+    this.annotationServerClientManager.logIn({ interactive: true }, (err) => {
       if (err) {
         callback(err)
       } else {

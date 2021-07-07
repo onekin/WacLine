@@ -51,12 +51,21 @@ class MoodleEstimationManager {
                 } else if (_.isError(humanReadablePendingTime)) {
                   result = ''
                 } else {
-                  result = ' - ' + humanReadablePendingTime
+                  result = ' - ' + (humanReadablePendingTime || 'Assessed')
                 }
                 if (_.isElement(estimatedTimeCounterElement)) {
                   estimatedTimeCounterElement.innerText = result
+                  if (humanReadablePendingTime === 0) {
+                    estimatedTimeCounterElement.title = 'You have already finished the assessment'
+                  } else {
+                    estimatedTimeCounterElement.title = 'Estimated pending time to finish the assessment is ' + humanReadablePendingTime
+                  }
                 } else {
-                  document.querySelector('#toolsetHeader').innerHTML += '<span id="estimatedTimeCounter">' + result + '</span>'
+                  if (humanReadablePendingTime === 0) {
+                    document.querySelector('#toolsetHeader').innerHTML += '<span id="estimatedTimeCounter" title="You have already finished the assessment">' + result + '</span>'
+                  } else {
+                    document.querySelector('#toolsetHeader').innerHTML += '<span id="estimatedTimeCounter" title="Estimated pending time to finish the assessment is ' + humanReadablePendingTime + '">' + result + '</span>'
+                  }
                 }
                 if (_.isFunction(callback)) {
                   callback()

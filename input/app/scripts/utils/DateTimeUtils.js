@@ -23,7 +23,19 @@ class DateTimeUtils {
       return new Error('Unable to parse unix time.')
     } else {
       let date = new Date(unixTime)
-      return Math.floor(unixTime / 1000 / 60 / 24) + 'h' + date.getMinutes() + 'm' + date.getSeconds() + 's'
+      let hours = Math.floor(unixTime / 1000 / 60 / 24)
+      if (hours > 0) {
+        return hours + ' hours'
+      }
+      let minutes = date.getMinutes()
+      if (minutes > 0) {
+        return minutes + ' mins.'
+      }
+      let seconds = date.getSeconds()
+      if (seconds > 0) {
+        return seconds + ' secs.'
+      }
+      return 0
     }
   }
 }

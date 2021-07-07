@@ -33,7 +33,7 @@ class MoodleEstimationContentScript {
                   let rowElementInGradingSummary = document.querySelector('#region-main > div:nth-child(3) > div.gradingsummary > div > table > tbody > tr:nth-child(5)')
                   let estimatedTimeNode = rowElementInGradingSummary.cloneNode(true)
                   estimatedTimeNode.querySelector('th').innerText = 'Estimated assessment time'
-                  estimatedTimeNode.querySelector('td').innerText = humanReadablePendingTime
+                  estimatedTimeNode.querySelector('td').innerText = humanReadablePendingTime || 'Assessed'
                   rowElementInGradingSummary.insertAdjacentElement('afterend', estimatedTimeNode)
                 }
               }
