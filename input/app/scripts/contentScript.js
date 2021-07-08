@@ -6,7 +6,7 @@ console.debug('Loaded abwa content script')
 if (_.isEmpty(window.abwa)) {
   window.abwa = {} // Global namespace for variables
   // Add listener for popup button click
-  chrome.extension.onMessage.addListener((msg) => {
+  chrome.runtime.onMessage.addListener((msg) => {
     if (_.isEmpty(window.abwa.contentScriptManager)) {
       window.abwa.contentScriptManager = new ContentScriptManager()
     }

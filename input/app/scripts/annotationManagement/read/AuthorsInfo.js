@@ -15,7 +15,7 @@ class AuthorsInfo {
     const authorsAnnotations = AuthorsInfo.getAuthorsAnnotations()
     const congress = window.abwa.annotationManagement.authorsSearch.congress
 
-    const canvasPageURL = chrome.extension.getURL('pages/specific/authorsCanvas.html')
+    const canvasPageURL = chrome.runtime.getURL('pages/specific/authorsCanvas.html')
     axios.get(canvasPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
       document.querySelector('#abwaSidebarButton').style.display = 'none'

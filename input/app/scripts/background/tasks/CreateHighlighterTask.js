@@ -1,7 +1,6 @@
 import Task from './Task'
 import _ from 'lodash'
 import MoodleUtils from '../../moodle/MoodleUtils'
-import AnnotationUtils from '../../utils/AnnotationUtils'
 import Codebook from '../../codebook/model/Codebook'
 import Config from '../../Config'
 // PVSCL:IFCOND(Hypothesis, LINE)

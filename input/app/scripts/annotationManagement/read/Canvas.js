@@ -15,7 +15,7 @@ class Canvas {
     // PVSCL:ELSECOND
     review = Review.parseAnnotations(window.abwa.annotationManagement.annotationReader.allAnnotations)
     // PVSCL:ENDCOND
-    const canvasPageURL = chrome.extension.getURL('pages/specific/reviewCanvas.html')
+    const canvasPageURL = chrome.runtime.getURL('pages/specific/reviewCanvas.html')
     axios.get(canvasPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
       document.querySelector('#abwaSidebarButton').style.display = 'none'

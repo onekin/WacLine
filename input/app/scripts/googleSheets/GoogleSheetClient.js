@@ -1,13 +1,5 @@
 import axios from 'axios'
 import _ from 'lodash'
-import qs from 'qs'
-
-let $
-if (typeof window === 'undefined') {
-  $ = require('jquery')(global.window)
-} else {
-  $ = require('jquery')
-}
 
 class GoogleSheetClient {
   constructor (token) {
@@ -18,7 +10,7 @@ class GoogleSheetClient {
   }
 
   createSpreadsheet (data, callback) {
-    $.ajax({
+    axios({
       method: 'POST',
       url: this.baseURI,
       headers: {
@@ -27,9 +19,9 @@ class GoogleSheetClient {
         'Access-Control-Allow-Origin': '*'
       },
       data: JSON.stringify(data)
-    }).done((result) => {
-      callback(null, result)
-    }).fail(() => {
+    }).then((result) => {
+      callback(null, result.data)
+    }).catch(() => {
       callback(new Error('Unable to create a spreadsheet'))
     })
   }
@@ -84,7 +76,7 @@ class GoogleSheetClient {
   }
 
   getSpreadsheet (spreadsheetId, callback) {
-    $.ajax({
+    axios({
       async: true,
       crossDomain: true,
       method: 'GET',
@@ -96,9 +88,9 @@ class GoogleSheetClient {
       data: {
         includeGridData: true
       }
-    }).done((result) => {
-      callback(null, result)
-    }).fail(() => {
+    }).then((result) => {
+      callback(null, result.data)
+    }).catch(() => {
       callback(new Error('Unable to retrieve gsheet'))
     })
   }
@@ -134,7 +126,7 @@ class GoogleSheetClient {
 
   batchUpdate (data, callback) {
     //  TODO Pass this call to axios
-    $.ajax({
+    axios({
       async: true,
       crossDomain: true,
       method: 'POST',
@@ -146,12 +138,12 @@ class GoogleSheetClient {
       data: JSON.stringify({
         requests: data.requests
       })
-    }).done(() => {
+    }).then(() => {
       // TODO Manage responses
       if (_.isFunction(callback)) {
         callback(null)
       }
-    }).fail((xhr, textStatus) => {
+    }).catch((xhr, textStatus) => {
       if (_.isFunction(callback)) {
         callback(new Error('Error in batch update, error: ' + textStatus))
       }

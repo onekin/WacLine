@@ -63,7 +63,7 @@ class TextSummary {
     })
 
     window.abwa.sidebar.closeSidebar()
-    const reviewPageURL = chrome.extension.getURL('pages/specific/reviewEditor.html')
+    const reviewPageURL = chrome.runtime.getURL('pages/specific/reviewEditor.html')
     axios.get(reviewPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
       document.querySelector('#abwaSidebarButton').style.display = 'none'

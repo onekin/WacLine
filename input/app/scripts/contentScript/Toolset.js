@@ -44,7 +44,7 @@ import ChecklistReview from '../annotationManagement/read/ChecklistReview'
 
 class Toolset {
   constructor () {
-    this.page = chrome.extension.getURL('pages/sidebar/toolset.html')
+    this.page = chrome.runtime.getURL('pages/sidebar/toolset.html')
     // PVSCL:IFCOND(AuthorsSearch, LINE)
     // TODO @inigoBereciartua review if this event still exists
     this.events = {}
@@ -73,7 +73,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(AnnotatedPDF, LINE)
       // Set screenshot image
-      const screenshotImageUrl = chrome.extension.getURL('/images/screenshot.png')
+      const screenshotImageUrl = chrome.runtime.getURL('/images/screenshot.png')
       this.screenshotImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.screenshotImage.src = screenshotImageUrl
       this.screenshotImage.title = 'Take a screenshot of the current document' // TODO i18n
@@ -84,7 +84,7 @@ class Toolset {
       // PVSCL:ENDCOND
 
       // PVSCL:IFCOND(ImportChecklist, LINE)
-      const essentialChecklistImageUrl = chrome.extension.getURL('/images/essentialChecklist.png')
+      const essentialChecklistImageUrl = chrome.runtime.getURL('/images/essentialChecklist.png')
       this.essentialChecklistImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.essentialChecklistImage.src = essentialChecklistImageUrl
       this.essentialChecklistImage.id = 'essentialChecklistButton'
@@ -96,7 +96,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(Canvas, LINE)
       // Set Canvas image
-      const canvasImageUrl = chrome.extension.getURL('/images/overview.png')
+      const canvasImageUrl = chrome.runtime.getURL('/images/overview.png')
       this.canvasImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.canvasImage.src = canvasImageUrl
       this.canvasImage.title = 'Generate canvas' // TODO i18n
@@ -108,7 +108,7 @@ class Toolset {
       // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
       // TODO @inigoBereciartua review if importchecklist should be added or not in PV clause
       // Set TextSummary image
-      const textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
+      const textSummaryImageUrl = chrome.runtime.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.textSummaryImage.src = textSummaryImageUrl
       this.textSummaryImage.title = 'Generate review report' // TODO i18n
@@ -119,7 +119,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(DeleteAll, LINE)
       // Set DeleteAll image
-      const deleteGroupImageUrl = chrome.extension.getURL('/images/deleteAnnotations.png')
+      const deleteGroupImageUrl = chrome.runtime.getURL('/images/deleteAnnotations.png')
       this.deleteGroupImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.deleteGroupImage.src = deleteGroupImageUrl
       this.deleteGroupImage.title = 'Delete all annotations in document' // TODO i18n
@@ -130,7 +130,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(LastAnnotation, LINE)
       // Set GoToLast image
-      const goToLastImageUrl = chrome.extension.getURL('/images/resume.png')
+      const goToLastImageUrl = chrome.runtime.getURL('/images/resume.png')
       this.goToLastImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.goToLastImage.src = goToLastImageUrl
       this.goToLastImage.title = 'Go to last annotation' // TODO i18n
@@ -141,7 +141,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(GoogleSheetConsumer, LINE)
       // Set Spreadsheet generation image
-      const googleSheetImageUrl = chrome.extension.getURL('/images/googleSheet.svg')
+      const googleSheetImageUrl = chrome.runtime.getURL('/images/googleSheet.svg')
       this.googleSheetImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.googleSheetImage.src = googleSheetImageUrl
       this.googleSheetImage.title = 'Go to a spreadsheet with classified content' // TODO i18n
@@ -164,7 +164,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(MoodleReport, LINE)
       // Set back to moodle icon
-      const moodleImageUrl = chrome.extension.getURL('/images/moodle.svg')
+      const moodleImageUrl = chrome.runtime.getURL('/images/moodle.svg')
       this.moodleImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.moodleImage.src = moodleImageUrl
       this.moodleImage.title = 'Back to moodle' // TODO i18n
@@ -176,7 +176,7 @@ class Toolset {
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(AnnotationList, LINE)
       // Set annotation list image
-      const annotationListImageUrl = chrome.extension.getURL('/images/annotationList.png')
+      const annotationListImageUrl = chrome.runtime.getURL('/images/annotationList.png')
       this.annotationListImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.annotationListImage.src = annotationListImageUrl
       this.annotationListImage.title = 'Go to annotation list' // TODO i18n
@@ -186,7 +186,7 @@ class Toolset {
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(JSON OR ImportAnnotations, LINE)
-      const exportImportImageUrl = chrome.extension.getURL('/images/importExport.png')
+      const exportImportImageUrl = chrome.runtime.getURL('/images/importExport.png')
       this.exportImportImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.exportImportImage.src = exportImportImageUrl
       this.exportImportImage.id = 'importExportButton'
@@ -197,7 +197,7 @@ class Toolset {
       // PVSCL:ENDCOND
 
       // PVSCL:IFCOND(ImportChecklist, LINE)
-      const checklistImageUrl = chrome.extension.getURL('/images/methods.png')
+      const checklistImageUrl = chrome.runtime.getURL('/images/methods.png')
       this.checklistImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.checklistImage.src = checklistImageUrl
       this.checklistImage.id = 'checklistButton'
@@ -208,10 +208,10 @@ class Toolset {
       this.toolsetBody.appendChild(this.checklistImage)
       // PVSCL:ENDCOND
       // Add link to configuration page of the tool
-      this.toolsetHeader.querySelector('#appNameBadge').href = chrome.extension.getURL('/pages/options.html')
-      this.toolsetHeader.querySelector('#sidebarConfigButton').src = chrome.extension.getURL('/images/configuration.png')
+      this.toolsetHeader.querySelector('#appNameBadge').href = chrome.runtime.getURL('/pages/options.html')
+      this.toolsetHeader.querySelector('#sidebarConfigButton').src = chrome.runtime.getURL('/images/configuration.png')
       this.toolsetHeader.querySelector('#sidebarConfigButton').addEventListener('click', () => {
-        window.open(chrome.extension.getURL('/pages/options.html'))
+        window.open(chrome.runtime.getURL('/pages/options.html'))
       })
       // Check if exist any element in the tools and show it
       if (!_.isEmpty(this.toolsetBody.innerHTML)) {
@@ -340,7 +340,7 @@ class Toolset {
   congressLoadedEventHandler () {
     return () => {
       const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
-      const authorsInfoImageUrl = chrome.extension.getURL('/images/authors.png')
+      const authorsInfoImageUrl = chrome.runtime.getURL('/images/authors.png')
       this.authorsInfoImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.authorsInfoImage.src = authorsInfoImageUrl
       this.authorsInfoImage.title = 'Get authors information' // TODO i18n

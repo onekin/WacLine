@@ -1,6 +1,5 @@
 'use strict'
 
-import jQuery from 'jquery'
 import _ from 'lodash'
 
 class LanguageUtils {
@@ -19,7 +18,7 @@ class LanguageUtils {
    * @returns {*|boolean}
    */
   static isEmptyObject (obj) {
-    return jQuery.isEmptyObject(obj)
+    return _.isEmpty(obj)
   }
 
   /**

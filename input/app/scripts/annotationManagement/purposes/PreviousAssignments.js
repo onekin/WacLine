@@ -94,7 +94,7 @@ class PreviousAssignments {
       previousAssignmentElement.appendChild(previousAssignmentLinkElement)
       // Create previous assignment append img
       const previousAssignmentAppendElement = document.createElement('img')
-      previousAssignmentAppendElement.src = chrome.extension.getURL('images/append.png')
+      previousAssignmentAppendElement.src = chrome.runtime.getURL('images/append.png')
       previousAssignmentAppendElement.title = 'Append the assignment URL'
       previousAssignmentAppendElement.className = 'previousAssignmentAppendButton'
       if (window.abwa.rolesManager.role === Config.tags.producer) {

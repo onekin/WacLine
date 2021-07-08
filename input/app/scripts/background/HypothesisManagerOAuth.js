@@ -1,4 +1,4 @@
-import $ from 'jquery'
+import axios from 'axios'
 import _ from 'lodash'
 
 import ChromeStorage from '../utils/ChromeStorage'
@@ -195,9 +195,11 @@ class HypothesisManagerOAuth {
       url: 'https://hypothes.is/account/profile',
       method: 'GET'
     }
-    $.ajax(callSettings).done((resultString) => {
+    axios(callSettings).catch((error) => {
+      callback(error)
+    }).then((resultString) => {
       let tempWrapper = document.createElement('div')
-      tempWrapper.innerHTML = resultString
+      tempWrapper.innerHTML = resultString.data
       try {
         callback(null, {
           displayName: tempWrapper.querySelector('[name="display_name"]').value,
@@ -209,8 +211,6 @@ class HypothesisManagerOAuth {
       } catch (e) {
         callback(e)
       }
-    }).fail((error) => {
-      callback(error)
     })
   }
 

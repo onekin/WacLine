@@ -63,14 +63,14 @@ class DOMTextUtils {
           const nodesBetween = nodes
           // Start node
           const startWrapper = document.createElement('mark')
-          $(startWrapper).addClass(className)
+          startWrapper.classList.add(className)
           startWrapper.dataset.annotationId = id
           startWrapper.dataset.startNode = ''
           startWrapper.dataset.highlightClassName = className
           DOMTextUtils.wrapNodeContent(startNode, startWrapper, range.startOffset, startNode.nodeValue.length)
           // End node
           const endWrapper = document.createElement('mark')
-          $(endWrapper).addClass(className)
+          endWrapper.classList.add(className)
           endWrapper.dataset.annotationId = id
           endWrapper.dataset.endNode = ''
           endWrapper.dataset.highlightClassName = className
@@ -81,17 +81,17 @@ class DOMTextUtils {
             for (let i = 0; i < leafNodes.length; i++) {
               if (leafNodes[i].textContent.length > 0 && (leafNodes[i].parentNode !== endNode && leafNodes[i].parentNode !== startNode)) {
                 const wrapper = document.createElement('mark')
-                $(wrapper).addClass(className)
+                wrapper.classList.add(className)
                 wrapper.dataset.annotationId = id
                 wrapper.dataset.endNode = ''
                 wrapper.dataset.highlightClassName = className
-                $(leafNodes[i]).wrap(wrapper)
+                wrapper.appendChild(leafNodes[i])
               }
             }
           })
         } else {
           const wrapper = document.createElement('mark')
-          $(wrapper).addClass(className)
+          wrapper.classList.add(className)
           wrapper.dataset.highlightClassName = className
           wrapper.dataset.annotationId = id
           DOMTextUtils.wrapNodeContent(startNode, wrapper, range.startOffset, range.endOffset)
@@ -338,7 +338,14 @@ class DOMTextUtils {
     const span = document.createElement('span')
     span.innerHTML = newNode
     oldNode.replaceWith(span)
-    $(span.childNodes).unwrap()
+    span.childNodes.forEach(el => {
+      let elParentNode = el.parentNode
+      if (elParentNode !== document.body) {
+        elParentNode.parentNode.insertBefore(el, elParentNode)
+        elParentNode.parentNode.removeChild(elParentNode)
+      }
+    })
+
   }
 
   static retrieveFirstTextNode (element) {

@@ -24,7 +24,7 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 
   init (callback) {
-    if (window.background) {
+    if (typeof window === 'undefined') {
       this.reloadClient(() => {
         // Start reloading of client
         this.reloadInterval = setInterval(() => {
@@ -49,45 +49,26 @@ class HypothesisClientManager extends AnnotationServerManager {
   }
 
   reloadClient (callback) {
-    if (_.has(window.background, 'hypothesisManager')) {
-      window.background.hypothesisManager.retrieveHypothesisToken((err, token) => {
-        if (err) {
-          this.client = new HypothesisClient()
-          this.hypothesisToken = null
-        } else {
+    chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
+      if (this.hypothesisToken !== token) {
+        this.hypothesisToken = token
+        if (this.hypothesisToken) {
           this.client = new HypothesisClient(token)
-          this.hypothesisToken = token
+        } else {
+          this.client = new HypothesisClient()
         }
-        if (_.isFunction(callback)) {
-          callback()
-        }
-      })
-    } else {
-      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
-        if (this.hypothesisToken !== token) {
-          this.hypothesisToken = token
-          if (this.hypothesisToken) {
-            this.client = new HypothesisClient(token)
-          } else {
-            this.client = new HypothesisClient()
-          }
-        }
-        if (_.isFunction(callback)) {
-          callback()
-        }
-      })
-    }
+      }
+      if (_.isFunction(callback)) {
+        callback()
+      }
+    })
   }
 
   isLoggedIn (callback) {
     if (_.isFunction(callback)) {
-      if (_.has(window.background, 'hypothesisManager.hypothesisManagerOAuth.tokens')) {
-        callback(null, _.isString(window.background.hypothesisManager.hypothesisManagerOAuth.tokens.accessToken))
-      } else {
-        chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
-          callback(null, !_.isEmpty(token))
-        })
-      }
+      chrome.runtime.sendMessage({ scope: 'hypothesis', cmd: 'getToken' }, ({ token }) => {
+        callback(null, !_.isEmpty(token))
+      })
     }
   }
 

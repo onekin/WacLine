@@ -68,7 +68,7 @@ class BrowserStorageManager extends AnnotationServerManager {
 
   constructSearchUrl (obj) {
     const hashParam = URLUtils.objectToParams(obj)
-    return chrome.extension.getURL('content/browserStorage/browserStorageSearch.html') + '#' + hashParam
+    return chrome.runtime.getURL('content/browserStorage/browserStorageSearch.html') + '#' + hashParam
   }
 
   cleanDatabase (callback) {

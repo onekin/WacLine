@@ -52,7 +52,7 @@ class UserFilter {
   }
 
   initUserFilterStructure (callback) {
-    const tagWrapperUrl = chrome.extension.getURL('pages/sidebar/userFilterWrapper.html')
+    const tagWrapperUrl = chrome.runtime.getURL('pages/sidebar/userFilterWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       this.sidebarContainer = document.querySelector('#abwaSidebarContainer')
       // Insert user filter after toolset

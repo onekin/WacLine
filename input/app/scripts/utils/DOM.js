@@ -1,3 +1,4 @@
+import axios from 'axios'
 import $ from 'jquery'
 
 class DOM {
@@ -31,9 +32,9 @@ class DOM {
    * @param callback
    */
   static scrapElement (callSettings, querySelector, callback) {
-    $.ajax(callSettings).done((resultString) => {
-      callback(null, DOM.getNodeFromHTMLStringDOM(resultString, querySelector))
-    }).fail((error) => {
+    axios(callSettings).then((resultString) => {
+      callback(null, DOM.getNodeFromHTMLStringDOM(resultString.data, querySelector))
+    }).catch((error) => {
       callback(error)
     })
   }

@@ -26,7 +26,7 @@ class ChecklistReview {
 
     const checklist = checklistAnnotation.body[0].value
 
-    const canvasPageURL = chrome.extension.getURL('pages/specific/checklistCanvas.html')
+    const canvasPageURL = chrome.runtime.getURL('pages/specific/checklistCanvas.html')
 
     axios.get(canvasPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
@@ -97,7 +97,7 @@ class ChecklistReview {
    * and the posibility to 'pass', 'fail' or 'undefine' the item.
    */
   static generateItemReview (checklistAnnotation, type, chosenCode) {
-    const itemPageURL = chrome.extension.getURL('pages/specific/checklistItem.html')
+    const itemPageURL = chrome.runtime.getURL('pages/specific/checklistItem.html')
     let newStatus = chosenCode.status
     axios.get(itemPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)

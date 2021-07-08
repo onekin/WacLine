@@ -227,7 +227,7 @@ class ImportChecklist {
    */
   askUserToChooseChecklist (filter, callback) {
     window.abwa.sidebar.closeSidebar()
-    const canvasPageURL = chrome.extension.getURL('pages/specific/chooseChecklist.html')
+    const canvasPageURL = chrome.runtime.getURL('pages/specific/chooseChecklist.html')
     const checklistAnnotations = ImportChecklist.getChecklistsAnnotations()
     axios.get(canvasPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
@@ -302,7 +302,7 @@ class ImportChecklist {
 
   askUserToChooseCriteria (method, callback) {
     window.abwa.sidebar.closeSidebar()
-    const canvasPageURL = chrome.extension.getURL('pages/specific/chooseCriteria.html')
+    const canvasPageURL = chrome.runtime.getURL('pages/specific/chooseCriteria.html')
     axios.get(canvasPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
       document.querySelector('#abwaSidebarButton').style.display = 'none'

@@ -3,15 +3,13 @@
   "short_name": "__MSG_appShortName__",
   "description": "__MSG_appDescription__",
   "version": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appVersion'))",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "default_locale": "en",
   "icons": {
     "256": "images/PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))/icon-512.png"
   },
   "background": {
-    "scripts": [
-      "scripts/background.js"
-    ]
+    "service_worker" : "scripts/background.js"
   },
   "content_scripts": [
     {
@@ -85,30 +83,33 @@
       "run_at": "document_end"
     }PVSCL:ENDCOND
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-  "page_action": {
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "action": {
     "default_icon": "images/PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))/icon-38-bw.png",
     "default_title": "__MSG_browserActionTitle__"
   },
   "options_page": "pages/options.html",
   "options_ui": {
     "page": "pages/options.html",
-    "chrome_style": false,
     "open_in_tab": true
   },
   "permissions": [
-    "https://hypothes.is/",
     "activeTab",
     "storage"PVSCL:IFCOND(GoogleSheetAnnotationServer),
     "identity.email"PVSCL:ENDCONDPVSCL:IFCOND(GoogleSheetProvider OR GoogleSheetConsumer),
     "identity"PVSCL:ENDCONDPVSCL:IFCOND(URN),
     "downloads",
-    "notifications",
-    "file://*/*"PVSCL:ENDCONDPVSCL:IFCOND(URL),
+    "notifications"PVSCL:ENDCONDPVSCL:IFCOND(URL),
     "contextMenus"PVSCL:IFCOND(Dropbox or ScienceDirect or ACM or IEEE or Springer),
     "webRequest",
     "tabs",
-    "webRequestBlocking"PVSCL:ENDCONDPVSCL:ENDCONDPVSCL:IFCOND(DOI),
+    "declarativeNetRequest"PVSCL:ENDCONDPVSCL:ENDCOND
+  ],
+  "host_permissions": [
+    "https://hypothes.is/"PVSCL:IFCOND(URN),
+    "file://*/*"PVSCL:ENDCONDPVSCL:IFCOND(DOI),
     "*://doi.org/*",
     "*://dx.doi.org/*"PVSCL:ENDCONDPVSCL:IFCOND(ScienceDirect),
     "*://www.sciencedirect.com/science/article/pii/*"PVSCL:ENDCONDPVSCL:IFCOND(Dropbox),
@@ -129,7 +130,11 @@
     ]
   },
   PVSCL:ENDCOND
-  "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]PVSCL:IFCOND(WebAnnotator.WebAnnotationClient->pv:Attribute('key')<>''),
-  "key": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('key'))"
-  PVSCL:ENDCOND
+  "web_accessible_resources": [
+    {
+      "resources": ["pages/*.html", "content/*", "images/*"],
+      "matches": ["*://*/*"]
+    }
+  ]PVSCL:IFCOND(WebAnnotator.WebAnnotationClient->pv:Attribute('key')<>''),
+  "key": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('key'))"PVSCL:ENDCOND
 }

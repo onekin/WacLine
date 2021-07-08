@@ -60,17 +60,17 @@ class MoodleDownloadManager {
       // Download is pending
       if (this.files[downloadItem.id] && downloadItem.filename && downloadItem.filename.current) {
         // Save download file path
-        const files = _.values(_.forIn(window.background.moodleDownloadManager.files, (file, key) => { file.key = key }))
+        const files = _.values(_.forIn(this.moodleDownloadManager.files, (file, key) => { file.key = key }))
         if (downloadItem.filename.current.startsWith('/')) { // Unix-based filesystem
           const repeatedLocalFiles = _.filter(files, (file) => { return file.localPath === encodeURI('file://' + downloadItem.filename.current) })
           _.forEach(repeatedLocalFiles, (repeatedLocalFiles) => {
-            delete window.background.moodleDownloadManager.files[repeatedLocalFiles.key]
+            delete this.moodleDownloadManager.files[repeatedLocalFiles.key]
           })
           this.files[downloadItem.id].localPath = encodeURI('file://' + downloadItem.filename.current)
         } else { // Windows-based filesystem
           const repeatedLocalFiles = _.filter(files, (file) => { return file.localPath === encodeURI('file:///' + _.replace(downloadItem.filename.current, /\\/g, '/')) })
           _.forEach(repeatedLocalFiles, (repeatedLocalFiles) => {
-            delete window.background.moodleDownloadManager.files[repeatedLocalFiles.key]
+            delete this.moodleDownloadManager.files[repeatedLocalFiles.key]
           })
           this.files[downloadItem.id].localPath = encodeURI('file:///' + _.replace(downloadItem.filename.current, /\\/g, '/'))
         }

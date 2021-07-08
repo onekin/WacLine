@@ -295,7 +295,7 @@ class GroupSelector {
   }
 
   checkIsLoggedIn (callback) {
-    const sidebarURL = chrome.extension.getURL('pages/sidebar/groupSelection.html')
+    const sidebarURL = chrome.runtime.getURL('pages/sidebar/groupSelection.html')
     $.get(sidebarURL, (html) => {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))
@@ -350,7 +350,7 @@ class GroupSelector {
             $('#neo4jLoginContainer').attr('aria-hidden', 'false')
           }
           // Add to configuration link the URL to options page that is dynamic depending on the extension ID
-          document.getElementById('configurationPageUrlForNeo4jLogin').href = chrome.extension.getURL('pages/options.html')
+          document.getElementById('configurationPageUrlForNeo4jLogin').href = chrome.runtime.getURL('pages/options.html')
           // PVSCL:ENDCOND
           if (_.isFunction(callback)) {
             callback(new Error('Is not logged in'))
@@ -656,7 +656,7 @@ class GroupSelector {
       if (window.abwa.annotationServerManager instanceof BrowserStorageManager) {
         Alerts.warningAlert({
           title: 'Unshareable group',
-          text: 'Remember that you have selected browser storage to store your annotations, making not possible to share them with others via an URL. Please check the <a target="_blank" href="' + chrome.extension.getURL('pages/options.html') + '">options page</a> for sharing options.'
+          text: 'Remember that you have selected browser storage to store your annotations, making not possible to share them with others via an URL. Please check the <a target="_blank" href="' + chrome.runtime.getURL('pages/options.html') + '">options page</a> for sharing options.'
         })
       } else {
         this.openGroupShareAlert(group)

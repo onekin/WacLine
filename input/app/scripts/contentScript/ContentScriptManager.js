@@ -499,7 +499,7 @@ class ContentScriptManager {
         })
       } else {
         const Alerts = require('../utils/Alerts').default
-        Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in <a href="' + chrome.extension.getURL('pages/options.html') + '">options page</a>.' })
+        Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in <a href="' + chrome.runtime.getURL('pages/options.html') + '">options page</a>.' })
       }
     })
     // PVSCL:ENDCOND

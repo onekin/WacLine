@@ -9,7 +9,7 @@ window.addEventListener('load', () => {
     console.log('Deactivated popup')
   })
   // When popup button is clicked
-  chrome.extension.onMessage.addListener((msg, sender, sendResponse) => {
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (_.isEmpty(window.mag)) {
       if (msg.action === 'initContentScript') {
         window.mag = {}

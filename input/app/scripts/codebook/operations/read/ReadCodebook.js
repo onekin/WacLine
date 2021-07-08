@@ -152,7 +152,7 @@ class ReadCodebook {
    * @param callback
    */
   initCodebookStructure (callback) {
-    const tagWrapperUrl = chrome.extension.getURL('pages/sidebar/tagWrapper.html')
+    const tagWrapperUrl = chrome.runtime.getURL('pages/sidebar/tagWrapper.html')
     $.get(tagWrapperUrl, (html) => {
       $('#abwaSidebarContainer').append($.parseHTML(html))
       this.buttonContainer = document.querySelector('#buttonContainer')

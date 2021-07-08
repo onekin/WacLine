@@ -28,7 +28,7 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
   }
 
   reloadClient (callback) {
-    if (window.background) {
+    if (typeof window === 'undefined') {
       this.isLoggedIn((err, isLogged) => {
         if (err) {
           if (_.isFunction(callback)) {
@@ -63,25 +63,13 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
 
   isLoggedIn (callback) {
     if (_.isFunction(callback)) {
-      if (window.background) {
-        if (window.background.googleSheetAnnotationManager.annotationServerManager.client) {
-          if (_.has(window.background, 'googleSheetAnnotationManager.annotationServerManager.googleToken')) {
-            GoogleSheetsManager.checkTokenIsStillActive(window.background.googleSheetAnnotationManager.annotationServerManager.googleToken, callback)
-          } else {
-            callback(null, false)
-          }
+      chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'isLoggedIn' }, (isLoggedIn) => {
+        if (isLoggedIn.error) {
+          callback(isLoggedIn.error)
         } else {
-          callback(null, false)
+          callback(null, isLoggedIn)
         }
-      } else {
-        chrome.runtime.sendMessage({ scope: 'googleSheetAnnotation', cmd: 'isLoggedIn' }, (isLoggedIn) => {
-          if (isLoggedIn.error) {
-            callback(isLoggedIn.error)
-          } else {
-            callback(null, isLoggedIn)
-          }
-        })
-      }
+      })
     }
   }
 
@@ -90,7 +78,8 @@ class GoogleSheetAnnotationClientManager extends AnnotationServerManager {
   }
 
   logIn ({ interactive = true }, callback) {
-    if (window.background) {
+    debugger
+    if (typeof window === 'undefined') {
       chrome.identity.getAuthToken({ interactive: interactive }, (token) => {
         if (chrome.runtime.lastError) {
           callback(chrome.runtime.lastError)

@@ -11,7 +11,7 @@ class Sidebar {
   }
 
   initSidebarStructure (callback) {
-    const sidebarURL = chrome.extension.getURL('pages/sidebar/sidebar.html')
+    const sidebarURL = chrome.runtime.getURL('pages/sidebar/sidebar.html')
     $.get(sidebarURL, (html) => {
       this.waitUntilBodyLoads(() => {
         // Append sidebar to content

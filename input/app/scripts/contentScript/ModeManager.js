@@ -37,7 +37,7 @@ class ModeManager {
   }
 
   loadSidebarToggle (callback) {
-    const sidebarURL = chrome.extension.getURL('pages/sidebar/annotatorMode.html')
+    const sidebarURL = chrome.runtime.getURL('pages/sidebar/annotatorMode.html')
     $.get(sidebarURL, (html) => {
       // Append sidebar to content
       $('#abwaSidebarContainer').append($.parseHTML(html))

@@ -72,7 +72,7 @@ class Neo4JClientManager extends AnnotationServerManager {
       callback: () => {
         Alerts.loadingAlert({ text: 'Waiting for neo4j credentials in the login tab.' })
         // Open new tab with configuration
-        const neo4jConfigurationWindow = window.open(chrome.extension.getURL('pages/options.html#neo4jConfiguration'))
+        const neo4jConfigurationWindow = window.open(chrome.runtime.getURL('pages/options.html#neo4jConfiguration'))
         // Interval until correctly logged in
         this.isLoggedInInterval = setInterval(() => {
           if (neo4jConfigurationWindow.closed) {

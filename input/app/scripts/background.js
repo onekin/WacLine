@@ -98,7 +98,7 @@ class Background {
 
     // PVSCL:ENDCOND
     // Initialize page_action event handler
-    chrome.pageAction.onClicked.addListener((tab) => {
+    chrome.action.onClicked.addListener((tab) => {
       // PVSCL:IFCOND(URN, LINE)
       // Check if current tab is a local file
       if (tab.url.startsWith('file://')) {
@@ -183,5 +183,7 @@ class Background {
   }
 }
 
-window.background = new Background()
-window.background.init()
+chrome.runtime.onStartup(() => {
+  let background = new Background()
+  background.init()
+})

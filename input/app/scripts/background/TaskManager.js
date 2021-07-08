@@ -131,7 +131,7 @@ class TaskManager {
       type: 'basic',
       title: 'Configuration done',
       message: notification,
-      iconUrl: chrome.extension.getURL('images/' + Config.urlParamName + '/icon-512.png'),
+      iconUrl: chrome.runtime.getURL('images/' + Config.urlParamName + '/icon-512.png'),
       buttons: [
         { title: 'Yes' }]
     }, () => {

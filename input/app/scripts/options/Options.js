@@ -12,7 +12,7 @@ import URLUtils from '../utils/URLUtils'
 class Options {
   init () {
     // Rate us, manual and contact initialization
-    document.querySelector('#chromeStoreLink').href = 'https://chrome.google.com/webstore/detail/' + (new URL(chrome.extension.getURL(''))).host
+    document.querySelector('#chromeStoreLink').href = 'https://chrome.google.com/webstore/detail/' + (new URL(chrome.runtime.getURL(''))).host
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1, LINE)
     // annotationServer type
     document.querySelector('#annotationServerDropdown').addEventListener('change', (event) => {
@@ -31,7 +31,7 @@ class Options {
     // PVSCL:IFCOND(BrowserStorage,LINE)
     // Browser annotationServer view annotations
     document.querySelector('#viewAnnotationsButton').addEventListener('click', () => {
-      window.open(chrome.extension.getURL('content/browserStorage/browserStorageSearch.html#'))
+      window.open(chrome.runtime.getURL('content/browserStorage/browserStorageSearch.html#'))
     })
     // Browser annotationServer restore
     document.querySelector('#restoreDatabaseButton').addEventListener('click', () => {
