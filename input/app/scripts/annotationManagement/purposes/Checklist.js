@@ -1,3 +1,4 @@
+import ChecklistReview from '../read/ChecklistReview'
 import Body from './Body'
 
 class Checklist extends Body {
@@ -26,31 +27,6 @@ class Checklist extends Body {
     return 'Checklist: ' + this.value.name
   }
 
-  toString () {
-    let str = '\t--' + this.value.name + '--\n'
-    this.value.definition.forEach((group) => {
-      str += '\n\t' + group.name + ':\n'
-      group.codes.sort((a, b) => {
-        if (a.status === 'passed') return -1
-        if (b.status === 'passed') return 1
-        if (a.status === 'failed') return -1
-        if (b.status === 'failed') return 1
-        return 0
-      })
-      group.codes.forEach((code) => {
-        let status = ''
-        if (code.status === 'passed') {
-          status = '✓'
-        } else if (code.status === 'failed') {
-          status = 'X'
-        } else {
-          status = '?'
-        }
-        str += '\t [' + status + ']-' + code.name + '\n'
-      })
-    })
-    return str
-  }
 }
 
 Checklist.purpose = 'checklist'

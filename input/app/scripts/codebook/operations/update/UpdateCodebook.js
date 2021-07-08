@@ -12,6 +12,7 @@ import LanguageUtils from '../../../utils/LanguageUtils'
 import CreateAnnotation from '../../../annotationManagement/create/CreateAnnotation'
 // PVSCL:IFCOND(ImportChecklist, LINE)
 import ImportChecklist from '../import/ImportChecklist'
+import ChecklistReview from '../../../annotationManagement/read/ChecklistReview'
 // PVSCL:ENDCOND
 
 
@@ -388,12 +389,9 @@ class UpdateCodebook {
               }
               checklistAnnotation.body[0].value.definition.push(checklistDef)
             }
-            
             LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
               annotation: checklistAnnotation
             })
-
-
             LanguageUtils.dispatchCustomEvent(Events.codesCreated, { newCodesAnnotations: annotations, theme: theme })
           }
         })
@@ -490,22 +488,20 @@ class UpdateCodebook {
   removeCriteriaEventHandler () {
     return (event) => {
       const code = event.detail.code
-      let checklist = event.detail.checklist
+      const validationsAnnotation = ChecklistReview.getChecklistsvalidationAnnotation()
       // Ask user is sure to remove
       Alerts.confirmAlert({
         title: 'Removing criteria ' + code.name,
-        text: 'Are you sure that you want to remove the criteria ' + code.name + ' for ' + checklist.body[0].value.name + ' checklist? You cannot undo this operation.',
+        text: 'Are you sure that you want to remove the criteria ' + code.name + ' for ' + validationsAnnotation.body[0].value.name + ' checklist? You cannot undo this operation.',
         alertType: Alerts.alertType.warning,
         callback: () => {
           window.abwa.annotationServerManager.client.deleteAnnotation(code.id, (err, result) => {
             if (err) {
               Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
             } else {
-              checklist.body[0].value.definition.forEach((definition) => {
-                definition.codes = definition.codes.filter((defCode) => defCode.name !== code.name)
-              })
+              validationsAnnotation.body[0].value.criteria = validationsAnnotation.body[0].value.criteria.filter((defCode) => defCode.id !== code.id)
               LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-                annotation: checklist
+                annotation: validationsAnnotation
               })
               LanguageUtils.dispatchCustomEvent(Events.codeRemoved, { code: code })
             }

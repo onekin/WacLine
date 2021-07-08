@@ -6,15 +6,16 @@ import Checklists from './Checklists'
 import Config from '../../../Config'
 
 import LanguageUtils from '../../../utils/LanguageUtils'
+// PVSCL:IFCOND(EmpiricalStandard, LINE)
 import Checklist from '../../../annotationManagement/purposes/Checklist'
-import KeywordBasedAnnotation from '../../../annotationManagement/create/KeywordBasedAnnotation'
+// PVSCL:ENDCOND
 import axios from 'axios'
 // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+import KeywordBasedAnnotation from '../../../annotationManagement/create/KeywordBasedAnnotation'
 import MethodsKeywords from '../../../annotationManagement/purposes/MethodsKeywords'
 import ReadCodebook from '../read/ReadCodebook'
-import ChecklistValidation from '../../../annotationManagement/purposes/ChecklistValidation'
-import ChecklistReview from '../../../annotationManagement/read/ChecklistReview'
 // PVSCL:ENDCOND
+import ChecklistReview from '../../../annotationManagement/read/ChecklistReview'
 
 class ImportChecklist {
 
@@ -365,8 +366,10 @@ class ImportChecklist {
    */
   saveChecklistsMethodsData () {
     const numMethods = this.getNumOfMethods()
-    console.log(numMethods)
-    Checklists.groups.forEach((group) => {
+    // PVSCL: IFCOND(EmpiricalStandard, LINE)
+    const checklists = Checklists
+    // PVSCL: ENDCOND
+    checklists.groups.forEach((group) => {
       group.methods.forEach((method) => {
         let newMethod = {
           groupName: group.name,

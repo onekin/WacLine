@@ -750,7 +750,7 @@ class ReadCodebook {
             }
             // PVSCL:IFCOND(ImportChecklist, LINE)
             if (key === 'removeCriteria') {
-              LanguageUtils.dispatchCustomEvent(Events.removeCriteria, { checklist: themeChecklist, code: code })
+              LanguageUtils.dispatchCustomEvent(Events.removeCriteria, { code: code })
             }
             // PVSCL:ENDCOND
             // PVSCL:ENDCOND
@@ -935,7 +935,7 @@ class ReadCodebook {
       let themeName = 'Essential'
       let newTheme
       let themeDescription
-      
+
       if (!codebook.getThemeByName(themeName)) {
         themeDescription = 'Theme which includes the essential criteria to evaluate the document'
         newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
