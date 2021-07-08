@@ -278,8 +278,9 @@ class UpdateCodebook {
         text: 'Are you sure that you want to remove the checklist ' + theme.name + '? You cannot undo this operation.',
         alertType: Alerts.alertType.warning,
         callback: () => {
+          // TODO: @inigoBereciartua edit, cannot remove one checklist
           let annotationsToDelete = [theme.id]
-          const themeChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
+          const themeChecklist = ImportChecklist.getChecklistsAnnotation().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
           // Get theme codes id to be removed too
           const codesId = _.map(theme.codes, (code) => { return code.id })
           if (_.every(codesId, _.isString)) {
@@ -358,6 +359,7 @@ class UpdateCodebook {
   createCodesEventHandler () {
     return (event) => {
       const theme = event.detail.theme
+      const checklistInfo = event.detail.checklistInfo
       if (!LanguageUtils.isInstanceOf(theme, Theme)) {
         Alerts.errorAlert({ text: 'An error has ocurred creating codes.' })
       } else {
@@ -372,6 +374,26 @@ class UpdateCodebook {
           if (err) {
             Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })
           } else {
+            const newCodes = annotations.map(code => code.id)
+            const checklistAnnotation = ImportChecklist.getChecklistsAnnotation()
+            const checklistBody = checklistAnnotation.body[0].value
+            const checklist = checklistBody.definition.find((checklist) => checklist.name === checklistInfo.name)
+            if (checklist) {
+              checklist.codes = checklist.codes.concat(newCodes)
+            } else {
+              const checklistDef = {
+                name: checklistInfo.name,
+                invalidCriticisms: checklistInfo.invalidCriticisms,
+                codes: newCodes
+              }
+              checklistAnnotation.body[0].value.definition.push(checklistDef)
+            }
+            
+            LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+              annotation: checklistAnnotation
+            })
+
+
             LanguageUtils.dispatchCustomEvent(Events.codesCreated, { newCodesAnnotations: annotations, theme: theme })
           }
         })

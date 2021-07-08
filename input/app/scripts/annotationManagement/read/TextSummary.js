@@ -61,7 +61,7 @@ class TextSummary {
   static generateReviewEditor () {
     let report = TextSummary.generateMergedReport()
     // PVSCL:IFCOND(ImportChecklist,LINE)
-    const checklists = ImportChecklist.getChecklistsAnnotations().map((checklist) => {
+    const checklists = ImportChecklist.getChecklistsAnnotation().map((checklist) => {
       return checklist.body[0].value
     })
     // PVSCL:ENDCOND
@@ -131,7 +131,7 @@ class TextSummary {
 
 
   static generateChecklistsSummary () {
-    const checklistAnnotations = ImportChecklist.getChecklistsAnnotations()
+    const checklistAnnotations = ImportChecklist.getChecklistsAnnotation()
     let summary = ''
     if (checklistAnnotations) {
       summary += 'CHECKLIST:\n\n'
