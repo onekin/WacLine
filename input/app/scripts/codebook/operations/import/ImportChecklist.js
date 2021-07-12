@@ -1,14 +1,14 @@
 import Events from '../../../Events'
 import _ from 'lodash'
 import Alerts from '../../../utils/Alerts'
+// PVSCL:IFCOND(EmpiricalStandardChecklists, LINE)
 import Checklists from './Checklists'
+// PVSCL:ENDCOND
 
 import Config from '../../../Config'
 
 import LanguageUtils from '../../../utils/LanguageUtils'
-// PVSCL:IFCOND(EmpiricalStandard, LINE)
 import Checklist from '../../../annotationManagement/purposes/Checklist'
-// PVSCL:ENDCOND
 import axios from 'axios'
 // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
 import KeywordBasedAnnotation from '../../../annotationManagement/create/KeywordBasedAnnotation'
@@ -210,14 +210,11 @@ class ImportChecklist {
         if (filter && (method.filter ? !method.filter.includes(filter) : true)) {
           filteredMethods.splice(i, 1)
           i--
-        } else {
-          for (let checklist of alreadyChosenChecklists) {
-            if (method.name === checklist.name) {
-              filteredMethods.splice(i, 1)
-              i--
-              break
-            }
-          }
+          continue
+        }
+        if (alreadyChosenChecklists.includes(method.name)) {
+          filteredMethods.splice(i, 1)
+          i--
         }
       }
       // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
@@ -366,9 +363,9 @@ class ImportChecklist {
    */
   saveChecklistsMethodsData () {
     const numMethods = this.getNumOfMethods()
-    // PVSCL: IFCOND(EmpiricalStandard, LINE)
+    // PVSCL:IFCOND(EmpiricalStandardChecklists, LINE)
     const checklists = Checklists
-    // PVSCL: ENDCOND
+    // PVSCL:ENDCOND
     checklists.groups.forEach((group) => {
       group.methods.forEach((method) => {
         let newMethod = {
@@ -383,7 +380,6 @@ class ImportChecklist {
             this.checklistsMethods.methods.push(newMethod)
             if (this.checklistsMethods.methods.length === numMethods) {
               this.saveMethodsData()
-              console.log(this.checklistsMethods.methods)
             }
           })
         } else {
@@ -391,7 +387,6 @@ class ImportChecklist {
           this.checklistsMethods.methods.push(newMethod)
           if (this.checklistsMethods.methods.length === numMethods) {
             this.saveMethodsData()
-            console.log(this.checklistsMethods.methods)
           }
         }
         // PVSCL:ELSECOND
