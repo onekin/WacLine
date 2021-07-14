@@ -192,6 +192,14 @@ class GoogleSheetAnnotationClientInterface {
   reloadCacheDatabase (data, callback) {
     GoogleSheetAnnotationClientInterface.sendCallToBackground('reloadCacheDatabase', data, callback)
   }
+
+  /**
+   * Updates cache for all the spreadsheet of current user
+   * @param callback
+   */
+  reloadWholeCacheDatabase (callback) {
+    GoogleSheetAnnotationClientInterface.sendCallToBackground('reloadWholeCacheDatabase', {}, callback)
+  }
 }
 
 

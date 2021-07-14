@@ -2,6 +2,9 @@ import URLUtils from './utils/URLUtils'
 import Config from './Config'
 import _ from 'lodash'
 import DOI from 'doi-regex'
+import AnnotationServerManagerInitializer from './annotationServer/AnnotationServerManagerInitializer'
+import GoogleSheetAnnotationClientManager
+  from './annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
 
 class ACMContentScript {
   constructor () {
@@ -21,16 +24,14 @@ class ACMContentScript {
     }
     // Add DOI as metadata in webpage
     document.head.insertAdjacentHTML('beforeend', '<meta name="dc.identifier" content="' + this.doi + '">')
-    // TODO Add DOI as param in URL
-    // TODO Check if this still working in ACM new DL
     // Get pdf link element
-    /* const pdfLinkElement = this.getPdfLinkElement()
+    let pdfLinkElement = this.getPdfLinkElement()
     if (pdfLinkElement) {
       // Get if this tab has an annotation to open
       if (!_.isEmpty(params) && !_.isEmpty(params[Config.urlParamName])) {
         // Activate the extension
-        chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, (result) => {
-          console.log('Activated popup')
+        chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, () => {
+          console.debug('Activated popup')
           // Retrieve pdf url
           let pdfUrl = pdfLinkElement.href
           // Create hash with required params to open extension
@@ -40,16 +41,74 @@ class ACMContentScript {
           }
           // Append hash to pdf url
           pdfUrl += hash
-          // Redirect browser to pdf
-          window.location.replace(pdfUrl)
+          pdfLinkElement.href += hash
+          chrome.runtime.sendMessage({
+            scope: 'target',
+            cmd: 'setDoiToTab',
+            data: { doi: this.doi, annotationId: params[Config.urlParamName] }
+          })
+          // Redirect browser to pdf if annotation has page in selectors
+          AnnotationServerManagerInitializer.init((err, annotationServerManager) => {
+            if (err) {
+              console.error('Unable to initialize annotation server manager, no redirection')
+            } else {
+              window.acm.annotationServerManager = annotationServerManager
+              window.acm.annotationServerManager.init((err) => {
+                if (err) {
+                  console.error('Unable to initialize annotation server manager')
+                } else {
+                  let promise
+                  // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+                  if (window.abwa.annotationServerManager instanceof GoogleSheetAnnotationClientManager) {
+                    promise = new Promise((resolve, reject) => {
+                      window.acm.annotationServerManager.reloadWholeCacheDatabase((err) => {
+                        if (err) {
+                          reject(err)
+                        } else {
+                          resolve()
+                        }
+                      })
+                    })
+                  } else {
+                    promise = new Promise((resolve) => { resolve() })
+                  }
+                  // PVSCL:ELSECOND
+                  promise = new Promise((resolve) => { resolve() })
+                  // PVSCL:ENDCOND
+                  promise.then(() => {
+                    const annotationId = params[Config.urlParamName]
+                    window.acm.annotationServerManager.client.fetchAnnotation(annotationId, (err, annotation) => {
+                      if (err) {
+                        console.error('Unable to retrieve initialization annotation')
+                      } else {
+                        let annotationFragmentSelector = annotation.target[0].selector.find((selector) => selector.type === 'FragmentSelector')
+                        if (annotationFragmentSelector && _.isNumber(annotationFragmentSelector.page)) {
+                          window.location.replace(pdfUrl)
+                        } else {
+                          console.debug('Nothing to do, annotated document is HTML version')
+                        }
+                      }
+                    })
+                  })
+                }
+              })
+            }
+          })
         })
       } else {
         // Append doi to PDF url
-        if (pdfLinkElement) {
+        if (this.doi) {
           pdfLinkElement.href += '#doi:' + this.doi
+          // Add DOI as metadata in webpage
+          document.head.insertAdjacentHTML('beforeend', '<meta name="dc.identifier" content="' + this.doi + '">')
+          chrome.runtime.sendMessage({
+            scope: 'target',
+            cmd: 'setDoiToTab',
+            data: { doi: this.doi }
+          })
         }
       }
-    } */
+    }
   }
 
   /**
@@ -58,9 +117,9 @@ class ACMContentScript {
    */
   findDoi () {
     if (window.location.href.includes('dl.acm.org/doi/pdf/')) {
-      return window.location.href.replace('https://dl.acm.org/doi/pdf/', '')
+      return window.location.href.replace('https://dl.acm.org/doi/pdf/', '').split('#' + Config.urlParamName)[0]
     } else if (window.location.href.includes('dl.acm.org/doi')) {
-      return window.location.href.replace('https://dl.acm.org/doi/', '')
+      return window.location.href.replace('https://dl.acm.org/doi/', '').split('#' + Config.urlParamName)[0]
     }
     // TODO Check if this still working in ACM new DL
     /* let doiElement = document.querySelector('#divmain > table:nth-child(4) > tbody > tr > td > table > tbody > tr:nth-child(4) > td > span:nth-child(10) > a')
@@ -86,7 +145,7 @@ class ACMContentScript {
   }
 
   getPdfLinkElement () {
-    return document.querySelector('#divmain > table:nth-child(2) > tbody > tr > td:nth-child(1) > table:nth-child(1) > tbody > tr > td:nth-child(2) > a')
+    return document.querySelector('a[href*=doi\\/pdf]')
   }
 }
 

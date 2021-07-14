@@ -151,11 +151,22 @@ class TargetManager {
           )).filter(target => target.selector)
           if (_.isArray(codebookElementEvidenceTargets)) {
             // Find if any of the source attributes is same as current document
-            let targetCoincidence = codebookElementEvidenceTargets.find(target =>
-              target.source.doi === this.doi ||
-              target.source.url === this.url ||
-              target.source.urn === this.urn ||
-              target.source.title === this.documentTitle)
+            let targetCoincidence = codebookElementEvidenceTargets.find(target => {
+              let sameTarget = false
+              if (!_.isEmpty(target.source.doi) && !_.isEmpty(this.doi)) {
+                sameTarget = target.source.doi === this.doi
+              }
+              if (!sameTarget && !_.isEmpty(target.source.url) && !_.isEmpty(this.url)) {
+                sameTarget = target.source.url === this.url
+              }
+              if (!sameTarget && !_.isEmpty(target.source.urn) && !_.isEmpty(this.urn)) {
+                sameTarget = target.source.urn === this.urn
+              }
+              if (!sameTarget && !_.isEmpty(target.source.title) && !_.isEmpty(this.documentTitle)) {
+                sameTarget = target.source.title === this.documentTitle
+              }
+              return sameTarget
+            })
             if (targetCoincidence) {
               this.documentId = targetCoincidence.source.id
             }

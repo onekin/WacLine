@@ -4,14 +4,12 @@ import Sidebar from './Sidebar'
 import CodebookManager from '../codebook/CodebookManager'
 import Config from '../Config'
 import AnnotationBasedInitializer from './AnnotationBasedInitializer'
+import AnnotationServerManagerInitializer from '../annotationServer/AnnotationServerManagerInitializer'
 // PVSCL:IFCOND(Manual, LINE)
 import Events from '../Events'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResource, LINE)
 import RolesManager from './RolesManager'
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(BrowserStorage, LINE)
-import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(PreviousAssignments, LINE)
 import PreviousAssignments from '../annotationManagement/purposes/PreviousAssignments'
@@ -437,72 +435,27 @@ class ContentScriptManager {
   }
 
   loadAnnotationServer (callback) {
-    // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()=1, LINE)
-    // PVSCL:IFCOND(Hypothesis, LINE)
-    const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager').default
-    window.abwa.annotationServerManager = new HypothesisClientManager()
-    // PVSCL:ENDCOND
-    // PVSCL:IFCOND(BrowserStorage, LINE)
-    window.abwa.annotationServerManager = new BrowserStorageManager()
-    // PVSCL:ENDCOND
-    // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
-    window.abwa.annotationServerManager = new GoogleSheetAnnotationClientManager()
-    // PVSCL:ENDCOND
-    window.abwa.annotationServerManager.init((err) => {
-      if (_.isFunction(callback)) {
-        if (err) {
-          callback(err)
+    AnnotationServerManagerInitializer.init((err, annotationServerManager) => {
+      if (err) {
+        callback(err)
+      } else {
+        window.abwa.annotationServerManager = annotationServerManager
+        if (window.abwa.annotationServerManager) {
+          window.abwa.annotationServerManager.init((err) => {
+            if (_.isFunction(callback)) {
+              if (err) {
+                callback(err)
+              } else {
+                callback()
+              }
+            }
+          })
         } else {
-          callback()
+          const Alerts = require('../utils/Alerts').default
+          Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in <a href="' + chrome.extension.getURL('pages/options.html') + '">options page</a>.' })
         }
       }
     })
-    // PVSCL:ELSECOND
-    // More than one annotation servers are selected, retrieve the current selected one
-    chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
-      // PVSCL:IFCOND(Hypothesis, LINE)
-      if (annotationServer === 'hypothesis') {
-        // Hypothesis
-        const HypothesisClientManager = require('../annotationServer/hypothesis/HypothesisClientManager').default
-        window.abwa.annotationServerManager = new HypothesisClientManager()
-      }
-      // PVSCL:ENDCOND// sass-lint:disable no-important
-      // PVSCL:IFCOND(BrowserStorage, LINE)
-      if (annotationServer === 'browserstorage') {
-        // Browser storage
-        window.abwa.annotationServerManager = new BrowserStorageManager()
-      }
-      // PVSCL:ENDCOND
-      // PVSCL:IFCOND(Neo4J, LINE)
-      if (annotationServer === 'neo4j') {
-        // Browser storage
-        const Neo4JClientManager = require('../annotationServer/neo4j/Neo4JClientManager').default
-        window.abwa.annotationServerManager = new Neo4JClientManager()
-      }
-      // PVSCL:ENDCOND
-      // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
-      if (annotationServer === 'googlesheetannotationserver') {
-        // Browser storage
-        const GoogleSheetAnnotationClientManager = require('../annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager').default
-        window.abwa.annotationServerManager = new GoogleSheetAnnotationClientManager()
-      }
-      // PVSCL:ENDCOND
-      if (window.abwa.annotationServerManager) {
-        window.abwa.annotationServerManager.init((err) => {
-          if (_.isFunction(callback)) {
-            if (err) {
-              callback(err)
-            } else {
-              callback()
-            }
-          }
-        })
-      } else {
-        const Alerts = require('../utils/Alerts').default
-        Alerts.errorAlert({ text: 'Unable to load selected server. Please configure in <a href="' + chrome.extension.getURL('pages/options.html') + '">options page</a>.' })
-      }
-    })
-    // PVSCL:ENDCOND
   }
 
   destroyAnnotationServer (callback) {
