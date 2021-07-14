@@ -16,6 +16,7 @@ import MethodsKeywords from '../../../annotationManagement/purposes/MethodsKeywo
 import ReadCodebook from '../read/ReadCodebook'
 // PVSCL:ENDCOND
 import ChecklistReview from '../../../annotationManagement/read/ChecklistReview'
+import Annotation from '../../../annotationManagement/Annotation'
 
 class ImportChecklist {
 
@@ -153,7 +154,8 @@ class ImportChecklist {
     LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
       purpose: Checklist.purpose,
       tags: tags,
-      checklist: newBody
+      checklist: newBody,
+      groupAnnotation: true
     })
   }
 
@@ -334,9 +336,9 @@ class ImportChecklist {
    * in the checklistInfo object
    */
   setChecklistsMethodsKeywords () {
-    let methodsDataAnnotations = ImportChecklist.getMethodsDataAnnotations()
-    if (methodsDataAnnotations[0]) {
-      this.checklistsMethods = methodsDataAnnotations[0].body[0].value
+    let methodsDataAnnotation = ImportChecklist.getMethodsDataAnnotation()
+    if (methodsDataAnnotation) {
+      this.checklistsMethods = methodsDataAnnotation.body[0].value
     }
   }
 
@@ -345,14 +347,14 @@ class ImportChecklist {
    * about the methods and their amount matching keywords annotation
    * @returns {Object}
    */
-  static getMethodsDataAnnotations () {
+  static getMethodsDataAnnotation () {
     const allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
     const methodsKeywordstAnnotations = _.filter(allAnnotations, (annotation) => {
       return _.some(annotation.tags, (tag) => {
         return tag.includes(Config.namespace + ':' + Config.tags.motivation + ':' + 'methodsKeywords')
       })
     })
-    return methodsKeywordstAnnotations
+    return methodsKeywordstAnnotations[0]
   }
 
   // PVSCL:ENDCOND
@@ -448,13 +450,16 @@ class ImportChecklist {
    * @returns {Object}
    */
   static getChecklistsAnnotation () {
-    const allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
-    const checklistAnnotation = _.filter(allAnnotations, (annotation) => {
-      return _.some(annotation.tags, (tag) => {
-        return tag.includes(Config.namespace + ':' + Config.tags.motivation + ':' + Checklist.purpose)
-      })
+    const tag = Config.namespace + ':' + Config.tags.motivation + ':' + Checklist.purpose
+    let annotation
+    window.abwa.annotationServerManager.client.searchAnnotations({ tag: tag, group: window.abwa.groupSelector.currentGroup.id }, (err, annotationsRetrieved) => {
+      if (err) {
+        console.error(err)
+      } else {
+        annotation = Annotation.deserialize(annotationsRetrieved[0])
+      }
     })
-    return checklistAnnotation[0]
+    return annotation
   }
 
 }

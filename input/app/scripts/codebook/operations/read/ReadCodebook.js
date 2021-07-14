@@ -630,7 +630,6 @@ class ReadCodebook {
       const items = {}
       // PVSCL:IFCOND(ImportChecklist, LINE)
       const theme = this.codebook.getCodeOrThemeFromId(themeId)
-      // TODO: @inigoBereciartua
       const themeChecklist = ImportChecklist.getChecklistsAnnotation().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
       // PVSCL:ENDCOND
 
@@ -716,7 +715,6 @@ class ReadCodebook {
     return (codeId) => {
       // Get code from id
       const code = this.codebook.getCodeOrThemeFromId(codeId)
-      // TODO: @inigobereciartua
       // PVSCL:IFCOND(ImportChecklist, LINE)
       const theme = code.theme
       const themeChecklist = ImportChecklist.getChecklistsAnnotation().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
@@ -913,8 +911,9 @@ class ReadCodebook {
   static addKeywordsTheme () {
     const codebook = window.abwa.codebookManager.codebookReader.codebook
     const keywordThemeName = 'Keywords'
+    const keywordsAnnotation = ImportChecklist.getMethodsDataAnnotation()
     if (!_.isEmpty(codebook)) {
-      if (!codebook.getThemeByName(keywordThemeName)) {
+      if (!keywordsAnnotation) {
         const themeDescription = 'Theme which includes the keywords found in the text'
         const newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
         LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })

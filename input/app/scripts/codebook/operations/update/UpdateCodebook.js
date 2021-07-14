@@ -279,7 +279,6 @@ class UpdateCodebook {
         text: 'Are you sure that you want to remove the checklist ' + theme.name + '? You cannot undo this operation.',
         alertType: Alerts.alertType.warning,
         callback: () => {
-          // TODO: @inigoBereciartua edit, cannot remove one checklist
           let annotationsToDelete = [theme.id]
           const themeChecklist = ImportChecklist.getChecklistsAnnotation().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
           // Get theme codes id to be removed too

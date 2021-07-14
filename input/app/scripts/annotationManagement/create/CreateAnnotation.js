@@ -206,7 +206,7 @@ class CreateAnnotation {
     return body
   }
 
-  static obtainTargetToCreateAnnotation ({ repliedAnnotation }) {
+  static obtainTargetToCreateAnnotation ({ repliedAnnotation, groupAnnotation }) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
       return [{
@@ -214,6 +214,13 @@ class CreateAnnotation {
       }]
     } else {
       const target = [{}]
+      if (groupAnnotation) {
+        const source = {
+          url: window.abwa.annotationServerManager.annotationServerUrl
+        }
+        target[0].source = source
+        return target
+      }
       const source = window.abwa.targetManager.getDocumentURIs()
       // Get document title
       source.title = window.abwa.targetManager.documentTitle || ''

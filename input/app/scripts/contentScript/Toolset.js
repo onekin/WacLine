@@ -12,8 +12,7 @@ import GoogleSheetGenerator from '../annotationManagement/read/GoogleSheetGenera
 // PVSCL:IFCOND(LastAnnotation, LINE)
 import Resume from '../annotationManagement/read/Resume'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
-// TODO @inigoBereciartua check if this functionality is from checklist
+// PVSCL:IFCOND(TextSummary, LINE)
 import TextSummary from '../annotationManagement/read/TextSummary'
 // PVSCL:ENDCOND
 import Events from '../Events'
@@ -98,7 +97,6 @@ class Toolset {
       })
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(TextSummary, LINE)
-      // TODO @inigoBereciartua review if importchecklist should be added or not in PV clause
       // Set TextSummary image
       const textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -240,8 +238,7 @@ class Toolset {
   }
 
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
-  // TODO @inigoBereciartua review this PV clause
+  // PVSCL:IFCOND(TextSummary, LINE)
   textSummaryButtonHandler () {
     TextSummary.proccessReview()
   }

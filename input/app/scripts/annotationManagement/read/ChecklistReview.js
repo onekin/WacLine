@@ -21,7 +21,6 @@ class ChecklistReview {
    * This function shows an overview of the current document's checklist.
    */
   static generateReview (theme) {
-    console.log(theme)
     window.abwa.sidebar.closeSidebar()
     const criteriaValidationAnnotation = ChecklistReview.getChecklistsvalidationAnnotation()
     const validationCriteria = criteriaValidationAnnotation.body[0].value.criteria
@@ -47,7 +46,6 @@ class ChecklistReview {
         usedMethods.push(newUsedMethod)
       }
     })
-    console.log(usedMethods)
 
 
     const canvasPageURL = chrome.extension.getURL('pages/specific/checklistCanvas.html')
