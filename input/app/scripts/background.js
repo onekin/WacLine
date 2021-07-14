@@ -47,10 +47,10 @@ chrome.runtime.onInstalled.addListener((details) => {
         chrome.notifications.create('hag-v0.3.0', {
           type: 'basic',
           title: 'Highlight&Go has been updated',
-          message: 'Highlight&Go has been updated with important changes. Please check them here: ',
+          message: 'Highlight&Go has been updated with important changes. Please check them clicking here.',
           iconUrl: chrome.extension.getURL('images/' + Config.urlParamName + '/icon-512.png'),
           buttons: [
-            { title: 'Yes' }]
+            { title: 'See changes' }]
         })
         const hagButtonClickListener = (notificationId, buttonIndex) => {
           if (notificationId === 'hag-v0.3.0' && buttonIndex === 0) {
