@@ -289,6 +289,7 @@ class ImportChecklist {
           })
         })
         document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
         callback(toAddCriteria)
       })
 

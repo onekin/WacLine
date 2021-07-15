@@ -74,13 +74,17 @@ class AuthorsSearch {
               h: 5
             },
             success: function (data) {
-              response(data.result.hits.hit.map((e) => {
-                return {
-                  label: e.info.acronym + '-' + e.info.venue,
-                  value: e.info.acronym + '-' + e.info.venue,
-                  info: e.info
-                }
-              }))
+              if (data.result.hits.hit) {
+                response(data.result.hits.hit.map((e) => {
+                  return {
+                    label: e.info.acronym + '-' + e.info.venue,
+                    value: e.info.acronym + '-' + e.info.venue,
+                    info: e.info
+                  }
+                }))
+              } else {
+                response([])
+              }
             }
           })
         },
