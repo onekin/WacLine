@@ -43,7 +43,8 @@ const Config = {
   // PVSCL:IFCOND(GoogleSheetAnnotationServer OR GoogleSheetAuditLog, LINE)
   googleSheetConfig: {
     db: 323696129,
-    template: '1nX0WP0YHvHAlog75_cnBkLxQ3uB0QV9Jj4ZFczkPuJw'
+    template: '1nX0WP0YHvHAlog75_cnBkLxQ3uB0QV9Jj4ZFczkPuJw',
+    papers: 'PrimaryStudies'
   },
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(Filter, LINE)

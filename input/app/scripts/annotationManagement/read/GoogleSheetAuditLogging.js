@@ -5,6 +5,7 @@ import Classifying from '../purposes/Classifying'
 import Commenting from '../purposes/Commenting'
 import RandomUtils from '../../utils/RandomUtils'
 import Assessing from '../purposes/Assessing'
+import Config from '../../Config'
 
 class GoogleSheetAuditLogging {
   init (callback) {
@@ -42,7 +43,7 @@ class GoogleSheetAuditLogging {
   }
 
   initPapersDatabase (callback) {
-    this.sendCallToBackground('getSheetRowsRawData', { spreadsheetId: window.abwa.groupSelector.currentGroup.id, sheetName: 'Papers' }, (err, result) => {
+    this.sendCallToBackground('getSheetRowsRawData', { spreadsheetId: window.abwa.groupSelector.currentGroup.id, sheetName: Config.googleSheetConfig.papers }, (err, result) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -529,12 +530,11 @@ class GoogleSheetAuditLogging {
     if (!_.isEmpty(paperRow)) {
       this.sendCallToBackground('appendRowSpreadSheet', {
         spreadsheetId: annotation.group,
-        range: 'Papers',
+        range: Config.googleSheetConfig.papers,
         data: { values: [paperRow] }
       })
     }
   }
-
 }
 
 export default GoogleSheetAuditLogging
