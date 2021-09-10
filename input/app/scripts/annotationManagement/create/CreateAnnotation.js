@@ -19,6 +19,7 @@ import Checklist from '../purposes/Checklist'
 import Report from '../purposes/Report'
 // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
 import MethodsKeywords from '../purposes/MethodsKeywords'
+import ChecklistValidation from '../purposes/ChecklistValidation'
 // PVSCL:ENDCOND
 // PVSCL:ENDCOND
 
@@ -80,7 +81,7 @@ class CreateAnnotation {
           body: body
         })
         // PVSCL:IFCOND(AuthorsSearch OR ImportChecklist, LINE)
-      } else if (event.detail.purpose === 'describing' || event.detail.purpose === 'checklist' || event.detail.purpose === 'report' || event.detail.purpose === 'methodsKeywords') {
+      } else if (event.detail.purpose === Describing.purpose || event.detail.purpose === Checklist.purpose || event.detail.purpose === ChecklistValidation.purpose || event.detail.purpose === Report.purpose || event.detail.purpose === MethodsKeywords.purpose) {
         // Create target
         const target = CreateAnnotation.obtainTargetToCreateAnnotation(event.detail)
         // Create body
@@ -147,6 +148,7 @@ class CreateAnnotation {
     /* PVSCL:ENDCOND */
     /* PVSCL:IFCOND(ImportChecklist) */
     checklist,
+    criteria,
     report,
     methodsKeywords,
     /* PVSCL:ENDCOND */
@@ -180,6 +182,12 @@ class CreateAnnotation {
       })
       body.push(checklistBody.serialize())
     }
+    if (criteria) {
+      const criteriaBody = new ChecklistValidation({
+        value: criteria
+      })
+      body.push(criteriaBody.serialize())
+    }
     if (report) {
       const reportBody = new Report({
         value: report
@@ -198,7 +206,7 @@ class CreateAnnotation {
     return body
   }
 
-  static obtainTargetToCreateAnnotation ({ repliedAnnotation }) {
+  static obtainTargetToCreateAnnotation ({ repliedAnnotation, groupAnnotation }) {
     if (repliedAnnotation) {
       // Get replying annotation source and create a target
       return [{
@@ -206,6 +214,13 @@ class CreateAnnotation {
       }]
     } else {
       const target = [{}]
+      if (groupAnnotation) {
+        const source = {
+          url: window.abwa.annotationServerManager.annotationServerUrl
+        }
+        target[0].source = source
+        return target
+      }
       const source = window.abwa.targetManager.getDocumentURIs()
       // Get document title
       source.title = window.abwa.targetManager.documentTitle || ''

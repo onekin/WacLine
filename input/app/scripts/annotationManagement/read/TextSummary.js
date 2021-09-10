@@ -5,19 +5,22 @@ import {
   Review
 } from '../../exporter/reviewModel'
 import axios from 'axios'
-// PVSCL:IFCOND(ImportChecklist, LINE)
+// PVSCL:IFCOND(EditSummary, LINE)
 import LanguageUtils from '../../utils/LanguageUtils'
 import Events from '../../Events'
 import Config from '../../Config'
 import { _ } from 'core-js'
+// PVSCL:IFCOND(ImportChecklist, LINE)
 import Classifying from '../purposes/Classifying'
 import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
+import ChecklistReview from './ChecklistReview'
+// PVSCL:ENDCOND
 // PVSCL:ENDCOND
 
 class TextSummary {
 
   static proccessReview () {
-    // PVSCL:IFCOND(ImportChecklist, LINE)
+    // PVSCL:IFCOND(EditSummary, LINE)
     TextSummary.generateReviewEditor()
     // PVSCL:ELSECOND
     Alerts.loadingAlert({
@@ -51,17 +54,13 @@ class TextSummary {
     FileSaver.saveAs(blob, docTitle + '.txt')
   }
 
-  // PVSCL:IFCOND(ImportChecklist,LINE)
+  // PVSCL:IFCOND(EditSummary,LINE)
   /**
    * This function generates the dialog to edit, download
    * and store the review report
    */
   static generateReviewEditor () {
     let report = TextSummary.generateMergedReport()
-    const checklists = ImportChecklist.getChecklistsAnnotations().map((checklist) => {
-      return checklist.body[0].value
-    })
-
     window.abwa.sidebar.closeSidebar()
     const reviewPageURL = chrome.extension.getURL('pages/specific/reviewEditor.html')
     axios.get(reviewPageURL).then((response) => {
@@ -97,47 +96,81 @@ class TextSummary {
         })
       })
 
-
+      // PVSCL:IFCOND(ImportChecklist,LINE)
       const invalidCritContainer = document.querySelector('#invalidCriticismsContainer')
       const invalidCritTemplate = document.querySelector('#invalidCritTemplate')
-
-      if (checklists[0]) {
-        const chosenChecklists = checklists[0].chosenChecklists
-        if (chosenChecklists) {
-          for (let checklist of chosenChecklists) {
-            if (checklist.invalidCriticisms) {
-              const invalidCriticisms = checklist.invalidCriticisms
-              const invalidCritElement = invalidCritTemplate.content.cloneNode(true)
-              let ul = invalidCritElement.querySelector('.invalidCriticismsList')
-              invalidCritElement.querySelector('.invalidCriticismsTitle').textContent = checklist.name
-              invalidCriticisms.forEach((invalidCriticism) => {
-                let li = document.createElement('li')
-                li.appendChild(document.createTextNode(invalidCriticism))
-                ul.appendChild(li)
-              })
-              invalidCritContainer.appendChild(invalidCritElement)
-            }
+      const checklistsAnnotation = ImportChecklist.getChecklistsAnnotation()
+      if (checklistsAnnotation) {
+        const chosenChecklists = checklistsAnnotation.body[0].value.definition
+        for (let checklist of chosenChecklists) {
+          if (checklist.invalidCriticisms) {
+            const invalidCriticisms = checklist.invalidCriticisms
+            const invalidCritElement = invalidCritTemplate.content.cloneNode(true)
+            let ul = invalidCritElement.querySelector('.invalidCriticismsList')
+            invalidCritElement.querySelector('.invalidCriticismsTitle').textContent = checklist.name
+            invalidCriticisms.forEach((invalidCriticism) => {
+              let li = document.createElement('li')
+              li.appendChild(document.createTextNode(invalidCriticism))
+              ul.appendChild(li)
+            })
+            invalidCritContainer.appendChild(invalidCritElement)
           }
         }
       }
-
+      // PVSCL:ENDCOND
       Alerts.closeAlert()
     })
   }
 
 
-
+  // PVSCL:IFCOND(ImportChecklist,LINE)
   static generateChecklistsSummary () {
-    const checklistAnnotations = ImportChecklist.getChecklistsAnnotations()
+    const essentialTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Essential')
+    const desirableTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Desirable')
+    const extraordinaryTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName('Extraordinary')
     let summary = ''
-    if (checklistAnnotations) {
+    if (essentialTheme.codes.length > 0 || desirableTheme.codes.length > 0 || extraordinaryTheme.codes.length > 0) {
       summary += 'CHECKLIST:\n\n'
-      checklistAnnotations.forEach((checklist) => {
-        summary += checklist.getBodyForPurpose('checklist').toString() + '\n\n'
-      })
+      const validationAnnotation = ChecklistReview.getChecklistsvalidationAnnotation()
+      const validationCodes = validationAnnotation.body[0].value.criteria
+      summary += TextSummary.summarizeCategory(essentialTheme, validationCodes)
+      summary += TextSummary.summarizeCategory(desirableTheme, validationCodes)
+      summary += TextSummary.summarizeCategory(extraordinaryTheme, validationCodes)
     }
     return summary
   }
+
+
+  static summarizeCategory (theme, validationCodes) {
+    let summary = '\t--' + theme.name + '--\n'
+    if (theme.codes.length > 0) {
+      theme.codes.forEach((code) => {
+        const validatedCode = validationCodes.find(validatedCode => validatedCode.codeId === code.id)
+        code.status = validatedCode ? validatedCode.status : 'undefined'
+      })
+      theme.codes.sort((a, b) => {
+        if (a.status === 'passed') return -1
+        if (b.status === 'passed') return 1
+        if (a.status === 'failed') return -1
+        if (b.status === 'failed') return 1
+        return 0
+      })
+      theme.codes.forEach((code) => {
+        let status = ''
+        if (code.status === 'passed') {
+          status = '✓'
+        } else if (code.status === 'failed') {
+          status = 'X'
+        } else {
+          status = '?'
+        }
+        summary += '\t [' + status + ']-' + code.name + '\n'
+      })
+    }
+    summary += '\n'
+    return summary
+  }
+  // PVSCL:ENDCOND
 
   /**
    * This function returns the Annotation corresponding to the report draft

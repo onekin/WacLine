@@ -81,6 +81,7 @@
   text-align: center;
 }
 
+// PVSCL:IFCOND(ImportChecklist, LINE)
 .invalidCriticismsColumn {
   flex: 25%;
   height: 100%;
@@ -116,22 +117,36 @@ h4.invalidCriticismsTitle{
   font-size: 1em;
 }
 
-#invalidCriticismsContainer::-webkit-scrollbar,
+#invalidCriticismsContainer::-webkit-scrollbar {
+  width: 10px;
+}
+
+// PVSCL:ENDCOND
 #reportText::-webkit-scrollbar {
   width: 10px;
 }
 
-#invalidCriticismsContainer::-webkit-scrollbar-track,
+// PVSCL:IFCOND(ImportChecklist, LINE)
+#invalidCriticismsContainer::-webkit-scrollbar-track {
+  background: white;
+}
+
+// PVSCL:ENDCOND
 #reportText::-webkit-scrollbar-track {
   background: white;
 }
 
-#invalidCriticismsContainer::-webkit-scrollbar-thumb,
+// PVSCL:IFCOND(ImportChecklist, LINE)
+#invalidCriticismsContainer::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background: #2c62ba
+}
+// PVSCL:ENDCOND
+
 #reportText::-webkit-scrollbar-thumb {
   border-radius: 2px;
   background: #2c62ba
 }
-
 .reportColumnContent {
   margin-top: 20px;
   text-align: center;

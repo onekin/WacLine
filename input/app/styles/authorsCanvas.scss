@@ -8,7 +8,7 @@
   top:15%;
   left:20%;
   z-index:1000;  
-  border-top:solid 1px #79a9f7;
+  border:solid 3px #79a9f7;
   box-sizing: border-box;
 }
 
@@ -31,6 +31,10 @@
   align-items: center;
   justify-content: center;
 }
+.greyRow {
+  background: #DCDCDC
+}
+
 .authorRow p{
   margin: 5%;
 }

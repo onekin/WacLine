@@ -12,8 +12,7 @@ import GoogleSheetGenerator from '../annotationManagement/read/GoogleSheetGenera
 // PVSCL:IFCOND(LastAnnotation, LINE)
 import Resume from '../annotationManagement/read/Resume'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
-// TODO @inigoBereciartua check if this functionality is from checklist
+// PVSCL:IFCOND(TextSummary, LINE)
 import TextSummary from '../annotationManagement/read/TextSummary'
 // PVSCL:ENDCOND
 import Events from '../Events'
@@ -45,10 +44,6 @@ import ChecklistReview from '../annotationManagement/read/ChecklistReview'
 class Toolset {
   constructor () {
     this.page = chrome.extension.getURL('pages/sidebar/toolset.html')
-    // PVSCL:IFCOND(AuthorsSearch, LINE)
-    // TODO @inigoBereciartua review if this event still exists
-    this.events = {}
-    // PVSCL:ENDCOND
   }
 
   init (callback) {
@@ -67,10 +62,6 @@ class Toolset {
       this.toolsetHeader = this.toolsetContainer.querySelector('#toolsetHeader')
       this.toolsetBody = this.sidebarContainer.querySelector('#toolsetBody')
       const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
-      // PVSCL:IFCOND(AuthorsSearch, LINE)
-      // TODO @inigoBereciartua review if this event still exists
-      this.initCongressLoadedEvent()
-      // PVSCL:ENDCOND
       // PVSCL:IFCOND(AnnotatedPDF, LINE)
       // Set screenshot image
       const screenshotImageUrl = chrome.extension.getURL('/images/screenshot.png')
@@ -105,8 +96,7 @@ class Toolset {
         this.canvasButtonHandler()
       })
       // PVSCL:ENDCOND
-      // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
-      // TODO @inigoBereciartua review if importchecklist should be added or not in PV clause
+      // PVSCL:IFCOND(TextSummary, LINE)
       // Set TextSummary image
       const textSummaryImageUrl = chrome.extension.getURL('/images/generator.png')
       this.textSummaryImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
@@ -205,6 +195,20 @@ class Toolset {
       })
       this.toolsetBody.appendChild(this.checklistImage)
       // PVSCL:ENDCOND
+       // PVSCL:IFCOND(AuthorsSearch, LINE)
+      const authorsInfoImageUrl = chrome.extension.getURL('/images/authors.png')
+      this.authorsInfoImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.authorsInfoImage.src = authorsInfoImageUrl
+      this.authorsInfoImage.title = 'Get authors information' // TODO i18n
+      this.toolsetBody.appendChild(this.authorsInfoImage)
+      this.authorsInfoImage.addEventListener('click', () => {
+        AuthorsInfo.reviewProcess()
+      })
+      // PVSCL:ENDCOND
+
+
+
+
       // Add link to configuration page of the tool
       this.toolsetHeader.querySelector('#appNameBadge').href = chrome.extension.getURL('/pages/options.html')
       this.toolsetHeader.querySelector('#sidebarConfigButton').src = chrome.extension.getURL('/images/configuration.png')
@@ -234,8 +238,7 @@ class Toolset {
   }
 
   // PVSCL:ENDCOND
-  // PVSCL:IFCOND(TextSummary or ImportChecklist, LINE)
-  // TODO @inigoBereciartua review this PV clause
+  // PVSCL:IFCOND(TextSummary, LINE)
   textSummaryButtonHandler () {
     TextSummary.proccessReview()
   }
@@ -322,31 +325,6 @@ class Toolset {
         }
       }
     })
-  }
-  // PVSCL:ENDCOND
-
-  // PVSCL:IFCOND(AuthorsSearch, LINE)
-  initCongressLoadedEvent () {
-    this.events.congressLoadedEvent = { element: document, event: Events.congressLoaded, handler: this.congressLoadedEventHandler() }
-    this.events.congressLoadedEvent.element.addEventListener(this.events.congressLoadedEvent.event, this.events.congressLoadedEvent.handler, false)
-  }
-
-  /**
-   * This function adds the button to see the authors information
-   * when a congress is loaded for the document
-   */
-  congressLoadedEventHandler () {
-    return () => {
-      const toolsetButtonTemplate = this.sidebarContainer.querySelector('#toolsetButtonTemplate')
-      const authorsInfoImageUrl = chrome.extension.getURL('/images/authors.png')
-      this.authorsInfoImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
-      this.authorsInfoImage.src = authorsInfoImageUrl
-      this.authorsInfoImage.title = 'Get authors information' // TODO i18n
-      this.toolsetBody.appendChild(this.authorsInfoImage)
-      this.authorsInfoImage.addEventListener('click', () => {
-        AuthorsInfo.generateReview()
-      })
-    }
   }
   // PVSCL:ENDCOND
 }

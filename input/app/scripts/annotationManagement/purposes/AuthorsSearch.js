@@ -4,6 +4,7 @@ import $ from 'jquery'
 import Events from '../../Events'
 import Config from '../../Config'
 import _ from 'lodash'
+import AuthorsInfo from '../read/AuthorsInfo'
 
 
 class AuthorsSearch {
@@ -42,13 +43,13 @@ class AuthorsSearch {
    * This function shows a form to ask the user for the congress
    */
   initCongress () {
-    let html = '<p>Which congress owns this article?</p>'
+    let html = '<p>If you want to get this document\'s authors\' information introduce the name of it\'s congress</p>'
     html += '<input placeholder="Choose congress" id="swal-input1" class="swal2-input">'
     const onBeforeOpen = this.generateOnBeforeOpenForm()
     const preConfirm = this.generateCongressFormPreConfirm()
     const swalCallback = this.generateCongressFormCallback()
     Alerts.multipleInputAlert({
-      title: 'Do you want to get authors information?',
+      title: 'Which congress owns this article?',
       html: html,
       position: Alerts.position.center,
       onBeforeOpen: onBeforeOpen,
@@ -73,13 +74,17 @@ class AuthorsSearch {
               h: 5
             },
             success: function (data) {
-              response(data.result.hits.hit.map((e) => {
-                return {
-                  label: e.info.acronym + '-' + e.info.venue,
-                  value: e.info.acronym + '-' + e.info.venue,
-                  info: e.info
-                }
-              }))
+              if (data.result.hits.hit) {
+                response(data.result.hits.hit.map((e) => {
+                  return {
+                    label: e.info.acronym + '-' + e.info.venue,
+                    value: e.info.acronym + '-' + e.info.venue,
+                    info: e.info
+                  }
+                }))
+              } else {
+                response([])
+              }
             }
           })
         },
