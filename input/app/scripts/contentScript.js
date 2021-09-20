@@ -11,8 +11,24 @@ if (_.isEmpty(window.abwa)) {
       window.abwa.contentScriptManager = new ContentScriptManager()
     }
     if (msg.action === 'initContentScript') {
+      document.body.innerHTML += '<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBSVG6L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>'
+
+      var setInnerHTML = function(elm, html) {
+        elm.innerHTML = html;
+        Array.from(elm.querySelectorAll("script")).forEach( oldScript => {
+          const newScript = document.createElement("script");
+          Array.from(oldScript.attributes)
+            .forEach( attr => newScript.setAttribute(attr.name, attr.value) );
+          newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+          oldScript.parentNode.replaceChild(newScript, oldScript);
+        });
+      }
+      setInnerHTML(document.head, '<script type="text/javascript">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":    new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);})(window,document,"script","dataLayer","GTM-MBSVG6L");</script>')
+
       if (window.abwa.contentScriptManager.status === ContentScriptManager.status.notInitialized) {
-        window.abwa.contentScriptManager.init()
+        window.abwa.contentScriptManager.init(() => {
+
+        })
       }
     } else if (msg.action === 'destroyContentScript') {
       if (window.abwa.contentScriptManager.status === ContentScriptManager.status.initialized) {

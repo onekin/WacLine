@@ -27,7 +27,7 @@ class ContentScriptManager {
     this.status = ContentScriptManager.status.notInitialized
   }
 
-  init () {
+  init (callback) {
     console.debug('Initializing content script manager')
     this.status = ContentScriptManager.status.initializing
     this.loadTargetManager(() => {
@@ -40,7 +40,11 @@ class ContentScriptManager {
             window.abwa.groupSelector = new GroupSelector()
             window.abwa.groupSelector.init(() => {
               // Reload for first time the content by group
-              this.reloadContentByGroup()
+              this.reloadContentByGroup(() => {
+                if (_.isFunction(callback)) {
+                  callback()
+                }
+              })
               // PVSCL:IFCOND(Manual,LINE)
               // Initialize listener for group change to reload the content
               this.initListenerForGroupChange()
@@ -122,6 +126,9 @@ class ContentScriptManager {
       .then(() => {
         this.status = ContentScriptManager.status.initialized
         console.debug('Initialized content script manager')
+        if (_.isFunction(callback)) {
+          callback()
+        }
       })
       .catch((err) => {
         if (err) {
