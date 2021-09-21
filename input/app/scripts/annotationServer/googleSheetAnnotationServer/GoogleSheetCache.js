@@ -316,7 +316,7 @@ class GoogleSheetCache {
         callback(new Error('Annotation with ID ' + id + ' not found'))
       }
     } else {
-      callback(id)
+      callback(new Error('Annotation ID ' + id + ' should be a string'))
     }
   }
 

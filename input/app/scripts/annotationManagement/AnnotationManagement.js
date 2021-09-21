@@ -128,6 +128,10 @@ class AnnotationManagement {
         }, 5000)
       } else {
         firstElementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        // Repeat the action as in some web the scroll is not working properly (e.g.: springer, see issue #113)
+        setTimeout(() => {
+          firstElementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }, 1000)
       }
     }
   }
