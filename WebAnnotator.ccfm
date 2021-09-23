@@ -354,6 +354,11 @@
         <cm:script cm:id="iOmlrQ1BD-LeaTt36" cm:language="ps:pvscl" cm:type="ps:boolean">IEEE</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="iNx1C94HKfN2u5jfl">
+      <cm:restriction cm:id="iw4qIjLpKkNlMspo_">
+        <cm:script cm:id="iZQgAVgKdZcNUDCEd" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.GoogleTagManager</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -33062,7 +33067,7 @@
         <cm:mimedesc cm:id="ie2rIyky4pVDvhpwi" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotationServerManagerInitializer.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="i-zqekn6_ady6XMCvYCF-B-BH4bi" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="i-zqekn6_ady6XMCvYCF-B-BH4bi" cm:restriction="iNx1C94HKfN2u5jfl" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="i-zqekn6_ady6XMCvYCF-B-BH4bidependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="iTBlcMzuvPkYmKjgrJyebHyMzt0R6fby2AMs0uv-V" cm:class="ps:parents">
@@ -33086,7 +33091,7 @@
           <cm:constant cm:id="ib2SOapPADnQ-fMCL" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iRpeQEtgEdHCNb6re" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i4ekeFSeR7e42e9sX" cm:type="ps:datetime">2021-09-17T10:57:26.593Z</cm:constant>
+          <cm:constant cm:id="i4ekeFSeR7e42e9sX" cm:type="ps:datetime">2021-09-23T11:11:50.540Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
