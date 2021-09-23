@@ -293,7 +293,13 @@ class GoogleSheetAnnotationClient {
   }
 
   fetchAnnotation (id, callback) {
-    this.cache.fetchAnnotation(id, callback)
+    if (this.cache) {
+      this.cache.fetchAnnotation(id, callback)
+    } else {
+      this.reloadCacheDatabase(() => {
+        this.cache.fetchAnnotation(id, callback)
+      })
+    }
   }
 
   getListOfGroups (data, callback) { // TODO Check if data can be removed

@@ -33,7 +33,7 @@ class AnnotationManagement {
       // Navigate to the annotation if initial annotation exist
       if (window.abwa.annotationBasedInitializer.initAnnotation) {
         const annotationToNavigate = Annotation.deserialize(window.abwa.annotationBasedInitializer.initAnnotation)
-        this.goToAnnotation(annotationToNavigate)
+        this.goToAnnotation(annotationToNavigate, true)
       }
       if (_.isFunction(callback)) {
         callback(err)
@@ -97,7 +97,7 @@ class AnnotationManagement {
     }
   }
 
-  goToAnnotation (annotation) {
+  goToAnnotation (annotation, retry = false) {
     // If document is pdf, the DOM is dynamic, we must scroll to annotation using PDF.js FindController
     if (window.abwa.targetManager.documentFormat === PDF) {
       const queryTextSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
@@ -128,6 +128,12 @@ class AnnotationManagement {
         }, 5000)
       } else {
         firstElementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        // Repeat the action as in some web the scroll is not working properly (e.g.: springer, see issue #113)
+        if (retry) {
+          setTimeout(() => {
+            firstElementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }, 1000)
+        }
       }
     }
   }

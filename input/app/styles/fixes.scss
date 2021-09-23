@@ -14,3 +14,12 @@
 .context-menu-list {
   z-index: $sidebarZIndex + 2 !important;
 }
+
+/* Fix a problem with comment textarea size, sweetalert and awesomeplete */
+.swal2-html-container {
+  min-height: 15rem;
+}
+
+.swal2-textarea {
+  width: 75%;
+}
