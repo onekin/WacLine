@@ -12,7 +12,7 @@ Created annotation clients are [browser extensions](https://developer.mozilla.or
 `npm install -g gulp`
 * For MacOSX it is required to have installed and updated [Xcode](https://developer.apple.com/xcode/)
 * Additional packages to develop:
-** eslint: `npm install eslint -g`
+  * eslint: `npm install eslint -g`
 
 # How to create and test your annotation client
 > You can follow [this small video](https://go.haritzmedina.com/waclineVideo) that creates a sample extension 
