@@ -354,11 +354,6 @@
         <cm:script cm:id="iOmlrQ1BD-LeaTt36" cm:language="ps:pvscl" cm:type="ps:boolean">IEEE</cm:script>
       </cm:restriction>
     </cm:restset>
-    <cm:restset cm:id="iNx1C94HKfN2u5jfl">
-      <cm:restriction cm:id="iw4qIjLpKkNlMspo_">
-        <cm:script cm:id="iZQgAVgKdZcNUDCEd" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.GoogleTagManager</cm:script>
-      </cm:restriction>
-    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -4898,7 +4893,6 @@
           <cm:target cm:id="iS7DNmterwfaWHiaqqeL54E29OAca7EmJnZOAE3pt">./i4vPwVvM96iZmPemzQ0_iG7EPgRa</cm:target>
           <cm:target cm:id="i-pPk5UA2Bwwv9FAM5-HyDhKjmtGihbZSLPdaI4da">./ilPQdSuZoHPAttvVeg11kwK81jxm</cm:target>
           <cm:target cm:id="ijDYkeCCqLTEgtJpCs_nme7QnRRe">./iySLezbiHxqt1vgXHysUH3q_WvOl</cm:target>
-          <cm:target cm:id="i9BOJf0mMses1s1mOUTqR-ssvCWp">./i-zqekn6_ady6XMCvYCF-B-BH4bi</cm:target>
           <cm:target cm:id="igtpRIgMO7eSTecwxw4ss7WbjCbf">./isk-zB4yoLNL_SN3BwgBlXe4HlUd</cm:target>
           <cm:target cm:id="iIXyBQGE1Nz3Tul-2K5vp90qxr2m">./ihGiBOSPcxBlJ3a0MFXSC5IYwobc</cm:target>
           <cm:target cm:id="ie6Eg7DE98X234on_YwEvKfu44Vi">./iv1Yh5QPa0lKfIPxIoDirPQ8-pNj</cm:target>
@@ -4928,7 +4922,7 @@
           <cm:constant cm:id="iW2P_pGbSEcndqn9v" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i0_Bjx9ge1a9md6P-" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iJ5IpKq7sKpPlEfTe" cm:type="ps:datetime">2021-09-28T13:48:58.124Z</cm:constant>
+          <cm:constant cm:id="iJ5IpKq7sKpPlEfTe" cm:type="ps:datetime">2021-09-29T12:00:00.177Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -33066,69 +33060,6 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ie2rIyky4pVDvhpwi" cm:mimetype="text/plain" cm:encoding="utf-8">AnnotationServerManagerInitializer.js</cm:mimedesc>
-      </cm:vname>
-    </cm:element>
-    <cm:element cm:id="i-zqekn6_ady6XMCvYCF-B-BH4bi" cm:restriction="iNx1C94HKfN2u5jfl" cm:type="ex:js" cm:class="ps:part" cm:default="on">
-      <cm:relations cm:id="i-zqekn6_ady6XMCvYCF-B-BH4bidependecies" cm:class="ps:dependencies">
-      </cm:relations>
-      <cm:relations cm:id="iTBlcMzuvPkYmKjgrJyebHyMzt0R6fby2AMs0uv-V" cm:class="ps:parents">
-        <cm:relation cm:id="i9F6o3TrujIYCdqExcqtKerG4MzmdMjq0UlksOAAw" cm:type="ps:parent">
-          <cm:target cm:id="iWSbqQkR6N5FhIyLj8pCxXSfHOkaW9V3DN5PQL5H4">./icGR_X9_Zyy0IoAOQZXE1w12CA_f</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:relations cm:id="i_TIWw-NvNzcGu7ophKP9y5w2UOo" cm:class="ps:children">
-        <cm:relation cm:id="id8tMDsX5k2EiZ49NhrH_nR3WG0k" cm:type="ps:optional">
-          <cm:target cm:id="iZDcQ8YfoUnqrDJuZG7I-A-73-7d">./ilvDuiKrYhK8cBRYzZq55A70kIpi</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:properties>
-        <cm:property cm:id="iq3yAZvMw-LGm8MzN" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
-          <cm:constant cm:id="ifig3Ib6SuELND1qN" cm:type="ps:string">haritz</cm:constant>
-        </cm:property>
-        <cm:property cm:id="ime9RBX6DUV4tzHZy" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
-          <cm:constant cm:id="ixCgyYYJosbw-IZPs" cm:type="ps:datetime">2021-09-17T10:57:26.593Z</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iW4654gRpfdyqHQK5" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ib2SOapPADnQ-fMCL" cm:type="ps:string">haritz</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iRpeQEtgEdHCNb6re" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i4ekeFSeR7e42e9sX" cm:type="ps:datetime">2021-09-23T11:11:50.540Z</cm:constant>
-        </cm:property>
-      </cm:properties>
-      <cm:vname>
-        <cm:mimedesc cm:id="iqQ5LzE_NcyfHduQR" cm:mimetype="text/plain" cm:encoding="utf-8">gtm</cm:mimedesc>
-      </cm:vname>
-    </cm:element>
-    <cm:element cm:id="ilvDuiKrYhK8cBRYzZq55A70kIpi" cm:type="ps:file" cm:class="ps:source" cm:default="on">
-      <cm:relations cm:id="ilvDuiKrYhK8cBRYzZq55A70kIpidependecies" cm:class="ps:dependencies">
-      </cm:relations>
-      <cm:relations cm:id="i3DP6NPkYaWUBnJaqSlURaWOkzgJOGOGOAwUB4oiY" cm:class="ps:parents">
-        <cm:relation cm:id="iywtubqAMBg5-4U29pZ7EfbB2jcwfXShXlsT7Z8Qk" cm:type="ps:parent">
-          <cm:target cm:id="iP6UlVR19frdGYSruAwYCWScGqKV7G4OAt0H48Fx1">./i-zqekn6_ady6XMCvYCF-B-BH4bi</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:properties>
-        <cm:property cm:id="iwn4Rn0GQMPoNCJQ977uFp-0MV7e" cm:type="ps:path" cm:fixed="true" cm:name="file">
-          <cm:constant cm:id="i7BEyxe3PYsO_6HcVLbqynCMw3Zg" cm:type="ps:path">gtm.js</cm:constant>
-        </cm:property>
-        <cm:property cm:id="i4hVmHcyzaMlobE74l3CqvNN69Jn" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
-          <cm:constant cm:id="imZ9mzA3p510C5Q9s_rcUJhnmdLg" cm:type="ps:filetype">misc</cm:constant>
-        </cm:property>
-        <cm:property cm:id="inQH-mwCKBGipYgsd" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
-          <cm:constant cm:id="it_nscvl7dPpmzXFt" cm:type="ps:string">haritz</cm:constant>
-        </cm:property>
-        <cm:property cm:id="ik4Vlm4CWxDbUyD0E" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
-          <cm:constant cm:id="iHqU4KFSkzPN_HOFa" cm:type="ps:datetime">2021-09-17T10:57:26.593Z</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iX_Ek35QKVCggpHmr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i7otOl9_fN8Qc6rSk" cm:type="ps:string">haritz</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iGD_t_INmEE0MJGxm" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ioGcitDEYYne1-ZOR" cm:type="ps:datetime">2021-09-17T10:57:26.593Z</cm:constant>
-        </cm:property>
-      </cm:properties>
-      <cm:vname>
-        <cm:mimedesc cm:id="iAcmArwTjzct72EU4" cm:mimetype="text/plain" cm:encoding="utf-8">gtm.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
     <cm:element cm:id="iiJsk45VPhIiroargbYJJ6-WdXjk" cm:type="ps:component" cm:class="ps:component" cm:default="on">
