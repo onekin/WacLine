@@ -6,7 +6,7 @@ Created annotation clients are [browser extensions](https://developer.mozilla.or
 
 # Requirements for contributors and annotation clients developers
 * Pure::variants v5.0: Our SPL is build on top of [pure::variants](https://www.pure-systems.com/). Pure::variants is an eclipse plugin for development and deployment of products lines and software families.
-  * [Evaluation Software](https://old.pure-systems.com/downloads-6.html) to develop it. 
+  * [Evaluation Software](https://www.pure-systems.com/support/purevariants-download) to develop it. 
 * NodeJS v16: required to compile the resultant generated products. We recommend you to use nvm for [UNIX-like systems](https://github.com/nvm-sh/nvm) or for [windows](https://github.com/coreybutler/nvm-windows) to manage multiple versions of nodeJS installed in your system.
 * [Gulp](https://gulpjs.com/) v4: a javascript toolkit to manage build tasks over nodeJS. To install it globally run:
 `npm install -g gulp`
