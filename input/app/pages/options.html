@@ -7,15 +7,8 @@
   <link rel="stylesheet" type="text/css" href="../styles/options.css">
 
   <title>Configuration</title>
-  <!-- Google Tag Manager -->
-  <script type="text/javascript" src="../scripts/gtm.js"></script>
-  <!-- End Google Tag Manager -->
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBSVG6L"
-                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 <div class="container">
   <!-- Header -->
   <header></header>
@@ -124,6 +117,17 @@
           <div class="form-group">
             <label for="neo4jUser">User</label>
             <input type="text" class="form-control" id="neo4jUser" placeholder="Enter your username or orcid">
+          </div>
+        </div>
+      </div>
+      // PVSCL:ENDCOND
+      // PVSCL:IFCOND(GoogleTagManager, LINE)
+      <div class="card">
+        <div class="card-header bg-dark text-white">Tracking</div>
+        <div class="card-body">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="googleTagManagerConsent" checked="checked">
+            <label for="googleTagManagerConsent" class="form-check-label">I consent this extension to collect anonymous tracking data to improve user experience and for research purposes. Learn about our tracking policy <a href="PVSCL:EVAL(WebAnnotator.Tracking->pv:Attribute('trackingPoliciesURL'))" target="_blank">here</a>.</label>
           </div>
         </div>
       </div>

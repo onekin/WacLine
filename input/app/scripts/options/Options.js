@@ -155,6 +155,24 @@ class Options {
       this.updateAutoOpenCheckbox()
     })
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(GoogleTagManager, LINE)
+    chrome.runtime.sendMessage({ scope: 'tracking', cmd: 'getTrackingGTM' }, ({ userResponse }) => {
+      if (_.isBoolean(userResponse)) {
+        document.querySelector('#googleTagManagerConsent').checked = userResponse
+      } else {
+        document.querySelector('#googleTagManagerConsent').checked = 'unchecked'
+      }
+    })
+    document.querySelector('#googleTagManagerConsent').addEventListener('change', (event) => {
+      chrome.runtime.sendMessage({
+        scope: 'tracking',
+        cmd: 'setTrackingGTM',
+        data: { userResponse: event.target.checked }
+      }, ({ userResponse }) => {
+        console.debug('Saved user response about tracking via GTM: ' + JSON.stringify(userResponse))
+      })
+    })
+    // PVSCL:ENDCOND
   }
 
   // PVSCL:IFCOND(BrowserStorage,LINE)

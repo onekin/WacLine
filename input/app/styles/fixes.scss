@@ -23,3 +23,8 @@
 .swal2-textarea {
   width: 75%;
 }
+
+/* In some websites such as ACM the links in sweetAlerts are not underlined, what difficults user to see if it is plain-text or a link */
+.alertLink {
+  text-decoration: underline;
+}

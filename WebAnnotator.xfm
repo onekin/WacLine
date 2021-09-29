@@ -3307,7 +3307,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="il87fwn1sOZsTWjKV" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="i45I-NeVRvfjiFykM" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i_8nSFhWYhstJgqiN" cm:type="ps:datetime">2021-09-23T11:07:21.722Z</cm:constant>
+          <cm:constant cm:id="i_8nSFhWYhstJgqiN" cm:type="ps:datetime">2021-09-28T14:41:04.302Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ihvn29gMaCpNp3s3m" cm:type="ps:string" cm:fixed="true" cm:name="trackingPoliciesURL">
+          <cm:constant cm:id="iTlO8RTyZSyWyptjL" cm:type="ps:string">https://github.com/onekin/WacLine/wiki/Highlight&amp;Go-tracking-policies</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

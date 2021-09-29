@@ -215,6 +215,42 @@ class Background {
           }
         }
       }
+      // PVSCL:IFCOND(Tracking, LINE)
+      if (request.scope === 'tracking') {
+        // PVSCL:IFCOND(GoogleTagManager, LINE)
+        if (request.cmd === 'getTrackingGTM') {
+          ChromeStorage.getData('tracking.gtm', ChromeStorage.sync, (err, userResponse) => {
+            if (err) {
+              sendResponse({ err: err })
+            } else {
+              if (!_.isEmpty(userResponse) && _.has(userResponse, 'data')) {
+                const parsedUserResponse = JSON.parse(userResponse.data)
+                if (parsedUserResponse === false) {
+                  sendResponse({ userResponse: false })
+                } else if (parsedUserResponse === true) {
+                  sendResponse({ userResponse: true })
+                } else {
+                  sendResponse({ userResponse: {} })
+                }
+              } else {
+                sendResponse({ userResponse: {} })
+              }
+            }
+          })
+        } else if (request.cmd === 'setTrackingGTM') {
+          const userResponse = request.data.userResponse
+          ChromeStorage.setData('tracking.gtm', { data: JSON.stringify(userResponse) }, ChromeStorage.sync, (err) => {
+            if (err) {
+              sendResponse({ err: err })
+            } else {
+              sendResponse({ userResponse: userResponse })
+            }
+          })
+        }
+        // PVSCL:ENDCOND
+        return true // Notice message passing handler that have to wait for async calls in chrome storage
+      }
+      // PVSCL:ENDCOND
     })
   }
 }
