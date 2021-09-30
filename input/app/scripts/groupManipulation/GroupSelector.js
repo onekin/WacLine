@@ -603,7 +603,7 @@ class GroupSelector {
   codebookDeletedEventHandler () {
     return (event) => {
       if (event.detail.err) {
-        Alerts.errorAlert({ text: 'Error when deleting the group: ' + event.detail.err.message })
+        Alerts.errorAlert({ text: 'Error when deleting the group, make sure you are the owner of it : ' + event.detail.err.message })
       } else {
         // If removed group is the current group, current group must defined again
         if (event.detail.group.id === this.currentGroup.id) {
@@ -703,7 +703,7 @@ class GroupSelector {
   codebookImportedEventHandler () {
     return (event) => {
       if (event.detail.err) {
-        Alerts.errorAlert({ text: 'Error when deleting the group: ' + event.detail.err.message })
+        Alerts.errorAlert({ text: 'Error when deleting the group, make sure you are the owner of it: ' + event.detail.err.message })
       } else {
         // Update groups from annotation server
         this.retrieveGroups(() => {
