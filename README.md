@@ -14,7 +14,7 @@ Created annotation clients are [browser extensions](https://developer.mozilla.or
 * Additional packages to develop:
   * eslint: `npm install eslint -g`
 
-# How to create and test your annotation client
+# How to create your annotation client
 > You can follow [this small video](https://go.haritzmedina.com/waclineVideo) that creates a sample extension 
 
 Step 1. You can create a product variant in ./Variants/ folder in Eclipse. Configure with the features that your annotation client must have to conduct your annotation activity. You can view the full documentation of the feature model [here](https://onekin.github.io/WacLine/featureModel/).
@@ -32,12 +32,20 @@ Step 4. A compiled browser extension is created in `./output/<name_of_your_produ
 Step 5. Test the installed extension in the browser
 
 # Examples
-We have created three variants that can be used as an example:
-* HighlightAndGo
-* ReviewAndGo
-* MarkAndGo
+Community have created up to 6 variants that can be used as an example, where three of them are already available in Chrome Store:
+* [Highlight&Go](https://chrome.google.com/webstore/detail/highlightgo/bihmalipgnlomidlpekdnoohiejppfmo): a web annotation client to conduct Systematic Literature Reviews data extraction using Google Sheets
+* [MarkAndGo](https://chrome.google.com/webstore/detail/markgo/kjedcndgienemldgjpjjnhjdhfoaocfa): a web annotation client to conduct assignments marking over Moodle using evaluation rubrics
+* [ReviewAndGo](https://chrome.google.com/webstore/detail/reviewgo/hgiannlbfceoomjmcgedbmkfeblbcogi?hl=en): a web annotation client to conduct papers review based on a customizable reviwing framework
+* ConceptAndGo: a web annotation client to develop mind maps based on capturing data over the web
+* Docal: a web annotation client to capture data from legal sentences
+* Fival: a web annotation client for bachelor degree thesis evaluation
 
-# Continuous delivery for application engineers
+You can find the latest version of each of them in their corresponding branch `product/*` (e.g., for Highlight&Go the branch is named `product/highlightAndGo`).
+
+# How to contribute
+You can check contribution information in [contributing notes](CONTRIBUTING.md).
+
+# Continuous delivery for application engineers and contributors
 Each of the derived products from WacLine are ready to build, ~~test~~ and pack to delivery in browser extensions stores (e.g: Chrome Web Store).
 Here are described some gulp tasks to facilitate these activities:
 
