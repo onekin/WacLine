@@ -1,6 +1,8 @@
 # Information for contributors
 Currently, WACline provides up to 111 features that can be reused to develop different variants for different annotation purposes. You can see a complete documentation of available features [here](https://onekin.github.io/WacLine/featureModel/). It includes a textual description and in some cases includes a screenshot of the user interface. However, some specific annotation workflows can require additional features. It is possible to contribute by forking the project and developing your own features to support new capabilities: new annotation storage connectors (like solid, mysql, elasticsearch,...), new annotation production purposes (describing, linking,...), new visualizations (diagrams, real-time charts,...). Try to always think about reusability by third parties, providing an understandable description, commented code or reusable modules, if it is possible. New contributions to the main project (bug fixes, enhancements, improvements, new features, optimizations) can be proposed opening a pull request.
 
+Most of the common bugs and problems we have found (and how to solve them) while developing in WACline using Pure::Variants can be found [here](https://github.com/onekin/WacLine/wiki/Common-bugs-when-developing-with-eclipse-pure-variants-and-wacline). Feel free to open a new issue whether it exists any problem in configuration, building or deploying steps.
+
 In the following lines we present main aspects of WACline's development, that can help you to introduce yourself in how is it developed.
 
 ## Conceptual model over web annotations
