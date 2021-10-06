@@ -16,8 +16,8 @@
 }
 
 /* Fix a problem with comment textarea size, sweetalert and awesomeplete */
-.swal2-html-container {
-  min-height: 15rem;
+.awesomplete {
+  position: inherit;
 }
 
 .swal2-textarea {

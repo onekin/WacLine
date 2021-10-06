@@ -22,7 +22,8 @@ class Alerts {
         reverseButtons,
         allowOutsideClick,
         allowEscapeKey,
-        showCancelButton: true
+        showCancelButton: true,
+        backdrop: false
       }).then((result) => {
         if (result.value) {
           if (_.isFunction(callback)) {
