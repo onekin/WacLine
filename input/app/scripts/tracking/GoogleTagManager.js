@@ -43,10 +43,12 @@ class GoogleTagManager {
         alertType: Alerts.alertType.question,
         text: chrome.i18n.getMessage('appName') + ' wants to collect anonymous user behaviour data. This data will be used to improve ' + chrome.i18n.getMessage('appName') + '\'s functionality only when the extension is activated. You have further information about <a href="' + policiesURL + '" target="_blank" class="alertLink">our tracking policy</a>. You can always change your preferences in the <a class="alertLink" target="_blank" href="' + chrome.extension.getURL('pages/options.html') + '">options page</a>.',
         title: 'Do you give us your consent to collect tracking data?',
+        backdrop: false,
         callback: () => {
           Alerts.infoSyncAlert({
             title: 'Thank you! Please disable ad blockers',
             text: 'Thanks for giving us your consent.<br/>To let ' + chrome.i18n.getMessage('appName') + ' capture usage data please disable any adblock extension installed in your browser, at least in websites where you are going to use ' + chrome.i18n.getMessage('appName') + '.',
+            backdrop: false,
             callback: () => {
               resolve(true)
             }

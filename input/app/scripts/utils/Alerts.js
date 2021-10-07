@@ -6,7 +6,7 @@ if (document && document.head) {
 }
 
 class Alerts {
-  static confirmAlert ({ alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', reverseButtons, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback }) {
+  static confirmAlert ({ alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', reverseButtons, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback, backdrop = true }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -23,7 +23,7 @@ class Alerts {
         allowOutsideClick,
         allowEscapeKey,
         showCancelButton: true,
-        backdrop: false
+        backdrop: backdrop
       }).then((result) => {
         if (result.value) {
           if (_.isFunction(callback)) {
@@ -58,8 +58,9 @@ class Alerts {
    * @param text
    * @param title
    * @param callback
+   * @param backdrop
    */
-  static infoSyncAlert ({ text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), title = 'Info', callback }) {
+  static infoSyncAlert ({ text = chrome.i18n.getMessage('expectedInfoMessageNotFound'), title = 'Info', callback, backdrop = true }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -69,7 +70,8 @@ class Alerts {
       swal.fire({
         icon: Alerts.alertType.info,
         title: title,
-        html: text
+        html: text,
+        backdrop: backdrop
       }).then(() => {
         if (_.isFunction(callback)) {
           callback(null)

@@ -160,7 +160,7 @@ class Options {
       if (_.isBoolean(userResponse)) {
         document.querySelector('#googleTagManagerConsent').checked = userResponse
       } else {
-        document.querySelector('#googleTagManagerConsent').checked = 'unchecked'
+        document.querySelector('#googleTagManagerConsent').checked = false
       }
     })
     document.querySelector('#googleTagManagerConsent').addEventListener('change', (event) => {

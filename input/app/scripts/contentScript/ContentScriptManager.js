@@ -429,10 +429,14 @@ class ContentScriptManager {
       this.destroyPreviousAssignments()
       this.destroyMoodleEstimationManager()
       // PVSCL:ENDCOND
-      // TODO Destroy groupSelector, sidebar,
+      // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+      this.destroyGoogleSheetAuditLogging()
+      // PVSCL:ENDCOND
+      // Destroy groupSelector, sidebar, annotation server
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
           this.destroyAnnotationServer(() => {
+            // Change status to non initialized
             this.status = ContentScriptManager.status.notInitialized
             console.debug('Correctly destroyed content script manager')
             if (_.isFunction(callback)) {
