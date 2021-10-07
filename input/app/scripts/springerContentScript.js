@@ -26,7 +26,7 @@ class SpringerContentScript {
     const pdfLinkElements = this.getPdfLinkElement()
     // Get pdf link element
     let pdfLinkElement = this.getPdfLinkElement()
-    if (pdfLinkElement) {
+    if (_.isElement(pdfLinkElement)) {
       // Get if this tab has an annotation to open
       if (!_.isEmpty(params) && !_.isEmpty(params[Config.urlParamName])) {
         // Activate the extension
@@ -143,7 +143,9 @@ class SpringerContentScript {
       '#article-actions > div > div.download-article.test-pdf-link > div > a',
       '#cobranding-and-download-availability-text > div > a',
       '#main-content > article.main-wrapper.main-wrapper--no-gradient.main-wrapper--dual-main > div > div > div.cta-button-container.cta-button-container--inline.cta-button-container--stacked.u-pt-36.test-download-book-separate-buttons > div:nth-child(1) > a',
-      '#main-content > article.main-wrapper.main-wrapper--no-gradient.main-wrapper--dual-main > div > div > div.cta-button-container.cta-button-container--stacked.u-pt-36 > div > div > a']
+      '#main-content > article.main-wrapper.main-wrapper--no-gradient.main-wrapper--dual-main > div > div > div.cta-button-container.cta-button-container--stacked.u-pt-36 > div > div > a',
+      '.c-pdf-download__link'
+    ]
     const pdfLinks = selectorsStrings.reduce(function (result, selector) {
       const pdfLink = document.querySelector(selector)
       if (_.isElement(pdfLink)) {
@@ -151,7 +153,11 @@ class SpringerContentScript {
       }
       return result
     }, [])
-    return pdfLinks
+    if (_.isArray(pdfLinks)) {
+      return pdfLinks[0]
+    } else {
+      return pdfLinks
+    }
   }
 }
 
