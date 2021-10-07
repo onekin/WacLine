@@ -19,7 +19,7 @@ class TargetManager {
     this.dropboxContent = { urls: ['*://*.dropboxusercontent.com/*'] }
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(IEEE, LINE)
-    this.ieee = { urls: ['*://ieeexplore.ieee.org/document/*', '*://ieeexplore.ieee.org/stamp/stamp.jsp*'] }
+    this.ieee = { urls: ['*://ieeexplore.ieee.org/stamp/stamp.jsp*'] }
     // PVSCL:ENDCOND
     this.tabs = {}
   }
