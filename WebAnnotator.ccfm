@@ -359,6 +359,11 @@
         <cm:script cm:id="iEaLP9jl2o3K0SvHr" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.GoogleTagManager</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="i0E-Z446A6jPz46_u">
+      <cm:restriction cm:id="iHHo2FnJswZrXqXSO">
+        <cm:script cm:id="iQ_ihJHyhKi23PGnK" cm:language="ps:pvscl" cm:type="ps:boolean">GoogleSheetAuditLog</cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -32232,7 +32237,7 @@
         <cm:mimedesc cm:id="iPG_GRJNk9JptvLNw" cm:mimetype="text/plain" cm:encoding="utf-8">upvote.png</cm:mimedesc>
       </cm:vname>
     </cm:element>
-    <cm:element cm:id="ihdTFZ2SNgqtdzXDPvAHIfdzBlGe" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+    <cm:element cm:id="ihdTFZ2SNgqtdzXDPvAHIfdzBlGe" cm:restriction="i0E-Z446A6jPz46_u" cm:type="ex:js" cm:class="ps:part" cm:default="on">
       <cm:relations cm:id="ihdTFZ2SNgqtdzXDPvAHIfdzBlGedependecies" cm:class="ps:dependencies">
       </cm:relations>
       <cm:relations cm:id="ilc7UtuV7XSU7hXgbB2bqD3YCfXsulIWm_pCxw1y2" cm:class="ps:parents">
@@ -32253,10 +32258,10 @@
           <cm:constant cm:id="i9Z-KrQW-FUs4Km6x" cm:type="ps:datetime">2021-06-24T12:09:56.471Z</cm:constant>
         </cm:property>
         <cm:property cm:id="i0Ro3ybV3rlqs6wcI" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="i8N_COy8osCGOEYH-" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="i8N_COy8osCGOEYH-" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iXxKETwn-etS_tXO6" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="it4Pg_o6VYTRQfgKi" cm:type="ps:datetime">2021-06-24T12:09:56.471Z</cm:constant>
+          <cm:constant cm:id="it4Pg_o6VYTRQfgKi" cm:type="ps:datetime">2021-10-08T10:25:59.872Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>

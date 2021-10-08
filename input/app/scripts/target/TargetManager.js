@@ -24,6 +24,7 @@ class TargetManager {
     this.urlChangeInterval = null
     this.urlParam = null
     this.documentId = null
+    this.documentIdAlreadyExists = false
     this.documentTitle = ''
     this.documentAuthor = ''
     this.documentPublisher = ''
@@ -124,9 +125,10 @@ class TargetManager {
       element: document,
       event: Events.updatedAllAnnotations,
       handler: () => {
-        if (_.isEmpty(this.documentId)) {
+        if (_.isEmpty(this.documentIdAlreadyExists)) {
           if (window.abwa.annotationManagement.annotationReader.allAnnotations.length > 0) {
             this.documentId = window.abwa.annotationManagement.annotationReader.allAnnotations[0].target[0].source.id
+            this.documentIdAlreadyExists = true
           } else {
             this.documentId = RandomUtils.randomString()
           }
@@ -135,6 +137,42 @@ class TargetManager {
       }
     }
     this.updatedAllAnnotationsEvent.element.addEventListener(this.updatedAllAnnotationsEvent.event, this.updatedAllAnnotationsEvent.handler, false)
+    // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+    this.updatedPapersList = {
+      element: document,
+      event: Events.googleSheetAuditPapersList,
+      handler: (event) => {
+        if (_.isEmpty(this.documentIdAlreadyExists)) {
+          let rows = event.detail.rows
+          let coincidenceRow = rows.find(elem => {
+            if (window.abwa.targetManager.documentTitle !== 'Unknown document') {
+              if (elem[2] === window.abwa.targetManager.documentTitle) {
+                return true
+              }
+            } else if (_.isString(window.abwa.targetManager.doi)) {
+              if (elem[3].replace('https://doi.org/', '') === window.abwa.targetManager.doi) {
+                return true
+              }
+            } else if (_.isString(window.abwa.targetManager.url)) {
+              if (elem[4] === window.abwa.targetManager.url) {
+                return true
+              }
+            } else if (_.isString(window.abwa.targetManager.urn)) {
+              if (elem[5] === window.abwa.targetManager.urn) {
+                return true
+              }
+            }
+            return false
+          })
+          if (_.isArray(coincidenceRow)) {
+            this.documentId = coincidenceRow[0] // If there is a coincident URL, get its previously set document id
+            this.documentIdAlreadyExists = true
+          }
+        }
+      }
+    }
+    this.updatedPapersList.element.addEventListener(this.updatedPapersList.event, this.updatedPapersList.handler, false)
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(EvidencedCodebook, LINE)
     // In case of evidencing, codebook elements (theme/code) can be taken from documents. We should check whether the current document was used to create codebook elements, as it will have an ID for current document
     this.codebookLoadedEvent = {
@@ -142,7 +180,7 @@ class TargetManager {
       event: Events.codebookLoaded,
       handler: () => {
         // Search in current codebook whether it codes/themes have current document as target
-        if (_.isEmpty(this.documentId)) {
+        if (!this.documentIdAlreadyExists) {
           // Get targets from themes and codes and filter those who have selector (means that were taken from an evidence somewhere)
           let codebookElementEvidenceTargets = _.flatten(window.abwa.codebookManager.codebookReader.codebook.themes.map(theme =>
             theme.target.concat(_.flatten(theme.codes.map(code =>
@@ -169,6 +207,7 @@ class TargetManager {
             })
             if (targetCoincidence) {
               this.documentId = targetCoincidence.source.id
+              this.documentIdAlreadyExists = true
             }
           }
         }

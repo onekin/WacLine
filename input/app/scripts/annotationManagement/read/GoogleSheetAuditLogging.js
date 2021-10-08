@@ -6,6 +6,7 @@ import Commenting from '../purposes/Commenting'
 import RandomUtils from '../../utils/RandomUtils'
 import Assessing from '../purposes/Assessing'
 import Config from '../../Config'
+import LanguageUtils from '../../utils/LanguageUtils'
 
 class GoogleSheetAuditLogging {
   init (callback) {
@@ -58,8 +59,10 @@ class GoogleSheetAuditLogging {
         this.papers = _.compact(this.papers.filter(
           elem => elem !== 'slr:codebookDevelopment' && elem !== 'oa:classifying' && !_.isEmpty(elem) && !elem.startsWith('file://')
         ))
+        // Send papers list initialized event
+        LanguageUtils.dispatchCustomEvent(Events.googleSheetAuditPapersList, { rows: result })
         if (_.isFunction(callback)) {
-          callback(null, _.compact(this.papers))
+          callback(null, this.papers)
         }
       }
     })

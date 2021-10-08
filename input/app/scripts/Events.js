@@ -92,6 +92,9 @@ const Events = {
   // PVSCL:IFCOND(SidebarNavigation, LINE)
   navigateToAnnotationByCode: 'navigateToAnnotationByCode',
   // PVSCL:ENDCOND
+  // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+  googleSheetAuditPapersList: 'googleSheetAuditPapersList',
+  // PVSCL:ENDCOND
   annotatedContentManagerUpdated: 'annotatedContentManagerUpdated',
   navigateToAnnotation: 'navigateToAnnotation',
   codebookRead: 'codebookRead' // Not in codebook variation point because absense of Codebook/Classifying also requires this event currently
