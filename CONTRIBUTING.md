@@ -7,7 +7,7 @@ In the following lines we present main aspects of WACline's development, that ca
 
 ## Conceptual model over web annotations
 WACline follows W3C annotation recommendations in terms of protocol (how annotations are transported), model (how annotations are represented) and vocabulary (terms used to describe an annotation on the web). The following interactive concept map define some main concepts of wacline that will be used in feature modeling, component naming and among the source code of the project.
-[![image](https://user-images.githubusercontent.com/6429012/135625602-55dc1f62-a9a2-4691-b9e4-f99807ffdca3.png)](https://rebrand.ly/webAnnotationCmap)
+[![image](https://user-images.githubusercontent.com/6429012/138644698-a905d7ae-a62d-4b48-8a8f-9f7627294c6a.png)](https://rebrand.ly/webAnnotationCmap)
 
 ## Feature model
 The feature model shows the functionalities that are implemented in WACline in a hierarchical structure. The following diagram only represents the most general groups and features developed in WACline.
