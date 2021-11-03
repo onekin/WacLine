@@ -118,6 +118,8 @@ class ACMContentScript {
   findDoi () {
     if (window.location.href.includes('dl.acm.org/doi/pdf/')) {
       return window.location.href.replace('https://dl.acm.org/doi/pdf/', '').split('#' + Config.urlParamName)[0]
+    } else if (window.location.href.includes('dl.acm.org/doi/abs')) {
+      return window.location.href.replace('https://dl.acm.org/doi/abs/', '').split('#' + Config.urlParamName)[0]
     } else if (window.location.href.includes('dl.acm.org/doi')) {
       return window.location.href.replace('https://dl.acm.org/doi/', '').split('#' + Config.urlParamName)[0]
     }
