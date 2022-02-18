@@ -1,6 +1,5 @@
 import _ from 'lodash'
 import LanguageUtils from '../../../utils/LanguageUtils'
-import token from 'basic-auth-token'
 import $ from 'jquery'
 
 class CmapCloudClient {
@@ -8,7 +7,8 @@ class CmapCloudClient {
     this.user = user
     this.password = password
     this.uid = uid
-    this.basicAuth = token(this.user, this.password)
+    let auth = user + ':' + password
+    this.basicAuth = btoa(auth)
   }
 
   getRootFolderInfor (callback) {

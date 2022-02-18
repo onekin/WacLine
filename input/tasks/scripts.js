@@ -28,12 +28,18 @@ gulp.task('scripts', () => {
         publicPath: ''
       },
       mode: ENV, // TODO Set to ENV. Currently uglify is not encoding contentScript.js in UTF-8
+      resolve: {
+        fallback: {
+          stream: require.resolve('stream-browserify')
+        }
+      },
       plugins: [
         new ESLintPlugin(),
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
-          'window.jQuery': 'jquery'
+          'window.jQuery': 'jquery',
+          process: 'process/browser'
         }),
         new webpack.DefinePlugin({
           'process.env.NODE_ENV': JSON.stringify(ENV),

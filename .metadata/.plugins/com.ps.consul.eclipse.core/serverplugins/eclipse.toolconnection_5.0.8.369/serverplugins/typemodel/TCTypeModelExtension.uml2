@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:uml="http://www.eclipse.org/uml2/1.0.0/UML" xmi:id="_aD164MMGEdmpTYk2LmdK_g_LOOT">
+  <ownedMember xmi:type="uml:Package" xmi:id="_cOso4MMGEdmpTYk2LmdK_g_LOOT" name="ps">
+    <ownedMember xmi:type="uml:Stereotype" xmi:id="_fX-G8MMGEdmpTYk2LmdK_g_LOOT" name="namespace"/>
+    <ownedMember xmi:type="uml:Class" xmi:id="_oDinAMxpEdmnlqw73ibBwg_LOOT" name="bug">
+      <generalization xmi:id="_oDinAcxpEdmnlqw73ibBwg_LOOT">
+        <general xmi:type="uml:Class" href="TypeModel.uml2#_9Gs64CwPEdmdtOzN278pqQ"/>
+      </generalization>
+    </ownedMember>
+  </ownedMember>
+</uml:Model>

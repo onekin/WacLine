@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin 
+  id="com.ps.consul.eclipse.ui.pvscleditor.transform.serverplugin" 
+  name="PVSCL Action List Extension" 
+  version="1.0.0" 
+  provider-name="pure-systems GmbH">
+  
+  <extension 
+    id="com.ps.consul.eclipse.ui.pvscleditor.transform" 
+    name="com.ps.consul.eclipse.ui.pvscleditor.transform" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="PVSCL Transformation Module" 
+      version="1.0" 
+      include="/variant"
+      exclude=""
+      type="client"
+      update="true"
+      partial="true"
+      label="PVSCL Transformation Module (After Actionlist)"
+      id="com.ps.consul.eclipse.ui.pvscleditor.transform.module"
+      runbefore="actionlist">
+      
+      <description>Handles pvsclxml and pvscltext objects.</description>
+
+      <parameters>
+      <!--
+        <parameter name="The name" type="The type" optional="false">
+          <description>The description.</description>
+        </parameter>
+      -->
+      </parameters>
+      
+    </module>
+    
+  </extension>
+
+</plugin>

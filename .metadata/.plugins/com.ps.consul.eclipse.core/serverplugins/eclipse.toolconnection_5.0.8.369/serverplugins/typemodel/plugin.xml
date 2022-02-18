@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <plugin
+     id="typemodel.extension.toolconnection"
+     name="Toolconnection Type Model Extension"
+     version="1.0.0"
+     provider-name="pure-systems GmbH">
+
+     <extension point="com.ps.consul.typemodel.extension">
+        <typemodel location="TCTypeModelExtension.uml2"/>
+     </extension>
+  </plugin>

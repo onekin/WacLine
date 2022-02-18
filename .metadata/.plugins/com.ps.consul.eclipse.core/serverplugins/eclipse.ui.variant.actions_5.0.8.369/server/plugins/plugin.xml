@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin 
+  id="com.ps.consul.eclipse.ui.variant.actions.serverplugin" 
+  name="Client Transformation Module" 
+  version="1.0.0" 
+  provider-name="pure-systems GmbH">
+  
+  <extension 
+    id="Cluster Transform Module" 
+    name="Cluster Transform Module" 
+    point="com.ps.consul.transformer.module">
+    
+    <module 
+      name="Element Cluster Report" 
+      version="1.0" 
+      include="/variant"
+      exclude=""
+      type="client"
+      update="true"
+      id="com.ps.consul.eclipse.ui.variant.actions.cluster.report.module">
+      
+      <description>Generates a selection cluster report of the transformed variants in a CSV file.</description>
+
+      <parameters>
+        <parameter name="IncludeMandatoryElements" type="ps:boolean" optional="true">
+          <description>Defines whether mandatory elements should be considered for the selection cluster analysis.
+
+Default value is "false".
+          </description>
+          <default>false</default>
+        </parameter>       
+        <parameter name="UseUserSelectionsOnly" type="ps:boolean" optional="true">
+          <description>Defines whether only user selections shall be used in the analysis.
+
+Default value is "false".
+          </description>
+          <default>false</default>
+        </parameter>       
+        <parameter name="OutputFile" type="ps:path" optional="false">
+          <description>Specifies the target file for the generated CSV report.</description>
+        </parameter>
+      </parameters>
+    </module>
+  </extension>
+</plugin>
