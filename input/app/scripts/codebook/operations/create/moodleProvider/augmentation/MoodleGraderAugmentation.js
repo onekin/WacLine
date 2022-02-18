@@ -32,15 +32,17 @@ class MoodleGraderAugmentation {
     this.waitUntilFilesAreLoaded((submissionFilesContainer) => {
       MoodleScraping.scrapAssignmentData((err, assignmentData) => {
         if (err) {
-
+          console.error(err.message)
         } else {
           let fileItemId = this.getFileItemId()
           const submittedFilesElements = submissionFilesContainer.querySelectorAll('a')
           // Change URLs of files elements
           _.forEach(submittedFilesElements, (submittedFileElement) => {
             submittedFileElement.href = submittedFileElement.href + '#studentId:' +
-              studentId + '&courseId:' + assignmentData.courseId + '&cmid:' + assignmentData.cmid +
-              '&fileItemId:' + fileItemId
+              studentId + '&courseId:' + assignmentData.courseId + '&cmid:' + assignmentData.cmid
+            if (fileItemId) {
+              submittedFileElement.href += '&fileItemId:' + fileItemId
+            }
           })
           console.debug('Modified submission files for current student ' + studentId)
         }
@@ -49,7 +51,12 @@ class MoodleGraderAugmentation {
   }
 
   getFileItemId () {
-    return document.querySelector("input[id*='id_files_']").value
+    let fileItemElement = document.querySelector("input[id*='id_files_']")
+    if (_.isElement(fileItemElement)) {
+      return fileItemElement.value
+    } else {
+      return null
+    }
   }
 
   waitUntilUserInfoIsLoaded (callback) {
@@ -91,7 +98,7 @@ class MoodleGraderAugmentation {
     this.studentChangeCheckerInterval = setInterval(() => {
       this.getStudentId((err, studentId) => {
         if (err) {
-
+          console.error(err.message)
         } else {
           if (studentId !== savedStudentId) { // Student has changed
             savedStudentId = studentId // Save the new student id

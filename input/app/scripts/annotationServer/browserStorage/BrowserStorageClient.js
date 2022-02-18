@@ -429,7 +429,7 @@ class BrowserStorageClient {
     return {
       name: name,
       description: description || '',
-      links: { html: annotationServerUrl + '/groups/' + groupId },
+      links: { html: annotationServerUrl + '/group/' + groupId },
       id: groupId
     }
   }

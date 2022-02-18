@@ -1,6 +1,7 @@
 import gulp from 'gulp'
 import gulpif from 'gulp-if'
-import { log, colors } from 'gulp-util'
+import log from 'fancy-log'
+import colors from 'ansi-colors'
 import named from 'vinyl-named'
 import webpack from 'webpack'
 import gulpWebpack from 'webpack-stream'
@@ -9,6 +10,7 @@ import livereload from 'gulp-livereload'
 import args from './lib/args'
 import 'regenerator-runtime/runtime'
 import 'core-js/stable'
+import ESLintPlugin from 'eslint-webpack-plugin'
 
 const ENV = args.production ? 'production' : 'development'
 
@@ -22,13 +24,16 @@ gulp.task('scripts', () => {
     .pipe(gulpWebpack({
       devtool: args.sourcemaps ? 'inline-source-map' : false,
       watch: args.watch,
+      output: {
+        publicPath: ''
+      },
       mode: ENV, // TODO Set to ENV. Currently uglify is not encoding contentScript.js in UTF-8
       plugins: [
+        new ESLintPlugin(),
         new webpack.ProvidePlugin({
           $: 'jquery',
           jQuery: 'jquery',
-          'window.jQuery': 'jquery',
-          Popper: ['popper.js', 'default']
+          'window.jQuery': 'jquery'
         }),
         new webpack.DefinePlugin({
           'process.env.NODE_ENV': JSON.stringify(ENV),
@@ -38,13 +43,14 @@ gulp.task('scripts', () => {
       module: {
         rules: [{
           test: /\.js$/,
-          loader: 'eslint-loader',
           exclude: /node_modules/,
-          enforce: 'pre'
-        }, {
-          test: /\.js$/,
-          loader: 'babel-loader',
-          query: { compact: false }
+          use: [{
+            loader: 'babel-loader',
+            options: {
+              cacheCompression: false
+            }
+          }]/*,
+          query: { compact: false } */
         }]
       },
       optimization: {

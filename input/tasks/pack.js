@@ -1,5 +1,6 @@
 import gulp from 'gulp'
-import { colors, log } from 'gulp-util'
+import log from 'fancy-log'
+import colors from 'ansi-colors'
 import zip from 'gulp-zip'
 import packageDetails from '../package.json'
 import args from './lib/args'

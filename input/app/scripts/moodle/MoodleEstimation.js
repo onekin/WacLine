@@ -67,7 +67,7 @@ class MoodleEstimation {
   static retrieveAnnotationsForMarkAndGo (annotationServerManager, callback) {
     annotationServerManager.client.getListOfGroups({}, (err, groups) => {
       if (err) {
-
+        callback(err)
       } else {
         let moodleBasedGroups = groups.filter(group => group.name.startsWith('MG'))
         let promises = []
@@ -105,6 +105,8 @@ class MoodleEstimation {
         let assignmentConfig = jsYaml.load(anno.text)
         if (assignmentConfig) {
           return assignmentConfig.assignmentName === assignmentName
+        } else {
+          return null
         }
       })
       // Get definition annotations for same cmid

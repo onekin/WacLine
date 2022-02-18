@@ -185,36 +185,42 @@ class Codebook {
     }
   }
 
-  static setAnnotationServer (newGroup, callback) {
-    let annotationAnnotationServer
+  static setAnnotationServer (newGroupId, callback) {
+    let annotationServerInstance
     let group
-    if (newGroup === null) {
-      group = window.abwa.groupSelector.currentGroup
+    if (_.has(window.abwa, 'groupSelector')) {
+      if (newGroupId === null) {
+        group = window.abwa.groupSelector.currentGroup
+      } else {
+        group = window.abwa.groupSelector.groups.find((element) => {
+          return element.id === newGroupId
+        })
+      }
     } else {
-      group = newGroup
+      group = { id: newGroupId } // Faking group object only with ID property, currently this is the only property used, but in case in any future feature is required to be used with more, this line must be taken into account for further modification
     }
     // PVSCL:IFCOND(AnnotationServer->pv:SelectedChildren('ps:annotationServer')->pv:Size()>1,LINE)
     chrome.runtime.sendMessage({ scope: 'annotationServer', cmd: 'getSelectedAnnotationServer' }, ({ annotationServer }) => {
       if (annotationServer === 'hypothesis') {
         // Hypothesis
-        annotationAnnotationServer = new Hypothesis({ group: group })
+        annotationServerInstance = new Hypothesis({ group: group })
       } else {
         // Browser storage
-        annotationAnnotationServer = new BrowserStorage({ group: group })
+        annotationServerInstance = new BrowserStorage({ group: group })
       }
       if (_.isFunction(callback)) {
-        callback(annotationAnnotationServer)
+        callback(annotationServerInstance)
       }
     })
     // PVSCL:ELSECOND
     // PVSCL:IFCOND(Hypothesis,LINE)
-    annotationAnnotationServer = new Hypothesis({ group: group })
+    annotationServerInstance = new Hypothesis({ group: group })
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(BrowserStorage,LINE)
-    annotationAnnotationServer = new BrowserStorage({ group: group })
+    annotationServerInstance = new BrowserStorage({ group: group })
     // PVSCL:ENDCOND
     if (_.isFunction(callback)) {
-      callback(annotationAnnotationServer)
+      callback(annotationServerInstance)
     }
     // PVSCL:ENDCOND
   }

@@ -1,5 +1,4 @@
 import _ from 'lodash'
-import swal from 'sweetalert2'
 import Alerts from '../../../../utils/Alerts'
 import ChromeStorage from '../../../../utils/ChromeStorage'
 import Codebook from '../../../model/Codebook'
@@ -46,20 +45,22 @@ class GroupInitializer {
         if (_.isEmpty(group)) {
           this.createGroup((err) => {
             if (err) {
-              swal('Oops!', // TODO i18n
-                'There was a problem while creating the group. Please reload the page and try it again. <br/>' +
-                'If the error continues, please contact administrator.',
-                'error') // Show to the user the error
+              Alerts.errorAlert({
+                title: 'Oops!',
+                text: 'There was a problem while creating the group. Please reload the page and try it again. <br/>' +
+                  'If the error continues, please contact administrator.'
+              })
               if (_.isFunction(callback)) {
                 callback(err)
               }
             } else {
               this.createFacetsAndCodes((err) => {
                 if (err) {
-                  swal('Oops!', // TODO i18n
-                    'There was a problem while creating buttons for the sidebar. Please reload the page and try it again. <br/>' +
-                    'If the error continues, please contact the administrator.',
-                    'error') // Show to the user the error
+                  Alerts.errorAlert({
+                    title: 'Oops!',
+                    text: 'There was a problem while creating buttons for the sidebar. Please reload the page and try it again. <br/>' +
+                      'If the error continues, please contact administrator.'
+                  })
                   // Remove created hypothesis group
                   this.removeGroup()
                   if (_.isFunction(callback)) {
@@ -85,9 +86,10 @@ class GroupInitializer {
         } else {
           const selectedAnnotationServerManager = window.googleSheetProvider.annotationServerManager
           const groupUrl = selectedAnnotationServerManager.constructSearchUrl({ group: group.id })
-          swal('The group ' + group.name + ' already exists', // TODO i18n
-            chrome.i18n.getMessage('VisitTheCreatedGroup') + ' <a href="' + groupUrl + '" target="_blank">here</a>.',
-            'info')
+          Alerts.infoAlert({
+            title: 'The group ' + group.name + ' already exists', // TODO i18n
+            text: chrome.i18n.getMessage('VisitTheCreatedGroup') + ' <a href="' + groupUrl + '" target="_blank">here</a>.',
+          })
           if (_.isFunction(callback)) {
             callback()
           }

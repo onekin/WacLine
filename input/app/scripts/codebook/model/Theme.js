@@ -139,7 +139,7 @@ class Theme {
           isTopic/* PVSCL:ENDCOND */
         })
       } else {
-
+        console.error('Unable to retrieve configuration for annotation')
       }
     } else {
       console.error('Unable to retrieve criteria from annotation')

@@ -460,12 +460,15 @@ class UpdateCodebook {
               if (code) {
                 classifyingBody.value = code.toObject()
                 return annotation
+              } else {
+                return null
               }
             }
-            /* PVSCL:ELSECOND */
-            return null
             /* PVSCL:ENDCOND */
+            return null
           }
+        } else {
+          return null
         }
       })
       const promises = annotations.forEach((annotation) => {

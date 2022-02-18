@@ -60,6 +60,8 @@ class Annotation {
       return this.body.find((body) => {
         if (body && body.purpose) {
           return body.purpose === purpose
+        } else {
+          return null
         }
       })
     }
@@ -167,6 +169,7 @@ class Annotation {
           return new Linking({ value: tempBody.value })
         }
         // PVSCL:ENDCOND
+        return null
       })
     }
     // PVSCL:IFCOND(Hypothesis, LINE)

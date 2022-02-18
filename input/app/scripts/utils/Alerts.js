@@ -59,7 +59,7 @@ class Alerts {
         callback(new Error('Unable to load swal'))
       }
     } else {
-      const fire = () => {
+      let fire = () => {
         let timerInterval
         swal.fire({
           type: Alerts.alertType.info,
@@ -68,14 +68,14 @@ class Alerts {
           allowOutsideClick,
           allowEscapeKey,
           showConfirmButton: true,
-          onOpen: () => {
+          didOpen: () => {
             if (_.isFunction(timerIntervalHandler)) {
               timerInterval = setInterval(() => {
                 timerIntervalHandler(swal, timerInterval)
               }, timerIntervalPeriodInSeconds * 1000)
             }
           },
-          onClose: () => {
+          didClose: () => {
             clearInterval(timerInterval)
           }
         })
@@ -169,7 +169,7 @@ class Alerts {
         title: title,
         html: text,
         showConfirmButton: confirmButton,
-        onBeforeOpen: () => {
+        willOpen: () => {
           swal.showLoading()
           if (_.isFunction(timerIntervalHandler)) {
             timerInterval = setInterval(() => {
@@ -181,7 +181,7 @@ class Alerts {
             }, 100)
           }
         },
-        onAfterClose: () => {
+        didClose: () => {
           clearInterval(timerInterval)
         }
       })
@@ -233,7 +233,7 @@ class Alerts {
         focusConfirm: false,
         preConfirm: preConfirm,
         position: position,
-        onBeforeOpen: onBeforeOpen,
+        willOpen: onBeforeOpen,
         allowOutsideClick,
         allowEscapeKey,
         customClass: customClass,
@@ -242,50 +242,6 @@ class Alerts {
         if (result.value) {
           if (_.isFunction(callback)) {
             callback(null, result.value)
-          }
-        } else {
-          if (_.isFunction(cancelCallback)) {
-            cancelCallback(null)
-          }
-        }
-      })
-    }
-  }
-
-  static threeOptionsAlert ({ title = 'Input', html = '', preConfirm, position = Alerts.position.center, onBeforeOpen, showDenyButton = true, showCancelButton = true, confirmButtonText = 'Confirm', confirmButtonColor = '#4BB543', denyButtonText = 'Deny', denyButtonColor = '#3085D6', cancelButtonText = 'Cancel', allowOutsideClick = true, allowEscapeKey = true, callback, denyCallback, cancelCallback, customClass }) {
-    Alerts.tryToLoadSwal()
-    if (_.isNull(swal)) {
-      if (_.isFunction(callback)) {
-        callback(new Error('Unable to load swal'))
-      }
-    } else {
-      swal.fire({
-        title: title,
-        html: html,
-        focusConfirm: false,
-        preConfirm: preConfirm,
-        position: position,
-        onBeforeOpen: onBeforeOpen,
-        allowOutsideClick,
-        allowEscapeKey,
-        customClass: customClass,
-        showDenyButton: showDenyButton,
-        showCancelButton: showCancelButton,
-        confirmButtonText: confirmButtonText,
-        confirmButtonColor: confirmButtonColor,
-        denyButtonText: denyButtonText,
-        denyButtonColor: denyButtonColor,
-        cancelButtonText: cancelButtonText
-
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          if (_.isFunction(callback)) {
-            callback(null, result.value)
-          }
-        } else if (result.isDenied) {
-          if (_.isFunction(callback)) {
-            denyCallback(null, result.value)
           }
         } else {
           if (_.isFunction(cancelCallback)) {
