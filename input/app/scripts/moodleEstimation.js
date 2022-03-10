@@ -18,7 +18,7 @@ class MoodleEstimationContentScript {
             console.error('Unable to retrieve annotations of previous mark&go groups. Error: ' + err.message)
           } else {
             // Get number of students assignments submitted
-            let numberOfStudentsAssignmentsSubmitted = Number.parseInt(document.querySelector('#region-main > div:nth-child(3) > div.gradingsummary > div > table > tbody > tr:nth-child(3) > td').innerText)
+            let numberOfStudentsAssignmentsSubmitted = Number.parseInt(document.querySelector('#region-main div.gradingsummary > div > table > tbody > tr:nth-child(3) > td').innerText)
             MoodleEstimation.estimateTimeInMilisecondsPendingToAssess({
               annotationsPerGroup, assignmentName: this.assignmentName, cmid: this.cmid, numberOfStudentsAssignmentsSubmitted
             }, (err, { timeInMilisecondsPendingToAssess }) => {
@@ -92,7 +92,7 @@ class MoodleEstimationContentScript {
   }
 
   getAssignmentName () {
-    return document.querySelector('#region-main > div:nth-child(3) > h2').innerText
+    return document.querySelector('#region-main h2').innerText
   }
 
   getMoodleEndpoint () {

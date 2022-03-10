@@ -123,6 +123,10 @@ class Options {
       document.querySelector('#moodleEndpoint').value = endpoint.endpoint
     })
 
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'getPersonalToken' }, (token) => {
+      document.querySelector('#moodleApiToken').value = token.token
+    })
+
     chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'isApiSimulationActivated' }, (isActivated) => {
       document.querySelector('#apiSimulationCheckbox').checked = isActivated.activated
     })
@@ -144,6 +148,9 @@ class Options {
     })
     document.querySelector('#moodleUpdateNotificationCheckbox').addEventListener('change', () => {
       this.updateMoodleUpdateNotificationCheckbox()
+    })
+    document.querySelector('#moodleApiToken').addEventListener('keyup', () => {
+      this.updateMoodlePersonalToken()
     })
     // PVSCL:ENDCOND
     // PVSCL:ENDCOND
@@ -246,6 +253,17 @@ class Options {
       data: { isActivated: isChecked }
     }, (response) => {
       console.debug('Moodle update notification is updated to: ' + response.activated)
+    })
+  }
+
+  updateMoodlePersonalToken () {
+    const token = document.querySelector('#moodleApiToken').value
+    chrome.runtime.sendMessage({
+      scope: 'moodle',
+      cmd: 'setPersonalToken',
+      data: { token: token }
+    }, (response) => {
+      console.debug('Moodle update token is updated to: ' + response.token)
     })
   }
 

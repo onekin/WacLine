@@ -48,6 +48,19 @@ class MoodleBackgroundManager {
               }
             }
           })
+        } else if (request.cmd === 'getPersonalToken') {
+          ChromeStorage.getData('moodlePersonalToken', ChromeStorage.local, (err, token) => {
+            if (err) {
+              sendResponse({ err: err })
+            } else {
+              if (token) {
+                const parsedToken = token.token
+                sendResponse({ token: parsedToken || '' })
+              } else {
+                sendResponse({ token: '' })
+              }
+            }
+          })
         } else if (request.cmd === 'saveGrantedPermissionMoodle') {
           ChromeStorage.setData('moodlePermission', { saved: true }, ChromeStorage.sync, (err) => {
             if (err) {
@@ -110,6 +123,14 @@ class MoodleBackgroundManager {
               sendResponse({ err: err, saved: false })
             } else {
               sendResponse({ saved: true })
+            }
+          })
+        } else if (request.cmd === 'setPersonalToken') {
+          ChromeStorage.setData('moodlePersonalToken', { token: request.data.token }, ChromeStorage.local, (err, response) => {
+            if (err) {
+              sendResponse({ err: err, saved: false })
+            } else {
+              sendResponse({ saved: true, token: request.data.token })
             }
           })
         } else if (request.cmd === 'isMoodleUploadAnnotatedFilesActivated') {

@@ -15,16 +15,28 @@ class MoodleClientManager {
   }
 
   init (callback) {
-    // Retrieve token from moodle
-    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'getTokenForEndpoint', data: { endpoint: this.moodleEndpoint } }, (result) => {
-      if (result.err) {
-        callback(new Error('Unable to retrieve valid token'))
-      } else {
-        this.tokens = result.tokens
+    // Check whether the user has defined a personal token in options page
+    chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'getPersonalToken' }, (result) => {
+      if (!_.isEmpty(result.token)) {
+        this.tokens = [{ token: result.token }]
+        this.tokens[0].tests = Object.values(MoodleFunctions).map(a => a.wsFunc).map(a => { return { enabled: true, service: a, token: result.token } })
         this.moodleClient = new MoodleClient(this.moodleEndpoint)
         if (_.isFunction(callback)) {
           callback()
         }
+      } else {
+        // Retrieve token from moodle
+        chrome.runtime.sendMessage({ scope: 'moodle', cmd: 'getTokenForEndpoint', data: { endpoint: this.moodleEndpoint } }, (result) => {
+          if (result.err) {
+            callback(new Error('Unable to retrieve valid token'))
+          } else {
+            this.tokens = result.tokens
+            this.moodleClient = new MoodleClient(this.moodleEndpoint)
+            if (_.isFunction(callback)) {
+              callback()
+            }
+          }
+        })
       }
     })
   }
