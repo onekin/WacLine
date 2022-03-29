@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <moduleconfigs name="Default">
   <moduleconfig ignoreerrors="false" name="FileProcessing">
-    <input use="false"/>
-    <output clear="false" create="false" recover="false" use="false"/>
+    <input use="true">$(PROJECT)/output/$(VARIANT)-GAFF</input>
+    <output clear="ask" create="ask" recover="true" use="true">$(PROJECT)/output/$(VARIANT)</output>
     <mode type="overwrite"/>
+    <modelfilter use="false"/>
     <module exclude="" include="/variant" name="Convert to transformer action list" tname="standard transformation">
       <parameter name="output file" type="ps:path"/>
       <parameter name="execution time" type="ps:string">before</parameter>
@@ -18,6 +19,7 @@
     <input use="false"/>
     <output clear="false" create="false" recover="false" use="false"/>
     <mode type="overwrite"/>
+    <modelfilter use="false"/>
     <module exclude="" include="/variant" name="Generate Selection Report" tname="Java Script Transformation Module">
       <parameter name="javascriptfile" type="ps:path">$(PROJECT)/script/elementIsInVariant.js</parameter>
       <parameter name="outputfile" type="ps:path"/>
@@ -28,6 +30,7 @@
     <input use="false"/>
     <output clear="false" create="false" recover="false" use="false"/>
     <mode type="overwrite"/>
+    <modelfilter use="false"/>
     <module exclude="" include="/variant" name="Convert to transformer action list" tname="standard transformation">
       <parameter name="output file" type="ps:path"/>
       <parameter name="execution time" type="ps:string">before</parameter>
@@ -47,6 +50,7 @@
     <input use="false"/>
     <output clear="false" create="false" recover="false" use="false"/>
     <mode type="overwrite"/>
+    <modelfilter use="false"/>
     <module exclude="" include="/variant" name="Convert to transformer action list" tname="standard transformation">
       <parameter name="output file" type="ps:path"/>
       <parameter name="execution time" type="ps:string">before</parameter>
@@ -74,6 +78,7 @@
     <input use="false"/>
     <output clear="false" create="false" recover="false" use="false"/>
     <mode type="overwrite"/>
+    <modelfilter use="false"/>
     <module exclude="" include="/variant" name="Convert to transformer action list" tname="standard transformation">
       <parameter name="output file" type="ps:path"/>
       <parameter name="execution time" type="ps:string">before</parameter>
@@ -101,6 +106,7 @@
     <input use="false"/>
     <output clear="false" create="false" recover="false" use="false"/>
     <mode type="overwrite"/>
+    <modelfilter use="false"/>
     <module exclude="" include="/variant" name="Convert to transformer action list" tname="standard transformation">
       <parameter name="output file" type="ps:path"/>
       <parameter name="execution time" type="ps:string">before</parameter>
@@ -122,6 +128,31 @@
       <parameter name="supply location" type="ps:boolean"/>
       <parameter name="ignore return value" type="ps:boolean"/>
       <parameter name="no wait" type="ps:boolean"/>
+    </module>
+  </moduleconfig>
+  <moduleconfig ignoreerrors="false" name="GAFFScript">
+    <input use="true">$(PROJECT)/input</input>
+    <output clear="ask" create="ask" recover="true" use="true">$(PROJECT)/output/$(VARIANT)-GAFF</output>
+    <mode type="overwrite"/>
+    <modelfilter use="false"/>
+    <module exclude="" id="com.ps.consul.eclipse.ui.transform.javascript.modul" include="/variant" name="Java Script Transformation Module" tname="Java Script Transformation Module">
+      <parameter name="javascriptfile" type="ps:path">/Users/xabiergarmendia/Desktop/GAFF-main/GAFeatureTracker.js</parameter>
+      <parameter name="outputfile" type="ps:path"/>
+      <parameter name="partial" type="ps:boolean">false</parameter>
+    </module>
+  </moduleconfig>
+  <moduleconfig ignoreerrors="false" name="GAFF">
+    <input use="false">$(PROJECT)/input</input>
+    <output clear="ask" create="ask" recover="true" use="false">$(PROJECT)/output/$(VARIANT)</output>
+    <mode type="overwrite"/>
+    <modelfilter use="false"/>
+    <module exclude="" id="com.ps.consul.eclipse.ui.transform.sub.module" include="/variant" name="GAFFScript" tname="Reuse Transformation">
+      <parameter name="Triggered By" type="ps:string">Each VDM</parameter>
+      <parameter name="Transformation" type="ps:transformation">GAFFScript</parameter>
+    </module>
+    <module exclude="" id="com.ps.consul.eclipse.ui.transform.sub.module" include="/variant" name="pv Transformation" tname="Reuse Transformation">
+      <parameter name="Triggered By" type="ps:string">Each VDM</parameter>
+      <parameter name="Transformation" type="ps:transformation">FileProcessing</parameter>
     </module>
   </moduleconfig>
 </moduleconfigs>

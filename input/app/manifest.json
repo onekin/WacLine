@@ -80,7 +80,7 @@
       "run_at": "document_end"
     }PVSCL:ENDCOND
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
   "page_action": {
     "default_icon": "images/PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))/icon-38-bw.png",
     "default_title": "__MSG_browserActionTitle__"
@@ -111,7 +111,7 @@
   ],
   PVSCL:IFCOND(GoogleSheetProvider or GoogleSheetConsumer or GoogleSheetAnnotationServer or GoogleSheetAudit, LINE)
   "oauth2": {
-  	PVSCL:IFCOND(GoogleSheetProvider, LINE)
+    PVSCL:IFCOND(GoogleSheetProvider, LINE)
     "client_id": "PVSCL:EVAL(GoogleSheetProvider->pv:Attribute('clientId'))",
     PVSCL:ELSEIFCOND(GoogleSheetConsumer)
     "client_id": "PVSCL:EVAL(GoogleSheetConsumer->pv:Attribute('clientId'))",
@@ -122,7 +122,7 @@
     ]
   },
   PVSCL:ENDCOND
-  "web_accessible_resources": ["pages/*.html", "content/*", "images/*"]PVSCL:IFCOND(WebAnnotator.WebAnnotationClient->pv:Attribute('key')<>''),
+  "web_accessible_resources": ["pages/*.html", "content/*", "images/*", "scripts/ga.js"]PVSCL:IFCOND(WebAnnotator.WebAnnotationClient->pv:Attribute('key')<>''),
   "key": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('key'))"
   PVSCL:ENDCOND
 }
