@@ -33,20 +33,28 @@ class ContentScriptManager {
     console.debug('Initializing content script manager')
     this.status = ContentScriptManager.status.initializing
     this.loadTargetManager(() => {
-      this.loadAnnotationServer(() => {
-        window.abwa.sidebar = new Sidebar()
-        window.abwa.sidebar.init(() => {
-          window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
-          window.abwa.annotationBasedInitializer.init(() => {
-            const GroupSelector = require('../groupManipulation/GroupSelector').default
-            window.abwa.groupSelector = new GroupSelector()
-            window.abwa.groupSelector.init(() => {
-              // Reload for first time the content by group
-              this.reloadContentByGroup()
-              // PVSCL:IFCOND(Manual,LINE)
-              // Initialize listener for group change to reload the content
-              this.initListenerForGroupChange()
-              // PVSCL:ENDCOND
+      let gaPromise = Promise.resolve()
+      gaPromise = new Promise((resolve) => {
+        this.loadGoogleAnalytics(() => {
+          resolve()
+        })
+      })
+      gaPromise.then(() => {
+        this.loadAnnotationServer(() => {
+          window.abwa.sidebar = new Sidebar()
+          window.abwa.sidebar.init(() => {
+            window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
+            window.abwa.annotationBasedInitializer.init(() => {
+              const GroupSelector = require('../groupManipulation/GroupSelector').default
+              window.abwa.groupSelector = new GroupSelector()
+              window.abwa.groupSelector.init(() => {
+                // Reload for first time the content by group
+                this.reloadContentByGroup()
+                // PVSCL:IFCOND(Manual,LINE)
+                // Initialize listener for group change to reload the content
+                this.initListenerForGroupChange()
+                // PVSCL:ENDCOND
+              })
             })
           })
         })
@@ -54,6 +62,17 @@ class ContentScriptManager {
     })
   }
 
+  loadGoogleAnalytics (callback) {
+    this.tracking = {}
+    this.tracking.googleAnalytics = new GoogleAnalytics()
+    this.tracking.googleAnalytics.init(callback)
+  }
+
+  destroyGoogleAnalytics () {
+    if (this.tracking && this.tracking.googleAnalytics) {
+      this.tracking.googleAnalytics.destroy()
+    }
+  }
 
   // PVSCL:IFCOND(Manual, LINE)
 
@@ -84,7 +103,7 @@ class ContentScriptManager {
     promise.then(() => {
       return this.reloadCodebookManager()
     })
-      // PVSCL:IFCOND(MoodleResource, LINE)
+    // PVSCL:IFCOND(MoodleResource, LINE)
       .then(() => {
         return this.reloadRolesManager()
       })
