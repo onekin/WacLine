@@ -23,6 +23,7 @@ import GoogleSheetAuditLogging from '../annotationManagement/read/GoogleSheetAud
 // PVSCL:IFCOND(GoogleTagManager, LINE)
 import GoogleTagManager from '../tracking/GoogleTagManager'
 // PVSCL:ENDCOND
+import GoogleAnalytics from '../GoogleAnalytics'
 
 class ContentScriptManager {
   constructor () {

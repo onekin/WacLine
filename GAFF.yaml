@@ -171,6 +171,23 @@ analytics:
       - name: "addedSuggestedLiterature"
         locations:
           - *location1
+  - expression: PreviousAssignments
+    locations:
+      - &location1
+        relativepath: "app/scripts/annotationManagement/purposes/PreviousAssignments.js"
+        anchor: |
+          previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
+             previousAssignmentAppendElement.addEventListener('click', () => {
+               // Append url to comment
+               [*GA_INJECT*]
+               const commentTextarea = document.querySelector('#comment')
+               commentTextarea.value = commentTextarea.value + previousAssignmentAppendElement.dataset.studentUrl
+             })
+           })
+        events:
+          - name: "addedPreviousAssignment"
+            locations:
+              - *location1
   - expression: SentimentAnalysis
     locations:
       - &location1
