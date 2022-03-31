@@ -136,7 +136,7 @@
     <mode type="overwrite"/>
     <modelfilter use="false"/>
     <module exclude="" id="com.ps.consul.eclipse.ui.transform.javascript.modul" include="/variant" name="Java Script Transformation Module" tname="Java Script Transformation Module">
-      <parameter name="javascriptfile" type="ps:path">/Users/xabiergarmendia/Desktop/GAFF-main/GAFeatureTracker.js</parameter>
+      <parameter name="javascriptfile" type="ps:path">/Users/xabiergarmendia/Desktop/SPLC22/GAFF/GAFeatureTracker.js</parameter>
       <parameter name="outputfile" type="ps:path"/>
       <parameter name="partial" type="ps:boolean">false</parameter>
     </module>

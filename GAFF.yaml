@@ -1,8 +1,8 @@
 ---
 analytics:
   - expression: Hypothesis
-    vps:
-      - &vp1
+    locations:
+      - &location1
         relativepath: "app/scripts/annotationServer/hypothesis/HypothesisClientInterface.js"
         anchor: |
           }, (result) => {
@@ -13,11 +13,11 @@ analytics:
               callback(null, result)
     events:
       - name: "errorInHypothesis"
-        vps:
-          - *vp1
+        locations:
+          - *location1
   - expression: SidebarNavigation or Canvas or LastAnnotation
-    vps:
-      - &vp1
+    locations:
+      - &location1
         relativepath: "app/scripts/codebook/operations/read/ReadCodebook.js"
         anchor: |
           })
@@ -28,7 +28,7 @@ analytics:
                 codeId: theme.id
               })
             }
-      - &vp2
+      - &location2
         relativepath: "app/scripts/codebook/operations/read/ReadCodebook.js"
         anchor: |
           } else {
@@ -38,7 +38,7 @@ analytics:
               codeId: code.id
             })
           }
-      - &vp3
+      - &location3
         relativepath: "app/scripts/codebook/operations/read/ReadCodebook.js"
         anchor: |
           })
@@ -49,7 +49,7 @@ analytics:
                 codeId: theme.id
               })
             }
-      - &vp4
+      - &location4
         relativepath: "app/scripts/annotationManagement/read/Canvas.js"
         anchor: |
           class Canvas {
@@ -57,7 +57,7 @@ analytics:
               [*GA_INJECT*]
               window.abwa.sidebar.closeSidebar()
               let review = null
-      - &vp5
+      - &location5
         relativepath: "app/scripts/annotationManagement/read/Resume.js"
         anchor: |
           if (window.abwa.annotationManagement.annotationReader.allAnnotations.length > 0) {
@@ -68,19 +68,19 @@ analytics:
           }
     events:
       - name: "SidebarNavigationUsed"
-        vps:
-          - *vp1
-          - *vp2
-          - *vp3
+        locations:
+          - *location1
+          - *location2
+          - *location3
       - name: "CanvasUsed"
-        vps:
-          - *vp4
+        locations:
+          - *location4
       - name: "LastAnnotationUsed"
-        vps:
-          - *vp5
+        locations:
+          - *location5
   - expression: Canvas
-    vps:
-      - &vp1
+    locations:
+      - &location1
         relativepath: "app/scripts/annotationManagement/read/Canvas.js"
         anchor: |
           document.querySelector('#canvasCloseButton').addEventListener('click', function () {
@@ -88,7 +88,7 @@ analytics:
             document.querySelector('#abwaSidebarButton').style.display = 'block'
             [*GA_INJECT*]
           })
-      - &vp2
+      - &location2
         relativepath: "app/scripts/annotationManagement/read/Canvas.js"
         anchor: |
           document.addEventListener('keydown', function (e) {
@@ -96,7 +96,7 @@ analytics:
             document.querySelector('#abwaSidebarButton').style.display = 'block'
             [*GA_INJECT*]
           })
-      - &vp3
+      - &location3
         relativepath: "app/scripts/annotationManagement/read/Canvas.js"
         anchor: |
           const canvasContainer = document.querySelector('#canvasContainer')
@@ -107,17 +107,17 @@ analytics:
             })
     events:
       - name: "closeCanvasFromExitButton"
-        vps:
-          - *vp1
+        locations:
+          - *location1
       - name: "closeCanvasFromESCKey"
-        vps:
-          - *vp2
+        locations:
+          - *location2
       - name: "closeCanvasFromClickingBackdrop"
-          vps:
-            - *vp3
+        locations:
+          - *location3
   - expression: Commenting
-      vps:
-        - &vp1
+    locations:
+      - &location1
         ccm_filename: "ReadAnnotation.js"
         relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
         anchor: |
@@ -126,79 +126,79 @@ analytics:
             this.openCommentingForm(annotation)
             [*GA_INJECT*]
           } /* PVSCL:IFCOND(Replying) */ else {
-        - &vp2
-          relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
-          anchor: |
-            }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
-              // Open commenting form
-              [*GA_INJECT*]
-              this.openCommentingForm(annotation)
-            } /* PVSCL:ENDCOND */
-            },
-        - &vp3
-          relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
-          anchor: |
-            LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-              annotation: annotation
-            })[*GA_INJECT*]
-            }
-            })
-            }
+      - &location2
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+          }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
+            // Open commenting form
+            [*GA_INJECT*]
+            this.openCommentingForm(annotation)
+          } /* PVSCL:ENDCOND */
+          },
+      - &location3
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: annotation
+          })[*GA_INJECT*]
+          }
+          })
+          }
 
-            // PVSCL:ENDCOND
-      events:
-        - name: "openCommentingFromDoubleClick"
-          vps:
-            - *vp1
-        - name: "openCommentingFromContextMenu"
-          vps:
-            - *vp2
-        - name: "CommentHasBeenMade"
-            vps:
-            - *vp3
+          // PVSCL:ENDCOND
+    events:
+      - name: "openCommentingFromDoubleClick"
+        locations:
+          - *location1
+      - name: "openCommentingFromContextMenu"
+        locations:
+          - *location2
+      - name: "CommentHasBeenMade"
+        locations:
+          - *location3
   - expression: SuggestedLiterature
-      vps:
-        - &vp1
+    locations:
+      - &location1
         relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
         anchor: |
           const li = document.createElement('li')
-                    $(li).append(a, '<span title="' + content + '">' + content + '</span>')
-                    $('#literatureList').append(li)
-                    [*GA_INJECT*]
-                    setTimeout(function () {
-                      $('#swal-input1').val('')
-        events:
-          - name: "addedSuggestedLiterature"
-            vps:
-              - *vp1
+             $(li).append(a, '<span title="' + content + '">' + content + '</span>')
+             $('#literatureList').append(li)
+             [*GA_INJECT*]
+             setTimeout(function () {
+             $('#swal-input1').val('')
+    events:
+      - name: "addedSuggestedLiterature"
+        locations:
+          - *location1
   - expression: SentimentAnalysis
-      vps:
-        - &vp1
+    locations:
+      - &location1
         relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
         anchor: |
           confirmButtonText: 'Save as it is',
-            reverseButtons: true,
-            callback: callback,
-            cancelCallback: () => {
+             reverseButtons: true,
+             callback: callback,
+             cancelCallback: () => {
+               [*GA_INJECT*]
+               showForm(preConfirmData)
+             }
+           })
+      - &location2
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+        anchor: |
+          .then((isOffensive) => {
+            if (isOffensive) {
+              // The comment is negative or offensive
               [*GA_INJECT*]
-              showForm(preConfirmData)
-            }
-          })
-        - &vp2
-            relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
-            anchor: |
-              .then((isOffensive) => {
-                if (isOffensive) {
-                  // The comment is negative or offensive
-                  [*GA_INJECT*]
-                  Alerts.confirmAlert({
-                    text: 'The message may be ofensive. Please modify it.',
-                    showCancelButton: true,
-                    cancelButtonText: 'Modify comment',
-        events:
-          - name: "SentimentAnalysisIgnored"
-            vps:
-              - *vp1
-          - name: "SentimentAnalysisSuggested"
-            vps:
-              - *vp2
+              Alerts.confirmAlert({
+                text: 'The message may be ofensive. Please modify it.',
+                showCancelButton: true,
+                cancelButtonText: 'Modify comment',
+    events:
+      - name: "SentimentAnalysisIgnored"
+        locations:
+          - *location1
+      - name: "SentimentAnalysisSuggested"
+        locations:
+          - *location2
