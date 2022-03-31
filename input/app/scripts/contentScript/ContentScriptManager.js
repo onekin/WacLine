@@ -22,6 +22,7 @@ import GoogleSheetAnnotationClientManager from '../annotationServer/googleSheetA
 // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
 import GoogleSheetAuditLogging from '../annotationManagement/read/GoogleSheetAuditLogging'
 // PVSCL:ENDCOND
+import GoogleAnalytics from '../GoogleAnalytics'
 
 class ContentScriptManager {
   constructor () {
