@@ -264,6 +264,12 @@ class CommentingForm {
   static generateOnBeforeOpenForm ({ annotation }) {
     // On before open
     let onBeforeOpen = (root) => {
+      // PVSCL:IFCOND(Categorize, LINE)
+      let containerSelect = document.querySelector('#categorizeDropdown')
+      containerSelect.addEventListener('change', () => {
+        console.log('Categorized')
+      })
+      // PVSCL:ENDCOND
       // PVSCL:IFCOND(Autocomplete,LINE)
       // Load datalist with previously used texts
       const themeOrCode = CommentingForm.getCodeOrThemeForAnnotation(annotation)
@@ -277,6 +283,9 @@ class CommentingForm {
           awesomeplete.evaluate()
           awesomeplete.open()
         })
+      })
+      document.querySelector('#comment').addEventListener('awesomplete-selectcomplete', () => {
+        console.log('Autocompleted')
       })
       // PVSCL:ENDCOND
 
