@@ -121,11 +121,21 @@ analytics:
         ccm_filename: "ReadAnnotation.js"
         relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
         anchor: |
-          // Open commenting form if you are the owner of the annotation, otherwise should be replace
-          if (annotationCreator === window.abwa.groupSelector.user.userid) {
+          // If current user, if has no replies commenting, otherwise replying
+          if (ReplyAnnotation.hasReplies(annotation, this.replyAnnotations)) {
+            this.openReplyingForm(annotation)
+          } else {
             this.openCommentingForm(annotation)
             [*GA_INJECT*]
-          } /* PVSCL:IFCOND(Replying) */ else {
+          }
+      - &location11
+        ccm_filename: "ReadAnnotation.js"
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+          if (annotationCreator === currentUserId) {
+            this.openCommentingForm(annotation)
+            [*GA_INJECT*]
+          }
       - &location2
         relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
         anchor: |
@@ -150,6 +160,7 @@ analytics:
       - name: "openCommentingFromDoubleClick"
         locations:
           - *location1
+          - *location11
       - name: "openCommentingFromContextMenu"
         locations:
           - *location2

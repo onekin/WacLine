@@ -526,6 +526,7 @@ class ContentScriptManager {
       // PVSCL:IFCOND(BrowserStorage, LINE)
       if (annotationServer === 'browserstorage') {
         // Browser storage
+        const BrowserStorageManager = require('../annotationServer/browserStorage/BrowserStorageManager').default
         window.abwa.annotationServerManager = new BrowserStorageManager()
       }
       // PVSCL:ENDCOND
