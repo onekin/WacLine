@@ -628,7 +628,10 @@ class ReadCodebook {
       const items = {}
       // PVSCL:IFCOND(ImportChecklist, LINE)
       const theme = this.codebook.getCodeOrThemeFromId(themeId)
-      const themeChecklist = ImportChecklist.getChecklistsAnnotation().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
+      const themeChecklist = ImportChecklist.getChecklistsAnnotation()
+      if (themeChecklist) {
+        themeChecklist.find((checklistAnnotation) => checklistAnnotation.body[0].value.definition[0].name === theme.name)
+      }
       // PVSCL:ENDCOND
 
       // PVSCL:IFCOND(CodebookUpdate, LINE)
