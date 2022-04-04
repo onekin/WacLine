@@ -128,7 +128,7 @@ analytics:
             this.openCommentingForm(annotation)
             [*GA_INJECT*]
           }
-      - &location11
+      - &location2
         ccm_filename: "ReadAnnotation.js"
         relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
         anchor: |
@@ -136,7 +136,7 @@ analytics:
             this.openCommentingForm(annotation)
             [*GA_INJECT*]
           }
-      - &location2
+      - &location3
         relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
         anchor: |
           }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
@@ -145,7 +145,7 @@ analytics:
             this.openCommentingForm(annotation)
           } /* PVSCL:ENDCOND */
           },
-      - &location3
+      - &location4
         relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
         anchor: |
           LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
@@ -160,13 +160,13 @@ analytics:
       - name: "openCommentingFromDoubleClick"
         locations:
           - *location1
-          - *location11
+          - *location2
       - name: "openCommentingFromContextMenu"
         locations:
-          - *location2
+          - *location3
       - name: "CommentHasBeenMade"
         locations:
-          - *location3
+          - *location4
   - expression: SuggestedLiterature
     locations:
       - &location1
@@ -212,7 +212,7 @@ analytics:
   - expression: PreviousAssignments
     locations:
       - &location1
-        relativepath: "app/scripts/annotationManagement/purposes/PreviousAssignments.js"
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
         anchor: |
           previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
              previousAssignmentAppendElement.addEventListener('click', () => {
