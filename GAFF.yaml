@@ -63,8 +63,8 @@ analytics:
           if (window.abwa.annotationManagement.annotationReader.allAnnotations.length > 0) {
             window.abwa.annotationManagement.goToAnnotation(window.abwa.annotationManagement.annotationReader.allAnnotations.reduce(
               (max, a) => a.modified > max.modified ? a : max)
-              [*GA_INJECT*]
             )
+            [*GA_INJECT*]
           }
     events:
       - name: "SidebarNavigationUsed"
@@ -171,6 +171,33 @@ analytics:
       - name: "addedSuggestedLiterature"
         locations:
           - *location1
+  - expression: Autocomplete
+    locations:
+      - &location1
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+        anchor: |
+          document.querySelector('#comment').addEventListener('awesomplete-selectcomplete', () => {
+            console.log('Autocompleted')
+            [*GA_INJECT*]
+          })
+    events:
+      - name: "autocompleteUsed"
+        locations:
+          - *location1
+  - expression: Categorize
+    locations:
+      - &location1
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+        anchor: |
+          let containerSelect = document.querySelector('#categorizeDropdown')
+            containerSelect.addEventListener('change', () => {
+              console.log('Categorized')
+              [*GA_INJECT*]
+            })
+    events:
+      - name: "categorizeUsed"
+        locations:
+          - *location1
   - expression: PreviousAssignments
     locations:
       - &location1
@@ -184,10 +211,10 @@ analytics:
                commentTextarea.value = commentTextarea.value + previousAssignmentAppendElement.dataset.studentUrl
              })
            })
-        events:
-          - name: "addedPreviousAssignment"
-            locations:
-              - *location1
+    events:
+      - name: "addedPreviousAssignment"
+        locations:
+          - *location1
   - expression: SentimentAnalysis
     locations:
       - &location1
