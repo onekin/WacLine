@@ -212,9 +212,9 @@ analytics:
              })
            })
     events:
-      - name: "addedPreviousAssignment"
-        locations:
-          - *location1
+        - name: "addedPreviousAssignment"
+          locations:
+            - *location1
   - expression: SentimentAnalysis
     locations:
       - &location1

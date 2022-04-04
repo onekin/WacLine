@@ -6,6 +6,15 @@ import Alerts from '../../utils/Alerts'
 
 class AuthorsInfo {
 
+  static reviewProcess () {
+    if (!_.isEmpty(window.abwa.annotationManagement.authorsSearch.congress)) {
+      AuthorsInfo.generateReview()
+    } else {
+      window.abwa.annotationManagement.authorsSearch.loadCongress()
+    }
+  }
+
+
   /**
    * This function shows an overview of the authors information
    * selected for the current document
@@ -45,22 +54,28 @@ class AuthorsInfo {
         let authors = result
         if (authors.length === 0) {
           document.querySelector('#noAuthors').style.display = 'block'
-        }
-        for (const author of authors) {
-          const rowElement = rowTemplate.content.cloneNode(true)
-          rowElement.querySelector('.authorsName').textContent = author.name
-          if (author.url !== '') {
-            AuthorsInfo.getAuthorPublications(author, congress).then((publications) => {
-              author.publications = publications
-              let ending = (publications === 1) ? '' : 's'
-              rowElement.querySelector('.authorsPublications').textContent = author.publications + ' publication' + ending
-              let link = '<a href="' + author.url + '">' + author.url + '</a>'
-              rowElement.querySelector('.authorsLink').innerHTML = link
+        } else {
+          let count = -1
+          for (const author of authors) {
+            count += 1
+            const rowElement = rowTemplate.content.cloneNode(true)
+            if (count % 2 === 1) {
+              rowElement.querySelector('.authorRow').classList.add('greyRow')
+            }
+            rowElement.querySelector('.authorsName').textContent = author.name
+            if (author.url !== '') {
+              AuthorsInfo.getAuthorPublications(author, congress).then((publications) => {
+                author.publications = publications
+                let ending = (publications === 1) ? '' : 's'
+                rowElement.querySelector('.authorsPublications').textContent = author.publications + ' publication' + ending
+                let link = '<a href="' + author.url + '">' + author.url + '</a>'
+                rowElement.querySelector('.authorsLink').innerHTML = link
+                canvasContainer.appendChild(rowElement)
+              })
+            } else {
+              rowElement.querySelector('.authorsPublications').textContent = 'This author could not be found'
               canvasContainer.appendChild(rowElement)
-            })
-          } else {
-            rowElement.querySelector('.authorsPublications').textContent = 'This author could not be found'
-            canvasContainer.appendChild(rowElement)
+            }
           }
         }
       })

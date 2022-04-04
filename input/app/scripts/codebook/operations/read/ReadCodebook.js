@@ -629,7 +629,10 @@ class ReadCodebook {
       const items = {}
       // PVSCL:IFCOND(ImportChecklist, LINE)
       const theme = this.codebook.getCodeOrThemeFromId(themeId)
-      const themeChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
+      const themeChecklist = ImportChecklist.getChecklistsAnnotation()
+      if (themeChecklist) {
+        themeChecklist.find((checklistAnnotation) => checklistAnnotation.body[0].value.definition[0].name === theme.name)
+      }
       // PVSCL:ENDCOND
 
       // PVSCL:IFCOND(CodebookUpdate, LINE)
@@ -714,10 +717,9 @@ class ReadCodebook {
     return (codeId) => {
       // Get code from id
       const code = this.codebook.getCodeOrThemeFromId(codeId)
-
       // PVSCL:IFCOND(ImportChecklist, LINE)
       const theme = code.theme
-      const themeChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
+      const themeChecklist = ImportChecklist.getChecklistsAnnotation().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === theme.name)
       // PVSCL:ENDCOND
       if (LanguageUtils.isInstanceOf(code, Code)) {
         const items = {}
@@ -748,7 +750,7 @@ class ReadCodebook {
             }
             // PVSCL:IFCOND(ImportChecklist, LINE)
             if (key === 'removeCriteria') {
-              LanguageUtils.dispatchCustomEvent(Events.removeCriteria, { checklist: themeChecklist, code: code })
+              LanguageUtils.dispatchCustomEvent(Events.removeCriteria, { code: code })
             }
             // PVSCL:ENDCOND
             // PVSCL:ENDCOND
@@ -909,8 +911,9 @@ class ReadCodebook {
   static addKeywordsTheme () {
     const codebook = window.abwa.codebookManager.codebookReader.codebook
     const keywordThemeName = 'Keywords'
+    const keywordsAnnotation = ImportChecklist.getMethodsDataAnnotation()
     if (!_.isEmpty(codebook)) {
-      if (!codebook.getThemeByName(keywordThemeName)) {
+      if (!keywordsAnnotation) {
         const themeDescription = 'Theme which includes the keywords found in the text'
         const newTheme = new Theme({ name: keywordThemeName, description: themeDescription, annotationGuide: codebook })
         LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
@@ -931,25 +934,24 @@ class ReadCodebook {
       let themeName = 'Essential'
       let newTheme
       let themeDescription
+
       if (!codebook.getThemeByName(themeName)) {
         themeDescription = 'Theme which includes the essential criteria to evaluate the document'
         newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
         LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
-        ImportChecklist.createChecklistAnnotation(themeName)
+        ImportChecklist.createChecklistAnnotation()
       }
       themeName = 'Desirable'
       if (!codebook.getThemeByName(themeName)) {
         themeDescription = 'Theme which includes the desirable criteria to evaluate the document'
         newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
         LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
-        ImportChecklist.createChecklistAnnotation(themeName)
       }
       themeName = 'Extraordinary'
       if (!codebook.getThemeByName(themeName)) {
         themeDescription = 'Theme which includes the extraordinary criteria to evaluate the document'
         newTheme = new Theme({ name: themeName, description: themeDescription, annotationGuide: codebook })
         LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme })
-        ImportChecklist.createChecklistAnnotation(themeName)
       }
     }
   }

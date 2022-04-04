@@ -283,6 +283,9 @@ class CommentingForm {
           awesomeplete.evaluate()
           awesomeplete.open()
         })
+        document.querySelector('#comment').addEventListener('awesomplete-selectcomplete', () => {
+          console.log('Autocompleted')
+        })
       })
       document.querySelector('#comment').addEventListener('awesomplete-selectcomplete', () => {
         console.log('Autocompleted')

@@ -1,7 +1,6 @@
 import Alerts from '../../utils/Alerts'
 import axios from 'axios'
 // PVSCL:IFCOND(ImportChecklist, LINE)
-import ImportChecklist from '../../codebook/operations/import/ImportChecklist'
 import ChecklistReview from './ChecklistReview'
 // PVSCL:ENDCOND
 import { Review } from '../../exporter/reviewModel'
@@ -38,15 +37,13 @@ class Canvas {
       })
       const canvasClusters = {}
       // PVSCL:IFCOND(ImportChecklist, LINE)
+      const checklistNames = ['Essential', 'Desirable', 'Extraordinary']
       const checklistsTheme = {
         name: 'Checklists',
-        codes: []
+        codes: checklistNames
       }
-      const checklistsAnnotations = ImportChecklist.getChecklistsAnnotations()
-      checklistsTheme.codes = checklistsAnnotations.map((checklist) => {
-        return checklist.body[0].value.name
-      })
       // PVSCL:ENDCOND
+
       window.abwa.codebookManager.codebookReader.codebook.themes.forEach((theme) => {
         let themeShouldBeAdded = true
         // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
@@ -56,7 +53,7 @@ class Canvas {
         themeShouldBeAdded = themeShouldBeAdded ? theme.name !== 'Authors' : themeShouldBeAdded // If any previous condition set themeShouldBeAdded to false, keeps false
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(ImportChecklist, LINE)
-        themeShouldBeAdded = themeShouldBeAdded ? !checklistsAnnotations.find((checklist) => checklist.body[0].value.name === theme.name) : themeShouldBeAdded // If any previous condition set themeShouldBeAdded to false, keeps false
+        themeShouldBeAdded = themeShouldBeAdded ? !checklistNames.includes(theme.name) : themeShouldBeAdded // If any previous condition set themeShouldBeAdded to false, keeps false
         // PVSCL:ENDCOND
         if (themeShouldBeAdded) {
           canvasClusters[theme.name] = theme.codes.map((code) => { return code.name })
@@ -65,9 +62,7 @@ class Canvas {
       })
 
       // PVSCL:IFCOND(ImportChecklist, LINE)
-      if (checklistsTheme.codes.length > 0) {
-        canvasClusters[checklistsTheme.name] = checklistsTheme.codes
-      }
+      canvasClusters[checklistsTheme.name] = checklistsTheme.codes
       // PVSCL:ENDCOND
 
       const clusterTemplate = document.querySelector('#propertyClusterTemplate')
@@ -173,13 +168,13 @@ class Canvas {
           clusterProperty.querySelector('.clusterProperty').style.width = '100%'
           let criterionAnnotations = review.annotations.filter((e) => { return e.criterion === canvasClusters[key][i] })
           // PVSCL:IFCOND(ImportChecklist, LINE)
-          if (key === checklistsTheme.name) {
+          if (checklistNames.includes(canvasClusters[key][i])) {
             criterionAnnotations = []
             clusterProperty.querySelector('.clusterProperty').style.cursor = 'pointer'
             clusterProperty.querySelector('.clusterProperty').addEventListener('click', () => {
-              const foundChecklist = checklistsAnnotations.find((checklistAn) => checklistAn.body[0].value.name === canvasClusters[key][i])
+              const themeAnnotation = window.abwa.codebookManager.codebookReader.codebook.getThemeByName(canvasClusters[key][i])
               document.querySelector('#reviewCanvas').style.display = 'none'
-              ChecklistReview.generateReview(foundChecklist)
+              ChecklistReview.generateReview(themeAnnotation)
             })
           }
           // PVSCL:ENDCOND

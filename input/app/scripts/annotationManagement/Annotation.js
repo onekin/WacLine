@@ -22,6 +22,7 @@ import Describing from './purposes/Describing'
 import Checklist from './purposes/Checklist'
 import Report from './purposes/Report'
 import MethodsKeywords from './purposes/MethodsKeywords'
+import ChecklistValidation from './purposes/ChecklistValidation'
 // PVSCL:ENDCOND
 class Annotation {
   constructor ({
@@ -177,6 +178,9 @@ class Annotation {
         }
         if (body.purpose === MethodsKeywords.purpose) {
           return new MethodsKeywords({ value: body.value })
+        }
+        if (body.purpose === ChecklistValidation.purpose) {
+          return new ChecklistValidation({ value: body.value })
         }
         // PVSCL:ENDCOND
         return null

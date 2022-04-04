@@ -68,7 +68,10 @@ class AnnotationManagement {
           $(event.target).parents('#canvasContainer').toArray().length === 0 &&
           $(event.target).parents('#reviewEditor').toArray().length === 0 &&
           $(event.target).parents('#checklistCanvas').toArray().length === 0 &&
-          $(event.target).parents('#checklistItem').toArray().length === 0
+          $(event.target).parents('#checklistItem').toArray().length === 0 &&
+          $(event.target).parents('#chooseChecklist').toArray().length === 0 &&
+          $(event.target).parents('#chooseCriteria').toArray().length === 0 &&
+          $(event.target).parents('#authorsCanvas').toArray().length === 0
         ) {
           window.abwa.sidebar.openSidebar()
         }

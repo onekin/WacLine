@@ -2,12 +2,15 @@
   <div id="reviewEditorOverlay"></div>
   <div id="reviewEditorContainer">
     <h1>Generate and edit report</h1>
+    
     <h3>Invalid criticisms</h3>
     <div id="reportEditorContainer">
+      // PVSCL:IFCOND(ImportChecklist, LINE)
       <div class="invalidCriticismsColumn">
         <div id="invalidCriticismsContainer">
         </div>
       </div>
+      // PVSCL:ENDCOND
       <div class="reportColumn">
         <div class="reportColumnContent">
           <textarea id="reportText"></textarea>
@@ -24,12 +27,12 @@
     <span></span>
     <span></span>
   </div>
+  
+  <template id="invalidCritTemplate">
+    <div class="invalidCriticism">
+      <h4 class="invalidCriticismsTitle"></h4>
+      <ul class="invalidCriticismsList">
+      </ul>
+    </div>
+  </template>
 </div>
-
-<template id="invalidCritTemplate">
-  <div class="invalidCriticism">
-   <h4 class="invalidCriticismsTitle"></h4>
-    <ul class="invalidCriticismsList">
-    </ul>
-  </div>
-</template>

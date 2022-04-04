@@ -1,18 +1,22 @@
 import Events from '../../../Events'
 import _ from 'lodash'
 import Alerts from '../../../utils/Alerts'
+// PVSCL:IFCOND(EmpiricalStandardChecklists, LINE)
 import Checklists from './Checklists'
+// PVSCL:ENDCOND
 
 import Config from '../../../Config'
 
 import LanguageUtils from '../../../utils/LanguageUtils'
 import Checklist from '../../../annotationManagement/purposes/Checklist'
-import KeywordBasedAnnotation from '../../../annotationManagement/create/KeywordBasedAnnotation'
 import axios from 'axios'
 // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+import KeywordBasedAnnotation from '../../../annotationManagement/create/KeywordBasedAnnotation'
 import MethodsKeywords from '../../../annotationManagement/purposes/MethodsKeywords'
 import ReadCodebook from '../read/ReadCodebook'
 // PVSCL:ENDCOND
+import ChecklistReview from '../../../annotationManagement/read/ChecklistReview'
+import Annotation from '../../../annotationManagement/Annotation'
 
 class ImportChecklist {
 
@@ -28,6 +32,7 @@ class ImportChecklist {
     // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
     this.setChecklistsMethodsKeywords()
     // PVSCL:ENDCOND
+    ChecklistReview.createValidateCriteriaAnnotation()
     if (_.isFunction(callback)) {
       callback()
     }
@@ -83,6 +88,7 @@ class ImportChecklist {
           let extraordinaries = toAddCriteria.extraordinary
 
           let i = 0
+
           for (let essential of essentials) {
             if (essentialTheme.getCodeByName(essential.name)) {
               essentials.splice(i, 1)
@@ -106,21 +112,6 @@ class ImportChecklist {
             i++
           }
 
-          // Adds all the criteria to the corresponding theme
-          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
-            theme: essentialTheme,
-            codesInfo: essentials
-          })
-          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
-            theme: desirableTheme,
-            codesInfo: desirables
-          })
-          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
-            theme: extraordinaryTheme,
-            codesInfo: extraordinaries
-          })
-
-          // 5- Add special annotation to track invalid criticisms and that checklist has been added
           let checklistWithInvalidCrit = {
             name: chosenMethod.name,
             invalidCriticisms: []
@@ -128,74 +119,23 @@ class ImportChecklist {
           if (chosenMethod.invalidCriticisms) {
             checklistWithInvalidCrit.invalidCriticisms = chosenMethod.invalidCriticisms
           }
-          let newEssentialDefinition = {
-            name: chosenMethod.name,
-            description: '',
-            codes: essentials.map((criterion) => {
-              return {
-                name: criterion.name,
-                description: criterion.description,
-                status: 'undefined'
-              }
-            })
-          }
 
-          let newDesirableDefinition = {
-            name: chosenMethod.name,
-            description: '',
-            codes: desirables.map((criterion) => {
-              return {
-                name: criterion.name,
-                description: criterion.description,
-                status: 'undefined'
-              }
-            })
-          }
-
-          let newExtraordinaryDefinition = {
-            name: chosenMethod.name,
-            description: '',
-            codes: extraordinaries.map((criterion) => {
-              return {
-                name: criterion.name,
-                description: criterion.description,
-                status: 'undefined'
-              }
-            })
-          }
-
-          // Update essential, desirable and extraordinary checklist annotations
-          const essentialChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Essential')
-          if (essentials.length > 0) {
-            essentialChecklist.body[0].value.totalCodes += essentials.length
-            essentialChecklist.body[0].value.definition.push(newEssentialDefinition)
-          }
-          essentialChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
-          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-            annotation: essentialChecklist
+          // Adds all the criteria to the corresponding theme
+          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+            theme: essentialTheme,
+            codesInfo: essentials,
+            checklistInfo: checklistWithInvalidCrit
           })
-
-          const desirableChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Desirable')
-          if (desirables.length > 0) {
-            desirableChecklist.body[0].value.totalCodes += desirables.length
-            desirableChecklist.body[0].value.definition.push(newDesirableDefinition)
-          }
-          desirableChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
-          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-            annotation: desirableChecklist
+          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+            theme: desirableTheme,
+            codesInfo: desirables,
+            checklistInfo: checklistWithInvalidCrit
           })
-
-          const extraordinaryChecklist = ImportChecklist.getChecklistsAnnotations().find((checklistAnnotation) => checklistAnnotation.body[0].value.name === 'Extraordinary')
-          if (extraordinaries.length > 0) {
-            extraordinaryChecklist.body[0].value.totalCodes += extraordinaries.length
-            extraordinaryChecklist.body[0].value.definition.push(newExtraordinaryDefinition)
-          }
-          extraordinaryChecklist.body[0].value.chosenChecklists.push(checklistWithInvalidCrit)
-          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-            annotation: extraordinaryChecklist
+          LanguageUtils.dispatchCustomEvent(Events.createCodes, {
+            theme: extraordinaryTheme,
+            codesInfo: extraordinaries,
+            checklistInfo: checklistWithInvalidCrit
           })
-
-          // Create annotation to keep chosen checklists and invalid criticisms
 
           Alerts.successAlert({
             text: 'Checklist has been imported successfully'
@@ -205,19 +145,17 @@ class ImportChecklist {
     })
   }
 
-  static createChecklistAnnotation (name) {
+  static createChecklistAnnotation () {
     let newBody = {
-      name: name,
-      definition: [],
-      totalCodes: 0,
-      chosenChecklists: []
+      definition: []
     }
     const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'checklist'
     const tags = [motivationTag]
     LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
       purpose: Checklist.purpose,
       tags: tags,
-      checklist: newBody
+      checklist: newBody,
+      groupAnnotation: true
     })
   }
 
@@ -228,7 +166,7 @@ class ImportChecklist {
   askUserToChooseChecklist (filter, callback) {
     window.abwa.sidebar.closeSidebar()
     const canvasPageURL = chrome.extension.getURL('pages/specific/chooseChecklist.html')
-    const checklistAnnotations = ImportChecklist.getChecklistsAnnotations()
+    const checklistAnnotation = ImportChecklist.getChecklistsAnnotation()
     axios.get(canvasPageURL).then((response) => {
       document.body.insertAdjacentHTML('beforeend', response.data)
       document.querySelector('#abwaSidebarButton').style.display = 'none'
@@ -268,20 +206,17 @@ class ImportChecklist {
       const select = document.querySelector('#checklistSelect')
       let filteredMethods = [...this.checklistsMethods.methods]
       let i = -1
-      const alreadyChosenChecklists = checklistAnnotations[0].body[0].value.chosenChecklists
+      const alreadyChosenChecklists = checklistAnnotation.body[0].value.definition.map((usedmethod) => usedmethod.name)
       for (let method of this.checklistsMethods.methods) {
         i++
         if (filter && (method.filter ? !method.filter.includes(filter) : true)) {
           filteredMethods.splice(i, 1)
           i--
-        } else {
-          for (let checklist of alreadyChosenChecklists) {
-            if (method.name === checklist.name) {
-              filteredMethods.splice(i, 1)
-              i--
-              break
-            }
-          }
+          continue
+        }
+        if (alreadyChosenChecklists.includes(method.name)) {
+          filteredMethods.splice(i, 1)
+          i--
         }
       }
       // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
@@ -354,6 +289,7 @@ class ImportChecklist {
           })
         })
         document.querySelector('#chooseCriteria').parentNode.removeChild(document.querySelector('#chooseCriteria'))
+        document.querySelector('#abwaSidebarButton').style.display = 'block'
         callback(toAddCriteria)
       })
 
@@ -368,6 +304,7 @@ class ImportChecklist {
         return numCodes + category.codes.length
       }, 0)
       method.definition.forEach((category) => {
+        const categoryTheme = window.abwa.codebookManager.codebookReader.codebook.getThemeByName(category.name)
         const categoryCluster = categoryTemplate.content.cloneNode(true)
         categoryCluster.querySelector('.categoryTitle').innerText = category.name
         const height = category.codes.length / totalCodes * 70
@@ -375,17 +312,19 @@ class ImportChecklist {
         const categoryCriteriaContainer = categoryCluster.querySelector('.criteria')
         const criterionCardTemplate = document.querySelector('#criterionCardTemplate')
         category.codes.forEach((criterion) => {
-          const categoryCard = criterionCardTemplate.content.cloneNode(true)
-          categoryCard.querySelector('.criterionCardContent span').innerText = criterion.name
-          categoryCard.querySelector('.criterion').addEventListener('click', function (e) {
-            if (e.currentTarget.classList.contains('selected')) {
-              e.currentTarget.classList.remove('selected')
-            } else {
-              e.currentTarget.classList.add('selected')
-            }
-          })
-
-          categoryCriteriaContainer.appendChild(categoryCard)
+          const matchingCode = categoryTheme.codes.find((code) => code.name === criterion.name)
+          if (!matchingCode) {
+            const categoryCard = criterionCardTemplate.content.cloneNode(true)
+            categoryCard.querySelector('.criterionCardContent span').innerText = criterion.name
+            categoryCard.querySelector('.criterion').addEventListener('click', function (e) {
+              if (e.currentTarget.classList.contains('selected')) {
+                e.currentTarget.classList.remove('selected')
+              } else {
+                e.currentTarget.classList.add('selected')
+              }
+            })
+            categoryCriteriaContainer.appendChild(categoryCard)
+          }
         })
         clusterContainer.appendChild(categoryCluster)
       })
@@ -398,9 +337,9 @@ class ImportChecklist {
    * in the checklistInfo object
    */
   setChecklistsMethodsKeywords () {
-    let methodsDataAnnotations = ImportChecklist.getMethodsDataAnnotations()
-    if (methodsDataAnnotations[0]) {
-      this.checklistsMethods = methodsDataAnnotations[0].body[0].value
+    let methodsDataAnnotation = ImportChecklist.getMethodsDataAnnotation()
+    if (methodsDataAnnotation) {
+      this.checklistsMethods = methodsDataAnnotation.body[0].value
     }
   }
 
@@ -409,14 +348,14 @@ class ImportChecklist {
    * about the methods and their amount matching keywords annotation
    * @returns {Object}
    */
-  static getMethodsDataAnnotations () {
+  static getMethodsDataAnnotation () {
     const allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
     const methodsKeywordstAnnotations = _.filter(allAnnotations, (annotation) => {
       return _.some(annotation.tags, (tag) => {
         return tag.includes(Config.namespace + ':' + Config.tags.motivation + ':' + 'methodsKeywords')
       })
     })
-    return methodsKeywordstAnnotations
+    return methodsKeywordstAnnotations[0]
   }
 
   // PVSCL:ENDCOND
@@ -427,7 +366,10 @@ class ImportChecklist {
    */
   saveChecklistsMethodsData () {
     const numMethods = this.getNumOfMethods()
-    Checklists.groups.forEach((group) => {
+    // PVSCL:IFCOND(EmpiricalStandardChecklists, LINE)
+    const checklists = Checklists
+    // PVSCL:ENDCOND
+    checklists.groups.forEach((group) => {
       group.methods.forEach((method) => {
         let newMethod = {
           groupName: group.name,
@@ -444,13 +386,17 @@ class ImportChecklist {
             }
           })
         } else {
-          // PVSCL:ENDCOND
           newMethod.keywordsMatches = 0
           this.checklistsMethods.methods.push(newMethod)
           if (this.checklistsMethods.methods.length === numMethods) {
             this.saveMethodsData()
           }
-          // PVSCL:IFCOND(KeywordBasedAnnotation, LINE)
+        }
+        // PVSCL:ELSECOND
+        newMethod.keywordsMatches = 0
+        this.checklistsMethods.methods.push(newMethod)
+        if (this.checklistsMethods.methods.length === numMethods) {
+          this.saveMethodsData()
         }
         // PVSCL:ENDCOND
 
@@ -474,7 +420,7 @@ class ImportChecklist {
    * the annotation that contains keywords information
    */
   saveMethodsData () {
-    const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'methodsKeywords'
+    const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + MethodsKeywords.purpose
     const tags = [motivationTag]
     LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
       purpose: MethodsKeywords.purpose,
@@ -504,14 +450,17 @@ class ImportChecklist {
    * This method returns the annotations corresponding to the checklist(s) of the document
    * @returns {Object}
    */
-  static getChecklistsAnnotations () {
-    const allAnnotations = window.abwa.annotationManagement.annotationReader.allAnnotations
-    const checklistAnnotations = _.filter(allAnnotations, (annotation) => {
-      return _.some(annotation.tags, (tag) => {
-        return tag.includes(Config.namespace + ':' + Config.tags.motivation + ':' + 'checklist')
-      })
+  static getChecklistsAnnotation () {
+    const tag = Config.namespace + ':' + Config.tags.motivation + ':' + Checklist.purpose
+    let annotation
+    window.abwa.annotationServerManager.client.searchAnnotations({ tag: tag, group: window.abwa.groupSelector.currentGroup.id }, (err, annotationsRetrieved) => {
+      if (err) {
+        console.error(err)
+      } else {
+        annotation = Annotation.deserialize(annotationsRetrieved[0])
+      }
     })
-    return checklistAnnotations
+    return annotation
   }
 
 }

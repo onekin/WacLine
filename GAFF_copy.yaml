@@ -1,0 +1,185 @@
+---
+analytics:
+  - expression: Commenting and Classifying
+    vps:
+      - &vp1
+        ccm_filename: "ReadAnnotation.js"
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+          // PVSCL:ENDCOND
+
+          // PVSCL:IFCOND(Commenting, LINE)
+          openCommentingForm (annotation) {[*GA_INJECT*]
+            CommentingForm.showCommentingForm(annotation, (err, annotation) => {
+              if (err) {
+      - &vp2
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+           LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+             annotation: annotation
+           })[*GA_INJECT*]
+           }
+           })
+           }
+
+           // PVSCL:ENDCOND
+      - &vp3
+        ccm_filename: "ReadAnnotation.js"
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+          // Open commenting form if you are the owner of the annotation, otherwise should be replace
+          if (annotationCreator === window.abwa.groupSelector.user.userid) {
+            this.openCommentingForm(annotation)
+            [*GA_INJECT*]
+          } /* PVSCL:IFCOND(Replying) */ else {
+      - &vp4
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+            }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
+              // Open commenting form
+              [*GA_INJECT*]
+              this.openCommentingForm(annotation)
+            } /* PVSCL:ENDCOND */
+          },
+    events:
+      - name: "openCommenting"
+        vps:
+          - *vp1
+      - name: "closeCommenting"
+        vps:
+          - *vp2
+      - name: "openCommentingFromDoubleClick"
+        vps:
+          - *vp3
+      - name: "openCommentingFromContextMenu"
+        vps:
+          - *vp4
+  - expression: SuggestedLiterature
+    vps:
+      - &vp1
+        ccm_filename: "CommentingForm.js"
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+        anchor: |
+          const li = document.createElement('li')
+                    $(li).append(a, '<span title="' + content + '">' + content + '</span>')
+                    $('#literatureList').append(li)
+                    [*GA_INJECT*]
+                    setTimeout(function () {
+                      $('#swal-input1').val('')
+    events:
+      - name: "added"
+        vps:
+          - *vp1
+  - expression: Canvas
+    vps:
+      - &vp1
+        relativepath: "app/scripts/annotationManagement/read/Canvas.js"
+        anchor: |
+          class Canvas {
+            static generateCanvas () {
+              [*GA_INJECT*]
+              window.abwa.sidebar.closeSidebar()
+              let review = null
+      - &vp2
+        relativepath: "app/scripts/annotationManagement/read/Canvas.js"
+        anchor: |
+           document.addEventListener('keydown', function (e) {
+                   if (e.code === 'Escape' && document.querySelector('#reviewCanvas') != null) document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
+                   document.querySelector('#abwaSidebarButton').style.display = 'block'
+                   [*GA_INJECT*]
+                 })
+      - &vp3
+        relativepath: "app/scripts/annotationManagement/read/Canvas.js"
+        anchor: |
+          document.querySelector('#canvasCloseButton').addEventListener('click', function () {
+            document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
+            document.querySelector('#abwaSidebarButton').style.display = 'block'
+            [*GA_INJECT*]
+          })
+    events:
+      - name: "openCanvas"
+        vps:
+          - *vp1
+      - name: "closeCanvas"
+        vps:
+          - *vp2
+          - *vp3
+  - expression: TextSummary
+    vps:
+      - &vp1
+        relativepath: "app/scripts/annotationManagement/read/TextSummary.js"
+        anchor: |
+          static proccessReview () {
+            [*GA_INJECT*]
+            // PVSCL:IFCOND(EditSummary, LINE)
+            TextSummary.generateReviewEditor()
+      - &vp2
+        relativepath: "app/scripts/annotationManagement/read/TextSummary.js"
+        anchor: |
+           let docTitle = 'Review report'
+           if (title !== '') docTitle += ' for ' + title
+           FileSaver.saveAs(blob, docTitle + '.txt')
+           [*GA_INJECT*]
+           }
+      - &vp3
+        relativepath: "app/scripts/annotationManagement/read/TextSummary.js"
+        anchor: |
+           document.querySelector('#saveReportDraft').addEventListener('click', function () {
+           let reportText = document.querySelector('#reportText').value
+           TextSummary.saveReport(reportText)
+           [*GA_INJECT*]
+           Alerts.successAlert({
+            text: 'Draft has been successfully saved'
+           })
+    events:
+      - name: "initTextSummary"
+        vps:
+          - *vp1
+      - name: "downloadTextSummary"
+        vps:
+          - *vp2
+      - name: "draftSaved"
+        vps:
+          - *vp3
+  - expression: Classifying
+    vps:
+      - &vp1
+        relativepath: "app/scripts/annotationManagement/create/CreateAnnotation.js"
+        anchor: |
+          annotationToCreate = new Annotation({
+                    target: target,
+                    tags: tags,
+                    body: body
+                  })
+                  [*GA_INJECT*]
+                  // PVSCL:IFCOND(AuthorsSearch OR ImportChecklist, LINE)
+    events:
+      - name: "classified"
+        vps:
+          - *vp1
+- expression: BuiltIn or EmptyCodebook
+  vps:
+    - &vp1
+      ccm_filename: "GroupSelector.js"
+      relativepath: "app/scripts/groupManipulation/GroupSelector.js"
+      anchor: |
+        // TODO Create default group
+        this.createApplicationBasedGroupForUser((err, group) => {
+          if (err) {
+            [*GA_INJECT*]
+            Alerts.errorAlert({ text: 'We are unable to create annotation group. Please check if you are logged in your annotation server.' })
+    - &vp2
+      relativepath: "app/scripts/groupManipulation/GroupSelector.js"
+      anchor: |
+          } else {
+            [*GA_INJECT*]
+            // PVSCL:IFCOND(Hypothesis,LINE)
+            // Modify group URL in Hypothes.is as it adds the name at the end of the URL
+            if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
+  events:
+    - name: "errorCreatingDefaultGroup"
+      vps:
+        - *vp1
+    - name: "DefaultGroupCreated"
+      vps:
+        - *vp2
