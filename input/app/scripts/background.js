@@ -24,12 +24,48 @@ import TaskManager from './background/TaskManager'
 // PVSCL:ENDCOND
 
 import _ from 'lodash'
+import Config from './Config'
+import ChromeStorage from './utils/ChromeStorage'
+import semver from 'semver'
 
 // Enable chromereload by uncommenting this line:
 // import 'chromereload/devonly'
 
 chrome.runtime.onInstalled.addListener((details) => {
   console.log('previousVersion', details.previousVersion)
+  // PVSCL:IFCOND(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName') = 'hag', LINE)
+  ChromeStorage.getData('updatesNotification.hag', ChromeStorage.local, (err, data) => {
+    if (err) {
+      console.error(err)
+    } else {
+      let showNotification = true
+      if (data) {
+        let latestVersionNotified = data.version || '0.0.1'
+        showNotification = semver.gt('0.3.0', latestVersionNotified) && details.previousVersion.includes('0.3.')
+      }
+      if (showNotification) {
+        chrome.notifications.create('hag-v0.3.0', {
+          type: 'basic',
+          title: 'Highlight&Go has been updated',
+          message: 'Highlight&Go has been updated with important changes. Please check them clicking here.',
+          iconUrl: chrome.extension.getURL('images/' + Config.urlParamName + '/icon-512.png'),
+          buttons: [
+            { title: 'See changes' }]
+        })
+        const hagButtonClickListener = (notificationId, buttonIndex) => {
+          if (notificationId === 'hag-v0.3.0' && buttonIndex === 0) {
+            chrome.tabs.create({ url: 'https://github.com/onekin/WacLine/releases/tag/HighlightAndGo-v0.3.0' })
+            // Save that user has visited the website
+            ChromeStorage.setData('updatesNotification.hag', { version: '0.3.0' }, ChromeStorage.local)
+          }
+          // Remove notification listener
+          chrome.notifications.onButtonClicked.removeListener(hagButtonClickListener)
+        }
+        chrome.notifications.onButtonClicked.addListener(hagButtonClickListener)
+      }
+    }
+  })
+  // PVSCL:ENDCOND
 })
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
@@ -179,6 +215,42 @@ class Background {
           }
         }
       }
+      // PVSCL:IFCOND(Tracking, LINE)
+      if (request.scope === 'tracking') {
+        // PVSCL:IFCOND(GoogleTagManager, LINE)
+        if (request.cmd === 'getTrackingGTM') {
+          ChromeStorage.getData('tracking.gtm', ChromeStorage.sync, (err, userResponse) => {
+            if (err) {
+              sendResponse({ err: err })
+            } else {
+              if (!_.isEmpty(userResponse) && _.has(userResponse, 'data')) {
+                const parsedUserResponse = JSON.parse(userResponse.data)
+                if (parsedUserResponse === false) {
+                  sendResponse({ userResponse: false })
+                } else if (parsedUserResponse === true) {
+                  sendResponse({ userResponse: true })
+                } else {
+                  sendResponse({ userResponse: {} })
+                }
+              } else {
+                sendResponse({ userResponse: {} })
+              }
+            }
+          })
+        } else if (request.cmd === 'setTrackingGTM') {
+          const userResponse = request.data.userResponse
+          ChromeStorage.setData('tracking.gtm', { data: JSON.stringify(userResponse) }, ChromeStorage.sync, (err) => {
+            if (err) {
+              sendResponse({ err: err })
+            } else {
+              sendResponse({ userResponse: userResponse })
+            }
+          })
+        }
+        // PVSCL:ENDCOND
+        return true // Notice message passing handler that have to wait for async calls in chrome storage
+      }
+      // PVSCL:ENDCOND
     })
   }
 }

@@ -3,6 +3,7 @@ import ContentScriptManager from './contentScript/ContentScriptManager'
 import _ from 'lodash'
 
 console.debug('Loaded abwa content script')
+
 if (_.isEmpty(window.abwa)) {
   window.abwa = {} // Global namespace for variables
   // Add listener for popup button click

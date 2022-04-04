@@ -115,8 +115,8 @@ class Theme {
       tags: tags,
       target: this.target, // TODO Check if discrepancy between target and URI values works well in Hypothes.is annotation server
       text: jsYaml.dump({
-        id: this.id || ''/* PVSCL:IFCOND(BuiltIn) */,
-        description: this.description/* PVSCL:ENDCOND */
+        id: this.id || '',
+        description: this.description
       }),
       uri: this.annotationGuide.annotationServer.getGroupUrl()
     }
@@ -170,8 +170,8 @@ class Theme {
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       if (_.isObject(config)) {
-        const description = config.description
-        const id = annotation.id
+        const description = config.description || ''
+        const id = annotation.id || ''
         // PVSCL:IFCOND(MoodleReport,LINE)
         const moodleCriteriaId = config.id
         // PVSCL:ENDCOND

@@ -2,6 +2,9 @@ import URLUtils from './utils/URLUtils'
 import Config from './Config'
 import _ from 'lodash'
 import DOI from 'doi-regex'
+import AnnotationServerManagerInitializer from './annotationServer/AnnotationServerManagerInitializer'
+import GoogleSheetAnnotationClientManager
+  from './annotationServer/googleSheetAnnotationServer/GoogleSheetAnnotationClientManager'
 
 class IEEEContentScript {
   constructor () {
@@ -34,25 +37,71 @@ class IEEEContentScript {
       if (pdfLinkElement) {
         // Get if this tab has an annotation to open
         if (!_.isEmpty(params) && !_.isEmpty(params[Config.urlParamName])) {
-          // Activate the extension
-          chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, () => {
-            console.debug('Activated popup')
-            // Retrieve pdf url
-            let pdfUrl = pdfLinkElement.href
-            // Create hash with required params to open extension
-            let hash = '#' + Config.urlParamName + ':' + params[Config.urlParamName]
-            if (this.doi) {
-              hash += '&doi:' + this.doi
+          // Retrieve pdf url
+          let pdfUrl = pdfLinkElement.href
+          // Create hash with required params to open extension
+          let hash = '#' + Config.urlParamName + ':' + params[Config.urlParamName]
+          if (this.doi) {
+            hash += '&doi:' + this.doi
+          }
+          // Append hash to pdf url
+          pdfUrl += hash
+          pdfLinkElement.href += hash
+          chrome.runtime.sendMessage({
+            scope: 'target',
+            cmd: 'setDoiToTab',
+            data: { doi: this.doi, annotationId: params[Config.urlParamName] }
+          })
+          // Redirect browser to pdf if annotation has page in selectors
+          AnnotationServerManagerInitializer.init((err, annotationServerManager) => {
+            if (err) {
+              console.error('Unable to initialize annotation server manager, no redirection')
+            } else {
+              window.ieee.annotationServerManager = annotationServerManager
+              window.ieee.annotationServerManager.init((err) => {
+                if (err) {
+                  console.error('Unable to initialize annotation server manager')
+                } else {
+                  let promise
+                  // PVSCL:IFCOND(GoogleSheetAnnotationServer, LINE)
+                  if (window.abwa.annotationServerManager instanceof GoogleSheetAnnotationClientManager) {
+                    promise = new Promise((resolve, reject) => {
+                      window.ieee.annotationServerManager.reloadWholeCacheDatabase((err) => {
+                        if (err) {
+                          reject(err)
+                        } else {
+                          resolve()
+                        }
+                      })
+                    })
+                  } else {
+                    promise = new Promise((resolve) => { resolve() })
+                  }
+                  // PVSCL:ELSECOND
+                  promise = new Promise((resolve) => { resolve() })
+                  // PVSCL:ENDCOND
+                  // Activate the extension
+                  chrome.runtime.sendMessage({ scope: 'extension', cmd: 'activatePopup' }, () => {
+                    console.debug('Activated popup')
+                  })
+                  promise.then(() => {
+                    const annotationId = params[Config.urlParamName]
+                    window.ieee.annotationServerManager.client.fetchAnnotation(annotationId, (err, annotation) => {
+                      if (err) {
+                        console.error('Unable to retrieve initialization annotation')
+                      } else {
+                        let annotationFragmentSelector = annotation.target[0].selector.find((selector) => selector.type === 'FragmentSelector')
+                        if (annotationFragmentSelector && _.isNumber(annotationFragmentSelector.page)) {
+                          window.location.replace(pdfUrl)
+                        } else {
+                          console.debug('Nothing to do, annotated document is HTML version')
+                        }
+                      }
+                    })
+                  })
+                }
+              })
             }
-            // Append hash to pdf url
-            pdfUrl += hash
-            chrome.runtime.sendMessage({
-              scope: 'target',
-              cmd: 'setDoiToTab',
-              data: { doi: this.doi, annotationId: params[Config.urlParamName] }
-            })
-            // Redirect browser to pdf
-            // window.location.replace(pdfUrl)
           })
         } else {
           // Append doi to PDF url

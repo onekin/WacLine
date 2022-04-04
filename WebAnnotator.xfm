@@ -55,6 +55,7 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
         <cm:relation cm:id="iev1lgslEiI_IbVCn" cm:type="ps:optional" cm:range="[0,n]">
           <cm:target cm:id="iYKe0ZzShJsqSwiiR">./iD93S-Zw_CUcdoLrR</cm:target>
           <cm:target cm:id="isH_TTI_A9fxVssQe">./ieFZrnU5hSRcf0lcM</cm:target>
+          <cm:target cm:id="imKqclu7neosYqOZx">./iKnHUNl3E5sOaH7bA</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -65,10 +66,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="icv3bKA3BND-DPoJI" cm:type="ps:datetime">2019-11-07T11:39:58.469Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iv210VYiJEpozoArk" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">pirqu</cm:constant>
+          <cm:constant cm:id="ilTXQXse4uZAT2l3A" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="izamyJvttk5t9t1_z" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2020-11-23T12:27:33.374Z</cm:constant>
+          <cm:constant cm:id="i0rfI-4LhXspqqrlj" cm:type="ps:datetime">2021-09-23T11:07:02.509Z</cm:constant>
         </cm:property>
         <cm:property cm:id="ipaIptNGXwqXJsHyV" cm:type="ps:string" cm:name="appName">
           <cm:constant cm:id="ikGzCSnHxopG8U4EC" cm:type="ps:string">Web annotation client</cm:constant>
@@ -1318,11 +1319,6 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:target cm:id="ixdP7QSaoBjWx6GLt">./imC0TaQUj7PyX6Yzb</cm:target>
         </cm:relation>
       </cm:relations>
-      <cm:relations cm:id="i2lTH7HJ1_KRG63In" cm:class="ps:children">
-        <cm:relation cm:id="iLMUmMdGyYGBvxxqD" cm:type="ps:optional">
-          <cm:target cm:id="i3jRkDjSq_MGw8I3j">./iWtXcE8QeoCHBD6Dk</cm:target>
-        </cm:relation>
-      </cm:relations>
       <cm:properties>
         <cm:property cm:id="ijXN8hf4zLk_znkWP" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
           <cm:constant cm:id="iucuYkBbUCXJrnYxU" cm:type="ps:string">haritz</cm:constant>
@@ -1331,10 +1327,10 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
           <cm:constant cm:id="iyl-zkWxAdkNhOkos" cm:type="ps:datetime">2019-11-07T11:54:45.204Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iIUD8yeeYcEXKjhiq" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="itSMFkK8TNZpsAcUI" cm:type="ps:string">User</cm:constant>
+          <cm:constant cm:id="itSMFkK8TNZpsAcUI" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iwW1SbSAE5TeM4mjL" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="ioa0iRoz6ddI84zkh" cm:type="ps:datetime">2021-07-04T20:32:33.249Z</cm:constant>
+          <cm:constant cm:id="ioa0iRoz6ddI84zkh" cm:type="ps:datetime">2020-03-04T10:10:26.204Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -3311,6 +3307,65 @@ AnnotationServer-&gt;pv:SelectedChildren(&apos;ps:annotationServer&apos;)-&gt;pv
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="iizCWkzK2mg6Y2tA5" cm:mimetype="text/plain" cm:encoding="utf-8">EditSummary</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="iKnHUNl3E5sOaH7bA" cm:name="Tracking" cm:type="ps:feature" cm:class="ps:feature">
+      <cm:relations cm:id="iqf0KY6rbQpC5Lnaa" cm:class="ps:parents">
+        <cm:relation cm:id="iCIvsKLmLZMWpokFI" cm:type="ps:parent">
+          <cm:target cm:id="idmuZAy3VW6GVz_eh">./i0OQU875T4LHYFzNv</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="i3U8iLILGDa3ktoHG" cm:class="ps:children">
+        <cm:relation cm:id="iuowShlXQnOz_OCA2" cm:type="ps:optional">
+          <cm:target cm:id="iPVS1xXmYemixixEe">./imFPFGRvHHjR-MHTy</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iRy3KkX53wQlh0vIn" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iI19M4izoEg-Nr7Vm" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iFa-BwVeTsrzKsZR_" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ibEMuUfsa7bL-jGM8" cm:type="ps:datetime">2021-09-23T11:07:02.509Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iCDYkoy5XYoyApbff" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="il87fwn1sOZsTWjKV" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i45I-NeVRvfjiFykM" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i_8nSFhWYhstJgqiN" cm:type="ps:datetime">2021-09-28T14:41:04.302Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ihvn29gMaCpNp3s3m" cm:type="ps:string" cm:fixed="true" cm:name="trackingPoliciesURL">
+          <cm:constant cm:id="iTlO8RTyZSyWyptjL" cm:type="ps:string">https://github.com/onekin/WacLine/wiki/Highlight&amp;Go-tracking-policies</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i4Kj02d1daT00nEiK" cm:mimetype="text/plain" cm:encoding="utf-8">Tracking</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="imFPFGRvHHjR-MHTy" cm:name="GoogleTagManager" cm:type="ps:feature" cm:class="ps:feature" cm:default="off">
+      <cm:relations cm:id="iXkf1ndFicWs2jvKG" cm:class="ps:parents">
+        <cm:relation cm:id="iK7yfGgunN5grfIOy" cm:type="ps:parent">
+          <cm:target cm:id="iI4ZMo1Dg7fmQRLsZ">./iKnHUNl3E5sOaH7bA</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ivtmgIOQJmYdpSb6H" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iinph0jwYfBr2Ckdn" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ixCX4a5u_gGEpLGPT" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="ixk1hWmMR56jM37UY" cm:type="ps:datetime">2021-09-23T11:07:21.722Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="il_jwluevAmRMQzun" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i4MSFMMPF98ja6w3g" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iMpEluPX_1ABAFftG" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i8-g6ddDVJUGQmKyE" cm:type="ps:datetime">2021-09-23T11:10:08.061Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="irxVCAM6KtQxg0FHn" cm:type="ps:string" cm:name="tagManagerId">
+          <cm:constant cm:id="iemUI3Bkta0wwgA6d" cm:type="ps:string"></cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="iiZvpF9n32CyXfKgx" cm:mimetype="text/plain" cm:encoding="utf-8">GoogleTagManager</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>

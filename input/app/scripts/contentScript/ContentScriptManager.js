@@ -4,14 +4,12 @@ import Sidebar from './Sidebar'
 import CodebookManager from '../codebook/CodebookManager'
 import Config from '../Config'
 import AnnotationBasedInitializer from './AnnotationBasedInitializer'
+import AnnotationServerManagerInitializer from '../annotationServer/AnnotationServerManagerInitializer'
 // PVSCL:IFCOND(Manual, LINE)
 import Events from '../Events'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(MoodleResource, LINE)
 import RolesManager from './RolesManager'
-// PVSCL:ENDCOND
-// PVSCL:IFCOND(BrowserStorage, LINE)
-import BrowserStorageManager from '../annotationServer/browserStorage/BrowserStorageManager'
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(PreviousAssignments, LINE)
 import PreviousAssignments from '../annotationManagement/purposes/PreviousAssignments'
@@ -21,6 +19,9 @@ import GoogleSheetAnnotationClientManager from '../annotationServer/googleSheetA
 // PVSCL:ENDCOND
 // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
 import GoogleSheetAuditLogging from '../annotationManagement/read/GoogleSheetAuditLogging'
+// PVSCL:ENDCOND
+// PVSCL:IFCOND(GoogleTagManager, LINE)
+import GoogleTagManager from '../tracking/GoogleTagManager'
 // PVSCL:ENDCOND
 import GoogleAnalytics from '../GoogleAnalytics'
 
@@ -34,31 +35,41 @@ class ContentScriptManager {
     console.debug('Initializing content script manager')
     this.status = ContentScriptManager.status.initializing
     this.loadTargetManager(() => {
-      let gaPromise = Promise.resolve()
-      gaPromise = new Promise((resolve) => {
-        this.loadGoogleAnalytics(() => {
+      let gtmPromise = Promise.resolve()
+      // PVSCL:IFCOND(GoogleTagManager, LINE)
+      gtmPromise = new Promise((resolve) => {
+        this.loadGoogleTagManager(() => {
           resolve()
         })
       })
-      gaPromise.then(() => {
-        this.loadAnnotationServer(() => {
-          window.abwa.sidebar = new Sidebar()
-          window.abwa.sidebar.init(() => {
-            window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
-            window.abwa.annotationBasedInitializer.init(() => {
-              const GroupSelector = require('../groupManipulation/GroupSelector').default
-              window.abwa.groupSelector = new GroupSelector()
-              window.abwa.groupSelector.init(() => {
-                // Reload for first time the content by group
-                this.reloadContentByGroup(() => {
-                  if (_.isFunction(callback)) {
-                    callback()
-                  }
+      // PVSCL:ENDCOND
+      gtmPromise.then(() => {
+        let gaPromise = Promise.resolve()
+        gaPromise = new Promise((resolve) => {
+          this.loadGoogleAnalytics(() => {
+            resolve()
+          })
+        })
+        gaPromise.then(() => {
+          this.loadAnnotationServer(() => {
+            window.abwa.sidebar = new Sidebar()
+            window.abwa.sidebar.init(() => {
+              window.abwa.annotationBasedInitializer = new AnnotationBasedInitializer()
+              window.abwa.annotationBasedInitializer.init(() => {
+                const GroupSelector = require('../groupManipulation/GroupSelector').default
+                window.abwa.groupSelector = new GroupSelector()
+                window.abwa.groupSelector.init(() => {
+                  // Reload for first time the content by group
+                  this.reloadContentByGroup(() => {
+                    if (_.isFunction(callback)) {
+                      callback()
+                    }
+                  })
+                  // PVSCL:IFCOND(Manual,LINE)
+                  // Initialize listener for group change to reload the content
+                  this.initListenerForGroupChange()
+                  // PVSCL:ENDCOND
                 })
-                // PVSCL:IFCOND(Manual,LINE)
-                // Initialize listener for group change to reload the content
-                this.initListenerForGroupChange()
-                // PVSCL:ENDCOND
               })
             })
           })
@@ -89,6 +100,20 @@ class ContentScriptManager {
   groupChangedEventHandlerCreator () {
     return (event) => {
       this.reloadContentByGroup()
+    }
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(GoogleTagManager, LINE)
+
+  loadGoogleTagManager (callback) {
+    this.tracking = {}
+    this.tracking.googleTagManager = new GoogleTagManager()
+    this.tracking.googleTagManager.init(callback)
+  }
+
+  destroyGoogleTagManager () {
+    if (this.tracking && this.tracking.googleTagManager) {
+      this.tracking.googleTagManager.destroy()
     }
   }
   // PVSCL:ENDCOND
@@ -426,10 +451,14 @@ class ContentScriptManager {
       this.destroyPreviousAssignments()
       this.destroyMoodleEstimationManager()
       // PVSCL:ENDCOND
-      // TODO Destroy groupSelector, sidebar,
+      // PVSCL:IFCOND(GoogleSheetAuditLog, LINE)
+      this.destroyGoogleSheetAuditLogging()
+      // PVSCL:ENDCOND
+      // Destroy groupSelector, sidebar, annotation server
       window.abwa.groupSelector.destroy(() => {
         window.abwa.sidebar.destroy(() => {
           this.destroyAnnotationServer(() => {
+            // Change status to non initialized
             this.status = ContentScriptManager.status.notInitialized
             console.debug('Correctly destroyed content script manager')
             if (_.isFunction(callback)) {

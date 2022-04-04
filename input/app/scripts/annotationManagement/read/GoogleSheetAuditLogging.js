@@ -5,6 +5,8 @@ import Classifying from '../purposes/Classifying'
 import Commenting from '../purposes/Commenting'
 import RandomUtils from '../../utils/RandomUtils'
 import Assessing from '../purposes/Assessing'
+import Config from '../../Config'
+import LanguageUtils from '../../utils/LanguageUtils'
 
 class GoogleSheetAuditLogging {
   init (callback) {
@@ -42,7 +44,7 @@ class GoogleSheetAuditLogging {
   }
 
   initPapersDatabase (callback) {
-    this.sendCallToBackground('getSheetRowsRawData', { spreadsheetId: window.abwa.groupSelector.currentGroup.id, sheetName: 'Papers' }, (err, result) => {
+    this.sendCallToBackground('getSheetRowsRawData', { spreadsheetId: window.abwa.groupSelector.currentGroup.id, sheetName: Config.googleSheetConfig.papers }, (err, result) => {
       if (err) {
         if (_.isFunction(callback)) {
           callback(err)
@@ -57,8 +59,10 @@ class GoogleSheetAuditLogging {
         this.papers = _.compact(this.papers.filter(
           elem => elem !== 'slr:codebookDevelopment' && elem !== 'oa:classifying' && !_.isEmpty(elem) && !elem.startsWith('file://')
         ))
+        // Send papers list initialized event
+        LanguageUtils.dispatchCustomEvent(Events.googleSheetAuditPapersList, { rows: result })
         if (_.isFunction(callback)) {
-          callback(null, _.compact(this.papers))
+          callback(null, this.papers)
         }
       }
     })
@@ -529,12 +533,11 @@ class GoogleSheetAuditLogging {
     if (!_.isEmpty(paperRow)) {
       this.sendCallToBackground('appendRowSpreadSheet', {
         spreadsheetId: annotation.group,
-        range: 'Papers',
+        range: Config.googleSheetConfig.papers,
         data: { values: [paperRow] }
       })
     }
   }
-
 }
 
 export default GoogleSheetAuditLogging

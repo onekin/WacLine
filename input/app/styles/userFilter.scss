@@ -1,3 +1,7 @@
 #userFilterContainer {
   padding: 5px;
 }
+
+.userFilterLabel {
+  display: initial; /* In ACM the filter moves to the next line, this should fix that */
+}

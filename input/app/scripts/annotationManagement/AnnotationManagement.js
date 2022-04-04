@@ -33,7 +33,7 @@ class AnnotationManagement {
       // Navigate to the annotation if initial annotation exist
       if (window.abwa.annotationBasedInitializer.initAnnotation) {
         const annotationToNavigate = Annotation.deserialize(window.abwa.annotationBasedInitializer.initAnnotation)
-        this.goToAnnotation(annotationToNavigate)
+        this.goToAnnotation(annotationToNavigate, true)
       }
       if (_.isFunction(callback)) {
         callback(err)
@@ -100,7 +100,7 @@ class AnnotationManagement {
     }
   }
 
-  goToAnnotation (annotation) {
+  goToAnnotation (annotation, retry = false) {
     // If document is pdf, the DOM is dynamic, we must scroll to annotation using PDF.js FindController
     if (window.abwa.targetManager.documentFormat === PDF) {
       const queryTextSelector = _.find(annotation.target[0].selector, (selector) => { return selector.type === 'TextQuoteSelector' })
@@ -119,15 +119,24 @@ class AnnotationManagement {
         this.removeFindTagsInPDFs()
       }
     } else { // Else, try to find the annotation by data-annotation-id element attribute
-      const firstElementToScroll = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
+      let firstElementToScroll = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
       // If go to annotation is done by init annotation and it is not found, wait for some seconds for ajax content to be loaded and try again to go to annotation
       if (!_.isElement(firstElementToScroll) && !_.isNumber(this.initializationTimeout)) { // It is done only once, if timeout does not exist previously (otherwise it won't finish never calling goToAnnotation
         this.initializationTimeout = setTimeout(() => {
-          console.debug('Trying to scroll to init annotation in 2 seconds')
-          this.initAnnotatorByAnnotation()
-        }, 2000)
+          console.debug('Trying to scroll to init annotation in 5 seconds')
+          firstElementToScroll = document.querySelector('[data-annotation-id="' + annotation.id + '"]')
+          if (firstElementToScroll) {
+            firstElementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }
+        }, 5000)
       } else {
         firstElementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        // Repeat the action as in some web the scroll is not working properly (e.g.: springer, see issue #113)
+        if (retry) {
+          setTimeout(() => {
+            firstElementToScroll.scrollIntoView({ behavior: 'smooth', block: 'center' })
+          }, 1000)
+        }
       }
     }
   }

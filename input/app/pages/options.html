@@ -128,6 +128,17 @@
         </div>
       </div>
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(GoogleTagManager, LINE)
+      <div class="card">
+        <div class="card-header bg-dark text-white">Tracking</div>
+        <div class="card-body">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="googleTagManagerConsent" checked="checked">
+            <label for="googleTagManagerConsent" class="form-check-label">I consent this extension to collect anonymous tracking data to improve user experience and for research purposes. Learn about our tracking policy <a href="PVSCL:EVAL(WebAnnotator.Tracking->pv:Attribute('trackingPoliciesURL'))" target="_blank">here</a>.</label>
+          </div>
+        </div>
+      </div>
+      // PVSCL:ENDCOND
     </div>
     <div id="contactRow" class="row row-cols-3">
       <div class="col">

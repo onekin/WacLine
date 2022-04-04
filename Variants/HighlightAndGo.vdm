@@ -9162,20 +9162,19 @@
           <cm:constant cm:id="igV56Lp68DMYMiZ5c" cm:type="ps:string">haritz</cm:constant>
         </cm:property>
         <cm:property cm:id="iXcvjTaHu8b9ex0Fo" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iYMg4dlTJZ2uFwrum" cm:type="ps:datetime">2021-06-28T15:15:43.026Z</cm:constant>
+          <cm:constant cm:id="iYMg4dlTJZ2uFwrum" cm:type="ps:datetime">2021-10-08T15:06:42.065Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iwzN03L4wUFrlJzjM" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/ikd06TuWH0GM-TRbB">
           <cm:constant cm:id="iwe2zkrEfCL_3TNrL" cm:type="ps:string">hag</cm:constant>
         </cm:property>
-        <cm:property cm:id="iFw0ReSqZob_o8nLh" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/iYoalgh7V2S1hh0Ba">
-          <cm:constant cm:id="ir_eApHy2Ttg5fFFY" cm:type="ps:string">Highlight your primary studies and go!
-</cm:constant>
+        <cm:property cm:id="iFw0ReSqZob_o8nLh" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/iYoalgh7V2S1hh0Ba">
+          <cm:constant cm:id="ir_eApHy2Ttg5fFFY" cm:type="ps:string">Highlight your primary studies and go!</cm:constant>
         </cm:property>
         <cm:property cm:id="iItRQpKXZxzv95ZAu" cm:type="ps:string" cm:name="iivhJRwmojkiJvYc5/iPbotzrtzWXGUgGrQ">
           <cm:constant cm:id="ivcyZP-GFQXNWjOui" cm:type="ps:string">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoQgtyvjHN1xpYMWig50Bx7iL4d8oSum8aVhiTCLpdSK93YAA6JubzTxeJKWj0n/zx4X6jiByuAGaAd7V0/s+mrJfP2J8hiMFu5BnxT6+2iekiLNV4Nc1RlX9wuaOq2Res0l9E2+2DpMTCli4aS1DyEBd9zpfwaNWPMqbmToZOLO0afibAklS/VAIEfcH/2lbDLrdq3UACEZdW7/hlmICj0yItYFQ2mXEI3spetnJH3VG9Q5Sj5RsSLnyuescQLSeT0vl1uovsPnKCpD/aS/iRzNyEtRNtAy727Ju334bj4xyOA8VIsueWWwYiKPatvhQ+gcNqq77UNOmw5Ido5fHMQIDAQAB</cm:constant>
         </cm:property>
         <cm:property cm:id="i4m0K_6F75zLVez3Z" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/iLzroTwOrb9YFVy8z">
-          <cm:constant cm:id="iOONfacrL4xzFIAsk" cm:type="ps:string">0.3.0</cm:constant>
+          <cm:constant cm:id="iOONfacrL4xzFIAsk" cm:type="ps:string">0.3.5</cm:constant>
         </cm:property>
         <cm:property cm:id="iPe1eCCXby3onwGih" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/iapoKiaR3oz2jfE3-">
           <cm:constant cm:id="i8FbMW6MTBSRBjHhc" cm:type="ps:string">https://github.com/onekin/WacLine/wiki/User-manual-for-Highlight&amp;Go</cm:constant>
@@ -13397,6 +13396,33 @@
         </cm:property>
         <cm:property cm:id="iUKj0XlIA8LEASWOq" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
           <cm:constant cm:id="iTBI9GdQs_B1HtAfH" cm:type="ps:datetime">2021-06-28T07:03:08.884Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+    </cm:element>
+    <cm:element cm:id="i0t6yf870izwfjPrP" cm:type="ps:unselected" cm:class="ps:selection">
+      <cm:relations cm:id="iQEsaYLbPSU3bzLbY" cm:class="ps:references">
+        <cm:relation cm:id="ieUNK39Hkd0y0zCqh" cm:type="ps:references">
+          <cm:target cm:id="itUlb0K9i6MGGe_7P">iivhJRwmojkiJvYc5/imFPFGRvHHjR-MHTy</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="iWkf6elEeDlSTUZ-P" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="iT_syeiTd20J3AUFh" cm:type="ps:string">ps:user</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iuOU2b0YFp-LRHzno" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="izW3T5SFrVUfY7NWI" cm:type="ps:string">haritz</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i3cZHl1TSWkMLnVXa" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iMafXIbur1KHQ8HXw" cm:type="ps:datetime">2021-09-23T11:10:24.483Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iiTYeU4HVo6K_-43K" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i9eP0T_jIS-F0GWPN" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ixmi3Wkw4hMTyJ7Mj" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iuUTKcUSZkp98VHyk" cm:type="ps:datetime">2022-04-04T08:07:50.328Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iUQlt2Jkpa9UMwar-" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/irxVCAM6KtQxg0FHn">
+          <cm:constant cm:id="iSKQ2Hjqp3ks0PkoK" cm:type="ps:string">GTM-MBSVG6L</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>

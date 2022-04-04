@@ -1,6 +1,3 @@
-import _ from 'lodash'
-import BrowserStorageManager from '../browserStorage/BrowserStorageManager'
-
 class GoogleSheetAnnotationBackgroundManager {
   init () {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -180,6 +177,14 @@ class GoogleSheetAnnotationBackgroundManager {
                 sendResponse({ error: err })
               } else {
                 sendResponse(result)
+              }
+            })
+          } else if (request.cmd === 'reloadWholeCacheDatabase') {
+            window.background.googleSheetAnnotationManager.annotationServerManager.client.reloadCacheDatabase((err, result) => {
+              if (err) {
+                sendResponse({ error: err })
+              } else {
+                sendResponse(window.background.googleSheetAnnotationManager.annotationServerManager.client.cache.database.annotations)
               }
             })
           }

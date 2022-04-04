@@ -14,3 +14,17 @@
 .context-menu-list {
   z-index: $sidebarZIndex + 2 !important;
 }
+
+/* Fix a problem with comment textarea size, sweetalert and awesomeplete */
+.awesomplete {
+  position: inherit;
+}
+
+.swal2-textarea {
+  width: 75%;
+}
+
+/* In some websites such as ACM the links in sweetAlerts are not underlined, what difficults user to see if it is plain-text or a link */
+.alertLink {
+  text-decoration: underline;
+}

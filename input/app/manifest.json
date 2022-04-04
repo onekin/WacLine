@@ -85,7 +85,7 @@
       "run_at": "document_end"
     }PVSCL:ENDCOND
   ],
-  "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
+  "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.googletagmanager.com https://ssl.google-analytics.com https://www.google-analytics.com; object-src 'self'",
   "page_action": {
     "default_icon": "images/PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('appShortName'))/icon-38-bw.png",
     "default_title": "__MSG_browserActionTitle__"
@@ -129,7 +129,7 @@
     ]
   },
   PVSCL:ENDCOND
-  "web_accessible_resources": ["pages/*.html", "content/*", "images/*", "scripts/ga.js"]PVSCL:IFCOND(WebAnnotator.WebAnnotationClient->pv:Attribute('key')<>''),
+  "web_accessible_resources": ["pages/*.html", "content/*", "scripts/ga.js", "images/*"PVSCL:IFCOND(GoogleTagManager), "scripts/gtm.js"PVSCL:ENDCOND]PVSCL:IFCOND(WebAnnotator.WebAnnotationClient->pv:Attribute('key')<>''),
   "key": "PVSCL:EVAL(WebAnnotator.WebAnnotationClient->pv:Attribute('key'))"
   PVSCL:ENDCOND
 }
