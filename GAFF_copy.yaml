@@ -1,78 +1,55 @@
 ---
 analytics:
-  - expression: Commenting and Classifying
-    vps:
-      - &vp1
-        ccm_filename: "ReadAnnotation.js"
-        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+  - expression: Hypothesis
+    locations:
+      - &location1
+        relativepath: "app/scripts/annotationServer/hypothesis/HypothesisClientInterface.js"
         anchor: |
-          // PVSCL:ENDCOND
-
-          // PVSCL:IFCOND(Commenting, LINE)
-          openCommentingForm (annotation) {[*GA_INJECT*]
-            CommentingForm.showCommentingForm(annotation, (err, annotation) => {
-              if (err) {
-      - &vp2
-        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
-        anchor: |
-           LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
-             annotation: annotation
-           })[*GA_INJECT*]
-           }
-           })
-           }
-
-           // PVSCL:ENDCOND
-      - &vp3
-        ccm_filename: "ReadAnnotation.js"
-        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
-        anchor: |
-          // Open commenting form if you are the owner of the annotation, otherwise should be replace
-          if (annotationCreator === window.abwa.groupSelector.user.userid) {
-            this.openCommentingForm(annotation)
-            [*GA_INJECT*]
-          } /* PVSCL:IFCOND(Replying) */ else {
-      - &vp4
-        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
-        anchor: |
-            }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
-              // Open commenting form
+          }, (result) => {
+            if (_.has(result, 'error')) {
               [*GA_INJECT*]
-              this.openCommentingForm(annotation)
-            } /* PVSCL:ENDCOND */
-          },
+              callback(result.error)
+            } else {
+              callback(null, result)
     events:
-      - name: "openCommenting"
-        vps:
-          - *vp1
-      - name: "closeCommenting"
-        vps:
-          - *vp2
-      - name: "openCommentingFromDoubleClick"
-        vps:
-          - *vp3
-      - name: "openCommentingFromContextMenu"
-        vps:
-          - *vp4
-  - expression: SuggestedLiterature
-    vps:
-      - &vp1
-        ccm_filename: "CommentingForm.js"
-        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+      - name: "errorInHypothesis"
+        locations:
+          - *location1
+  - expression: SidebarNavigation or Canvas or LastAnnotation
+    locations:
+      - &location1
+        relativepath: "app/scripts/codebook/operations/read/ReadCodebook.js"
         anchor: |
-          const li = document.createElement('li')
-                    $(li).append(a, '<span title="' + content + '">' + content + '</span>')
-                    $('#literatureList').append(li)
-                    [*GA_INJECT*]
-                    setTimeout(function () {
-                      $('#swal-input1').val('')
-    events:
-      - name: "added"
-        vps:
-          - *vp1
-  - expression: Canvas
-    vps:
-      - &vp1
+          })
+            } else {
+              // Else navigate to annotation
+              [*GA_INJECT*]
+              LanguageUtils.dispatchCustomEvent(Events.navigateToAnnotationByCode, {
+                codeId: theme.id
+              })
+            }
+      - &location2
+        relativepath: "app/scripts/codebook/operations/read/ReadCodebook.js"
+        anchor: |
+          } else {
+            // Else navigate to annotation
+            [*GA_INJECT*]
+            LanguageUtils.dispatchCustomEvent(Events.navigateToAnnotationByCode, {
+              codeId: code.id
+            })
+          }
+      - &location3
+        relativepath: "app/scripts/codebook/operations/read/ReadCodebook.js"
+        anchor: |
+          })
+            } else {
+              // Else navigate to annotation
+              [*GA_INJECT*]
+              LanguageUtils.dispatchCustomEvent(Events.navigateToAnnotationByCode, {
+                codeId: theme.id
+              })
+            }
+      - &location4
         relativepath: "app/scripts/annotationManagement/read/Canvas.js"
         anchor: |
           class Canvas {
@@ -80,15 +57,30 @@ analytics:
               [*GA_INJECT*]
               window.abwa.sidebar.closeSidebar()
               let review = null
-      - &vp2
-        relativepath: "app/scripts/annotationManagement/read/Canvas.js"
+      - &location5
+        relativepath: "app/scripts/annotationManagement/read/Resume.js"
         anchor: |
-           document.addEventListener('keydown', function (e) {
-                   if (e.code === 'Escape' && document.querySelector('#reviewCanvas') != null) document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
-                   document.querySelector('#abwaSidebarButton').style.display = 'block'
-                   [*GA_INJECT*]
-                 })
-      - &vp3
+          if (window.abwa.annotationManagement.annotationReader.allAnnotations.length > 0) {
+            window.abwa.annotationManagement.goToAnnotation(window.abwa.annotationManagement.annotationReader.allAnnotations.reduce(
+              (max, a) => a.modified > max.modified ? a : max)
+            )
+            [*GA_INJECT*]
+          }
+    events:
+      - name: "SidebarNavigationUsed"
+        locations:
+          - *location1
+          - *location2
+          - *location3
+      - name: "CanvasUsed"
+        locations:
+          - *location4
+      - name: "LastAnnotationUsed"
+        locations:
+          - *location5
+  - expression: Canvas
+    locations:
+      - &location1
         relativepath: "app/scripts/annotationManagement/read/Canvas.js"
         anchor: |
           document.querySelector('#canvasCloseButton').addEventListener('click', function () {
@@ -96,90 +88,172 @@ analytics:
             document.querySelector('#abwaSidebarButton').style.display = 'block'
             [*GA_INJECT*]
           })
-    events:
-      - name: "openCanvas"
-        vps:
-          - *vp1
-      - name: "closeCanvas"
-        vps:
-          - *vp2
-          - *vp3
-  - expression: TextSummary
-    vps:
-      - &vp1
-        relativepath: "app/scripts/annotationManagement/read/TextSummary.js"
+      - &location2
+        relativepath: "app/scripts/annotationManagement/read/Canvas.js"
         anchor: |
-          static proccessReview () {
+          document.addEventListener('keydown', function (e) {
+            if (e.code === 'Escape' && document.querySelector('#reviewCanvas') != null) document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
+            document.querySelector('#abwaSidebarButton').style.display = 'block'
             [*GA_INJECT*]
-            // PVSCL:IFCOND(EditSummary, LINE)
-            TextSummary.generateReviewEditor()
-      - &vp2
-        relativepath: "app/scripts/annotationManagement/read/TextSummary.js"
+          })
+      - &location3
+        relativepath: "app/scripts/annotationManagement/read/Canvas.js"
         anchor: |
-           let docTitle = 'Review report'
-           if (title !== '') docTitle += ' for ' + title
-           FileSaver.saveAs(blob, docTitle + '.txt')
-           [*GA_INJECT*]
-           }
-      - &vp3
-        relativepath: "app/scripts/annotationManagement/read/TextSummary.js"
+          const canvasContainer = document.querySelector('#canvasContainer')
+            document.querySelector('#canvasOverlay').addEventListener('click', function () {
+              document.querySelector('#reviewCanvas').parentNode.removeChild(document.querySelector('#reviewCanvas'))
+              document.querySelector('#abwaSidebarButton').style.display = 'block'
+              [*GA_INJECT*]
+            })
+    events:
+      - name: "closeCanvasFromExitButton"
+        locations:
+          - *location1
+      - name: "closeCanvasFromESCKey"
+        locations:
+          - *location2
+      - name: "closeCanvasFromClickingBackdrop"
+        locations:
+          - *location3
+  - expression: Commenting
+    locations:
+      - &location1
+        ccm_filename: "ReadAnnotation.js"
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
         anchor: |
-           document.querySelector('#saveReportDraft').addEventListener('click', function () {
-           let reportText = document.querySelector('#reportText').value
-           TextSummary.saveReport(reportText)
-           [*GA_INJECT*]
-           Alerts.successAlert({
-            text: 'Draft has been successfully saved'
+          // If current user, if has no replies commenting, otherwise replying
+          if (ReplyAnnotation.hasReplies(annotation, this.replyAnnotations)) {
+            this.openReplyingForm(annotation)
+          } else {
+            this.openCommentingForm(annotation)
+            [*GA_INJECT*]
+          }
+      - &location2
+        ccm_filename: "ReadAnnotation.js"
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+          if (annotationCreator === currentUserId) {
+            this.openCommentingForm(annotation)
+            [*GA_INJECT*]
+          }
+      - &location3
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+          }/* PVSCL:ENDCOND *//* PVSCL:IFCOND(Commenting) */ else if (key === 'comment') {
+            // Open commenting form
+            [*GA_INJECT*]
+            this.openCommentingForm(annotation)
+          } /* PVSCL:ENDCOND */
+          },
+      - &location4
+        relativepath: "app/scripts/annotationManagement/read/ReadAnnotation.js"
+        anchor: |
+          LanguageUtils.dispatchCustomEvent(Events.updateAnnotation, {
+            annotation: annotation
+          })[*GA_INJECT*]
+          }
+          })
+          }
+
+          // PVSCL:ENDCOND
+    events:
+      - name: "openCommentingFromDoubleClick"
+        locations:
+          - *location1
+          - *location2
+      - name: "openCommentingFromContextMenu"
+        locations:
+          - *location3
+      - name: "CommentHasBeenMade"
+        locations:
+          - *location4
+  - expression: SuggestedLiterature
+    locations:
+      - &location1
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+        anchor: |
+          const li = document.createElement('li')
+             $(li).append(a, '<span title="' + content + '">' + content + '</span>')
+             $('#literatureList').append(li)
+             [*GA_INJECT*]
+             setTimeout(function () {
+             $('#swal-input1').val('')
+    events:
+      - name: "addedSuggestedLiterature"
+        locations:
+          - *location1
+  - expression: Autocomplete
+    locations:
+      - &location1
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+        anchor: |
+          document.querySelector('#comment').addEventListener('awesomplete-selectcomplete', () => {
+            console.log('Autocompleted')
+            [*GA_INJECT*]
+          })
+    events:
+      - name: "autocompleteUsed"
+        locations:
+          - *location1
+  - expression: Categorize
+    locations:
+      - &location1
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+        anchor: |
+          let containerSelect = document.querySelector('#categorizeDropdown')
+            containerSelect.addEventListener('change', () => {
+              console.log('Categorized')
+              [*GA_INJECT*]
+            })
+    events:
+      - name: "categorizeUsed"
+        locations:
+          - *location1
+  - expression: PreviousAssignments
+    locations:
+      - &location1
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+        anchor: |
+          previousAssignmentAppendElements.forEach((previousAssignmentAppendElement) => {
+             previousAssignmentAppendElement.addEventListener('click', () => {
+               // Append url to comment
+               [*GA_INJECT*]
+               const commentTextarea = document.querySelector('#comment')
+               commentTextarea.value = commentTextarea.value + previousAssignmentAppendElement.dataset.studentUrl
+             })
            })
     events:
-      - name: "initTextSummary"
-        vps:
-          - *vp1
-      - name: "downloadTextSummary"
-        vps:
-          - *vp2
-      - name: "draftSaved"
-        vps:
-          - *vp3
-  - expression: Classifying
-    vps:
-      - &vp1
-        relativepath: "app/scripts/annotationManagement/create/CreateAnnotation.js"
+      - name: "addedPreviousAssignment"
+        locations:
+          - *location1
+  - expression: SentimentAnalysis
+    locations:
+      - &location1
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
         anchor: |
-          annotationToCreate = new Annotation({
-                    target: target,
-                    tags: tags,
-                    body: body
-                  })
-                  [*GA_INJECT*]
-                  // PVSCL:IFCOND(AuthorsSearch OR ImportChecklist, LINE)
+          confirmButtonText: 'Save as it is',
+             reverseButtons: true,
+             callback: callback,
+             cancelCallback: () => {
+               [*GA_INJECT*]
+               showForm(preConfirmData)
+             }
+           })
+      - &location2
+        relativepath: "app/scripts/annotationManagement/purposes/CommentingForm.js"
+        anchor: |
+          .then((isOffensive) => {
+            if (isOffensive) {
+              // The comment is negative or offensive
+              [*GA_INJECT*]
+              Alerts.confirmAlert({
+                text: 'The message may be ofensive. Please modify it.',
+                showCancelButton: true,
+                cancelButtonText: 'Modify comment',
     events:
-      - name: "classified"
-        vps:
-          - *vp1
-- expression: BuiltIn or EmptyCodebook
-  vps:
-    - &vp1
-      ccm_filename: "GroupSelector.js"
-      relativepath: "app/scripts/groupManipulation/GroupSelector.js"
-      anchor: |
-        // TODO Create default group
-        this.createApplicationBasedGroupForUser((err, group) => {
-          if (err) {
-            [*GA_INJECT*]
-            Alerts.errorAlert({ text: 'We are unable to create annotation group. Please check if you are logged in your annotation server.' })
-    - &vp2
-      relativepath: "app/scripts/groupManipulation/GroupSelector.js"
-      anchor: |
-          } else {
-            [*GA_INJECT*]
-            // PVSCL:IFCOND(Hypothesis,LINE)
-            // Modify group URL in Hypothes.is as it adds the name at the end of the URL
-            if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
-  events:
-    - name: "errorCreatingDefaultGroup"
-      vps:
-        - *vp1
-    - name: "DefaultGroupCreated"
-      vps:
-        - *vp2
+      - name: "SentimentAnalysisIgnored"
+        locations:
+          - *location1
+      - name: "SentimentAnalysisSuggested"
+        locations:
+          - *location2
