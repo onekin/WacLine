@@ -774,6 +774,16 @@ class GroupSelector {
         }
       } else {
         this.user = profile
+        if (profile.userid === '' && profile.display_name === '') {
+          if (window.abwa.annotationServerManager instanceof GoogleSheetAnnotationClientManager) {
+            Alerts.errorAlert({
+              title: 'Unable to retrieve your user profile name',
+              text: 'Please activate browser sync <a target="_blank" href="' + chrome.extension.getURL('pages/enableSync.html') + '">here</a>. Otherwise you will not be able to share your annotations with others.'
+            })
+          }
+          profile.userid = 'anonymous'
+          profile.display_name = 'Anonymous'
+        }
         if (_.isFunction(callback)) {
           callback(null, profile.groups)
         }

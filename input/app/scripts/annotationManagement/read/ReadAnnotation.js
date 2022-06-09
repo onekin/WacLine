@@ -465,7 +465,7 @@ class ReadAnnotation {
         // Create items for context menu
         const items = {}
         // If current user is the same as author, allow to remove annotation or add a comment
-        if (annotation.creator === window.abwa.groupSelector.getCreatorData()) {
+        if (annotation.creator === window.abwa.groupSelector.getCreatorData() || annotation.creator === 'anonymous') {
           // Check if somebody has replied
           // PVSCL:IFCOND(Replying, LINE)
           if (ReplyAnnotation.hasReplies(annotation, this.replyAnnotations)) {
