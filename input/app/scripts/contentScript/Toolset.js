@@ -308,7 +308,7 @@ class Toolset {
         // PVSCL:IFCOND(CXLExport, LINE)
         // PVSCL:IFCOND(EvidenceAnnotations, LINE)
         // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
-        items.exportWithToolURL = { name: 'Export CXL with tool URLs' }
+        items.exportWithToolURL = { name: 'Export CXL with ' + 'PVSCL:EVAL(WebAnnotationClient->pv:Attribute('appName'))' + ' URLs' }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
         items.exportWithHypothesisURL = { name: 'Export CXL with Hypothes.is URLs' }
@@ -362,7 +362,7 @@ class Toolset {
         // PVSCL:IFCOND(CXLExport, LINE)
         // PVSCL:IFCOND(EvidenceAnnotations, LINE)
         // PVSCL:IFCOND(ToolEvidenceAnnotations, LINE)
-        items.exportWithToolURL = { name: 'Export CXL with tool URLs' }
+        items.exportWithToolURL = { name: 'Export CXL with ' + 'PVSCL:EVAL(WebAnnotationClient->pv:Attribute('appName'))' + ' URLs' }
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(HypothesisEvidenceAnnotations, LINE)
         items.exportWithHypothesisURL = { name: 'Export CXL with Hypothes.is URLs' }

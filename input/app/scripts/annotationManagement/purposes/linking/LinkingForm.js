@@ -33,7 +33,8 @@ class LinkingForm {
           denyCallback: form.denyCallback,
           cancelCallback: form.cancelCallback,
           customClass: 'large-swal',
-          preConfirm: form.preConfirm
+          preConfirm: form.preConfirm,
+          preDeny: form.preDeny
         })
       }
       showForm()
@@ -77,6 +78,20 @@ class LinkingForm {
         swal.showValidationMessage('You have to make the relation between two different concepts.')
       }
     }
+    // Predeny
+    let preDenyData = {}
+    let preDeny = () => {
+      let from = document.querySelector('#categorizeDropdownFrom').value
+      preDenyData.linkingWord = document.querySelector('#inputLinkingWord').value
+      let to = document.querySelector('#categorizeDropdownTo').value
+      preDenyData.fromTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(from)
+      preDenyData.toTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(to)
+      if (from === to) {
+        const swal = require('sweetalert2')
+        swal.showValidationMessage('You have to make the relation between two different concepts.')
+        return false
+      }
+    }
     // Callback
     let callback = () => {
       // TODO comprobar que no existe
@@ -94,40 +109,31 @@ class LinkingForm {
       Alerts.simpleSuccessAlert({ text: 'Saved' })
     }
     let denyCallback = () => {
-      let from = document.querySelector('#categorizeDropdownFrom').value
-      preConfirmData.linkingWord = document.querySelector('#inputLinkingWord').value
-      let to = document.querySelector('#categorizeDropdownTo').value
-      preConfirmData.fromTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(from)
-      preConfirmData.toTheme = window.abwa.codebookManager.codebookReader.codebook.getCodeOrThemeFromId(to)
-      if (from === to) {
-        const swal = require('sweetalert2')
-        swal.showValidationMessage('You have to make the relation between two different concepts.')
-      }
-      let tags = ['from' + ':' + preConfirmData.fromTheme.name]
-      tags.push('linkingWord:' + preConfirmData.linkingWord)
-      tags.push('to:' + preConfirmData.toTheme.name)
+      let tags = ['from' + ':' + preDenyData.fromTheme.name]
+      tags.push('linkingWord:' + preDenyData.linkingWord)
+      tags.push('to:' + preDenyData.toTheme.name)
       LanguageUtils.dispatchCustomEvent(Events.createAnnotation, {
         purpose: 'linking',
         tags: tags,
-        from: preConfirmData.fromTheme.id,
-        to: preConfirmData.toTheme.id,
-        linkingWord: preConfirmData.linkingWord,
+        from: preDenyData.fromTheme.id,
+        to: preDenyData.toTheme.id,
+        linkingWord: preDenyData.linkingWord,
         target: onBeforeOpen.target
       })
       let returnToLinkingForm = () => {
         LinkingForm.showLinkingForm(relationshipData)
       }
-      Alerts.simpleSuccessAlert({ text: 'Saved', callback: returnToLinkingForm })
       let relationshipData = {}
       relationshipData.target = onBeforeOpen.target
-      relationshipData.from = preConfirmData.fromTheme.id
-      relationshipData.to = preConfirmData.toTheme.id
-      relationshipData.linkingWord = preConfirmData.linkingWord
+      relationshipData.from = preDenyData.fromTheme.id
+      relationshipData.to = preDenyData.toTheme.id
+      relationshipData.linkingWord = preDenyData.linkingWord
+      Alerts.simpleSuccessAlert({ text: 'Saved', callback: returnToLinkingForm })
     }
     let cancelCallback = () => {
       console.log('new link canceled')
     }
-    return { onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, callback: callback, denyCallback: denyCallback, cancelCallback: cancelCallback }
+    return { onBeforeOpen: onBeforeOpen, preConfirm: preConfirm, preDeny: preDeny, callback: callback, denyCallback: denyCallback, cancelCallback: cancelCallback }
   }
 
   static generateLinkingFormHTML () {

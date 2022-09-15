@@ -252,7 +252,7 @@ class Alerts {
     }
   }
 
-  static threeOptionsAlert ({ title = 'Input', html = '', preConfirm, position = Alerts.position.center, onBeforeOpen, showDenyButton = true, showCancelButton = true, confirmButtonText = 'Confirm', confirmButtonColor = '#4BB543', denyButtonText = 'Deny', denyButtonColor = '#3085D6', cancelButtonText = 'Cancel', allowOutsideClick = true, allowEscapeKey = true, callback, denyCallback, cancelCallback, customClass }) {
+  static threeOptionsAlert ({ title = 'Input', html = '', preConfirm, preDeny, position = Alerts.position.center, onBeforeOpen, showDenyButton = true, showCancelButton = true, confirmButtonText = 'Confirm', confirmButtonColor = '#4BB543', denyButtonText = 'Deny', denyButtonColor = '#3085D6', cancelButtonText = 'Cancel', allowOutsideClick = true, allowEscapeKey = true, callback, denyCallback, cancelCallback, customClass }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -264,8 +264,9 @@ class Alerts {
         html: html,
         focusConfirm: false,
         preConfirm: preConfirm,
+        preDeny: preDeny,
         position: position,
-        onBeforeOpen: onBeforeOpen,
+        willOpen: onBeforeOpen,
         allowOutsideClick,
         allowEscapeKey,
         customClass: customClass,
