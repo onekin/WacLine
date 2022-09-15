@@ -36,7 +36,7 @@ Community have created up to 6 variants that can be used as an example, where th
 * [Highlight&Go](https://chrome.google.com/webstore/detail/highlightgo/bihmalipgnlomidlpekdnoohiejppfmo): a web annotation client to conduct Systematic Literature Reviews data extraction using Google Sheets
 * [Mark&Go](https://chrome.google.com/webstore/detail/markgo/kjedcndgienemldgjpjjnhjdhfoaocfa): a web annotation client to conduct assignments marking over Moodle using evaluation rubrics
 * [Review&Go](https://chrome.google.com/webstore/detail/reviewgo/hgiannlbfceoomjmcgedbmkfeblbcogi?hl=en): a web annotation client to conduct papers review based on a customizable reviewing framework
-* ConceptAndGo: a web annotation client to develop mind maps based on capturing data over the web
+* [ConceptAndGo](https://chrome.google.com/webstore/detail/conceptgo/oacbaceaekfkgeegdfknnhnjdghaokpa?hl=es): a web annotation client to develop mind maps based on capturing data over the web
 * Docal: a web annotation client to capture data from legal sentences
 * Fival: a web annotation client for bachelor degree thesis evaluation
 
