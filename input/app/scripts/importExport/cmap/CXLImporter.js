@@ -10,11 +10,11 @@ import HypothesisClientManager from '../../annotationServer/hypothesis/Hypothesi
 // PVSCL:ENDCOND
 
 class CXLImporter {
-  static askUserToImportDocumentAnnotations (callback) {
+  static askUserToImportCxlFile (callback) {
     // Ask user to upload the file
     Alerts.inputTextAlert({
-      title: 'Upload this document review annotations file',
-      html: 'Here you can upload your json file with the annotations for this document.',
+      title: 'Upload your .cxl file',
+      html: 'Here you can upload your cmap in the .cxl format.',
       input: 'file',
       callback: (err, file) => {
         if (err) {
@@ -60,7 +60,7 @@ class CXLImporter {
           if (err) {
             window.alert('An unexpected error happened when trying to load the alert.')
           } else {
-            callback(null, topicConcept)
+            callback(topicConcept)
           }
         }
       })
@@ -69,7 +69,7 @@ class CXLImporter {
   }
 
   static importCXLfile () {
-    CXLImporter.askUserToImportDocumentAnnotations((err, cxlObject) => {
+    CXLImporter.askUserToImportCxlFile((err, cxlObject) => {
       if (err) {
         Alerts.errorAlert({ text: 'Unable to parse cxl file. Error:<br/>' + err.message })
       } else {
@@ -104,22 +104,23 @@ class CXLImporter {
             if (err) {
               window.alert('Unable to load alert. Unexpected error, please contact developer.')
             } else {
-              window.abwa.annotationServerManager.client.createNewGroup({ name: groupName }, (err, newGroup) => {
+              window.abwa.annotationServerManager.client.createNewGroup({ name: groupName, description: 'A group created from a cxl file' }, (err, newGroup) => {
                 if (err) {
                   Alerts.errorAlert({ text: 'Unable to create a new annotation group. Error: ' + err.message })
                 } else {
                   // PVSCL:IFCOND(Hypothesis,LINE)
                   // Remove public group in hypothes.is and modify group URL
-                  if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
-                    if (_.has(newGroup, 'links.html')) {
-                      newGroup.links.html = newGroup.links.html.substr(0, newGroup.links.html.lastIndexOf('/'))
-                    }
-                  }
+                  // if (LanguageUtils.isInstanceOf(window.abwa.annotationServerManager, HypothesisClientManager)) {
+                  //  if (_.has(newGroup, 'links.html')) {
+                  //    newGroup.links.html = newGroup.links.html.substr(0, newGroup.links.html.lastIndexOf('/'))
+                  //  }
+                  // }
                   // PVSCL:ENDCOND
                   // Create codebook
                   let conceptList = cxlObject.getElementsByTagName('concept-list')[0]
                   let tempCodebook = Codebook.fromCXLFile(conceptList, groupName)
-                  Codebook.setAnnotationServer(newGroup, (annotationServer) => {
+                  window.abwa.groupSelector.groups.push(newGroup)
+                  Codebook.setAnnotationServer(newGroup.id, (annotationServer) => {
                     tempCodebook.annotationServer = annotationServer
                     CXLImporter.askUserRootTheme(tempCodebook.themes, (topicConceptName) => {
                       let topicThemeObject = _.filter(tempCodebook.themes, (theme) => {
