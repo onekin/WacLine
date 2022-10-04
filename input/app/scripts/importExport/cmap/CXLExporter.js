@@ -168,10 +168,11 @@ export class CXLExporter {
           let annotation = concept.evidenceAnnotations[i]
           let name
           if (i === 0) {
-            name = LanguageUtils.camelize(concept.theme.name)
+            name = LanguageUtils.camelize(concept.theme.name) + '_source_' + LanguageUtils.camelize(annotation.target[0].source.title)
           } else {
-            name = LanguageUtils.camelize(concept.theme.name + i)
+            name = LanguageUtils.camelize(concept.theme.name + i) + '_source_' + LanguageUtils.camelize(annotation.target[0].source.title)
           }
+          name = name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s/g, '')
           let url
           if (evidenceAnnotations === 'hypothesis') {
             url = new HypothesisURL({ elementID, name, annotation })
@@ -212,10 +213,11 @@ export class CXLExporter {
               let fromName = annotation.tags[0].replace('from:', '')
               let toName = annotation.tags[2].replace('to:', '')
               if (i === 0) {
-                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName)
+                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName) + '_source_' + LanguageUtils.camelize(annotation.target[0].source.title)
               } else {
-                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName + i)
+                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName + i) + '_source_' + LanguageUtils.camelize(annotation.target[0].source.title)
               }
+              name = name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s/g, '')
               let url
               if (evidenceAnnotations === 'hypothesis') {
                 url = new HypothesisURL({ elementID, name, annotation })

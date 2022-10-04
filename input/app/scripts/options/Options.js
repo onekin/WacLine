@@ -92,7 +92,7 @@ class Options {
         if (data.userData.user && data.userData.password && data.userData.uid) {
           document.querySelector('#cmapCloudUserValue').value = data.userData.user
           document.querySelector('#cmapCloudPasswordValue').value = data.userData.password
-          document.querySelector('#uidValue').innerHTML = 'User ID: ' + data.userData.uid
+          document.querySelector('#uidValue').innerHTML = 'You are logged in!'
           $('#cmapCloudUserValue').prop('readonly', true)
           $('#cmapCloudPasswordValue').prop('readonly', true)
           cmapCloudButton.innerHTML = 'Change user credentials'
@@ -346,7 +346,7 @@ class Options {
     }, (response) => {
       if (response.userData) {
         if (response.userData.uid) {
-          document.querySelector('#uidValue').innerHTML = 'User ID: ' + response.userData.uid
+          document.querySelector('#uidValue').innerHTML = 'You are logged in!'
           $('#cmapCloudUserValue').prop('readonly', true)
           $('#cmapCloudPasswordValue').prop('readonly', true)
           document.querySelector('#checkCmapValues').innerHTML = 'Change user credentials'
