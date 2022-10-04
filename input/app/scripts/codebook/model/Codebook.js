@@ -334,7 +334,8 @@ class Codebook {
     for (let i = 0; i < conceptList.childNodes.length; i++) {
       let concept = conceptList.childNodes[i]
       let conceptName = concept.getAttribute('label')
-      let theme = new Theme({ name: conceptName, annotationGuide })
+      let conceptID = concept.getAttribute('id')
+      let theme = new Theme({ id: conceptID, name: conceptName, annotationGuide })
       annotationGuide.themes.push(theme)
     }
     return annotationGuide

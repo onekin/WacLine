@@ -86,7 +86,7 @@ export class CXLExporter {
 
     // Set description
     let description = xmlDoc.createElement('dc:description')
-    description.textContent = window.abwa.groupSelector.currentGroup.name
+    description.textContent = window.abwa.groupSelector.currentGroup.id
     metadata.appendChild(description)
 
     // Create map
