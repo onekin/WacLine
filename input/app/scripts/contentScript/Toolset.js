@@ -180,6 +180,16 @@ class Toolset {
       // Add menu when clicking on the button
       this.CXLCloudButtonHandler()
       // PVSCL:ENDCOND
+      // PVSCL:IFCOND(CXLExport or CXLImport, LINE)
+      const seroImageUrl = chrome.extension.getURL('/images/sero.png')
+      this.seroImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.seroImage.src = seroImageUrl
+      this.seroImage.id = 'seroButton'
+      this.seroImage.title = 'Work with Sero' // TODO i18n
+      this.toolsetBody.appendChild(this.seroImage)
+      // Add menu when clicking on the button
+      this.seroButtonHandler()
+      // PVSCL:ENDCOND
       // Check if exist any element in the tools and show it
       if (!_.isEmpty(this.toolsetBody.innerHTML)) {
         this.show()
@@ -408,6 +418,33 @@ class Toolset {
                 Alerts.infoAlert({ text: 'Please, provide us your Cmap Cloud login credentials in the configuration page of the Web extension.', title: 'We need your Cmap Cloud credentials', callback: callback() })
               }
             })
+          },
+          items: items
+        }
+      }
+    })
+  }
+  // PVSCL:ENDCOND
+  // PVSCL:IFCOND(CXLExport or CXLImport, LINE)
+
+  seroButtonHandler () {
+    // Create context menu for import export
+    $.contextMenu({
+      selector: '#seroButton',
+      trigger: 'left',
+      build: () => {
+        // Create items for context menu
+        let items = {}
+        items.importFromSero = { name: 'Import from Sero' }
+        items.exportToSero = { name: 'Export to Sero' }
+        return {
+          callback: (key, opt) => {
+            if (key === 'importFromSero') {
+              Alerts.simpleSuccessAlert({ text: 'This feature is work in progress' })
+            }
+            if (key === 'exportToSero') {
+              Alerts.simpleSuccessAlert({ text: 'This feature is work in progress' })
+            }
           },
           items: items
         }
