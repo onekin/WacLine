@@ -10,7 +10,7 @@ import Annotation from '../../../annotationManagement/Annotation'
 import Code from '../../model/Code'
 // PVSCL:ENDCOND
 import LanguageUtils from '../../../utils/LanguageUtils'
-import ImageUtilsUtils from '../../../utils/ImageUtils'
+import ImageUtils from '../../../utils/ImageUtils'
 
 
 class UpdateCodebook {
@@ -87,68 +87,91 @@ class UpdateCodebook {
     newThemeButton.innerText = 'New ' + Config.tags.grouped.group
     newThemeButton.id = 'newThemeButton'
     newThemeButton.className = 'tagButton codingElement'
-    newThemeButton.addEventListener('click', async () => {
+    newThemeButton.addEventListener('click', () => {
       let newTheme
       let target = window.abwa.annotationManagement.annotationCreator.obtainTargetToCreateAnnotation({})
-      let retrievedThemeName = ''
-      // Get user selected content
-      let selection = document.getSelection()
-      // If selection is child of sidebar, return null
+      this.retriveThemeName((retrievedName) => {
+        Alerts.multipleInputAlert({
+          title: 'You are creating a new ' + Config.tags.grouped.group + ': ',
+          html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New ' + Config.tags.grouped.group + ' name" value="' + retrievedName + '"/>' +
+            '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="themeDescription" placeholder="Please type a description that describes this ' + Config.tags.grouped.group + '..."></textarea>',
+          preConfirm: () => {
+            const themeNameElement = document.querySelector('#themeName')
+            let themeName
+            if (_.isElement(themeNameElement)) {
+              themeName = themeNameElement.value
+            }
+            if (themeName.length > 0) {
+              if (!this.themeNameExist(themeName)) {
+                const themeDescriptionElement = document.querySelector('#themeDescription')
+                let themeDescription
+                if (_.isElement(themeDescriptionElement)) {
+                  themeDescription = themeDescriptionElement.value
+                }
+                newTheme = new Theme({
+                  name: themeName,
+                  description: themeDescription,
+                  annotationGuide: window.abwa.codebookManager.codebookReader.codebook
+                })
+              } else {
+                const swal = require('sweetalert2')
+                swal.showValidationMessage('There exist a ' + Config.tags.grouped.group + ' with the same name. Please select a different name.')
+              }
+            } else {
+              const swal = require('sweetalert2')
+              swal.showValidationMessage('Name cannot be empty.')
+            }
+          },
+          callback: () => {
+            LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme, target: target })
+          },
+          cancelCallback: () => {
+            console.log('new theme canceled')
+          }
+        })
+      })
+    })
+    window.abwa.codebookManager.codebookReader.buttonContainer.append(newThemeButton)
+  }
+
+  static retriveThemeName (callback) {
+    let retrievedThemeName = ''
+    // Get user selected content
+    let selection = document.getSelection()
+    // If selection is child of sidebar, return null
+    if (selection.anchorNode) {
       if ($(selection.anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0 || selection.toString().length < 1) {
         if (selection.anchorNode.innerText) {
-          retrievedThemeName = selection.anchorNode.innerText
+          if (_.isFunction(callback)) {
+            callback(selection.anchorNode.innerText)
+          }
         } else {
           if (selection.anchorNode.nodeName === 'IMG') {
-            retrievedThemeName = await ImageUtilsUtils.getStringFromImage(selection.anchorNode)
+            ImageUtils.getStringFromImage(selection.anchorNode, (imageText) => {
+              if (_.isFunction(callback)) {
+                callback(imageText)
+              }
+            })
           } else {
             if (selection.anchorNode.lastChild.nodeName === 'IMG') {
-              retrievedThemeName = await ImageUtilsUtils.getStringFromImage(selection.anchorNode.lastChild)
+              ImageUtils.getStringFromImage(selection.anchorNode, (imageText) => {
+                if (_.isFunction(callback)) {
+                  callback(imageText)
+                }
+              })
             }
           }
         }
       } else {
-        retrievedThemeName = selection.toString().trim().replace(/^\w/, c => c.toUpperCase())
-      }
-      Alerts.multipleInputAlert({
-        title: 'You are creating a new ' + Config.tags.grouped.group + ': ',
-        html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New ' + Config.tags.grouped.group + ' name" value="' + retrievedThemeName + '"/>' +
-          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="themeDescription" placeholder="Please type a description that describes this ' + Config.tags.grouped.group + '..."></textarea>',
-        preConfirm: () => {
-          const themeNameElement = document.querySelector('#themeName')
-          let themeName
-          if (_.isElement(themeNameElement)) {
-            themeName = themeNameElement.value
-          }
-          if (themeName.length > 0) {
-            if (!this.themeNameExist(themeName)) {
-              const themeDescriptionElement = document.querySelector('#themeDescription')
-              let themeDescription
-              if (_.isElement(themeDescriptionElement)) {
-                themeDescription = themeDescriptionElement.value
-              }
-              newTheme = new Theme({
-                name: themeName,
-                description: themeDescription,
-                annotationGuide: window.abwa.codebookManager.codebookReader.codebook
-              })
-            } else {
-              const swal = require('sweetalert2')
-              swal.showValidationMessage('There exist a ' + Config.tags.grouped.group + ' with the same name. Please select a different name.')
-            }
-          } else {
-            const swal = require('sweetalert2')
-            swal.showValidationMessage('Name cannot be empty.')
-          }
-        },
-        callback: () => {
-          LanguageUtils.dispatchCustomEvent(Events.createTheme, { theme: newTheme, target: target })
-        },
-        cancelCallback: () => {
-          console.log('new theme canceled')
+        if (_.isFunction(callback)) {
+          callback(selection.toString().trim().replace(/^\w/, c => c.toUpperCase()))
         }
-      })
-    })
-    window.abwa.codebookManager.codebookReader.buttonContainer.append(newThemeButton)
+      }
+    } else {
+      if (_.isFunction(callback)) {
+        callback('')
+      }
+    }
   }
 
   static themeNameExist (newThemeName) {
@@ -419,11 +442,11 @@ class UpdateCodebook {
       .catch((rejects) => {
         Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + rejects[0].toString() })
       }).then(() => {
-      if (_.isFunction(callback)) {
-        callback()
-      }
-      LanguageUtils.dispatchCustomEvent(Events.themeUpdated, { updatedTheme: themeToUpdate })
-    })
+        if (_.isFunction(callback)) {
+          callback()
+        }
+        LanguageUtils.dispatchCustomEvent(Events.themeUpdated, { updatedTheme: themeToUpdate })
+      })
   }
 
   updateAnnotationsWithTheme (theme) {
