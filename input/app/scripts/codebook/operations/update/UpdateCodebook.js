@@ -10,7 +10,7 @@ import Annotation from '../../../annotationManagement/Annotation'
 import Code from '../../model/Code'
 // PVSCL:ENDCOND
 import LanguageUtils from '../../../utils/LanguageUtils'
-import ImageUtilsUtils from '../../../utils/ImageUtils'
+import ImageUtilsOCR from '../../../utils/ImageUtilsOCR'
 
 
 class UpdateCodebook {
@@ -94,20 +94,28 @@ class UpdateCodebook {
       // Get user selected content
       let selection = document.getSelection()
       // If selection is child of sidebar, return null
-      if ($(selection.anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0 || selection.toString().length < 1) {
-        if (selection.anchorNode.innerText) {
-          retrievedThemeName = selection.anchorNode.innerText
-        } else {
-          if (selection.anchorNode.nodeName === 'IMG') {
-            retrievedThemeName = await ImageUtilsUtils.getStringFromImage(selection.anchorNode)
+      if (selection.anchorNode) {
+        if ($(selection.anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0 || selection.toString().length < 1) {
+          if (selection.anchorNode.innerText) {
+            retrievedThemeName = selection.anchorNode.innerText
           } else {
-            if (selection.anchorNode.lastChild.nodeName === 'IMG') {
-              retrievedThemeName = await ImageUtilsUtils.getStringFromImage(selection.anchorNode.lastChild)
+            if (selection.anchorNode.nodeName === 'IMG') {
+              retrievedThemeName = await ImageUtilsOCR.getStringFromImage(selection.anchorNode)
+            } else {
+              if (selection.anchorNode.childNodes) {
+                let childArray = Array.from(selection.anchorNode.childNodes)
+                let imgChild = childArray.filter((node) => {
+                    return node.nodeName === 'IMG'
+                })
+                if (imgChild[0]) {
+                  retrievedThemeName = await ImageUtilsOCR.getStringFromImage(imgChild[0])
+                }
+              }
             }
           }
+        } else {
+          retrievedThemeName = selection.toString().trim().replace(/^\w/, c => c.toUpperCase())
         }
-      } else {
-        retrievedThemeName = selection.toString().trim().replace(/^\w/, c => c.toUpperCase())
       }
       Alerts.multipleInputAlert({
         title: 'You are creating a new ' + Config.tags.grouped.group + ': ',

@@ -1,23 +1,18 @@
-import tesseract from "node-tesseract-ocr"
+import Tesseract from "tesseract.js"
 
-const config = {
-  lang: "eng",
-  oem: 1,
-  psm: 3,
-}
 // const img = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Equation_illustration_colour.svg/220px-Equation_illustration_colour.svg.png"
 
-class ImageUtils {
+class ImageUtilsOCR {
   static getStringFromImage (imgElement) {
-    return tesseract
-      .recognize(imgElement.src, config)
-      .then((text) => {
-        return text
-      })
-      .catch((error) => {
-        console.log(error.message)
-      })
+    console.log(imgElement.src)
+    return Tesseract.recognize(
+      imgElement.src,
+      'eng',
+      { logger: m => console.log(m) }
+    ).then(({ data: { text } }) => {
+      return text;
+    })
   }}
 
 
-export default ImageUtils
+export default ImageUtilsOCR
