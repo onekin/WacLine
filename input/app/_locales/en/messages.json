@@ -109,9 +109,6 @@
   "CurrentSelectionNotAnnotable": {
     "message": "The selected content cannot be highlighted, is not part of the document"
   },
-  "annotationServerLoginRequired": {
-    "message": "You need to login in the corresponding annotation server to start annotating. Check instructions to login in the sidebar and reload the page if it is not done automatically."
-  },
   "ErrorContactDeveloper": {
     "message": "If the error continues, please <a href='https://github.com/onekin/WebAnnotatorSPL/issues/new?title=Bug+$errorMessage$&body=%23+How+to+reproduce%0AWrite+here+any+information+related+to+the+error+found%0A%23+Trace%0A%60$errorStacktrace$%60&labels=bug' target='_blank'>open an issue</a>.",
     "placeholders": {

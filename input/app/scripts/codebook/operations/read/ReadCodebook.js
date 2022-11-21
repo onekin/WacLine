@@ -628,11 +628,13 @@ class ReadCodebook {
         items.removeTheme = { name: 'Remove ' + Config.tags.grouped.group }
         // PVSCL:IFCOND(Linking,LINE)
         items.manageRelationships = { name: 'Manage links' }
+        items.showAnnotations = { name: 'Show annotations' }
         // PVSCL:ENDCOND
       } else {
         items.updateTheme = { name: 'Modify topic' }
         // PVSCL:IFCOND(Linking,LINE)
         items.manageRelationships = { name: 'Manage links' }
+        items.showAnnotations = { name: 'Show annotations' }
         // PVSCL:ENDCOND
       }
       // PVSCL:ELSECOND
@@ -640,6 +642,7 @@ class ReadCodebook {
       items.removeTheme = { name: 'Remove ' + Config.tags.grouped.group }
       // PVSCL:IFCOND(Linking,LINE)
       items.manageRelationships = { name: 'Manage links' }
+      items.showAnnotations = { name: 'Show annotations' }
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
       // PVSCL:ENDCOND
@@ -673,6 +676,24 @@ class ReadCodebook {
             let theme = this.codebook.getCodeOrThemeFromId(themeId)
             if (LanguageUtils.isInstanceOf(theme, Theme)) {
               window.abwa.mapContentManager.manageRelationships(theme)
+            }
+          }
+          if (key === 'showAnnotations') {
+            let theme = this.codebook.getCodeOrThemeFromId(themeId)
+            if (LanguageUtils.isInstanceOf(theme, Theme)) {
+              window.abwa.annotationServerManager.client.getUserProfile((err, userProfile) => {
+                if (err) {
+                  console.error('Error while retrieving user profile in hypothesis')
+                } else {
+                  console.log(userProfile)
+                  let groupId = window.abwa.groupSelector.currentGroup.id
+                  let groupName = window.abwa.groupSelector.currentGroup.name.toLowerCase().replace(/ /g,"-");
+                  let query = '?q=tag:' + Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name.replace(/ /g,"+");
+                  let url = 'https://hypothes.is/groups/'+groupId+'/'+groupName+query
+                  console.log(url)
+                  window.open(url)
+                }
+              })
             }
           }
           // PVSCL:ENDCOND

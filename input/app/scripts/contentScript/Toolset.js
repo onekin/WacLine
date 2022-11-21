@@ -27,9 +27,10 @@ import AnnotationList from '../annotationManagement/read/AnnotationList'
 // PVSCL:IFCOND(ImportAnnotations, LINE)
 import AnnotationImporter from '../importExport/AnnotationImporter'
 // PVSCL:ENDCOND
-// PVSCL:IFCOND(Export, LINE)
+// PVSCL:IFCOND(JSON, LINE)
 import AnnotationExporter from '../importExport/AnnotationExporter'
 // PVSCL:ENDCOND
+import PreviousVersionAnnotationImporter from '../importExport/PreviousVersionAnnotationImporter'
 // PVSCL:IFCOND(CXLExport, LINE)
 import { CXLExporter } from '../importExport/cmap/CXLExporter'
 // PVSCL:ENDCOND
@@ -171,6 +172,17 @@ class Toolset {
       this.CXLArchiveFileButtonHandler()
       // PVSCL:ENDCOND
       // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+      const cxlCloudHomeImageUrl = chrome.extension.getURL('/images/cmapCloudHome.png')
+      this.cxlCloudHomeImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.cxlCloudHomeImage.src = cxlCloudHomeImageUrl
+      this.cxlCloudHomeImage.id = 'cxlCloudHomeButton'
+      this.cxlCloudHomeImage.title = 'Open CmapCloud folder' // TODO i18n
+      this.toolsetBody.appendChild(this.cxlCloudHomeImage)
+      // Add menu when clicking on the button
+      this.cxlCloudHomeImage.addEventListener('click', () => {
+        this.CXLCloudHomeButtonHandler()
+      })
+
       const cxlCloudImageUrl = chrome.extension.getURL('/images/cmapCloud.png')
       this.cxlCloudImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
       this.cxlCloudImage.src = cxlCloudImageUrl
@@ -190,6 +202,21 @@ class Toolset {
       // Add menu when clicking on the button
       this.seroButtonHandler()
       // PVSCL:ENDCOND
+      const importPreviousVersionImageUrl = chrome.extension.getURL('/images/importExport.png')
+      this.importPreviousVersionImage = $(toolsetButtonTemplate.content.firstElementChild).clone().get(0)
+      this.importPreviousVersionImage.src = importPreviousVersionImageUrl
+      this.importPreviousVersionImage.id = 'importPreviousVersion'
+      this.importPreviousVersionImage.title = 'Import previous version' // TODO i18n
+      this.toolsetBody.appendChild(this.importPreviousVersionImage)
+      this.importPreviousVersionImage.addEventListener('click', () => {
+        let annotatedResources = window.abwa.annotationManagement.annotationReader.allGroupAnnotations.map(annotation => annotation.target[0].source.url)
+        annotatedResources = _.uniq(annotatedResources).filter(anno => anno != undefined)
+        if (annotatedResources) {
+          PreviousVersionAnnotationImporter.importPreviousVersionAnnotations()
+        } else {
+          Alerts.infoAlert({ text: 'You have not annotated documents.', title: 'Problem'})
+        }
+      })
       // Check if exist any element in the tools and show it
       if (!_.isEmpty(this.toolsetBody.innerHTML)) {
         this.show()
@@ -360,6 +387,22 @@ class Toolset {
   }
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(CXLExportCmapCloud, LINE)
+
+  CXLCloudHomeButtonHandler () {
+    chrome.runtime.sendMessage({ scope: 'cmapCloud', cmd: 'getUserData' }, (response) => {
+      if (response.data) {
+        let data = response.data
+        if (data.userData.user && data.userData.password && data.userData.uid) {
+          window.open('https://cmapcloud.ihmc.us/cmaps/myCmaps.html')
+        }
+      } else {
+        let callback = () => {
+          window.open(chrome.extension.getURL('pages/options.html#cmapCloudConfiguration'))
+        }
+        Alerts.infoAlert({ text: 'Please, provide us your Cmap Cloud login credentials in the configuration page of the Web extension.', title: 'We need your Cmap Cloud credentials', callback: callback() })
+      }
+    })
+  }
 
   CXLCloudButtonHandler () {
     // Create context menu for import export

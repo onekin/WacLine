@@ -6,7 +6,7 @@ if (document && document.head) {
 }
 
 class Alerts {
-  static confirmAlert ({ alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', reverseButtons, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback }) {
+  static confirmAlert ({ alertType = Alerts.alertType.info, title = '', text = '', confirmButtonText = 'OK', cancelButtonText = 'Cancel', onBeforeOpen, reverseButtons, allowOutsideClick = true, allowEscapeKey = true, callback, cancelCallback }) {
     Alerts.tryToLoadSwal()
     if (_.isNull(swal)) {
       if (_.isFunction(callback)) {
@@ -20,6 +20,7 @@ class Alerts {
         confirmButtonText,
         cancelButtonText,
         reverseButtons,
+        willOpen: onBeforeOpen,
         allowOutsideClick,
         allowEscapeKey,
         showCancelButton: true

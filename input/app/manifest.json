@@ -26,6 +26,9 @@
       // PVSCL:IFCOND(MoodleProvider,LINE)
       "exclude_matches": ["*://*/*grade/grading/*", "*://*/*mod/assign/view.php*", "*://*/*course/modedit.php?add=assign*"PVSCL:IFCOND(Manual and Hypothesis), "https://hypothes.is/login"PVSCL:ENDCOND],
       //PVSCL:ENDCOND
+      // PVSCL:IFCOND(CXLExportCmapCloud,LINE)
+      "exclude_matches": ["https://cmapcloud.ihmc.us/cmaps/myCmaps.html"],
+      //PVSCL:ENDCOND
       "js": ["scripts/contentScript.js"],
       "css": ["styles/contentScript.css"],
       "run_at": "document_start",
@@ -77,6 +80,11 @@
     {
       "matches": ["*://*/*mod/assign/view.php*"],
       "js": ["scripts/moodleEstimation.js"],
+      "run_at": "document_end"
+    }PVSCL:ENDCONDPVSCL:IFCOND(CXLExportCmapCloud),
+    {
+      "matches": ["https://cmapcloud.ihmc.us/cmaps/myCmaps.html"],
+      "js": ["scripts/cmapCloudPage.js"],
       "run_at": "document_end"
     }PVSCL:ENDCOND
   ],
