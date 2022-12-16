@@ -13,6 +13,9 @@ class Theme {
   constructor ({
     id,
     name,
+    // PVSCL:IFCOND(Dimensions,LINE)
+    dimension,
+    // PVSCL:ENDCOND
     color,
     annotationGuide,
     createdDate = new Date(),
@@ -24,6 +27,9 @@ class Theme {
   }) {
     this.id = id
     this.name = name
+    // PVSCL:IFCOND(Dimensions,LINE)
+    this.dimension = dimension
+    // PVSCL:ENDCOND
     this.description = description
     this.color = color
     this.annotationGuide = annotationGuide
@@ -65,8 +71,13 @@ class Theme {
 
   toAnnotation () {
     const themeTag = Config.namespace + ':' + Config.tags.grouped.group + ':' + this.name
+    // PVSCL:IFCOND(Dimensions,LINE)
+    const assignedDimensionTag = Config.namespace + ':assignedDimension' + ':' + this.dimension
+    // PVSCL:ENDCOND
     const motivationTag = Config.namespace + ':' + Config.tags.motivation + ':' + 'codebookDevelopment'
-    const tags = [themeTag, motivationTag]
+    // PVSCL:IFCOND(Dimensions,LINE)
+    const tags = [themeTag, assignedDimensionTag, motivationTag]
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(MoodleProvider,LINE)
     const cmidTag = 'cmid:' + this.annotationGuide.cmid
     tags.push(cmidTag)
@@ -110,7 +121,20 @@ class Theme {
       return tag.includes(Config.namespace + ':inductive')
     })
     // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Dimensions,LINE)
+    const dimensionTag = _.find(annotation.tags, (tag) => {
+      return tag.includes(Config.namespace + ':assignedDimension' + ':')
+    })
+    // PVSCL:ENDCOND
     if (_.isString(themeTag)) {
+      // PVSCL:IFCOND(Dimensions,LINE)
+      let dimension
+      if (dimensionTag) {
+        dimension = dimensionTag.replace(Config.namespace + ':assignedDimension' + ':', '')
+      } else {
+        dimension = ''
+      }
+      // PVSCL:ENDCOND
       const name = themeTag.replace(Config.namespace + ':' + Config.tags.grouped.group + ':', '')
       const config = jsYaml.load(annotation.text)
       // PVSCL:IFCOND(GoogleSheetProvider and Hierarchy,LINE)
@@ -130,6 +154,9 @@ class Theme {
         return new Theme({
           id,
           name,
+          // PVSCL:IFCOND(Dimensions,LINE)
+          dimension,
+          // PVSCL:ENDCOND
           description,
           createdDate: annotation.updated,
           annotationGuide/* PVSCL:IFCOND(GoogleSheetProvider and Hierarchy) */,

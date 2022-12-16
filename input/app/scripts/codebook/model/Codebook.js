@@ -6,6 +6,9 @@ import LanguageUtils from '../../utils/LanguageUtils'
 // PVSCL:IFCOND(Hierarchy,LINE)
 import Code from './Code'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Dimensions,LINE)
+import Dimension from './Dimension'
+// PVSCL:ENDCOND
 // PVSCL:IFCOND(Hypothesis, LINE)
 import Hypothesis from '../../annotationServer/hypothesis/Hypothesis'
 // PVSCL:ENDCOND
@@ -32,6 +35,7 @@ class Codebook {
     this.id = id
     this.name = name
     this.themes = []
+    this.dimensions = []
     this.annotationServer = annotationServer
     // PVSCL:IFCOND(MoodleProvider,LINE)
     this.moodleEndpoint = moodleEndpoint
@@ -92,8 +96,15 @@ class Codebook {
     // Create annotation for current element
     annotations.push(this.toAnnotation())
     // Create annotations for all criterias
-    for (let i = 0; i < this.themes.length; i++) {
-      annotations = annotations.concat(this.themes[i].toAnnotations())
+    if (this.themes) {
+      for (let i = 0; i < this.themes.length; i++) {
+        annotations = annotations.concat(this.themes[i].toAnnotations())
+      }
+    }
+    if (this.dimensions) {
+      for (let i = 0; i < this.dimensions.length; i++) {
+        annotations = annotations.concat(this.dimensions[i].toAnnotation())
+      }
     }
     return annotations
   }
@@ -144,6 +155,13 @@ class Codebook {
             return tag.includes(Config.namespace + ':' + Config.tags.grouped.group + ':')
           })
         })
+        // PVSCL:IFCOND(Dimensions,LINE)
+        const dimensionsAnnotations = _.remove(annotations, (annotation) => {
+          return _.some(annotation.tags, (tag) => {
+            return tag.includes(Config.namespace + ':' + 'dimension:')
+          })
+        })
+        // PVSCL:ENDCOND
         // PVSCL:IFCOND(Hierarchy,LINE)
         const codeAnnotations = _.remove(annotations, (annotation) => {
           return _.some(annotation.tags, (tag) => {
@@ -157,6 +175,22 @@ class Codebook {
             guide.themes.push(theme)
           }
         }
+        // PVSCL:IFCOND(Dimensions,LINE)
+        for (let i = 0; i < dimensionsAnnotations.length; i++) {
+          const dimension = Dimension.fromAnnotation(dimensionsAnnotations[i], guide)
+          let themes = guide.themes.filter((theme) => {
+            return theme.dimension === dimension.name
+          })
+          if (themes) {
+            for (let i = 0; i < themes.length; i++) {
+              dimension.addTheme(themes[i])
+            }
+          }
+          if (LanguageUtils.isInstanceOf(dimension, Dimension)) {
+            guide.dimensions.push(dimension)
+          }
+        }
+        // PVSCL:ENDCOND
         // PVSCL:IFCOND(Hierarchy,LINE)
         for (let i = 0; i < codeAnnotations.length; i++) {
           const codeAnnotation = codeAnnotations[i]
@@ -329,13 +363,24 @@ class Codebook {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(CXLImport, LINE)
 
-  static fromCXLFile (conceptList, name) {
+  static fromCXLFile (conceptList, dimensionsList, name) {
     let annotationGuide = new Codebook({ name: name })
-    for (let i = 0; i < conceptList.childNodes.length; i++) {
-      let concept = conceptList.childNodes[i]
-      let conceptName = concept.getAttribute('label')
-      let conceptID = concept.getAttribute('id')
-      let theme = new Theme({ id: conceptID, name: conceptName, annotationGuide })
+    if (dimensionsList.length > 0) {
+      for (let i = 0; i < dimensionsList.length; i++) {
+        let dimension = new Dimension({ name: dimensionsList[i], annotationGuide })
+        annotationGuide.dimensions.push(dimension)
+      }
+    }
+    if (conceptList && conceptList.childNodes && conceptList.childNodes.length > 0) {
+      for (let i = 0; i < conceptList.childNodes.length; i++) {
+        let concept = conceptList.childNodes[i]
+        let conceptName = concept.getAttribute('label')
+        let conceptID = concept.getAttribute('id')
+        let theme = new Theme({ id: conceptID, name: conceptName, annotationGuide })
+        annotationGuide.themes.push(theme)
+      }
+    } else {
+      let theme = new Theme({ name: name, annotationGuide })
       annotationGuide.themes.push(theme)
     }
     return annotationGuide
@@ -368,10 +413,16 @@ class Codebook {
   addTheme (theme) {
     if (LanguageUtils.isInstanceOf(theme, Theme)) {
       this.themes.push(theme)
+      // PVSCL:IFCOND(Dimensions, LINE)
+      let dimension = this.getDimensionByName(theme.dimension)
+      theme.color = dimension.color
+      dimension.addTheme(theme)
+      // PVSCL:ELSECOND
       // Get new color for the theme
       const colors = ColorUtils.getDifferentColors(this.themes.length)
       const lastColor = colors.pop()
       theme.color = ColorUtils.setAlphaToColor(lastColor, Config.colors.minAlpha)
+      // PVSCL:ENDCOND
     }
   }
 
@@ -391,6 +442,33 @@ class Codebook {
   removeTheme (theme) {
     _.remove(this.themes, theme)
   }
+  // PVSCL:IFCOND(Dimensions, LINE)
+
+  addDimension (dimension) {
+    if (LanguageUtils.isInstanceOf(dimension, Dimension)) {
+      const color = ColorUtils.getDifferentColors(1)
+      dimension.color = ColorUtils.setAlphaToColor(color, 0.6)
+      this.dimensions.push(dimension)
+    }
+  }
+
+  updateDimension (theme, previousId) {
+    if (LanguageUtils.isInstanceOf(theme, Theme)) {
+      // Find item index using _.findIndex
+      const index = _.findIndex(this.themes, (it) => {
+        return it.id === theme.id || it.id === previousId
+      })
+      const previousTheme = this.themes[index]
+      // Replace item at index using native splice
+      this.themes.splice(index, 1, theme)
+      theme.color = previousTheme.color
+    }
+  }
+
+  removeDimension (theme) {
+    _.remove(this.themes, theme)
+  }
+  // PVSCL:ENDCOND
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(MoodleProvider, LINE)
 
@@ -447,6 +525,16 @@ class Codebook {
       return null
     }
   }
+  // PVSCL:IFCOND(Dimensions, LINE)
+
+  getDimensionByName (name) {
+    if (_.isString(name)) {
+      return this.dimensions.find(dimension => dimension.name === name)
+    } else {
+      return null
+    }
+  }
+  // PVSCL:ENDCOND
 
   static codebookAnnotationsAreEqual (anno1, anno2) {
     return anno1.group === anno2.group &&

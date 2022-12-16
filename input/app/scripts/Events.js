@@ -45,6 +45,13 @@ const Events = {
   // Annotation codebook management events
   createCodebook: 'createCodebook',
   codebookCreated: 'codebookCreated',
+  // PVSCL:IFCOND(Dimensions, LINE)
+  dimensionCreated: 'dimensionCreated',
+  removeDimension: 'removeDimension',
+  dimensionRemoved: 'dimensionRemoved',
+  updateDimension: 'updateDimension',
+  dimensionUpdated: 'dimensionUpdated',
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(CodebookUpdate, LINE)
   codebookUpdated: 'codebookUpdated',
   createTheme: 'createTheme',

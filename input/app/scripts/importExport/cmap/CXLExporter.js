@@ -83,11 +83,25 @@ export class CXLExporter {
     let title = xmlDoc.createElement('dc:title')
     title.textContent = LanguageUtils.camelize(window.abwa.groupSelector.currentGroup.name)
     metadata.appendChild(title)
+    // PVSCL:IFCOND(Dimensions, LINE)
 
-    // Set description
-    let description = xmlDoc.createElement('dc:description')
-    description.textContent = window.abwa.groupSelector.currentGroup.id
-    metadata.appendChild(description)
+    // Set focus question
+    let focusQuestion = xmlDoc.createElement('dc:description')
+    focusQuestion.textContent = window.abwa.groupSelector.currentGroup.id
+    metadata.appendChild(focusQuestion)
+
+    // Set keywords
+    let dimensions = xmlDoc.createElement('dc:subject')
+    dimensions.textContent = window.abwa.groupSelector.currentGroup.id
+    metadata.appendChild(dimensions)
+
+    // Set Hypothes.is group
+    let creator = xmlDoc.createElement('dc:creator')
+    let groupId = xmlDoc.createElement('vcard:FN')
+    groupId.textContent = window.abwa.groupSelector.currentGroup.id
+    creator.appendChild(groupId)
+    metadata.appendChild(creator)
+    // PVSCL:ENDCOND
 
     // Create map
     let map = xmlDoc.createElement('map')

@@ -1,4 +1,4 @@
-import Tesseract from "tesseract.js"
+import Tesseract from 'tesseract.js'
 
 // const img = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Equation_illustration_colour.svg/220px-Equation_illustration_colour.svg.png"
 
@@ -10,9 +10,10 @@ class ImageUtilsOCR {
       'eng',
       { logger: m => console.log(m) }
     ).then(({ data: { text } }) => {
-      return text;
+      return text
     })
-  }}
+  }
+}
 
 
 export default ImageUtilsOCR

@@ -104,12 +104,20 @@ class CXLImporter {
   }
 
   static createNewImportedCmap (cxlObject, title) {
+    let inputValue = title
+    // PVSCL:IFCOND(Dimensions, LINE)
+    let focusQuestionElement = cxlObject.getElementsByTagName('dc:description')[0]
+    let focusQuestion = focusQuestionElement.innerHTML
+    if (focusQuestionElement || focusQuestion) {
+      inputValue = focusQuestion
+    }
+    // PVSCL:ENDCOND
     Alerts.inputTextAlert({
       alertType: Alerts.alertType.warning,
       title: 'You have imported a new concept map',
       text: 'When the configuration is imported a new highlighter is created. You can return to your other annotation codebooks using the sidebar.',
       inputPlaceholder: 'Type here the name of your new concept map...',
-      inputValue: title,
+      inputValue: inputValue,
       preConfirm: (groupName) => {
         if (_.isString(groupName)) {
           if (groupName.length <= 0) {
@@ -131,9 +139,10 @@ class CXLImporter {
             if (err) {
               Alerts.errorAlert({ text: 'Unable to create a new annotation group. Error: ' + err.message })
             } else {
-
               let conceptList = cxlObject.getElementsByTagName('concept-list')[0]
-              let tempCodebook = Codebook.fromCXLFile(conceptList, groupName)
+              let dimensionsListElement = cxlObject.getElementsByTagName('dc:subject')[0]
+              let dimensionsList = dimensionsListElement.innerHTML.split(';')
+              let tempCodebook = Codebook.fromCXLFile(conceptList, dimensionsList, groupName)
               window.abwa.groupSelector.groups.push(newGroup)
               Codebook.setAnnotationServer(newGroup.id, (annotationServer) => {
                 tempCodebook.annotationServer = annotationServer
@@ -205,19 +214,21 @@ class CXLImporter {
                             }
                           }
                           // PVSCL:ENDCOND
-                          window.abwa.annotationServerManager.client.createNewAnnotations(linkingAnnotations, (err, annotations) => {
-                            if (err) {
-                              Alerts.errorAlert({ text: 'Unable to import annotations. Error: ' + err.message })
-                            } else {
-                              window.abwa.groupSelector.retrieveGroups(() => {
-                                window.abwa.groupSelector.setCurrentGroup(newGroup.id, () => {
-                                  window.abwa.sidebar.openSidebar()
-                                  // Dispatch annotations updated
-                                  Alerts.closeAlert()
+                          if (linkingAnnotations.length !== 0) {
+                            window.abwa.annotationServerManager.client.createNewAnnotations(linkingAnnotations, (err, annotations) => {
+                              if (err) {
+                                Alerts.errorAlert({ text: 'Unable to import annotations. Error: ' + err.message })
+                              } else {
+                                window.abwa.groupSelector.retrieveGroups(() => {
+                                  window.abwa.groupSelector.setCurrentGroup(newGroup.id, () => {
+                                    window.abwa.sidebar.openSidebar()
+                                    // Dispatch annotations updated
+                                    Alerts.closeAlert()
+                                  })
                                 })
-                              })
-                            }
-                          })
+                              }
+                            })
+                          }
                         }
                       })
                     }

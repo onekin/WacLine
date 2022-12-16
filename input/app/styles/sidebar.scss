@@ -110,6 +110,18 @@
   text-align: center;
 }
 
+.containerHeaderDimension{
+  background-color: rgba(50, 50, 50, 0.5);
+  color: $containerHeaderFontColor;
+  padding-bottom: 4px;
+  min-width: calc( #{$sideBarWidth} - 0.5rem - 0.2rem);
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
 .bodyContainer {
   background-color: $sidebarBackgroundColor;
   min-width: calc( #{$sideBarWidth} - 0.5rem - 0.2rem);

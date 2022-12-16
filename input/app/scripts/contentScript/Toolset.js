@@ -210,11 +210,11 @@ class Toolset {
       this.toolsetBody.appendChild(this.importPreviousVersionImage)
       this.importPreviousVersionImage.addEventListener('click', () => {
         let annotatedResources = window.abwa.annotationManagement.annotationReader.allGroupAnnotations.map(annotation => annotation.target[0].source.url)
-        annotatedResources = _.uniq(annotatedResources).filter(anno => anno != undefined)
+        annotatedResources = _.uniq(annotatedResources).filter(anno => anno !== undefined)
         if (annotatedResources) {
           PreviousVersionAnnotationImporter.importPreviousVersionAnnotations()
         } else {
-          Alerts.infoAlert({ text: 'You have not annotated documents.', title: 'Problem'})
+          Alerts.infoAlert({ text: 'You have not annotated documents.', title: 'Problem' })
         }
       })
       // Check if exist any element in the tools and show it

@@ -299,6 +299,11 @@
         <cm:script cm:id="is1l8QbcEna6ELWDy" cm:language="ps:pvscl" cm:type="ps:boolean">WebAnnotator.MoodleProvider</cm:script>
       </cm:restriction>
     </cm:restset>
+    <cm:restset cm:id="i3m1YRNy7RU2BscVt">
+      <cm:restriction cm:id="i4vqaV7xYWDSBBRUf">
+        <cm:script cm:id="iPm6WR8rWuJhEAjyt" cm:language="ps:pvscl" cm:type="ps:boolean"></cm:script>
+      </cm:restriction>
+    </cm:restset>
   </cm:restrictions>
   <cm:elements cm:rootid="iT03PYqnsie4nDpS3bL0p6PlQFYl">
     <cm:element cm:id="iT03PYqnsie4nDpS3bL0p6PlQFYl" cm:name="WebAnnotator" cm:type="ps:family" cm:class="ps:family" cm:default="on">
@@ -23460,6 +23465,7 @@
         <cm:relation cm:id="iIoovd4NaVzpuCHnDGZUlsmsdnWf" cm:type="ps:optional">
           <cm:target cm:id="i56AfzUrmVbP6Yyltx_7orz9lbqm">./ioksxAwuJpZIFv9WgbIFJ8tgf6ub</cm:target>
           <cm:target cm:id="imRUYQY6kdyqXKse87_8uQ1Tt8Fh">./iK2BRrS85nEfokTtYh_nZXYjfCic</cm:target>
+          <cm:target cm:id="iTx1jnUUzvCRhOeG-VDeUltsAt7j">./in7iFUY7swHzxdoJI5Ar6nzNI1Gf</cm:target>
           <cm:target cm:id="iaLinHtcMrD6wSXa8T1ncc_hQJsg">./iiS-oBiy4MWCZyXNB7l5WwE3Ly_c</cm:target>
         </cm:relation>
       </cm:relations>
@@ -23480,7 +23486,7 @@
           <cm:constant cm:id="iobU7eX2EdDP-8cH7" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="i-DaM-PUVb5ld61Iy" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iZzO0KHB1c3W46Uhy" cm:type="ps:datetime">2020-01-23T09:10:44.064Z</cm:constant>
+          <cm:constant cm:id="iZzO0KHB1c3W46Uhy" cm:type="ps:datetime">2022-12-15T12:01:19.463Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -32512,6 +32518,69 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="ih0VNYRXSClEwnkGW" cm:mimetype="text/plain" cm:encoding="utf-8">cmapCloudHome.png</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="in7iFUY7swHzxdoJI5Ar6nzNI1Gf" cm:restriction="i3m1YRNy7RU2BscVt" cm:type="ex:js" cm:class="ps:part" cm:default="on">
+      <cm:relations cm:id="in7iFUY7swHzxdoJI5Ar6nzNI1Gfdependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="iaaN5WCt0x1IiHyLzCNpdnJIO8_9p19B2qeq0gbeH" cm:class="ps:parents">
+        <cm:relation cm:id="iU7zgK5RQjc8_kc4E7EMPisvfqKiYDNr0gbRkaG6U" cm:type="ps:parent">
+          <cm:target cm:id="iKP1nUlca6oT7aWjIyMPkXSJy5-R6Gyzw7U8FsuJi">./iFm_d3Gq4vdffWd6fSd6C-x12yFc</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:relations cm:id="igd_wX4qFkhS6loXus4APJxi99ak" cm:class="ps:children">
+        <cm:relation cm:id="iKDeuLS4BnRF5tqgRn_hOmLHxzue" cm:type="ps:optional">
+          <cm:target cm:id="iCf2RARtlMhVqDhwHQc3V4DOH2sp">./i9LHkIx21GjsKjlsj9gbZGYzY3qh</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ijjMIGkefyjKyv-ty" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iRh6epFWgueA-YCIf" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iSgx7eAa_Ttgx5bLq" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i1-wWBmT7whrA9vCX" cm:type="ps:datetime">2022-12-15T12:01:19.463Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDAFi74djCtUE7lwE" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iAE_Xr1SwPaiyHws8" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iDqRLL7P0FkC5zjxX" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i34E75s4rAffpqTng" cm:type="ps:datetime">2022-12-15T12:09:33.288Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="i9kzAv6NMNdQbJtCf" cm:mimetype="text/plain" cm:encoding="utf-8">Dimension</cm:mimedesc>
+      </cm:vname>
+    </cm:element>
+    <cm:element cm:id="i9LHkIx21GjsKjlsj9gbZGYzY3qh" cm:type="ps:file" cm:class="ps:source" cm:default="on">
+      <cm:relations cm:id="i9LHkIx21GjsKjlsj9gbZGYzY3qhdependecies" cm:class="ps:dependencies">
+      </cm:relations>
+      <cm:relations cm:id="iiIOQgHgHZC-_RQGieHywVB7EaaQAquOAqequeHoJ" cm:class="ps:parents">
+        <cm:relation cm:id="it0ufx1re3DCx_pvLbqSlz2vfW8_Vhbv1Wm6UpZVB" cm:type="ps:parent">
+          <cm:target cm:id="ihbzgqu4--VteDN_FhHB2dGWSXmCNDxsezwtuxfHi">./in7iFUY7swHzxdoJI5Ar6nzNI1Gf</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ip08VOYse4hvH0oBj-jQnVdaANUj" cm:type="ps:path" cm:fixed="true" cm:name="file">
+          <cm:constant cm:id="iHZ6ZPG9TQLwfAijhRikAuvZDeUl" cm:type="ps:path">Dimension.js</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i3VxkDRB8wa9qb1cjosV9kEjBM7a" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
+          <cm:constant cm:id="io_t35wdqgdcafJ2ljAVxhEtVDfm" cm:type="ps:filetype">misc</cm:constant>
+        </cm:property>
+        <cm:property cm:id="itexxY8xn-_mvZG8C" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iA_1efj00c86lON0v" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iJNDt6j5qaqZb4MF3" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="i7YZ76jZGEesyjsMC" cm:type="ps:datetime">2022-12-15T12:01:19.463Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i50R5GnxBQZPx5WQl" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iULLzETpV3OSldf_U" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ifPKx5GI_NbQAOLR0" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="i6Y4OxqwYC_wPP0Ed" cm:type="ps:datetime">2022-12-15T12:01:19.463Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+      <cm:vname>
+        <cm:mimedesc cm:id="ihtdnqL0vz_XyoAJ3" cm:mimetype="text/plain" cm:encoding="utf-8">Dimension.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
   </cm:elements>

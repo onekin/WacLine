@@ -1,6 +1,6 @@
 import Alerts from '../utils/Alerts'
 import _ from 'lodash'
-import Annotation from "../annotationManagement/Annotation";
+import Annotation from '../annotationManagement/Annotation'
 
 class PreviousVersionAnnotationImporter {
   static askUserToSelectAnnotatedResource (callback) {
@@ -29,8 +29,7 @@ class PreviousVersionAnnotationImporter {
   static importPreviousVersionAnnotations () {
     PreviousVersionAnnotationImporter.askUserToSelectAnnotatedResource((err, jsonObject) => {
       if (err) {
-        Alerts.errorAlert({text: 'Unable to parse json file. Error:<br/>' + err.message})
-      } else {
+        Alerts.errorAlert({ text: 'Unable to parse json file. Error:<br/>' + err.message })
       }
     })
   }
@@ -55,10 +54,10 @@ class PreviousVersionAnnotationImporter {
         source.title = window.abwa.targetManager.documentTitle || ''
         // Get UUID for current target
         source.id = window.abwa.targetManager.getDocumentId()
-        selectedResourceAnnotations.forEach( annotation => {
+        selectedResourceAnnotations.forEach(annotation => {
           let target = [{}]
           target[0].source = source
-          target[0].selector =  annotation.target[0].selector
+          target[0].selector = annotation.target[0].selector
           let annotationToCreate = new Annotation({
             target: target,
             tags: annotation.tags,
@@ -68,7 +67,7 @@ class PreviousVersionAnnotationImporter {
           // annotationsForNewVersion.push(annotationToCreate)
           window.abwa.annotationServerManager.client.createNewAnnotation(annotationToCreate.serialize(), (err, annotation) => {
             if (err) {
-              Alerts.errorAlert({text: 'Unable to create new group.'})
+              Alerts.errorAlert({ text: 'Unable to create new group.' })
             } else {
               // Parse annotations and dispatch created codebook
               console.log(annotation)
@@ -93,7 +92,7 @@ class PreviousVersionAnnotationImporter {
     inputFrom.setAttribute('list', 'resources')
 
     let annotatedResources = window.abwa.annotationManagement.annotationReader.allGroupAnnotations.map(annotation => annotation.target[0].source.url)
-    annotatedResources = _.uniq(annotatedResources).filter(anno => anno != undefined)
+    annotatedResources = _.uniq(annotatedResources).filter(anno => anno !== undefined)
     console.log(annotatedResources)
 
     // create options

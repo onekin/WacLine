@@ -78,7 +78,7 @@
           <cm:constant cm:id="i0nOl3e7KP1TTb9rK" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iAs39e5sQ_NxhlFQv" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iN1wnmEQ6UOvnDBYC" cm:type="ps:datetime">2022-10-19T07:56:41.993Z</cm:constant>
+          <cm:constant cm:id="iN1wnmEQ6UOvnDBYC" cm:type="ps:datetime">2022-11-21T14:50:59.312Z</cm:constant>
         </cm:property>
         <cm:property cm:id="iWJuxDiwLkyeNzFxk" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/ikd06TuWH0GM-TRbB">
           <cm:constant cm:id="ioGS5hLGB_iFK8d0Y" cm:type="ps:string">cag</cm:constant>
@@ -90,7 +90,7 @@
           <cm:constant cm:id="iAHOhwmGgkgHYcXfQ" cm:type="ps:string">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAh62oqu5gL13CQVRafRtqaTWkS6UQru7zvTinTn2UxJvFUjsOttkumdEhKh4g4fOvBdYtT07LNsxgVpehKNRiZqdlwSBVIrNTO2vdDKIIHGd4WGYZ/DJLJ7IMgoIvVgvDozH+WwqMEhaeldI+flDAPPswBClT8Sve3npYpM1pZAd9MPyi8HPUXOyJd83gJY3n156rS+DKIEvlR3Ree1Hs8Jns7oNG0AN4+XNZQ3U4vE3W8+YWBfgIn0GOqKnAtza2WPQ2Pml3wupILypaVP7fIt4yQ++YI9ucvOqYzhaD1l1aFi2OMCOZSXNaixQ4PrRooLqGsWoKuiechYE92dijOQIDAQAB</cm:constant>
         </cm:property>
         <cm:property cm:id="i8UUHEHFFm67mic1-" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/iYuM7N7dRcMGZxNk-">
-          <cm:constant cm:id="iA6nS1smmdq3cT4Bi" cm:type="ps:string">0.2.1</cm:constant>
+          <cm:constant cm:id="iA6nS1smmdq3cT4Bi" cm:type="ps:string">0.2.3</cm:constant>
         </cm:property>
         <cm:property cm:id="i7Pb-CBlvD9QufZZ9" cm:type="ps:string" cm:fixed="true" cm:name="iivhJRwmojkiJvYc5/iJML-QuP9BZDq9JNf">
           <cm:constant cm:id="ivjAEkGnwv6I2uTyx" cm:type="ps:string">https://github.com/onekin/WacLine/wiki/User-manual-for-Concept&amp;Go</cm:constant>
@@ -11099,8 +11099,20 @@
         </cm:relation>
       </cm:relations>
       <cm:properties>
-        <cm:property cm:id="i-x9LniB-v1CcyaoE" cm:type="ps:string" cm:invisible="true" cm:name="ps:selector">
-          <cm:constant cm:id="iL99GJmMzBvowvCSl" cm:type="ps:string">ps:auto</cm:constant>
+        <cm:property cm:id="i-x9LniB-v1CcyaoE" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="iL99GJmMzBvowvCSl" cm:type="ps:string">ps:user</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iBFcDXjenhOhh-Qpx" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iS6uKk3PWcZxq-BSi" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ikZUxOpch-7gS4P82" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iE5znNbL_C24zrOy7" cm:type="ps:datetime">2022-12-15T09:52:08.043Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iAQc2nSs2zm6ceK_r" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i5tNuvsDMs-799_e3" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ibJ_sJgcd-neNRaqZ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iR4B2gEvHYy6I8_9G" cm:type="ps:datetime">2022-12-15T09:52:08.043Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>
@@ -23218,6 +23230,54 @@
         </cm:property>
         <cm:property cm:id="ib_3IiKdagF_Ps6Lq" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
           <cm:constant cm:id="ipgCoFMRLGl-UDTcn" cm:type="ps:datetime">2022-09-15T07:50:48.652Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+    </cm:element>
+    <cm:element cm:id="ir23cikTWgz_SKazS" cm:type="ps:unselected" cm:class="ps:selection">
+      <cm:relations cm:id="iVGr4pYHuU9WIKxeL" cm:class="ps:references">
+        <cm:relation cm:id="i1RJPp8OPH0jD_noI" cm:type="ps:references">
+          <cm:target cm:id="iEHPzp1AjalxlVz2x">iivhJRwmojkiJvYc5/iCcGyRMZ_c85YeUdh</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="i1h3_GHbB-qh5o8xE" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="iJ9PL6UYdATBXRF0a" cm:type="ps:string">ps:user</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i6EmTd_Ow9xRR84HM" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="iBrYtAWfuOZHLXsNf" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iObvFOEaBhinq3kje" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iVx6BS8R7DdXp2L_E" cm:type="ps:datetime">2022-12-15T09:47:02.894Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="ioy9VmtLX46dsa1Xy" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="iUY-FhxpP-5cvincN" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="iW9GXHXPKJhtm_HnJ" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="ioP_S2XVLe44Fm3Sx" cm:type="ps:datetime">2022-12-15T09:47:06.073Z</cm:constant>
+        </cm:property>
+      </cm:properties>
+    </cm:element>
+    <cm:element cm:id="i7LqeZ7ZDXVFpcpl3" cm:type="ps:selected" cm:class="ps:selection">
+      <cm:relations cm:id="iQdXwk6SpOqoKPePM" cm:class="ps:references">
+        <cm:relation cm:id="iINbv0ewzsrmeUL3f" cm:type="ps:references">
+          <cm:target cm:id="iZeAMGT3BTLDzHXYH">iivhJRwmojkiJvYc5/inHGKhsMLPOg_xqYq</cm:target>
+        </cm:relation>
+      </cm:relations>
+      <cm:properties>
+        <cm:property cm:id="ipKsJxN-1FdQneH71" cm:type="ps:string" cm:invisible="true" cm:fixed="true" cm:name="ps:selector">
+          <cm:constant cm:id="ie2SVACawZKgMwRdl" cm:type="ps:string">ps:user</cm:constant>
+        </cm:property>
+        <cm:property cm:id="idii9NUcLIDuKC0tv" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
+          <cm:constant cm:id="i9J_El0xXyHhUcv7m" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i3XRoJNxkQvLoabL6" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
+          <cm:constant cm:id="iTYtxZtcRi1wS0xMX" cm:type="ps:datetime">2022-12-15T09:49:51.566Z</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i6B3EJDlDN439puEw" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
+          <cm:constant cm:id="i1XeIAnHBo_-DTGIi" cm:type="ps:string">xabiergarmendia</cm:constant>
+        </cm:property>
+        <cm:property cm:id="i-Y0OGdRIUIM1r_O8" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
+          <cm:constant cm:id="iMkMC9C3yHTT_PNWr" cm:type="ps:datetime">2022-12-15T09:49:51.566Z</cm:constant>
         </cm:property>
       </cm:properties>
     </cm:element>

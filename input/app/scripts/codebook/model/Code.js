@@ -53,8 +53,8 @@ class Code {
       references: [],
       tags: tags,
       target: [],
+      uri: this.theme.annotationGuide.annotationServer.getGroupUrl(),
       text: jsYaml.dump({ id: this.id || '', description: this.description }),
-      uri: this.theme.annotationGuide.annotationServer.getGroupUrl()
     }
   }
 

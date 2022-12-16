@@ -16,6 +16,9 @@ import ColorUtils from '../../../utils/ColorUtils'
 import LanguageUtils from '../../../utils/LanguageUtils'
 // PVSCL:IFCOND(CodebookUpdate, LINE)
 import UpdateCodebook from '../update/UpdateCodebook'
+// PVSCL:IFCOND(Dimensions,LINE)
+import Dimension from '../../model/Dimension'
+// PVSCL:ENDCOND
 // PVSCL:ENDCOND
 
 class ReadCodebook {
@@ -32,6 +35,11 @@ class ReadCodebook {
     this.initThemeCreatedEvent()
     this.initThemeUpdatedEvent()
     this.initThemeRemovedEvent()
+    // PVSCL:IFCOND(Dimensions,LINE)
+    this.initDimensionCreatedEvent()
+    this.initDimensionUpdatedEvent()
+    this.initDimensionRemovedEvent()
+    // PVSCL:ENDCOND
     // PVSCL:IFCOND(Hierarchy,LINE)
     this.initCodeCreatedEvent()
     this.initCodeUpdatedEvent()
@@ -94,6 +102,23 @@ class ReadCodebook {
     this.events.themeRemovedEvent = { element: document, event: Events.themeRemoved, handler: this.themeRemovedEventHandler() }
     this.events.themeRemovedEvent.element.addEventListener(this.events.themeRemovedEvent.event, this.events.themeRemovedEvent.handler, false)
   }
+  // PVSCL:IFCOND(Dimensions,LINE)
+
+  initDimensionCreatedEvent () {
+    this.events.dimensionCreatedEvent = { element: document, event: Events.dimensionCreated, handler: this.dimensionCreatedEventHandler() }
+    this.events.dimensionCreatedEvent.element.addEventListener(this.events.dimensionCreatedEvent.event, this.events.dimensionCreatedEvent.handler, false)
+  }
+
+  initDimensionUpdatedEvent () {
+    this.events.dimensionUpdatedEvent = { element: document, event: Events.dimensionUpdated, handler: this.dimensionUpdatedEventHandler() }
+    this.events.dimensionUpdatedEvent.element.addEventListener(this.events.dimensionUpdatedEvent.event, this.events.dimensionUpdatedEvent.handler, false)
+  }
+
+  initDimensionRemovedEvent () {
+    this.events.dimensionRemovedEvent = { element: document, event: Events.dimensionRemoved, handler: this.dimensionRemovedEventHandler() }
+    this.events.dimensionRemovedEvent.element.addEventListener(this.events.dimensionRemovedEvent.event, this.events.dimensionRemovedEvent.handler, false)
+  }
+  // PVSCL:ENDCOND
   // PVSCL:IFCOND(Hierarchy,LINE)
 
   initCodeCreatedEvent () {
@@ -288,15 +313,71 @@ class ReadCodebook {
     this.buttonContainer.innerText = ''
     // PVSCL:IFCOND(Codebook, LINE)
     // Set colors for each element
+    // PVSCL:IFCOND(Dimensions, LINE)
+    this.applyColorsToDimensions()
+    // PVSCL:ELSECOND
     this.applyColorsToThemes()
+    // PVSCL:ENDCOND
     // PVSCL:ENDCOND
     // Populate sidebar buttons container
     this.createButtons()
   }
 
+  // PVSCL:IFCOND(Dimensions, LINE)
   /**
    * This function adds the buttons that must appear in the sidebar to be able to annotate
    */
+  createButtons () {
+    // PVSCL:IFCOND(CodebookUpdate, LINE)
+    // PVSCL:IFCOND(Dimensions, LINE)
+    // Create new theme button
+    UpdateCodebook.createNewDimensionButton()
+    // PVSCL:ELSECOND
+    // Create new theme button
+    UpdateCodebook.createNewThemeButton()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(Linking, LINE)
+    // Create new relation button
+    LinkingButton.createNewLinkButton()
+    // PVSCL:ENDCOND
+    // PVSCL:IFCOND(TopicBased, LINE)
+    const rootTheme = this.getTopicTheme()
+    // PVSCL:ENDCOND
+    let themeButtonContainer
+    // PVSCL:IFCOND(TopicBased,LINE)
+    if (rootTheme) {
+      themeButtonContainer = this.createThemeButtonContainer(rootTheme)
+      if (_.isElement(themeButtonContainer)) {
+        this.buttonContainer.append(themeButtonContainer)
+      }
+    }
+    // PVSCL:ENDCOND
+    this.codebook.dimensions.forEach((dimension) => {
+      const header = document.createElement('div')
+      header.className = 'containerHeaderDimension'
+      const headerText = document.createElement('a')
+      headerText.innerText = dimension.name
+      header.appendChild(headerText)
+      this.buttonContainer.append(header)
+      // PVSCL:IFCOND(CodebookUpdate, LINE)
+      // Create new theme button
+      UpdateCodebook.createNewThemeButton(dimension.name)
+      // PVSCL:ENDCOND
+      let themes = this.codebook.themes.filter((theme) => {
+        return theme.dimension === dimension.name
+      })
+      themes.sort((a, b) => a.name.localeCompare(b.name))
+      for (let i = 0; i < themes.length; i++) {
+        const theme = themes[i]
+        themeButtonContainer = this.createThemeButtonContainer(theme)
+        if (_.isElement(themeButtonContainer)) {
+          this.buttonContainer.append(themeButtonContainer)
+        }
+      }
+    })
+  }
+  // PVSCL:ELSECOND
+
   createButtons () {
     // PVSCL:IFCOND(CodebookUpdate, LINE)
     // Create new theme button
@@ -368,6 +449,7 @@ class ReadCodebook {
       }
     }
   }
+  // PVSCL:ENDCOND
 
   createGroupedThemeButtonContainer (theme, codes) {
     return Buttons.createGroupedButtons({
@@ -587,6 +669,38 @@ class ReadCodebook {
     }) !== -1
   }
 
+  // PVSCL:IFCOND(Dimensions,LINE)
+
+  /**
+   * This function gives a color to each codebook element
+   */
+  applyColorsToDimensions () {
+    if (this.codebook && this.codebook.dimensions) {
+      const listOfColors = ColorUtils.getDifferentColors(this.codebook.dimensions.length + 1)
+      let topicColor = listOfColors.pop()
+      let topic = this.codebook.themes.filter((theme) => {
+        return theme.isTopic === true
+      })
+      if (topic) {
+        topic[0].color = topicColor
+      }
+      this.codebook.dimensions.forEach((dimension) => {
+        const color = listOfColors.pop()
+        // Set a color for each theme
+        dimension.color = ColorUtils.setAlphaToColor(color, 0.5)
+        let themesPerDimension = this.codebook.themes.filter((theme) => {
+          return theme.dimension === dimension.name
+        })
+        // Set color gradient for each code
+        if (themesPerDimension) {
+          themesPerDimension.forEach((theme) => {
+            theme.color = dimension.color
+          })
+        }
+      })
+    }
+  }
+  // PVSCL:ELSECOND
   /**
    * This function gives a color to each codebook element
    */
@@ -610,6 +724,7 @@ class ReadCodebook {
       })
     }
   }
+  // PVSCL:ENDCOND
 
   /**
    * This function creates the themes right click context menu.
@@ -624,21 +739,21 @@ class ReadCodebook {
       // PVSCL:IFCOND(TopicBased, LINE)
       let theme = this.codebook.getCodeOrThemeFromId(themeId)
       if (!theme.isTopic) {
-        items.updateTheme = { name: 'Modify ' + Config.tags.grouped.group }
+        items.updateTheme = { name: 'Rename ' + Config.tags.grouped.group }
         items.removeTheme = { name: 'Remove ' + Config.tags.grouped.group }
         // PVSCL:IFCOND(Linking,LINE)
         items.manageRelationships = { name: 'Manage links' }
         items.showAnnotations = { name: 'Show annotations' }
         // PVSCL:ENDCOND
       } else {
-        items.updateTheme = { name: 'Modify topic' }
+        items.updateTheme = { name: 'Rename topic' }
         // PVSCL:IFCOND(Linking,LINE)
         items.manageRelationships = { name: 'Manage links' }
         items.showAnnotations = { name: 'Show annotations' }
         // PVSCL:ENDCOND
       }
       // PVSCL:ELSECOND
-      items.updateTheme = { name: 'Modify ' + Config.tags.grouped.group }
+      items.updateTheme = { name: 'Rename ' + Config.tags.grouped.group }
       items.removeTheme = { name: 'Remove ' + Config.tags.grouped.group }
       // PVSCL:IFCOND(Linking,LINE)
       items.manageRelationships = { name: 'Manage links' }
@@ -687,9 +802,9 @@ class ReadCodebook {
                 } else {
                   console.log(userProfile)
                   let groupId = window.abwa.groupSelector.currentGroup.id
-                  let groupName = window.abwa.groupSelector.currentGroup.name.toLowerCase().replace(/ /g,"-");
-                  let query = '?q=tag:' + Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name.replace(/ /g,"+");
-                  let url = 'https://hypothes.is/groups/'+groupId+'/'+groupName+query
+                  let groupName = window.abwa.groupSelector.currentGroup.name.toLowerCase().replace(/ /g, '-')
+                  let query = '?q=tag:' + Config.namespace + ':' + Config.tags.grouped.group + ':' + theme.name.replace(/ /g, '+')
+                  let url = 'https://hypothes.is/groups/' + groupId + '/' + groupName + query
                   console.log(url)
                   window.open(url)
                 }
@@ -762,7 +877,53 @@ class ReadCodebook {
     }
   }
   // PVSCL:ENDCOND
+
   // PVSCL:IFCOND(CodebookUpdate, LINE)
+  // PVSCL:IFCOND(Dimensions, LINE)
+  /**
+   * This function stores the new theme in the codebook and reloads the button container.
+   */
+  dimensionCreatedEventHandler () {
+    return (event) => {
+      const dimension = Dimension.fromAnnotation(event.detail.newDimensionAnnotation, this.codebook)
+      // Add to the model the new theme
+      this.codebook.addDimension(dimension)
+      // Reload button container
+      this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+      // Open the sidebar
+      window.abwa.sidebar.openSidebar()
+    }
+  }
+
+  dimensionUpdatedEventHandler () {
+    return (event) => {
+      // Update model
+      this.codebook.updateTheme(event.detail.updatedTheme)
+      // Reload button container
+      this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+      // Open the sidebar
+      window.abwa.sidebar.openSidebar()
+    }
+  }
+
+  /**
+   * This function removes the given theme from the codebook and reloads the button container.
+   */
+  dimensionRemovedEventHandler () {
+    return (event) => {
+      const theme = event.detail.theme
+      theme.annotationGuide.removeTheme(theme)
+      // Reload button container
+      this.reloadButtonContainer()
+      // Dispatch codebook updated event
+      LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
+    }
+  }
+  // PVSCL:ENDCOND
 
   /**
    * This function stores the new theme in the codebook and reloads the button container.
@@ -815,10 +976,11 @@ class ReadCodebook {
     }
   }
 
+  // PVSCL:IFCOND(Hierarchy, LINE)
+
   /**
    * This function stores the new code in the codebook and reloads the button container.
    */
-  // PVSCL:IFCOND(Hierarchy, LINE)
   codeCreatedEventHandler () {
     return (event) => {
       const theme = event.detail.theme
@@ -863,6 +1025,7 @@ class ReadCodebook {
       LanguageUtils.dispatchCustomEvent(Events.codebookUpdated, { codebook: this.codebook })
     }
   }
+  // PVSCL:ENDCOND
   // PVSCL:ENDCOND
   // PVSCL:ENDCOND
 
@@ -929,10 +1092,12 @@ class ReadCodebook {
     return _.find(themes, (theme) => { return theme.isTopic === true })
   }
 
+  // PVSCL:IFCOND(NOT(Dimensions), LINE)
   filterTopicTheme () {
     let themes = this.codebook.themes
     return themes.filter((theme) => { return theme.isTopic === false })
   }
+  // PVSCL:ENDCOND
   // PVSCL:ENDCOND
 }
 
