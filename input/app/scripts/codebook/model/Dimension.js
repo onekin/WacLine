@@ -41,11 +41,13 @@ class Dimension {
       const config = jsYaml.load(annotation.text)
       if (_.isObject(config)) {
         const description = config.description
+        const color = config.color
         const id = annotation.id
         return new Dimension({
           id,
           name,
           description,
+          color,
           createdDate: annotation.updated,
           annotationGuide
         })
@@ -72,7 +74,9 @@ class Dimension {
       tags: tags,
       target: [],
       text: jsYaml.dump({
-        id: this.id
+        id: this.id,
+        description: this.description,
+        color: this.color
       }),
       uri: this.annotationGuide.annotationServer.getGroupUrl()
     }

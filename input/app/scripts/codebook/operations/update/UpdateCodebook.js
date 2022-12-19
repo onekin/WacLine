@@ -14,6 +14,7 @@ import Dimension from '../../model/Dimension'
 // PVSCL:ENDCOND
 import LanguageUtils from '../../../utils/LanguageUtils'
 import ImageUtilsOCR from '../../../utils/ImageUtilsOCR'
+import ColorUtils from '../../../utils/ColorUtils'
 
 
 class UpdateCodebook {
@@ -111,15 +112,13 @@ class UpdateCodebook {
    * This function adds a button in the sidebar that allows to create new themes.
    */
   static createNewThemeButton (dimensionName) {
-    const newThemeButton = document.createElement('button')
-    if (dimensionName) {
-      newThemeButton.innerText = 'New ' + dimensionName
-    } else {
-      newThemeButton.innerText = 'New THEME'
-    }
-    newThemeButton.id = 'newThemeButton' + dimensionName
-    newThemeButton.className = 'tagButton codingElement'
-    newThemeButton.addEventListener('click', async () => {
+    const header = document.createElement('div')
+    header.className = 'containerHeaderDimension'
+    header.id = 'newThemeButton' + dimensionName
+    const headerText = document.createElement('a')
+    headerText.innerText = dimensionName
+    header.appendChild(headerText)
+    header.addEventListener('click', async () => {
       let newTheme
       let target = window.abwa.annotationManagement.annotationCreator.obtainTargetToCreateAnnotation({})
       let retrievedThemeName = ''
@@ -150,7 +149,7 @@ class UpdateCodebook {
         }
       }
       Alerts.multipleInputAlert({
-        title: 'You are creating a new ' + Config.tags.grouped.group + ': ',
+        title: 'You are creating a new ' + dimensionName + ' ' + Config.tags.grouped.group + ': ',
         html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New ' + Config.tags.grouped.group + ' name" value="' + retrievedThemeName + '"/>' +
           '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="themeDescription" placeholder="Please type a description that describes this ' + Config.tags.grouped.group + '..."></textarea>',
         preConfirm: () => {
@@ -189,7 +188,7 @@ class UpdateCodebook {
         }
       })
     })
-    window.abwa.codebookManager.codebookReader.buttonContainer.append(newThemeButton)
+    window.abwa.codebookManager.codebookReader.buttonContainer.append(header)
   }
   // PVSCL:ELSECOND
   /**
@@ -288,73 +287,79 @@ class UpdateCodebook {
     newDimensionButton.id = 'newDimensionButton'
     newDimensionButton.className = 'tagButton codingElement'
     newDimensionButton.addEventListener('click', async () => {
-      let newDimension
-      let target = window.abwa.annotationManagement.annotationCreator.obtainTargetToCreateAnnotation({})
-      let retrievedDimensionName = ''
-      // Get user selected content
-      let selection = document.getSelection()
-      // If selection is child of sidebar, return null
-      if (selection.anchorNode) {
-        if ($(selection.anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0 || selection.toString().length < 1) {
-          if (selection.anchorNode.innerText) {
-            retrievedDimensionName = selection.anchorNode.innerText
-          } else {
-            if (selection.anchorNode.nodeName === 'IMG') {
-              retrievedDimensionName = await ImageUtilsOCR.getStringFromImage(selection.anchorNode)
+      if (window.abwa.codebookManager.codebookReader.codebook.dimensions.length < 12) {
+        let newDimension
+        let target = window.abwa.annotationManagement.annotationCreator.obtainTargetToCreateAnnotation({})
+        let retrievedDimensionName = ''
+        // Get user selected content
+        let selection = document.getSelection()
+        // If selection is child of sidebar, return null
+        if (selection.anchorNode) {
+          if ($(selection.anchorNode).parents('#annotatorSidebarWrapper').toArray().length !== 0 || selection.toString().length < 1) {
+            if (selection.anchorNode.innerText) {
+              retrievedDimensionName = selection.anchorNode.innerText
             } else {
-              if (selection.anchorNode.childNodes) {
-                let childArray = Array.from(selection.anchorNode.childNodes)
-                let imgChild = childArray.filter((node) => {
-                  return node.nodeName === 'IMG'
-                })
-                if (imgChild[0]) {
-                  retrievedDimensionName = await ImageUtilsOCR.getStringFromImage(imgChild[0])
+              if (selection.anchorNode.nodeName === 'IMG') {
+                retrievedDimensionName = await ImageUtilsOCR.getStringFromImage(selection.anchorNode)
+              } else {
+                if (selection.anchorNode.childNodes) {
+                  let childArray = Array.from(selection.anchorNode.childNodes)
+                  let imgChild = childArray.filter((node) => {
+                    return node.nodeName === 'IMG'
+                  })
+                  if (imgChild[0]) {
+                    retrievedDimensionName = await ImageUtilsOCR.getStringFromImage(imgChild[0])
+                  }
                 }
               }
             }
+          } else {
+            retrievedDimensionName = selection.toString().trim().replace(/^\w/, c => c.toUpperCase())
           }
-        } else {
-          retrievedDimensionName = selection.toString().trim().replace(/^\w/, c => c.toUpperCase())
         }
-      }
-      Alerts.multipleInputAlert({
-        title: 'You are creating a new theme:',
-        html: '<input autofocus class="formCodeName swal2-input" type="text" id="dimensionName" placeholder="New ' + 'theme' + ' name" value="' + retrievedDimensionName + '"/>' +
-          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="dimensionDescription" placeholder="Please type a description that describes this theme' + '..."></textarea>',
-        preConfirm: () => {
-          const dimensionNameElement = document.querySelector('#dimensionName')
-          let dimensionName
-          if (_.isElement(dimensionNameElement)) {
-            dimensionName = dimensionNameElement.value
-          }
-          if (dimensionName.length > 0) {
-            if (!this.dimensionNameExist(dimensionName)) {
-              const dimensionDescriptionElement = document.querySelector('#dimensionDescription')
-              let dimensionDescription
-              if (_.isElement(dimensionDescriptionElement)) {
-                dimensionDescription = dimensionDescriptionElement.value
+        Alerts.multipleInputAlert({
+          title: 'You are creating a new theme:',
+          html: '<input autofocus class="formCodeName swal2-input" type="text" id="dimensionName" placeholder="New ' + 'theme' + ' name" value="' + retrievedDimensionName + '"/>' +
+            '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="dimensionDescription" placeholder="Please type a description that describes this theme' + '..."></textarea>',
+          preConfirm: () => {
+            const dimensionNameElement = document.querySelector('#dimensionName')
+            let dimensionName
+            if (_.isElement(dimensionNameElement)) {
+              dimensionName = dimensionNameElement.value
+            }
+            if (dimensionName.length > 0) {
+              if (!this.dimensionNameExist(dimensionName)) {
+                const dimensionDescriptionElement = document.querySelector('#dimensionDescription')
+                let dimensionDescription
+                if (_.isElement(dimensionDescriptionElement)) {
+                  dimensionDescription = dimensionDescriptionElement.value
+                }
+                let dimensionColor = ColorUtils.getDimensionColor(window.abwa.codebookManager.codebookReader.codebook.dimensions)
+                newDimension = new Dimension({
+                  name: dimensionName,
+                  description: dimensionDescription,
+                  color: dimensionColor,
+                  annotationGuide: window.abwa.codebookManager.codebookReader.codebook
+                })
+              } else {
+                const swal = require('sweetalert2')
+                swal.showValidationMessage('There exist a ' + Config.tags.grouped.group + ' with the same name. Please select a different name.')
               }
-              newDimension = new Dimension({
-                name: dimensionName,
-                description: dimensionDescription,
-                annotationGuide: window.abwa.codebookManager.codebookReader.codebook
-              })
             } else {
               const swal = require('sweetalert2')
-              swal.showValidationMessage('There exist a ' + Config.tags.grouped.group + ' with the same name. Please select a different name.')
+              swal.showValidationMessage('Name cannot be empty.')
             }
-          } else {
-            const swal = require('sweetalert2')
-            swal.showValidationMessage('Name cannot be empty.')
+          },
+          callback: () => {
+            LanguageUtils.dispatchCustomEvent(Events.createDimension, { dimension: newDimension, target: target })
+          },
+          cancelCallback: () => {
+            console.log('new dimension canceled')
           }
-        },
-        callback: () => {
-          LanguageUtils.dispatchCustomEvent(Events.createDimension, { dimension: newDimension, target: target })
-        },
-        cancelCallback: () => {
-          console.log('new dimension canceled')
-        }
-      })
+        })
+      } else {
+
+      }
     })
     window.abwa.codebookManager.codebookReader.buttonContainer.append(newDimensionButton)
   }

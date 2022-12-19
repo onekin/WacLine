@@ -353,12 +353,6 @@ class ReadCodebook {
     }
     // PVSCL:ENDCOND
     this.codebook.dimensions.forEach((dimension) => {
-      const header = document.createElement('div')
-      header.className = 'containerHeaderDimension'
-      const headerText = document.createElement('a')
-      headerText.innerText = dimension.name
-      header.appendChild(headerText)
-      this.buttonContainer.append(header)
       // PVSCL:IFCOND(CodebookUpdate, LINE)
       // Create new theme button
       UpdateCodebook.createNewThemeButton(dimension.name)
@@ -375,6 +369,16 @@ class ReadCodebook {
         }
       }
     })
+    let undefindedThemes = this.codebook.themes.filter((theme) => {
+      return !theme.dimension
+    })
+    for (let i = 0; i < undefindedThemes.length; i++) {
+      const theme = undefindedThemes[i]
+      themeButtonContainer = this.createThemeButtonContainer(theme)
+      if (_.isElement(themeButtonContainer)) {
+        this.buttonContainer.append(themeButtonContainer)
+      }
+    }
   }
   // PVSCL:ELSECOND
 
@@ -676,25 +680,23 @@ class ReadCodebook {
    */
   applyColorsToDimensions () {
     if (this.codebook && this.codebook.dimensions) {
-      const listOfColors = ColorUtils.getDifferentColors(this.codebook.dimensions.length + 1)
-      let topicColor = listOfColors.pop()
+      // const listOfColors = ColorUtils.getDifferentColors(this.codebook.dimensions.length + 1)
       let topic = this.codebook.themes.filter((theme) => {
         return theme.isTopic === true
       })
       if (topic) {
-        topic[0].color = topicColor
+        topic[0].color = ColorUtils.getTopicColor()
       }
       this.codebook.dimensions.forEach((dimension) => {
-        const color = listOfColors.pop()
+        // const color = listOfColors.pop()
         // Set a color for each theme
-        dimension.color = ColorUtils.setAlphaToColor(color, 0.5)
         let themesPerDimension = this.codebook.themes.filter((theme) => {
           return theme.dimension === dimension.name
         })
         // Set color gradient for each code
         if (themesPerDimension) {
           themesPerDimension.forEach((theme) => {
-            theme.color = dimension.color
+            theme.color = ColorUtils.setAlphaToColor(dimension.color, 0.5)
           })
         }
       })

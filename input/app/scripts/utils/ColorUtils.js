@@ -3,6 +3,7 @@ import Color from 'color'
 import UniqueColors from 'unique-colors'
 
 class ColorUtils {
+
   static getDefaultColor () {
     return 'rgba(150,150,150,0.5)'
   }
@@ -50,6 +51,55 @@ class ColorUtils {
   static getDifferentColors (number) {
     return UniqueColors.unique_colors(number)
   }
+
+  static getDimensionColor (dimensions) {
+    const cmapCloudColors = [
+      'rgba(255,150,200)',
+      'rgba(255,255,150)',
+      'rgba(200,255,200)',
+      'rgba(150,200,255)',
+      'rgba(255,200,0)',
+      'rgba(200,150,255)',
+      'rgba(0,200,255)',
+      'rgba(150,200,0)',
+      'rgba(255,150,0)',
+      'rgba(200,200,200)',
+      'rgba(255,0,255)',
+      'rgba(0,255,0)'
+    ]
+    let usedColors = ColorUtils.getUsedColors(dimensions)
+    if (usedColors.length > 0) {
+      let remainColors = cmapCloudColors.filter(val => !usedColors.includes(val))
+      return remainColors[0]
+    } else {
+      return cmapCloudColors[0]
+    }
+  }
+
+  static getTopicColor () {
+    return 'rgba(239,109,121)'
+  }
+
+  static getUsedColors (dimensions) {
+    let usedColors = []
+    if (dimensions) {
+      dimensions.forEach(dimension => {
+        let color = dimension.color.replace(', 0.6)', ')').replaceAll(' ', '')
+        usedColors.push(color)
+      })
+    }
+
+    return usedColors
+  }
+
+  static turnForCmapCloud (color) {
+    let cmapCloudColor = color.replace(', 0.6)', '').replaceAll(' ', '').replace('rgba(', '').replace(')', '')
+    cmapCloudColor = cmapCloudColor + ',255'
+
+    return cmapCloudColor
+  }
+
+
 }
 
 export default ColorUtils

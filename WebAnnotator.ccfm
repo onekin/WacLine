@@ -24733,7 +24733,6 @@
         <cm:relation cm:id="iW8e2rnBOsluuqrkLjD-Xb6J8iMn" cm:type="ps:optional">
           <cm:target cm:id="iTgK6rBbvrsIj6RH34ost_G34-Fk">./ima7qqWMSc5vze32BN6UhjCN6bIe</cm:target>
           <cm:target cm:id="iVnyXgLjPGIIR_AuPgK8Gz6H7Svb">./i_dtq0FghUpusxm02ZJ4uQQ0fgcd</cm:target>
-          <cm:target cm:id="ixT1T3zqi7EmILC0mP-SfvgmxBhb">./i3r9tHZgHEE_4BlobmMGHrLVm9On</cm:target>
         </cm:relation>
       </cm:relations>
       <cm:properties>
@@ -24753,7 +24752,7 @@
           <cm:constant cm:id="idyTTDLBKMkErnCCx" cm:type="ps:string">xabiergarmendia</cm:constant>
         </cm:property>
         <cm:property cm:id="iBgRjfUtM7XoOsWSY" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i10Ij59KWiJr1Wck3" cm:type="ps:datetime">2022-10-18T16:31:34.713Z</cm:constant>
+          <cm:constant cm:id="i10Ij59KWiJr1Wck3" cm:type="ps:datetime">2022-12-19T11:16:29.237Z</cm:constant>
         </cm:property>
       </cm:properties>
       <cm:vname>
@@ -32203,69 +32202,6 @@
       </cm:properties>
       <cm:vname>
         <cm:mimedesc cm:id="imiWWSlm0s1WwNEXJ" cm:mimetype="text/plain" cm:encoding="utf-8">sero.png</cm:mimedesc>
-      </cm:vname>
-    </cm:element>
-    <cm:element cm:id="i3r9tHZgHEE_4BlobmMGHrLVm9On" cm:type="ex:js" cm:class="ps:part" cm:default="on">
-      <cm:relations cm:id="i3r9tHZgHEE_4BlobmMGHrLVm9Ondependecies" cm:class="ps:dependencies">
-      </cm:relations>
-      <cm:relations cm:id="iC3ENqeaaJ4WmvfChDNLj9pM5R6QkrK4UsugHz28p" cm:class="ps:parents">
-        <cm:relation cm:id="iLz6-9_cGLzhX-pB2URVB_VlYicFNC3kIgbVlv1EN" cm:type="ps:parent">
-          <cm:target cm:id="iuflYJixv8VntYCeXtKwvXSwvDN2TDhYmcaTlJyIi">./iaDqp-3SvciFiAX2Ycls0udT3Stp</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:relations cm:id="i2Upfj60-yMcDJgHX8Zc_8iXBK0b" cm:class="ps:children">
-        <cm:relation cm:id="iB9W_F1xBMXHQCVd7L9HFVcqHiPf" cm:type="ps:optional">
-          <cm:target cm:id="ieMVELemXlK3P8Q7_CtYJLhqGnRj">./i3fW4zTsQbXVX64VYpI7PpQgfk7f</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:properties>
-        <cm:property cm:id="i70jKRBbqHN8Dlvbr" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
-          <cm:constant cm:id="iOFcXlNiMoaIfvT12" cm:type="ps:string">xabiergarmendia</cm:constant>
-        </cm:property>
-        <cm:property cm:id="i3pbttFZC5Yk3ANZC" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
-          <cm:constant cm:id="i9_ARUHhJQgcHXwGA" cm:type="ps:datetime">2022-10-18T13:26:04.928Z</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iPJGcjWx51BsgWjr9" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="il0tRuMNm2WVVdKDH" cm:type="ps:string">xabiergarmendia</cm:constant>
-        </cm:property>
-        <cm:property cm:id="ifAdLrTJ0yFwFsnuz" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="i3aqVTGCGIpgtzDSt" cm:type="ps:datetime">2022-10-18T13:26:04.928Z</cm:constant>
-        </cm:property>
-      </cm:properties>
-      <cm:vname>
-        <cm:mimedesc cm:id="iPxCSf1XeH4BFhzXX" cm:mimetype="text/plain" cm:encoding="utf-8">test</cm:mimedesc>
-      </cm:vname>
-    </cm:element>
-    <cm:element cm:id="i3fW4zTsQbXVX64VYpI7PpQgfk7f" cm:type="ps:file" cm:class="ps:source" cm:default="on">
-      <cm:relations cm:id="i3fW4zTsQbXVX64VYpI7PpQgfk7fdependecies" cm:class="ps:dependencies">
-      </cm:relations>
-      <cm:relations cm:id="iYCkYXmOkiIXSYCU7jYURdGwvXCmZ8FVRhXUBURz2" cm:class="ps:parents">
-        <cm:relation cm:id="iPkKP19UlXmBMVBgH4U1nOQWCA2NP7UptPAM5uvW8" cm:type="ps:parent">
-          <cm:target cm:id="it05oca2nX8L5v1GOdGKzJiwfbGoJRQ29wfLzvLZm">./i3r9tHZgHEE_4BlobmMGHrLVm9On</cm:target>
-        </cm:relation>
-      </cm:relations>
-      <cm:properties>
-        <cm:property cm:id="iLfg70FFGjkRwJ3eWXBnPhGvUwWg" cm:type="ps:path" cm:fixed="true" cm:name="file">
-          <cm:constant cm:id="i--ntdENt2Mg2YQyIwUCsCszTE9k" cm:type="ps:path">test.js</cm:constant>
-        </cm:property>
-        <cm:property cm:id="ikrJuLBmaqUvm6ebWwJbfxk0t1Oh" cm:type="ps:filetype" cm:fixed="true" cm:name="type">
-          <cm:constant cm:id="iEFy6kY54u39hqtXne4TyiIJZO1a" cm:type="ps:filetype">misc</cm:constant>
-        </cm:property>
-        <cm:property cm:id="imCQewU59mvFsvS9V" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:Source">
-          <cm:constant cm:id="itzjuesqq0ZeD2jAb" cm:type="ps:string">xabiergarmendia</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iUZrjg4v2uV1HXFQP" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Created">
-          <cm:constant cm:id="iAgZiUQXkWK4nl-w4" cm:type="ps:datetime">2022-10-18T13:26:04.928Z</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iME6OiF56QPtepkcV" cm:type="ps:string" cm:fixed="true" cm:readonly="true" cm:name="ps:ChangedBy">
-          <cm:constant cm:id="iJQMRG3-4WsQHSEPm" cm:type="ps:string">xabiergarmendia</cm:constant>
-        </cm:property>
-        <cm:property cm:id="iQ3IpXdHedVBislP_" cm:type="ps:datetime" cm:fixed="true" cm:readonly="true" cm:name="ps:Changed">
-          <cm:constant cm:id="iI9b6MeTr-TVEiMm4" cm:type="ps:datetime">2022-10-18T13:26:04.928Z</cm:constant>
-        </cm:property>
-      </cm:properties>
-      <cm:vname>
-        <cm:mimedesc cm:id="iJ0F6V_By5I8ABsrX" cm:mimetype="text/plain" cm:encoding="utf-8">test.js</cm:mimedesc>
       </cm:vname>
     </cm:element>
     <cm:element cm:id="iT_tS0LnzdDOpCm3dwDKVMsrxYMk" cm:type="ex:js" cm:class="ps:part" cm:default="on">

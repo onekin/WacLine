@@ -4,6 +4,7 @@ import HypothesisURL from './evidenceAnnotation/HypothesisURL'
 import ToolURL from './evidenceAnnotation/ToolURL'
 import LanguageUtils from '../../utils/LanguageUtils'
 import _ from 'lodash'
+import ColorUtils from '../../utils/ColorUtils'
 
 export class LinkingPhrase {
   constructor (linkingWord, id) {
@@ -176,6 +177,19 @@ export class CXLExporter {
       let elementID = concept.theme.id
       id.value = elementID
       conceptAppearance.setAttributeNode(id)
+      // PVSCL:IFCOND(Dimensions, LINE)
+      let background = document.createAttribute('background-color')
+      if (concept.theme.isTopic) {
+        background.value = ColorUtils.turnForCmapCloud(ColorUtils.getTopicColor())
+        conceptAppearance.setAttributeNode(background)
+      } else {
+        let dimension = window.abwa.codebookManager.codebookReader.codebook.getDimensionByName(concept.theme.dimension)
+        if (dimension) {
+          background.value = ColorUtils.turnForCmapCloud(dimension.color)
+          conceptAppearance.setAttributeNode(background)
+        }
+      }
+      // PVSCL:ENDCOND
       conceptAppearanceList.appendChild(conceptAppearance)
       if (concept.evidenceAnnotations.length > 0) {
         for (let i = 0; i < concept.evidenceAnnotations.length; i++) {

@@ -368,6 +368,8 @@ class Codebook {
     if (dimensionsList.length > 0) {
       for (let i = 0; i < dimensionsList.length; i++) {
         let dimension = new Dimension({ name: dimensionsList[i], annotationGuide })
+        let color = ColorUtils.getDimensionColor(annotationGuide.dimensions)
+        dimension.color = ColorUtils.setAlphaToColor(color, 0.6)
         annotationGuide.dimensions.push(dimension)
       }
     }
@@ -446,8 +448,7 @@ class Codebook {
 
   addDimension (dimension) {
     if (LanguageUtils.isInstanceOf(dimension, Dimension)) {
-      const color = ColorUtils.getDifferentColors(1)
-      dimension.color = ColorUtils.setAlphaToColor(color, 0.6)
+      dimension.color = ColorUtils.setAlphaToColor(dimension.color, 0.6)
       this.dimensions.push(dimension)
     }
   }

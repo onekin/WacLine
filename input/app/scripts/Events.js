@@ -46,6 +46,7 @@ const Events = {
   createCodebook: 'createCodebook',
   codebookCreated: 'codebookCreated',
   // PVSCL:IFCOND(Dimensions, LINE)
+  createDimension: 'createDimension',
   dimensionCreated: 'dimensionCreated',
   removeDimension: 'removeDimension',
   dimensionRemoved: 'dimensionRemoved',
