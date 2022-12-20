@@ -330,8 +330,10 @@ class ReadCodebook {
   createButtons () {
     // PVSCL:IFCOND(CodebookUpdate, LINE)
     // PVSCL:IFCOND(Dimensions, LINE)
+    // PVSCL:IFCOND(NOT(FixedDimensions), LINE)
     // Create new theme button
     UpdateCodebook.createNewDimensionButton()
+    // PVSCL:ENDCOND
     // PVSCL:ELSECOND
     // Create new theme button
     UpdateCodebook.createNewThemeButton()
@@ -685,7 +687,8 @@ class ReadCodebook {
         return theme.isTopic === true
       })
       if (topic) {
-        topic[0].color = ColorUtils.getTopicColor()
+        let topicColor = ColorUtils.getTopicColor()
+        topic[0].color = ColorUtils.setAlphaToColor(topicColor, 0.6)
       }
       this.codebook.dimensions.forEach((dimension) => {
         // const color = listOfColors.pop()

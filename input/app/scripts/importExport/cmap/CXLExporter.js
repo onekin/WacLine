@@ -88,20 +88,27 @@ export class CXLExporter {
 
     // Set focus question
     let focusQuestion = xmlDoc.createElement('dc:description')
-    focusQuestion.textContent = window.abwa.groupSelector.currentGroup.id
+    let topicTheme = window.abwa.codebookManager.codebookReader.getTopicTheme()
+    focusQuestion.textContent = topicTheme.name
     metadata.appendChild(focusQuestion)
 
     // Set keywords
-    let dimensions = xmlDoc.createElement('dc:subject')
-    dimensions.textContent = window.abwa.groupSelector.currentGroup.id
-    metadata.appendChild(dimensions)
+    let dimensionsTag = xmlDoc.createElement('dc:subject')
+    dimensionsTag.textContent = window.abwa.codebookManager.codebookReader.codebook.getDimensionsForCmapCloud()
+    metadata.appendChild(dimensionsTag)
 
     // Set Hypothes.is group
+    let rights = xmlDoc.createElement('dcterms:rightsHolder')
     let creator = xmlDoc.createElement('dc:creator')
+    let contributor = xmlDoc.createElement('dc:contributor')
     let groupId = xmlDoc.createElement('vcard:FN')
     groupId.textContent = window.abwa.groupSelector.currentGroup.id
+    rights.appendChild(groupId)
     creator.appendChild(groupId)
+    contributor.appendChild(groupId)
+    metadata.appendChild(rights)
     metadata.appendChild(creator)
+    metadata.appendChild(contributor)
     // PVSCL:ENDCOND
 
     // Create map

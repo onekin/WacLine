@@ -11,6 +11,10 @@ import Config from '../../Config'
 import Events from '../../Events'
 import { Relationship } from '../../contentScript/MapContentManager'
 // PVSCL:ENDCOND
+// PVSCL:IFCOND(Dimensions,LINE)
+import ColorUtils from '../../utils/ColorUtils'
+// PVSCL:ENDCOND
+
 
 class CXLImporter {
   static askUserToImportCxlFile (callback) {
@@ -74,12 +78,15 @@ class CXLImporter {
       if (err) {
         Alerts.errorAlert({ text: 'Unable to parse cxl file. Error:<br/>' + err.message })
       } else {
-        let title, groupID
+        let title, groupID, focusQuestion
         try {
           let titleElement = cxlObject.getElementsByTagName('dc:title')[0]
           title = titleElement.innerHTML
-          let groupIDElement = cxlObject.getElementsByTagName('dc:description')[0]
+          let contributor = cxlObject.getElementsByTagName('dc:contributor')[0]
+          let groupIDElement = contributor.getElementsByTagName('vcard:FN')[0]
           groupID = groupIDElement.innerHTML
+          let focusQuestionElement = cxlObject.getElementsByTagName('dc:description')[0]
+          focusQuestion = focusQuestionElement.innerHTML
         } catch (err) {
           title = ''
           groupID = ''
@@ -228,6 +235,14 @@ class CXLImporter {
                                 })
                               }
                             })
+                          } else {
+                            window.abwa.groupSelector.retrieveGroups(() => {
+                              window.abwa.groupSelector.setCurrentGroup(newGroup.id, () => {
+                                window.abwa.sidebar.openSidebar()
+                                // Dispatch annotations updated
+                                Alerts.closeAlert()
+                              })
+                            })
                           }
                         }
                       })
@@ -246,7 +261,9 @@ class CXLImporter {
     // IF THE IMPORTED MAP HAS AN EXISTING GROUP
     window.abwa.groupSelector.updateCurrentGroupHandler(restoredGroup.id)
     let conceptList = cxlObject.getElementsByTagName('concept-list')[0]
-    let importedCodebook = Codebook.fromCXLFile(conceptList, restoredGroup)
+    let dimensionsListElement = cxlObject.getElementsByTagName('dc:subject')[0]
+    let dimensionsList = dimensionsListElement.innerHTML.split(';')
+    let importedCodebook = Codebook.fromCXLFile(conceptList, dimensionsList, restoredGroup)
     Codebook.setAnnotationServer(restoredGroup.id, (annotationServer) => {
       importedCodebook.annotationServer = annotationServer
       let title = 'Concept&Go has detected a version of this map. What was the topic or focus question?'
@@ -267,6 +284,11 @@ class CXLImporter {
               let previousCodebookIDs = previousCodebook.themes.map(previousCodebookTheme => previousCodebookTheme.id)
               let previousCodebookNames = previousCodebook.themes.map(previousCodebookTheme => previousCodebookTheme.name)
               let importedCodebookIDs = importedCodebook.themes.map(importedCodebookTheme => importedCodebookTheme.id)
+              // PVSCL:IFCOND(Dimensions,LINE)
+              let previousDimensionsIDs = previousCodebook.dimensions.map(previousCodebookDimensions => previousCodebookDimensions.id)
+              let previousDimensionsNames = previousCodebook.dimensions.map(previousCodebookDimensions => previousCodebookDimensions.name)
+              let importedDimensionsNames = importedCodebook.dimensions.map(importedCodebookDimensions => importedCodebookDimensions.name)
+              // PVSCL:ENDCOND
               let importedRelationships = []
               // construct relationships
               let linkingPhraseList = cxlObject.getElementsByTagName('linking-phrase-list')[0]
@@ -303,18 +325,57 @@ class CXLImporter {
               console.log(previousRelationships)
               console.log('importedRelationships')
               console.log(importedRelationships)
-              console.log('previousCodebook')
-              console.log(previousCodebook)
-              console.log('importedCodebook')
-              console.log(importedCodebook)
               if (err) {
                 Alerts.errorAlert({ text: 'Error parsing codebook. Error: ' + err.message })
               } else {
+                // PVSCL:IFCOND(Dimensions,LINE)
+                // NEW DIMENSIONS
+                let dimensionsToInclude = importedCodebook.dimensions.filter(importedCodebookDimension => !(previousDimensionsNames.includes(importedCodebookDimension.name)))
+                if (dimensionsToInclude[0]) {
+                  dimensionsToInclude.forEach(dimensionToInclude => {
+                    const newDimensionAnnotation = dimensionToInclude.toAnnotation()
+                    window.abwa.annotationServerManager.client.createNewAnnotation(newDimensionAnnotation, (err, annotation) => {
+                      if (err) {
+                        Alerts.errorAlert({ text: 'Unable to create the new code. Error: ' + err.toString() })
+                      } else {
+                        LanguageUtils.dispatchCustomEvent(Events.dimensionCreated, { newDimensionAnnotation: annotation, target: event.detail.target })
+                      }
+                    })
+                  })
+                }
+                // REMOVE DIMENSIONS
+                let dimensionsToRemove = previousCodebook.dimensions.filter(previousCodebookDimension => !(importedDimensionsNames.includes(previousCodebookDimension.name)))
+                dimensionsToRemove.forEach(dimensionToRemove => {
+                  let annotationsToDelete = [dimensionToRemove.id]
+                  window.abwa.annotationServerManager.client.deleteAnnotations(annotationsToDelete, (err, result) => {
+                    if (err) {
+                      Alerts.errorAlert({ text: 'Unexpected error when deleting the code.' })
+                    } else {
+                      LanguageUtils.dispatchCustomEvent(Events.dimensionRemoved, { dimension: dimensionToRemove })
+                    }
+                  })
+                })
+                // UPDATE DIMENSION FOR THEMES
+                let maintainedDimensions = previousCodebook.dimensions.filter(previousCodebookDimension => importedDimensionsNames.includes(previousCodebookDimension.name))
+                let conceptAppearanceList = cxlObject.getElementsByTagName('concept-appearance-list')[0]
+                importedCodebook.themes.forEach(theme => {
+                  let themeColor = CXLImporter.getThemeColor(conceptAppearanceList, theme)
+                  themeColor = ColorUtils.getColorFromCXLFormat(themeColor)
+                  let dimension = maintainedDimensions.find((dim) => {
+                    // Delete element 5 on first iteration
+                    let dimColor = dim.color.replaceAll(' ', '')
+                    return  dimColor === themeColor
+                  })
+                  if (dimension) {
+                    theme.dimension = dimension.name
+                  }
+                })
+                // PVSCL:ENDCOND
                 // UPDATED THEMES
                 let candidateThemesToUpdate = importedCodebook.themes.filter(importedCodebookTheme => previousCodebookIDs.includes(importedCodebookTheme.id))
                 let themesToUpdate = candidateThemesToUpdate.filter(themeToUpdate => {
                   let elementToCompare = previousCodebook.themes.filter(previousCodebookTheme => previousCodebookTheme.id === themeToUpdate.id)
-                  return !(themeToUpdate.name === elementToCompare[0].name)
+                  return !(themeToUpdate.name === elementToCompare[0].name) || !(themeToUpdate.dimension === elementToCompare[0].dimension)
                 })
                 console.log(themesToUpdate)
                 if (themesToUpdate[0]) {
@@ -404,11 +465,35 @@ class CXLImporter {
                 }
               }
               Alerts.simpleSuccessAlert({ text: 'Concept map succesfully uploaded. Refresh the page!' })
+              window.abwa.groupSelector.retrieveGroups(() => {
+                window.abwa.groupSelector.setCurrentGroup(restoredGroup.id, () => {
+                  window.abwa.sidebar.openSidebar()
+                  // Dispatch annotations updated
+                  Alerts.closeAlert()
+                })
+              })
             })
           }
         })
       })
     })
+  }
+
+  static getThemeColor (conceptAppearanceList, theme) {
+    let concept = _.filter(conceptAppearanceList.childNodes, (conceptNode) => {
+      return conceptNode.getAttribute('id') === theme.id
+    })
+    if (concept) {
+      let backgroundColor = concept[0].getAttribute('background-color')
+      if (backgroundColor) {
+        return backgroundColor
+      } else {
+        return null
+      }
+    } else {
+      return null
+    }
+
   }
 }
 

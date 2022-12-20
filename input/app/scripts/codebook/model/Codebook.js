@@ -387,6 +387,17 @@ class Codebook {
     }
     return annotationGuide
   }
+  // PVSCL:IFCOND(Dimensions, LINE)
+
+  getDimensionsForCmapCloud () {
+    let dimensionsString = ''
+    this.dimensions.forEach(dimension => {
+      dimensionsString = dimensionsString + dimension.name + ';'
+    })
+    dimensionsString = dimensionsString.slice(0, -1)
+    return dimensionsString
+  }
+  // PVSCL:ENDCOND
   // PVSCL:ENDCOND
 
   getCodeOrThemeFromId (id) {
