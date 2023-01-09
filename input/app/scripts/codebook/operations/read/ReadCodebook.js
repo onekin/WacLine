@@ -346,7 +346,7 @@ class ReadCodebook {
     const rootTheme = this.getTopicTheme()
     // PVSCL:ENDCOND
     let themeButtonContainer
-    // PVSCL:IFCOND(TopicBased,LINE)
+    // PVSCL:IFCOND(TopicBased AND NOT(Dimensions),LINE)
     if (rootTheme) {
       themeButtonContainer = this.createThemeButtonContainer(rootTheme)
       if (_.isElement(themeButtonContainer)) {
@@ -603,9 +603,19 @@ class ReadCodebook {
   }
 
   createThemeButtonContainer (theme) {
+    let name
+    // PVSCL:IFCOND(Dimensions, LINE)
+    if (theme.topic !== '') {
+      name = theme.topic
+    } else {
+      name = theme.name
+    }
+    // PVSCL:ELSECOND
+    name = theme.topic
+    // PVSCL:ENDCOND
     return Buttons.createButton({
       id: theme.id,
-      name: theme.name,
+      name: name,
       className: 'codingElement',
       description: theme.description,
       color: theme.color,

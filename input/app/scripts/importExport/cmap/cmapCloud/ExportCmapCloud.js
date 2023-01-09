@@ -47,7 +47,7 @@ class ExportCmapCloud {
           let blob = new window.Blob([mapString], {
             type: 'text/plain;charset=utf-8'
           })
-          FileSaver.saveAs(blob, LanguageUtils.camelize(folderName) + '.cxl')
+          FileSaver.saveAs(blob, LanguageUtils.camelize(folderName) + '(' + window.abwa.groupSelector.currentGroup.id + ')' + '.cxl')
           Alerts.infoAlert({ text: 'You have available your resource in CmapCloud in ' + folderName + ' folder.\n Please move the downloaded map to the corresponding CmapCloud folder.', title: 'Completed' })
           // })
         }, reason => {

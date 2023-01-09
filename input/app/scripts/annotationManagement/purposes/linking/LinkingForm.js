@@ -16,7 +16,7 @@ class LinkingForm {
     return new Promise(() => {
       // Close sidebar if opened
       window.abwa.sidebar.closeSidebar()
-      let title = 'Creating new relation'
+      let title = 'Creating new relationship'
       // Get body for classifying
       let showForm = () => {
         // Create form

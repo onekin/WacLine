@@ -89,7 +89,11 @@ export class CXLExporter {
     // Set focus question
     let focusQuestion = xmlDoc.createElement('dc:description')
     let topicTheme = window.abwa.codebookManager.codebookReader.getTopicTheme()
-    focusQuestion.textContent = topicTheme.name
+    if (topicTheme.topic !== '') {
+      focusQuestion.textContent = topicTheme.topic
+    } else {
+      focusQuestion.textContent = topicTheme.name
+    }
     metadata.appendChild(focusQuestion)
 
     // Set keywords
@@ -176,7 +180,11 @@ export class CXLExporter {
       id.value = concept.theme.id
       conceptElement.setAttributeNode(id)
       let label = document.createAttribute('label')
-      label.value = concept.theme.name
+      if (concept.theme.topic !== '') {
+        label.value = concept.theme.topic
+      } else {
+        label.value = concept.theme.name
+      }
       conceptElement.setAttributeNode(label)
       conceptList.appendChild(conceptElement)
       let conceptAppearance = xmlDoc.createElement('concept-appearance')
@@ -203,11 +211,11 @@ export class CXLExporter {
           let annotation = concept.evidenceAnnotations[i]
           let name
           if (i === 0) {
-            name = LanguageUtils.camelize(concept.theme.name) + '_source_' + LanguageUtils.camelize(annotation.target[0].source.title)
+            name = LanguageUtils.camelize(concept.theme.name)
           } else {
-            name = LanguageUtils.camelize(concept.theme.name + i) + '_source_' + LanguageUtils.camelize(annotation.target[0].source.title)
+            name = LanguageUtils.camelize(concept.theme.name)
           }
-          name = name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s/g, '')
+          name = name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s/g, '') + '---' + annotation.id
           let url
           if (evidenceAnnotations === 'hypothesis') {
             url = new HypothesisURL({ elementID, name, annotation })
@@ -248,11 +256,11 @@ export class CXLExporter {
               let fromName = annotation.tags[0].replace('from:', '')
               let toName = annotation.tags[2].replace('to:', '')
               if (i === 0) {
-                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName) + '_source_' + LanguageUtils.camelize(annotation.target[0].source.title)
+                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName)
               } else {
-                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName + i) + '_source_' + LanguageUtils.camelize(annotation.target[0].source.title)
+                name = LanguageUtils.camelize(fromName) + '_To_' + LanguageUtils.camelize(toName)
               }
-              name = name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s/g, '')
+              name = name.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s/g, '') + '---' + annotation.id
               let url
               if (evidenceAnnotations === 'hypothesis') {
                 url = new HypothesisURL({ elementID, name, annotation })

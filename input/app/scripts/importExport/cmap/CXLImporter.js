@@ -48,8 +48,18 @@ class CXLImporter {
       selectFrom.id = 'topicConcept'
       themes.forEach(theme => {
         let option = document.createElement('option')
+        // PVSCL:IFCOND(Dimensions, LINE)
+        if (theme.topic !== '') {
+          option.text = theme.topic
+          option.value = theme.topic
+        } else {
+          option.text = theme.name
+          option.value = theme.name
+        }
+        // PVSCL:ELSECOND
         option.text = theme.name
         option.value = theme.name
+        // PVSCL:ENDCOND
         selectFrom.add(option)
       })
       html += 'Topic:' + selectFrom.outerHTML + '<br>'
@@ -131,8 +141,13 @@ class CXLImporter {
             const swal = require('sweetalert2')
             swal.showValidationMessage('Name cannot be empty.')
           } else if (groupName.length > 25) {
+            // PVSCL:IFCOND(Dimensions, LINE)
+            groupName = groupName.slice(0, 25)
+            return groupName
+            // PVSCL:ELSECOND
             const swal = require('sweetalert2')
             swal.showValidationMessage('The concept map name cannot be higher than 25 characters.')
+            // PVSCL:ENDCOND
           } else {
             return groupName
           }
@@ -149,15 +164,22 @@ class CXLImporter {
               let conceptList = cxlObject.getElementsByTagName('concept-list')[0]
               let dimensionsListElement = cxlObject.getElementsByTagName('dc:subject')[0]
               let dimensionsList = dimensionsListElement.innerHTML.split(';')
-              let tempCodebook = Codebook.fromCXLFile(conceptList, dimensionsList, groupName)
+              let tempCodebook = Codebook.fromCXLFile(conceptList, dimensionsList, groupName, focusQuestion)
               window.abwa.groupSelector.groups.push(newGroup)
               Codebook.setAnnotationServer(newGroup.id, (annotationServer) => {
                 tempCodebook.annotationServer = annotationServer
                 let title = 'Which is the topic or focus question?'
                 CXLImporter.askUserRootTheme(tempCodebook.themes, title, (topicConceptName) => {
-                  let topicThemeObject = _.filter(tempCodebook.themes, (theme) => {
+                  let topicThemeObject
+                  // PVSCL:IFCOND(Dimensions, LINE)
+                  topicThemeObject = _.filter(tempCodebook.themes, (theme) => {
+                    return theme.topic === topicConceptName || theme.name === topicConceptName
+                  })
+                  // PVSCL:ELSECOND
+                  topicThemeObject = _.filter(tempCodebook.themes, (theme) => {
                     return theme.name === topicConceptName
                   })
+                  // PVSCL:ENDCOND
                   topicThemeObject[0].isTopic = true
                   let annotations = tempCodebook.toAnnotations()
                   // Send create highlighter
@@ -259,18 +281,30 @@ class CXLImporter {
 
   static updateImportedMap (cxlObject, restoredGroup) {
     // IF THE IMPORTED MAP HAS AN EXISTING GROUP
+    let focusQuestion
+    // PVSCL:IFCOND(Dimensions, LINE)
+    let focusQuestionElement = cxlObject.getElementsByTagName('dc:description')[0]
+    focusQuestion = focusQuestionElement.innerHTML
+    // PVSCL:ENDCOND
     window.abwa.groupSelector.updateCurrentGroupHandler(restoredGroup.id)
     let conceptList = cxlObject.getElementsByTagName('concept-list')[0]
     let dimensionsListElement = cxlObject.getElementsByTagName('dc:subject')[0]
     let dimensionsList = dimensionsListElement.innerHTML.split(';')
-    let importedCodebook = Codebook.fromCXLFile(conceptList, dimensionsList, restoredGroup)
+    let importedCodebook = Codebook.fromCXLFile(conceptList, dimensionsList, restoredGroup, focusQuestion)
     Codebook.setAnnotationServer(restoredGroup.id, (annotationServer) => {
       importedCodebook.annotationServer = annotationServer
       let title = 'Concept&Go has detected a version of this map. What was the topic or focus question?'
       CXLImporter.askUserRootTheme(importedCodebook.themes, title, (topicConceptName) => {
-        let topicThemeObject = _.filter(importedCodebook.themes, (theme) => {
+        let topicThemeObject
+        // PVSCL:IFCOND(Dimensions, LINE)
+        topicThemeObject = _.filter(importedCodebook.themes, (theme) => {
+          return theme.topic === topicConceptName || theme.name === topicConceptName
+        })
+        // PVSCL:ELSECOND
+        topicThemeObject = _.filter(importedCodebook.themes, (theme) => {
           return theme.name === topicConceptName
         })
+        // PVSCL:ENDCOND
         topicThemeObject[0].isTopic = true
         window.abwa.annotationServerManager.client.searchAnnotations({
           url: 'https://hypothes.is/groups/' + restoredGroup.id,
@@ -364,7 +398,7 @@ class CXLImporter {
                   let dimension = maintainedDimensions.find((dim) => {
                     // Delete element 5 on first iteration
                     let dimColor = dim.color.replaceAll(' ', '')
-                    return  dimColor === themeColor
+                    return dimColor === themeColor
                   })
                   if (dimension) {
                     theme.dimension = dimension.name

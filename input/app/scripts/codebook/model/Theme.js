@@ -23,7 +23,8 @@ class Theme {
     multivalued,
     inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleProvider) */,
     moodleCriteriaId/* PVSCL:ENDCOND *//* PVSCL:IFCOND(TopicBased) */,
-    isTopic = false/* PVSCL:ENDCOND */
+    isTopic = false/* PVSCL:ENDCOND */ /* PVSCL:IFCOND(Dimensions) */,
+    topic = '' /* PVSCL:ENDCOND */
   }) {
     this.id = id
     this.name = name
@@ -53,6 +54,9 @@ class Theme {
     // PVSCL:ENDCOND
     // PVSCL:IFCOND(TopicBased, LINE)
     this.isTopic = isTopic
+    // PVSCL:IFCOND(Dimensions, LINE)
+    this.topic = topic
+    // PVSCL:ENDCOND
     // PVSCL:ENDCOND
   }
 
@@ -103,7 +107,8 @@ class Theme {
       text: jsYaml.dump({
         id: this.id || ''/* PVSCL:IFCOND(BuiltIn) */,
         description: this.description/* PVSCL:ENDCOND *//* PVSCL:IFCOND(TopicBased) */,
-        isTopic: this.isTopic/* PVSCL:ENDCOND */
+        isTopic: this.isTopic,
+        topic: this.topic/* PVSCL:ENDCOND */
       }),
       uri: this.annotationGuide.annotationServer.getGroupUrl()
     }
@@ -150,6 +155,9 @@ class Theme {
         // PVSCL:ENDCOND
         // PVSCL:IFCOND(TopicBased,LINE)
         let isTopic = config.isTopic
+        // PVSCL:IFCOND(Dimensions,LINE)
+        let topic = config.topic
+        // PVSCL:ENDCOND
         // PVSCL:ENDCOND
         return new Theme({
           id,
@@ -163,7 +171,8 @@ class Theme {
           multivalued,
           inductive/* PVSCL:ENDCOND *//* PVSCL:IFCOND(MoodleReport) */,
           moodleCriteriaId/* PVSCL:ENDCOND *//* PVSCL:IFCOND(TopicBased) */,
-          isTopic/* PVSCL:ENDCOND */
+          isTopic,
+          topic/* PVSCL:ENDCOND */
         })
       } else {
         console.error('Unable to retrieve configuration for annotation')
@@ -253,7 +262,8 @@ class Theme {
       name: this.name,
       description: this.description,
       id: this.id/* PVSCL:IFCOND(TopicBased) */,
-      isTopic: this.isTopic/* PVSCL:ENDCOND */
+      isTopic: this.isTopic/* PVSCL:ENDCOND */ /* PVSCL:IFCOND(Dimensions) */,
+      topic: this.topic/* PVSCL:ENDCOND */
     }
   }
 

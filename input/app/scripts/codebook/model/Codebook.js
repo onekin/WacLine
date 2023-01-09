@@ -363,7 +363,7 @@ class Codebook {
   // PVSCL:ENDCOND
   // PVSCL:IFCOND(CXLImport, LINE)
 
-  static fromCXLFile (conceptList, dimensionsList, name) {
+  static fromCXLFile (conceptList, dimensionsList, name, topic) {
     let annotationGuide = new Codebook({ name: name })
     if (dimensionsList.length > 0) {
       for (let i = 0; i < dimensionsList.length; i++) {
@@ -382,7 +382,7 @@ class Codebook {
         annotationGuide.themes.push(theme)
       }
     } else {
-      let theme = new Theme({ name: name, annotationGuide })
+      let theme = new Theme({ name: name, annotationGuide, topic })
       annotationGuide.themes.push(theme)
     }
     return annotationGuide

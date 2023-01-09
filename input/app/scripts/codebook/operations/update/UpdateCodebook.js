@@ -116,7 +116,7 @@ class UpdateCodebook {
     header.className = 'containerHeaderDimension'
     header.id = 'newThemeButton' + dimensionName
     const headerText = document.createElement('a')
-    headerText.innerText = dimensionName
+    headerText.innerText = 'New ' + dimensionName
     header.appendChild(headerText)
     header.addEventListener('click', async () => {
       let newTheme
@@ -149,9 +149,8 @@ class UpdateCodebook {
         }
       }
       Alerts.multipleInputAlert({
-        title: 'You are creating a new ' + dimensionName + ' ' + Config.tags.grouped.group + ': ',
-        html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New ' + Config.tags.grouped.group + ' name" value="' + retrievedThemeName + '"/>' +
-          '<textarea class="formCodeDescription swal2-textarea" data-minchars="1" data-multiple rows="6" id="themeDescription" placeholder="Please type a description that describes this ' + Config.tags.grouped.group + '..."></textarea>',
+        title: 'You are creating a new ' + dimensionName + ' code: ',
+        html: '<input autofocus class="formCodeName swal2-input" type="text" id="themeName" placeholder="New ' + Config.tags.grouped.group + ' name" value="' + retrievedThemeName + '"/>',
         preConfirm: () => {
           const themeNameElement = document.querySelector('#themeName')
           let themeName
@@ -358,7 +357,10 @@ class UpdateCodebook {
           }
         })
       } else {
-
+        Alerts.errorAlert({
+          title: 'No more themes available',
+          text: 'Please, delete one of your themes to be able to create a new one'
+        })
       }
     })
     window.abwa.codebookManager.codebookReader.buttonContainer.append(newDimensionButton)
